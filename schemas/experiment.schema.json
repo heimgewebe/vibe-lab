@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vibe-Lab Experiment",
+  "description": "Schema für Experiment-Dokumentationen im Vibe-Lab",
+  "type": "object",
+  "required": ["name", "date", "hypothesis", "tools", "techniques", "status"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name des Experiments",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Datum des Experiments (YYYY-MM-DD)"
+    },
+    "hypothesis": {
+      "type": "string",
+      "description": "Die zu testende Hypothese",
+      "minLength": 1
+    },
+    "tools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Verwendete Tools"
+    },
+    "techniques": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Verwendete Techniken (kebab-case IDs)"
+    },
+    "styles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Verwendete Stile (kebab-case IDs)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "in-progress", "completed", "abandoned"],
+      "description": "Status des Experiments"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["confirmed", "partially-confirmed", "refuted", "inconclusive"],
+      "description": "Ergebnis bezüglich der Hypothese"
+    },
+    "ratings": {
+      "type": "object",
+      "description": "Bewertung anhand der Standard-Dimensionen (1-5)",
+      "properties": {
+        "speed": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "accuracy": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "code_quality": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "iterability": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "cognitive_load": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "scalability": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "creativity": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags für Kategorisierung"
+    }
+  },
+  "additionalProperties": false
+}

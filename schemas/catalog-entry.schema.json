@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vibe-Lab Catalog Entry",
+  "description": "Schema für Katalog-Einträge im Vibe-Lab (Styles, Techniques, Technologies, Workflows, Anti-Patterns)",
+  "type": "object",
+  "required": ["name", "category", "maturity", "complexity", "tags", "last_tested"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name des Eintrags",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": ["style", "technique", "technology", "workflow", "anti-pattern"],
+      "description": "Kategorie des Eintrags"
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["experimental", "proven", "deprecated"],
+      "description": "Reifegrad des Eintrags"
+    },
+    "tools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Kompatible oder verwendete Tools"
+    },
+    "synergies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Gut kombiniertbar mit diesen Einträgen (kebab-case IDs)"
+    },
+    "anti-synergies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Schlecht kombinierbar mit diesen Einträgen (kebab-case IDs)"
+    },
+    "complexity": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Komplexität der Anwendung"
+    },
+    "speed_boost": {
+      "type": "string",
+      "description": "Geschwindigkeitsgewinn (z.B. '2x', '5x', 'minimal')"
+    },
+    "quality_impact": {
+      "type": "string",
+      "enum": ["---", "--", "-", "neutral", "+", "++", "+++"],
+      "description": "Auswirkung auf die Codequalität"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Tags für Kategorisierung und Suche"
+    },
+    "last_tested": {
+      "type": "string",
+      "format": "date",
+      "description": "Datum der letzten Erprobung (YYYY-MM-DD)"
+    }
+  },
+  "additionalProperties": false
+}
