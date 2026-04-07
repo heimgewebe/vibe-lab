@@ -1,0 +1,31 @@
+name: Idea
+description: Propose a new vibe-coded idea
+title: "[Idea]: "
+labels: ["lab", "idea"]
+body:
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis / Problem
+      description: What are you trying to test or solve?
+    validations:
+      required: true
+  - type: textarea
+    id: metric
+    attributes:
+      label: Success Metric
+      description: How do we know this is a success?
+    validations:
+      required: true
+  - type: textarea
+    id: stack
+    attributes:
+      label: Proposed Stack
+      description: What technologies will be used?
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risks / Kill Criteria
+      description: When do we kill this idea?
+    validations:
+      required: true
