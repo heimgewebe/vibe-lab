@@ -8,7 +8,21 @@ Die Vision beruht auf vier Pfeilern: **Sammlung, Erprobung, Validierung und Krea
 3. **bewährt** (Validierung)
 4. **systemisch erweitert** (Kreation)
 
-**Das System ist zyklisch: Jede Stufe beeinflusst alle anderen.** Feedback wirkt nicht symmetrisch: Validierte Praktiken beeinflussen neue Experimente (Stabilisierung), Lab-Ergebnisse erzeugen neue Experimente (Innovation) und Experimente können bestehende Praktiken in Frage stellen (Revision). Validierte Praktiken stabilisieren und verdichten die Systemintelligenz; nicht validierte liefern explorativen Erkenntniswert. Praktiken und Erkenntnisse werden dabei konsequent bewertet, denn **Qualität zeigt sich primär in reproduzierbarer Verbesserung des Vibes, bleibt jedoch kontextabhängig und teilweise nicht vollständig deterministisch.** Neben Reproduzierbarkeit umfasst Qualität auch Kontextsensitivität (funktioniert unter variierenden Bedingungen) und explorativen Wert (eröffnet neue Möglichkeiten, auch wenn noch nicht stabil). Die Bewertung erfolgt entlang von drei Achsen: Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität).
+Diese vier Zustände beschreiben die epistemische Entwicklung einer Idee (Wissenszustand). Davon zu unterscheiden ist der operative Status im System (Lifecycle), der als Entscheidungszustand geführt wird (idea → testing → adopted/rejected).
+
+Beide Modelle sind gekoppelt, aber nicht identisch:
+– Der epistemische Zustand beschreibt, wie belastbar eine Erkenntnis ist
+– Der Entscheidungsstatus beschreibt, wie das System mit ihr umgeht
+
+Typische Zuordnung:
+– roh ↔ idea
+– getestet ↔ testing
+– bewährt ↔ adopted
+– systemisch erweitert ↔ (post-adoption, Einfluss auf neue Experimente)
+
+Rejected hat keinen stabilen epistemischen Zustand, liefert aber explorativen Erkenntniswert.
+
+**Das System ist zyklisch: Jede Stufe beeinflusst alle anderen.** Feedback wirkt nicht symmetrisch: Validierte Praktiken beeinflussen neue Experimente (Stabilisierung), Lab-Ergebnisse erzeugen neue Experimente (Innovation) und Experimente können bestehende Praktiken in Frage stellen (Revision). Validierte Praktiken stabilisieren und verdichten die Systemintelligenz; nicht validierte Praktiken liefern explorativen Erkenntniswert. Praktiken und Erkenntnisse werden dabei konsequent bewertet, denn **Qualität zeigt sich primär in reproduzierbarer Verbesserung des Vibes, bleibt jedoch kontextabhängig und teilweise nicht vollständig deterministisch.** Neben Reproduzierbarkeit umfasst Qualität auch Kontextsensitivität (funktioniert unter variierenden Bedingungen) und explorativen Wert (eröffnet neue Möglichkeiten, auch wenn noch nicht stabil). Die Bewertung erfolgt entlang von drei Achsen: Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität).
 
 Das System organisiert sich in drei Schichten:
 
