@@ -8,7 +8,7 @@ Die Vision beruht auf vier Pfeilern: **Sammlung, Erprobung, Validierung und Krea
 3. **bewährt** (Validierung)
 4. **systemisch erweitert** (Kreation)
 
-**Das System ist zyklisch: Jede Stufe beeinflusst alle anderen.** Nur validierte Praktiken erhöhen die Systemintelligenz. Praktiken und Erkenntnisse werden dabei konsequent bewertet, denn **Qualität bedeutet: Eine Praxis verbessert den Vibe reproduzierbar.** Die Bewertung erfolgt entlang von drei Achsen: Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität).
+**Das System ist zyklisch: Jede Stufe beeinflusst alle anderen.** Feedback wirkt nicht symmetrisch: Validierte Praktiken beeinflussen neue Experimente (Stabilisierung), Lab-Ergebnisse erzeugen neue Experimente (Innovation) und Experimente können bestehende Praktiken in Frage stellen (Revision). Validierte Praktiken stabilisieren und verdichten die Systemintelligenz; nicht validierte liefern explorativen Erkenntniswert. Praktiken und Erkenntnisse werden dabei konsequent bewertet, denn **Qualität zeigt sich primär in reproduzierbarer Verbesserung des Vibes, bleibt jedoch kontextabhängig und teilweise nicht vollständig deterministisch.** Neben Reproduzierbarkeit umfasst Qualität auch Kontextsensitivität (funktioniert unter variierenden Bedingungen) und explorativen Wert (eröffnet neue Möglichkeiten, auch wenn noch nicht stabil). Die Bewertung erfolgt entlang von drei Achsen: Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität).
 
 Das System organisiert sich in drei Schichten:
 
@@ -29,7 +29,7 @@ Die Core Engine schafft reproduzierbare Rahmenbedingungen für die Arbeit mit LL
 
 ## Layer 2: Practice System (Die Zusammenarbeit)
 
-Wie Mensch und Maschine strukturiert zusammenarbeiten.
+Wie Mensch und Maschine strukturiert zusammenarbeiten. Das System trennt hierbei strikt zwischen Beobachtung (Experimentdaten), Bewertung (Interpretation entlang der Achsen), Entscheidung (adopt / reject / iterate) und Wissen (persistierte Praktiken).
 
 - **Strukturierte Hypothesen**
   Praktiken, Techniken, Tools und Workflows werden als strukturierte, testbare Hypothesen gesammelt und weiterverfolgt. Jeder Eintrag durchläuft einen Statuszyklus (idea → testing → adopted/rejected).
@@ -51,7 +51,7 @@ Wie das Repository als Erkenntnisraum lernt und wächst.
 - **Anbindung ans Ökosystem**
   Erfolgreiche Praktiken sollen nicht im Labor verbleiben, sondern in angrenzende Standards, Templates und Repositories des übergeordneten Ökosystems (z.B. Heimgewebe) zurückfließen.
 - **Selbstoptimierung**
-  Das ultimative Ziel der Feedback-Schleifen und Validierungsmechanismen: Das Vibe-Lab optimiert seine eigenen Prozesse kontinuierlich weiter.
+  Das ultimative Ziel der Feedback-Schleifen und Validierungsmechanismen: Das Vibe-Lab optimiert seine eigenen Prozesse kontinuierlich weiter. Selbstoptimierung bedeutet nicht nur Effizienzsteigerung, sondern auch die kontinuierliche Überprüfung und Anpassung der eigenen Bewertungsmaßstäbe.
 
 ---
 *Vibe-Lab ist der Raum, in dem Ideen systematisch gesammelt, unerbittlich geprüft, validiert und kreativ weiterentwickelt werden.*
