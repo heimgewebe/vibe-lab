@@ -219,33 +219,29 @@ GitHub rendert Diagramme, wenn Mermaid-Syntax in einem mermaid-Codeblock steht.
 
 ```mermaid
 flowchart TD
-    Start["Idee entsteht<br/>lab/ideas"]
-    A{"Triage:<br/>Label + Owner"}
-    B["Archiv / Learnings"]
-    C["Spike-Prototyp<br/>lab/spikes"]
-    D{"Promotion-PR?"}
-    E["Pattern<br/>library/patterns"]
-    F["Demo-App<br/>demos/*"]
-    G["Dependabot PRs"]
-    H["Scorecard/Scanning"]
-    I{"CI Gates<br/>Tests + Security + Build"}
-    J["Fix / Rework"]
-    K["Release + Notes"]
-    L["Docs-Index aktualisieren"]
+    idea["Idee entsteht"]
+    triage{"Triage"}
+    archive["Archiv / Learnings"]
+    spike["Spike-Prototyp"]
+    promote{"Promotion-PR?"}
+    pattern["Pattern"]
+    demo["Demo-App"]
+    ci{"CI Gates"}
+    rework["Fix / Rework"]
+    release["Release + Notes"]
+    docs["Docs-Index aktualisieren"]
 
-    Start --> A
-    A -- verwerfen --> B
-    A -- Spike --> C
-    C --> D
-    D -- nein --> C
-    D -- ja --> E
-    E --> F
-    F --> I
-    G --> I
-    H --> I
-    I -- rot --> J
-    I -- grün --> K
-    K --> L
+    idea --> triage
+    triage -->|verwerfen| archive
+    triage -->|Spike| spike
+    spike --> promote
+    promote -->|nein| spike
+    promote -->|ja| pattern
+    pattern --> demo
+    demo --> ci
+    ci -->|rot| rework
+    ci -->|grün| release
+    release --> docs
 ```
 
 Tool-Vergleichstabellen
