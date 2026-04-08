@@ -1,0 +1,88 @@
+# Plan 3 – vibe-lab als Vibe-Coding Meta-Framework
+
+## Arbeitsstand
+Dieses Dokument sammelt Vision, MVP-Kern und spätere Ausbauachsen bewusst noch in einer Datei.
+
+## Vision
+vibe-lab ist ein experimentelles Repository, das Vibe-Coding von „prompte und hoffe" zu einem systematischen, reproduzierbaren und qualitätsgesicherten Paradigma erhebt. Es ist gleichzeitig Toolkit, Wissensbasis und Experimentierfeld.
+
+## Kernidee
+
+### 1. .vibe/ als Vertragszone
+Statt lose Prompts an ein LLM zu werfen, definiert man Vibe Contracts — deklarative Dateien, die Intent, Constraints und Qualitätskriterien formalisieren.
+
+### 2. Pipeline statt Einzelprompt
+Automatisierte Multi-Step-Workflows, die über einfaches „Prompt → Code" hinausgehen.
+
+### 3. Experimente statt Bauchgefühl
+Jede Coding-Session wird als Experiment protokolliert. Tracking von Modell, Prompt-Variante und Kontext-Strategie macht Ansätze messbar und vergleichbar.
+
+### 4. Guardrails als Vorbedingung
+Vibe-Coding ohne Guardrails ist wie Autofahren ohne Bremsen. Sicherheits- und Architektur-Checks fungieren als Input-Constraint für die Generierung.
+
+## MVP-Kern
+
+### Minimale Artefaktkette
+- `.vibe/intent.md` (Was soll entstehen?)
+- `.vibe/constraints.yaml` (Technische Grenzen)
+- `.vibe/quality-gates.yaml` (Automatisch prüfbare Kriterien)
+- `experiments/<id>/run.yaml`
+- `experiments/<id>/decision.yaml` (Operationalisiertes Entscheidungsmodell, z. B.:
+  ```yaml
+  decision: adopt | reject | iterate
+  confidence: low | medium | high
+  reason:
+    - passed_quality_gates
+    - architecture_violation
+    - high_rework
+  notes: "Freie Erklärung"
+  evidence_level: anecdotal | compared | benchmarked
+  ```
+  )
+
+### Minimale Pipeline
+- **Prepare Context:** Auswahl und Zusammenstellung relevanter Kontextartefakte (Code, Specs, Docs) gemäß Intent und Constraints.
+- **Generate**
+- **Validate:** Checks explizit basierend auf den in `.vibe/quality-gates.yaml` definierten Regeln.
+- **Decide**
+
+### MVP-Struktur
+```text
+vibe-lab/
+  .vibe/
+  experiments/
+  pipelines/
+  guardrails/
+  prompts/      # Optionale Sammlung wiederverwendbarer Artefakte, NICHT der primäre Fokus.
+  docs/
+  README.md
+```
+
+## Spätere Ausbauachsen
+
+Die folgenden Bereiche sind Teil der Langfrist-Vision, sollten aber im Start-MVP zurückgestellt werden, um Fokus zu wahren:
+
+- **Scoring (Vibe Score):** Quantitative Bewertung (First-Try Success Rate, Vibe Drift, etc.). Als Frühphase-MVP zu riskant.
+- **Context Engineering Toolkit:** Automatische Extraktion und Assemblierung von Kontext (muss sich klar von bestehender Infrastruktur abgrenzen).
+- **Collaborative Vibing:** Handoff-Protokolle, Session-State und Pair-Vibing.
+- **Meta-Learning Layer:** Das Repo lernt aus sich selbst (Retrospektiven, Model-Profile).
+- **The Playground:** Vorkonfigurierte Challenges und Speed Runs.
+
+## Radikale Ideen (zum Diskutieren)
+- Inverse Vibe-Coding: LLM schreibt Tests, Mensch den Code (oder umgekehrt).
+- Vibe Diffs: Intentionsbasierte Transformationen auf bestehendem Code.
+- Prompt Genome: Evolutionäre Optimierung von Prompts.
+- Confidence Annotations: Inline-Konfidenz-Markierungen im generierten Code.
+- Vibe Replay: Sessions wie ein Spiel-Replay abspielen und forken.
+
+## Tech-Stack-Empfehlung
+- **Core CLI:** TypeScript (oder Go für Performance) — ein `vibe` CLI als zentraler Einstiegspunkt
+- **Konfiguration:** YAML + JSON Schema 2020-12 für Validierung
+- **Experiment Tracking:** SQLite lokal, optional Cloud-Sync
+- **Dokumentation:** Markdown (später VitePress oder Astro)
+- **CI/CD:** GitHub Actions mit wiederverwendbaren Workflows
+
+## Nächste Schritte (priorisiert für MVP)
+1. README.md ausarbeiten mit Vision und Quickstart (basierend auf diesem MVP-Kern).
+2. `.vibe/` Contract-Format spezifizieren.
+3. Erste minimale Pipeline implementieren (Generate -> Validate).
