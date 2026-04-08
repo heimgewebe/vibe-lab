@@ -1,290 +1,55 @@
-Blaupause für ein Vibe‑Coding‑Repo im Heimgewebe‑Ökosystem
+Blaupause für ein Vibe-Coding-Repo im Heimgewebe-Ökosystem
+
 Dialektische Erörterung
-These: Ein dediziertes Repo für „Vibe‑Coding“ kann im Heimgewebe‑Kontext ein echter Produktivitäts‑Multiplikator sein, wenn es implizites Arbeitswissen in wiederholbare, überprüfbare Artefakte verwandelt und als Lern‑/Template‑Zulieferer an den bestehenden Control‑Plane‑Mechanismus anschließt. Das passt grundsätzlich zur vorhandenen Logik: Templates + Contracts + Fleet‑Mechanik werden im Metarepo kanonisiert und verteilt, nicht als lose Notizen gepflegt.
 
-Antithese: Genau so ein Repo kippt statistisch am häufigsten in zwei toxische Zustände: (a) „Ideen‑Friedhof“ (Markdown‑Links + Begeisterung, aber keine Selektion), oder (b) „Parallelwahrheit“ (Regeln/Workflows weichen von Metarepo/WGX‑Konventionen ab → Drift, mehr kognitive Last, weniger Velocity). Der Organismus‑Kontext beschreibt explizit, dass Standards und Contracts zentral verankert sein sollen („contracts first“, einheitliche WGX‑Kommandos), was ein isoliertes Ideensammel‑Repo direkt konterkariert.
+These: Ein dediziertes Repo für „Vibe-Coding“ kann im Heimgewebe-Kontext ein echter Produktivitäts-Multiplikator sein, wenn es implizites Arbeitswissen in wiederholbare, überprüfbare Artefakte verwandelt und als Lern-/Template-Zulieferer an den bestehenden Control-Plane-Mechanismus anschließt.
 
-Synthese: Das sinnvollste ist kein „Ideen‑Repo“, sondern ein exekutierbarer Erkenntnisraum:
+Antithese: Ein solches Repo kippt leicht in zwei toxische Zustände: (a) „Ideen-Friedhof“ (Begeisterung ohne Selektion), oder (b) „Parallelwahrheit“ (Drift von Metarepo/WGX-Konventionen).
+
+Synthese: Das Repo darf kein „Ideen-Repo“ sein, sondern muss ein exekutierbarer Erkenntnisraum sein:
 A) Exploration (Experimente, roh),
 B) Selektion (harte Gates, reproduzierbar),
-C) Promotion (als Templates/Policies in die Fleet zurück, über Metarepo),
-D) Beobachtbarkeit (Metriken/Artefakte so, dass Leitstand sie lesen kann, ohne selbst zu orchestrieren).
-Diese Synthese ist kompatibel mit dem bestehenden Meta‑Layer‑Prinzip („Templates spiegeln, Verbesserungen zurückziehen“) und der Rollen‑Trennung (z. B. Leitstand = Beobachter, nicht Orchestrator).
+C) Promotion (Rückführung in die Fleet),
+D) Beobachtbarkeit (Erkenntnisse werden zu auswertbaren Artefakten).
 
-Alternative Sinnachsen und Kontrastprüfung
-Alternative Sinnachse (Zielannahme kippen):
-Statt „besser viben → besser coden“: „Vibe“ ist kein Input, sondern ein Systemzustand als Output.
-Dann ist die Leitfrage nicht „Welche Tools/Prompts?“, sondern: Welche Feedback‑Schleifen, Contracts und Friktionsbremsen erzeugen zuverlässig Flow? Das ist anschlussfähig an die Organismus‑Achsen (Events/Fakten vs. Commands/Intentionen; WGX‑Motorik; OS‑Kontext als Signalquelle).
+Alternative Sinnachse
 
-Resonanz‑ und Kontrastprüfung (zwei plausible, widersprechende Deutungen):
+Statt „besser viben → besser coden“: „Vibe“ ist kein Input, sondern ein Systemzustand als Output. Die Leitfrage lautet: Welche Feedback-Schleifen und Contracts erzeugen zuverlässig Flow und senken die Friktion?
 
-Deutung A (pro, plausibel): Das Repo wird euer „Experiment‑Motor“: neue Agent‑Workflows, Editor‑Regeln und Tool‑Kombinationen lassen sich risikoarm testen, formal entscheiden und dann als Templates/Instructions in die produktiven Repos ausrollen. Cursor unterstützt z. B. versionskontrollierte Projekt‑Regeln in .cursor/rules; GitHub Copilot unterstützt Repo‑Instruktionen und Prompt‑Files im Repo selbst – perfekte Zielartefakte für „Promotion“.
+Kanonische Artefakte und Experiment-Disziplin
 
-Deutung B (contra, plausibel): Das Repo wird ein „Friktions‑Knoten“: Man investiert Energie in Metadokumentation, während die eigentliche Work („Code shipping“) in anderen Repos passiert; am Ende entsteht Drift (andere Regeln/Prompts als in produktiven Repos), und niemand vertraut den Empfehlungen, weil sie nicht mehr reproduzierbar sind. Der Metarepo‑Hinweis „Source of Truth“ + Fleet‑Definition + Template‑Sync sind genau als Drift‑Bremse gebaut – ein neues Repo ohne harte Kopplung würde dagegen arbeiten.
+Jede Idee wird als strukturiertes Experiment behandelt, um „tribales Wissen“ messbar zu machen.
 
-Die Spannung ist real: Beide Szenarien sind gleichzeitig möglich. Der Unterschied ist nicht Motivation, sondern Governance + Validierung + Promotion‑Pfad.
+Jedes Experiment erzeugt mindestens diese Artefakte:
+- manifest.yml — Ziel, Hypothese, Setup, Metriken
+- method.md — Ablauf und Eingriffe
+- results/result.md — Ergebnisdarstellung
+- results/decision.yml — adopt | reject | iterate
+- results/evidence.jsonl — Rohereignisse / Messpunkte
+- artifacts/ — konkrete Zielartefakte wie Rules, Prompts, Instructions, Diffs
 
-Prämissencheck, Erfolgskriterien und epistemische Leere
-Prämissencheck
-Damit ein neues Repo euch „auf eine neue Stufe“ hebt, müssen diese Annahmen plausibel wahr sein:
+Instruction Blocks (IR) - Der systemische Hebel
 
-Ihr könnt Erfolg operationalisieren (sonst gewinnt das „fühlt sich gut an“ gegen „wir liefern“). Der Organismus hat bereits mess‑/logfähige Achsen (WGX‑Metriken, Events, OS‑Kontext), die man anzapfen kann.
-Ideen werden in Experimente übersetzt (sonst ist es nur Kuratierung).
-Es gibt einen Promotion‑Mechanismus zurück in Fleet‑Standards (sonst bleibt es Parallelwelt). Das ist im Metarepo als Prinzip explizit („Templates spiegeln“, „Lernen aus Sub‑Repos“).
-Ihr akzeptiert eine hohe Kill‑Rate (sonst akkumuliert Müll schneller als Wert).
-Epistemische Leere (explizit)
-Eure konkrete Domäne/„Use‑Case“‑Constraints fehlen, nötig für:
-Welche Regeln/Prompts/Workflows wirklich tragen. Ohne Stack‑Details (Sprachen, Deploy‑Pfad, Sicherheitsniveau, Team‑Setup) ist jede „Best Practice“ nur halbkalibriert.
+Der größte Hebel ist eine kanonische Zwischenrepräsentation (IR) für Agent-Instruktionen. Anstatt tool-spezifische Prompts zu sammeln, werden „Instruction Blocks“ engine-neutral modelliert und können dann als Basis dienen, um tool-spezifische Artefakte abzuleiten.
 
-Euer Zielsystem („Vibe“) ist nicht definiert, nötig für:
-Selektion. Ohne Zielmetrik kein „adopt/reject“.
+Beispiel für ein Instruction Block Konzept:
+- purpose: "Mehrrepo-Refactorings konsistent durchführen"
+- scope: repos und paths definieren
+- style: do / don't Vorgaben
+- validation: commands für den Nachweis
+- export_targets: cursor_rules, copilot_repo_instructions, agents_md
 
-Das ist kein Blocker, aber es erzwingt einen Start im Pilot‑Modus (ein Experiment, ein Messrahmen, ein Promotion‑Pfad).
+Tool- und Ökosystem-Integration
 
-Typische Fehlannahmen, aktiv korrigiert
-„Mehr Tools = mehr Vibe.“ Nein: Mehr Tools erhöhen oft Kontextwechselkosten; der Gewinn kommt aus stabilen Schnittstellen (Contracts, Instructions, wiederholbare Tasks).
-„Vibe ist subjektiv → nicht messbar.“ Teilweise falsch: Proxies sind möglich (Iteration‑Latenz, Rework‑Rate, Kontextwechsel). OS‑Kontext‑Signale können diese Proxies stützen, ohne Rohtext zu speichern.
-„Das Repo soll Wissen sammeln.“ Sammeln ohne Gate ist ein Museum ohne Feuerlöscher: schön, bis es brennt.
-Repo‑Design als Experiment‑Engine
-Rollenbeschreibung im Heimgewebe‑Sinne
-Repo‑Rolle: VibeLab = Experiment‑ und Promotion‑Werkstatt für agentische Entwicklungsarbeit.
-Es produziert nicht „Meinungen“, sondern validierte Artefakte, die in andere Repos ausgerollt werden können (über Metarepo‑Templates/Policies). Dieses Muster ist im Metarepo bereits normativ angelegt (Template‑SSOT + Drift‑Checks + Pull‑Lernen).
+GitHub Copilot unterstützt repository-wide custom instructions typischerweise über .github/copilot-instructions.md und path-spezifische Instructions unter .github/instructions/**/*.instructions.md; zusätzliche Agent-Instructions wie AGENTS.md werden je nach Oberfläche/Feature unterstützt. Prompt-Files unter .github/prompts/*.prompt.md sind derzeit noch Public Preview und nicht auf allen Oberflächen verfügbar.
 
-Strukturvorschlag
-Ein Layout, das Exploration zulässt, aber Selektion erzwingt:
+Cursor dokumentiert .cursor/rules und AGENTS.md als projektnahe, versionskontrollierbare Instruktionsmechanismen. Für das VibeLab sollten diese Artefakte als primäre Cursor-Ziele behandelt werden.
 
-text
-Kopieren
-vibelab/
-  README.md
-  docs/
-    concept.md
-    runbook.md
-    metrics.md
-    promotion.md
-    security.md
-  experiments/
-    EXP-YYYY-MM-<slug>/
-      manifest.yml
-      method.md
-      results/
-        result.md
-        decision.yml
-        evidence.jsonl
-      artifacts/
-        prompts/
-        rules/
-        diffs/
-  patterns/
-    adopted/
-    rejected/
-    anti-patterns/
-  stacks/
-    2026-04.md
-    2026-06.md
-  tooling/
-    validate.sh
-    pack-evidence.sh
-    promote-to-metarepo.sh
-  .github/
-    workflows/
-  .wgx/
-    profile.yml
-Warum so strikt: Der Metarepo warnt ausdrücklich davor, Repo‑Listen und „Wahrheiten“ in Markdown zu pflegen; Kanon liegt in strukturierten Definitionen/Contracts/Workflows. Ein Repo, das „Vibe‑Wissen“ ernst nimmt, muss genauso strukturiert sein wie eure übrigen Kontrollschichten.
+Copilot ist im Repo-Design als zwei unterschiedliche Ausführungsmodi zu behandeln: lokale, interaktive Agent-Nutzung in der IDE einerseits und Copilot cloud agent als GitHub-seitige, branch- und PR-orientierte Agentenumgebung andererseits. Beide Modi verlangen unterschiedliche Sicherheits-, Reproduzierbarkeits- und Promotion-Strategien.
 
-Minimal‑Contract für Experimente
-Der Clou ist: jede Idee wird ein Experiment‑Objekt. Das Repo enthält kein „free‑floating“ Brainstorming ohne Manifest.
+Wenn MCP-Server oder MCP-basiertes Tooling im Vibe-Kontext eingesetzt werden, sind Consent, Data Privacy und Tool Safety nicht „nice to have“, sondern Teil des Grunddesigns; die MCP-Spezifikation benennt diese Sicherheitsprinzipien explizit.
 
-Beispiel‑Manifest (Format kann YAML bleiben; Contract sollte perspektivisch „contracts first“ im Metarepo landen, wenn ihr es systemweit nutzen wollt).
-
-yaml
-Kopieren
-id: EXP-2026-04-agent-instructions-layering
-goal: "Reduziere Iterationslatenz bei Changes über mehrere Repos"
-hypothesis:
-  statement: "Layered Instructions (AGENTS + tool-specific) senken Rework"
-  expected_effect:
-    - metric: iteration_latency_p50
-      direction: decrease
-    - metric: rework_commits_per_task
-      direction: decrease
-method:
-  environment:
-    repos: ["metarepo", "wgx", "hausKI"]   # Beispiel
-    tools: ["copilot-agent-mode", "cursor-agent"]  # Beispiel
-  steps:
-    - "Baseline ohne zusätzliche Instructions"
-    - "Mit standardisierten Instructions"
-    - "Vergleich: Zeit + Fehler + Rework"
-metrics:
-  collection:
-    - source: "git"
-    - source: "wgx"
-    - source: "os.context"   # optional
-decision:
-  status: "iterate"   # adopt|reject|iterate
-evidence:
-  required:
-    - "diffs"
-    - "logs"
-    - "time_measurements"
-Neuer Hebel gegenüber den bisherigen Vorschlägen
-Die obigen Modelle (Grok/ChatGPT/Gemini) fokussieren stark auf „Repo‑Ordnerstruktur“. Der größere Hebel ist eine Kanonische Zwischenrepräsentation (IR) für Agent‑Instruktionen, analog zur Idee in snippet-engine-control: dort werden Snippets als engine‑neutrale IR modelliert und daraus exportierbare Pläne/Adapter abgeleitet.
-
-Übertragen auf Vibe‑Coding:
-
-IR: „Instruction Blocks“ (Ziel, Stil, Do/Don’t, Repo‑Kontrakte, Test‑/Build‑Pfad, Safety‑Regeln)
-Compiler/Exporter: generiert daraus:
-Cursor‑Regeln (.cursor/rules)
-Copilot Repo‑Instruktionen (.github/copilot-instructions.md)
-Copilot Prompt‑Files (.github/prompts/*.prompt.md)
-optional AGENTS‑Layer (AGENTS.md), den mehrere Tools explizit unterstützen
-Wirkung: Eine Quelle, mehrere Zielsysteme, weniger Drift.
-Nebenwirkung: Initialer Engineering‑Aufwand (Exporter + Validation).
-
-Tool‑ und Ökosystem‑Integration
-WGX als Pflicht‑Motorik
-WGX ist im Organismus als Standard‑Motorik verankert; neue Repos sollen ein .wgx/profile.yml bekommen und Standard‑Kommandos nutzen.
-
-Plan:
-
-VibeLab bekommt .wgx/profile.yml mit Tasks wie:
-guard (Contracts, Lint, Schema‑Validation)
-validate (Manifest‑Schema, JSONL‑Evidence)
-pack (Evidence‑Pack build)
-promote (öffnet/erstellt Changesets für Metarepo‑Templates)
-CI nutzt die wiederverwendbaren WGX‑Workflows (wie in wgx beschrieben) statt eigener Snowflake‑Pipelines.
-Lenskit als Kontext‑Packager
-Wenn ihr „Vibe‑Coding“ ernst nehmt, ist Kontext‑Qualität ein Primärhebel. lenskit/repoLens existiert bereits explizit, um Repos für LLMs aufzubereiten (Level „overview“ bis „max“, split‑fähig).
-
-Plan:
-
-Jede Experiment‑Execution erzeugt einen Context Pack (z. B. repoLens‑Export) als Artefakt, damit Ergebnisse reproduzierbar und auditierbar bleiben.
-Das verhindert den Klassiker: „Hat bei mir funktioniert“ ohne rekonstruierbaren Kontext.
-Sichere Anwendung von Diffs
-Für agentischen Code‑Flow ist der „Patch‑Pfad“ kritischer als der „Prompt‑Pfad“. agent-control-surface ist bereits als lokales, schrittweises „Lenkrad“ gebaut: allow‑listed Repos, nur localhost‑Binding, keine mutierenden Aktionen auf main/master, JSONL‑Logging optional.
-
-Plan:
-
-VibeLab definiert den Standard: Agenten liefern Diff/Patch + Evidence, angewendet wird über einen sicheren Flow (acs oder vergleichbar).
-Das senkt das Risiko, dass „Agent Mode“ versehentlich produktive Branches beschädigt.
-Copilot: Agent Mode vs. Cloud Agent als zwei Modi im Repo‑Design
-Aus GitHub‑Doku ist wichtig:
-
-„Agent mode“ arbeitet autonom in der lokalen IDE‑Umgebung (Pläne, Edits, Terminal‑Commands, Iteration).
-„Copilot cloud agent“ arbeitet autonom in einer GitHub‑Actions‑Umgebung, kann Repo recherchieren, Plan erstellen, Branch ändern und PRs erzeugen; er ist explizit von Agent Mode getrennt.
-Plan‑Konsequenz: VibeLab sollte Experimente so designen, dass sie beide Modi abdecken:
-
-Local Agent Mode: schnelle Iteration, hohe Interaktivität.
-Cloud Agent: reproduzierbare, pipeline‑kompatible Task‑Abarbeitung.
-Repo‑Instruktionen und Prompt‑Files als „Promotion‑Targets“
-GitHub unterstützt:
-
-Repo‑weite Instruktionen in .github/copilot-instructions.md und path‑spezifische Instruktionsdateien in .github/instructions/*.instructions.md; außerdem agent‑spezifische Instruktionsdateien wie AGENTS.md (und alternativ CLAUDE.md/GEMINI.md) mit Pfad‑Priorität.
-Prompt‑Files als wiederverwendbare Prompts, gespeichert als *.prompt.md unter .github/prompts/.
-Cursor unterstützt:
-
-Projekt‑Regeln in .cursor/rules (versionskontrolliert, scope‑bar) sowie AGENTS.md als einfache Alternative; .cursorrules gilt als Legacy/deprecated.
-Sinnvollster Promotion‑Pfad:
-VibeLab produziert diese Artefakte nicht nur als Doku, sondern als ausrollbare Files, idealerweise via Metarepo‑Template‑Mechanik (Kanon) statt Copy‑Paste.
-
-MCP als Tool‑Bus mit expliziter Sicherheitslogik
-MCP ist als offenes Protokoll zur Integration von LLM‑Apps mit Tools/Datenquellen spezifiziert; es nutzt JSON‑RPC‑basierte Host/Client/Server‑Kommunikation.
-Die Spezifikation betont explizit, dass diese Power (Datenzugriff, Code‑Pfad) harte Sicherheits‑ und Consent‑Prinzipien braucht (User Consent, Data Privacy, Tool Safety, Sampling Controls).
-
-Plan‑Konsequenz für VibeLab:
-
-Wenn ihr MCP‑Server/Tooling im Vibe‑Kontext verwendet (ihr habt bereits local‑MCP‑Bezug im Metarepo), dann nur mit:
-Allowlist + Consent‑UI/Flow,
-Preview‑before‑apply (wie acs‑Philosophie),
-keine Secrets im Repo,
-auditierbare Artefakte (JSONL, validierbar).
-Governance, Roadmap und Risiko‑/Nutzenabwägung
-Governance, damit es nicht verrottet
-Regelset (hart, aber realistisch):
-
-Kein Merge ohne Manifest + Decision + Evidence (sonst keine Selektion).
-Alles „Adoptierte“ muss einen Promotion‑Pfad haben (z. B. PR/Sync‑Plan Richtung Metarepo Templates).
-„Rejected“ ist ein First‑Class‑Asset (Anti‑Patterns sparen mehr Zeit als „Tipps“).
-Release‑Cadence: „Vibe Stack YYYY‑MM“ – bewusst versioniert, weil Tool‑Mischungen veralten.
-Metrikset für „Vibe“ als Output
-Ein kompaktes Set (damit es messbar bleibt):
-
-Iteration‑Latenz: p50/p90 „von Auftrag → Tests grün / Build ok“. (Belegt, dass Agent Mode iterativ mit Tool‑Outputs arbeitet.)
-Rework‑Rate: Commits/PR‑Kommentare bis „done“ (Proxy für Missverständnisse).
-Kontextwechsel‑Proxy: App‑/Fensterwechsel + Tippintensität als Signal (wenn mitschreiber aktiv ist, ohne Rohtext).
-Safety‑Events: Anzahl blockierter Aktionen (z. B. „main/master write blocked“) als Indikator für Schutzgeländer, nicht als „Fehler“.
-Start‑Roadmap in drei Phasen
-Pilot (eine Woche):
-Ein einziges Experiment: Instruction‑Layering (AGENTS + Copilot‑Instructions + Cursor‑Rules) gegen Baseline in 1–2 Repos. Ziel: messbare Latenz/ Rework‑Änderung. (Die Artefakt‑Targets sind technisch belegt.)
-
-Stabilisierung (ein Monat):
-
-Evidence‑Pack‑Pipeline (JSONL + Schema‑Validation; WGX‑Tasks).
-Promotion‑Mechanik Richtung Metarepo (Pull‑Lernen/Reconciling).
-Zwei Anti‑Patterns formalisiert (damit „Kill“ sichtbar Wert erzeugt).
-Scale (quartalsweise):
-
-Vibe‑Metriken als konsumierbare Artefakte, damit Leitstand sie visualisieren kann, ohne die Rolle zu brechen.
-Optional: OS‑Kontext‑Signale systematisch als Proxy einbinden (Privacy‑Prinzipien beachten).
-Nutzen‑ und Risikoklassen
-Nutzen (plausibel, nicht garantiert):
-
-Operativ: schnellere Iterationen durch wiederverwendbare Instructions/Prompts/Rules (technisch unterstützt durch Cursor/GitHub‑Mechaniken).
-Epistemisch: weniger „tribales Wissen“, mehr reproduzierbare Evidenz (anschlussfähig an bestehende JSONL/Contract‑Kultur in eurem System).
-Strategisch: schnellere Adaptionsfähigkeit, weil Promotions in Fleet‑Templates statt Tool‑Gefrickel pro Repo.
-Risiken (real):
-
-Drift/Parallelwelt: wenn Promotion in Metarepo fehlt → Widerspruch zur SSOT‑Logik.
-Overengineering: zu früh ein IR‑Compiler bauen, bevor ein einziges Experiment Wert bewiesen hat.
-Security‑Schulden: Tool‑Bus (MCP/Agent‑Tools) ohne Consent/Allowlist. MCP weist explizit darauf hin, dass implementierende Systeme Consent und Tool‑Safety sauber lösen müssen.
-Mess‑Illusion: Proxies werden zu Zielen (Goodhart lässt grüßen und reibt sich die Hände).
-Alternativpfad, der anders denkt
-Statt ein neues Repo zu schaffen: „Vibe als Dimension in bestehenden Artefakten“ – d. h. jedes bestehende Experiment/Change‑System (z. B. in heimlern‑ähnlicher Policy‑Logik) bekommt 2–3 Vibe‑Proxies. Vorteil: keine neue Wissensinfrastruktur, weniger Fragmentierung. Nachteil: weniger Freiraum, weniger Fokus. (Dass heimlern bereits contracts‑/fixture‑validierte Entscheidungen als Artefakte behandelt, ist ein gutes Vorbild für diese Denkrichtung.)
-
-Evidenzstatus, Unsicherheit und Essenz
-Belegt, plausibel, spekulativ
-Belegt:
-
-Metarepo ist SSOT für Templates/Contracts/Fleet‑Definition und hat explizite Mechaniken für Template‑Sync und Drift‑Checks.
-WGX‑Profil/Tasks + Guard‑Mechanik existieren als Fleet‑Standard.
-Cursor unterstützt versionierte Regeln in .cursor/rules und behandelt .cursorrules als Legacy.
-GitHub Copilot unterstützt Repo‑Instruktionen (.github/copilot-instructions.md), path‑spezifische Instructions sowie Prompt‑Files in .github/prompts.
-MCP spezifiziert Sicherheitsprinzipien (Consent, Data Privacy, Tool Safety).
-Plausibel:
-
-Ein Experiment‑Repo mit harter Selektion steigert eure Velocity mehr als ein „Awesome‑List“-Repo.
-Spekulativ:
-
-Vollautomatische Rückführung von Vibe‑Metriken in chronik/leitstand als eigener Datenstrom (machbar, aber Contract‑/Implementationsarbeit nötig).
-Unsicherheitsgrad und Ursachen
-Unsicherheitsgrad: 0,34
-Ursachen:
-
-Kontextlücke: Use‑Case‑Details fehlen (Stack/Team/Compliance‑Randbedingungen).
-Ambiguität: „Vibe“ als Zielgröße ist noch nicht operationalisiert.
-Zeitbezug: Tool‑Features ändern sich schnell; die grundlegenden Mechaniken (Instructions/Rules/Prompt‑Files) sind zwar dokumentiert, aber Roadmaps bleiben volatil.
-Interpolationsgrad und Hauptannahmen
-Interpolationsgrad: 0,42
-Hauptquellen der Annahmen:
-
-Dass ihr den Metarepo‑Kanon‑Pfad wirklich nutzt (statt „nur im VibeLab zu bleiben“).
-Dass OS‑Kontext‑Proxies für euch akzeptabel sind (Privacy‑/Erfassungsmodus).
-Optimierungsgrad und Nebenwirkungen
-Optimierungsgrad (Was/Wie/Wodurch/Wirkung):
-
-Was: Iterationsgeschwindigkeit + Qualitäts‑Stabilität agentischer Änderungen.
-Wie: Standardisierte Instructions/Rules/Prompts + reproduzierbare Experimente + Promotion in Templates.
-Wodurch: WGX‑Tasks/CI‑Gates, repoLens‑Kontextpacks, sichere Patch‑Flows (acs).
-Wirkung: Weniger Rework, weniger Drift, mehr Wiederverwendbarkeit.
-Nebenwirkungen:
-
-Mehr Initial‑Disziplin, weniger „spontanes Notieren“. (Das ist Absicht, aber fühlt sich am Anfang wie „Vibe‑Entzug“ an.)
 Essenz
-Hebel: Exploration → Selektion → Promotion (Templates) → Observability.
-Entscheidung: Vibe‑Repo ja, aber nur als Experiment‑Engine mit Promotion‑Pfad in Metarepo.
-Nächste Aktion: Ein Pilot‑Experiment bauen (Instruction‑Layering), CI‑Gate minimal halten, danach erst Struktur ausbauen.
 
-Zum Schluss ein erkenntnisfördernder Witz (leider ohne Garantie): Ein Vibe‑Coding‑Repo ohne harte Gates ist wie ein Orchester ohne Dirigent – alle spielen leidenschaftlich, aber der einzige, der einen Takt erkennt, ist der Feueralarm.
-
-Kritik an der eigenen Erörterung (blinde Flecken): Ich habe bewusst auf eure konkrete Domäne nicht spekuliert; dadurch bleibt der Plan generisch‑systemisch. Der blinde Fleck ist: welche Tasks in eurem Alltag die meiste Reibung erzeugen (Debugging? Refactors? Multi‑Repo‑Changes?). Ohne diese Hotspots kann man die Pilot‑Experimente falsch wählen.
+Hebel: Exploration → Selektion → Promotion → Observability.
+Entscheidung: Ein Vibe-Repo ist sinnvoll, wenn es nicht als Friedhof, sondern als Engine mit klarem Rückführungspfad funktioniert. Es dient als strukturelles Rückgrat, das Offenheit zulässt, aber Auswertbarkeit erzwingt.
