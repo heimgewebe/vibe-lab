@@ -1,0 +1,381 @@
+
+# Kollaboratives Repository für vibe-coded Ideen
+Executive Summary
+These: Ein gemeinsames Repository kann „vibe-coded“ Ideen (schnelle, intuitiv entstandene Prototypen/Skizzen) systematisch in wiederverwendbare Muster und belastbare Demos überführen – wenn es als Pipeline gedacht wird (Idee → Triage → Pattern → Demo → Release) statt als chaotischer Sammelordner.
+
+Antithese: Genau diese Geschwindigkeit erzeugt Entropie: ohne harte Trennlinien (Sandbox vs. stabil), Metadaten und Automatisierung wird das Repo zur „Ideen-Deponie“ (viel Geruch, wenig Nährwert) und erhöht Security-/Lizenz-/Privacy-Risiken durch unkontrollierte Abhängigkeiten, Secrets, Assets und Copy-Paste-Code.
+
+Synthese: Baue eine zweischichtige Architektur mit klaren Gates:
+
+Labor-Schicht (hohe Freiheit): Ideen, Skizzen, Spike-Prototypen, UI-Experimente.
+Bibliothek-/Produkt-Schicht (hohe Verlässlichkeit): geprüfte Patterns, Playbooks, Design Tokens, stabile Demo-Projekte, Releases.
+Die Übergabe zwischen beiden Schichten wird über PR-Templates, Labels, CODEOWNERS, Status-Checks und Security-Scanning kontrolliert.
+Alternative Sinnachse (Zielannahme kippen):
+Nicht „möglichst viele Ideen produzieren“, sondern „möglichst viele Entscheidungen und Lerngewinne konservieren“. Dann wird das Repo primär ein Wissens- und Entscheidungsinstrument (Design- und Architektur-Entscheidungen, wiederholbare Experimente, verifizierbare Demos) – und erst sekundär eine Ideenmaschine. Das reduziert späteren Kontextverlust („Warum haben wir das so gemacht?“).
+
+Epistemische Leere (explizit):
+
+Use-Case/Domain fehlt, nötig für: Priorisierung der Tech-Stacks, Security-Härte, Privacy-Guardrails, Deployment-Ziele (intern/extern), Lizenzstrategie (Open Source vs. Closed).
+Zielgruppe fehlt, nötig für: Dokumentationstiefe, UI-Kit-Formate, Tutorial-Stil, Support- und Governance-Modell.
+Unsicherheitsgrad: 0,42
+
+Ursache: Kontextlücken (Use-Case, Zielgruppe, Regulatorik), Zeitbezug gering (Repo-Best-Practices relativ stabil), Ambiguität im Begriff „vibe-coded“.
+Interpolationsgrad: 0,63
+
+Hauptannahmen: Multi-Stack-Repo sinnvoll; GitHub-native Automatisierung bevorzugt; Wert entsteht durch kuratierte Übergänge (Labor → Bibliothek).
+Risiko-/Nutzenklassen (kurz):
+
+Nutzen: Geschwindigkeit, Wiederverwendung, Wissensspeicher, Demo-to-Decision, Recruiting/Community.
+Risiken: Supply-Chain, Lizenzen bei Assets/Code, Secrets-Leaks, falsche Erwartungen („Demo = Produktion“), Wartungsaufwand durch Tool-Sprawl.
+Zielbild, Deutungen und Prämissencheck
+Begriffsklärung (arbeitsfähig, nicht dogmatisch): „Vibe-coded“ ist hier nicht „unprofessionell“, sondern intentional unvollständig: schnelle Artefakte, die Hypothesen testen (UX, Flow, API-Schnitt, Machbarkeit). Entscheidend ist, dass das Repo Mechaniken besitzt, um aus „Vibe“ entweder (a) robuste Assets zu destillieren oder (b) gelerntes Wissen sauber zu verwerfen.
+
+Resonanz- und Kontrastprüfung (zwei plausible Lesarten, die kollidieren):
+
+Deutung A (kreatives Labor): Hauptwert ist Ideengenerierung; Qualitätssicherung darf nicht bremsen. Ergebnis: viele kleine Prototypen, kurze Halbwertszeit. Risiko: Unauffindbarkeit, Redundanz, „Demo-Friedhof“.
+Deutung B (Engineering-Bibliothek): Hauptwert ist Wiederverwendung; alles muss reviewbar, testbar, releasebar sein. Ergebnis: weniger Artefakte, dafür langlebig. Risiko: Innovationsbremse, Overhead, Frustration („Ich wollte nur kurz was ausprobieren!“).
+Auflösungsvorschlag: Akzeptiere den Widerspruch – und mache ihn sichtbar durch zwei klar getrennte Qualitätszonen samt Übergabeprozess (Labels, Review-Gates, Release-Mechanik). Das ist Governance als Produktfeature, nicht als Moralpredigt.
+
+Typische Fehlannahmen (aktiv korrigiert):
+
+„Ein gutes Folder-Tree löst Zusammenarbeit.“ Nein: Ohne Templates, Labels, Ownership und Branch-Regeln bleibt Struktur nur Dekoration.
+„Demo-Projekte kann man wie Libraries versionieren.“ Nicht automatisch: Demos brauchen oft andere Release-Semantik (z. B. „v0.x“, Snapshot-Releases, klare Kompatibilitätserwartungen). Hier ist Semantic Versioning als Sprache hilfreich, aber nicht jede Demo muss sofort SemVer-strikt sein.
+„Design-Assets gehören einfach ins Repo.“ Ohne Regeln zu Größen, Formaten, Lizenzrechten und ggf. Git LFS wird das technisch und rechtlich schnell unerquicklich (wie ein Kleiderschrank ohne Bügel: alles ist drin, nichts ist tragbar).
+Prämissencheck für zentrale Entscheidungen (damit Empfehlungen gelten):
+
+Open-Core/Community-Strategie funktioniert nur, wenn (a) Lizenz/Contributor-Regeln klar, (b) Security-Scanning aktiv, (c) Docs auffindbar, (d) Releases gepflegt sind.
+Multi-Stack-Demos funktionieren nur, wenn (a) Standards für Metadaten & Storytelling existieren, (b) CI die wichtigsten Pfade testet, (c) Onboarding reproduzierbar ist (z. B. Devcontainer).
+Repository-Struktur und Content-Typen
+Beispielhafte Ordnerstruktur
+text
+Kopieren
+repo/
+  README.md
+  LICENSE
+  CODE_OF_CONDUCT.md
+  CONTRIBUTING.md
+  SECURITY.md
+  SUPPORT.md
+
+  .github/
+    ISSUE_TEMPLATE/
+      idea.yml
+      bug.yml
+      pattern-proposal.yml
+    PULL_REQUEST_TEMPLATE/
+      lab-spike.md
+      pattern-promotion.md
+      demo-release.md
+    workflows/
+      ci.yml
+      docs.yml
+      demo-deploy.yml
+      scorecard.yml
+      codeql.yml
+    dependabot.yml
+    CODEOWNERS
+
+  docs/
+    index.md
+    playbooks/
+    patterns/
+    demos/
+    governance/
+    legal/
+
+  lab/
+    ideas/
+      2026-04__kurztitel__v0.md
+    spikes/
+      spike-*/  (kurzlebig, mit Ablaufdatum)
+
+  library/
+    patterns/
+      pattern-*/  (stabiler, reviewpflichtig)
+    snippets/
+      */  (kleine, geprüfte Ausschnitte)
+    workflows/
+      */  (wiederverwendbare CI/CD-Bausteine)
+
+  design/
+    tokens/
+      dtcg/  (JSON nach DTCG)
+    ui-kit/
+      figma/
+      exports/  (SVG/PNG, ggf. LFS)
+    guidelines/
+
+  demos/
+    web-next/
+    web-sveltekit/
+    mobile-flutter/
+    api-fastapi/
+
+  tools/
+    scripts/
+    cli/
+    linting/
+Die .github-Struktur (Issue-/PR-Templates, Workflows) folgt direkt den GitHub-Konzepten für Vorlagen.
+
+Naming Conventions, Metadaten und Templates
+Empfehlung: „Artefakt-Karten“ mit Pflicht-Metadaten (Aufwand: mittel).
+
+Was: Jede Idee, jedes Pattern, jede Demo bekommt ein kurzes, maschinenlesbares Frontmatter (YAML) plus menschliche Zusammenfassung (Markdown).
+Warum: Entkoppelt Inhalt von Struktur; ermöglicht Suche/Filter/Release Notes.
+Schritte:
+Definiere ein minimales Schema: status, owner, maturity, stack, tags, created, last_reviewed, license_risk, security_notes.
+Erzwinge Schema via CI (JSON Schema/YAML lint) nur in library/ und demos/ (nicht im lab/).
+Generiere daraus Docs-Indexseiten automatisch (Docs-Build).
+Vorteile: Auffindbarkeit, Governance „ohne Meeting“, skalierbar.
+Nachteile: Initialer Overhead; Gefahr von „Metadaten-Theater“, wenn niemand pflegt.
+Empfehlung: Drei Standard-Templates (Aufwand: niedrig).
+
+Idea Canvas (für lab/ideas): Problem/Hypothese, Zielmetric, Scope, Risiko, „Kill-Kriterium“, nächste Aktion.
+Pattern Card (für library/patterns): Kontext, Lösung, Trade-offs, Beispielcode, Testbarkeit, Security/Privacy-Hinweise.
+Demo Spec (für demos/*): Zielpersona, User Journey, Architektur, Setup, Deploy, Nicht-Ziele.
+Issue- und PR-Templates sind GitHub-unterstützt und können die Datenerfassung standardisieren.
+Content-Typen, wie sie zusammenarbeiten
+Playbooks (Aufwand: mittel).
+
+Zweck: „Wie arbeiten wir hier?“ (Triage, Review-Gates, Release, Security Response).
+Implementation: docs/playbooks/* + Verlinkung aus README; optional als „Runbooks“ für Maintainer.
+Pro: Onboarding, reduziert Tribal Knowledge.
+Contra: Doc-Rot-Risiko; braucht Ownership.
+Patterns (Aufwand: mittel bis hoch).
+
+Zweck: Wiederverwendbare Lösungen mit expliziten Trade-offs.
+Implementation: library/patterns/pattern-<slug>/ mit README.md, Referenzimplementierung, Tests.
+Pro: Hebelwirkung (ein Pattern, viele Demos).
+Contra: Review-/Testkosten; falsche Generalisierung möglich.
+Design Tokens & UI Kit (Aufwand: hoch).
+
+Zweck: Konsistente UI/Brand/Design-System-Bausteine über Stacks hinweg.
+Technische Basis: Nutze das DTCG-Format für Austauschbarkeit (Design Tokens Community Group).
+Schritte:
+Definiere Token-Namensregeln + Mappings (z. B. color.brand.primary).
+Hinterlege Tokens als DTCG-JSON in design/tokens/dtcg.
+Erzeuge Build-Schritte, die Tokens nach CSS variables, Android/iOS/Flutter, JSON für Web exportieren.
+Pro: Tool-Interoperabilität, theming, Konsistenz.
+Contra: Hoher Initialaufwand, Governance nötig (sonst Token-Wildwuchs).
+Binary Assets (Aufwand: niedrig bis mittel).
+
+Empfehlung: Große Exporte (PNGs, Videos, PSDs) via Git LFS, um Repo-Gewicht und Git-Architekturprobleme zu entschärfen.
+Pro: Saubere Klonerfahrung, weniger Git-Historien-Bloat.
+Contra: LFS-Quotas/Kosten, zusätzliche Tooling-Anforderung.
+Tooling, Tech-Stack und CI/CD
+Kernprinzip: GitHub-native Checks als Qualitätsgates
+Empfehlung: CI als „Türsteher“, nicht als „Richter“ (Aufwand: mittel).
+
+Was: In lab/ nur schnelle Syntax-/Formatchecks; in library/ und demos/ zusätzlich Tests, Security-Checks, Build.
+Warum: Bewahrt Vibe-Speed im Labor und verhindert gleichzeitig, dass Unreifes als stabil verkauft wird.
+Mechanik: GitHub Actions erzeugt Status Checks, die als Required Checks in geschützten Branches genutzt werden können.
+Empfehlung: Branch Protection + Required Status Checks (Aufwand: niedrig).
+
+Schritte:
+main schützen, required checks definieren.
+Erlaubte Merge-Methoden festlegen (z. B. squash) + linear history optional.
+CODEOWNERS für kritische Pfade (Tokens, Workflows, Security).
+Pro: Verhindert „Drive-by-Merges“.
+Contra: Kann Kleinigkeiten verlangsamen, wenn Checks zu schwergewichtig sind.
+Versorgungskette: Abhängigkeiten, Secrets, Security-Scanning
+Empfehlung: Dependabot für Version Updates inkl. Actions (Aufwand: niedrig bis mittel).
+
+Fakt: Dependabot wird über dependabot.yml aktiviert/konfiguriert und kann auch GitHub Actions up to date halten.
+Schritte:
+.github/dependabot.yml anlegen (für npm/pnpm, pip/poetry, github-actions).
+Update-Intervalle differenzieren: Demos wöchentlich, Library ggf. täglich, Lab seltener.
+Auto-Merge nur für Patch-Updates nach grünem CI (bewusst restriktiv).
+Pro: Kontinuierliche Hygiene; reduziert bekannte Schwachstellen-Rückstände.
+Contra: „PR-Flut“ ohne Triage; kann Builds brechen.
+Empfehlung: Code Scanning & Secret Scanning aktivieren (Aufwand: mittel).
+
+Fakt: GitHub bündelt Dependabot, Secret Scanning und Code Scanning in den Security-Features, inklusive Security Alerts.
+Schritte:
+Security Policy (SECURITY.md) definieren, damit Meldungen kanalisiert werden.
+Secret-Scanning-Regeln (inkl. Custom Patterns) für eure Token/Keys anpassen.
+CodeQL oder alternative Scanner laufen lassen (mindestens in library/ und demos/).
+Pro: Frühe Risikoerkennung; Compliance-freundlicher.
+Contra: Setup/Noise, braucht Tuning.
+Empfehlung: OpenSSF Scorecard als messbares Sicherheitsbarometer (Aufwand: mittel).
+
+Fakt: Scorecard bewertet Security-Heuristiken automatisiert und bietet eine offizielle GitHub Action.
+Schritte:
+Scorecard-Workflow scheduled + on push.
+Score-Drops als Issue erstellen lassen (Automation).
+Zielwerte für „Bibliothek“-Schicht definieren (z. B. branch protection, signed releases perspektivisch).
+Pro: Objektiviert Security-Diskussionen („wir fühlen uns sicher“ → „wir messen“).
+Contra: Metrik kann „optimiert“ werden; braucht Kontext.
+Onboarding-Technik: reproduzierbare Dev-Environments
+Empfehlung: Devcontainer als Standard-Entry (Aufwand: mittel).
+
+Fakt: GitHub Codespaces nutzt devcontainer.json (+Dockerfile) zur Erstellung konsistenter Entwicklungscontainer; Spezifikation ist dokumentiert.
+Schritte:
+.devcontainer/ bereitstellen mit Tools (Node/Python/Flutter je nach Demo), Lintern, CLIs.
+„Minimal“ für Lab, „Full“ für Demos als Varianten.
+Pro: Onboarding in Minuten statt Tagen; weniger „works on my machine“.
+Contra: Container-Komplexität; Build-Zeit.
+Mermaid als lebende Repo-Dokumentation
+GitHub rendert Diagramme, wenn Mermaid-Syntax in einem mermaid-Codeblock steht.
+
+```mermaid
+flowchart TD
+    Start["Idee entsteht<br/>lab/ideas"]
+    A{"Triage:<br/>Label + Owner"}
+    B["Archiv / Learnings"]
+    C["Spike-Prototyp<br/>lab/spikes"]
+    D{"Promotion-PR?"}
+    E["Pattern<br/>library/patterns"]
+    F["Demo-App<br/>demos/*"]
+    G["Dependabot PRs"]
+    H["Scorecard/Scanning"]
+    I{"CI Gates<br/>Tests + Security + Build"}
+    J["Fix / Rework"]
+    K["Release + Notes"]
+    L["Docs-Index aktualisieren"]
+
+    Start --> A
+    A -- verwerfen --> B
+    A -- Spike --> C
+    C --> D
+    D -- nein --> C
+    D -- ja --> E
+    E --> F
+    F --> I
+    G --> I
+    H --> I
+    I -- rot --> J
+    I -- grün --> K
+    K --> L
+```
+
+Tool-Vergleichstabellen
+Dokumentations-Stack (vergleichend, nicht religiös):
+
+Tool Stärken Schwächen Gute Passung, wenn… Aufwand
+Docusaurus Versionierung/CLI vorhanden; gut für Docs+Blog+Site; sehr verbreitet.  React/Node-Ökosystem nötig; Versionierung kann Contributors belasten. ihr ohnehin viel JS/TS macht und Docs-Versionen braucht mittel
+MkDocs + Material for MkDocs Sehr schnell; starke Suche (lunr) und viele Plugins, inkl. Search/Blog/Tags.  Python-Toolchain; Theme-/Plugin-Drift möglich ihr Doku als „Produkt“ wollt, aber Tooling schlank halten niedrig bis mittel
+GitHub-native Markdown (ohne Site) Null Setup, direkt im Repo; Mermaid möglich.  Auffindbarkeit/IA begrenzt; keine starke Navigation ihr erst validiert, ob Doku überhaupt genutzt wird niedrig
+
+Versions-/Release-Sprache (für „Bibliothek“-Teil):
+
+Ansatz Vorteil Nachteil Empfehlung
+Conventional Commits Maschinenlesbar, erleichtert Automatisierung; knüpft an SemVer an.  Umstellung im Team; erfordert Disziplin Für library/ und demos/ verpflichtend, lab/ optional
+SemVer strikt überall Klarheit für Konsumenten.  Demos/Spikes haben oft keine stabile API SemVer strikt nur dort, wo „Konsum“ real ist (Patterns/Packages)
+
+Zusammenarbeit, Governance, Discoverability und Onboarding
+Collaboration Model: Vorlagen, Ownership, gesunde Beiträge
+Empfehlung: Issue Forms + PR-Templates als „Datenpipeline“ (Aufwand: niedrig).
+
+Fakt: GitHub unterstützt Issuevorlagen (inkl. Issue Forms) und Pull-Request-Templates sowie mehrere Templates über Unterverzeichnisse.
+Schritte:
+Issue-Form idea.yml mit Pflichtfeldern (Hypothese, Erfolgskriterium, Stack, Risiko).
+PR-Templates getrennt nach „Lab-Spike“ vs „Promotion zu Pattern“ vs „Demo Release“.
+Labels, die direkt Governance ausdrücken: lab, candidate, library, demo, security, license-risk.
+Pro: Weniger Nachfragen, bessere Triage, schnelleres Review.
+Contra: Zu strikte Formulare können „kreative“ Einreichungen verhindern. Lösung: lab-Form minimal halten.
+Empfehlung: CODEOWNERS als Review-Skalierung (Aufwand: niedrig).
+
+Fakt: CODEOWNERS definiert zuständige Personen/Teams pro Pfad.
+Schritte:
+Owner pro Bereich: design/tokens, .github/workflows, library/patterns.
+„Default owner“ für lab/ (leichter Gate).
+Pro: Verantwortlichkeit ohne Orga-Chart.
+Contra: Bottleneck-Risiko, wenn Owner schwach besetzt.
+Empfehlung: Community-Health-Files zentralisieren (Aufwand: niedrig).
+
+Fakt: GitHub unterstützt Standarddateien wie CONTRIBUTING und CODE_OF_CONDUCT (auch als Default für Accounts/Orgs).
+Schritte: Baseline: CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, SUPPORT.md.
+Pro: Erwartungsmanagement, niedrigere Einstiegshürde.
+Contra: Muss gelebt werden.
+Discoverability: Auffinden statt Suchen
+Empfehlung: GitHub Topics + strukturierte Releases (Aufwand: niedrig).
+
+Fakt: Repos können mit Topics klassifiziert werden; GitHub schlägt Topics basierend auf öffentlichem Inhalt vor.
+Fakt: Releases sind „deployable iterations“, basieren auf Tags; Release-/Tag-Historie ist sichtbar; Release Notes können automatisch generiert werden.
+Schritte:
+Topics: prototyping, design-tokens, ui-kit, patterns, playbooks, plus eure Domain-Tags.
+Releases: mindestens für library/ (Patterns/Packages) und „Golden Demos“.
+Auto-Release-Notes aus Labels/Conventional Commits ableiten (und kuratieren).
+Pro: Konsumierbarkeit für interne/externe Nutzer.
+Contra: Release-Disziplin nötig; sonst „leere“ Releases.
+Empfehlung: Docs-Site mit Volltextsuche (Aufwand: mittel).
+
+Begründung: Ein Repo ohne indexierte Doku ist wie eine Bibliothek ohne Katalog – romantisch, aber unpraktisch. MkDocs Material bietet integrierte Suche.
+Onboarding: Starter Guides + Sample-Projekte
+Empfehlung: „First 30 Minutes“-Pfad (Aufwand: mittel).
+
+Schritte:
+docs/onboarding/first-30-min.md: Devcontainer starten, eine Idee anlegen, einen Spike ausführen, PR öffnen.
+docs/onboarding/first-pattern.md: Promotion-Flow.
+docs/onboarding/first-demo.md: Demo deployen.
+Pro: Reduziert Anfangslärm, erhöht Beitragstakt.
+Contra: Muss aktualisiert werden.
+Drei Demo-Projektideen mit unterschiedlichen Tech-Stacks
+Web-Demo: Ideen-Werkbank mit Pattern-Browser (Aufwand: hoch)
+
+Stack: Next.js + Design Tokens → CSS Variables + einfache Suche über Metadaten.
+Ziel: „Von Idee zu klickbarer UI“ inkl. eingebettetem Pattern-Katalog.
+Besonderheit: nutzt Repo-Metadaten (Frontmatter) als „Content-DB“.
+Web-Demo: Interaction-Lab für Micro-UX Patterns (Aufwand: mittel)
+
+Stack: SvelteKit (schnell für UI-Experimente) + Tokens.
+Ziel: Sammlung kurzer, testbarer Interaktionsmuster (Loading states, Error recovery, empty states).
+Besonderheit: Fokus auf „vibe“ → „messbar“: jede Interaction hat ein Akzeptanzkriterium (z. B. LCP, a11y checks optional).
+Mobile-Demo: Token-getriebene Component Gallery (Aufwand: hoch)
+
+Stack: Flutter + Token-Exports.
+Ziel: Eine App, die alle UI-Komponenten/States rendert; ideal für Design/Dev Alignment.
+Besonderheit: „Golden Screens“ als Regression-Referenz (visuell), aber Assets/Exports sauber gehandhabt (ggf. Git LFS).
+Optional (wenn euer Use-Case API-lastig ist): API-Demo: Prompt-to-Prototype Backend mit FastAPI, um Workflows/Automatisierung zu demonstrieren (z. B. Metadaten validieren, Docs generieren).
+
+Betrieb, Recht, Sicherheit, Privacy und Wachstum
+Maintenance: Automatisierung, Bots, Metriken
+Empfehlung: Maintenance als „Default“, nicht als Sprintthema (Aufwand: mittel).
+
+Bausteine:
+Dependabot für Dependencies & Actions.
+Security Alerts/Scanning aktiv (inkl. Secret Scanning).
+Scorecard regelmäßig laufen lassen.
+Metriken (pragmatisch): Anzahl „promoted patterns“, Zeit von Idee→Demo, offene Security Alerts, Release-Frequenz, Onboarding-Zeit. (Die Metrik ist nur dann gut, wenn sie Entscheidungen verbessert, nicht wenn sie PowerPoints verschönert.)
+Legal/Licensing: Code, Inhalte, Design-Assets
+Empfehlung: Lizenzentscheidung zweigleisig (Aufwand: mittel).
+
+Code-Lizenz: permissiv (z. B. MIT/Apache-2.0) für maximale Adoption; Apache-2.0 umfasst expliziten Patent-Grant (relevant bei commercial Nutzung).
+Content/Docs/Design: ggf. getrennte Lizenz für nicht-Code-Artefakte (z. B. CC), weil Design-Assets rechtlich anders „kleben“ können als Code. (Hier entsteht schnell Stillstand, wenn man alles gleich lizenzieren will.)
+Schritte:
+Ein LICENSE für Code, plus klare Hinweise in docs/legal/licensing.md für Assets.
+Contributor-Regel: DCO/CLA-Entscheidung (nur nötig, wenn externe Beiträge & IP-Risiko relevant).
+Asset-Inventar: Welche UI Kit-Exporte dürfen überhaupt verteilt werden?
+Empfehlung: SPDX-Kompatibilität ernst nehmen (Aufwand: niedrig).
+
+Fakt: GitHub nutzt SPDX-Lizenzschlüssel u. a. in Lizenz-Endpunkten.
+Pro: Maschinenlesbarkeit, weniger Missverständnisse.
+Contra: Nicht jede Custom-Lizenz ist sauber abbildbar → lieber Standardlizenzen.
+Security & Privacy: Guardrails, die Vibe nicht töten
+Empfehlung: Vulnerability Reporting & Security Policy (Aufwand: niedrig).
+
+Fakt: SECURITY.md legt fest, wie Schwachstellen gemeldet werden sollen.
+Pro: Verantwortliche Meldeschiene; reduziert „Issue mit 0-day“.
+Contra: Muss beantwortet werden (sonst Vertrauensverlust).
+Empfehlung: Datenminimierung und DSGVO-Checkliste (Aufwand: mittel).
+
+Fakt: Die DSGVO ist der maßgebliche EU-Rechtsrahmen für Verarbeitung personenbezogener Daten.
+Konkrete Repo-Regeln:
+Keine echten Kundendaten in Demos; nur synthetische Daten.
+„Privacy Notes“ als Pflichtfeld in Demo Specs (Frontmatter).
+Sanitizer-Skripte für Logs/Screenshots; Secrets-Scanning als Default.
+Pro: Reduziert Haftungs-/Reputationsrisiko.
+Contra: Zusätzliche Review-Linse; braucht klare Beispiele („so sieht anonymisiert aus“).
+
+Kuratierte Demo-Pakete als bezahlte „Starter Kits“ (z. B. UI Kit + Token-Pipeline + CI).
+Risiko: Lizenz-/Asset-Clearing wird kritisch, sonst verkauft man aus Versehen fremde Möbel.
+Kritische Selbstprüfung und blinde Flecken
+War das kritisch genug? Ein blinder Fleck bleibt: Ohne euren konkreten Use-Case kann ich nicht entscheiden, ob z. B. UI-Kit/Tokens der Haupthebel sind oder ob ihr eher Workflow-Automation und Backend-Demos braucht. Diese Leerstelle ist nicht kosmetisch; sie bestimmt, ob das Repo eher Design-System-zentriert oder Engineering-Pattern-zentriert wird.
+
+Außerdem: „Keine Budgetgrenze“ verführt zu Tool-Sprawl. Ironischerweise ist das größte Risiko nicht Geld, sondern Aufmerksamkeit – die einzige Ressource, die keine CI cached.
+
+Essenz (Hebel, Entscheidung, nächste Aktion):
+
+Hebel: Trennung von Labor vs. Bibliothek + Metadatenpflicht + GitHub-native Gates (Templates, CODEOWNERS, Checks, Security).
+Entscheidung: Wollt ihr primär kreative Durchsatzrate oder wiederverwendbare Verlässlichkeit? Beides geht – aber nicht im selben Ordner ohne Regeln.
+Nächste Aktion: Implementiere in 48 Stunden ein Minimum: Issue-Form „Idea“, PR-Template „Promotion“, CODEOWNERS, Branch Protection + CI-Skeleton, Dependabot. Damit ist das Repo sofort ein System statt ein Sammelalbum.
