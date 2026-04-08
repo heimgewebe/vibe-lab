@@ -1,8 +1,8 @@
 # Vibe-Lab: Lernendes, prüfendes und schöpferisches System
 
-Das Vibe-Lab ist kein bloß passives Ideenarchiv. Es ist eine Engine zur kontinuierlichen Erfassung, Erprobung und Weiterentwicklung von Vibe-Coding-Workflows. Dokumentation, Katalogisierung und Wissensspeicherung sind legitime Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.
+Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. Dokumentation, Katalogisierung und Wissensspeicherung sind legitime Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.
 
-Die Vision beruht auf einem Dreiklang, in dem Sammlung, Erprobung und Kreation gleich ernst genommen werden, wobei **Erprobung das Gate** darstellt.
+Die Vision beruht auf einem Dreiklang, in dem Sammlung, Erprobung und Kreation gleich ernst genommen werden, wobei **Erprobung das Gate** darstellt. Praktiken und Erkenntnisse werden dabei konsequent entlang von drei Achsen bewertet: **Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität)**.
 
 Das System organisiert sich in drei Schichten:
 
@@ -25,8 +25,8 @@ Die Core Engine schafft reproduzierbare Rahmenbedingungen für die Arbeit mit LL
 
 Wie Mensch und Maschine strukturiert zusammenarbeiten.
 
-- **Katalogisierte Hypothesen**
-  Praktiken, Techniken, Tools und Workflows werden gesammelt und strukturiert katalogisiert. Jeder Eintrag durchläuft einen Statuszyklus (idea → testing → adopted/rejected).
+- **Strukturierte Hypothesen**
+  Praktiken, Techniken, Tools und Workflows werden als strukturierte, testbare Hypothesen gesammelt und weiterverfolgt. Jeder Eintrag durchläuft einen Statuszyklus (idea → testing → adopted/rejected).
 - **Strikte Selektions-Gates**
   Ideen bewegen sich nur durch den Nachweis von Evidenz. Ohne Experiment keine belastbare Practice; ohne Entscheidung kein adoptierter Ansatz.
 - **Erkenntniskreislauf**
