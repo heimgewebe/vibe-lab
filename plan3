@@ -27,13 +27,24 @@ Vibe-Coding ohne Guardrails ist wie Autofahren ohne Bremsen. Sicherheits- und Ar
 - `.vibe/constraints.yaml` (Technische Grenzen)
 - `.vibe/quality-gates.yaml` (Automatisch prüfbare Kriterien)
 - `experiments/<id>/run.yaml`
-- `experiments/<id>/decision.yaml`
+- `experiments/<id>/decision.yaml` (Operationalisiertes Entscheidungsmodell, z. B.:
+  ```yaml
+  decision: adopt | reject | iterate
+  confidence: low | medium | high
+  reason:
+    - passed_quality_gates
+    - architecture_violation
+    - high_rework
+  notes: "Freie Erklärung"
+  evidence_level: anecdotal | compared | benchmarked
+  ```
+  )
 
 ### Minimale Pipeline
-- Prepare Context
-- Generate
-- Validate
-- Decide
+- **Prepare Context:** Auswahl und Zusammenstellung relevanter Kontextartefakte (Code, Specs, Docs) gemäß Intent und Constraints.
+- **Generate**
+- **Validate:** Checks explizit basierend auf den in `.vibe/quality-gates.yaml` definierten Regeln.
+- **Decide**
 
 ### MVP-Struktur
 ```text
@@ -42,7 +53,7 @@ vibe-lab/
   experiments/
   pipelines/
   guardrails/
-  prompts/
+  prompts/      # Optionale Sammlung wiederverwendbarer Artefakte, NICHT der primäre Fokus.
   docs/
   README.md
 ```
