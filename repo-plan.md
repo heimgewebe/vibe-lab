@@ -16,6 +16,10 @@ Das System trennt strikt zwischen Wissensreife (epistemischen Zuständen) und de
 
 Operativ durchlaufen Artefakte die Status: `idea` → `testing` → `adopted` / `rejected` → `deprecated`.
 
+**Unterscheidung Rejected vs. Deprecated:**
+*   **`rejected`**: Eine Hypothese, die sich im Experiment nicht bewährt hat und nie in den Katalog aufgenommen wurde.
+*   **`deprecated`**: Eine Practice, die ehemals `adopted` war, aber durch neue Evidenz, Tools oder bessere Alternativen abgelöst wurde. Deprecated Practices verbleiben als Historie im Katalog, erhalten aber ein Status-Update und werden aus den generierten Exports entfernt.
+
 ## Phasenmodell der Architektur
 Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen:
 
@@ -44,7 +48,7 @@ Die Pipeline stützt sich auf sieben harte, schemavalidierte Artefaktarten:
 
 1.  **Hypothese (Innovation)**: Problem, Hypothese, Erfolgskriterium, Scope. Formuliert als Issue-Formular.
 2.  **Experiment**: Isolierter Ordner (Manifest, Methode, Resultat, Entscheidung, Evidenz). Der überprüfbare Prozess.
-3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Keine bloßen Notizen, sondern Workflow-treibende Elemente.
+3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Diese leben explizit im Ordner `decisions/`, um das Repository operativ zu steuern.
 4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente.
 5.  **Combo**: Unterart des Katalogs (`catalog/combos/`). Getestete Synergien/Anti-Synergien (z.B. Stil + Tool).
 6.  **Benchmarks**: Definition von Metriken (Time-to-Running, Rework-Zyklen). *Wichtig:* Dies sind Startheuristiken. Qualitative Begleitevaluierung bleibt essenziell, das System darf nicht ausschließlich auf das Messbare optimieren.
@@ -79,11 +83,13 @@ Dieser Gate prüft hart:
 ### 4. Generierung der Exports
 Bei Änderungen an der IR (`instruction-blocks/`) zwingt die CI zur Synchronisation der `exports/`. Es werden keine Prompts manuell gepflegt, sondern ausschließlich Ziel-Artefakte abgeleitet.
 
-## Governance und Sicherheit
-Sicherheit und Qualitätsschranken sind als Produktfeature integriert:
-*   **Zonen:** Klare Trennung zwischen Labor (frei, CI warnt nur) und Bibliothek (restriktiv, CI blockt).
-*   **Ownership:** Pfadbasierte Zuweisungen über `CODEOWNERS` regeln Review-Zuständigkeiten (z.B. strengeres Review für `catalog/`).
-*   **Sicherheit:** Dependabot für Supply-Chain, Secret Scanning für Leak-Prävention, OpenSSF Scorecard als Baseline.
+## Governance und Zonenmodell
+Sicherheit und Qualitätsschranken sind als Produktfeature integriert und architektonisch in zwei strikte Zonen unterteilt:
+
+*   **Labor-Schicht (Freies Explorieren):** Umfasst den Issue-Intake und den `experiments/` Pfad. Hier warnt die CI bei Schema-Fehlern nur, der Flow darf nicht unterbrochen werden.
+*   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
+
+Sicherheits-Baselines (Dependabot, Secret Scanning, Scorecard) sichern das gesamte Repository ab.
 
 ## Vorgeschlagene Zielstruktur
 *Die Struktur zeigt das Zielbild, wird aber inkrementell (MVP → Ausbau) besiedelt.*
@@ -111,28 +117,32 @@ vibe-lab/
   .cursor/rules/          # Symlinks/generiert für lokale Nutzung
   AGENTS.md               # Generiert
 
-  experiments/            # Materialisierte Testläufe
+  decisions/              # Meta-Entscheidungen (Systemsteuerung)
+    catalog-updates/      # z.B. Deprecation Decisions
+    system-rules/
+
+  experiments/            # Labor-Schicht: Materialisierte Testläufe
     _template/
     2026-04-08_spec-first/
       manifest.yml
       results/decision.yml
 
-  catalog/                # Validiertes Wissen (Bibliothek)
+  catalog/                # Bibliothek: Validiertes Wissen
     styles/
     workflows/
     combos/               # Kuratierte Synergien
 
-  benchmarks/             # Startheuristiken & Messpunkte
+  benchmarks/             # Bibliothek: Startheuristiken
     criteria.md
 
-  instruction-blocks/     # Kanonische IR
+  instruction-blocks/     # Bibliothek: Kanonische IR
     spec-first-vibe.yml
 
-  exports/                # Tool-spezifische Ziele (Generiert)
+  exports/                # Bibliothek: Tool-spezifische Ziele (Generiert)
     copilot/
     cursor/
 
-  schemas/                # Datenmodelle für CI-Checks
+  schemas/                # Bibliothek: Datenmodelle für CI-Checks
     experiment.manifest.schema.json
     catalog.entry.schema.json
 
