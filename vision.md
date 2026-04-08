@@ -7,7 +7,8 @@ Vibe-Lab ist kein Ideenarchiv.
 Es ist ein System zur kontinuierlichen Verbesserung von Vibe-Coding durch:
 1. Sammlung
 2. Erprobung
-3. Kreation
+3. Validierung
+4. Kreation
 
 Ziel ist nicht Wissen, sondern Wirkung:
 bessere Workflows, bessere Tools, mehr Flow.
@@ -18,9 +19,9 @@ bessere Workflows, bessere Tools, mehr Flow.
 
 Jede Idee muss sich bewegen.
 
-inbox → experiment → practice → lab
+inbox → experiments → practices → lab
 
-Stillstand ist Fehler.
+Stillstand ist ein Systemfehler.
 
 ---
 
@@ -28,6 +29,8 @@ Stillstand ist Fehler.
 
 ### 1. Sammlung (inbox)
 Ideen werden niedrigschwellig erfasst.
+Sammlung umfasst Ideen, Methoden, Tools und Hypothesen.
+Alles wird mit Blick auf spätere Erprobung erfasst.
 Keine Bewertung, keine Perfektion.
 
 ### 2. Erprobung (experiments)
@@ -35,10 +38,12 @@ Jede relevante Idee wird getestet.
 Ohne Experiment keine Weiterentwicklung.
 
 ### 3. Validierung (practices)
-Nur bewährte Ansätze werden übernommen.
+Validierung bedeutet explizite Entscheidung auf Basis von Experimenten.
+Nur validierte Ansätze werden als Practices übernommen.
 
 ### 4. Kreation (lab)
-Neue Methoden entstehen durch Kombination, Variation und Bruch bestehender Praktiken.
+Neue Methoden entstehen auf Basis validierter Praktiken und gezielter Experimente.
+Kreation ist kein freies Brainstorming, sondern Weiterentwicklung durch Kombination, Variation und Bruch bestehender Praktiken.
 
 ---
 
