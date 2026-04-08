@@ -1,87 +1,49 @@
-# Vibe-Lab – Grundvision
+# Vibe-Lab: Lernendes, prüfendes und schöpferisches System
 
-## Zweck
+Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. Dokumentation, Katalogisierung und Wissensspeicherung sind legitime Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.
 
-Vibe-Lab ist kein Ideenarchiv.
+Die Vision beruht auf einem Dreiklang, in dem Sammlung, Erprobung und Kreation gleich ernst genommen werden, wobei **Erprobung das Gate** darstellt. Praktiken und Erkenntnisse werden dabei konsequent entlang von drei Achsen bewertet: **Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität)**.
 
-Es ist ein System zur kontinuierlichen Verbesserung von Vibe-Coding durch:
-1. Sammlung
-2. Erprobung
-3. Validierung
-4. Kreation
+Das System organisiert sich in drei Schichten:
 
-Ziel ist nicht Wissen, sondern Wirkung:
-bessere Workflows, bessere Tools, mehr Flow.
+## Layer 1: Core Engine (Der Mechanismus)
 
----
+Die Core Engine schafft reproduzierbare Rahmenbedingungen für die Arbeit mit LLMs und Agenten.
 
-## Kernprinzip
+- **Vibe Contracts (.vibe/ als Vertragszone)**
+  Loses Prompting reicht nicht aus; es wird durch Contracts, Kontext und Validierung gerahmt. Intentionen, Restriktionen und Quality Gates schaffen explizite und prüfbare Grenzen für Agenten.
+- **Pipeline-Exekution**
+  Wir denken in Workflows, nicht im Einzelprompt: Prepare Context → Generate → Validate → Decide.
+- **Zweizonenlogik: Labor vs. Bibliothek**
+  Eine organisatorische und konzeptionelle Trennung:
+  - **Labor-Schicht:** Eine Zone hoher Freiheit für Exploration, Variation und schnelle Experimente.
+  - **Bibliotheks-Schicht:** Eine Zone hoher Verlässlichkeit für bewährte, übernommene Praktiken und getestete Artefakte.
+- **Guardrails**
+  Architektur- und Sicherheits-Checks finden statt, bevor Code generiert oder übernommen wird.
 
-Jede Idee muss sich bewegen.
+## Layer 2: Practice System (Die Zusammenarbeit)
 
-inbox → experiments → practices → lab
+Wie Mensch und Maschine strukturiert zusammenarbeiten.
 
-Stillstand ist ein Systemfehler.
+- **Strukturierte Hypothesen**
+  Praktiken, Techniken, Tools und Workflows werden als strukturierte, testbare Hypothesen gesammelt und weiterverfolgt. Jeder Eintrag durchläuft einen Statuszyklus (idea → testing → adopted/rejected).
+- **Strikte Selektions-Gates**
+  Ideen bewegen sich nur durch den Nachweis von Evidenz. Ohne Experiment keine belastbare Practice; ohne Entscheidung kein adoptierter Ansatz.
+- **Erkenntniskreislauf**
+  Jedes Experiment produziert auswertbare Daten. Am Ende steht immer eine klare Entscheidung: adopt, reject oder iterate.
+- **Kreation als Evolution**
+  Neue Mittel und Wege entstehen aus der Kombination, Variation und dem gezielten Bruch von Bestehendem. Kreation baut auf validierten Praktiken und dokumentierten Erfahrungen auf.
 
----
+## Layer 3: Evolution System (Die Selbsterneuerung)
 
-## Systemlogik
+Wie das Repository als Erkenntnisraum lernt und wächst.
 
-### 1. Sammlung (inbox)
-Ideen werden niedrigschwellig erfasst.
-Sammlung umfasst Ideen, Methoden, Tools und Hypothesen.
-Alles wird mit Blick auf spätere Erprobung erfasst.
-Keine Bewertung, keine Perfektion.
-
-### 2. Erprobung (experiments)
-Jede relevante Idee wird getestet.
-Ohne Experiment keine Weiterentwicklung.
-
-### 3. Validierung (practices)
-Validierung bedeutet explizite Entscheidung auf Basis von Experimenten.
-Nur validierte Ansätze werden als Practices übernommen.
-
-### 4. Kreation (lab)
-Neue Methoden entstehen auf Basis validierter Praktiken und gezielter Experimente.
-Kreation ist kein freies Brainstorming, sondern Weiterentwicklung durch Kombination, Variation und Bruch bestehender Praktiken.
-
----
-
-## Bewertungslogik
-
-Jede Erkenntnis wird entlang von drei Achsen bewertet:
-
-- Effektivität (Output)
-- Reibung (Aufwand)
-- Flow (subjektive Qualität)
+- **Exploration und Rückführung**
+  Das Repo dient der systematischen Erprobung (Exploration) und der Selektion. Ziel ist die Beobachtbarkeit von "tribalem" Wissen und die Rückführung von Erkenntnissen in die Praxis.
+- **Sichtbarkeit von Lerngewinnen**
+  Wissen wird konserviert. Auch vorläufige oder abgelehnte Hypothesen tragen zur Systemintelligenz bei, wenn sie gut dokumentiert sind.
+- **Anbindung ans Ökosystem**
+  Erfolgreiche Praktiken sollen nicht im Labor verbleiben, sondern in angrenzende Standards, Templates und Repositories des übergeordneten Ökosystems (z.B. Heimgewebe) zurückfließen.
 
 ---
-
-## Anti-Prinzipien
-
-- Kein Ideenfriedhof
-- Keine ungetesteten Best Practices
-- Keine Komplexität ohne Nutzen
-- Keine Dokumentation ohne Anwendung
-
----
-
-## Evolutionsprinzip
-
-Das System ist nicht statisch.
-
-Neue Visionen, Modelle und Ansätze werden integriert,
-wenn sie:
-- die Durchflusslogik nicht brechen
-- die Erprobung stärken
-- oder die Kreation verbessern
-
----
-
-## Zielzustand
-
-Ein lebendiges System, das:
-
-- kontinuierlich bessere Coding-Praktiken hervorbringt
-- Flow systematisch erhöht
-- neue Wege des Programmierens entdeckt
+*Vibe-Lab ist der Raum, in dem Ideen systematisch gesammelt, unerbittlich geprüft und kreativ weiterentwickelt werden.*
