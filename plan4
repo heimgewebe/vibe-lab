@@ -1,246 +1,89 @@
 Vibe-Lab: Repository-Struktur & Konzept
 
+Kernidee: "Stile, Techniken, Tools und Workflows als katalogisierte Hypothesen mit Experiment- und Entscheidungsbezug verwalten."
 
 1. Kernstruktur des Repos
 
-
-Code
 vibe-lab/
 ├── README.md                    # Übersicht, Mission, Quickstart
 ├── CONTRIBUTING.md              # Wie man beiträgt, Bewertungskriterien
-├── catalog/                     # 📚 Die Wissensdatenbank
-│   ├── styles/                  # Vibe-Coding-Stile (z.B. "YOLO-Prompting", "Chain-of-Thought-Driven Dev", "Spec-First Vibe")
-│   ├── technologies/            # Tools & Plattformen (Cursor, Copilot, Aider, Claude Code, Windsurf, etc.)
-│   ├── techniques/              # Einzelne Techniken (Prompt-Chaining, Context-Stuffing, Rubber-Duck-Prompting, etc.)
-│   ├── workflows/               # End-to-End-Workflows (z.B. "Von Idee zu MVP in 2h")
-│   └── anti-patterns/           # Was NICHT funktioniert – genauso wertvoll
-├── experiments/                  # 🧪 Erprobungen & Kombinationen
-│   ├── _template/               # Template für neue Experimente
-│   └── YYYY-MM-DD_name/         # Einzelne Experimente mit Ergebnis-Dokumentation
-├── combos/                       # 🔀 Kombinationsrezepte (Stil + Technik + Tool)
-├── benchmarks/                   # 📊 Vergleichbare Bewertungen
-│   ├── criteria.md              # Bewertungskatalog (Geschwindigkeit, Codequalität, Wartbarkeit, etc.)
-│   └── results/                 # Ergebnisse in strukturiertem Format
-├── innovations/                  # 💡 Neue, noch unerprobte Ideen
-├── prompts/                      # 🎯 Prompt-Bibliothek (wiederverwendbare Prompts & System-Prompts)
-│   ├── system-prompts/
-│   ├── meta-prompts/            # Prompts, die Prompts generieren
-│   └── chain-templates/         # Multi-Step-Prompt-Ketten
+├── catalog/                     # 📚 Die Wissensdatenbank (Strukturierte Ergebnisse)
+│   ├── styles/                  # Denk-/Interaktionshaltung (z.B. "YOLO-Prompting", "Spec-First Vibe")
+│   ├── technologies/            # Tools & Plattformen (Cursor, Copilot, Aider, etc.)
+│   ├── techniques/              # Konkrete Methoden (Prompt-Chaining, Context-Stuffing, etc.)
+│   ├── workflows/               # Mehrstufige Abläufe (z.B. "Von Idee zu MVP in 2h")
+│   └── anti-patterns/           # Was nachweislich NICHT funktioniert
+├── experiments/                  # 🧪 Die Experiment-Engine (Durchführung & Auswertung)
+│   ├── _template/               # Template für neue Experimente (inkl. Entscheidung & Evidence Level)
+│   └── YYYY-MM-DD_name/         # Einzelne Experimente mit Protokoll und rohen Prompts
+├── combos/                       # 🔀 Getestete Kombinationsrezepte (Mindestens 2 Achsen, z.B. Stil + Tool)
+├── benchmarks/                   # 📊 Robuste Bewertungskriterien & Ergebnisse
+│   ├── criteria.md              # Harte Metriken (Zeit, Rework-Zyklen, Erfolgsquote)
+│   └── results/                 # Ergebnisse im strukturierten Format
+├── innovations/                  # 💡 Rohzone: Neue, ungetestete Ideen (vor dem Experiment)
+├── prompts/                      # 🎯 (Geprüfte) Prompt-Bibliothek für wiederverwendbare, adopted Prompts
 ├── schemas/                      # JSON/YAML-Schemas für einheitliche Datenerfassung
 └── tools/                        # Hilfstools (z.B. Experiment-Generator, Benchmark-Runner)
 
-2. Datenformat für Katalogeinträge
+2. Datenformat für Katalogeinträge (mit Statuslogik)
 
+Jeder Eintrag im catalog/ ist das Ergebnis einer Erkenntniskette und hat ein standardisiertes YAML-Frontmatter:
 
-Jeder Eintrag im catalog/ sollte ein standardisiertes Markdown-Format mit YAML-Frontmatter haben:
-
-
-YAML
+```yaml
 ---
-name: "Chain-of-Thought Driven Development"
-category: technique
-maturity: experimental | proven | deprecated
-tools: [cursor, claude-code, copilot]
-synergies: [spec-first, tdd-vibe]
+name: "Spec-First Vibe"
+category: workflow # [style | technique | workflow | technology | combo]
+status: adopted # [idea | testing | adopted | rejected | deprecated]
+evidence_level: benchmarked # [none | anecdotal | compared | benchmarked]
+tools: [cursor, aider]
+synergies: [tdd-vibe]
 anti-synergies: [yolo-prompting]
-complexity: low | medium | high
-speed_boost: "3x"
+speed_boost: "2x"
 quality_impact: "++"
-tags: [prompting, reasoning, architecture]
+tags: [architecture, stability]
+linked_experiments: ["2026-03-15_spec-first-vs-yolo"]
 last_tested: 2026-04-01
 ---
+```
 
-3. Experiment-Template
+3. Gehärtetes Experiment-Template
 
+Jedes Experiment in experiments/ erzwingt eine Entscheidung:
 
-Jedes Experiment in experiments/ folgt einer Struktur:
+- **Hypothese:** Was genau wird getestet?
+- **Setup:** Welche Tools, Stile, Techniken?
+- **Durchführung:** Protokoll der Ausführung.
+- **Artefakte:** Code, Kontext-Prompts, Fehlermeldungen.
+- **Benchmarks:** Messung gegen harte Kern-Metriken.
+- **Entscheidung (Decision):** `adopt` | `reject` | `iterate`
+- **Reproducibility:** `low` | `medium` | `high`
+- **Learnings & Nächste Schritte:** Einsortierung in den Katalog oder Anti-Patterns.
 
+4. Verschlankter Benchmark-Kern
 
+Initial Fokus auf wenige, harte Metriken, um Operationalisierung zu garantieren:
 
-Hypothese: Was wird getestet?
+- ⏱️ **Time-to-Running:** Zeit von Start bis zum ersten lauffähigen Zustand.
+- 🔄 **Rework-Zyklen:** Wie viele Korrektur-Prompts waren nötig?
+- 🎯 **Acceptance Rate:** Anteil der Outputs, die ohne manuelle Änderung übernommen wurden.
+- 🛠️ **Manual Intervention:** Anzahl der zwingend notwendigen menschlichen Code-Eingriffe.
 
-Setup: Welche Tools, Stile, Techniken?
+*(Weiche Dimensionen wie "Kognitive Last" oder "Kreativität" können als qualitative Begleitevaluierung in Experimenten notiert werden, sind aber keine Kern-Benchmarks).*
 
-Durchführung: Schritt-für-Schritt-Protokoll
+5. Der Erkenntniskreislauf (Promotionspfad)
 
-Artefakte: Generierter Code, Prompts, Screenshots
+Die zentrale Mechanik des Repos:
+1. **Idee:** Landet in `innovations/` (Status: `idea`).
+2. **Experiment:** Wird in `experiments/` getestet (Status: `testing`).
+3. **Ergebnis:** Benchmarks werden erhoben, Entscheidung fällt (`adopt`, `reject`, `iterate`).
+4. **Katalogisierung:** Eintrag wandert nach `catalog/` oder `anti-patterns/` (Status: `adopted` oder `rejected`).
+5. **Artefakte:** Nur bewährte Prompts wandern nach `prompts/`.
 
-Ergebnis: Quantitative + qualitative Bewertung
+6. Priorisierte Erste Schritte
 
-Learnings: Was wurde gelernt?
-
-Nächste Schritte: Follow-up-Experimente
-
-
-4. Bewertungskatalog (Benchmarks)
-
-
-Einheitliche Dimensionen für die Bewertung:
-
-
-
-⏱️ Geschwindigkeit: Zeit von Idee → funktionierender Code
-
-🎯 Treffsicherheit: Wie oft liefert der erste Versuch das gewünschte Ergebnis?
-
-🏗️ Codequalität: Wartbarkeit, Lesbarkeit, Testabdeckung
-
-🔄 Iterationsfähigkeit: Wie gut lässt sich der Output weiterentwickeln?
-
-🧠 Kognitive Last: Wie viel muss der Mensch noch denken/korrigieren?
-
-📐 Skalierbarkeit: Funktioniert es auch bei größeren Projekten?
-
-🎨 Kreativität: Liefert der Ansatz innovative Lösungen?
-
-
-5. Innovative Ideen & weiterführende Konzepte
-
-
-🧬 Vibe-DNA: Kombinatorische Stilkarten
-
-
-
-Jeder Vibe-Coding-Stil wird als "Gen" modelliert mit Eigenschaften
-
-Stile können kombiniert ("gekreuzt") werden → neue Hybrid-Stile
-
-Visualisierung als interaktive Matrix: Welche Kombinationen wurden getestet, welche nicht?
-
-
-🤖 Meta-Vibe-Coding: AI die Vibe-Coding optimiert
-
-
-
-Prompts, die analysieren, welcher Vibe-Coding-Stil für ein gegebenes Problem optimal wäre
-
-Ein "Vibe-Advisor"-Prompt, der basierend auf Projekttyp, Teamgröße, Deadline den besten Ansatz empfiehlt
-
-Self-Improving: Ergebnisse fließen zurück in die Empfehlungslogik
-
-
-🎮 Vibe-Challenges: Standardisierte Aufgaben
-
-
-
-Definierte Coding-Aufgaben (z.B. "Baue eine REST-API", "Refactore diese Legacy-Codebase")
-
-Jede Challenge wird mit verschiedenen Vibe-Stilen gelöst
-
-Ergebnisse werden verglichen → welcher Stil passt zu welchem Problemtyp?
-
-
-🌊 Flow-State-Tracking: Der menschliche Faktor
-
-
-
-Dokumentation, wie verschiedene Stile den Flow-State des Entwicklers beeinflussen
-
-Erfassung von: Frustration, Überraschung, Kontrolle, Vertrauen in den Output
-
-Hypothese: Der beste Vibe-Coding-Stil ist der, der den Menschen am produktivsten fühlen lässt
-
-
-🔬 Prompt-Forensik: Warum funktioniert etwas?
-
-
-
-Reverse-Engineering erfolgreicher Vibe-Sessions
-
-Was genau im Prompt hat den Unterschied gemacht?
-
-Aufbau einer "Prompt-Anatomie"-Datenbank
-
-
-📡 Living Document via CI/CD
-
-
-
-GitHub Actions, die automatisch:
-
-Eine statische Website aus dem Katalog generieren (z.B. mit Astro/VitePress)
-
-Katalog-Einträge validieren (Schema-Checks)
-
-Statistiken über Experimente aggregieren
-
-Ein "Kombinationsradar" generieren (welche Combos fehlen noch?)
-
-
-
-
-🧩 Vibe-Coding-Periodensystem
-
-
-
-Visuelle Darstellung aller bekannten Techniken als "Periodensystem"
-
-Gruppiert nach Kategorien (wie echte Elemente nach Eigenschaften)
-
-Interaktiv: Klick auf ein "Element" → Details, Experimente, Combos
-
-
-🔄 Feedback-Loops mit der Community
-
-
-
-Issue-Templates für: "Neuer Stil entdeckt", "Experiment-Vorschlag", "Combo-Idee"
-
-Discussions für offene Fragen und Erfahrungsberichte
-
-Labels-System: style, technique, tool, experiment, innovation, needs-testing
-
-
-🏷️ Vibe-Maturity-Model
-
-
-
-Level 1: Ad-hoc – Zufälliges Prompting
-
-Level 2: Bewusst – Gezielte Technikwahl
-
-Level 3: Systematisch – Reproduzierbare Workflows
-
-Level 4: Optimiert – Datengetriebene Stilwahl
-
-Level 5: Innovativ – Eigene Stile & Meta-Optimierung
-
-
-6. Technologie-Empfehlungen für das Repo
-
-
-
-Datenformat: Markdown + YAML-Frontmatter (menschenlesbar, Git-freundlich, maschinenverarbeitbar)
-
-Schema-Validierung: JSON Schema für Frontmatter → CI-Check
-
-Website: VitePress oder Astro für eine durchsuchbare, filterbares Katalog-Website
-
-Tagging: Konsistentes Tag-System über alle Katalogeinträge
-
-Versionierung: Semantic Versioning für den Gesamtkatalog (Releases = Snapshots)
-
-
-7. Erste Schritte (Priorisiert)
-
-
-
-✅ Repo-Struktur mit Ordnern und Templates anlegen
-
-✅ Schemas für Katalogeinträge und Experimente definieren
-
-✅ README mit Vision, Struktur und Mitmach-Anleitung schreiben
-
-✅ Erste 5-10 bekannte Vibe-Coding-Stile dokumentieren
-
-✅ Erste 3 Vibe-Challenges definieren
-
-✅ Erstes Experiment durchführen und dokumentieren
-
-🔜 CI/CD-Pipeline für Validierung und Website aufsetzen
-
-🔜 Community-Beitrags-Infrastruktur (Templates, Labels, Discussions)
-
-
-
-Implementing
+✅ Repo-Struktur anlegen.
+✅ Schemas inkl. Statusmodell (`idea`, `testing`, `adopted`...) definieren.
+✅ Experiment-Template härten (Fokus auf Decision & Evidence).
+✅ Erste 3 Hypothesen formulieren und Experimente starten.
+🔜 GitHub Actions für Schema-Validierung aufsetzen.
+🔜 Statische Site generieren, um die Katalog-Entscheidungen sichtbar zu machen.
