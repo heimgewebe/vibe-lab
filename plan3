@@ -1,0 +1,331 @@
+Implement the plan:
+
+
+🧪 vibe-lab — Das Vibe-Coding Meta-Framework
+
+
+Vision
+
+
+vibe-lab ist ein experimentelles Repository, das Vibe-Coding von „prompte und hoffe" zu einem systematischen, reproduzierbaren und qualitätsgesicherten Paradigma erhebt. Es ist gleichzeitig Toolkit, Wissensbasis und Experimentierfeld.
+
+
+
+1. Kern-Innovation: Vibe Contracts (.vibe/-Verzeichnis)
+
+
+Statt lose Prompts an ein LLM zu werfen, definiert man Vibe Contracts — deklarative Dateien, die Intent, Constraints und Qualitätskriterien formalisieren.
+
+
+
+.vibe/intent.md — Was soll entstehen? (Natürliche Sprache, aber strukturiert)
+
+.vibe/constraints.yaml — Technische Grenzen: Sprache, Frameworks, Architektur-Patterns, Sicherheitsanforderungen
+
+.vibe/quality-gates.yaml — Automatisch prüfbare Kriterien: Tests müssen grün sein, kein neuer Tech-Debt, Performance-Budgets
+
+.vibe/context/ — Referenz-Dateien, die das LLM als Kontext bekommt (Architektur-Diagramme, API-Specs, Style Guides)
+
+
+Warum? Vibe-Coding scheitert oft an vagem Kontext. Contracts machen den Vibe explizit und reproduzierbar.
+
+
+
+2. Prompt Engineering Lab (prompts/)
+
+
+Eine kuratierte, versionierte Bibliothek von Prompt-Patterns, kategorisiert nach Aufgabentyp:
+
+
+
+prompts/patterns/ — Wiederverwendbare Prompt-Bausteine (Chain-of-Thought, Few-Shot, Persona, etc.)
+
+prompts/recipes/ — Zusammengesetzte Workflows (z.B. „Greenfield Microservice", „Legacy Refactoring", „Bug Triage")
+
+prompts/anti-patterns/ — Dokumentierte Fehler und warum sie scheitern
+
+prompts/benchmarks/ — Gleiche Aufgabe, verschiedene Prompts → messbarer Vergleich
+
+
+Innovation: Prompts werden wie Code behandelt — mit Tests, Reviews und Changelogs.
+
+
+
+3. Vibe Pipelines (pipelines/)
+
+
+Automatisierte Multi-Step-Workflows, die über einfaches „Prompt → Code" hinausgehen:
+
+
+
+Decompose → Generate → Validate → Integrate als formalisierter Zyklus
+
+pipelines/decompose/ — Große Aufgaben in LLM-verdauliche Chunks zerlegen
+
+pipelines/generate/ — Code-Generierung mit Context Injection aus .vibe/
+
+pipelines/validate/ — Automatische Validierung (Lint, Test, Security Scan, Architektur-Conformance)
+
+pipelines/integrate/ — Merge-Strategien, Conflict Resolution, Changelog-Generierung
+
+
+Paradigmen-Bruch: Nicht ein Prompt → ein Output, sondern eine Pipeline mit Feedback-Loops.
+
+
+
+4. The Vibe Score (scoring/)
+
+
+Ein quantitatives Bewertungssystem für Vibe-Coding-Sessions:
+
+
+
+Prompt Efficiency — Verhältnis von Prompt-Tokens zu generiertem, behaltenem Code
+
+First-Try Success Rate — Wie oft läuft generierter Code beim ersten Mal?
+
+Human Edit Distance — Wie viel muss der Mensch noch ändern?
+
+Architectural Coherence — Passt der generierte Code zur bestehenden Architektur?
+
+Vibe Drift — Wie weit weicht das Ergebnis vom ursprünglichen Intent ab?
+
+
+Implementiert als CLI-Tool, das Git-History und LLM-Logs analysiert.
+
+
+
+5. Context Engineering Toolkit (context/)
+
+
+Das größte Problem bei Vibe-Coding ist Kontext-Management. Dieses Toolkit löst es:
+
+
+
+context/extractors/ — Automatische Extraktion von relevantem Kontext aus großen Codebases (AST-basiert, nicht nur Textsuche)
+
+context/compressors/ — Intelligente Kontextkompression (wichtige Teile behalten, Boilerplate entfernen)
+
+context/assemblers/ — Kontext-Assemblierung: Die richtige Information zum richtigen Zeitpunkt
+
+context/strategies/ — Verschiedene Strategien: Breadth-First (Überblick), Depth-First (Detail), Hybrid
+
+
+Innovation: „Context as Code" — der Kontext wird nicht manuell zusammengestellt, sondern programmatisch erzeugt.
+
+
+
+6. Experiment Tracking (experiments/)
+
+
+Inspiriert von ML-Experiment-Tracking (MLflow, W&B), aber für Vibe-Coding:
+
+
+
+Jede Coding-Session wird als Experiment protokolliert
+
+Tracking von: Modell, Prompt-Variante, Kontext-Strategie, Ergebnis-Metriken
+
+Vergleichbare Runs: Gleiche Aufgabe, verschiedene Ansätze
+
+Experiment-Logs als Markdown, maschinenlesbar und menschlich reviewbar
+
+
+
+7. Guardrails & Safety (guardrails/)
+
+
+Vibe-Coding ohne Guardrails ist wie Autofahren ohne Bremsen:
+
+
+
+guardrails/security/ — Automatische Security-Checks auf generierten Code (SAST, Dependency-Check)
+
+guardrails/architecture/ — Architektur-Fitness-Functions (keine zirkulären Dependencies, Layer-Violations)
+
+guardrails/style/ — Automatische Style-Enforcement (nicht nur Linting, sondern auch Code-Patterns)
+
+guardrails/hallucination-detection/ — Erkennung von halluzinierten APIs, nicht existierenden Libraries, falschen Signaturen
+
+
+Paradigmen-Bruch: Guardrails nicht als nachträglicher Check, sondern als Input-Constraint für die Generierung.
+
+
+
+8. Collaborative Vibing (collab/)
+
+
+Vibe-Coding ist heute meist solo. Das ändert sich:
+
+
+
+collab/handoff-protocols/ — Standardisierte Übergabe zwischen Mensch und LLM und zwischen LLM-Sessions
+
+collab/session-state/ — Serialisierbarer Session-State, der zwischen Tools portabel ist
+
+collab/review-integration/ — LLM-generierter Code in bestehende Review-Workflows einbetten
+
+collab/pair-vibing/ — Patterns für Mensch+LLM Pair Programming (wer führt wann?)
+
+
+
+9. Meta-Learning Layer (meta/)
+
+
+Das Repo lernt aus sich selbst:
+
+
+
+meta/retrospectives/ — Automatische Analyse vergangener Sessions: Was hat funktioniert, was nicht?
+
+meta/model-profiles/ — Stärken/Schwächen verschiedener Modelle für verschiedene Aufgaben
+
+meta/evolution/ — Wie haben sich Prompts und Workflows über Zeit verändert? Was wurde besser?
+
+
+
+10. The Playground (playground/)
+
+
+Ein sicherer Sandkasten für Experimente:
+
+
+
+Vorkonfigurierte Umgebungen für verschiedene Sprachen/Frameworks
+
+Challenge Mode: Vordefinierte Coding-Challenges mit bekannter Lösung — zum Benchmarken neuer Ansätze
+
+Chaos Mode: Absichtlich schwierige Szenarien (Legacy-Code, widersprüchliche Requirements, unklare Specs)
+
+Speed Runs: Wie schnell kann man Feature X mit verschiedenen Vibe-Strategien umsetzen?
+
+
+
+Repo-Struktur (Übersicht)
+
+
+Code
+vibe-lab/
+├── .vibe/                    # Vibe Contracts für dieses Repo selbst (dogfooding)
+│   ├── intent.md
+│   ├── constraints.yaml
+│   ├── quality-gates.yaml
+│   └── context/
+├── prompts/
+│   ├── patterns/
+│   ├── recipes/
+│   ├── anti-patterns/
+│   └── benchmarks/
+├── pipelines/
+│   ├── decompose/
+│   ├── generate/
+│   ├── validate/
+│   └── integrate/
+├── scoring/
+│   ├── metrics/
+│   ├── cli/
+│   └── visualizations/
+├── context/
+│   ├── extractors/
+│   ├── compressors/
+│   ├── assemblers/
+│   └── strategies/
+├── experiments/
+│   ├── tracking/
+│   ├── templates/
+│   └── logs/
+├── guardrails/
+│   ├── security/
+│   ├── architecture/
+│   ├── style/
+│   └── hallucination-detection/
+├── collab/
+│   ├── handoff-protocols/
+│   ├── session-state/
+│   ├── review-integration/
+│   └── pair-vibing/
+├── meta/
+│   ├── retrospectives/
+│   ├── model-profiles/
+│   └── evolution/
+├── playground/
+│   ├── challenges/
+│   ├── environments/
+│   └── speed-runs/
+├── docs/
+│   ├── philosophy.md         # Warum Vibe-Coding ernst genommen werden sollte
+│   ├── getting-started.md
+│   ├── glossary.md
+│   └── contributing.md
+└── README.md
+
+
+Grundlegende Design-Prinzipien
+
+
+
+Dogfooding — Das Repo selbst wird mit Vibe-Coding entwickelt und nutzt seine eigenen Tools
+
+Messbarkeit über Meinungen — Jede Behauptung über „besseres" Vibe-Coding muss quantifizierbar sein
+
+Modell-Agnostisch — Funktioniert mit jedem LLM, keine Vendor-Lock-in
+
+Progressive Disclosure — Anfänger können sofort loslegen, Experten finden Tiefe
+
+Composability — Jede Komponente ist unabhängig nutzbar, aber zusammen stärker
+
+Transparenz — Jede Entscheidung des Systems ist nachvollziehbar und erklärbar
+
+
+
+Radikale Ideen (zum Diskutieren)
+
+
+
+Inverse Vibe-Coding: Das LLM schreibt die Tests, der Mensch den Code — oder umgekehrt. Wer ist besser worin?
+
+Vibe Diffs: Statt Code zu generieren, generiert das LLM Transformationen auf bestehendem Code (wie ein Diff, aber intentionsbasiert)
+
+Prompt Genome: Prompts werden wie Gene behandelt — Mutation, Crossover, Selection — Evolution findet die besten Prompts automatisch
+
+Confidence Annotations: Generierter Code enthält inline-Konfidenz-Markierungen (// confidence: 0.3 — verify this edge case)
+
+Vibe Replay: Jede Session kann wie ein Spiel-Replay abgespielt, analysiert und an beliebiger Stelle geforked werden
+
+Anti-Fragile Coding: Das System wird absichtlich mit Edge Cases, Fehlern und Chaos konfrontiert und wird dadurch besser
+
+
+
+Tech-Stack-Empfehlung
+
+
+
+Core CLI: TypeScript (oder Go für Performance) — ein vibe CLI als zentraler Einstiegspunkt
+
+Konfiguration: YAML + JSON Schema für Validierung
+
+Experiment Tracking: SQLite lokal, optional Cloud-Sync
+
+Visualisierung: Web-Dashboard (Vite + React) oder Terminal-UI (Ink/Blessed)
+
+CI/CD: GitHub Actions mit Custom Actions für Vibe-Pipelines
+
+Dokumentation: Astro oder VitePress
+
+
+
+Nächste Schritte (priorisiert)
+
+
+
+README.md ausarbeiten mit Vision und Quickstart
+
+.vibe/ Contract-Format spezifizieren und für das Repo selbst anlegen
+
+prompts/patterns/ mit 5–10 Kern-Patterns bestücken
+
+scoring/ CLI als erstes funktionales Tool implementieren
+
+playground/challenges/ mit 3 Benchmark-Challenges starten
+
+Community-Feedback einholen und iterieren
