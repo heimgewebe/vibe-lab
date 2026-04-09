@@ -55,6 +55,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Breitere Tool-Abdeckung:** Exports für weitere Agentensysteme.
 *   **Erweiterte Metriken:** Automatisierte Erfassung quantitativer Daten.
 *   **Intelligence Layer (Vollton):** Komplexe CI-Gates, breitere Diagnoseebene (`supersession-map`, `knowledge-gaps`).
+*   **Reaktiver Loop (Minimal-Implementierung):** Einführung eines ersten emergenten Kreislaufs (1 State, 1 Signal, 1 Policy, 1 Action, 1 Evaluation), um erstes reaktives Verhalten zu testen, ohne das System zu überladen.
 
 ## Die Intelligence Layer (Systemintelligenz)
 Zusätzlich zur operativen Pipeline (`intake` → `experiments` → `catalog` → `exports`) erhält das Repository eine leichte, maschinenlesbare Diagnostik- und Steuerungsebene. Diese ersetzt die operative Pipeline nicht, sondern macht sie für Agenten navigierbar und schützt vor Drift.
@@ -78,6 +79,20 @@ Diese Dokumente erzwingen eine bindende Lesereihenfolge, verbieten stille Interp
 4. Kanonische Kernquellen
 5. Navigation (nur als Navigation)
 6. Generierte Diagnose (nur als Diagnose)
+
+**Konzeptionelles Agentenmodell:**
+Agenten können im System funktional unterschieden werden: *Sensor* (erfasst State), *Interpreter* (deutet Signal), *Policy* (trifft Entscheidung), *Executor* (führt Action aus) und *Critic* (übernimmt Evaluation). Dies dient als reines Denkmodell, ohne neue Ordnerstrukturen zu erzwingen.
+
+### Reaktive Steuerlogik (Emergente Erweiterung)
+Das System soll perspektivisch Zustände nicht nur speichern, sondern interpretieren und darauf reagieren. Dazu wird ein konzeptioneller Kreislauf eingeführt:
+**STATE → SIGNAL → POLICY → ACTION → EVALUATION → STATE**
+
+*   **State:** Beobachtbarer Zustand (z.B. Drift, fehlende Links).
+*   **Signal:** Interpretierte Bedeutung („Spannung“).
+*   **Policy:** Deklarative Regel („wenn X, dann Y unter Constraints Z“). Policies fungieren nicht nur als Constraints, sondern als reaktive Entscheidungslogik, die Diagnose mit Handlung verbindet.
+*   **Action:** Konkrete Ausführung (untergeordnet).
+*   **Evaluation:** Bewertung und Rückführung ins System.
+*(Klarstellung: Manuelle Commands bleiben erhalten, werden aber durch Policies gesteuert und perspektivisch weniger direkt durch Benutzer oder Agenten initiiert.)*
 
 ### Dokumente als epistemische Objekte
 Markdown-Dokumente sind keine bloßen Fließtexte, sondern strukturierte Erkenntnisobjekte. Ein `contracts/docmeta.schema.json` erzwingt eine Frontmatter-Pflicht für kanonische Markdown-Dateien und standardisiert Relationen (kein Link-Wildwuchs).
@@ -179,6 +194,16 @@ Um Wildwuchs zu verhindern, arbeitet das Repository mit einem expliziten Contrib
 *   `Combo`
 *   `Prompt`
 *   `Decision Artifact`
+
+**Traceability (Pflicht für Reaktivität):**
+Um Emergenz kontrollierbar und debugbar zu halten, muss jede automatisch (reaktiv) ausgelöste Aktion strikt nachvollziehbar dokumentiert werden. Beispielstruktur:
+```yaml
+trace:
+  triggered_by: <signal>
+  policy: <policy_id>
+  action: <action_id>
+  outcome: <result>
+```
 
 **Agenten- und Tool-Security:**
 *   Lokale Agenten (z.B. Cursor) und Cloud-Agenten (z.B. Copilot) weisen unterschiedliche Reproduzierbarkeits- und Sicherheitsbedarfe auf, die in den Experiments explizit zu trennen sind.
@@ -285,8 +310,9 @@ vibe-lab/
 ---
 
 ## CHANGELOG
-- **Phasenmodell erweitert:** Phase B "Starter Corpus (Initialbefüllung)" als eigene klar abgegrenzte Schicht direkt nach dem MVP eingefügt.
+- **Phasenmodell erweitert:** Phase B "Starter Corpus (Initialbefüllung)" als eigene klar abgegrenzte Schicht direkt nach dem MVP eingefügt. Spätphase (D) um reaktiven Minimal-Loop ergänzt.
 - **Intelligence Layer integriert:** Neue Architekturebene eingeführt, die `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` als maschinenlesbare Steuerungs- und Agentenführungsebene etabliert, ohne die operative Pipeline abzulösen.
+- **Reaktive Steuerlogik:** Ergänzung eines emergenten Kreislaufs (STATE → SIGNAL → POLICY → ACTION → EVALUATION) zur Systemsteuerung, ergänzt durch konzeptionelle Agenten-Rollen (Sensor, Interpreter, etc.) und strikte Traceability-Vorgaben für Debugbarkeit.
 - **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert.
 - **Kanonische Artefakte ergänzt:**
   - *Schema-Starter-Set* sowie operative Bedeutung von *README & CONTRIBUTING* bei Phase A ergänzt.
