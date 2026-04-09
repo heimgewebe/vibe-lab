@@ -236,6 +236,7 @@ trace:
 vibe-lab/
   README.md
   CONTRIBUTING.md           # Operatives Einstiegssystem
+  .env.example              # Beispiel für erlaubte lokale Konfiguration
   vision.md
   repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
   agent-policy.yaml         # Agentensteuerung
@@ -338,6 +339,8 @@ vibe-lab/
       generate_doc_index.py
       generate_stale_entries.py # Phase C/D Erweiterung
       generate_weak_links.py    # Phase C/D Erweiterung
+      generate_knowledge_gaps.py # Phase C/D Erweiterung
+      generate_supersession_map.py # Phase C/D Erweiterung
 
   tools/                  # CLI / Automatisierung
     vibe-cli/             # Scaffolding-CLI (Make-Frontdoor)
@@ -356,4 +359,4 @@ vibe-lab/
 - **Reaktive Steuerlogik:** Ergänzung eines emergenten Kreislaufs (STATE → SIGNAL → POLICY → ACTION → EVALUATION) zur Systemsteuerung, ergänzt durch konzeptionelle Agenten-Rollen (Sensor, Interpreter, etc.) und strikte Traceability-Vorgaben für Debugbarkeit.
 - **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert.
 - **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Innovation, Experiment, Catalog Entry, Combo, Prompt, Decision Artifact) und jeweils eigene Qualitätsanforderungen auferlegt.
-- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert.
+- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet.
