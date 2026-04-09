@@ -32,7 +32,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
 *   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos (`contracts/docmeta.schema.json`).
 *   **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` sind keine Beiwerk-Dateien, sondern operative Systemkomponenten. Ziel ist es, dass neue Contributors das Repo-Ziel, die Beitragstypen und den Ablauf in kürzester Zeit verstehen.
-*   **Intelligence Layer (Basis):** Einführung von `repo.meta.yaml` als maschinenlesbare Verfassung, `AGENTS.md` und `agent-policy.yaml` zur Agentenführung, sowie Basis-Diagnosegeneratoren (`doc-index`, `backlinks`, `orphans`, `system-map`).
+*   **Intelligence Layer (Basis):** Einführung von `repo.meta.yaml` als maschinenlesbare Verfassung, `AGENTS.md` und `agent-policy.yaml` zur Agentenführung, sowie Basis-Diagnosegeneratoren (`doc-index`).
 
 ### B. Starter Corpus (Initialbefüllung)
 *Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar und testbar zu machen. Dies umfasst:*
@@ -84,11 +84,13 @@ Markdown-Dokumente sind keine bloßen Fließtexte, sondern strukturierte Erkennt
 *   **Pflichtfelder:** `id`, `title`, `doc_type`, `status`, `canonicality`, `summary`, `epistemic_state`, `relations`, `last_reviewed`, `tags`.
 *   **Standardisierte Relations-Typen:** `relates_to`, `depends_on`, `tests`, `evaluates`, `derived_from`, `contradicts`, `supports`, `supersedes`.
 
+*(Klarstellung: `contracts/` enthält kanonische semantische und policy-nahe Schemas wie das docmeta, während `schemas/` die operativen Validierungsschemas für Pipeline-Artefakte wie Experimente und Catalog Entries enthält.)*
+
 ### Diagnostische Generatoren
 vibe-lab nutzt eine kleine Menge generierter Diagnoseartefakte unter `docs/_generated/`.
 **Wichtig:** Diese Artefakte sind reine *Diagnose*, keine Wahrheit. `docs/index.md` ist Navigation, keine Wahrheit. Diese generierten Artefakte dürfen **niemals manuell editiert werden**.
 
-*   **MVP-Generatoren:** `doc-index.md`, `backlinks.md`, `orphans.md`, `system-map.md`.
+*   **MVP-Generatoren:** `doc-index.md`.
 *   **Spätere Generatoren:** `weak-links.md`, `supersession-map.md`, `knowledge-gaps.md`.
 
 ### Epistemische Dokumentpfade
@@ -102,10 +104,9 @@ Ergänzend zur operativen Pipeline (`experiments/`, `catalog/`, etc.) organisier
 *(Diese Struktur dient als Verdichtungs- und Diagnoseebene und ersetzt nicht die ausführbaren Experimente.)*
 
 ### Minimaler Guard-/Generator-Stack
-Ein Startset an Scripts unter `scripts/docmeta/` schützt das System:
+Ein Lean-Startset an Scripts unter `scripts/docmeta/` schützt das System für den MVP:
 *   `validate_schema.py`
-*   `validate_relations.py`
-*   `generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`
+*   `generate_doc_index.py`
 
 ### Explizite Abgrenzung (Was NICHT übernommen wird)
 Um Bürokratie zu vermeiden, wird bewusst verzichtet auf:
@@ -190,6 +191,7 @@ Um Wildwuchs zu verhindern, arbeitet das Repository mit einem expliziten Contrib
 ```text
 vibe-lab/
   README.md
+  CONTRIBUTING.md           # Operatives Einstiegssystem
   vision.md
   repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
   agent-policy.yaml         # Agentensteuerung
@@ -212,7 +214,7 @@ vibe-lab/
 
   .cursor/rules/          # Symlinks/generiert für lokale Nutzung
 
-  contracts/              # System-Schemas
+  contracts/              # System-Schemas (Kanonische/policy-nahe Semantik)
     docmeta.schema.json
 
   decisions/              # Meta-Entscheidungen (Systemsteuerung)
@@ -251,7 +253,7 @@ vibe-lab/
     copilot/
     cursor/
 
-  schemas/                # Bibliothek: Datenmodelle für CI-Checks
+  schemas/                # Bibliothek: Datenmodelle für CI-Checks (Pipeline-Validierung)
     experiment.manifest.schema.json
     catalog.entry.schema.json
 
@@ -268,7 +270,7 @@ vibe-lab/
     reference/
     playbooks/            # Triage Runbooks etc.
     onboarding/
-    _generated/           # Diagnose-Artefakte (orphans, backlinks etc.)
+    _generated/           # Diagnose-Artefakte
 
   scripts/                # Minimaler Guard-/Generator-Stack
     docmeta/
