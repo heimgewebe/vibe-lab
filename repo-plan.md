@@ -26,7 +26,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 ### A. Minimaler Kern (MVP)
 *Zwingend erforderlich, um den Erkenntniskreislauf zu starten.*
 *   **Intake:** GitHub Issues als primäre Einlassschleuse.
-*   **Experiment-Engine:** `experiments/` Ordner mit Manifest, Methode, Entscheidung und Resultat.
+*   **Experiment-Engine:** `experiments/` Ordner mit vollständigem Skelett (Manifest, Methode, Evidenz, Entscheidung).
 *   **Minimaler Katalog:** `catalog/` für erste `adopted` Practices.
 *   **Schema-Validierung:** Harte CI-Prüfung der Kernartefakte (`schemas/`).
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
@@ -34,12 +34,12 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 ### B. Frühe Verstärker
 *Sinnvoll nach Stabilisierung des MVPs, erhöht die Systemqualität maßgeblich.*
 *   **Instruction Blocks (IR) & Exports:** Einführung von `instruction-blocks/` und automatisierte Generierung der `exports/`.
-*   **Benchmarks:** Erste Heuristiken zur Erfolgsmessung.
+*   **Benchmarks & Observability:** Erste Heuristiken zur Erfolgsmessung sowie saubere Evidenz-Logs.
 *   **Erweiterte Governance:** Feinere CODEOWNERS-Regeln und verfeinerte Status Checks.
 
 ### C. Spätphase / Optionale Schicht
 *Erstrebenswert für Distribution und Skalierung im Ökosystem.*
-*   **Docs-Site:** Generierte MkDocs-Site für Durchsuchbarkeit.
+*   **Playbooks & Onboarding:** Strukturierte `docs/` mit Triage-Runbooks.
 *   **Breitere Tool-Abdeckung:** Exports für weitere Agentensysteme.
 *   **Erweiterte Metriken:** Automatisierte Erfassung quantitativer Daten.
 
@@ -47,9 +47,9 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 Die Pipeline stützt sich auf sieben harte, schemavalidierte Artefaktarten:
 
 1.  **Hypothese (Innovation)**: Problem, Hypothese, Erfolgskriterium, Scope. Formuliert als Issue-Formular.
-2.  **Experiment**: Isolierter Ordner (Manifest, Methode, Resultat, Entscheidung, Evidenz). Der überprüfbare Prozess.
+2.  **Experiment**: Isolierter Ordner (`manifest.yml`, `method.md`, `results/result.md`, `results/decision.yml`, `results/evidence.jsonl`, `artifacts/`). Dieser Aufbau zwingt zu einem überprüfbaren Prozess statt bloßem Basteln.
 3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Diese leben explizit im Ordner `decisions/` und entstehen immer dann, wenn Regeln, Metriken, Gates, Katalogstatus oder Export-Ziele des Systems selbst geändert, bestätigt oder außer Kraft gesetzt werden.
-4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente.
+4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente. Umfasst zwingend Metadaten wie `status`, `evidence_level`, `linked_experiments`, `last_tested`, `tools` und `owner`. Auch verworfene Ansätze landen hier als Anti-Patterns.
 5.  **Combo**: Unterart des Katalogs (`catalog/combos/`). Getestete Synergien/Anti-Synergien (z.B. Stil + Tool).
 6.  **Benchmarks**: Definition von Metriken (Time-to-Running, Rework-Zyklen). *Wichtig:* Dies sind Startheuristiken. Qualitative Begleitevaluierung bleibt essenziell, das System darf nicht ausschließlich auf das Messbare optimieren.
 7.  **Instruction Block IR + Exports**: Engine-neutrale Repräsentation (IR), aus der spezifische Ziel-Artefakte generiert werden.
@@ -68,32 +68,39 @@ Die primäre Intake-Logik ist **Issue-first**.
 Ein YAML-basiertes Issue Form (`.github/ISSUE_TEMPLATE/idea.yml`) erfasst die Hypothese niedrigschwellig. Erst beim Übergang in den Status `testing` erfolgt die Materialisierung als Datei/Ordner im Repository (`experiments/`).
 
 ### 2. Experiment-Durchführung
-Jedes Experiment materialisiert sich als Ordner (z.B. `experiments/2026-04-08_spec-first-vs-yolo/`) basierend auf einem Golden Skeleton:
+Jedes Experiment materialisiert sich als Ordner (z.B. `experiments/2026-04-08_spec-first-vs-yolo/`) basierend auf einem strikten Golden Skeleton:
 *   `manifest.yml` (Setup, Hypothese, Metriken)
+*   `method.md` (Ablauf und Variablen)
+*   `results/result.md` (Zusammenfassung)
 *   `results/decision.yml` (Adopt, Reject, Iterate; inkl. Rationale)
-*   Begleitende Methoden- und Resultatsdokumente.
+*   `results/evidence.jsonl` (Rohereignisse)
+*   `artifacts/` (Erzeugte Diffs/Outputs)
 
 ### 3. Katalogisierung (Promotion-PR)
 Die Aufnahme in den `catalog/` erfolgt ausschließlich über einen "Promotion-PR".
 Dieser Gate prüft hart:
-*   Existiert ein vollständiges Experiment?
-*   Sind Schemas valide?
+*   Existiert ein vollständiges Experiment (inkl. `evidence.jsonl`)?
+*   Sind Frontmatter/Schemas im Katalog-Eintrag valide?
 *   Sind Export-Artefakte synchron?
 *   Passieren die Quality Gates?
 
-### 4. Generierung der Exports
-Bei Änderungen an der IR (`instruction-blocks/`) zwingt die CI zur Synchronisation der `exports/`. Es werden keine Prompts manuell gepflegt, sondern ausschließlich Ziel-Artefakte abgeleitet.
+### 4. Generierung der Exports & Observability
+Bei Änderungen an der IR (`instruction-blocks/`) zwingt die CI zur Synchronisation der `exports/`.
+Gleichzeitig bilden `evidence.jsonl`, Benchmarks, Decision Artifacts und dieser Export-Sync gemeinsam die explizite **Observability-Schicht** des Repositories.
 
-## Governance und Zonenmodell
-Sicherheit und Qualitätsschranken sind als Produktfeature integriert und architektonisch in zwei strikte Zonen unterteilt:
+## Governance, Zonenmodell und Agentensicherheit
+Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen unterteilt:
 
-*   **Labor-Schicht (Freies Explorieren):** Umfasst den Issue-Intake und den `experiments/` Pfad. Hier warnt die CI bei Schema-Fehlern nur, der Flow darf nicht unterbrochen werden.
-*   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
+*   **Labor-Schicht (Freies Explorieren):** Umfasst den Issue-Intake und den `experiments/` Pfad. Hier warnt die CI bei Schema-Fehlern nur.
+*   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/`, `prompts/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
 
-Sicherheits-Baselines (Dependabot, Secret Scanning, Scorecard) sichern das gesamte Repository ab.
+**Agenten- und Tool-Security:**
+*   Lokale Agenten (z.B. Cursor) und Cloud-Agenten (z.B. Copilot) weisen unterschiedliche Reproduzierbarkeits- und Sicherheitsbedarfe auf, die in den Experiments explizit zu trennen sind.
+*   MCP-basierte Integrationen unterliegen explizit strikten Consent-, Privacy- und Tool-Safety-Regeln, bevor sie als `adopted` gelten können.
+*   Sicherheits-Baselines (Dependabot, Secret Scanning, Scorecard) sichern das gesamte Repository ab.
 
 ## Vorgeschlagene Zielstruktur
-*Die Struktur zeigt das Zielbild, wird aber inkrementell (MVP → Ausbau) besiedelt.*
+*Die Struktur zeigt das Zielbild, wird aber inkrementell besiedelt.*
 
 ```text
 vibe-lab/
@@ -119,21 +126,32 @@ vibe-lab/
   AGENTS.md               # Generiert
 
   decisions/              # Meta-Entscheidungen (Systemsteuerung)
-    catalog-updates/      # z.B. Deprecation Decisions
+    catalog-updates/
     system-rules/
 
   experiments/            # Labor-Schicht: Materialisierte Testläufe
     _template/
-    2026-04-08_spec-first/
       manifest.yml
-      results/decision.yml
+      method.md
+      results/
+        decision.yml
+        result.md
+        evidence.jsonl
+      artifacts/
+    2026-04-08_spec-first/
 
   catalog/                # Bibliothek: Validiertes Wissen
     styles/
+    technologies/
+    techniques/
     workflows/
+    anti-patterns/        # Wertvolles Wissen über das, was nicht funktioniert
     combos/               # Kuratierte Synergien
 
-  benchmarks/             # Bibliothek: Startheuristiken
+  prompts/                # Bibliothek: Menschenlesbare Artefakte
+    adopted/
+
+  benchmarks/             # Bibliothek: Startheuristiken & Observability
     criteria.md
 
   instruction-blocks/     # Bibliothek: Kanonische IR
@@ -146,6 +164,10 @@ vibe-lab/
   schemas/                # Bibliothek: Datenmodelle für CI-Checks
     experiment.manifest.schema.json
     catalog.entry.schema.json
+
+  docs/                   # Optionale Spätphase
+    playbooks/
+    onboarding/
 
   tools/                  # CLI / Automatisierung
     validate/
