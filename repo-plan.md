@@ -11,7 +11,7 @@ Das System trennt strikt zwischen Wissensreife (epistemischen Zuständen) und de
 **Mapping:**
 *   **Roh** ↔ `Intake (Issue)`: Sammlung unsortierter Impulse.
 *   **Getestet** ↔ `Experiment`: Strukturierte Prüfung in isolierter Umgebung.
-*   **Bewährt** ↔ `Catalog Entry (Adopted)`: Validiere Practice, aufgenommen in die Bibliothek.
+*   **Bewährt** ↔ `Catalog Entry (Adopted)`: Validierte Praxis, aufgenommen in die Bibliothek.
 *   **Systemisch erweitert** ↔ `Export / Ecosystem Promotion`: Ausleitung als Tool-Instruktion oder Anstoß für neue Experimente.
 
 Operativ durchlaufen Artefakte die Status: `idea` → `testing` → `adopted` / `rejected` → `deprecated`.
@@ -48,7 +48,7 @@ Die Pipeline stützt sich auf sieben harte, schemavalidierte Artefaktarten:
 
 1.  **Hypothese (Innovation)**: Problem, Hypothese, Erfolgskriterium, Scope. Formuliert als Issue-Formular.
 2.  **Experiment**: Isolierter Ordner (Manifest, Methode, Resultat, Entscheidung, Evidenz). Der überprüfbare Prozess.
-3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Diese leben explizit im Ordner `decisions/`, um das Repository operativ zu steuern.
+3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Diese leben explizit im Ordner `decisions/` und entstehen immer dann, wenn Regeln, Metriken, Gates, Katalogstatus oder Export-Ziele des Systems selbst geändert, bestätigt oder außer Kraft gesetzt werden.
 4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente.
 5.  **Combo**: Unterart des Katalogs (`catalog/combos/`). Getestete Synergien/Anti-Synergien (z.B. Stil + Tool).
 6.  **Benchmarks**: Definition von Metriken (Time-to-Running, Rework-Zyklen). *Wichtig:* Dies sind Startheuristiken. Qualitative Begleitevaluierung bleibt essenziell, das System darf nicht ausschließlich auf das Messbare optimieren.
@@ -59,6 +59,7 @@ Zur Vermeidung von Drift sind drei Ebenen funktional strikt getrennt:
 *   **`.vibe/`**: Operative Default-Verträge dieses spezifischen Repositories (Constraints, Quality Gates).
 *   **`instruction-blocks/`**: Die kanonische, wiederverwendbare Zwischenrepräsentation (IR) von Instruktionen.
 *   **`exports/`**: Die daraus generierten, tool-spezifischen Ziel-Artefakte (z.B. `.cursor/rules/`, `.github/copilot-instructions.md`).
+*   **Regel für generierte Artefakte:** Generierte Artefakte (wie `exports/`, `.cursor/rules/` oder `AGENTS.md`) werden **niemals manuell editiert**. Maßgeblich ist ausschließlich die IR (`instruction-blocks/`).
 
 ## Workflow: Intake bis Export
 
