@@ -21,7 +21,7 @@ Operativ durchlaufen Artefakte die Status: `idea` → `testing` → `adopted` / 
 *   **`deprecated`**: Eine Practice, die ehemals `adopted` war, aber durch neue Evidenz, Tools oder bessere Alternativen abgelöst wurde. Deprecated Practices verbleiben als Historie im Katalog, erhalten aber ein Status-Update und werden aus den generierten Exports entfernt.
 
 ## Phasenmodell der Architektur
-Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen:
+Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen, ergänzt um eine explizite Erstbefüllungsschicht:
 
 ### A. Minimaler Kern (MVP)
 *Zwingend erforderlich, um den Erkenntniskreislauf zu starten.*
@@ -30,16 +30,16 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Minimaler Katalog:** `catalog/` für erste `adopted` Practices.
 *   **Schema-Validierung:** Harte CI-Prüfung der Kernartefakte (`schemas/`).
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
-*   **Schema-Starter-Set:** Zum MVP gehört zwingend ein minimales Set real nutzbarer, durchsetzbarer Schemas (für Catalog, Experiment und Combo).
-*   **Operatives Onboarding:** README und CONTRIBUTING sind als systemkritische Architekturbestandteile definiert (Ziel: Einstieg < 10 Minuten, klares Verständnis der Beitragsarten und Abläufe).
+*   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos.
+*   **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` sind keine Beiwerk-Dateien, sondern operative Systemkomponenten. Ziel ist es, dass neue Contributors das Repo-Ziel, die Beitragstypen und den Ablauf in kürzester Zeit verstehen.
 
 ### B. Starter Corpus (Initialbefüllung)
-*Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar zu machen.*
-*   **Initiale Katalogeinträge:** Befüllung aller Hauptkategorien.
-*   **Erste Anti-Patterns:** Aktive Erfassung verworfener Ansätze als First-Class-Lerninstrumente.
-*   **Erste Benchmark-Challenges:** Standardisierte Aufgaben für den methodischen Vergleich.
-*   **Referenzexperiment (Golden Example):** Mindestens ein vollständig durchgeführtes Referenzexperiment zur qualitativen Orientierung.
-*   **Menschenlesbare Prompts (optional):** Erste Prompt-Adaptionen (nicht kanonisch).
+*Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar und testbar zu machen. Dies umfasst:*
+*   **Initiale Katalogeinträge:** Mindestens ein Eintrag je Hauptkategorie.
+*   **Erste Anti-Patterns:** Aktive Erfassung von Mustern, die nicht funktionieren.
+*   **Erste Benchmark-Challenges:** Definition standardisierter Vergleichsaufgaben.
+*   **Golden Example:** Mindestens ein vollständig durchgeführtes Referenzexperiment.
+*   **Adopted Prompts:** Erste menschenlesbare Prompt-Adaptionen.
 
 ### C. Frühe Verstärker
 *Sinnvoll nach Stabilisierung des MVPs, erhöht die Systemqualität maßgeblich.*
@@ -58,13 +58,13 @@ Die Pipeline stützt sich auf harte, schemavalidierte Artefaktarten:
 
 1.  **Hypothese (Innovation)**: Problem, Hypothese, Erfolgskriterium, Scope. Formuliert als Issue-Formular.
 2.  **Experiment**: Isolierter Ordner (`manifest.yml`, `method.md`, `results/result.md`, `results/decision.yml`, `results/evidence.jsonl`, `artifacts/`). Dieser Aufbau zwingt zu einem überprüfbaren Prozess statt bloßem Basteln.
-    *   **Golden Examples:** Das Repository enthält zwingend mindestens ein vollständig ausgefülltes Referenzexperiment (Golden Example), um Verständnis zu erleichtern, Qualität zu standardisieren und Contributors Orientierung zu geben.
+    *   **Golden Examples:** Neben Templates enthält das Repo zwingend mindestens ein vollständig ausgefülltes Referenzexperiment. Dies dient der Orientierung für Contributors, als Prüfstein für Schemas und als Referenz für die Review-Qualität.
 3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Diese leben explizit im Ordner `decisions/` und entstehen immer dann, wenn Regeln, Metriken, Gates, Katalogstatus oder Export-Ziele des Systems selbst geändert, bestätigt oder außer Kraft gesetzt werden.
 4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente. Umfasst zwingend Metadaten wie `status`, `evidence_level`, `linked_experiments`, `last_tested`, `tools` und `owner`.
-    *   **Anti-Patterns als First-Class-Komponente:** Anti-Patterns sind kein Nebenprodukt, sondern werden aktiv als Erstbefüllung und zentrales Lerninstrument genutzt und gepflegt.
+    *   **Anti-Patterns als First-Class-Komponente:** Sie sind kein Nebenprodukt, sondern werden aktiv gepflegt und als Erstbefüllung sowie als zentrales Lerninstrument genutzt.
 5.  **Combo**: Unterart des Katalogs (`catalog/combos/`). Getestete Synergien/Anti-Synergien (z.B. Stil + Tool).
 6.  **Benchmarks**: Definition von Metriken (Time-to-Running, Rework-Zyklen). *Wichtig:* Dies sind Startheuristiken. Qualitative Begleitevaluierung bleibt essenziell, das System darf nicht ausschließlich auf das Messbare optimieren.
-    *   **Benchmark-Challenges:** Benchmarks umfassen nicht nur Metriken, sondern standardisierte, versionierte, wiederverwendbare Aufgaben ("Challenges"). Sie ermöglichen reproduzierbare Vergleiche zwischen Tools, Stilen und Workflows.
+    *   **Benchmark-Challenges:** Benchmarks beruhen nicht nur auf Metriken, sondern auch auf standardisierten, versionierten Vergleichsaufgaben („Challenges“). Nur diese erlauben reproduzierbare Vergleiche zwischen Stilen, Tools und Workflows.
     *   **Erweiterte Bewertungsdimensionen (optional):** Neben Kernmetriken existiert ein nicht-verpflichtender Satz qualitativer Dimensionen (Geschwindigkeit, Treffsicherheit, Codequalität, Iterationsfähigkeit, kognitive Last, Skalierbarkeit, Kreativität), der die Evaluierung ergänzt.
 7.  **Instruction Block IR + Exports**: Engine-neutrale Repräsentation (IR), aus der spezifische Ziel-Artefakte generiert werden.
 
@@ -108,13 +108,14 @@ Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen un
 *   **Labor-Schicht (Freies Explorieren):** Umfasst den Issue-Intake und den `experiments/` Pfad. Hier warnt die CI bei Schema-Fehlern nur.
 *   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/`, `prompts/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
 
-**Contribution Contract (Beitragsregeln):**
-Zur Vermeidung von Wildwuchs definiert das System eine strikte Typisierung von Pull Requests. Jeder Beitrag muss einem Typ mit eigenen Qualitätsanforderungen zugeordnet sein (Typisierung via Label-System):
-*   `Katalogeintrag`
-*   `Experiment`
-*   `Combo`
+**Contribution Contract (Strukturierte Beitragslogik):**
+Um Wildwuchs zu verhindern, arbeitet das Repository mit einem expliziten Contribution Contract. Jeder Beitrag muss typisiert sein (z.B. via Labels oder PR-Templates), und jeder Typ unterliegt eigenen Mindestanforderungen:
 *   `Innovation`
-*   `Prompt` (optional)
+*   `Experiment`
+*   `Catalog Entry`
+*   `Combo`
+*   `Prompt`
+*   `Decision Artifact`
 
 **Agenten- und Tool-Security:**
 *   Lokale Agenten (z.B. Cursor) und Cloud-Agenten (z.B. Copilot) weisen unterschiedliche Reproduzierbarkeits- und Sicherheitsbedarfe auf, die in den Experiments explizit zu trennen sind.
@@ -204,4 +205,4 @@ vibe-lab/
   - *Golden Examples* unter Punkt 2 (Experiment) als referenzbildendes Muster verankert.
   - *Anti-Patterns* unter Punkt 4 als aktiv zu nutzende First-Class-Komponenten gestärkt.
   - *Benchmark-Challenges* und *Erweiterte Bewertungsdimensionen* (Geschwindigkeit, Codequalität etc.) in Punkt 6 (Benchmarks) als standardisierende Elemente eingebaut.
-- **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Katalogeintrag, Experiment, Combo, Innovation, Prompt) und jeweils eigene Qualitätsanforderungen auferlegt.
+- **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Innovation, Experiment, Catalog Entry, Combo, Prompt, Decision Artifact) und jeweils eigene Qualitätsanforderungen auferlegt.
