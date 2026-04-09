@@ -1,6 +1,6 @@
 # Repository-Plan für vibe-lab
 
-## Zielbild: Exekutierbarer Erkenntnisraum
+## Zielbild: Exekutierbarer Erkenntraum
 Das Repository ist ein exekutierbarer Erkenntnisraum. Es erfasst Vibe‑Coding‑Hypothesen, macht sie experimentierbar, zwingt zu Entscheidungen, konserviert Lerngewinne und liefert daraus praktische, wiederverwendbare Artefakte (Rules, Instructions, Prompt‑Bausteine, Workflows).
 
 Die Vision „Sammlung → Erprobung → Validierung → Kreation“ wird als Pipeline mit asymmetrischer Rückkopplung umgesetzt. Nichts bleibt „nur Idee“, aber nichts wird unvalidiert zur „Best Practice“ erklärt.
@@ -14,13 +14,12 @@ Das System trennt strikt zwischen Wissensreife (epistemischen Zuständen) und de
 *   **Bewährt** ↔ `Catalog Entry (Adopted)`: Validierte Praxis, aufgenommen in die Bibliothek.
 *   **Systemisch erweitert** ↔ `Export / Ecosystem Promotion`: Ausleitung als Tool-Instruktion oder Anstoß für neue Experimente.
 
-Operativ durchlaufen Artefakte die Status: `idea` → `testing` → `adopted` / `rejected` → `deprecated` / `blocked` / `inconclusive`.
-
 **Erweitertes Statusmodell:**
-*   **`rejected`**: Eine Hypothese, die sich im Experiment nicht bewährt hat und nie in den Katalog aufgenommen wurde.
-*   **`deprecated`**: Eine Practice, die ehemals `adopted` war, aber durch neue Evidenz, Tools oder bessere Alternativen abgelöst wurde. Deprecated Practices verbleiben als Historie im Katalog, erhalten aber ein Status-Update und werden aus den generierten Exports entfernt.
-*   **`blocked`**: Operativer Status für Experimente, die aus externen Gründen pausieren (z.B. Tool-Bug, API-Release).
-*   **`inconclusive`**: Epistemischer Status für Experimentläufe ohne belastbares Urteil. Zwingt zu einer expliziten, begründeten Entscheidung statt eines Schwebezustands.
+Artefakte durchlaufen im Repository folgende strukturierten Zustände:
+*   **Operativer Fluss:** `idea` → `testing` → `adopted` / `rejected` (Eine Hypothese, die sich im Experiment nicht bewährt hat und nie in den Katalog aufgenommen wurde).
+*   **Sonderstatus:** `blocked` für pausierte Experimente, die aus externen Gründen warten (z.B. Tool-Bug, API-Release).
+*   **Folgestatus:** `deprecated` für eine ehemals `adopted` Practice, die durch neue Evidenz abgelöst wurde. Diese verbleibt als Historie im Katalog, erhält aber ein Status-Update und wird aus generierten Exports entfernt.
+*   **Entscheidungsstatus:** `inconclusive` für Experimentläufe ohne belastbares Urteil. Zwingt zu einer expliziten Entscheidung statt eines Schwebezustands.
 
 ## Phasenmodell der Architektur
 Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen, ergänzt um eine explizite Erstbefüllungsschicht. *Die neue "Intelligence Layer" (Agentensteuerung, Dokumentsemantik) wird schrittweise über diese Phasen integriert.*
@@ -188,8 +187,8 @@ Jedes Experiment materialisiert sich als Ordner (z.B. `experiments/2026-04-08_sp
 ### 3. Katalogisierung (Promotion-PR)
 Die Aufnahme in den `catalog/` erfolgt ausschließlich über einen "Promotion-PR".
 Dieser Gate prüft hart:
-*   Existiert ein vollständiges Experiment (inkl. `evidence.jsonl`)?
-*   Sind Frontmatter/Schemas im Katalog-Eintrag valide? (Inklusive obligatorischem `CONTEXT.md`/`INITIAL.md` zur Reproduzierbarkeit).
+*   Existiert ein vollständiges, reproduzierbares Experiment (inkl. `CONTEXT.md` / `INITIAL.md` und `evidence.jsonl`, wo für die Promotion erforderlich)?
+*   Sind Frontmatter und Schemas des *Catalog Entrys* selbst valide?
 *   Sind Export-Artefakte synchron?
 *   Passieren die Quality Gates?
 
@@ -359,4 +358,4 @@ vibe-lab/
 - **Reaktive Steuerlogik:** Ergänzung eines emergenten Kreislaufs (STATE → SIGNAL → POLICY → ACTION → EVALUATION) zur Systemsteuerung, ergänzt durch konzeptionelle Agenten-Rollen (Sensor, Interpreter, etc.) und strikte Traceability-Vorgaben für Debugbarkeit.
 - **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert.
 - **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Innovation, Experiment, Catalog Entry, Combo, Prompt, Decision Artifact) und jeweils eigene Qualitätsanforderungen auferlegt.
-- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet.
+- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet. Statuslogik (operativ vs. epistemisch) entwirrt und Promotion-Gate-Abfragen sprachlich differenziert.
