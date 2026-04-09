@@ -30,7 +30,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Minimaler Katalog:** `catalog/` für erste `adopted` Practices.
 *   **Schema-Validierung:** Harte CI-Prüfung der Kernartefakte (`schemas/`).
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
-*   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos (`contracts/docmeta.schema.json`).
+*   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos.
 *   **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` sind keine Beiwerk-Dateien, sondern operative Systemkomponenten. Ziel ist es, dass neue Contributors das Repo-Ziel, die Beitragstypen und den Ablauf in kürzester Zeit verstehen.
 *   **Intelligence Layer (Basis):** Einführung von `repo.meta.yaml` als maschinenlesbare Verfassung, `AGENTS.md` und `agent-policy.yaml` zur Agentenführung, sowie Basis-Diagnosegeneratoren (`doc-index`).
 
@@ -256,6 +256,7 @@ vibe-lab/
   schemas/                # Bibliothek: Datenmodelle für CI-Checks (Pipeline-Validierung)
     experiment.manifest.schema.json
     catalog.entry.schema.json
+    combo.schema.json
 
   docs/                   # Epistemische Dokumentpfade
     index.md
