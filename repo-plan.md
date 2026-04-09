@@ -26,7 +26,7 @@ Operativ durchlaufen Artefakte die Status: `idea` → `testing` → `adopted` / 
 Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen, ergänzt um eine explizite Erstbefüllungsschicht. *Die neue "Intelligence Layer" (Agentensteuerung, Dokumentsemantik) wird schrittweise über diese Phasen integriert.*
 
 ### A. Minimaler Kern (MVP)
-*Zwingend erforderlich, um den Erkenntniskreislauf zu starten.*
+*Zwingend erforderlich, um den Erkenntniskreislauf zu starten. (Klarstellung: Um den MVP nicht zu überladen, dürfen einzelne Bestandteile als Stub oder in einer reduzierten Erstversion starten.)*
 *   **Typed Intake:** Mindestens drei YAML Issue Forms dienen als primäre Einlassschleuse und mappen direkt auf den Contribution Contract: `idea` (für Innovationen), `experiment-proposal` (für Experimente), `promotion-request` (für Catalog Entries, Prompts, Combos).
 *   **Experiment-Engine:** `experiments/` Ordner mit vollständigem Skelett (Manifest, Methode, Evidenz, Entscheidung). Iterationen müssen über Felder wie `replicated_from` oder `parent_experiment` verlinkt sein (Experiment-Chaining).
 *   **Evidenz-Taxonomie:** `evidence.jsonl` nutzt ein maschinenlesbares, fixes Vokabular (`event_type`: z.B. `rework_cycle`, `token_usage`, `manual_intervention`) und wird via JSON-Schema validiert.
@@ -54,7 +54,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Leichtgewichtiges Metrik-Dashboard:** Ein Generator leitet Trends aus `evidence.jsonl` ab und legt diese unter `docs/_generated/metrics/` ab.
 *   **Frühe Diagnose-Kopplung:** Generatoren wie `weak-links` und `knowledge-gaps` werden an das Staleness-Signal gekoppelt, um automatisch Innovation-/Experiment-Issues zu triggern.
 *   **Typisierte Decision Artifacts:** Differenzierung in Ordner wie `decisions/process/`, `decisions/export/` und `decisions/policy/`.
-*   **Benchmark-Challenge Versionierung:** Versionierte Challenges (z.B. `rest-api-v1.md`). Ein zwingendes `challenge_version` Feld in `results/decision.yml` (oder dem Benchmark-Result-Schema) sorgt für Stabilität über die Zeit.
+*   **Benchmark-Challenge Versionierung:** Versionierte Challenges (z.B. `rest-api-v1.md`). Ein zwingendes `challenge_version` Feld sorgt für Stabilität über die Zeit. *Initial kann dieses Feld in `results/decision.yml` geführt werden, später darf es bei Bedarf in ein eigenes Benchmark-Result-Schema ausgelagert werden.*
 *   **Erweiterte Governance (Rulesets):** Nutzung von GitHub Rulesets zur feineren, pfadbasierten Durchsetzung des Zonenmodells (Labor vs. Bibliothek).
 
 ### D. Spätphase / Optionale Schicht
@@ -272,6 +272,8 @@ vibe-lab/
   experiments/            # Labor-Schicht: Materialisierte Testläufe
     _archive/             # Staleness/Retention
     _template/
+      CONTEXT.md          # Kontext-Engineering (Pflicht für Adopt-Kandidaten)
+      INITIAL.md
       manifest.yml
       method.md
       results/
@@ -301,7 +303,7 @@ vibe-lab/
     spec-first-vibe.yml
 
   exports/                # Bibliothek: Tool-spezifische Ziele (Generiert)
-    copilot/
+    copilot/              # Info: Exporte enthalten Herkunftsmetadaten (generated_from, Hash, Timestamp)
     cursor/
 
   schemas/                # Bibliothek: Datenmodelle für CI-Checks (Pipeline-Validierung)
@@ -327,6 +329,8 @@ vibe-lab/
       metrics/            # Leichtgewichtiges Metrik-Dashboard
       stale-entries.md    # Phase C Generator-Output
       weak-links.md       # Phase C/D Generator-Output
+      knowledge-gaps.md   # Phase C/D Generator-Output
+      supersession-map.md # Phase C/D Generator-Output
 
   scripts/                # Minimaler Guard-/Generator-Stack
     docmeta/
@@ -352,4 +356,4 @@ vibe-lab/
 - **Reaktive Steuerlogik:** Ergänzung eines emergenten Kreislaufs (STATE → SIGNAL → POLICY → ACTION → EVALUATION) zur Systemsteuerung, ergänzt durch konzeptionelle Agenten-Rollen (Sensor, Interpreter, etc.) und strikte Traceability-Vorgaben für Debugbarkeit.
 - **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert.
 - **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Innovation, Experiment, Catalog Entry, Combo, Prompt, Decision Artifact) und jeweils eigene Qualitätsanforderungen auferlegt.
-- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert.
+- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert.
