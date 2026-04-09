@@ -30,28 +30,42 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Minimaler Katalog:** `catalog/` für erste `adopted` Practices.
 *   **Schema-Validierung:** Harte CI-Prüfung der Kernartefakte (`schemas/`).
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
+*   **Schema-Starter-Set:** Zum MVP gehört zwingend ein minimales Set real nutzbarer, durchsetzbarer Schemas (für Catalog, Experiment und Combo).
+*   **Operatives Onboarding:** README und CONTRIBUTING sind als systemkritische Architekturbestandteile definiert (Ziel: Einstieg < 10 Minuten, klares Verständnis der Beitragsarten und Abläufe).
 
-### B. Frühe Verstärker
+### B. Starter Corpus (Initialbefüllung)
+*Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar zu machen.*
+*   **Initiale Katalogeinträge:** Befüllung aller Hauptkategorien.
+*   **Erste Anti-Patterns:** Aktive Erfassung verworfener Ansätze als First-Class-Lerninstrumente.
+*   **Erste Benchmark-Challenges:** Standardisierte Aufgaben für den methodischen Vergleich.
+*   **Referenzexperiment (Golden Example):** Mindestens ein vollständig durchgeführtes Referenzexperiment zur qualitativen Orientierung.
+*   **Menschenlesbare Prompts (optional):** Erste Prompt-Adaptionen (nicht kanonisch).
+
+### C. Frühe Verstärker
 *Sinnvoll nach Stabilisierung des MVPs, erhöht die Systemqualität maßgeblich.*
 *   **Instruction Blocks (IR) & Exports:** Einführung von `instruction-blocks/` und automatisierte Generierung der `exports/`.
 *   **Benchmarks & Observability:** Erste Heuristiken zur Erfolgsmessung sowie saubere Evidenz-Logs.
 *   **Erweiterte Governance:** Feinere CODEOWNERS-Regeln und verfeinerte Status Checks.
 
-### C. Spätphase / Optionale Schicht
+### D. Spätphase / Optionale Schicht
 *Erstrebenswert für Distribution und Skalierung im Ökosystem.*
 *   **Playbooks & Onboarding:** Strukturierte `docs/` mit Triage-Runbooks.
 *   **Breitere Tool-Abdeckung:** Exports für weitere Agentensysteme.
 *   **Erweiterte Metriken:** Automatisierte Erfassung quantitativer Daten.
 
 ## Kanonische Artefakte
-Die Pipeline stützt sich auf sieben harte, schemavalidierte Artefaktarten:
+Die Pipeline stützt sich auf harte, schemavalidierte Artefaktarten:
 
 1.  **Hypothese (Innovation)**: Problem, Hypothese, Erfolgskriterium, Scope. Formuliert als Issue-Formular.
 2.  **Experiment**: Isolierter Ordner (`manifest.yml`, `method.md`, `results/result.md`, `results/decision.yml`, `results/evidence.jsonl`, `artifacts/`). Dieser Aufbau zwingt zu einem überprüfbaren Prozess statt bloßem Basteln.
+    *   **Golden Examples:** Das Repository enthält zwingend mindestens ein vollständig ausgefülltes Referenzexperiment (Golden Example), um Verständnis zu erleichtern, Qualität zu standardisieren und Contributors Orientierung zu geben.
 3.  **Decision Artifact (Meta-Entscheidung)**: Steuert das System selbst. Dokumentiert Metriken, Gate-Regeln, Re-/De-Katalogisierungen und Export-Ziele. Diese leben explizit im Ordner `decisions/` und entstehen immer dann, wenn Regeln, Metriken, Gates, Katalogstatus oder Export-Ziele des Systems selbst geändert, bestätigt oder außer Kraft gesetzt werden.
-4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente. Umfasst zwingend Metadaten wie `status`, `evidence_level`, `linked_experiments`, `last_tested`, `tools` und `owner`. Auch verworfene Ansätze landen hier als Anti-Patterns.
+4.  **Catalog Entry (Practice / Anti-Pattern)**: Kuratierter Eintrag mit Status und Evidenz, verlinkt zwingend auf Experimente. Umfasst zwingend Metadaten wie `status`, `evidence_level`, `linked_experiments`, `last_tested`, `tools` und `owner`.
+    *   **Anti-Patterns als First-Class-Komponente:** Anti-Patterns sind kein Nebenprodukt, sondern werden aktiv als Erstbefüllung und zentrales Lerninstrument genutzt und gepflegt.
 5.  **Combo**: Unterart des Katalogs (`catalog/combos/`). Getestete Synergien/Anti-Synergien (z.B. Stil + Tool).
 6.  **Benchmarks**: Definition von Metriken (Time-to-Running, Rework-Zyklen). *Wichtig:* Dies sind Startheuristiken. Qualitative Begleitevaluierung bleibt essenziell, das System darf nicht ausschließlich auf das Messbare optimieren.
+    *   **Benchmark-Challenges:** Benchmarks umfassen nicht nur Metriken, sondern standardisierte, versionierte, wiederverwendbare Aufgaben ("Challenges"). Sie ermöglichen reproduzierbare Vergleiche zwischen Tools, Stilen und Workflows.
+    *   **Erweiterte Bewertungsdimensionen (optional):** Neben Kernmetriken existiert ein nicht-verpflichtender Satz qualitativer Dimensionen (Geschwindigkeit, Treffsicherheit, Codequalität, Iterationsfähigkeit, kognitive Last, Skalierbarkeit, Kreativität), der die Evaluierung ergänzt.
 7.  **Instruction Block IR + Exports**: Engine-neutrale Repräsentation (IR), aus der spezifische Ziel-Artefakte generiert werden.
 
 ### Die drei Regulationsebenen
@@ -88,11 +102,19 @@ Dieser Gate prüft hart:
 Bei Änderungen an der IR (`instruction-blocks/`) zwingt die CI zur Synchronisation der `exports/`.
 Gleichzeitig bilden `evidence.jsonl`, Benchmarks, Decision Artifacts und dieser Export-Sync gemeinsam die explizite **Observability-Schicht** des Repositories.
 
-## Governance, Zonenmodell und Agentensicherheit
+## Governance, Zonenmodell und Contribution Contract
 Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen unterteilt:
 
 *   **Labor-Schicht (Freies Explorieren):** Umfasst den Issue-Intake und den `experiments/` Pfad. Hier warnt die CI bei Schema-Fehlern nur.
 *   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/`, `prompts/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
+
+**Contribution Contract (Beitragsregeln):**
+Zur Vermeidung von Wildwuchs definiert das System eine strikte Typisierung von Pull Requests. Jeder Beitrag muss einem Typ mit eigenen Qualitätsanforderungen zugeordnet sein (Typisierung via Label-System):
+*   `Katalogeintrag`
+*   `Experiment`
+*   `Combo`
+*   `Innovation`
+*   `Prompt` (optional)
 
 **Agenten- und Tool-Security:**
 *   Lokale Agenten (z.B. Cursor) und Cloud-Agenten (z.B. Copilot) weisen unterschiedliche Reproduzierbarkeits- und Sicherheitsbedarfe auf, die in den Experiments explizit zu trennen sind.
@@ -172,3 +194,14 @@ vibe-lab/
   tools/                  # CLI / Automatisierung
     validate/
 ```
+
+---
+
+## CHANGELOG
+- **Phasenmodell erweitert:** Phase B "Starter Corpus (Initialbefüllung)" als eigene klar abgegrenzte Schicht direkt nach dem MVP eingefügt.
+- **Kanonische Artefakte ergänzt:**
+  - *Schema-Starter-Set* sowie operative Bedeutung von *README & CONTRIBUTING* bei Phase A ergänzt.
+  - *Golden Examples* unter Punkt 2 (Experiment) als referenzbildendes Muster verankert.
+  - *Anti-Patterns* unter Punkt 4 als aktiv zu nutzende First-Class-Komponenten gestärkt.
+  - *Benchmark-Challenges* und *Erweiterte Bewertungsdimensionen* (Geschwindigkeit, Codequalität etc.) in Punkt 6 (Benchmarks) als standardisierende Elemente eingebaut.
+- **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Katalogeintrag, Experiment, Combo, Innovation, Prompt) und jeweils eigene Qualitätsanforderungen auferlegt.
