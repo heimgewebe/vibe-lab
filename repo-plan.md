@@ -21,7 +21,7 @@ Operativ durchlaufen Artefakte die Status: `idea` → `testing` → `adopted` / 
 *   **`deprecated`**: Eine Practice, die ehemals `adopted` war, aber durch neue Evidenz, Tools oder bessere Alternativen abgelöst wurde. Deprecated Practices verbleiben als Historie im Katalog, erhalten aber ein Status-Update und werden aus den generierten Exports entfernt.
 
 ## Phasenmodell der Architektur
-Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen, ergänzt um eine explizite Erstbefüllungsschicht:
+Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen, ergänzt um eine explizite Erstbefüllungsschicht. *Die neue "Intelligence Layer" (Agentensteuerung, Dokumentsemantik) wird schrittweise über diese Phasen integriert.*
 
 ### A. Minimaler Kern (MVP)
 *Zwingend erforderlich, um den Erkenntniskreislauf zu starten.*
@@ -30,8 +30,9 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Minimaler Katalog:** `catalog/` für erste `adopted` Practices.
 *   **Schema-Validierung:** Harte CI-Prüfung der Kernartefakte (`schemas/`).
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
-*   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos.
+*   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos (`contracts/docmeta.schema.json`).
 *   **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` sind keine Beiwerk-Dateien, sondern operative Systemkomponenten. Ziel ist es, dass neue Contributors das Repo-Ziel, die Beitragstypen und den Ablauf in kürzester Zeit verstehen.
+*   **Intelligence Layer (Basis):** Einführung von `repo.meta.yaml` als maschinenlesbare Verfassung, `AGENTS.md` und `agent-policy.yaml` zur Agentenführung, sowie Basis-Diagnosegeneratoren (`doc-index`, `backlinks`, `orphans`, `system-map`).
 
 ### B. Starter Corpus (Initialbefüllung)
 *Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar und testbar zu machen. Dies umfasst:*
@@ -46,12 +47,73 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Instruction Blocks (IR) & Exports:** Einführung von `instruction-blocks/` und automatisierte Generierung der `exports/`.
 *   **Benchmarks & Observability:** Erste Heuristiken zur Erfolgsmessung sowie saubere Evidenz-Logs.
 *   **Erweiterte Governance:** Feinere CODEOWNERS-Regeln und verfeinerte Status Checks.
+*   **Intelligence Layer (Ausbau):** Zusätzliche Dokument-Schemas, erweiterte Relationslogik und Generatoren für `weak-links`.
 
 ### D. Spätphase / Optionale Schicht
 *Erstrebenswert für Distribution und Skalierung im Ökosystem.*
 *   **Playbooks & Onboarding:** Strukturierte `docs/` mit Triage-Runbooks.
 *   **Breitere Tool-Abdeckung:** Exports für weitere Agentensysteme.
 *   **Erweiterte Metriken:** Automatisierte Erfassung quantitativer Daten.
+*   **Intelligence Layer (Vollton):** Komplexe CI-Gates, breitere Diagnoseebene (`supersession-map`, `knowledge-gaps`).
+
+## Die Intelligence Layer (Systemintelligenz)
+Zusätzlich zur operativen Pipeline (`intake` → `experiments` → `catalog` → `exports`) erhält das Repository eine leichte, maschinenlesbare Diagnostik- und Steuerungsebene. Diese ersetzt die operative Pipeline nicht, sondern macht sie für Agenten navigierbar und schützt vor Drift.
+
+### Maschinenlesbare Repo-Verfassung
+Das Repository besitzt eine maschinenlesbare Verfassung in Form der `repo.meta.yaml`.
+Diese Datei fungiert als Wahrheitsarchitektur des Repos und trennt strikt zwischen Kanon, Navigation und Diagnose. Sie definiert:
+*   `entrypoints` und `canonical_sources`
+*   `discovery_roots` und `generated_artifacts`
+*   `safe_read_paths`, `guarded_write_paths` und `forbidden_write_paths`
+*   `required_checks` und `truth_model / precedence`
+
+### Agentenführung
+vibe-lab verfügt über eine explizite Agentensteuerungsschicht, bestehend aus `AGENTS.md` und `agent-policy.yaml`.
+Diese Dokumente erzwingen eine bindende Lesereihenfolge, verbieten stille Interpolation bei fehlenden Daten, setzen Pfaddisziplin durch, regeln den Umgang mit generierten Dateien und erzwingen einen Abbruch bei Konflikten in kanonischen Quellen.
+
+**Zentrale Lesereihenfolge für Agenten:**
+1. `repo.meta.yaml`
+2. `AGENTS.md`
+3. `agent-policy.yaml`
+4. Kanonische Kernquellen
+5. Navigation (nur als Navigation)
+6. Generierte Diagnose (nur als Diagnose)
+
+### Dokumente als epistemische Objekte
+Markdown-Dokumente sind keine bloßen Fließtexte, sondern strukturierte Erkenntnisobjekte. Ein `contracts/docmeta.schema.json` erzwingt eine Frontmatter-Pflicht für kanonische Markdown-Dateien und standardisiert Relationen (kein Link-Wildwuchs).
+*   **Pflichtfelder:** `id`, `title`, `doc_type`, `status`, `canonicality`, `summary`, `epistemic_state`, `relations`, `last_reviewed`, `tags`.
+*   **Standardisierte Relations-Typen:** `relates_to`, `depends_on`, `tests`, `evaluates`, `derived_from`, `contradicts`, `supports`, `supersedes`.
+
+### Diagnostische Generatoren
+vibe-lab nutzt eine kleine Menge generierter Diagnoseartefakte unter `docs/_generated/`.
+**Wichtig:** Diese Artefakte sind reine *Diagnose*, keine Wahrheit. `docs/index.md` ist Navigation, keine Wahrheit. Diese generierten Artefakte dürfen **niemals manuell editiert werden**.
+
+*   **MVP-Generatoren:** `doc-index.md`, `backlinks.md`, `orphans.md`, `system-map.md`.
+*   **Spätere Generatoren:** `weak-links.md`, `supersession-map.md`, `knowledge-gaps.md`.
+
+### Epistemische Dokumentpfade
+Ergänzend zur operativen Pipeline (`experiments/`, `catalog/`, etc.) organisiert der `docs/` Ordner Wissen nicht nach Themen, sondern nach seiner epistemischen Semantik:
+*   `docs/concepts/` = unvalidierte Begriffe / Denkmodelle
+*   `docs/experiments/` = Versuchsdesign / Hypothesen (Doku-Ebene)
+*   `docs/evaluations/` = Auswertungen
+*   `docs/syntheses/` = verdichtete Erkenntnisse
+*   `docs/rules/` = operationalisierte Regeln
+*   `docs/blueprints/` = Überführung in Repo-/Agentenpraxis
+*(Diese Struktur dient als Verdichtungs- und Diagnoseebene und ersetzt nicht die ausführbaren Experimente.)*
+
+### Minimaler Guard-/Generator-Stack
+Ein Startset an Scripts unter `scripts/docmeta/` schützt das System:
+*   `validate_schema.py`
+*   `validate_relations.py`
+*   `generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`
+
+### Explizite Abgrenzung (Was NICHT übernommen wird)
+Um Bürokratie zu vermeiden, wird bewusst verzichtet auf:
+*   Volle "Weltgewebe"-Komplexität von Beginn an.
+*   Eine zu große Zahl diagnostischer Artefakte in Phase A.
+*   Ops-schwere Heimserver-Formalisierungen.
+*   Eine radikale YAML-Primarität für absolut alle Inhalte.
+*   Themenablagen ohne epistemisches Zustandsmodell.
 
 ## Kanonische Artefakte
 Die Pipeline stützt sich auf harte, schemavalidierte Artefaktarten:
@@ -73,7 +135,7 @@ Zur Vermeidung von Drift sind drei Ebenen funktional strikt getrennt:
 *   **`.vibe/`**: Operative Default-Verträge dieses spezifischen Repositories (Constraints, Quality Gates).
 *   **`instruction-blocks/`**: Die kanonische, wiederverwendbare Zwischenrepräsentation (IR) von Instruktionen.
 *   **`exports/`**: Die daraus generierten, tool-spezifischen Ziel-Artefakte (z.B. `.cursor/rules/`, `.github/copilot-instructions.md`).
-*   **Regel für generierte Artefakte:** Generierte Artefakte (wie `exports/`, `.cursor/rules/` oder `AGENTS.md`) werden **niemals manuell editiert**. Maßgeblich ist ausschließlich die IR (`instruction-blocks/`).
+*   **Regel für generierte Artefakte:** Generierte Artefakte (wie `exports/`, `.cursor/rules/`, `AGENTS.md` oder `docs/_generated/`) werden **niemals manuell editiert**. Maßgeblich ist ausschließlich die IR bzw. die Generatoren.
 
 ## Workflow: Intake bis Export
 
@@ -100,13 +162,13 @@ Dieser Gate prüft hart:
 
 ### 4. Generierung der Exports & Observability
 Bei Änderungen an der IR (`instruction-blocks/`) zwingt die CI zur Synchronisation der `exports/`.
-Gleichzeitig bilden `evidence.jsonl`, Benchmarks, Decision Artifacts und dieser Export-Sync gemeinsam die explizite **Observability-Schicht** des Repositories.
+Gleichzeitig bilden `evidence.jsonl`, Benchmarks, Decision Artifacts, die Diagnostikgeneratoren (`docs/_generated/`) und dieser Export-Sync gemeinsam die explizite **Observability-Schicht** des Repositories.
 
 ## Governance, Zonenmodell und Contribution Contract
 Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen unterteilt:
 
 *   **Labor-Schicht (Freies Explorieren):** Umfasst den Issue-Intake und den `experiments/` Pfad. Hier warnt die CI bei Schema-Fehlern nur.
-*   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/`, `prompts/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
+*   **Bibliotheks-Schicht (Harte Validierung):** Umfasst `catalog/`, `benchmarks/`, `exports/`, `prompts/`, `contracts/` und `decisions/`. Hier gelten strikte Review-Pflichten via `CODEOWNERS` und blockierende CI-Checks.
 
 **Contribution Contract (Strukturierte Beitragslogik):**
 Um Wildwuchs zu verhindern, arbeitet das Repository mit einem expliziten Contribution Contract. Jeder Beitrag muss typisiert sein (z.B. via Labels oder PR-Templates), und jeder Typ unterliegt eigenen Mindestanforderungen:
@@ -129,6 +191,9 @@ Um Wildwuchs zu verhindern, arbeitet das Repository mit einem expliziten Contrib
 vibe-lab/
   README.md
   vision.md
+  repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
+  agent-policy.yaml         # Agentensteuerung
+  AGENTS.md                 # Bindende Leseregeln für Agenten
 
   .github/
     ISSUE_TEMPLATE/
@@ -146,7 +211,9 @@ vibe-lab/
     quality-gates.yml
 
   .cursor/rules/          # Symlinks/generiert für lokale Nutzung
-  AGENTS.md               # Generiert
+
+  contracts/              # System-Schemas
+    docmeta.schema.json
 
   decisions/              # Meta-Entscheidungen (Systemsteuerung)
     catalog-updates/
@@ -188,9 +255,25 @@ vibe-lab/
     experiment.manifest.schema.json
     catalog.entry.schema.json
 
-  docs/                   # Optionale Spätphase
-    playbooks/
+  docs/                   # Epistemische Dokumentpfade
+    index.md
+    masterplan.md
+    concepts/             # Unvalidierte Begriffe / Denkmodelle
+    experiments/          # Doku-Ebene Versuchsdesign
+    evaluations/          # Auswertungen
+    syntheses/            # Verdichtete Erkenntnisse
+    rules/                # Operationalisierte Regeln
+    blueprints/           # Überführung in Praxis
+    policies/
+    reference/
+    playbooks/            # Triage Runbooks etc.
     onboarding/
+    _generated/           # Diagnose-Artefakte (orphans, backlinks etc.)
+
+  scripts/                # Minimaler Guard-/Generator-Stack
+    docmeta/
+      validate_schema.py
+      generate_doc_index.py
 
   tools/                  # CLI / Automatisierung
     validate/
@@ -200,6 +283,8 @@ vibe-lab/
 
 ## CHANGELOG
 - **Phasenmodell erweitert:** Phase B "Starter Corpus (Initialbefüllung)" als eigene klar abgegrenzte Schicht direkt nach dem MVP eingefügt.
+- **Intelligence Layer integriert:** Neue Architekturebene eingeführt, die `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` als maschinenlesbare Steuerungs- und Agentenführungsebene etabliert, ohne die operative Pipeline abzulösen.
+- **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert.
 - **Kanonische Artefakte ergänzt:**
   - *Schema-Starter-Set* sowie operative Bedeutung von *README & CONTRIBUTING* bei Phase A ergänzt.
   - *Golden Examples* unter Punkt 2 (Experiment) als referenzbildendes Muster verankert.
