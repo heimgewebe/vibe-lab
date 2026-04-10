@@ -14,6 +14,10 @@ import json
 import sys
 from pathlib import Path
 
+# Gemeinsame Pfad-Logik aus _paths.py
+sys.path.insert(0, str(Path(__file__).parent))
+from _paths import extract_frontmatter  # noqa: E402
+
 try:
     import yaml
     from jsonschema import validate, ValidationError, SchemaError
@@ -30,10 +34,12 @@ SCHEMA_MAP = {
 }
 
 # Pflichtfelder für jede Zeile in evidence.jsonl
-EVIDENCE_REQUIRED_KEYS = {"event_type", "timestamp", "iteration", "metric", "value", "context"}
+EVIDENCE_REQUIRED_KEYS: frozenset[str] = frozenset({
+    "event_type", "timestamp", "iteration", "metric", "value", "context"
+})
 
 # Erlaubte Werte für event_type
-EVIDENCE_EVENT_TYPES = {"observation", "measurement", "decision"}
+EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision"})
 
 errors = []
 
@@ -46,21 +52,6 @@ def load_schema(schema_path: Path) -> dict:
 def load_yaml(path: Path) -> dict:
     with open(path) as f:
         return yaml.safe_load(f) or {}
-
-
-def extract_frontmatter(path: Path) -> dict | None:
-    """Extract YAML frontmatter from a Markdown file."""
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---"):
-        return None
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return None
-    try:
-        return yaml.safe_load(parts[1]) or {}
-    except yaml.YAMLError as e:
-        errors.append(f"  YAML parse error in {path}: {e}")
-        return None
 
 
 def validate_experiment_manifests():

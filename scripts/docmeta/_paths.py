@@ -4,12 +4,20 @@
 Zentrale Logik für:
 - should_skip(): Welche Verzeichnisse werden übersprungen?
 - write_if_changed(): Datei nur schreiben, wenn sich der Inhalt geändert hat (Idempotenz).
+- extract_frontmatter(): YAML-Frontmatter aus Markdown-Dateien lesen.
 
 Hinweis: .vibe/ ist operative Wahrheit und wird NICHT übersprungen.
          .github/, .cursor/ dagegen schon.
 """
 
 from pathlib import Path
+
+try:
+    import yaml as _yaml
+except ImportError:
+    import sys
+    print("ERROR: Missing dependency. Run: pip install pyyaml")
+    sys.exit(1)
 
 # Verzeichnisse, die in allen Skripten konsistent übersprungen werden
 SKIP_DIR_NAMES: frozenset[str] = frozenset({
@@ -48,3 +56,20 @@ def write_if_changed(output_path: Path, content: str) -> bool:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(content, encoding="utf-8")
     return True
+
+
+def extract_frontmatter(path: Path) -> dict | None:
+    """Liest YAML-Frontmatter aus einer Markdown-Datei.
+
+    Gibt None zurück, wenn kein Frontmatter vorhanden oder nicht parsebar ist.
+    """
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---"):
+        return None
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return None
+    try:
+        return _yaml.safe_load(parts[1]) or {}
+    except _yaml.YAMLError:
+        return None

@@ -12,13 +12,7 @@ from pathlib import Path
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
-from _paths import should_skip, write_if_changed  # noqa: E402
-
-try:
-    import yaml
-except ImportError:
-    print("ERROR: Missing dependency. Run: pip install pyyaml")
-    sys.exit(1)
+from _paths import should_skip, write_if_changed, extract_frontmatter  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = REPO_ROOT / "docs" / "_generated" / "orphans.md"
@@ -35,19 +29,6 @@ ROOT_FILES = {
     "docs/policies/privacy-and-ethics.md",
     "benchmarks/challenges/rest-api-v1.md",
 }
-
-
-def extract_frontmatter(path: Path) -> dict | None:
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---"):
-        return None
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return None
-    try:
-        return yaml.safe_load(parts[1]) or {}
-    except yaml.YAMLError:
-        return None
 
 
 def main():
