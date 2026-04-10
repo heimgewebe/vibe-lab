@@ -37,14 +37,16 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 - [ ] **Promotion-Gate:** Zwingende PR-Templates (`promotion.md`) regeln den Aufstieg in den Katalog.
 - [ ] **Scaffolding-CLI & Frontdoor:** Ein minimales `Makefile` (`make validate`, `make vibe`) und/oder `tools/vibe-cli` (z.B. `new experiment`) existieren, um Boilerplate zu senken.
 - [ ] **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` erklären Repo-Ziel, Beitragstypen und den Ablauf auf einen Blick (< 10 Minuten Lesezeit).
-- [ ] **Intelligence Layer (Basis):** `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` existieren in erster Version. Ein Basis-Generator für `doc-index.md` läuft.
+- [ ] **Intelligence Layer (Basis):** `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` existieren in erster Version. Die Basis-Navigationsdokumente `docs/index.md` und `docs/masterplan.md` sind angelegt. Die Basis-Diagnosegeneratoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) sowie die Validatoren (`validate_schema.py`, `validate_relations.py`) liegen ausführbar bereit.
 
 **Akzeptanzkriterien für Phase A (MVP abgeschlossen, wenn):**
 - [ ] Ein Issue lässt sich über ein typisiertes YAML-Formular erstellen.
 - [ ] Ein PR für ein Experiment triggert erfolgreich einen Schema-CI-Check.
 - [ ] Die `AGENTS.md` und `repo.meta.yaml` sind im Root angelegt.
 - [ ] `README.md` und `CONTRIBUTING.md` verweisen auf den Contribution Contract.
-- [ ] Der Befehl `make validate` (oder ein Workflow) existiert und läuft ohne Fehler durch.
+- [ ] Der Befehl `make validate` (oder ein Workflow) existiert und führt den minimalen Guard-Stack (Schema- und Relations-Validierung) ohne Fehler aus.
+- [ ] `docs/index.md` und `docs/masterplan.md` existieren als Navigationsbasis.
+- [ ] Die vier Basis-Diagnosegeneratoren (Index, Backlinks, Orphans, System-Map) sind funktional vorhanden.
 
 ### B. Starter Corpus (Initialbefüllung)
 *Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar und testbar zu machen.*
@@ -150,11 +152,12 @@ Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen un
     - [ ] `contracts/docmeta.schema.json` für die Dokumentsemantik anlegen.
 - [ ] **Schritt 4: Die Labor-Umgebung**
     - [ ] `experiments/_template/` inklusive Golden Skeleton (`CONTEXT.md`, `INITIAL.md`, `manifest.yml`, `method.md`, `evidence.jsonl`, `decision.yml`) aufbauen.
-- [ ] **Schritt 5: Die Bibliothek (Stubs)**
+- [ ] **Schritt 5: Die Bibliothek & Erkenntniswege (Stubs)**
     - [ ] `catalog/` (inkl. Unterordner `styles`, `workflows`, `anti-patterns`, `combos`), `prompts/adopted/` und `benchmarks/` anlegen.
+    - [ ] `docs/` mit `index.md`, `masterplan.md` und den Basis-Strukturordnern (`_generated/` etc.) anlegen.
 - [ ] **Schritt 6: Guard-Frontdoor & CI**
     - [ ] `Makefile` oder `.github/workflows/docs-guard.yml` einrichten.
-    - [ ] `scripts/docmeta/` (MVP-Generatoren wie `validate_schema.py`, `generate_doc_index.py`) bereitstellen.
+    - [ ] `scripts/docmeta/` mit den Validatoren (`validate_schema.py`, `validate_relations.py`) und den Basis-Generatoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) bereitstellen.
 - [ ] **Schritt 7: Erstbefüllung (Phase B)**
     - [ ] Golden Example in `experiments/` ausführen.
     - [ ] Erste Einträge in Katalog und Anti-Patterns überführen.
@@ -303,4 +306,4 @@ vibe-lab/
 - **Reaktive Steuerlogik:** Ergänzung eines emergenten Kreislaufs (STATE → SIGNAL → POLICY → ACTION → EVALUATION) zur Systemsteuerung, ergänzt durch konzeptionelle Agenten-Rollen (Sensor, Interpreter, etc.) und strikte Traceability-Vorgaben für Debugbarkeit.
 - **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert. Kanon, Navigation und Diagnose als strikt getrennte Wahrheitslogiken verankert.
 - **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Innovation, Experiment, Catalog Entry, Combo, Prompt, Decision Artifact) und jeweils eigene Qualitätsanforderungen auferlegt.
-- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet. Statuslogik (operativ vs. epistemisch) entwirrt und Promotion-Gate-Abfragen sprachlich differenziert. Sichtbarkeit des minimalen Früh-Stacks an Guard-Skripten im Baum geschärft und klare Agenten-Lesereihenfolge definiert. *Make-Frontdoor-Kohärenz hergestellt: `Makefile` als schlanke Routine-Frontdoor sichtbar verankert.* *AGENTS.md Kohärenz hergestellt: Aus der Liste der generierten Artefakte entfernt und explizit (gemeinsam mit `repo.meta.yaml` und `agent-policy.yaml`) als handgepflegtes, kanonisches Steuerungsdokument klassifiziert. Phasenmodell-Beschreibung sprachlich entdoppelt (Phase B ist die Erstbefüllung). Intake-Pfad für Decision Artifacts im Contribution Contract geklärt.*
+- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet. Statuslogik (operativ vs. epistemisch) entwirrt und Promotion-Gate-Abfragen sprachlich differenziert. Sichtbarkeit des minimalen Früh-Stacks an Guard-Skripten im Baum geschärft und klare Agenten-Lesereihenfolge definiert. *Make-Frontdoor-Kohärenz hergestellt: `Makefile` als schlanke Routine-Frontdoor sichtbar verankert.* *AGENTS.md Kohärenz hergestellt: Aus der Liste der generierten Artefakte entfernt und explizit (gemeinsam mit `repo.meta.yaml` und `agent-policy.yaml`) als handgepflegtes, kanonisches Steuerungsdokument klassifiziert. Phasenmodell-Beschreibung sprachlich entdoppelt (Phase B ist die Erstbefüllung). Intake-Pfad für Decision Artifacts im Contribution Contract geklärt. Phase-A-Checkliste, Baupfad und Akzeptanzkriterien exakt auf die MVP-Pflichtelemente (docs/index.md, masterplan.md, volle Basis-Generatoren und Validatoren) synchronisiert.*

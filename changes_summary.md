@@ -1,10 +1,9 @@
-Änderungsübersicht (Operationalisierung)
+Änderungsübersicht (Kohärenz-Synchronisierung)
 
 Geändert:
-- Das Phasenmodell (A bis D) wurde in strukturierte Markdown-Checklisten überführt. An jede Phase wurde ein präziser Block mit überprüfbaren Akzeptanzkriterien angehängt.
-- Die theoretischen Architekturabschnitte (Intelligence Layer, Kanonische Artefakte & Workflow, Governance & Zonenmodell) wurden ebenfalls in abhakbare Checklisten-Punkte („Operationalisierung der...“) überführt.
-- Vor der Zielstruktur wurde ein neuer, abhakbarer Abschnitt „Einführungsreihenfolge (Der Baupfad)“ ergänzt. Dieser definiert chronologisch, in welcher Reihenfolge die Dateien und Ordner physisch für den MVP angelegt werden müssen, und was erst später (Phase C/D) folgt.
+- Phase A (Umsetzungs-Checkliste), die Akzeptanzkriterien für Phase A und die Einführungsreihenfolge (Baupfad) wurden strikt miteinander synchronisiert.
+- Es ist nun einheitlich abhakbar, dass im MVP (`Phase A`) die Basis-Navigationsdokumente (`docs/index.md`, `docs/masterplan.md`) sowie der vollständige minimale Guard-Stack (`validate_schema.py`, `validate_relations.py`, `generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) verpflichtend anzulegen sind.
 
 Nicht verändert:
-- Es wurden keine neuen Konzepte, Phasen, Sicherheitsmodelle, Generatoren oder Issue-Form-Typen eingeführt.
-- Die bestehende Repo-Architektur, das Zonenmodell, das Statusmodell und die epistemische Mechanik blieben inhaltlich unangetastet. Die Umwandlung in Checklisten diente ausschließlich der besseren Umsetzbarkeit, Projektsteuerung und Reviewbarkeit.
+- Es wurden keine neuen Phasen, Generatoren, Issue-Forms oder Governance-Regeln eingeführt.
+- Die bestehenden Architekturentscheidungen und die Einordnung, was MVP ist und was später kommt (Phase C/D), blieben unangetastet. Die Maßnahme diente ausschließlich der Kohärenz zwischen Architekturtext und Umsetzungscheckliste.
