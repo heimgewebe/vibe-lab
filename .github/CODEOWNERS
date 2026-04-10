@@ -1,0 +1,27 @@
+# CODEOWNERS — Pfadbasierte Governance
+# Siehe: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Kanonische Steuerungsdokumente — erfordern Review durch Maintainer
+/repo.meta.yaml                  @heimgewebe
+/AGENTS.md                       @heimgewebe
+/agent-policy.yaml               @heimgewebe
+
+# Operative Grunddokumente
+/README.md                       @heimgewebe
+/CONTRIBUTING.md                 @heimgewebe
+
+# Verträge und Schemas
+/contracts/                      @heimgewebe
+/schemas/                        @heimgewebe
+
+# Bibliothek — Promotion-Gate erforderlich
+/catalog/                        @heimgewebe
+/prompts/                        @heimgewebe
+/benchmarks/                     @heimgewebe
+
+# Governance
+/decisions/                      @heimgewebe
+/.vibe/                          @heimgewebe
+
+# CI/Workflows
+/.github/workflows/              @heimgewebe

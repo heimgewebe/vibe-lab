@@ -1,0 +1,78 @@
+name: "🧪 Experiment Proposal"
+description: "Strukturiertes Experiment zur Prüfung einer Hypothese beantragen"
+title: "[Experiment]: "
+labels: ["experiment", "intake"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Experiment-Vorschlag
+        Beschreibe ein strukturiertes Experiment zur Prüfung einer Hypothese.
+        Das Experiment wird nach dem Golden Skeleton in `experiments/_template/` angelegt.
+
+  - type: input
+    id: related_idea
+    attributes:
+      label: "Bezug zu Idee (Issue-Nr.)"
+      description: "Referenz auf ein bestehendes Idea-Issue, falls vorhanden."
+      placeholder: "#42"
+    validations:
+      required: false
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: "Hypothese"
+      description: "Welche konkrete, prüfbare Hypothese soll getestet werden?"
+      placeholder: "Spec-First-Prompting reduziert die Fehlerquote bei API-Generierung um >30%."
+    validations:
+      required: true
+
+  - type: textarea
+    id: method
+    attributes:
+      label: "Methode (Kurzfassung)"
+      description: "Wie soll die Hypothese geprüft werden? (Vollständige Methode im Experiment-Ordner)"
+      placeholder: "3 identische Tasks mit/ohne Spec-First, Vergleich der Ergebnisse."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Kontext / Setup"
+      description: "Welche Tools, Modelle, Sprachen und Umgebungen werden verwendet?"
+      placeholder: "GPT-4o, TypeScript, VS Code + Copilot, REST-API-Projekt"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Kategorie"
+      options:
+        - Style
+        - Technology
+        - Technique
+        - Workflow
+        - Combo
+    validations:
+      required: true
+
+  - type: textarea
+    id: success_criteria
+    attributes:
+      label: "Erfolgskriterien"
+      description: "Wann gilt die Hypothese als bestätigt?"
+      placeholder: "Fehlerquote sinkt messbar; Code-Review zeigt weniger Nacharbeit."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution_type
+    attributes:
+      label: "Beitragstyp"
+      description: "Bestätigung des Contribution Contract"
+      options:
+        - label: "Dies ist ein **Experiment**-Beitrag gemäß dem Contribution Contract."
+          required: true
