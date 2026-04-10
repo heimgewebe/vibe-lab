@@ -1,9 +1,10 @@
-Änderungsübersicht
+Änderungsübersicht (Operationalisierung)
 
 Geändert:
-- Im Contribution Contract wurde die Intake-Logik für das `Decision Artifact` präzisiert: Es benötigt kein eigenes Issue Form, da es typischerweise systemisch aus PR-, Review- oder Governance-Prozessen (z.B. bei abgelaufenen Review-Zyklen oder Export-Konflikten) entsteht.
-- Der Changelog am Ende von `repo-plan.md` wurde minimal aktualisiert, um diese Klärung zu vermerken.
+- Das Phasenmodell (A bis D) wurde in strukturierte Markdown-Checklisten überführt. An jede Phase wurde ein präziser Block mit überprüfbaren Akzeptanzkriterien angehängt.
+- Die theoretischen Architekturabschnitte (Intelligence Layer, Kanonische Artefakte & Workflow, Governance & Zonenmodell) wurden ebenfalls in abhakbare Checklisten-Punkte („Operationalisierung der...“) überführt.
+- Vor der Zielstruktur wurde ein neuer, abhakbarer Abschnitt „Einführungsreihenfolge (Der Baupfad)“ ergänzt. Dieser definiert chronologisch, in welcher Reihenfolge die Dateien und Ordner physisch für den MVP angelegt werden müssen, und was erst später (Phase C/D) folgt.
 
 Nicht verändert:
-- Es wurden keine neuen Issue Forms, Phasen, Artefaktklassen oder Generatoren erfunden.
-- Die Zielstruktur des Repositories, die Security-Policies und die Governance-Prinzipien blieben unangetastet.
+- Es wurden keine neuen Konzepte, Phasen, Sicherheitsmodelle, Generatoren oder Issue-Form-Typen eingeführt.
+- Die bestehende Repo-Architektur, das Zonenmodell, das Statusmodell und die epistemische Mechanik blieben inhaltlich unangetastet. Die Umwandlung in Checklisten diente ausschließlich der besseren Umsetzbarkeit, Projektsteuerung und Reviewbarkeit.
