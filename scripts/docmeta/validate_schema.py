@@ -11,6 +11,7 @@ Benötigt: pip install pyyaml jsonschema
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -41,8 +42,8 @@ EVIDENCE_REQUIRED_KEYS: frozenset[str] = frozenset({
 # Erlaubte Werte für event_type
 EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision"})
 
-# Erkennungsmuster für Template-Platzhalter in failure_modes.md
-FAILURE_MODES_PLACEHOLDER = "- [ ] TODO:"
+# Muster für Template-Platzhalter in failure_modes.md (case-insensitive, whitespace-tolerant)
+FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)
 
 # Statuses, die eine ausgefüllte failure_modes.md erfordern
 FAILURE_MODES_REQUIRED_STATUSES: frozenset[str] = frozenset({"testing", "adopted"})
@@ -197,10 +198,10 @@ def validate_failure_modes():
             continue
 
         content = fm_path.read_text(encoding="utf-8")
-        if FAILURE_MODES_PLACEHOLDER in content:
+        if FAILURE_MODES_PLACEHOLDER_RE.search(content):
             errors.append(
                 f"  ❌ {fm_path.relative_to(REPO_ROOT)}: "
-                f"enthält Template-Platzhalter ('{FAILURE_MODES_PLACEHOLDER}'). "
+                f"enthält Template-Platzhalter (unfilled TODO items). "
                 f"Muss vor Promotion ausgefüllt sein."
             )
             continue

@@ -68,8 +68,7 @@
       "if": {
         "properties": {
           "evidence_level": { "const": "replicated" }
-        },
-        "required": ["evidence_level"]
+        }
       },
       "then": {
         "required": ["replicated_from"],
