@@ -22,7 +22,7 @@ Artefakte durchlaufen im Repository folgende strukturierten Zustände:
 *   **Entscheidungsstatus:** `inconclusive` für Experimentläufe ohne belastbares Urteil. Zwingt zu einer expliziten Entscheidung statt eines Schwebezustands.
 
 ## Phasenmodell der Architektur
-Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in drei Phasen, ergänzt um eine explizite Erstbefüllungsschicht. *Die neue "Intelligence Layer" (Agentensteuerung, Dokumentsemantik) wird schrittweise über diese Phasen integriert.*
+Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau strukturiert in vier Phasen (A bis D). *Die "Intelligence Layer" (Agentensteuerung, Dokumentsemantik) wird schrittweise über diese Phasen hinweg integriert.*
 
 ### A. Minimaler Kern (MVP)
 *Zwingend erforderlich, um den Erkenntniskreislauf zu starten. (Klarstellung: Um den MVP nicht zu überladen, dürfen einzelne Bestandteile als Stub oder in einer reduzierten Erstversion starten.)*
@@ -213,8 +213,8 @@ Um Wildwuchs zu verhindern, arbeitet das Repository mit einem expliziten Contrib
 *   `Innovation` (gemappt von `idea`)
 *   `Experiment` (gemappt von `experiment-proposal`)
 *   `Catalog Entry` (gemappt von `promotion-request`)
-*   `Combo`
-*   `Prompt`
+*   `Combo` (gemappt von `promotion-request`)
+*   `Prompt` (gemappt von `promotion-request`)
 *   `Decision Artifact`
 
 **Traceability (Pflicht für Reaktivität):**
