@@ -1,0 +1,49 @@
+# .vibe/quality-gates.yml — Quality Gates für den Erkenntniskreislauf
+# Definiert Mindestanforderungen für Zustandsübergänge.
+
+schema_version: "0.1.0"
+
+gates:
+
+  - id: idea-to-testing
+    transition: "idea → testing"
+    description: "Hypothese muss formuliert und ein Experiment-Skeleton angelegt sein."
+    requirements:
+      - "Experiment-Ordner existiert mit manifest.yml"
+      - "method.md beschreibt das Vorgehen"
+      - "CONTEXT.md dokumentiert den Ausgangszustand"
+
+  - id: testing-to-adopted
+    transition: "testing → adopted"
+    description: "Experiment muss vollständig durchgeführt und belastbar ausgewertet sein."
+    requirements:
+      - "evidence.jsonl enthält mindestens einen Eintrag"
+      - "decision.yml enthält verdict: adopted"
+      - "CONTEXT.md und INITIAL.md sind vollständig"
+      - "Schema-Validierung bestanden"
+      - "Promotion-PR mit Template promotion.md"
+
+  - id: testing-to-rejected
+    transition: "testing → rejected"
+    description: "Experiment muss ausgewertet sein, auch wenn das Ergebnis negativ ist."
+    requirements:
+      - "decision.yml enthält verdict: rejected mit Begründung"
+      - "evidence.jsonl dokumentiert die Beobachtungen"
+
+  - id: adopted-to-deprecated
+    transition: "adopted → deprecated"
+    description: "Ablösung durch neue Evidenz muss dokumentiert sein."
+    requirements:
+      - "Verweis auf ablösende Practice oder Experiment"
+      - "Status-Update im Katalogeintrag"
+      - "Entfernung aus generierten Exports"
+
+  - id: catalog-entry
+    gate: "Promotion Gate"
+    description: "Harte Prüfung vor Aufnahme in die Bibliothek."
+    requirements:
+      - "Vollständiges Experiment vorhanden"
+      - "Schema-Validierung bestanden (make validate)"
+      - "evidence.jsonl nicht leer"
+      - "CONTEXT.md und INITIAL.md vorhanden"
+      - "PR nutzt Template promotion.md"

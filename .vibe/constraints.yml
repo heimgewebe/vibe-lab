@@ -1,0 +1,58 @@
+# .vibe/constraints.yml — Operative Restriktionen
+# Definiert harte Grenzen für Agenten und Prozesse.
+
+schema_version: "0.1.0"
+
+constraints:
+
+  - id: no-manual-edit-generated
+    description: "Generierte Artefakte dürfen niemals manuell editiert werden."
+    applies_to:
+      - "exports/*"
+      - ".cursor/rules/*"
+      - "docs/_generated/*"
+    severity: hard
+
+  - id: no-promotion-without-evidence
+    description: "Katalogeinträge erfordern belastbare Experimentdaten."
+    applies_to:
+      - "catalog/*"
+      - "prompts/adopted/*"
+    severity: hard
+
+  - id: schema-compliance
+    description: "Alle strukturierten Artefakte müssen gegen ihre Schemas validieren."
+    applies_to:
+      - "experiments/*/manifest.yml"
+      - "catalog/**/*.md"
+      - "experiments/*/results/decision.yml"
+    severity: hard
+
+  - id: context-engineering-required
+    description: "CONTEXT.md und INITIAL.md sind Pflicht für Adopt-Kandidaten."
+    applies_to:
+      - "experiments/*"
+    severity: hard
+    condition: "Nur wenn Status = adopted oder Promotion beantragt"
+
+  - id: no-secrets-in-evidence
+    description: "Personenbezogene Daten und Secrets sind in evidence.jsonl und Artefakten untersagt."
+    applies_to:
+      - "experiments/*/results/evidence.jsonl"
+      - "exports/*"
+    severity: hard
+
+  - id: zone-separation
+    description: "Labor-Artefakte werden nicht ohne Promotion-Gate in die Bibliothek verschoben."
+    applies_to:
+      - "experiments/*"
+      - "catalog/*"
+    severity: hard
+
+  - id: canonical-sources-immutable-by-agents
+    description: "Kanonische Steuerungsdokumente werden nur von Menschen editiert."
+    applies_to:
+      - repo.meta.yaml
+      - AGENTS.md
+      - agent-policy.yaml
+    severity: hard
