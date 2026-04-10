@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/catalog.entry.schema.json",
+  "title": "Catalog Entry",
+  "description": "Schema für Katalogeinträge (Adopted Practices). Operative Pipeline-Validierung.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version dieses Schemas (semver)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Name der Praxis"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["adopted", "deprecated"],
+      "description": "Aktueller Status im Katalog"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["style", "technology", "technique", "workflow", "anti-pattern"],
+      "description": "Katalog-Kategorie"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Einzeilige Zusammenfassung"
+    },
+    "evidence_source": {
+      "type": "string",
+      "description": "Pfad zum validierenden Experiment"
+    },
+    "created": {
+      "type": "string",
+      "format": "date"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date"
+    },
+    "author": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["validated_by", "supersedes", "superseded_by", "references", "derived_from"]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "target"]
+      }
+    }
+  },
+  "required": ["schema_version", "title", "status", "category", "summary", "evidence_source"]
+}
