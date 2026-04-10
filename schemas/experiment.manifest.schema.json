@@ -64,7 +64,22 @@
           "description": "Referenz auf Idea-Issue (z.B. #42)"
         }
       },
-      "required": ["name", "hypothesis", "status", "category"]
+      "required": ["name", "hypothesis", "status", "category", "evidence_level"],
+      "if": {
+        "properties": {
+          "evidence_level": { "const": "replicated" }
+        },
+        "required": ["evidence_level"]
+      },
+      "then": {
+        "required": ["replicated_from"],
+        "properties": {
+          "replicated_from": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "context": {
       "type": "object",
