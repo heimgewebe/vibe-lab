@@ -1,0 +1,29 @@
+# Decision — Spec-First Vibe-Coding
+
+schema_version: "0.1.0"
+
+verdict: adopted
+confidence: high
+date: "2026-04-08"
+reviewer: "heimgewebe"
+
+rationale: |
+  Spec-First-Prompting zeigte in allen drei Tasks klare Vorteile:
+  - Vollständigkeit der Fehlercodes: 5/5 vs. 3/5 (Task 1), 4/4 vs. 2/4 (Task 2)
+  - Konsistenz der Response-Strukturen: einheitlich vs. inkonsistent (Task 3)
+  - Nacharbeit: 4 Zeilen vs. 23 Zeilen (Task 1)
+  - Subjektiver Flow: 4.3 vs. 3.7 (Lesbarkeit), 4.0 vs. 2.7 (Vertrauen)
+
+  Der zusätzliche Schritt (Spec generieren + reviewen) kostet ca. 5-10 Minuten pro Task,
+  spart aber deutlich mehr an Nacharbeit und erhöht das Vertrauen in den Output erheblich.
+
+evidence_summary:
+  observations: 13
+  positive: 8
+  negative: 0
+  neutral: 5
+
+next_steps: |
+  - Promotion-PR erstellen für Katalogeintrag unter catalog/techniques/
+  - Adopted Prompt unter prompts/adopted/ anlegen
+  - Mögliches Follow-up: Test mit anderen Modellen (Claude, Gemini)

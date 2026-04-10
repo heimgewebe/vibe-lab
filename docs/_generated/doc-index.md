@@ -1,5 +1,5 @@
 <!-- GENERATED FILE — DO NOT EDIT MANUALLY -->
-<!-- Generated: 2026-04-10T09:43:36Z by generate_doc_index.py -->
+<!-- Generated: 2026-04-10T09:46:55Z by generate_doc_index.py -->
 
 # Document Index
 
@@ -8,12 +8,20 @@
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
 | `README.md` | README | — | — |
+| `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
+| `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
+| `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
+| `experiments/2026-04-08_spec-first/CONTEXT.md` | Spec-First Vibe-Coding — Experiment-Kontext | adopted | operative |
+| `experiments/2026-04-08_spec-first/INITIAL.md` | Spec-First Vibe-Coding — Initiale Situation | adopted | operative |
+| `experiments/2026-04-08_spec-first/method.md` | Spec-First Vibe-Coding — Methode | adopted | operative |
+| `experiments/2026-04-08_spec-first/results/result.md` | Spec-First Vibe-Coding — Ergebnis | adopted | operative |
 | `experiments/_template/CONTEXT.md` | Experiment-Kontext (Template) | draft | operative |
 | `experiments/_template/INITIAL.md` | Initiale Prompt-/Setup-Situation (Template) | draft | operative |
 | `experiments/_template/method.md` | Experiment-Methode (Template) | draft | operative |
 | `experiments/_template/results/result.md` | Experiment-Ergebnis (Template) | draft | operative |
+| `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
