@@ -140,6 +140,13 @@ def validate_evidence_files():
                 )
                 continue
 
+            if not isinstance(entry, dict):
+                errors.append(
+                    f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                    f"expected JSON object, got {type(entry).__name__}"
+                )
+                continue
+
             missing = EVIDENCE_REQUIRED_KEYS - entry.keys()
             if missing:
                 errors.append(

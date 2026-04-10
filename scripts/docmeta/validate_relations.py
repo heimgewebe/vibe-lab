@@ -19,11 +19,19 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 errors = []
 
 
-def resolve_target(source_file: Path, target: str) -> Path:
-    """Resolve a relation target relative to the source file's directory."""
+def resolve_target(source_file: Path, target: str) -> Path | None:
+    """Resolve a relation target relative to the source file's directory.
+
+    Returns None if the target resolves outside REPO_ROOT (path-escape guard).
+    """
     if target.startswith("#"):
         return source_file  # Issue reference, skip
-    return (source_file.parent / target).resolve()
+    resolved = (source_file.parent / target).resolve()
+    try:
+        resolved.relative_to(REPO_ROOT)
+    except ValueError:
+        return None  # target escapes repository root
+    return resolved
 
 
 def validate_file_relations(md_file: Path):
@@ -53,7 +61,12 @@ def validate_file_relations(md_file: Path):
             continue
 
         resolved = resolve_target(md_file, target)
-        if not resolved.exists():
+        if resolved is None:
+            errors.append(
+                f"  ❌ {md_file.relative_to(REPO_ROOT)}: "
+                f"relation '{rel_type}' target '{target}' escapes repository root"
+            )
+        elif not resolved.exists():
             errors.append(
                 f"  ❌ {md_file.relative_to(REPO_ROOT)}: "
                 f"relation '{rel_type}' target '{target}' does not exist"
