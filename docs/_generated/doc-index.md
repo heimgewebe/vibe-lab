@@ -1,5 +1,5 @@
 <!-- GENERATED FILE — DO NOT EDIT MANUALLY -->
-<!-- Generated: 2026-04-10T09:46:55Z by generate_doc_index.py -->
+<!-- Generated: 2026-04-10T11:55:18Z by generate_doc_index.py -->
 
 # Document Index
 
