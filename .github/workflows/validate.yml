@@ -28,3 +28,9 @@ jobs:
 
       - name: Validate relations
         run: python3 scripts/docmeta/validate_relations.py
+
+      - name: Regenerate diagnostics
+        run: make generate
+
+      - name: Check generated files are up to date
+        run: git diff --exit-code docs/_generated/

@@ -23,13 +23,13 @@ Das Repository realisiert die Pipeline **Sammlung → Erprobung → Validierung 
 ## Schnellstart
 
 ### Idee einreichen
-Erstelle ein Issue mit dem Formular **Idea** → [Neues Issue](.github/ISSUE_TEMPLATE/idea.yml)
+Gehe zu **Issues → New issue → Get started** und wähle das Formular **💡 Idea** aus.
 
 ### Experiment starten
-Erstelle ein Issue mit dem Formular **Experiment Proposal** → kopiere `experiments/_template/` in einen neuen Ordner.
+Gehe zu **Issues → New issue → Get started** und wähle das Formular **🧪 Experiment Proposal** aus. Kopiere anschließend `experiments/_template/` in einen neuen Ordner.
 
 ### Ergebnis zur Übernahme vorschlagen
-Erstelle einen PR mit dem Template **Promotion** (`promotion.md`).
+Erstelle einen PR und wähle im PR-Dialog das Template **Promotion** aus.
 
 ### Lokal validieren
 ```bash

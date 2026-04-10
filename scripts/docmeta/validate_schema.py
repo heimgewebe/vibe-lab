@@ -5,6 +5,7 @@ Prüft:
 - experiments/*/manifest.yml gegen schemas/experiment.manifest.schema.json
 - catalog/**/*.md Frontmatter gegen schemas/catalog.entry.schema.json
 - catalog/combos/**/*.md Frontmatter gegen schemas/combo.schema.json
+- experiments/*/results/evidence.jsonl auf Struktur und Taxonomie
 
 Benötigt: pip install pyyaml jsonschema
 """
@@ -27,6 +28,12 @@ SCHEMA_MAP = {
     "catalog_entry": REPO_ROOT / "schemas" / "catalog.entry.schema.json",
     "combo": REPO_ROOT / "schemas" / "combo.schema.json",
 }
+
+# Pflichtfelder für jede Zeile in evidence.jsonl
+EVIDENCE_REQUIRED_KEYS = {"event_type", "timestamp", "iteration", "metric", "value", "context"}
+
+# Erlaubte Werte für event_type
+EVIDENCE_EVENT_TYPES = {"observation", "measurement", "decision"}
 
 errors = []
 
@@ -105,6 +112,55 @@ def validate_catalog_entries():
             errors.append(f"  ❌ {md_file.relative_to(REPO_ROOT)}: {e.message}")
 
 
+def validate_evidence_files():
+    """Minimaler struktureller Check für evidence.jsonl Dateien.
+
+    Prüft:
+    - Jede Zeile ist gültiges JSON
+    - Pflichtfelder (event_type, timestamp, iteration, metric, value, context) vorhanden
+    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision)
+    """
+    experiments_dir = REPO_ROOT / "experiments"
+    found = 0
+    for evidence_file in experiments_dir.glob("*/results/evidence.jsonl"):
+        if evidence_file.parent.parent.name.startswith("_"):
+            continue  # Skip _template, _archive
+        found += 1
+        lines = evidence_file.read_text(encoding="utf-8").strip().splitlines()
+        for lineno, line in enumerate(lines, 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError as e:
+                errors.append(
+                    f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: invalid JSON — {e}"
+                )
+                continue
+
+            missing = EVIDENCE_REQUIRED_KEYS - entry.keys()
+            if missing:
+                errors.append(
+                    f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                    f"missing required keys: {sorted(missing)}"
+                )
+                continue
+
+            event_type = entry.get("event_type")
+            if event_type not in EVIDENCE_EVENT_TYPES:
+                errors.append(
+                    f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                    f"event_type '{event_type}' not in allowlist {sorted(EVIDENCE_EVENT_TYPES)}"
+                )
+                continue
+
+            print(f"  ✅ {evidence_file.relative_to(REPO_ROOT)}:{lineno} ({event_type})")
+
+    if found == 0:
+        print("  (no evidence.jsonl files found outside _template/_archive)")
+
+
 def main():
     print("🔍 Schema Validation")
     print()
@@ -113,6 +169,9 @@ def main():
     print()
     print("Catalog Entries:")
     validate_catalog_entries()
+    print()
+    print("Evidence Files:")
+    validate_evidence_files()
     print()
 
     if errors:

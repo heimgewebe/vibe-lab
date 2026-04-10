@@ -10,6 +10,10 @@ Benötigt: pip install pyyaml
 import sys
 from pathlib import Path
 
+# Gemeinsame Pfad-Logik aus _paths.py
+sys.path.insert(0, str(Path(__file__).parent))
+from _paths import should_skip  # noqa: E402
+
 try:
     import yaml
 except ImportError:
@@ -19,7 +23,6 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 errors = []
-warnings = []
 
 
 def extract_frontmatter(path: Path) -> dict | None:
@@ -83,17 +86,10 @@ def main():
     print("🔗 Relations Validation")
     print()
 
-    # Scan all markdown files
+    # Scan all markdown files — uses shared skip logic, includes .vibe/
     scanned = 0
     for md_file in sorted(REPO_ROOT.rglob("*.md")):
-        # Skip hidden dirs, _generated, node_modules, etc.
-        rel = md_file.relative_to(REPO_ROOT)
-        parts = rel.parts
-        if any(p.startswith(".") for p in parts):
-            continue
-        if "_generated" in parts:
-            continue
-        if any(p in ("node_modules", "__pycache__") for p in parts):
+        if should_skip(md_file, REPO_ROOT, skip_generated=True):
             continue
 
         validate_file_relations(md_file)
