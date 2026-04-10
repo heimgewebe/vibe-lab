@@ -17,6 +17,7 @@
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
 | `experiments/2026-04-08_spec-first/CONTEXT.md` | Spec-First Vibe-Coding — Experiment-Kontext | adopted | operative |
 | `experiments/2026-04-08_spec-first/INITIAL.md` | Spec-First Vibe-Coding — Initiale Situation | adopted | operative |
+| `experiments/2026-04-08_spec-first/failure_modes.md` | Failure Modes — Spec-First Vibe-Coding | adopted | operative |
 | `experiments/2026-04-08_spec-first/method.md` | Spec-First Vibe-Coding — Methode | adopted | operative |
 | `experiments/2026-04-08_spec-first/results/result.md` | Spec-First Vibe-Coding — Ergebnis | adopted | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |

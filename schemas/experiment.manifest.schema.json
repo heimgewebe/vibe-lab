@@ -50,6 +50,11 @@
           "minimum": 1,
           "description": "Aktuelle Iterationsnummer"
         },
+        "evidence_level": {
+          "type": "string",
+          "enum": ["anecdotal", "experimental", "replicated"],
+          "description": "Epistemisches Niveau der Evidenz: anecdotal (einzelne Beobachtung), experimental (kontrollierter Test), replicated (unabhängig reproduziert)"
+        },
         "replicated_from": {
           "type": "string",
           "description": "Pfad zum Original-Experiment bei Replikation"

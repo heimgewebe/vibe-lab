@@ -33,4 +33,9 @@ jobs:
         run: make generate
 
       - name: Check generated files are up to date
-        run: git diff --exit-code docs/_generated/
+        run: |
+          if git status --porcelain docs/_generated/ | grep -q .; then
+            echo "❌ Generated files are out of date or untracked. Run 'make generate' and commit the changes."
+            git status --porcelain docs/_generated/
+            exit 1
+          fi

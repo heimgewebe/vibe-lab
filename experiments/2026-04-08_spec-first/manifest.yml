@@ -12,6 +12,7 @@ experiment:
   updated: "2026-04-10"
   author: "heimgewebe"
   iteration: 1
+  evidence_level: experimental
   related_idea: "#1"
 
 context:

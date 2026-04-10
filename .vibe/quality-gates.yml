@@ -12,6 +12,7 @@ gates:
       - "Experiment-Ordner existiert mit manifest.yml"
       - "method.md beschreibt das Vorgehen"
       - "CONTEXT.md dokumentiert den Ausgangszustand"
+      - "failure_modes.md legt bekannte Grenzen und Fehlannahmen fest"
 
   - id: testing-to-adopted
     transition: "testing → adopted"
@@ -20,6 +21,7 @@ gates:
       - "evidence.jsonl enthält mindestens einen Eintrag"
       - "decision.yml enthält verdict: adopted"
       - "CONTEXT.md und INITIAL.md sind vollständig"
+      - "failure_modes.md ist ausgefüllt (nicht nur Template)"
       - "Schema-Validierung bestanden"
       - "Promotion-PR mit Template promotion.md"
 
@@ -46,4 +48,17 @@ gates:
       - "Schema-Validierung bestanden (make validate)"
       - "evidence.jsonl nicht leer"
       - "CONTEXT.md und INITIAL.md vorhanden"
+      - "failure_modes.md vorhanden und ausgefüllt"
       - "PR nutzt Template promotion.md"
+
+  - id: replication-required
+    gate: "Replikations-Gate"
+    description: "Experiment muss unabhängig reproduzierbar sein, bevor evidence_level: replicated vergeben wird."
+    requirements:
+      - "replicated_from im manifest.yml verweist auf das Original-Experiment"
+      - "Replikation läuft mit eigenem Kontext (andere Person oder andere Sitzung)"
+      - "Eigene evidence.jsonl vorhanden (nicht kopiert aus Original)"
+    note: |
+      Ohne Replikation kann evidence_level maximal 'experimental' sein.
+      evidence_level: replicated ist der höchste epistemische Status und erfordert
+      dieses Gate explizit.

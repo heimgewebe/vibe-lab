@@ -12,6 +12,7 @@ experiment:
   updated: "YYYY-MM-DD"
   author: ""
   iteration: 1
+  evidence_level: experimental  # anecdotal | experimental | replicated
   # replicated_from: ""      # Pfad zum Original-Experiment bei Replikation
   # related_idea: ""          # Referenz auf Idea-Issue (z.B. #42)
 

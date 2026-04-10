@@ -56,3 +56,24 @@ constraints:
       - AGENTS.md
       - agent-policy.yaml
     severity: hard
+
+  - id: anti-gaming-evidence
+    description: |
+      Evidenz-Einträge müssen unabhängige Beobachtungen darstellen.
+      Verboten: gleiche Person/Session zählt mehrfach als unabhängige Evidenz;
+      identische Tasks werden als neue Messungen deklariert.
+      evidence_level: replicated erfordert nachweislich andere Person oder andere Session-Instanz.
+    applies_to:
+      - "experiments/*/results/evidence.jsonl"
+      - "experiments/*/manifest.yml"
+    severity: hard
+
+  - id: failure-modes-required
+    description: |
+      Jedes Experiment mit Status adopted oder testing muss eine failure_modes.md enthalten.
+      Die Datei darf nicht nur Template-Platzhalter enthalten.
+      Ziel: verhindert blinde Flecken durch selektive Evidenz-Auswahl.
+    applies_to:
+      - "experiments/*"
+    severity: hard
+    condition: "Nur wenn Status = adopted, testing oder Promotion beantragt"

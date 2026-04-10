@@ -1,5 +1,13 @@
 # CODEOWNERS — Pfadbasierte Governance
 # Siehe: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Hinweis: Damit CODEOWNERS wirksam ist, muss Branch Protection für `main` aktiviert sein:
+#   Settings → Branches → main → "Require a pull request before merging" +
+#   "Require review from Code Owners"
+# Ohne Branch Protection hat diese Datei nur dokumentarischen Charakter.
+
+# Diese Datei selbst — schützt CODEOWNERS vor unkontrollierten Änderungen
+/.github/CODEOWNERS              @heimgewebe
 
 # Kanonische Steuerungsdokumente — erfordern Review durch Maintainer
 /repo.meta.yaml                  @heimgewebe
