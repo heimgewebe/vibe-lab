@@ -1,0 +1,38 @@
+---
+title: "Experiment-Ergebnis (Template)"
+status: draft
+canonicality: operative
+---
+
+# result.md — Experiment-Ergebnis
+
+> Zusammenfassung der Ergebnisse in menschenlesbarer Form.
+
+## Zusammenfassung
+
+<!-- Kurze Zusammenfassung: Was wurde beobachtet? Was ist das Gesamtergebnis? -->
+
+## Beobachtungen
+
+<!-- Narrative Beschreibung der wichtigsten Beobachtungen, gestützt auf evidence.jsonl -->
+
+### Wirksamkeit (Effektivität)
+<!-- Wie wirksam war die getestete Praxis? -->
+
+### Reibung (Aufwand)
+<!-- Wie hoch war der Aufwand? -->
+
+### Flow (subjektive Qualität)
+<!-- Wie wurde die subjektive Qualität empfunden? -->
+
+## Verdict
+
+<!-- adopted / rejected / inconclusive — mit Begründung -->
+
+## Lessons Learned
+
+<!-- Was wurde gelernt, unabhängig vom Verdict? -->
+
+## Nächste Schritte
+
+<!-- Iterate? Promote? Archive? -->
