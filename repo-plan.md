@@ -30,9 +30,9 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau in d
 *   **Experiment-Engine:** `experiments/` Ordner mit vollständigem Skelett (Manifest, Methode, Evidenz, Entscheidung). Iterationen müssen über Felder wie `replicated_from` oder `parent_experiment` verlinkt sein (Experiment-Chaining).
 *   **Evidenz-Taxonomie:** `evidence.jsonl` nutzt ein maschinenlesbares, fixes Vokabular (`event_type`: z.B. `rework_cycle`, `token_usage`, `manual_intervention`) und wird via JSON-Schema validiert.
 *   **Minimaler Katalog:** `catalog/` für erste `adopted` Practices.
-*   **Schema-Validierung & Versionierung:** Harte CI-Prüfung der Kernartefakte. Alle schemavalidierten Artefakte erfordern ein `schema_version` Feld in ihrem Frontmatter oder Root-Node. Brechende Schema-Änderungen erzwingen eine Migrationsnotiz via Decision-Artifact. Eine schlanke Guard-Frontdoor bündelt diese Checks als Routinepfad (z.B. gebündelt über ein `make validate` oder einen `.github/workflows/docs-guard.yml` Workflow).
+*   **Schema-Validierung & Versionierung:** Harte CI-Prüfung der Kernartefakte. Alle schemavalidierten Artefakte erfordern ein `schema_version` Feld in ihrem Frontmatter oder Root-Node. Brechende Schema-Änderungen erzwingen eine Migrationsnotiz via Decision-Artifact. Eine schlanke Guard-Frontdoor bündelt diese Checks als Routinepfad (z.B. über ein `Makefile` als lokales `make validate` oder einen `.github/workflows/docs-guard.yml` Workflow).
 *   **Promotion-Gate:** Zwingender PR-Prozess für Änderungen am Katalog.
-*   **Scaffolding-CLI (Make-Frontdoor):** Ein minimales CLI (`tools/vibe-cli` oder `make vibe`) stellt Befehle wie `new experiment`, `new catalog-entry` bereit, um Boilerplate zu reduzieren.
+*   **Scaffolding-CLI & Frontdoor:** Ein zentrales `Makefile` dient als schlanke Routine-Frontdoor (z.B. `make validate`, `make vibe`), während ein dediziertes CLI (`tools/vibe-cli`) spezifische Scaffolding-Befehle wie `new experiment` oder `new catalog-entry` bereitstellt, um Boilerplate zu reduzieren.
 *   **Schema-Starter-Set:** Zum MVP gehört ein minimales Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos.
 *   **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` sind keine Beiwerk-Dateien, sondern operative Systemkomponenten. Ziel ist es, dass neue Contributors das Repo-Ziel, die Beitragstypen und den Ablauf in kürzester Zeit verstehen.
 *   **Intelligence Layer (Basis):** Einführung von `repo.meta.yaml` als maschinenlesbare Verfassung, `AGENTS.md` und `agent-policy.yaml` zur Agentenführung, sowie Basis-Diagnosegeneratoren (`doc-index`, `backlinks`, `orphans`, `system-map`) und Validatoren (`schema`, `relations`).
@@ -239,6 +239,7 @@ trace:
 
 ```text
 vibe-lab/
+  Makefile                  # Schlanke Routine-Frontdoor (z.B. make validate, make vibe)
   README.md
   CONTRIBUTING.md           # Operatives Einstiegssystem
   .env.example              # Beispiel für erlaubte lokale Konfiguration
@@ -357,7 +358,7 @@ vibe-lab/
       generate_supersession_map.py # Phase C/D Erweiterung
 
   tools/                  # CLI / Automatisierung
-    vibe-cli/             # Scaffolding-CLI (Make-Frontdoor)
+    vibe-cli/             # Scaffolding-CLI (spezifische Kommandos)
     validate/
 ```
 
@@ -373,4 +374,4 @@ vibe-lab/
 - **Reaktive Steuerlogik:** Ergänzung eines emergenten Kreislaufs (STATE → SIGNAL → POLICY → ACTION → EVALUATION) zur Systemsteuerung, ergänzt durch konzeptionelle Agenten-Rollen (Sensor, Interpreter, etc.) und strikte Traceability-Vorgaben für Debugbarkeit.
 - **Dokumentsemantik und Diagnostik:** Markdown-Dateien als epistemische Objekte mit Frontmatter/Relations-Schema (`contracts/docmeta.schema.json`) definiert; `docs/_generated/` für Diagnoseartefakte und Guard-Scripts (`scripts/docmeta/`) integriert. Kanon, Navigation und Diagnose als strikt getrennte Wahrheitslogiken verankert.
 - **Governance erweitert:** *Contribution Contract* eingefügt, der Beiträge zwingend in PR-Typen klassifiziert (Innovation, Experiment, Catalog Entry, Combo, Prompt, Decision Artifact) und jeweils eigene Qualitätsanforderungen auferlegt.
-- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet. Statuslogik (operativ vs. epistemisch) entwirrt und Promotion-Gate-Abfragen sprachlich differenziert. Sichtbarkeit des minimalen Früh-Stacks an Guard-Skripten im Baum geschärft und klare Agenten-Lesereihenfolge definiert.
+- **Kohärenz-Fixes:** Schema-Starter-Set exakt mit der `schemas/`-Ordnerstruktur synchronisiert (inkl. `combo.schema.json`) und Unterscheidung zwischen `contracts/` und `schemas/` klargestellt. `CONTRIBUTING.md` als operatives System dokumentiert. `blocked` als einziger operativer Pausenstatus normiert. Letzte Sichtbarkeitslücken (wie `CONTEXT.md` in der Templates-Struktur, `knowledge-gaps.md` im Baum und Export-Herkunftsmetadaten) geschlossen sowie `challenge_version`-Flexibilität und MVP-Scope im Text präzisiert. Harmonisierung der Generator-Skripte (`generate_knowledge_gaps.py`, `generate_supersession_map.py`) für Phase C/D und Aufnahme der `.env.example` in die Zielstruktur vollendet. Statuslogik (operativ vs. epistemisch) entwirrt und Promotion-Gate-Abfragen sprachlich differenziert. Sichtbarkeit des minimalen Früh-Stacks an Guard-Skripten im Baum geschärft und klare Agenten-Lesereihenfolge definiert. *Make-Frontdoor-Kohärenz hergestellt: `Makefile` als schlanke Routine-Frontdoor sichtbar verankert.*
