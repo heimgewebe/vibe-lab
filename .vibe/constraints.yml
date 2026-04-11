@@ -1,5 +1,8 @@
 # .vibe/constraints.yml — Operative Restriktionen
 # Definiert harte Grenzen für Agenten und Prozesse.
+#
+# Scope-Hinweis: raw-vibes/ ist bewusst von allen Constraints ausgenommen.
+# Harte Anforderungen gelten für strukturierte Experimente und Bibliothekspfade.
 
 schema_version: "0.1.0"
 

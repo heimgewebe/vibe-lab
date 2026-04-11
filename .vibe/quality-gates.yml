@@ -1,9 +1,24 @@
 # .vibe/quality-gates.yml — Quality Gates für den Erkenntniskreislauf
 # Definiert Mindestanforderungen für Zustandsübergänge.
+#
+# Phasenmodell:
+#   raw vibe  → keine Anforderungen (raw-vibes/)
+#   idea      → minimale Anforderungen (Experiment-Skeleton)
+#   testing   → strukturierte Anforderungen (Evidenz, Methode)
+#   adopted   → harte Anforderungen (volle Validierung, Promotion-Gate)
 
 schema_version: "0.1.0"
 
 gates:
+
+  - id: raw-to-idea
+    transition: "raw vibe → idea"
+    description: "Eine rohe Idee wird zu einer prüfbaren Hypothese formalisiert."
+    requirements:
+      - "Hypothese ist formuliert (als Issue oder in manifest.yml)"
+    note: |
+      Keine harten Pflichtartefakte in dieser Phase.
+      raw-vibes/ ist bewusst unstrukturiert und unvalidiert.
 
   - id: idea-to-testing
     transition: "idea → testing"
@@ -12,7 +27,9 @@ gates:
       - "Experiment-Ordner existiert mit manifest.yml"
       - "method.md beschreibt das Vorgehen"
       - "CONTEXT.md dokumentiert den Ausgangszustand"
-      - "failure_modes.md legt bekannte Grenzen und Fehlannahmen fest"
+    note: |
+      failure_modes.md, INITIAL.md sind in dieser Phase empfohlen, aber nicht erzwungen.
+      Sie werden erst bei Promotion zur Pflicht.
 
   - id: testing-to-adopted
     transition: "testing → adopted"

@@ -2,45 +2,76 @@
 
 **Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken.**
 
-Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. Das System verbessert nicht nur Coding, sondern sich selbst.
-
-## Was ist Vibe-Lab?
-
-Das Repository realisiert die Pipeline **Sammlung → Erprobung → Validierung → Kreation**:
-
-- **Sammlung (roh):** Ideen und Hypothesen werden über typisierte Issue-Formulare eingebracht.
-- **Erprobung (getestet):** Strukturierte Experimente mit reproduzierbarem Setup prüfen Hypothesen.
-- **Validierung (bewährt):** Nur evidenzbasierte Praktiken werden in den Katalog aufgenommen.
-- **Kreation (systemisch erweitert):** Validierte Praktiken fließen als Instruction Blocks und Exports ins Ökosystem zurück.
-
-## Zweizonenlogik
-
-| Zone         | Ort                  | Charakter                        |
-| ------------ | -------------------- | -------------------------------- |
-| **Labor**    | `experiments/`       | Freie Exploration, hohe Varianz  |
-| **Bibliothek** | `catalog/`, `prompts/`, `benchmarks/` | Validiertes Wissen, harte Checks |
+Vibe-Lab sammelt, erprobt und validiert Vibe-Coding-Praktiken. Nicht alles muss sofort ein schweres epistemisches Objekt sein — die meisten Ideen starten roh und werden erst bei Bedarf strukturiert.
 
 ## Schnellstart
 
-### Idee einreichen
-Gehe zu **Issues → New issue → Get started** und wähle das Formular **💡 Idea** aus.
+### 💡 Rohe Idee festhalten (sofort, ohne Setup)
 
-### Experiment starten
-Gehe zu **Issues → New issue → Get started** und wähle das Formular **🧪 Experiment Proposal** aus. Kopiere anschließend `experiments/_template/` in einen neuen Ordner.
+Lege eine Markdown-Datei in `raw-vibes/` an:
 
-### Ergebnis zur Übernahme vorschlagen
-Erstelle einen PR und wähle im PR-Dialog das Template **Promotion** aus.
+```bash
+echo "# Meine Beobachtung\n\nChain-of-Thought scheint bei Refactoring besser zu funktionieren als..." \
+  > raw-vibes/chain-of-thought-refactoring.md
+```
+
+Kein Schema, kein Frontmatter, keine CI-Prüfung. Einfach festhalten.
+
+### 🧪 Strukturiertes Experiment starten
+
+Wenn eine Idee reif genug zum Testen ist:
+
+1. Erstelle ein Issue mit dem Formular **🧪 Experiment Proposal**
+2. Kopiere `experiments/_template/` in einen neuen Ordner
+3. Fülle `manifest.yml`, `method.md` und `CONTEXT.md` aus
+4. Sammle Evidenz in `evidence.jsonl`
+
+### 📚 Ergebnis in den Katalog übernehmen
+
+Erst wenn ein Experiment belastbare Evidenz liefert:
+
+1. Erstelle einen PR mit dem Template **Promotion**
+2. Alle Pflichtartefakte müssen vollständig sein (`make validate`)
+3. Review + Merge = adoptierte Praxis
 
 ### Lokal validieren
+
 ```bash
 make validate
 ```
 
-## Contribution Contract
+## Drei Phasen, aufsteigende Strenge
 
-Jeder Beitrag muss einem der folgenden Typen entsprechen: **Innovation**, **Experiment**, **Catalog Entry**, **Combo**, **Prompt** oder **Decision Artifact**. Details: [CONTRIBUTING.md](CONTRIBUTING.md).
+| Phase | Ort | Anforderung | Charakter |
+|-------|-----|-------------|-----------|
+| **Roh** | `raw-vibes/` | Keine | Spontan, frei, unstrukturiert |
+| **Experiment** | `experiments/` | Manifest, Methode, Evidenz | Strukturiert, reproduzierbar |
+| **Bibliothek** | `catalog/`, `prompts/adopted/` | Volle Validierung, Promotion-Gate | Hart geprüft, evidenzbasiert |
 
-## Steuerungsdokumente
+**Prinzip:** Leicht am Eingang, hart am Ausgang.
+
+## Projektstruktur
+
+```
+vibe-lab/
+  raw-vibes/                      # Rohe Ideen, Notizen, Fragmente
+  experiments/                    # Labor: Strukturierte Testläufe
+  catalog/                        # Bibliothek: Validiertes Wissen
+  prompts/                        # Bibliothek: Menschenlesbare Artefakte
+  benchmarks/                     # Bibliothek: Vergleichsaufgaben
+  decisions/                      # Meta-Entscheidungen
+  docs/                           # Epistemische Dokumentpfade
+  contracts/                      # Kanonische/policy-nahe Schemas
+  schemas/                        # Pipeline-Validierungs-Schemas
+  scripts/                        # Guard-/Generator-Stack
+  tools/                          # CLI / Automatisierung
+  .vibe/                          # Repo-operative Verträge
+```
+
+## Steuerung & Governance
+
+<details>
+<summary>Steuerungsdokumente und Wahrheitshierarchie (für Fortgeschrittene)</summary>
 
 | Dokument              | Zweck                               | Status          |
 | --------------------- | ----------------------------------- | --------------- |
@@ -50,36 +81,18 @@ Jeder Beitrag muss einem der folgenden Typen entsprechen: **Innovation**, **Expe
 | `vision.md`           | Systemvision                        | Kanonisch       |
 | `repo-plan.md`        | Architektur- und Umsetzungsplan     | Kanonisch       |
 
-## Wahrheitshierarchie
+**Wahrheitshierarchie:**
 
 1. **Kanonische Quellen** — `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`, `vision.md`, `repo-plan.md`, `contracts/*`, `schemas/*`
 2. **Operative Dokumente** — `README.md`, `CONTRIBUTING.md`, `.vibe/*`
 3. **Navigation** — `docs/index.md` (Wegweiser, nicht Wahrheit)
 4. **Diagnose** — `docs/_generated/*` (maschinell, read-only)
 
-## Projektstruktur
-
-```
-vibe-lab/
-  README.md, CONTRIBUTING.md      # Operatives Einstiegssystem
-  repo.meta.yaml                  # Maschinenlesbare Repo-Verfassung
-  AGENTS.md, agent-policy.yaml    # Agentensteuerung
-  .vibe/                          # Repo-operative Verträge
-  contracts/                      # Kanonische/policy-nahe Schemas
-  schemas/                        # Pipeline-Validierungs-Schemas
-  experiments/                    # Labor: Materialisierte Testläufe
-  catalog/                        # Bibliothek: Validiertes Wissen
-  prompts/                        # Bibliothek: Menschenlesbare Artefakte
-  benchmarks/                     # Bibliothek: Vergleichsaufgaben
-  decisions/                      # Meta-Entscheidungen
-  docs/                           # Epistemische Dokumentpfade
-  scripts/                        # Guard-/Generator-Stack
-  tools/                          # CLI / Automatisierung
-```
+</details>
 
 ## Weiterführend
 
+- [Contributing](CONTRIBUTING.md) — Phasenmodell, Beitragstypen, Qualitätsanforderungen
 - [Vision](vision.md)
 - [Repo-Plan](repo-plan.md)
-- [Contributing](CONTRIBUTING.md)
 - [Dokumentation](docs/index.md)
