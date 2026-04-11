@@ -46,7 +46,9 @@ EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", 
 FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)
 
 # Statuses, die eine ausgefüllte failure_modes.md erfordern
-FAILURE_MODES_REQUIRED_STATUSES: frozenset[str] = frozenset({"testing", "adopted"})
+# Hinweis: Nur bei adopted/Promotion Pflicht. Für testing ist failure_modes.md
+# empfohlen, aber nicht erzwungen (siehe CONTRIBUTING.md, quality-gates.yml).
+FAILURE_MODES_REQUIRED_STATUSES: frozenset[str] = frozenset({"adopted"})
 
 # Pfad zum docmeta-Kanonicalschema (contracts/, nicht schemas/)
 DOCMETA_SCHEMA_PATH = REPO_ROOT / "contracts" / "docmeta.schema.json"

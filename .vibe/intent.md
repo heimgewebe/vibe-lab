@@ -8,7 +8,7 @@ Vibe-Lab ist ein exekutierbarer Erkenntnisraum. Es erfasst Vibe-Coding-Hypothese
 
 Das Repository realisiert die Pipeline **Sammlung → Erprobung → Validierung → Kreation** als asymmetrische Rückkopplung:
 
-- Nichts bleibt „nur Idee"
+- Rohe Ideen dürfen roh bleiben — aber wer testen will, braucht Struktur
 - Nichts wird unvalidiert zur „Best Practice" erklärt
 - Validierte Praktiken stabilisieren das System
 - Nicht-validierte Praktiken liefern explorativen Erkenntniswert

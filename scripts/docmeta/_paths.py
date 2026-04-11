@@ -34,7 +34,7 @@ SKIP_DIR_NAMES: frozenset[str] = frozenset({
 def should_skip(path: Path, repo_root: Path, skip_generated: bool = True) -> bool:
     """Gibt True zurück, wenn der Pfad übersprungen werden soll.
 
-    Überspringt: .git/, .github/, .cursor/, node_modules/, __pycache__/, _archive/
+    Überspringt: .git/, .github/, .cursor/, node_modules/, __pycache__/, _archive/, raw-vibes/
     Inkludiert:  .vibe/ (operative Wahrheit gemäß Truth Model)
     """
     parts = path.relative_to(repo_root).parts

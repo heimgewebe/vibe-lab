@@ -73,10 +73,11 @@ constraints:
 
   - id: failure-modes-required
     description: |
-      Jedes Experiment mit Status adopted oder testing muss eine failure_modes.md enthalten.
+      Jedes Experiment mit Status adopted muss eine failure_modes.md enthalten.
       Die Datei darf nicht nur Template-Platzhalter enthalten.
       Ziel: verhindert blinde Flecken durch selektive Evidenz-Auswahl.
+      Für laufende Experimente (testing) ist failure_modes.md empfohlen, aber nicht erzwungen.
     applies_to:
       - "experiments/*"
     severity: hard
-    condition: "Nur wenn Status = adopted, testing oder Promotion beantragt"
+    condition: "Nur wenn Status = adopted oder Promotion beantragt"

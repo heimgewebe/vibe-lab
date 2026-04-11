@@ -87,7 +87,7 @@ Sonderstatus:
 | Schema-Compliance | — | ✅ | ✅ |
 | `manifest.yml` | — | ✅ | ✅ |
 | `evidence.jsonl` | — | ✅ | ✅ |
-| `CONTEXT.md` | — | empfohlen | ✅ Pflicht |
+| `CONTEXT.md` | — | ✅ | ✅ Pflicht |
 | `INITIAL.md` | — | empfohlen | ✅ Pflicht |
 | `failure_modes.md` | — | empfohlen | ✅ Pflicht |
 | `decision.yml` | — | — | ✅ Pflicht |
