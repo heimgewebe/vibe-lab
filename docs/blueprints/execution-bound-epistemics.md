@@ -1,7 +1,10 @@
 ---
 title: "Blaupause: Execution-Bound Epistemics für Vibe-Lab"
 status: draft
-canonicality: canonical
+canonicality: operative
+relations:
+  - type: informs
+    target: ../masterplan.md
 schema_version: "0.1.0"
 created: "2026-04-12"
 updated: "2026-04-12"
@@ -13,6 +16,9 @@ tags:
 ---
 
 # Blaupause: Execution-Bound Epistemics für Vibe-Lab
+
+> **Hinweis:** Dies ist ein Entwurfsdokument (Blaupause). Es beschreibt Zielarchitektur und Härtungsvorschläge für das System, ist aber noch nicht als bindende Wahrheit umgesetzt. Verbindlichkeit entsteht erst durch spätere, technische Folge-PRs.
+
 
 ## 0. Kurzdefinition
 

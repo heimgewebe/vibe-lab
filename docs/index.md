@@ -37,6 +37,7 @@ canonicality: navigation
 | [syntheses/](syntheses/)  | Verdichtete Erkenntnisse                    |
 | [rules/](rules/)          | Operationalisierte Regeln                   |
 | [blueprints/](blueprints/) | Überführung in Praxis                      |
+| [Execution-Bound Epistemics](blueprints/execution-bound-epistemics.md) | Blueprint für harte Ausführungsbindung |
 | [policies/](policies/)    | Richtlinien und Policy-Dokumente            |
 | [reference/](reference/)  | Nachschlagewerke und Referenzmaterial       |
 | [playbooks/](playbooks/)  | Triage-Runbooks und operative Anleitungen   |
