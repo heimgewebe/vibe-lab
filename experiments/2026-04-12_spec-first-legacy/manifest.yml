@@ -1,0 +1,23 @@
+# Experiment Manifest
+schema_version: "0.1.0"
+
+experiment:
+  name: "Spec-First Legacy Refactoring"
+  hypothesis: "Der 'Spec-First'-Ansatz führt bei Legacy-Code zu einer besseren Testbarkeit und Fehlerbehandlung als unstrukturierte Refaktorierung."
+  status: testing
+  category: workflow
+  created: "2026-04-12"
+  updated: "2026-04-12"
+  author: "Agent"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools: ["LLM-Agents", "Vibe-Coding"]
+  language: "Diverse"
+  environment: "Vibe-Lab"
+  challenge_version: "legacy-refactoring-v1"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

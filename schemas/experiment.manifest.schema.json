@@ -23,7 +23,7 @@
         },
         "status": {
           "type": "string",
-          "enum": ["idea", "testing", "adopted", "rejected", "blocked", "inconclusive"],
+          "enum": ["idea", "designed", "testing", "adopted", "rejected", "blocked", "inconclusive"],
           "description": "Aktueller Status des Experiments"
         },
         "category": {

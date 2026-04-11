@@ -1,0 +1,10 @@
+verdict: not_executed
+confidence: none
+
+summary: >
+  Dieses Experiment wurde aus qualitativen Beobachtungen rekonstruiert,
+  jedoch nicht im aktuellen System ausgeführt.
+
+reason:
+  - keine Benchmark-Durchläufe
+  - keine reproduzierbare Datengenerierung

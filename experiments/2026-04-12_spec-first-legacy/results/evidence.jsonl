@@ -1,0 +1,4 @@
+{"event_type": "observation", "timestamp": "2026-04-12T10:00:00Z", "iteration": 1, "context": {"step": "setup"}, "metric": {"name": "duration_seconds"}, "value": 5}
+{"event_type": "observation", "timestamp": "2026-04-12T10:02:00Z", "iteration": 1, "context": {"step": "refactoring"}, "metric": {"name": "duration_seconds"}, "value": 120}
+{"event_type": "observation", "timestamp": "2026-04-12T10:05:00Z", "iteration": 1, "context": {"step": "write_tests"}, "metric": {"name": "duration_seconds"}, "value": 180}
+{"event_type": "observation", "timestamp": "2026-04-12T10:06:00Z", "iteration": 1, "context": {"step": "run_tests"}, "metric": {"name": "test_pass_rate"}, "value": 1.0}
