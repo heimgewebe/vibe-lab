@@ -37,6 +37,10 @@ operative_documents:
   - ".vibe/*"
 
 path_logic:
+  capture_zone:
+    description: "Roher, unstrukturierter Ideeneingang"
+    paths:
+      - "raw-vibes/*"
   lab_zone:
     description: "Freie Exploration, hohe Varianz"
     paths:
@@ -63,6 +67,7 @@ path_logic:
 
 safe_read_paths:
   - README.md
+  - "raw-vibes/*"
   - CONTRIBUTING.md
   - repo.meta.yaml
   - AGENTS.md

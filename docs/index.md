@@ -30,6 +30,7 @@ canonicality: navigation
 
 | Ordner                    | Inhalt                                      |
 | ------------------------- | ------------------------------------------- |
+| [raw-vibes/](../raw-vibes/) | Rohe Ideen und Beobachtungen                |
 | [concepts/](concepts/)    | Unvalidierte Begriffe und Denkmodelle       |
 | [experiments/](experiments/) | Dokumentationsebene für Versuchsdesign   |
 | [evaluations/](evaluations/) | Auswertungen und Bewertungen             |

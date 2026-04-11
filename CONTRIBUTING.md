@@ -60,7 +60,7 @@ Jeder Beitrag ordnet sich einem dieser Typen zu:
 | -------------------- | ------------------------------- | ---------------------------- | ---------------------------------------------------------------- |
 | **Raw Vibe**         | Direkt in `raw-vibes/`          | `raw-vibes/`                 | Keine                                                            |
 | **Innovation**       | Issue: `idea.yml`               | `experiments/`               | Hypothese formuliert, reproduzierbar                             |
-| **Experiment**       | Issue: `experiment-proposal.yml`| `experiments/<name>/`        | Golden Skeleton vollständig, `evidence.jsonl` vorhanden          |
+| **Experiment**       | Issue: `experiment-proposal.yml`| `experiments/<name>/`        | Manifest und Methode initialisiert, `evidence.jsonl` vorhanden   |
 | **Catalog Entry**    | PR: `promotion.md`             | `catalog/`                   | Experiment abgeschlossen, Evidenz belastbar, Schema valide       |
 | **Combo**            | PR: `promotion.md`             | `catalog/combos/`            | Mindestens zwei Practices referenziert, eigene Evidenz vorhanden |
 | **Prompt**           | PR: `promotion.md`             | `prompts/adopted/`           | Experiment-Rückverweis, menschenlesbar                           |
