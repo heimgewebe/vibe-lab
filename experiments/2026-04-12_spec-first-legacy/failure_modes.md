@@ -1,3 +1,9 @@
+---
+title: "Failure Modes: Spec-First Legacy Refactoring"
+status: "testing"
+canonicality: "operative"
+---
+
 # Failure Modes
 
 - Übersehen von versteckten Abhängigkeiten.

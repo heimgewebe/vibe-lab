@@ -27,11 +27,11 @@
 | `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md` | YOLO vs. Spec-First — Failure Modes | testing | operative |
 | `experiments/2026-04-11_yolo-vs-spec-first/method.md` | YOLO vs. Spec-First — Methode | testing | operative |
 | `experiments/2026-04-11_yolo-vs-spec-first/results/result.md` | YOLO vs. Spec-First — Ergebnisse | testing | operative |
-| `experiments/2026-04-12_spec-first-legacy/CONTEXT.md` | CONTEXT | — | — |
-| `experiments/2026-04-12_spec-first-legacy/INITIAL.md` | INITIAL | — | — |
-| `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | failure_modes | — | — |
-| `experiments/2026-04-12_spec-first-legacy/method.md` | method | — | — |
-| `experiments/2026-04-12_spec-first-legacy/results/result.md` | result | — | — |
+| `experiments/2026-04-12_spec-first-legacy/CONTEXT.md` | Context: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-12_spec-first-legacy/INITIAL.md` | Initial: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |

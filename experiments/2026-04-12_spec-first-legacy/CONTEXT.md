@@ -1,3 +1,9 @@
+---
+title: "Context: Spec-First Legacy Refactoring"
+status: "testing"
+canonicality: "operative"
+---
+
 # CONTEXT
 
 ## Ziel

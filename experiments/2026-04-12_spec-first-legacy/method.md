@@ -1,3 +1,9 @@
+---
+title: "Methodik: Spec-First Legacy Refactoring"
+status: "testing"
+canonicality: "operative"
+---
+
 # Methodik
 
 1. Analyse des Legacy-Codes.
