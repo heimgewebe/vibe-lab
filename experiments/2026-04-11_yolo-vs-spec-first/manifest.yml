@@ -12,7 +12,7 @@ experiment:
   updated: "2026-04-11"
   author: "Agent"
   iteration: 1
-  evidence_level: experimental
+  evidence_level: anecdotal
 
 context:
   tools: ["LLM-Agents", "Vibe-Coding"]

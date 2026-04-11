@@ -1,3 +1,9 @@
+---
+title: "YOLO vs. Spec-First — Ergebnisse"
+status: testing
+canonicality: operative
+---
+
 # Ergebnisse: YOLO vs. Spec-First
 
 Basierend auf den gesammelten qualitativen Beobachtungen ergeben sich folgende Befunde:

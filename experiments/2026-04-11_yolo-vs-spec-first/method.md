@@ -1,3 +1,9 @@
+---
+title: "YOLO vs. Spec-First — Methode"
+status: testing
+canonicality: operative
+---
+
 # Methode: YOLO vs. Spec-First
 
 Dieses Experiment vergleicht zwei gegensätzliche Vibe-Coding-Ansätze:

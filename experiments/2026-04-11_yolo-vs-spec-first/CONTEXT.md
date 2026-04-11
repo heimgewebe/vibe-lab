@@ -1,3 +1,9 @@
+---
+title: "YOLO vs. Spec-First — Kontext"
+status: testing
+canonicality: operative
+---
+
 # Kontext
 
 Dieses Experiment archiviert qualitative Erkenntnisse aus der vorherigen Version des Vibe-Labs bezüglich des zentralen Trade-offs zwischen schnellem, unstrukturiertem Vibe-Coding ("YOLO") und präzisem, aber initial langsamerem Vibe-Coding ("Spec-First").
