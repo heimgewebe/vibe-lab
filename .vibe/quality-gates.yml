@@ -1,0 +1,81 @@
+# .vibe/quality-gates.yml — Quality Gates für den Erkenntniskreislauf
+# Definiert Mindestanforderungen für Zustandsübergänge.
+#
+# Phasenmodell:
+#   raw vibe  → keine Anforderungen (raw-vibes/)
+#   idea      → minimale Anforderungen (Experiment-Skeleton)
+#   testing   → strukturierte Anforderungen (Evidenz, Methode)
+#   adopted   → harte Anforderungen (volle Validierung, Promotion-Gate)
+
+schema_version: "0.1.0"
+
+gates:
+
+  - id: raw-to-idea
+    transition: "raw vibe → idea"
+    description: "Eine rohe Idee wird zu einer prüfbaren Hypothese formalisiert."
+    requirements:
+      - "Hypothese ist formuliert (als Issue oder in manifest.yml)"
+    note: |
+      Keine harten Pflichtartefakte in dieser Phase.
+      raw-vibes/ ist bewusst unstrukturiert und unvalidiert.
+
+  - id: idea-to-testing
+    transition: "idea → testing"
+    description: "Hypothese muss formuliert und ein Experiment-Skeleton angelegt sein."
+    requirements:
+      - "Experiment-Ordner existiert mit manifest.yml"
+      - "method.md beschreibt das Vorgehen"
+      - "CONTEXT.md dokumentiert den Ausgangszustand"
+    note: |
+      failure_modes.md, INITIAL.md sind in dieser Phase empfohlen, aber nicht erzwungen.
+      Sie werden erst bei Promotion zur Pflicht.
+
+  - id: testing-to-adopted
+    transition: "testing → adopted"
+    description: "Experiment muss vollständig durchgeführt und belastbar ausgewertet sein."
+    requirements:
+      - "evidence.jsonl enthält mindestens einen Eintrag"
+      - "decision.yml enthält verdict: adopted"
+      - "CONTEXT.md und INITIAL.md sind vollständig"
+      - "failure_modes.md ist ausgefüllt (nicht nur Template)"
+      - "Schema-Validierung bestanden"
+      - "Promotion-PR mit Template promotion.md"
+
+  - id: testing-to-rejected
+    transition: "testing → rejected"
+    description: "Experiment muss ausgewertet sein, auch wenn das Ergebnis negativ ist."
+    requirements:
+      - "decision.yml enthält verdict: rejected mit Begründung"
+      - "evidence.jsonl dokumentiert die Beobachtungen"
+
+  - id: adopted-to-deprecated
+    transition: "adopted → deprecated"
+    description: "Ablösung durch neue Evidenz muss dokumentiert sein."
+    requirements:
+      - "Verweis auf ablösende Practice oder Experiment"
+      - "Status-Update im Katalogeintrag"
+      - "Entfernung aus generierten Exports"
+
+  - id: catalog-entry
+    gate: "Promotion Gate"
+    description: "Harte Prüfung vor Aufnahme in die Bibliothek."
+    requirements:
+      - "Vollständiges Experiment vorhanden"
+      - "Schema-Validierung bestanden (make validate)"
+      - "evidence.jsonl nicht leer"
+      - "CONTEXT.md und INITIAL.md vorhanden"
+      - "failure_modes.md vorhanden und ausgefüllt"
+      - "PR nutzt Template promotion.md"
+
+  - id: replication-required
+    gate: "Replikations-Gate"
+    description: "Experiment muss unabhängig reproduzierbar sein, bevor evidence_level: replicated vergeben wird."
+    requirements:
+      - "replicated_from im manifest.yml verweist auf das Original-Experiment"
+      - "Replikation läuft mit eigenem Kontext (andere Person oder andere Sitzung)"
+      - "Eigene evidence.jsonl vorhanden (nicht kopiert aus Original)"
+    note: |
+      Ohne Replikation kann evidence_level maximal 'experimental' sein.
+      evidence_level: replicated ist der höchste epistemische Status und erfordert
+      dieses Gate explizit.

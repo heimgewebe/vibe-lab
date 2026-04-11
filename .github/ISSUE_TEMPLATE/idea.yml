@@ -1,0 +1,60 @@
+name: "💡 Idea"
+description: "Neue Hypothese, Beobachtung oder Impuls einbringen"
+title: "[Idea]: "
+labels: ["idea", "intake"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Neue Idee / Hypothese
+        Beschreibe eine Beobachtung, Hypothese oder einen Impuls zum Thema Vibe-Coding.
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: "Hypothese / Beobachtung"
+      description: "Was genau ist deine Hypothese oder Beobachtung?"
+      placeholder: "Wenn man X tut, dann verbessert sich Y, weil Z."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Kontext"
+      description: "In welchem Kontext hast du das beobachtet? (Tools, Sprache, Setup)"
+      placeholder: "Beobachtet bei Arbeit mit Cursor + TypeScript in einem Monorepo."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Kategorie"
+      description: "Welcher Bereich wird adressiert?"
+      options:
+        - Style
+        - Technology
+        - Technique
+        - Workflow
+        - Combo
+        - Andere
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_value
+    attributes:
+      label: "Erwarteter Nutzen"
+      description: "Was wäre der konkrete Gewinn, wenn sich die Hypothese bestätigt?"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution_type
+    attributes:
+      label: "Beitragstyp"
+      description: "Bestätigung des Contribution Contract"
+      options:
+        - label: "Dies ist ein **Innovation**-Beitrag gemäß dem Contribution Contract."
+          required: true

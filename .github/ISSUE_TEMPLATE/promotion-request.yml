@@ -1,0 +1,63 @@
+name: "🏆 Promotion Request"
+description: "Validierte Praxis zur Aufnahme in Katalog, Prompts oder Combos vorschlagen"
+title: "[Promotion]: "
+labels: ["promotion", "intake"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Promotion-Antrag
+        Schlage eine durch Experiment validierte Praxis zur Aufnahme in die Bibliothek vor.
+        Voraussetzung: Ein vollständig durchgeführtes Experiment mit belastbarer Evidenz.
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: "Ziel"
+      description: "Wohin soll die Praxis aufgenommen werden?"
+      options:
+        - "Catalog Entry"
+        - "Combo"
+        - "Prompt"
+    validations:
+      required: true
+
+  - type: input
+    id: experiment_ref
+    attributes:
+      label: "Experiment-Referenz"
+      description: "Pfad zum abgeschlossenen Experiment"
+      placeholder: "experiments/2026-04-08_spec-first/"
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_summary
+    attributes:
+      label: "Evidenz-Zusammenfassung"
+      description: "Kurze Zusammenfassung der Experimentbefunde, die die Promotion rechtfertigen."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_entry
+    attributes:
+      label: "Vorgeschlagener Eintrag"
+      description: "Wie soll der Katalogeintrag / Prompt / Combo aussehen? (Kurzfassung)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Promotion-Checkliste"
+      description: "Bestätige, dass alle Voraussetzungen erfüllt sind."
+      options:
+        - label: "Experiment ist vollständig durchgeführt (manifest.yml, method.md, evidence.jsonl, decision.yml)"
+          required: true
+        - label: "CONTEXT.md und INITIAL.md sind vorhanden"
+          required: true
+        - label: "decision.yml enthält `verdict: adopted`"
+          required: true
+        - label: "Schema-Validierung bestanden (`make validate`)"
+          required: true

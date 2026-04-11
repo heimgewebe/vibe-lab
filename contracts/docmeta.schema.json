@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/contracts/docmeta.schema.json",
+  "title": "Document Metadata (Frontmatter)",
+  "description": "Kanonisches Schema für Markdown-Frontmatter. Definiert epistemische Pflichtfelder und Relations-Typen. Gehört in contracts/ (policy-nahe Semantik, nicht Pipeline-Validierung).",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Dokumenttitel"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["idea", "testing", "adopted", "rejected", "blocked", "inconclusive", "deprecated", "draft", "active", "archived"],
+      "description": "Operativer Status des Dokuments"
+    },
+    "canonicality": {
+      "type": "string",
+      "enum": ["canonical", "operative", "navigation", "diagnosis", "derived"],
+      "description": "Stellung in der Wahrheitshierarchie"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version des verwendeten Schemas (semver)"
+    },
+    "created": {
+      "type": "string",
+      "format": "date",
+      "description": "Erstellungsdatum"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Letztes Änderungsdatum"
+    },
+    "author": {
+      "type": "string",
+      "description": "Autor oder verantwortliche Person"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Freitext-Tags zur Kategorisierung"
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "derived_from",
+              "replicated_from",
+              "supersedes",
+              "superseded_by",
+              "validates",
+              "validated_by",
+              "references",
+              "blocks",
+              "blocked_by",
+              "informs",
+              "informed_by"
+            ],
+            "description": "Art der Beziehung"
+          },
+          "target": {
+            "type": "string",
+            "description": "Relativer Pfad oder Identifier des Zieldokuments"
+          }
+        },
+        "required": ["type", "target"]
+      },
+      "description": "Gerichtete Beziehungen zu anderen Dokumenten"
+    }
+  },
+  "required": ["title", "status"]
+}

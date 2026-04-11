@@ -1,0 +1,38 @@
+# CODEOWNERS — Pfadbasierte Governance
+# Siehe: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# WICHTIG: CODEOWNERS erfordert gültige GitHub-Benutzer (@username) oder Teams (@org/team-name).
+# Eine Organisation (@heimgewebe) allein ist kein gültiger Owner und wird von GitHub ignoriert.
+#
+# Damit diese Datei wirksam ist, muss Branch Protection für `main` aktiviert sein:
+#   Settings → Branches → main → "Require a pull request before merging" +
+#   "Require review from Code Owners"
+# Ohne Branch Protection hat diese Datei nur dokumentarischen Charakter.
+
+# Diese Datei selbst — schützt CODEOWNERS vor unkontrollierten Änderungen
+/.github/CODEOWNERS              @alexdermohr
+
+# Kanonische Steuerungsdokumente — erfordern Review durch Maintainer
+/repo.meta.yaml                  @alexdermohr
+/AGENTS.md                       @alexdermohr
+/agent-policy.yaml               @alexdermohr
+
+# Operative Grunddokumente
+/README.md                       @alexdermohr
+/CONTRIBUTING.md                 @alexdermohr
+
+# Verträge und Schemas
+/contracts/                      @alexdermohr
+/schemas/                        @alexdermohr
+
+# Bibliothek — Promotion-Gate erforderlich
+/catalog/                        @alexdermohr
+/prompts/                        @alexdermohr
+/benchmarks/                     @alexdermohr
+
+# Governance
+/decisions/                      @alexdermohr
+/.vibe/                          @alexdermohr
+
+# CI/Workflows
+/.github/workflows/              @alexdermohr

@@ -1,0 +1,26 @@
+# Experiment Manifest (Template)
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: ""                    # Kurzname des Experiments
+  hypothesis: ""              # Zu prüfende Hypothese
+  status: idea                # idea | testing | adopted | rejected | blocked | inconclusive
+  category: technique         # style | technology | technique | workflow | combo
+  created: "YYYY-MM-DD"
+  updated: "YYYY-MM-DD"
+  author: ""
+  iteration: 1
+  evidence_level: experimental  # anecdotal | experimental | replicated
+  # replicated_from: ""      # Pfad zum Original-Experiment bei Replikation
+  # related_idea: ""          # Referenz auf Idea-Issue (z.B. #42)
+
+context:
+  tools: []                   # Verwendete Tools und Modelle
+  language: ""                # Primäre Programmiersprache
+  environment: ""             # Entwicklungsumgebung
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

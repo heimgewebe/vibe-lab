@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment.manifest.schema.json",
+  "title": "Experiment Manifest",
+  "description": "Schema für manifest.yml in Experiment-Ordnern. Operative Pipeline-Validierung (gehört in schemas/, nicht contracts/).",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version dieses Schemas (semver)"
+    },
+    "experiment": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Kurzname des Experiments"
+        },
+        "hypothesis": {
+          "type": "string",
+          "description": "Zu prüfende Hypothese"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["idea", "testing", "adopted", "rejected", "blocked", "inconclusive"],
+          "description": "Aktueller Status des Experiments"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["style", "technology", "technique", "workflow", "combo"],
+          "description": "Kategorie der untersuchten Praxis"
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "description": "Startdatum des Experiments"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date",
+          "description": "Letztes Update"
+        },
+        "author": {
+          "type": "string",
+          "description": "Experimentverantwortliche Person"
+        },
+        "iteration": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Aktuelle Iterationsnummer"
+        },
+        "evidence_level": {
+          "type": "string",
+          "enum": ["anecdotal", "experimental", "replicated"],
+          "description": "Epistemisches Niveau der Evidenz: anecdotal (einzelne Beobachtung), experimental (kontrollierter Test), replicated (unabhängig reproduziert)"
+        },
+        "replicated_from": {
+          "type": "string",
+          "description": "Pfad zum Original-Experiment bei Replikation"
+        },
+        "related_idea": {
+          "type": "string",
+          "description": "Referenz auf Idea-Issue (z.B. #42)"
+        }
+      },
+      "required": ["name", "hypothesis", "status", "category", "evidence_level"],
+      "if": {
+        "properties": {
+          "evidence_level": { "const": "replicated" }
+        }
+      },
+      "then": {
+        "required": ["replicated_from"],
+        "properties": {
+          "replicated_from": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Verwendete Tools und Modelle"
+        },
+        "language": {
+          "type": "string",
+          "description": "Primäre Programmiersprache"
+        },
+        "environment": {
+          "type": "string",
+          "description": "Entwicklungsumgebung"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "jsonl",
+          "description": "Format der Evidenzdaten"
+        },
+        "path": {
+          "type": "string",
+          "description": "Relativer Pfad zur Evidenzdatei"
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "experiment"]
+}

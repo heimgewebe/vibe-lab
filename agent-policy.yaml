@@ -1,0 +1,57 @@
+# agent-policy.yaml — Operative Agentensteuerung
+# Handgepflegt. Kanonisch. Nicht generiert.
+# Referenz: repo.meta.yaml, AGENTS.md
+
+schema_version: "0.1.0"
+
+read_order:
+  - repo.meta.yaml
+  - AGENTS.md
+  - agent-policy.yaml
+  - README.md
+  - docs/index.md
+  - "contracts/*"
+  - "schemas/*"
+  - ".vibe/*"
+  - "docs/_generated/*"
+
+zones:
+  lab:
+    paths:
+      - "experiments/*"
+    freedom: high
+    description: "Exploration, schnelle Iteration"
+  library:
+    paths:
+      - "catalog/*"
+      - "prompts/*"
+      - "benchmarks/*"
+      - "instruction-blocks/*"
+    freedom: low
+    description: "Validiertes Wissen, harte Checks erforderlich"
+
+generated_artifacts:
+  paths:
+    - "exports/*"
+    - ".cursor/rules/*"
+    - "docs/_generated/*"
+  policy: "Niemals manuell editieren. Bei Widerspruch zu kanonischen Quellen: Abbruch und Meldung."
+
+canonical_sources:
+  paths:
+    - repo.meta.yaml
+    - AGENTS.md
+    - agent-policy.yaml
+  policy: "Handgepflegt. Nicht durch Agenten oder Generatoren veränderbar."
+
+conflict_resolution:
+  on_conflict: abort
+  report_to: "Issue oder PR-Kommentar"
+  message: "Konflikt zwischen generiertem Artefakt und kanonischer Quelle erkannt."
+
+traceability:
+  required_fields:
+    - triggered_by
+    - policy
+    - action
+    - outcome
