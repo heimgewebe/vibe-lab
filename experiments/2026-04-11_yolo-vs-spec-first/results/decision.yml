@@ -1,0 +1,6 @@
+schema_version: "0.1.0"
+decision:
+  status: testing
+  justification: "Qualitative Beobachtungen bestätigen den Trade-off. Quantitative Härtung durch standardisierte Benchmarks (z.B. Legacy Refactoring) steht noch aus, um harte Metriken zu generieren."
+  next_steps:
+    - "Anwendung der Spec-First-Methode auf die neuen Benchmarks zur Gewinnung harter Metriken."
