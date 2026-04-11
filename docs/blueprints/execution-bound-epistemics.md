@@ -99,6 +99,8 @@ Erlaubte Zustände:
 - designed
 - executing
 - executed
+- replicated
+- reconstructed
 - analyzed
 - adopted
 - rejected
@@ -147,6 +149,8 @@ Mögliche substanzielle Zustände:
   geplant, aber nicht ausgeführt
 - executed
   mindestens ein echter Run belegt
+- reconstructed
+  aus Vorwissen, Altmaterial, Erinnerungen oder nachgetragenen Spuren rekonstruiert, aber kein vollwertiger Execution-Proof. Rekonstruierte Logs oder aus Erinnerung synthetisierte Ausführungsspuren dürfen ausdrücklich **nicht** als Proof of Execution für `executed` gelten.
 - analyzed
   Ergebnisse zusammengeführt
 - adopted / rejected / inconclusive
@@ -185,6 +189,7 @@ execution_status:
   - designed
   - executed
   - replicated
+  - reconstructed
 ```
 
 **Warum getrennt?**
@@ -198,13 +203,15 @@ Weil „testing“ aktuell im Repo oft überladen ist.
 
 Ein Experiment gilt nur dann als executed, wenn mindestens Folgendes vorliegt:
 
-**Mindestanforderung**
-- ein run-Event in evidence.jsonl
-- ein referenziertes Artefakt in results/artifacts/
-- ein technischer Output mit:
-  - Zeitstempel
-  - Tool/Command
-  - Exit-Code oder Ergebnisstatus
+**Mindestanforderung (Proof-Bündel)**
+Ein relevanter Run-Proof muss robust sein. Er besteht aus:
+- `event_type`: "run" in `evidence.jsonl`
+- `artifact_ref`: Muss ein String sein, relativ zum Experiment-Root, und auf eine physisch existierende Datei zeigen. Darf nicht absolut sein.
+- `command`: Der exakte Ausführungsbefehl.
+- `exit_code`: Oder ein äquivalenter technischer Ergebnisstatus.
+
+Optional ergänzend: `duration`, `runner`, `trace_id`, `checksum/hash`.
+Ein einzelnes Artefakt ohne dieses Bündel ist zu leicht als scheinbarer Beweis missbrauchbar.
 
 **Minimales Beispiel**
 
@@ -216,15 +223,23 @@ Ein Experiment gilt nur dann als executed, wenn mindestens Folgendes vorliegt:
 
 ### 5.3 Contract 3: Decision-Vertrag
 
-results/decision.yml ist nur erlaubt, wenn:
+Ein `adoption_assessment` in `results/decision.yml` ist nur erlaubt, wenn:
 - execution_status ∈ {executed, replicated}
 - evidence.jsonl mindestens ein run-Event enthält
-- artifact_ref existiert
+- artifact_ref existiert und pfadsicher ist
 - result.md auf reale Run-Artefakte Bezug nimmt
 
-Sonst:
-- kein decision.yml
-- oder explizit verdict: not_executed
+Andere Decision-Typen (wie `execution_assessment`) sind stattdessen zu nutzen, wenn kein echter Run vorliegt.
+
+⸻
+
+### 5.4 Zweite Wahrheitsachse: Contract-Treue
+
+Eine echte Ausführung genügt nicht automatisch. Bei benchmark-basierten Experimenten muss zusätzlich gelten:
+- Die benchmark-definierenden Invarianten wurden eingehalten.
+- Das Verhalten wurde nicht unbemerkt verfälscht.
+
+Erfolg heißt nicht nur „lief“, sondern „lief benchmarktreu“. Der Run legitimiert die Durchführung, die Contract-Treue legitimiert die Vergleichbarkeit.
 
 ⸻
 
@@ -236,7 +251,7 @@ Ich empfehle folgende Eventtypen:
 
 - observation  = qualitative Beobachtung
 - run          = reale Ausführung
-- metric       = messbarer numerischer oder kategorialer Wert aus realem Lauf
+- measurement  = messbarer numerischer oder kategorialer Wert aus realem Lauf (Feldname `metric` bleibt, aber Typ ist `measurement`)
 - error        = reproduzierbarer Fehler
 - decision     = nur aus bereits validierter Analyse ableitbar
 
@@ -280,6 +295,13 @@ Optional:
 - challenge_version
 - mode
 - trace_id
+
+### 6.4 Provenienz und Verantwortlichkeit
+
+Die Herkunft von Spuren muss klarer fassbar sein. Perspektivisch unterscheidet die Provenienz zwischen:
+- `author`: Verfasser des Dokuments
+- `executed_by`: Ausführende Entität (Mensch oder konkreter Agent)
+- `reviewed_by`: Prüfende Instanz
 
 ⸻
 
@@ -335,7 +357,7 @@ Erweitere schemas/experiment.manifest.schema.json um:
       "properties": {
         "execution_status": {
           "type": "string",
-          "enum": ["designed", "executed", "replicated"]
+          "enum": ["designed", "executed", "replicated", "reconstructed"]
         }
       }
     }
@@ -419,64 +441,33 @@ Sie dürfen aber nicht:
 
 ## 10. Entscheidungslogik neu kalibrieren
 
-### 10.1 Wann decision.yml erlaubt ist
+### 10.1 Decision-Typen unterscheiden
 
-Nur bei:
-- execution_status: executed
-- oder replicated
+Es gibt nicht die "eine" Entscheidung. `decision.yml` wird in drei semantische Typen aufgespalten:
+- **`execution_assessment`**: Bewertet den Ausführungsstatus (z. B. "nicht ausgeführt", "nur rekonstruiert", "Proof fehlt").
+- **`result_assessment`**: Bewertet die Ergebnisse auf Basis vorhandener Evidenz.
+- **`adoption_assessment`**: Die harte Entscheidung zur Übernahme in kanonische Pfade.
 
-### 10.2 Wann decision.yml verboten ist
+### 10.2 Erlaubte Typen nach Status
 
-Bei:
-- execution_status: designed
+- `execution_assessment` darf auch bei `designed` oder `reconstructed` existieren.
+- `adoption_assessment` darf **nur** bei `executed` oder `replicated` existieren.
 
-### 10.3 Alternative: Meta-Datei für Vorentscheide
-
-Falls du unbedingt eine Zwischenform brauchst, nicht decision.yml, sondern z. B.:
-
-results/assessment.md
-
-Mit Inhalt:
-- was angenommen wird
-- was fehlt
-- welche Ausführung noch nötig ist
-
-So bleibt Entscheidung ≠ Vorbewertung.
+Nicht jede Entscheidung ist eine Adoption, und nicht jede Entscheidung setzt `executed` voraus. Aber Adoption setzt zwingend echte Durchführung voraus.
 
 ⸻
 
 ## 11. Migration des aktuellen Bestands
 
-### 11.1 2026-04-08_spec-first
+### 11.1 Bestandsmigration: Ehrliche Einstufung
 
-Prüfen:
-- Wurde das Experiment real ausgeführt?
-- Gibt es echte Execution-Spuren oder nur strukturierte Rekonstruktion?
-
-Falls ja
-- execution_status: executed
-- Run-/Metric-Events nachziehen, soweit ehrlich möglich
-- Artefaktpflicht nachziehen, sofern vorhanden oder rekonstruierbar
-
-Falls nein
-- ehrlich auf designed oder not_executed zurückstufen
+Für den Altbestand gelten künftig drei ehrliche Wege:
+- **`executed`**: Wenn echte Ausführungsspuren und Artefakte nachweisbar vorliegen.
+- **`reconstructed`**: Wenn nur rekonstruierbare Altspuren oder Erfahrungswissen vorliegen. Dies bleibt erkenntnisfähig, ist aber nicht gleichrangig mit echter Ausführung.
+- **`designed`**: Wenn das Experiment im aktuellen System nur als geplante oder nachträglich formulierte Struktur existiert.
 
 Wichtiger Punkt:
-Auch Altbestand darf nicht aus Nostalgie epistemisch privilegiert bleiben.
-
-⸻
-
-### 11.2 2026-04-11_yolo-vs-spec-first
-
-Sollte nach deiner eigenen Einsicht nicht als durchgeführt gelten.
-
-Richtige Behandlung
-- execution_status: designed
-- kein decision.yml
-- evidence.jsonl entweder:
-  - umbenennen / umdeuten als qualitative Beobachtungen
-  - oder nur behalten, wenn klar observation-only
-  - klar markieren: rekonstruiertes Vorwissen, nicht echter Run
+Altbestand bekommt keinen Sonderbonus. Nostalgie ersetzt keinen Proof. Rekonstruktion wird explizit als solche ausgewiesen.
 
 ⸻
 
@@ -698,6 +689,7 @@ Nur die Stelle härten, an der aus Denken Wissen werden soll.
 - Nicht alle alten qualitative Beobachtungen löschen
 - Nicht raw-vibes/ mit Beweispflichten überziehen
 - Nicht die Repo-Semantik durch neue Top-Level-Strukturen aufblasen
+- **Keine Diff-Lawinen:** Epistemische Härtung darf bestehende Artefakte nur dort verändern, wo es für semantische Korrektheit oder Validierung nötig ist. Stilistische oder formatierende Massenänderungen ohne Erkenntnisgewinn sind zu vermeiden (Minimalinvasivität).
 
 ⸻
 
