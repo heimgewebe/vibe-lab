@@ -1,28 +1,24 @@
-# Experiment Manifest — Spec-First Vibe-Coding
-# Validiert gegen: schemas/experiment.manifest.schema.json
-
-schema_version: "0.1.0"
-
+schema_version: 0.1.0
 experiment:
-  name: "spec-first-prompting"
-  hypothesis: "Ein vorangestellter Spezifikationsschritt (Spec-First) verbessert Konsistenz und Vollständigkeit von LLM-generiertem API-Code messbar."
+  name: spec-first-prompting
+  hypothesis: "Ein vorangestellter Spezifikationsschritt (Spec-First) verbessert Konsistenz\
+    \ und Vollst\xE4ndigkeit von LLM-generiertem API-Code messbar."
   status: adopted
   category: technique
-  created: "2026-04-08"
-  updated: "2026-04-10"
-  author: "heimgewebe"
+  created: '2026-04-08'
+  updated: '2026-04-10'
+  author: heimgewebe
   iteration: 1
   evidence_level: experimental
-  related_idea: "#1"
-
+  related_idea: '#1'
+  execution_status: executed
 context:
   tools:
-    - "VS Code"
-    - "GitHub Copilot"
-    - "GPT-4o"
-  language: "TypeScript"
-  environment: "Node.js / Express.js"
-
+  - VS Code
+  - GitHub Copilot
+  - GPT-4o
+  language: TypeScript
+  environment: Node.js / Express.js
 evidence:
   format: jsonl
   path: results/evidence.jsonl

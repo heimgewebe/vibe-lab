@@ -40,7 +40,7 @@ EVIDENCE_REQUIRED_KEYS: frozenset[str] = frozenset({
 })
 
 # Erlaubte Werte für event_type
-EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision"})
+EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision", "run", "error", "metric"})
 
 # Muster für Template-Platzhalter in failure_modes.md (case-insensitive, whitespace-tolerant)
 FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)
@@ -121,7 +121,7 @@ def validate_evidence_files():
     Prüft:
     - Jede Zeile ist gültiges JSON
     - Pflichtfelder (event_type, timestamp, iteration, metric, value, context) vorhanden
-    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision)
+    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision, run, error, metric)
     """
     experiments_dir = REPO_ROOT / "experiments"
     found = 0

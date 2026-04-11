@@ -29,6 +29,10 @@ jobs:
       - name: Validate relations
         run: python3 scripts/docmeta/validate_relations.py
 
+      - name: Validate execution proof
+        run: python3 scripts/docmeta/validate_execution_proof.py
+
+
       - name: Regenerate diagnostics
         run: make generate
 

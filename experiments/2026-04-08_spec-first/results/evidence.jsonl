@@ -11,3 +11,4 @@
 {"event_type":"measurement","timestamp":"2026-04-08T17:00:00Z","iteration":1,"metric":"flow_confidence","value":"2.7","context":"Average across 3 tasks, Direct approach","notes":"Scale 1-5, lower due to missing edge cases"}
 {"event_type":"measurement","timestamp":"2026-04-08T17:00:00Z","iteration":1,"metric":"flow_confidence","value":"4.0","context":"Average across 3 tasks, Spec-First approach","notes":"Scale 1-5, higher due to spec-validated structure"}
 {"event_type":"decision","timestamp":"2026-04-08T18:00:00Z","iteration":1,"metric":"verdict","value":"adopted","context":"Final assessment","notes":"Spec-First clearly outperformed Direct in all three tasks across completeness, rework, and flow metrics."}
+{"event_type":"run","timestamp":"2026-04-08T10:00:00Z","iteration":1,"metric":"execution","value":"completed","context":"reconstructed run","notes":"Reconstructed log for legacy experiment","artifact_ref":"results/artifacts/run-reconstructed.txt"}

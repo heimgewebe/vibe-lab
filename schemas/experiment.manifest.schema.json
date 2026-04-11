@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment.manifest.schema.json",
   "title": "Experiment Manifest",
-  "description": "Schema für manifest.yml in Experiment-Ordnern. Operative Pipeline-Validierung (gehört in schemas/, nicht contracts/).",
+  "description": "Schema f\u00fcr manifest.yml in Experiment-Ordnern. Operative Pipeline-Validierung (geh\u00f6rt in schemas/, nicht contracts/).",
   "type": "object",
   "properties": {
     "schema_version": {
@@ -19,16 +19,29 @@
         },
         "hypothesis": {
           "type": "string",
-          "description": "Zu prüfende Hypothese"
+          "description": "Zu pr\u00fcfende Hypothese"
         },
         "status": {
           "type": "string",
-          "enum": ["idea", "testing", "adopted", "rejected", "blocked", "inconclusive"],
+          "enum": [
+            "idea",
+            "testing",
+            "adopted",
+            "rejected",
+            "blocked",
+            "inconclusive"
+          ],
           "description": "Aktueller Status des Experiments"
         },
         "category": {
           "type": "string",
-          "enum": ["style", "technology", "technique", "workflow", "combo"],
+          "enum": [
+            "style",
+            "technology",
+            "technique",
+            "workflow",
+            "combo"
+          ],
           "description": "Kategorie der untersuchten Praxis"
         },
         "created": {
@@ -52,8 +65,12 @@
         },
         "evidence_level": {
           "type": "string",
-          "enum": ["anecdotal", "experimental", "replicated"],
-          "description": "Epistemisches Niveau der Evidenz: anecdotal (einzelne Beobachtung), experimental (kontrollierter Test), replicated (unabhängig reproduziert)"
+          "enum": [
+            "anecdotal",
+            "experimental",
+            "replicated"
+          ],
+          "description": "Epistemisches Niveau der Evidenz: anecdotal (einzelne Beobachtung), experimental (kontrollierter Test), replicated (unabh\u00e4ngig reproduziert)"
         },
         "replicated_from": {
           "type": "string",
@@ -62,16 +79,36 @@
         "related_idea": {
           "type": "string",
           "description": "Referenz auf Idea-Issue (z.B. #42)"
+        },
+        "execution_status": {
+          "type": "string",
+          "enum": [
+            "designed",
+            "executed",
+            "replicated"
+          ],
+          "description": "Tats\u00e4chlicher Durchf\u00fchrungszustand"
         }
       },
-      "required": ["name", "hypothesis", "status", "category", "evidence_level"],
+      "required": [
+        "name",
+        "hypothesis",
+        "status",
+        "category",
+        "evidence_level",
+        "execution_status"
+      ],
       "if": {
         "properties": {
-          "evidence_level": { "const": "replicated" }
+          "evidence_level": {
+            "const": "replicated"
+          }
         }
       },
       "then": {
-        "required": ["replicated_from"],
+        "required": [
+          "replicated_from"
+        ],
         "properties": {
           "replicated_from": {
             "type": "string",
@@ -85,12 +122,14 @@
       "properties": {
         "tools": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Verwendete Tools und Modelle"
         },
         "language": {
           "type": "string",
-          "description": "Primäre Programmiersprache"
+          "description": "Prim\u00e4re Programmiersprache"
         },
         "environment": {
           "type": "string",
@@ -113,5 +152,8 @@
       }
     }
   },
-  "required": ["schema_version", "experiment"]
+  "required": [
+    "schema_version",
+    "experiment"
+  ]
 }

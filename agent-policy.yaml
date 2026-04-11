@@ -60,3 +60,11 @@ traceability:
     - policy
     - action
     - outcome
+
+forbidden_actions:
+  - "write decision.yml for non-executed experiments"
+  - "emit run-like evidence without corresponding artifacts"
+  - "mark experiment as executed without execution proof"
+
+required_checks:
+  - execution-proof-check

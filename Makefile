@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-relations generate help
+.PHONY: validate validate-schemas validate-relations validate-execution-proof generate help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-relations
+validate: validate-schemas validate-relations validate-execution-proof
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -14,6 +14,10 @@ validate-schemas:
 validate-relations:
 	@echo "🔗 Validating relations..."
 	@python3 scripts/docmeta/validate_relations.py
+
+validate-execution-proof:
+	@echo "📜 Validating execution proof..."
+	@python3 scripts/docmeta/validate_execution_proof.py
 
 # Diagnose-Generatoren
 generate: generate-doc-index generate-backlinks generate-orphans generate-system-map
@@ -36,6 +40,7 @@ help:
 	@echo ""
 	@echo "  make validate           — Run minimal guard stack (schema + relations)"
 	@echo "  make validate-schemas   — Validate artifacts against JSON schemas"
-	@echo "  make validate-relations — Validate frontmatter relations"
+	@echo "  make validate-relations — Validate frontmatter relations
+	@echo "  make validate-execution-proof — Validate execution proof""
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make help               — Show this help"
