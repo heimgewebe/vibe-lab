@@ -124,7 +124,9 @@ def validate_evidence_files():
     - event_type ist in der erlaubten Taxonomie (observation, measurement, decision, run)
     - Wenn event_type == "run":
       - artifact_ref muss vorhanden sein
-      - die referenzierte Datei muss existieren
+      - artifact_ref muss ein String sein
+      - Der aufgelöste Pfad muss innerhalb des Experiment-Roots bleiben
+      - Die referenzierte Datei muss als Datei existieren (is_file())
     """
     experiments_dir = REPO_ROOT / "experiments"
     found = 0
@@ -177,12 +179,34 @@ def validate_evidence_files():
                     )
                     continue
 
-                exp_root = evidence_file.parent.parent
-                artifact_path = exp_root / artifact_ref
-                if not artifact_path.exists():
+                if not isinstance(artifact_ref, str):
                     errors.append(
                         f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
-                        f"artifact_ref '{artifact_ref}' does not exist relative to experiment root"
+                        f"artifact_ref must be a string, got {type(artifact_ref).__name__}"
+                    )
+                    continue
+
+                exp_root = evidence_file.parent.parent
+                try:
+                    artifact_path = (exp_root / artifact_ref).resolve()
+                    artifact_path.relative_to(exp_root.resolve())
+                except ValueError:
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"artifact_ref '{artifact_ref}' escapes experiment root"
+                    )
+                    continue
+                except Exception as e:
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"invalid artifact_ref path '{artifact_ref}' — {e}"
+                    )
+                    continue
+
+                if not artifact_path.is_file():
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"artifact_ref '{artifact_ref}' does not exist or is not a file"
                     )
                     continue
 

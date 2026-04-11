@@ -24,8 +24,16 @@ class OrderProcessorRefactored:
             total = self.calculator.calculate_total(order)
 
             self.db.save_order(total)
-            self.email.send_confirmation(order.get('email'), total)
+
+            try:
+                self.email.send_confirmation(order.get('email'), total)
+            except Exception as email_err:
+                print(f"Email Error (swallowed to match legacy behavior): {email_err}")
+
             return True
+        except json.JSONDecodeError as jde:
+            print(f"Parsing Error: {jde}")
+            return False
         except ValueError as ve:
             print(f"Validation Error: {ve}")
             return False
