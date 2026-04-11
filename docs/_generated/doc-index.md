@@ -22,11 +22,11 @@
 | `experiments/2026-04-08_spec-first/failure_modes.md` | Failure Modes — Spec-First Vibe-Coding | adopted | operative |
 | `experiments/2026-04-08_spec-first/method.md` | Spec-First Vibe-Coding — Methode | adopted | operative |
 | `experiments/2026-04-08_spec-first/results/result.md` | Spec-First Vibe-Coding — Ergebnis | adopted | operative |
-| `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md` | YOLO vs. Spec-First — Kontext | testing | operative |
-| `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md` | YOLO vs. Spec-First — Initial State | testing | operative |
-| `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md` | YOLO vs. Spec-First — Failure Modes | testing | operative |
-| `experiments/2026-04-11_yolo-vs-spec-first/method.md` | YOLO vs. Spec-First — Methode | testing | operative |
-| `experiments/2026-04-11_yolo-vs-spec-first/results/result.md` | YOLO vs. Spec-First — Ergebnisse | testing | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md` | YOLO vs. Spec-First — Kontext | designed | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md` | YOLO vs. Spec-First — Initial State | designed | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md` | YOLO vs. Spec-First — Failure Modes | designed | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/method.md` | YOLO vs. Spec-First — Methode | designed | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/results/result.md` | YOLO vs. Spec-First — Ergebnisse | designed | operative |
 | `experiments/2026-04-12_spec-first-legacy/CONTEXT.md` | Context: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/INITIAL.md` | Initial: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |

@@ -121,7 +121,10 @@ def validate_evidence_files():
     Prüft:
     - Jede Zeile ist gültiges JSON
     - Pflichtfelder (event_type, timestamp, iteration, metric, value, context) vorhanden
-    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision)
+    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision, run)
+    - Wenn event_type == "run":
+      - artifact_ref muss vorhanden sein
+      - die referenzierte Datei muss existieren
     """
     experiments_dir = REPO_ROOT / "experiments"
     found = 0
@@ -164,6 +167,24 @@ def validate_evidence_files():
                     f"event_type '{event_type}' not in allowlist {sorted(EVIDENCE_EVENT_TYPES)}"
                 )
                 continue
+
+            if event_type == "run":
+                artifact_ref = entry.get("artifact_ref")
+                if not artifact_ref:
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"event_type 'run' requires 'artifact_ref'"
+                    )
+                    continue
+
+                exp_root = evidence_file.parent.parent
+                artifact_path = exp_root / artifact_ref
+                if not artifact_path.exists():
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"artifact_ref '{artifact_ref}' does not exist relative to experiment root"
+                    )
+                    continue
 
             print(f"  ✅ {evidence_file.relative_to(REPO_ROOT)}:{lineno} ({event_type})")
 

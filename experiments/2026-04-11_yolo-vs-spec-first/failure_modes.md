@@ -1,6 +1,6 @@
 ---
 title: "YOLO vs. Spec-First — Failure Modes"
-status: testing
+status: designed
 canonicality: operative
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "YOLO vs. Spec-First — Kontext"
-status: testing
+status: designed
 canonicality: operative
 ---
 
