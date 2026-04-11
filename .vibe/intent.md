@@ -16,7 +16,10 @@ Das Repository realisiert die Pipeline **Sammlung → Erprobung → Validierung 
 ## Systemidentität
 
 - **Lernendes System:** Das Repository verbessert nicht nur Coding, sondern sich selbst.
-- **Zweizonenlogik:** Labor (freie Exploration) vs. Bibliothek (validiertes Wissen).
+- **Drei-Phasen-Logik:**
+  - **Capture (`raw-vibes/`):** Ungeprüft, nicht kanonisch. Für die freie Erfassung.
+  - **Experiments (`experiments/`):** Validierbar, prüfbar. Für die strukturierte Erprobung.
+  - **Library (`catalog/`, `prompts/adopted/`):** Kanonisch. Für validiertes, bewiesenes Wissen.
 - **Evidenzbasiert:** Ohne Experiment keine Practice. Ohne Entscheidung keine Adoption.
 
 ## Referenz

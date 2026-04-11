@@ -1,6 +1,6 @@
 ---
 title: "YOLO vs. Spec-First — Methode"
-status: testing
+status: designed
 canonicality: operative
 ---
 

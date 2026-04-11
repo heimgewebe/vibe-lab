@@ -11,7 +11,7 @@
     },
     "status": {
       "type": "string",
-      "enum": ["idea", "testing", "adopted", "rejected", "blocked", "inconclusive", "deprecated", "draft", "active", "archived"],
+      "enum": ["idea", "designed", "testing", "adopted", "rejected", "blocked", "inconclusive", "deprecated", "draft", "active", "archived"],
       "description": "Operativer Status des Dokuments"
     },
     "canonicality": {

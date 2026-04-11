@@ -6,7 +6,7 @@ schema_version: "0.1.0"
 experiment:
   name: "YOLO vs Spec-First"
   hypothesis: "Der 'YOLO'-Ansatz erzeugt schnelleren Code, führt aber zu mehr Rework. 'Spec-First' senkt die initiale Geschwindigkeit, verbessert aber Code-Qualität und Iterierbarkeit erheblich."
-  status: testing
+  status: designed
   category: workflow
   created: "2026-04-11"
   updated: "2026-04-11"
