@@ -28,6 +28,8 @@ ROOT_FILES = {
     "docs/masterplan.md",
     "docs/policies/privacy-and-ethics.md",
     "benchmarks/challenges/rest-api-v1.md",
+    "benchmarks/challenges/kanban-board-v1.md",
+    "benchmarks/challenges/legacy-refactoring-v1.md",
 }
 
 

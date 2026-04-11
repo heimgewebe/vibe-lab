@@ -9,6 +9,8 @@
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
 | `README.md` | README | — | — |
+| `benchmarks/challenges/kanban-board-v1.md` | Kanban Board UI/State Challenge v1 | active | operative |
+| `benchmarks/challenges/legacy-refactoring-v1.md` | Legacy Refactoring Challenge v1 | active | operative |
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
@@ -20,6 +22,11 @@
 | `experiments/2026-04-08_spec-first/failure_modes.md` | Failure Modes — Spec-First Vibe-Coding | adopted | operative |
 | `experiments/2026-04-08_spec-first/method.md` | Spec-First Vibe-Coding — Methode | adopted | operative |
 | `experiments/2026-04-08_spec-first/results/result.md` | Spec-First Vibe-Coding — Ergebnis | adopted | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md` | YOLO vs. Spec-First — Kontext | testing | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md` | YOLO vs. Spec-First — Initial State | testing | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md` | YOLO vs. Spec-First — Failure Modes | testing | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/method.md` | YOLO vs. Spec-First — Methode | testing | operative |
+| `experiments/2026-04-11_yolo-vs-spec-first/results/result.md` | YOLO vs. Spec-First — Ergebnisse | testing | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
