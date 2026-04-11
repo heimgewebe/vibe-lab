@@ -33,6 +33,7 @@ ZONE_MAP = {
     "docs": "📖 Dokumentation",
     "scripts": "🔧 Tooling",
     "tools": "🔧 Tooling",
+    "raw-vibes": "📥 Capture",
 }
 
 

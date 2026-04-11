@@ -27,7 +27,6 @@ SKIP_DIR_NAMES: frozenset[str] = frozenset({
     "node_modules",
     "__pycache__",
     "_archive",
-    "raw-vibes",
 })
 
 
@@ -42,6 +41,8 @@ def should_skip(path: Path, repo_root: Path, skip_generated: bool = True) -> boo
         if p in SKIP_DIR_NAMES:
             return True
     if skip_generated and "_generated" in parts:
+        return True
+    if "raw-vibes" in parts:
         return True
     return False
 

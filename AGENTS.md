@@ -47,4 +47,4 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 1. **Abbruch bei Konflikten:** Wenn ein generiertes Artefakt einer kanonischen Quelle widerspricht, bricht der Agent ab und meldet den Konflikt.
 2. **Keine Eigeninterpretation:** Agenten ergänzen keine Konzepte, die nicht in den kanonischen Quellen angelegt sind.
 3. **Transparenz:** Jede agentengesteuerte Änderung muss ihren Auslöser (`triggered_by`) dokumentieren.
-4. **Zonenrespekt:** Die Zweizonenlogik (Labor vs. Bibliothek) wird eingehalten. Labor-Artefakte werden nicht ohne Promotion-Gate in die Bibliothek verschoben.
+4. **Zonenrespekt:** Die Dreiphasenlogik (Capture vs. Labor vs. Bibliothek) wird eingehalten. Capture-Artefakte (raw-vibes/) sind roh und unstrukturiert. Labor-Artefakte werden nicht ohne Promotion-Gate in die Bibliothek verschoben.

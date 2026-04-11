@@ -16,6 +16,11 @@ read_order:
   - "docs/_generated/*"
 
 zones:
+  capture:
+    paths:
+      - "raw-vibes/*"
+    freedom: very_high
+    description: "Roher, unstrukturierter Ideeneingang"
   lab:
     paths:
       - "experiments/*"

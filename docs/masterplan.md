@@ -18,7 +18,7 @@ Vibe-Lab ist ein exekutierbarer Erkenntnisraum. Das System erfasst Vibe-Coding-H
 ## Kernprinzipien
 
 1. **Evidenzbasiert:** Nichts wird unvalidiert zur Best Practice erklärt.
-2. **Zweizonenlogik:** Labor (freie Exploration) vs. Bibliothek (validiertes Wissen).
+2. **Dreiphasenlogik:** Capture (rohe Ideen), Labor (freie Exploration), Bibliothek (validiertes Wissen).
 3. **Pipeline:** Sammlung → Erprobung → Validierung → Kreation.
 4. **Asymmetrische Rückkopplung:** Validierte Praktiken stabilisieren; Lab-Ergebnisse erzeugen Innovation; Experimente können bestehende Praktiken in Frage stellen.
 5. **Selbstoptimierung:** Das System verbessert nicht nur Coding, sondern sich selbst.
@@ -27,7 +27,7 @@ Vibe-Lab ist ein exekutierbarer Erkenntnisraum. Das System erfasst Vibe-Coding-H
 
 | Epistemischer Zustand     | Operativer Status    | Ort im Repo              |
 | ------------------------- | -------------------- | ------------------------ |
-| Roh                       | `idea`               | Issue (Intake)           |
+| Roh                       | `idea`               | `raw-vibes/`, Issue      |
 | Getestet                  | `testing`            | `experiments/`           |
 | Bewährt                   | `adopted`            | `catalog/`, `prompts/`   |
 | Systemisch erweitert      | (post-adoption)      | `exports/`, `instruction-blocks/` |
