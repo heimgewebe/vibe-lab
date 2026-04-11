@@ -40,7 +40,7 @@ EVIDENCE_REQUIRED_KEYS: frozenset[str] = frozenset({
 })
 
 # Erlaubte Werte für event_type
-EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision"})
+EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision", "run"})
 
 # Muster für Template-Platzhalter in failure_modes.md (case-insensitive, whitespace-tolerant)
 FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)

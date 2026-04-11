@@ -1,4 +1,5 @@
 {"event_type": "observation", "timestamp": "2026-04-12T10:00:00Z", "iteration": 1, "context": "Setup des Legacy-Codes", "metric": "duration_seconds", "value": 14}
 {"event_type": "observation", "timestamp": "2026-04-12T10:02:00Z", "iteration": 1, "context": "Refactoring gemäß Spec-First Ansatz", "metric": "duration_seconds", "value": 113}
 {"event_type": "observation", "timestamp": "2026-04-12T10:05:00Z", "iteration": 1, "context": "Test-Erstellung basierend auf Spezifikation", "metric": "duration_seconds", "value": 85}
-{"event_type": "measurement", "timestamp": "2026-04-12T10:06:00Z", "iteration": 1, "context": "Test-Ausführung (python3 test_processor.py)", "metric": "test_pass_rate", "value": 1.0, "notes": "Alle 4 neu generierten Tests für den Refactoring-Code laufen erfolgreich durch (siehe artifacts/test_output.txt)."}
+{"event_type": "measurement", "timestamp": "2026-04-12T10:06:00Z", "iteration": 1, "context": "Test-Ausführung", "metric": "test_pass_rate", "value": 1.0, "notes": "Alle 4 neu generierten Tests für den Refactoring-Code laufen erfolgreich durch (siehe artifacts/test_output.txt)."}
+{"event_type": "run", "timestamp": "2026-04-12T10:06:00Z", "iteration": 1, "context": "python3 src/test_processor.py", "metric": "exit_code", "value": 0, "notes": "Executed unit test suite for refactored processor", "artifact_ref": "artifacts/test_output.txt"}
