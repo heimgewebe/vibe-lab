@@ -7,11 +7,11 @@ Dokumente sie enthalten, und welcher Zone sie zugehören.
 Ausgabe: docs/_generated/system-map.md
 """
 
-SYSTEM_MAP_SCOPE_NOTE = "system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte."
-
 import sys
 import subprocess
 from pathlib import Path
+
+SYSTEM_MAP_SCOPE_NOTE = "system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte."
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
@@ -74,7 +74,7 @@ def get_git_tracked_files() -> list[str]:
         files = [f.decode("utf-8", errors="replace") for f in result.stdout.split(b"\0") if f]
         return sorted(files)
     except subprocess.CalledProcessError as e:
-        print(f"ERROR: Failed to run `git ls-files -z` (Exit Code: {e.returncode}).", file=sys.stderr)
+        print(f"ERROR: Konnte Liste getrackter Dateien nicht bestimmen (git ls-files -z schlug fehl mit Exit Code {e.returncode}).\nsystem-map.md kann nicht deterministisch erzeugt werden.", file=sys.stderr)
         print(f"Stderr: {e.stderr.decode('utf-8', errors='replace')}", file=sys.stderr)
         sys.exit(1)
     except FileNotFoundError:
@@ -87,11 +87,13 @@ def main():
 
     tracked_files = get_git_tracked_files()
 
+    # system-map.md kartiert die projektlogische Hauptstruktur des versionierten Repos.
+    # Bewusst wird nicht jede technische oder infrastrukturelle Hilfsstruktur gleichgewichtig abgebildet.
+    # Skip infrastructure/tooling directories (e.g. .git, .github, node_modules).
     for rel in tracked_files:
+        # Skip infrastructure/tooling directories
+
         rel_parts = Path(rel).parts
-        # system-map.md kartiert die projektlogische Hauptstruktur des versionierten Repos.
-        # Bewusst wird nicht jede technische oder infrastrukturelle Hilfsstruktur gleichgewichtig abgebildet.
-        # Skip infrastructure/tooling directories (e.g. .git, .github, node_modules).
         if any(p in SKIP_DIR_NAMES for p in rel_parts):
             continue
 
