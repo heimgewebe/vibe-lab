@@ -63,6 +63,6 @@ canonicality: navigation
 | [schemas/combo.schema.json](../schemas/combo.schema.json) | Combo-Eintrag                       |
 
 
-## Concepts (latent)
+## Konzepte (latent)
 
 - [Execution-Bound Epistemics](concepts/execution-bound-epistemics.md)

@@ -17,7 +17,7 @@ tags:
 
 # Konzept: Execution-Bound Epistemics für Vibe-Lab
 
-> ⚠️ **Status: Dormant Concept (nicht operativ)**
+> ⚠️ **Status: Latentes Konzept (nicht operativ)**
 >
 > Dieses Dokument ist bewusst **nicht Teil der aktuellen Repo-Prioritäten**.
 > Es beschreibt eine mögliche zukünftige Härtung der epistemischen Regeln.

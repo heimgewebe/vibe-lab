@@ -1,6 +1,6 @@
 ---
 title: "YOLO vs. Spec-First — Initial State"
-status: testing
+status: designed
 canonicality: operative
 ---
 

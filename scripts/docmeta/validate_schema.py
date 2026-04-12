@@ -40,7 +40,7 @@ EVIDENCE_REQUIRED_KEYS: frozenset[str] = frozenset({
 })
 
 # Erlaubte Werte für event_type
-EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision"})
+EVIDENCE_EVENT_TYPES: frozenset[str] = frozenset({"observation", "measurement", "decision", "run"})
 
 # Muster für Template-Platzhalter in failure_modes.md (case-insensitive, whitespace-tolerant)
 FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)
@@ -121,7 +121,12 @@ def validate_evidence_files():
     Prüft:
     - Jede Zeile ist gültiges JSON
     - Pflichtfelder (event_type, timestamp, iteration, metric, value, context) vorhanden
-    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision)
+    - event_type ist in der erlaubten Taxonomie (observation, measurement, decision, run)
+    - Wenn event_type == "run":
+      - artifact_ref muss vorhanden sein
+      - artifact_ref muss ein String sein
+      - Der aufgelöste Pfad muss innerhalb des Experiment-Roots bleiben
+      - Die referenzierte Datei muss als Datei existieren (is_file())
     """
     experiments_dir = REPO_ROOT / "experiments"
     found = 0
@@ -164,6 +169,46 @@ def validate_evidence_files():
                     f"event_type '{event_type}' not in allowlist {sorted(EVIDENCE_EVENT_TYPES)}"
                 )
                 continue
+
+            if event_type == "run":
+                artifact_ref = entry.get("artifact_ref")
+                if not artifact_ref:
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"event_type 'run' requires 'artifact_ref'"
+                    )
+                    continue
+
+                if not isinstance(artifact_ref, str):
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"artifact_ref must be a string, got {type(artifact_ref).__name__}"
+                    )
+                    continue
+
+                exp_root = evidence_file.parent.parent
+                try:
+                    artifact_path = (exp_root / artifact_ref).resolve()
+                    artifact_path.relative_to(exp_root.resolve())
+                except ValueError:
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"artifact_ref '{artifact_ref}' escapes experiment root"
+                    )
+                    continue
+                except Exception as e:
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"invalid artifact_ref path '{artifact_ref}' — {e}"
+                    )
+                    continue
+
+                if not artifact_path.is_file():
+                    errors.append(
+                        f"  ❌ {evidence_file.relative_to(REPO_ROOT)}:{lineno}: "
+                        f"artifact_ref '{artifact_ref}' does not exist or is not a file"
+                    )
+                    continue
 
             print(f"  ✅ {evidence_file.relative_to(REPO_ROOT)}:{lineno} ({event_type})")
 
