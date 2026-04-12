@@ -4,8 +4,6 @@
 Erzeugt eine Systemübersicht: Welche Ordner existieren, wie viele
 Dokumente sie enthalten, und welcher Zone sie zugehören.
 
-SYSTEM_MAP_SCOPE_NOTE: system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte.
-
 Ausgabe: docs/_generated/system-map.md
 """
 
@@ -79,6 +77,9 @@ def get_git_tracked_files() -> list[str]:
         print(f"ERROR: Failed to run `git ls-files -z` (Exit Code: {e.returncode}).", file=sys.stderr)
         print(f"Stderr: {e.stderr.decode('utf-8', errors='replace')}", file=sys.stderr)
         sys.exit(1)
+    except FileNotFoundError:
+        print("ERROR: `git` command not found. Ensure git is installed and in your PATH.", file=sys.stderr)
+        sys.exit(1)
 
 
 def main():
@@ -88,8 +89,9 @@ def main():
 
     for rel in tracked_files:
         rel_parts = Path(rel).parts
+        # system-map.md kartiert die projektlogische Hauptstruktur des versionierten Repos.
+        # Bewusst wird nicht jede technische oder infrastrukturelle Hilfsstruktur gleichgewichtig abgebildet.
         # Skip infrastructure/tooling directories (e.g. .git, .github, node_modules).
-        # Even though these might be git-tracked, they clutter the logical project map.
         if any(p in SKIP_DIR_NAMES for p in rel_parts):
             continue
 
