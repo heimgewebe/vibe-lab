@@ -110,7 +110,9 @@ Nicht alle müssen sofort technisch eingeführt werden, aber die Logik muss da s
 
 ### 3.2 Keine Entscheidung ohne Ausführung
 
-decision.yml ist nur zulässig, wenn mindestens eine echte Execution-Spur existiert.
+Die Zulässigkeit von `decision.yml` hängt vom Entscheidungstyp ab:
+- `execution_assessment` ist auch ohne echte Run-Spur zulässig (z.B. für `designed`).
+- `adoption_assessment` ist **nur** zulässig, wenn mindestens eine echte Execution-Spur existiert.
 
 ### 3.3 Keine Ausführung ohne Proof
 
@@ -150,7 +152,7 @@ Mögliche substanzielle Zustände:
 - executed
   mindestens ein echter Run belegt
 - reconstructed
-  aus Vorwissen, Altmaterial, Erinnerungen oder nachgetragenen Spuren rekonstruiert, aber kein vollwertiger Execution-Proof. Rekonstruierte Logs oder aus Erinnerung synthetisierte Ausführungsspuren dürfen ausdrücklich **nicht** als Proof of Execution für `executed` gelten.
+  aus Vorwissen, Altmaterial, Erinnerungen oder nachgetragenen Spuren rekonstruiert, aber kein vollwertiger Execution-Proof. Rekonstruktion darf dokumentieren, aber nicht legitimieren. Es darf nie als Basis für ein `adoption_assessment` dienen und nicht in `executed` umgewertet werden.
 - analyzed
   Ergebnisse zusammengeführt
 - adopted / rejected / inconclusive
@@ -239,7 +241,7 @@ Eine echte Ausführung genügt nicht automatisch. Bei benchmark-basierten Experi
 - Die benchmark-definierenden Invarianten wurden eingehalten.
 - Das Verhalten wurde nicht unbemerkt verfälscht.
 
-Erfolg heißt nicht nur „lief“, sondern „lief benchmarktreu“. Der Run legitimiert die Durchführung, die Contract-Treue legitimiert die Vergleichbarkeit.
+Execution Proof ohne Benchmark-Treue erzeugt nur Aktivität, keine belastbare Vergleichbarkeit.
 
 ⸻
 
@@ -284,13 +286,13 @@ Mindestfelder pro Zeile:
   "value": "completed",
   "context": "benchmark: legacy-refactoring-v1",
   "notes": "Spec-first baseline run",
+  "command": "python3 tools/run_benchmark.py --mode spec-first",
+  "exit_code": 0,
   "artifact_ref": "results/artifacts/run-001.log"
 }
 ```
 
 Optional:
-- command
-- exit_code
 - duration_ms
 - challenge_version
 - mode
@@ -384,13 +386,13 @@ if manifest.experiment.execution_status in {"executed", "replicated"}:
     assert every run has artifact_ref
     assert referenced artifact files exist
 
-if decision.yml exists:
+if decision.yml has adoption_assessment:
     assert manifest.experiment.execution_status in {"executed", "replicated"}
     assert evidence has run-events
 
-# Zusatzregel
-if manifest.experiment.execution_status == "designed":
-    assert decision.yml does not exist
+if decision.yml has execution_assessment:
+    # allowed for designed, reconstructed, executed, replicated
+    pass
 ```
 
 ⸻
@@ -463,7 +465,7 @@ Nicht jede Entscheidung ist eine Adoption, und nicht jede Entscheidung setzt `ex
 
 Für den Altbestand gelten künftig drei ehrliche Wege:
 - **`executed`**: Wenn echte Ausführungsspuren und Artefakte nachweisbar vorliegen.
-- **`reconstructed`**: Wenn nur rekonstruierbare Altspuren oder Erfahrungswissen vorliegen. Dies bleibt erkenntnisfähig, ist aber nicht gleichrangig mit echter Ausführung.
+- **`reconstructed`**: Wenn nur rekonstruierbare Altspuren oder Erfahrungswissen vorliegen. Dies bleibt erkenntnisfähig, ist aber nicht gleichrangig mit echter Ausführung. Rekonstruktion darf dokumentieren, aber nicht legitimieren. Es darf nie als Basis für ein `adoption_assessment` dienen.
 - **`designed`**: Wenn das Experiment im aktuellen System nur als geplante oder nachträglich formulierte Struktur existiert.
 
 Wichtiger Punkt:
@@ -545,8 +547,8 @@ experiment:
 ### 13.3 Beispiel für results/evidence.jsonl
 
 ```json
-{"event_type":"run","timestamp":"2026-04-12T10:00:00Z","iteration":1,"metric":"execution","value":"started","context":"benchmark: legacy-refactoring-v1","notes":"Spec-first run started","command":"python3 tools/run_legacy.py --mode spec-first","artifact_ref":"results/artifacts/run-001.log"}
-{"event_type":"metric","timestamp":"2026-04-12T10:02:13Z","iteration":1,"metric":"tests_passing","value":"18/24","context":"benchmark: legacy-refactoring-v1","notes":"First pass after generation","artifact_ref":"results/artifacts/run-001-test-output.txt"}
+{"event_type":"run","timestamp":"2026-04-12T10:00:00Z","iteration":1,"metric":"execution","value":"completed","context":"benchmark: legacy-refactoring-v1","notes":"Spec-first run completed","command":"python3 tools/run_legacy.py --mode spec-first","exit_code":0,"artifact_ref":"results/artifacts/run-001.log"}
+{"event_type":"measurement","timestamp":"2026-04-12T10:02:13Z","iteration":1,"metric":"tests_passing","value":"18/24","context":"benchmark: legacy-refactoring-v1","notes":"First pass after generation","artifact_ref":"results/artifacts/run-001-test-output.txt"}
 {"event_type":"error","timestamp":"2026-04-12T10:03:02Z","iteration":1,"metric":"regression","value":"payment_side_effect_changed","context":"benchmark: legacy-refactoring-v1","notes":"Observed changed behavior in refund path","artifact_ref":"results/artifacts/run-001.log"}
 ```
 
@@ -605,8 +607,12 @@ def main():
                 if not artifact_path.exists():
                     errors.append(f"{manifest_path}: artifact_ref does not exist: {artifact_ref}")
 
-        if decision_path.exists() and execution_status == "designed":
-            errors.append(f"{manifest_path}: decision.yml exists for designed experiment")
+        if decision_path.exists():
+            decision_data = yaml.safe_load(decision_path.read_text(encoding="utf-8")) or {}
+            # Pseudo-check for adoption_assessment
+            if decision_data.get("type") == "adoption_assessment" and execution_status not in {"executed", "replicated"}:
+                errors.append(f"{manifest_path}: adoption_assessment requires executed or replicated status")
+            # execution_assessment is fine for designed or reconstructed
 
     if errors:
         print("❌ Execution proof validation FAILED")
