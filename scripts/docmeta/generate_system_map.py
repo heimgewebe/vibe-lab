@@ -3,10 +3,13 @@
 
 Erzeugt eine Systemübersicht: Welche Ordner existieren, wie viele
 Dokumente sie enthalten, und welcher Zone sie zugehören.
-system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte.
+
+SYSTEM_MAP_SCOPE_NOTE: system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte.
 
 Ausgabe: docs/_generated/system-map.md
 """
+
+SYSTEM_MAP_SCOPE_NOTE = "system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte."
 
 import sys
 import subprocess
@@ -58,18 +61,23 @@ def classify_top_dir(rel: str) -> str:
 
 
 def get_git_tracked_files() -> list[str]:
-    """Gibt eine Liste aller von Git getrackten Dateien relativ zum Repo-Root zurück."""
+    """Gibt eine Liste aller von Git getrackten Dateien relativ zum Repo-Root zurück.
+    Liest null-terminierte Strings (-z), um mit speziellen Dateinamen robust umzugehen.
+    """
     try:
         result = subprocess.run(
-            ["git", "ls-files"],
+            ["git", "ls-files", "-z"],
             cwd=str(REPO_ROOT),
             stdout=subprocess.PIPE,
-            text=True,
+            stderr=subprocess.PIPE,
             check=True
         )
-        return sorted([f for f in result.stdout.splitlines() if f.strip()])
-    except subprocess.CalledProcessError:
-        print("ERROR: Failed to run git ls-files. Is this a git repository?")
+        # Split on null byte and decode correctly, ignoring empty strings
+        files = [f.decode("utf-8", errors="replace") for f in result.stdout.split(b"\0") if f]
+        return sorted(files)
+    except subprocess.CalledProcessError as e:
+        print(f"ERROR: Failed to run `git ls-files -z` (Exit Code: {e.returncode}).", file=sys.stderr)
+        print(f"Stderr: {e.stderr.decode('utf-8', errors='replace')}", file=sys.stderr)
         sys.exit(1)
 
 
@@ -80,7 +88,8 @@ def main():
 
     for rel in tracked_files:
         rel_parts = Path(rel).parts
-        # Skip .git, .github, .cursor, node_modules, __pycache__ — but NOT .vibe
+        # Skip infrastructure/tooling directories (e.g. .git, .github, node_modules).
+        # Even though these might be git-tracked, they clutter the logical project map.
         if any(p in SKIP_DIR_NAMES for p in rel_parts):
             continue
 
@@ -98,7 +107,7 @@ def main():
         "",
         "# System Map",
         "",
-        "> **Hinweis:** system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte.",
+        f"> **Hinweis:** {SYSTEM_MAP_SCOPE_NOTE}",
         "",
         "| Directory | Zone | Files | Markdown |",
         "| --------- | ---- | ----: | -------: |",
