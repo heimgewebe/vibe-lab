@@ -30,6 +30,7 @@ ROOT_FILES = {
     "benchmarks/challenges/rest-api-v1.md",
     "benchmarks/challenges/kanban-board-v1.md",
     "benchmarks/challenges/legacy-refactoring-v1.md",
+    "docs/concepts/execution-bound-epistemics.md",
 }
 
 
