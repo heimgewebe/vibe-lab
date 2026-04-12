@@ -11,7 +11,7 @@
 
 ## `docs/masterplan.md`
 
-- ← `docs/blueprints/execution-bound-epistemics.md` (informs)
+- ← `docs/concepts/execution-bound-epistemics.md` (informs)
 
 ## `experiments/2026-04-08_spec-first/results/result.md`
 

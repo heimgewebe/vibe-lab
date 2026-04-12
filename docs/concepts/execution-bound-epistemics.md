@@ -1,7 +1,13 @@
 ---
 title: "Blaupause: Execution-Bound Epistemics für Vibe-Lab"
 status: draft
-canonicality: operative
+canonicality: exploratory
+intent: dormant
+activation: conditional
+activation_triggers:
+  - repeated_fake_execution_detected
+  - adoption_without_artifacts
+  - need_for_reproducibility
 relations:
   - type: informs
     target: ../masterplan.md
@@ -16,6 +22,13 @@ tags:
 ---
 
 # Blaupause: Execution-Bound Epistemics für Vibe-Lab
+
+> ⚠️ **Status: Dormant Concept (nicht operativ)**
+>
+> Dieses Dokument ist bewusst **nicht Teil der aktuellen Repo-Prioritäten**.
+> Es beschreibt eine mögliche zukünftige Härtung der epistemischen Regeln.
+>
+> Aktivierung erfolgt nur, wenn reale Probleme auftreten (siehe activation_triggers).
 
 > **Hinweis:** Dies ist ein Entwurfsdokument (Blaupause). Es beschreibt Zielarchitektur und Härtungsvorschläge für das System, ist aber noch nicht als bindende Wahrheit umgesetzt. Verbindlichkeit entsteht erst durch spätere, technische Folge-PRs.
 

@@ -37,7 +37,6 @@ canonicality: navigation
 | [syntheses/](syntheses/)  | Verdichtete Erkenntnisse                    |
 | [rules/](rules/)          | Operationalisierte Regeln                   |
 | [blueprints/](blueprints/) | Überführung in Praxis                      |
-| [Execution-Bound Epistemics](blueprints/execution-bound-epistemics.md) | Blueprint für harte Ausführungsbindung |
 | [policies/](policies/)    | Richtlinien und Policy-Dokumente            |
 | [reference/](reference/)  | Nachschlagewerke und Referenzmaterial       |
 | [playbooks/](playbooks/)  | Triage-Runbooks und operative Anleitungen   |
@@ -62,3 +61,8 @@ canonicality: navigation
 | [schemas/experiment.manifest.schema.json](../schemas/experiment.manifest.schema.json) | Experiment-Manifest  |
 | [schemas/catalog.entry.schema.json](../schemas/catalog.entry.schema.json) | Katalogeintrag         |
 | [schemas/combo.schema.json](../schemas/combo.schema.json) | Combo-Eintrag                       |
+
+
+## Concepts (latent)
+
+- [Execution-Bound Epistemics](concepts/execution-bound-epistemics.md)
