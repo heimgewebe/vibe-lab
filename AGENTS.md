@@ -48,3 +48,4 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 2. **Keine Eigeninterpretation:** Agenten ergänzen keine Konzepte, die nicht in den kanonischen Quellen angelegt sind.
 3. **Transparenz:** Jede agentengesteuerte Änderung muss ihren Auslöser (`triggered_by`) dokumentieren.
 4. **Zonenrespekt:** Die Dreiphasenlogik (Capture vs. Labor vs. Bibliothek) wird eingehalten. Capture-Artefakte (raw-vibes/) sind roh und unstrukturiert. Labor-Artefakte werden nicht ohne Promotion-Gate in die Bibliothek verschoben.
+5. **Verbot ungerechtfertigter Status-Umdeutung:** Ein Experiment darf NUR dann auf `designed` gesetzt werden, wenn es belegt ist durch: (1) `decision.yml` mit `not_executed`, (2) explizite Textaussage im Experiment, oder (3) eindeutigen strukturellen Hinweis als reines Design-Artefakt. Fehlt der Run-Proof, bleibt der Status unberührt (epistemische Unklarheit aushalten, optional Hinweis notieren).
