@@ -9,6 +9,10 @@
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
+## `docs/masterplan.md`
+
+- ← `docs/concepts/execution-bound-epistemics.md` (informs)
+
 ## `experiments/2026-04-08_spec-first/results/result.md`
 
 - ← `catalog/anti-patterns/vague-prompt-and-fix.md` (references)

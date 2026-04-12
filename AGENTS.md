@@ -48,3 +48,4 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 2. **Keine Eigeninterpretation:** Agenten ergänzen keine Konzepte, die nicht in den kanonischen Quellen angelegt sind.
 3. **Transparenz:** Jede agentengesteuerte Änderung muss ihren Auslöser (`triggered_by`) dokumentieren.
 4. **Zonenrespekt:** Die Dreiphasenlogik (Capture vs. Labor vs. Bibliothek) wird eingehalten. Capture-Artefakte (raw-vibes/) sind roh und unstrukturiert. Labor-Artefakte werden nicht ohne Promotion-Gate in die Bibliothek verschoben.
+5. **Verbot unbelegter Status-Umdeutung:** Agenten dürfen den Status bestehender Experimente nicht ohne belegte Grundlage ändern. Erforderlich ist entweder (1) eine explizite Aussage im Experiment, (2) ein passendes Decision-Artefakt, oder (3) ein eindeutiger struktureller Hinweis. Fehlen belastbare Belege, bleibt der bestehende Status unberührt; epistemische Unklarheit ist explizit auszuhalten.

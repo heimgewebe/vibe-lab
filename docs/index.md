@@ -61,3 +61,8 @@ canonicality: navigation
 | [schemas/experiment.manifest.schema.json](../schemas/experiment.manifest.schema.json) | Experiment-Manifest  |
 | [schemas/catalog.entry.schema.json](../schemas/catalog.entry.schema.json) | Katalogeintrag         |
 | [schemas/combo.schema.json](../schemas/combo.schema.json) | Combo-Eintrag                       |
+
+
+## Konzepte (latent)
+
+- [Execution-Bound Epistemics](concepts/execution-bound-epistemics.md)
