@@ -10,7 +10,7 @@ created: "2026-04-12"
 updated: "2026-04-12"
 author: "heimgewebe"
 tags:
-  - blueprint
+  - concept
   - execution
   - epistemics
 ---
@@ -29,14 +29,10 @@ tags:
 >   - adoption_without_artifacts
 >   - need_for_reproducibility
 
-> **Hinweis:** Dies ist ein Entwurfsdokument (Blaupause). Es beschreibt Zielarchitektur und Härtungsvorschläge für das System, ist aber noch nicht als bindende Wahrheit umgesetzt. Verbindlichkeit entsteht erst durch spätere, technische Folge-PRs.
+> **Hinweis:** Dies ist ein latentes Konzept. Es beschreibt Zielarchitektur und Härtungsvorschläge für das System, ist aber noch nicht als bindende Wahrheit umgesetzt. Verbindlichkeit entsteht erst durch spätere, technische Folge-PRs.
 
 
 ## 0. Kurzdefinition
-
-**Begriff:** Blaupause
-
-**Etymologie:** „Blaupause“ kommt aus der historischen Kopiertechnik des Cyanotypie-Verfahrens, bei dem technische Zeichnungen als weiße Linien auf blauem Grund vervielfältigt wurden. Bedeutung heute: ein präziser Bauplan, der nicht bloß Idee, sondern umsetzbare Struktur liefert.
 
 **Begriff:** Execution-Bound Epistemics
 
