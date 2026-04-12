@@ -784,9 +784,9 @@ first proof-bound benchmark execution
 
 ## Essenz
 
-**Hebel:** Durchführungsaussagen an Proof binden.
-**Entscheidung:** Einführung eines harten execution_status + CI-Guards + Agentenverbote.
-**Nächste Aktion:** zuerst den epistemischen Contract bauen, dann erst wieder Experimente „durchführen“.
+**Möglicher Hebel:** Durchführungsaussagen an Proof binden.
+**Mögliche spätere Entscheidung:** Einführung eines harten execution_status + CI-Guards + Agentenverbote.
+**Nächste Aktion nur bei Aktivierungstriggern:** zuerst den epistemischen Contract bauen, dann erst wieder Experimente „durchführen“.
 
 **Unsicherheitsgrad:** 0.10
 **Ursachen:** Die Lösung ist konzeptionell klar, aber wie streng du Altbestand rückwirkend behandeln willst, ist eine echte Governance-Entscheidung.
