@@ -32,8 +32,7 @@
         "operative",
         "navigation",
         "diagnosis",
-        "derived",
-        "exploratory"
+        "derived"
       ],
       "description": "Stellung in der Wahrheitshierarchie"
     },
@@ -96,18 +95,6 @@
         ]
       },
       "description": "Gerichtete Beziehungen zu anderen Dokumenten"
-    },
-    "intent": {
-      "type": "string"
-    },
-    "activation": {
-      "type": "string"
-    },
-    "activation_triggers": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
     }
   },
   "required": [
