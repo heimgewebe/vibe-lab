@@ -609,9 +609,20 @@ def main():
                 if not artifact_ref:
                     errors.append(f"{manifest_path}: run event missing artifact_ref")
                     continue
-                artifact_path = manifest_path.parent / artifact_ref
-                if not artifact_path.exists():
-                    errors.append(f"{manifest_path}: artifact_ref does not exist: {artifact_ref}")
+                if not isinstance(artifact_ref, str):
+                    errors.append(f"{manifest_path}: artifact_ref must be a string")
+                    continue
+
+                try:
+                    artifact_path = (manifest_path.parent / artifact_ref).resolve()
+                    # Prevent escape from experiment root
+                    artifact_path.relative_to(manifest_path.parent.resolve())
+                except ValueError:
+                    errors.append(f"{manifest_path}: artifact_ref escapes experiment root: {artifact_ref}")
+                    continue
+
+                if not artifact_path.is_file():
+                    errors.append(f"{manifest_path}: artifact_ref is not a valid file: {artifact_ref}")
 
         if decision_path.exists():
             decision_data = yaml.safe_load(decision_path.read_text(encoding="utf-8")) or {}
@@ -624,11 +635,6 @@ def main():
             # execution_assessment is fine for designed or reconstructed
             elif decision_data.get("type") == "execution_assessment":
                 pass
-
-            if execution_status == "reconstructed":
-                # reconstructed darf nie als proof für executed/adoption dienen
-                if decision_data.get("type") == "adoption_assessment":
-                     errors.append(f"{manifest_path}: reconstructed cannot be used for adoption_assessment")
 
     if errors:
         print("❌ Execution proof validation FAILED")
