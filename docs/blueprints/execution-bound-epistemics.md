@@ -48,10 +48,10 @@ Vibe-Lab soll künftig vier Dinge sauber unterscheiden:
 3. **Execution**
    reale Durchführung mit maschinell prüfbaren Spuren
 4. **Decision**
-   Auswertung auf Basis echter Execution-Artefakte
+   Auswertung; harte Adoption immer auf Basis echter Execution-Artefakte (nicht jede Entscheidung ist eine Adoption)
 
 **Zentralregel:**
-Was nicht ausgeführt wurde, darf nicht wie Erkenntnis aussehen.
+Was nicht ausgeführt wurde, darf nicht wie Erkenntnis aussehen. Keine Adoption ohne Ausführung.
 
 Das Repo soll also nicht nur gute Dokumente erzeugen, sondern falsche epistemische Aufwertung strukturell verhindern.
 
@@ -389,8 +389,9 @@ Pseudologik
 if manifest.experiment.execution_status in {"executed", "replicated"}:
     assert evidence.jsonl exists
     assert at least one event_type == "run"
-    assert every run has artifact_ref
-    assert referenced artifact files exist
+    assert every run has artifact_ref (must be string)
+    assert artifact path resolves strictly within experiment root
+    assert referenced artifact files exist (is_file)
 
 if decision.yml has adoption_assessment:
     assert manifest.experiment.execution_status in {"executed", "replicated"}
