@@ -78,7 +78,7 @@ def get_git_tracked_files() -> list[str]:
         print(f"Stderr: {e.stderr.decode('utf-8', errors='replace')}", file=sys.stderr)
         sys.exit(1)
     except FileNotFoundError:
-        print("ERROR: `git` command not found. Ensure git is installed and in your PATH.", file=sys.stderr)
+        print("ERROR: `git`-Befehl nicht gefunden. Bitte sicherstellen, dass git installiert und im PATH verfügbar ist.", file=sys.stderr)
         sys.exit(1)
 
 
@@ -87,12 +87,11 @@ def main():
 
     tracked_files = get_git_tracked_files()
 
-    # system-map.md kartiert die projektlogische Hauptstruktur des versionierten Repos.
-    # Bewusst wird nicht jede technische oder infrastrukturelle Hilfsstruktur gleichgewichtig abgebildet.
-    # Skip infrastructure/tooling directories (e.g. .git, .github, node_modules).
+    # system-map.md kartiert primär die projektlogische Hauptstruktur des Repos.
+    # Obwohl die Datenbasis auf Git-getrackten Dateien beruht, werden definierte
+    # infrastrukturelle Hilfsstrukturen (wie .github oder node_modules) bewusst
+    # nicht als gleichgewichtiger Teil der Architekturkarte gewertet.
     for rel in tracked_files:
-        # Skip infrastructure/tooling directories
-
         rel_parts = Path(rel).parts
         if any(p in SKIP_DIR_NAMES for p in rel_parts):
             continue
