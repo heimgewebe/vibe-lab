@@ -29,7 +29,7 @@ tags:
 >   - adoption_without_artifacts
 >   - need_for_reproducibility
 
-> **Hinweis:** Dies ist ein latentes Konzept. Es beschreibt Zielarchitektur und Härtungsvorschläge für das System, ist aber noch nicht als bindende Wahrheit umgesetzt. Verbindlichkeit entsteht erst durch spätere, technische Folge-PRs.
+> **Hinweis:** Dies ist ein latentes Konzept (Optionsraum). Es beschreibt Zielarchitektur und Ausbauoptionen für das System, erzwingt aber aktuell keinen Umsetzungsauftrag. Die aktuelle Repo-Priorität bleibt: echte Experimente fahren, nicht vorzeitig Governance ausbauen. Verbindlichkeit entstünde erst durch spätere, optionale technische Folge-PRs.
 
 
 ## 0. Kurzdefinition
@@ -688,20 +688,20 @@ summary: "Auf Basis echter Run-Artefakte und Messwerte übernommen."
 
 ⸻
 
-## 14. Einführungsplan in drei Phasen
+## 14. Möglicher Einführungsplan in drei Phasen (bei Bedarf)
 
-### Phase A — Sofort
+### Phase A — Bei Aktivierung (Optional)
 - execution_status ins Manifest
 - neuer Validator
 - decision.yml an execution_status binden
 - Agent-Policy verschärfen
 
-### Phase B — Bestandsbereinigung
+### Phase B — Bestandsbereinigung (Optional)
 - vorhandene Experimente neu klassifizieren
 - falsche Abschlüsse entfernen
 - observation vs run sauber trennen
 
-### Phase C — Später
+### Phase C — Späterer Vollausbau
 - echte CLI-Runner
 - automatische Artefakterzeugung
 - reproducible experiment runs
@@ -759,7 +759,7 @@ Nur die Stelle härten, an der aus Denken Wissen werden soll.
 
 ⸻
 
-## 18. Konkrete nächste PRs
+## 18. Mögliche Folge-PRs (falls aktiviert)
 
 **PR 1**
 
