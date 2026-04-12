@@ -1,7 +1,7 @@
 ---
 title: "Konzept: Execution-Bound Epistemics für Vibe-Lab"
 status: draft
-canonicality: derived
+canonicality: exploratory
 relations:
   - type: informs
     target: ../masterplan.md

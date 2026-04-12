@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/contracts/docmeta.schema.json",
   "title": "Document Metadata (Frontmatter)",
-  "description": "Kanonisches Schema für Markdown-Frontmatter. Definiert epistemische Pflichtfelder und Relations-Typen. Gehört in contracts/ (policy-nahe Semantik, nicht Pipeline-Validierung).",
+  "description": "Kanonisches Schema f\u00fcr Markdown-Frontmatter. Definiert epistemische Pflichtfelder und Relations-Typen. Geh\u00f6rt in contracts/ (policy-nahe Semantik, nicht Pipeline-Validierung).",
   "type": "object",
   "properties": {
     "title": {
@@ -11,12 +11,31 @@
     },
     "status": {
       "type": "string",
-      "enum": ["idea", "designed", "testing", "adopted", "rejected", "blocked", "inconclusive", "deprecated", "draft", "active", "archived"],
+      "enum": [
+        "idea",
+        "designed",
+        "testing",
+        "adopted",
+        "rejected",
+        "blocked",
+        "inconclusive",
+        "deprecated",
+        "draft",
+        "active",
+        "archived"
+      ],
       "description": "Operativer Status des Dokuments"
     },
     "canonicality": {
       "type": "string",
-      "enum": ["canonical", "operative", "navigation", "diagnosis", "derived"],
+      "enum": [
+        "canonical",
+        "operative",
+        "navigation",
+        "diagnosis",
+        "derived",
+        "exploratory"
+      ],
       "description": "Stellung in der Wahrheitshierarchie"
     },
     "schema_version": {
@@ -32,7 +51,7 @@
     "updated": {
       "type": "string",
       "format": "date",
-      "description": "Letztes Änderungsdatum"
+      "description": "Letztes \u00c4nderungsdatum"
     },
     "author": {
       "type": "string",
@@ -40,7 +59,9 @@
     },
     "tags": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Freitext-Tags zur Kategorisierung"
     },
     "relations": {
@@ -70,10 +91,16 @@
             "description": "Relativer Pfad oder Identifier des Zieldokuments"
           }
         },
-        "required": ["type", "target"]
+        "required": [
+          "type",
+          "target"
+        ]
       },
       "description": "Gerichtete Beziehungen zu anderen Dokumenten"
     }
   },
-  "required": ["title", "status"]
+  "required": [
+    "title",
+    "status"
+  ]
 }
