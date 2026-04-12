@@ -93,9 +93,9 @@ Nicht Halluzination an sich, sondern institutionalisierte Halluzination.
 
 ### 3.1 Trennung von Zuständen
 
-Ein Experiment darf nie zugleich alles sein.
+Ein Experiment darf nie zugleich alles sein. Es gibt eine Trennung zwischen dem konzeptionellen Lebenszyklus und dem konkret modellierten Status.
 
-Erlaubte Zustände:
+Konzeptionelle Lebenszykluszustände:
 - designed
 - executing
 - executed
@@ -106,7 +106,13 @@ Erlaubte Zustände:
 - rejected
 - inconclusive
 
-Nicht alle müssen sofort technisch eingeführt werden, aber die Logik muss da sein.
+Davon wird im Manifest (`execution_status`) zunächst nur die execution-bezogene Teilmenge modelliert:
+- designed
+- executed
+- replicated
+- reconstructed
+
+Zustände wie `analyzed`, `adopted`, `rejected` gehören zur breiteren Prozesslogik und nicht zwingend in das Feld `execution_status`.
 
 ### 3.2 Keine Entscheidung ohne Ausführung
 
@@ -152,7 +158,7 @@ Mögliche substanzielle Zustände:
 - executed
   mindestens ein echter Run belegt
 - reconstructed
-  aus Vorwissen, Altmaterial, Erinnerungen oder nachgetragenen Spuren rekonstruiert, aber kein vollwertiger Execution-Proof. Rekonstruktion darf dokumentieren, aber nicht legitimieren. Es darf nie als Basis für ein `adoption_assessment` dienen und nicht in `executed` umgewertet werden.
+  aus Vorwissen, Altmaterial, Erinnerungen oder nachgetragenen Spuren rekonstruiert, aber kein vollwertiger Execution-Proof. Rekonstruktion dokumentiert Vergangenheitsnähe, nicht Durchführungsbeweis. Was rekonstruiert ist, darf informativ sein, aber nicht proof-äquivalent. Rekonstruierte Run-Artefakte sind historische Hinweise und dürfen nie den Validatorpfad für `executed` erfüllen oder Grundlage eines `adoption_assessment` sein.
 - analyzed
   Ergebnisse zusammengeführt
 - adopted / rejected / inconclusive
@@ -263,7 +269,7 @@ Ich empfehle folgende Eventtypen:
 | :--- | :--- | :--- |
 | observation | ja | nein |
 | run | nein | ja |
-| metric | nein | ja |
+| measurement | nein | ja |
 | error | nein | ja |
 | decision | nein | ja, aber nur als Folge |
 
@@ -465,7 +471,7 @@ Nicht jede Entscheidung ist eine Adoption, und nicht jede Entscheidung setzt `ex
 
 Für den Altbestand gelten künftig drei ehrliche Wege:
 - **`executed`**: Wenn echte Ausführungsspuren und Artefakte nachweisbar vorliegen.
-- **`reconstructed`**: Wenn nur rekonstruierbare Altspuren oder Erfahrungswissen vorliegen. Dies bleibt erkenntnisfähig, ist aber nicht gleichrangig mit echter Ausführung. Rekonstruktion darf dokumentieren, aber nicht legitimieren. Es darf nie als Basis für ein `adoption_assessment` dienen.
+- **`reconstructed`**: Wenn nur rekonstruierbare Altspuren oder Erfahrungswissen vorliegen. Dies bleibt erkenntnisfähig, ist aber nicht gleichrangig mit echter Ausführung. Rekonstruktion dokumentiert Vergangenheitsnähe, nicht Durchführungsbeweis. Was rekonstruiert ist, darf informativ sein, aber nicht proof-äquivalent. Es darf nie als Basis für ein `adoption_assessment` dienen.
 - **`designed`**: Wenn das Experiment im aktuellen System nur als geplante oder nachträglich formulierte Struktur existiert.
 
 Wichtiger Punkt:
@@ -609,10 +615,20 @@ def main():
 
         if decision_path.exists():
             decision_data = yaml.safe_load(decision_path.read_text(encoding="utf-8")) or {}
-            # Pseudo-check for adoption_assessment
-            if decision_data.get("type") == "adoption_assessment" and execution_status not in {"executed", "replicated"}:
-                errors.append(f"{manifest_path}: adoption_assessment requires executed or replicated status")
+
+            # adoption_assessment needs executed/replicated
+            if decision_data.get("type") == "adoption_assessment":
+                if execution_status not in {"executed", "replicated"}:
+                    errors.append(f"{manifest_path}: adoption_assessment requires executed or replicated status")
+
             # execution_assessment is fine for designed or reconstructed
+            elif decision_data.get("type") == "execution_assessment":
+                pass
+
+            if execution_status == "reconstructed":
+                # reconstructed darf nie als proof für executed/adoption dienen
+                if decision_data.get("type") == "adoption_assessment":
+                     errors.append(f"{manifest_path}: reconstructed cannot be used for adoption_assessment")
 
     if errors:
         print("❌ Execution proof validation FAILED")
@@ -624,6 +640,26 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
+
+⸻
+
+### 13.5 Beispiel für results/decision.yml
+
+Die Trennung der Decision-Typen erfordert minimale, explizite Dateien.
+
+**Beispiel 1: execution_assessment**
+```yaml
+type: execution_assessment
+verdict: not_executed
+summary: "Kein echter Run-Proof vorhanden. Das Experiment ist nur designed."
+```
+
+**Beispiel 2: adoption_assessment**
+```yaml
+type: adoption_assessment
+verdict: adopted
+summary: "Auf Basis echter Run-Artefakte und Messwerte übernommen."
 ```
 
 ⸻
