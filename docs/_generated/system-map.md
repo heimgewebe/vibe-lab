@@ -3,6 +3,8 @@
 
 # System Map
 
+> **Hinweis:** system-map.md kartiert die versionierte Repo-Struktur auf Basis getrackter Dateien und ist keine Live-Sicht des Arbeitsverzeichnisses sowie keine semantische Beziehungskarte.
+
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
 | `./` | 📁 Root | 10 | 5 |
