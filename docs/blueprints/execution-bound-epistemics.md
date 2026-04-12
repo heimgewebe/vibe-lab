@@ -48,7 +48,7 @@ Vibe-Lab soll künftig vier Dinge sauber unterscheiden:
 3. **Execution**
    reale Durchführung mit maschinell prüfbaren Spuren
 4. **Decision**
-   Auswertung; harte Adoption immer auf Basis echter Execution-Artefakte (nicht jede Entscheidung ist eine Adoption)
+   Auswertung in verschiedenen Assessment-Typen; harte Adoption immer auf Basis echter Execution-Artefakte (nicht jede Entscheidung ist eine Adoption)
 
 **Zentralregel:**
 Was nicht ausgeführt wurde, darf nicht wie Erkenntnis aussehen. Keine Adoption ohne Ausführung.
@@ -392,6 +392,8 @@ if manifest.experiment.execution_status in {"executed", "replicated"}:
     assert every run has artifact_ref (must be string)
     assert artifact path resolves strictly within experiment root
     assert referenced artifact files exist (is_file)
+    assert every run has command (must be string)
+    assert every run has exit_code
 
 if decision.yml has adoption_assessment:
     assert manifest.experiment.execution_status in {"executed", "replicated"}
@@ -624,6 +626,13 @@ def main():
 
                 if not artifact_path.is_file():
                     errors.append(f"{manifest_path}: artifact_ref is not a valid file: {artifact_ref}")
+
+                command = r.get("command")
+                if not command or not isinstance(command, str):
+                    errors.append(f"{manifest_path}: run event missing valid command string")
+
+                if "exit_code" not in r:
+                    errors.append(f"{manifest_path}: run event missing exit_code")
 
         if decision_path.exists():
             decision_data = yaml.safe_load(decision_path.read_text(encoding="utf-8")) or {}
