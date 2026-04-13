@@ -31,6 +31,8 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 
 - **canonical**: verbindliche, langfristige Referenz
 - **operative**: aktiv genutzte Arbeitsgrundlage
+- **navigation**: orientierende Einstiegs- und Wegweiserdokumente; helfen beim Auffinden relevanter kanonischer oder operativer Inhalte
+- **diagnosis**: diagnostische oder generierte Analyse-Sicht (z. B. _generated); informativ, aber nicht maßgeblich gegenüber kanonischen Quellen
 - **derived**: aus anderen Quellen abgeleitet, nicht primär
 - **exploratory**: dokumentierter Denk- und Optionsraum; bewusst nicht operativ bindend
 
