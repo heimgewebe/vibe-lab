@@ -65,5 +65,5 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 ## Epistemische Kalibrierung
 
 - **Rohzonen bleiben roh.** Keine Begründungspflicht, keine Reviewerwartung in `raw-vibes/`.
-- **`designed ≠ executed`.** Entwurf, Durchführung, Beobachtung und Deutung müssen unterscheidbar bleiben. `execution_status: executed` oder `replicated` ist nur zulässig, wenn `execution_refs` mindestens einen Verweis auf eine nachvollziehbare Spur enthält (evidence.jsonl, Artefakt, Log, Ergebnisdatei).
+- **`designed ≠ executed`.** Entwurf, Durchführung, Beobachtung und Deutung müssen unterscheidbar bleiben. `execution_status: executed` oder `replicated` setzt nachvollziehbare Spur in `execution_refs` voraus (evidence.jsonl, Artefakt, Log, Ergebnisdatei).
 - **Aufwertung braucht sichtbare Begründung.** Jeder Anstieg epistemischen Status (adopted, pattern, best practice) muss nachvollziehbar begründet sein.
