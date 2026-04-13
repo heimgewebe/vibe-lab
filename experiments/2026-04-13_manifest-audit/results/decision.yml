@@ -1,0 +1,30 @@
+verdict: inconclusive
+confidence: medium
+date: "2026-04-13"
+reviewer: "claude-sonnet-4-6"
+
+rationale: |
+  Die Hypothese wurde teilweise bestätigt: Das Skript lief fehlerfrei und fand in allen 3
+  vorhandenen Experimenten eine Inkonsistenz (execution_status fehlt trotz vorhandener Evidenz).
+
+  Das Ergebnis ist jedoch epistemisch ambivalent:
+  - Technisch ist es korrekt: die Felder fehlen, die Evidenz ist da.
+  - Inhaltlich könnte man argumentieren, dass die Experimente tatsächlich durchgeführt wurden
+    (evidence.jsonl ist befüllt), also keine "falsche" Behauptung gemacht wird.
+
+  Die Inkonsistenz liegt auf Schema-Ebene (deklarierter Zustand ≠ tatsächlicher Zustand),
+  nicht auf Wahrheitsebene (Beweise existieren trotzdem).
+
+  Daraus folgt keine starke Empfehlung für execution_status als Pflichtfeld,
+  aber ein klares Signal: Template und Schema signalisieren unterschiedliche Erwartungen.
+
+evidence_summary:
+  observations: 5
+  measurements: 1
+  runs: 1
+  decisions: 0
+
+next_steps:
+  - Nicht: execution_status zum Pflichtfeld machen (scope creep, Systemänderung)
+  - Möglicherweise: Template-Kommentar klarstellen, dass execution_status Pflicht ist sobald evidence existiert
+  - Nicht jetzt: Bestehende Manifests korrigieren (nicht Teil dieses Experiments)

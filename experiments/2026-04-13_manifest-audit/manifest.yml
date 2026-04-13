@@ -1,0 +1,31 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "manifest-audit"
+  hypothesis: "Ein kurzes Audit-Skript kann Inkonsistenzen zwischen dem deklarierten execution_status in manifest.yml und dem tatsächlichen Zustand der evidence.jsonl-Dateien automatisch erkennen – und wird in den vorhandenen Experimenten mindestens eine solche Inkonsistenz finden."
+  status: inconclusive
+  category: technique
+  execution_status: executed
+  execution_refs:
+    - "experiments/2026-04-13_manifest-audit/artifacts/audit.py"
+    - "experiments/2026-04-13_manifest-audit/results/evidence.jsonl"
+  created: "2026-04-13"
+  updated: "2026-04-13"
+  author: "claude-sonnet-4-6"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools:
+    - "Python 3"
+    - "PyYAML"
+    - "claude-sonnet-4-6"
+  language: "Python"
+  environment: "vibe-lab / linux"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

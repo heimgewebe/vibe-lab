@@ -1,0 +1,18 @@
+=== Manifest-Audit ===
+
+Geprüfte Experimente: 3
+
+[!] 2026-04-08_spec-first
+     status=adopted  execution_status=None  evidence_count=13  refs=0
+     >> execution_status fehlt, aber 13 Evidenzeinträge vorhanden
+[!] 2026-04-11_yolo-vs-spec-first
+     status=designed  execution_status=None  evidence_count=5  refs=0
+     >> execution_status fehlt, aber 5 Evidenzeinträge vorhanden
+[!] 2026-04-12_spec-first-legacy
+     status=testing  execution_status=None  evidence_count=5  refs=0
+     >> execution_status fehlt, aber 5 Evidenzeinträge vorhanden
+
+--- Zusammenfassung ---
+Experimente:        3
+Inkonsistenzen:     3
+Fehler (kein yaml): 0
