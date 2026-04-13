@@ -89,18 +89,6 @@
               }
             }
           }
-        },
-        {
-          "if": {
-            "required": ["execution_status"],
-            "properties": { "execution_status": { "enum": ["executed", "replicated"] } }
-          },
-          "then": {
-            "required": ["execution_refs"],
-            "properties": {
-              "execution_refs": { "minItems": 1 }
-            }
-          }
         }
       ]
     },
