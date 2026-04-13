@@ -25,6 +25,8 @@ Es gibt fast keine:
 3. **Kein CI-Check** — dieser Ordner wird nicht validiert
 4. **Dateiname = kurzer Titel** (z. B. `chain-of-thought-beim-refactoring.md`)
 
+**Schutzregel:** Promotions-, Bibliotheks- und Experimentnormen strahlen nicht in diese Zone zurück. Was anderswo im Repo gilt, gilt hier nicht.
+
 ## Und dann?
 
 Wenn eine Idee reif genug ist, wird daraus ein Experiment:

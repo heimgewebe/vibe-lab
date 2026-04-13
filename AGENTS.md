@@ -66,6 +66,6 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 
 - **Rohzonen bleiben roh.** Keine Begründungspflicht, keine Reviewerwartung in `raw-vibes/`.
 - **Experimente unterscheiden Entwurf, Durchführung, Beobachtung und Deutung.** `designed ≠ executed` — Durchführungsanspruch braucht Spur.
-- **Keine Durchführungsbehauptung ohne Beleg.** `execution_status: executed` erfordert mindestens eine referenzierte Spur (Artefakt, Log, Evidenz).
+- **Keine Durchführungsbehauptung ohne Beleg.** `execution_status: executed` oder `replicated` ist nur zulässig, wenn `execution_refs` mindestens einen Verweis auf eine nachvollziehbare Spur enthält (evidence.jsonl, Artefakt, Log, Ergebnisdatei).
 - **Aufwertung braucht sichtbare Begründung.** Jeder Anstieg epistemischen Status (adopted, pattern, best practice) muss nachvollziehbar begründet sein.
 - **Plausibilität darf nicht still zu Wissen werden.** Sprachliche Kohärenz, saubere Struktur oder gutes Framing ersetzen keine belastbare Grundlage.
