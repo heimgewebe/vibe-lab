@@ -1,6 +1,6 @@
 ---
 title: "Ausgangszustand: Pretty Evidence Script"
-status: adopted
+status: testing
 canonicality: operative
 ---
 

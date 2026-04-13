@@ -1,6 +1,6 @@
 ---
 title: "Experiment-Kontext: Pretty Evidence Script"
-status: adopted
+status: testing
 canonicality: operative
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes (Template)"
-status: adopted
+status: testing
 canonicality: operative
 ---
 
