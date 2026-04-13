@@ -26,6 +26,16 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 
 **Regel:** Bei Widersprüchen gilt die höhere Ebene.
 
+
+### Definitionen (canonicality & status)
+
+- **canonical**: verbindliche, langfristige Referenz
+- **operative**: aktiv genutzte Arbeitsgrundlage
+- **derived**: abgeleitet aus anderen Quellen, nicht primär
+- **exploratory**: dokumentierter Denk- und Optionsraum. Bewusst nicht operativ bindend. Kann relevant sein ohne aktuelle Umsetzung (z.B. Konzepte, Hypothesen, zukünftige Härtungsideen).
+
+*Hinweis zu `status: designed`:* Dieser Status ist primär experimentnah. Er beschreibt geplante / vorbereitete Zustände und ist kein generischer globaler Dokumentstatus für beliebige Inhalte.
+
 ## Generierte Artefakte
 
 Die folgenden Pfade enthalten ausschließlich generierte Artefakte. Agenten dürfen sie lesen, aber **niemals manuell editieren**:
