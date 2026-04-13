@@ -91,7 +91,7 @@ Wie verhindern wir, dass ungesicherte Plausibilität zu früh wie gesicherte Erk
 
 ### 4.1 Drei epistemische Zonen
 
-#### A. Rohzone
+A. Rohzone
 
 Primär: raw-vibes/ und funktional ähnliche Frühformen.
 
@@ -119,7 +119,7 @@ Prinzip: Rohheit ist hier keine Schwäche, sondern Funktion.
 
 ⸻
 
-#### B. Experimentzone
+B. Experimentzone
 
 Primär: experiments/
 
@@ -138,7 +138,7 @@ Ziel der Mitte:
 
 ⸻
 
-#### C. Kanonisierungszone
+C. Kanonisierungszone
 
 Primär: catalog/, prompts/adopted/, zentrale orientierende Policy- und Konzeptpfade.
 
@@ -153,15 +153,15 @@ Je höher die Geltung, desto sichtbarer die Begründung.
 
 ### 4.2 Drei Disziplinschichten
 
-#### Schicht 1 — Freie Front
+Schicht 1 — Freie Front
 
 Rohzone bleibt fast reibungsfrei.
 
-#### Schicht 2 — Execution-Bound-Mitte
+Schicht 2 — Execution-Bound-Mitte
 
 Experimente werden an reale Durchführung, Spur und Beobachtung gebunden.
 
-#### Schicht 3 — Aufwertungs-Gate
+Schicht 3 — Aufwertungs-Gate
 
 Bindende Übernahme braucht einen kleinen, expliziten Nachweis.
 
@@ -472,19 +472,19 @@ Eine kleine operative Kernnorm, wenige klare Vollzugsorte, kein zweiter Begriffs
 
 ### 11.3 Sollbild
 
-#### Ebene A — operative Kernnorm
+Ebene A — operative Kernnorm
 
 Was ist vorne, in der Mitte, hinten Pflicht?
 
-#### Ebene B — Vollzugsoberfläche
+Ebene B — Vollzugsoberfläche
 
 Wo erscheint diese Pflicht konkret? Templates, AGENTS, wenige Hinweise.
 
-#### Ebene C — deterministische Prüfbarkeit
+Ebene C — deterministische Prüfbarkeit
 
 Nur was Maschinen eindeutig prüfen können, darf in CI.
 
-#### Ebene D — Hintergrundwerkzeug
+Ebene D — Hintergrundwerkzeug
 
 Vertiefte Methoden ohne Alltagszwang.
 
@@ -526,7 +526,7 @@ Bürokratie marschiert selten ein. Sie tröpfelt.
 
 ### 13.1 Was tatsächlich sinnvoll ist
 
-#### A. Kleine Kernnorm
+A. Kleine Kernnorm
 
 Entweder als ultrakurze neue Policy nur wenn sie echte Bündelung bringt,
 oder als Verdichtung an bereits vorhandenen Orten.
@@ -539,7 +539,7 @@ Inhalt:
 
 Länge: ideal unter einer Seite
 
-#### B. AGENTS-Kurzergänzung
+B. AGENTS-Kurzergänzung
 
 Sehr knapp:
 - Rohe Arbeit braucht keine Tiefenanalyse.
@@ -547,11 +547,11 @@ Sehr knapp:
 - Bindendere Übernahme braucht sichtbare Begründung.
 - Plausibilität darf nicht still als Erkenntnis aufgewertet werden.
 
-#### C. Experiment-Manifest-Schärfung
+C. Experiment-Manifest-Schärfung
 - execution_status
 - optional observation_basis, nur falls nötig
 
-#### D. Minimaler Promotionsblock
+D. Minimaler Promotionsblock
 
 Im vorhandenen Promotion-Template:
 - Grundlage
@@ -570,25 +570,25 @@ Im vorhandenen Promotion-Template:
 
 ## 14. Einführungsplan
 
-#### Phase 1 — Bestandskalibrierung
+Phase 1 — Bestandskalibrierung
 - epistemische Aussagen aus AGENTS, Constraints, Quality Gates, CONTRIBUTING und Templates nebeneinanderlegen
 - Doppelungen markieren
 - entscheiden, was zusammengezogen werden kann
 - nur dann neue Mini-Policy anlegen, wenn bloße Verdichtung nicht reicht
 
-#### Phase 2 — Rohzone absichern
+Phase 2 — Rohzone absichern
 - explizit festhalten: keine neuen Anforderungen in raw-vibes/
 - keine Frontmatter- oder Reviewerwartungen rückstrahlen lassen
 
-#### Phase 3 — Experimentmitte konkretisieren
+Phase 3 — Experimentmitte konkretisieren
 - execution_status oder Äquivalent ergänzen
 - Beobachtung vs. Deutung in Template-Sprache klarer machen
 - keine zusätzliche Review-Liturgie einführen
 
-#### Phase 4 — Kanonisierungsblock ergänzen
+Phase 4 — Kanonisierungsblock ergänzen
 - Minimalbegründung im Promotion-Template einbauen
 
-#### Phase 5 — Beobachten statt ausbauen
+Phase 5 — Beobachten statt ausbauen
 
 Für mindestens 4–6 Wochen:
 - Experimentrate
@@ -597,7 +597,7 @@ Für mindestens 4–6 Wochen:
 - PR-/Promotionsfriktion
 - qualitative Driftfälle
 
-#### Phase 6 — Nur bei echtem Bedarf vertiefen
+Phase 6 — Nur bei echtem Bedarf vertiefen
 
 Erst wenn sichtbar wird, dass:
 - große Strukturfragen schlecht bearbeitet werden
