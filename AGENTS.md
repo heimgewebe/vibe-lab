@@ -61,3 +61,11 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 3. **Transparenz:** Jede agentengesteuerte Änderung muss ihren Auslöser (`triggered_by`) dokumentieren.
 4. **Zonenrespekt:** Die Dreiphasenlogik (Capture vs. Labor vs. Bibliothek) wird eingehalten. Capture-Artefakte (raw-vibes/) sind roh und unstrukturiert. Labor-Artefakte werden nicht ohne Promotion-Gate in die Bibliothek verschoben.
 5. **Verbot unbelegter Status-Umdeutung:** Agenten dürfen den Status bestehender Experimente nicht ohne belegte Grundlage ändern. Erforderlich ist entweder (1) eine explizite Aussage im Experiment, (2) ein passendes Decision-Artefakt, oder (3) ein eindeutiger struktureller Hinweis. Fehlen belastbare Belege, bleibt der bestehende Status unberührt; epistemische Unklarheit ist explizit auszuhalten.
+
+## Epistemische Kalibrierung
+
+- **Rohzonen bleiben roh.** Keine Begründungspflicht, keine Reviewerwartung in `raw-vibes/`.
+- **Experimente unterscheiden Entwurf, Durchführung, Beobachtung und Deutung.** `designed ≠ executed` — Durchführungsanspruch braucht Spur.
+- **Keine Durchführungsbehauptung ohne Beleg.** `execution_status: executed` erfordert mindestens eine referenzierte Spur (Artefakt, Log, Evidenz).
+- **Aufwertung braucht sichtbare Begründung.** Jeder Anstieg epistemischen Status (adopted, pattern, best practice) muss nachvollziehbar begründet sein.
+- **Plausibilität darf nicht still zu Wissen werden.** Sprachliche Kohärenz, saubere Struktur oder gutes Framing ersetzen keine belastbare Grundlage.

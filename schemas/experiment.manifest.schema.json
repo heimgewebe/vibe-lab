@@ -50,6 +50,11 @@
           "minimum": 1,
           "description": "Aktuelle Iterationsnummer"
         },
+        "execution_status": {
+          "type": "string",
+          "enum": ["designed", "prepared", "executed", "replicated"],
+          "description": "Durchführungsstatus: designed (nur entworfen), prepared (Setup angelegt), executed (tatsächlicher Run mit Spur), replicated (belastbar wiederholt)"
+        },
         "evidence_level": {
           "type": "string",
           "enum": ["anecdotal", "experimental", "replicated"],
