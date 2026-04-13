@@ -50,6 +50,16 @@
           "minimum": 1,
           "description": "Aktuelle Iterationsnummer"
         },
+        "execution_status": {
+          "type": "string",
+          "enum": ["designed", "prepared", "executed", "replicated"],
+          "description": "Durchführungsgrad (orthogonal zu status und evidence_level): designed (nur Entwurf), prepared (Setup angelegt, kein Run), executed (tatsächlicher Run mit Spur in execution_refs), replicated (belastbar und unabhängig wiederholt)"
+        },
+        "execution_refs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Spurverweise, insbesondere bei executed/replicated: Pfade zu evidence.jsonl, Artefakten, Logs oder Ergebnisdateien. Bei execution_status designed oder prepared sollte dieses Feld in der Regel leer bleiben."
+        },
         "evidence_level": {
           "type": "string",
           "enum": ["anecdotal", "experimental", "replicated"],
@@ -65,20 +75,39 @@
         }
       },
       "required": ["name", "hypothesis", "status", "category", "evidence_level"],
-      "if": {
-        "properties": {
-          "evidence_level": { "const": "replicated" }
-        }
-      },
-      "then": {
-        "required": ["replicated_from"],
-        "properties": {
-          "replicated_from": {
-            "type": "string",
-            "minLength": 1
+      "allOf": [
+        {
+          "if": {
+            "properties": { "evidence_level": { "const": "replicated" } }
+          },
+          "then": {
+            "required": ["replicated_from", "execution_status"],
+            "properties": {
+              "replicated_from": {
+                "type": "string",
+                "minLength": 1
+              },
+              "execution_status": {
+                "not": { "enum": ["designed", "prepared"] }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["execution_status"],
+            "properties": { "execution_status": { "enum": ["executed", "replicated"] } }
+          },
+          "then": {
+            "required": ["execution_refs"],
+            "properties": {
+              "execution_refs": {
+                "minItems": 1
+              }
+            }
           }
         }
-      }
+      ]
     },
     "context": {
       "type": "object",

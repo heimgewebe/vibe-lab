@@ -14,7 +14,7 @@ canonicality: operative
 
 ## Beobachtungen
 
-<!-- Narrative Beschreibung der wichtigsten Beobachtungen, gestützt auf evidence.jsonl -->
+<!-- Messbar/sichtbar Beobachtetes, gestützt auf evidence.jsonl. Keine Schlüsse hier — die gehören in ## Deutung. -->
 
 ### Wirksamkeit (Effektivität)
 <!-- Wie wirksam war die getestete Praxis? -->
@@ -24,6 +24,11 @@ canonicality: operative
 
 ### Flow (subjektive Qualität)
 <!-- Wie wurde die subjektive Qualität empfunden? -->
+
+## Deutung
+
+<!-- Was bedeuten diese Beobachtungen? Schlüsse, Hypothesenprüfung, Einschränkungen.
+     Beobachtet und Gedeutet trennen: Was war messbar/sichtbar — und was ist Interpretation? -->
 
 ## Verdict
 

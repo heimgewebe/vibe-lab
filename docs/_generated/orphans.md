@@ -3,11 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (19 found):
+Documents not referenced by any other document via frontmatter relations (18 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
-- `docs/blueprints/asymmetrische-aufwertungsarchitektur.md`
 - `docs/concepts/execution-bound-epistemics.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
