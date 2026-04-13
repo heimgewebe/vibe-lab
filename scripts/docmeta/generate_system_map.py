@@ -70,7 +70,8 @@ def get_git_tracked_files() -> list[str]:
             stderr=subprocess.PIPE,
             check=True
         )
-        # Split on null byte and decode correctly, ignoring empty strings
+        # Split on null byte and decode correctly, ignoring empty strings.
+        # errors="replace" ensures robustness against non-conformant filenames without crashing the generator.
         files = [f.decode("utf-8", errors="replace") for f in result.stdout.split(b"\0") if f]
         return sorted(files)
     except subprocess.CalledProcessError as e:
@@ -87,10 +88,9 @@ def main():
 
     tracked_files = get_git_tracked_files()
 
-    # system-map.md kartiert primär die projektlogische Hauptstruktur des Repos.
-    # Obwohl die Datenbasis auf Git-getrackten Dateien beruht, werden definierte
-    # infrastrukturelle Hilfsstrukturen (wie .github oder node_modules) bewusst
-    # nicht als gleichgewichtiger Teil der Architekturkarte gewertet.
+    # system-map.md basiert auf Git-getrackten Dateien.
+    # Definierte Infrastrukturverzeichnisse aus SKIP_DIR_NAMES werden für diese Übersicht
+    # bewusst ausgeblendet, damit die projektlogische Hauptstruktur im Vordergrund bleibt.
     for rel in tracked_files:
         rel_parts = Path(rel).parts
         if any(p in SKIP_DIR_NAMES for p in rel_parts):
