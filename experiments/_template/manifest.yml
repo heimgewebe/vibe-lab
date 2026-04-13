@@ -9,7 +9,8 @@ experiment:
   status: idea                # idea | testing | adopted | rejected | blocked | inconclusive
   category: technique         # style | technology | technique | workflow | combo
   execution_status: designed  # designed | prepared | executed | replicated
-  execution_refs: []          # Pflicht sobald execution_status executed/replicated: Pfade zu evidence.jsonl, Artefakten, Logs
+                              # (Durchführungsgrad, orthogonal zu status und evidence_level)
+  execution_refs: []          # Spurverweise — befüllen sobald execution_status executed/replicated
   created: "YYYY-MM-DD"
   updated: "YYYY-MM-DD"
   author: ""

@@ -53,12 +53,12 @@
         "execution_status": {
           "type": "string",
           "enum": ["designed", "prepared", "executed", "replicated"],
-          "description": "Durchführungsstatus: designed (nur entworfen), prepared (Setup angelegt), executed (tatsächlicher Run mit Spur), replicated (belastbar wiederholt)"
+          "description": "Durchführungsgrad (orthogonal zu status und evidence_level): designed (nur Entwurf), prepared (Setup angelegt, kein Run), executed (tatsächlicher Run mit Spur in execution_refs), replicated (belastbar und unabhängig wiederholt)"
         },
         "execution_refs": {
           "type": "array",
           "items": { "type": "string" },
-          "description": "Spurverweise (Pflicht bei execution_status executed/replicated): Pfade zu evidence.jsonl, Artefakten, Logs oder Ergebnisdateien"
+          "description": "Spurverweise bei executed/replicated: Pfade zu evidence.jsonl, Artefakten, Logs oder Ergebnisdateien. Leer lassen solange execution_status designed oder prepared."
         },
         "evidence_level": {
           "type": "string",
@@ -86,6 +86,19 @@
               "replicated_from": {
                 "type": "string",
                 "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["execution_status"],
+            "properties": { "evidence_level": { "const": "replicated" } }
+          },
+          "then": {
+            "properties": {
+              "execution_status": {
+                "not": { "enum": ["designed", "prepared"] }
               }
             }
           }

@@ -14,7 +14,7 @@ canonicality: operative
 
 ## Beobachtungen
 
-<!-- Narrative Beschreibung der wichtigsten Beobachtungen, gestützt auf evidence.jsonl -->
+<!-- Messbar/sichtbar Beobachtetes, gestützt auf evidence.jsonl. Keine Schlüsse hier — die gehören in ## Deutung. -->
 
 ### Wirksamkeit (Effektivität)
 <!-- Wie wirksam war die getestete Praxis? -->
