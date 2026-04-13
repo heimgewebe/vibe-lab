@@ -57,7 +57,7 @@
         },
         "execution_refs": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": { "type": "string", "minLength": 1 },
           "description": "Spurverweise, insbesondere bei executed/replicated: Pfade zu evidence.jsonl, Artefakten, Logs oder Ergebnisdateien. Bei execution_status designed oder prepared sollte dieses Feld in der Regel leer bleiben."
         },
         "evidence_level": {
@@ -81,22 +81,12 @@
             "properties": { "evidence_level": { "const": "replicated" } }
           },
           "then": {
-            "required": ["replicated_from"],
+            "required": ["replicated_from", "execution_status"],
             "properties": {
               "replicated_from": {
                 "type": "string",
                 "minLength": 1
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["execution_status"],
-            "properties": { "evidence_level": { "const": "replicated" } }
-          },
-          "then": {
-            "properties": {
+              },
               "execution_status": {
                 "not": { "enum": ["designed", "prepared"] }
               }

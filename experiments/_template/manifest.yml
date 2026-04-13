@@ -6,7 +6,7 @@ schema_version: "0.1.0"
 experiment:
   name: ""                    # Kurzname des Experiments
   hypothesis: ""              # Zu prüfende Hypothese
-  status: idea                # idea | testing | adopted | rejected | blocked | inconclusive
+  status: idea                # idea | designed | testing | adopted | rejected | blocked | inconclusive
   category: technique         # style | technology | technique | workflow | combo
   execution_status: designed  # designed | prepared | executed | replicated
                               # (Durchführungsgrad, orthogonal zu status und evidence_level)
