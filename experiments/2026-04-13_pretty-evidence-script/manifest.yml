@@ -1,0 +1,26 @@
+# Experiment Manifest (Template)
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "pretty-evidence-script"
+  hypothesis: "Ein einfaches Python-Skript kann die Lesbarkeit von evidence.jsonl verbessern, ohne die repo-invarianten Regeln zu verletzen."
+  status: adopted
+  category: technique
+  execution_status: executed
+  execution_refs: ["artifacts/test_output.txt"]
+  created: "2026-04-13"
+  updated: "2026-04-13"
+  author: "Jules"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools: ["python"]
+  language: "python"
+  environment: "local"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

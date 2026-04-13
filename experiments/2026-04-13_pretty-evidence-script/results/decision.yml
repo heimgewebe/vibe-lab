@@ -1,0 +1,24 @@
+# Decision (Template)
+# Validiert gegen: (kein eigenes Schema im MVP; Struktur orientiert sich an der Pipeline-Logik)
+
+schema_version: "0.1.0"
+
+verdict: "adopted"
+confidence: "high"
+date: "2026-04-13"
+reviewer: "Jules"
+
+rationale: |
+  Das Experiment zeigt erfolgreich, dass die Repo-Struktur auch unterbestimmte Aufgaben sauber kanalisiert. Das Skript funktioniert als Diagnosetool und die geforderten Trennungen zwischen Ausführung und Interpretation wurden erzwungen.
+
+evidence_summary:
+  observations: 2
+  positive: 2
+  negative: 0
+  neutral: 0
+
+next_steps: |
+  - Das Skript im Hauptzweig belassen und für Diagnosen nutzen.
+  - Das Experiment im Kanon belassen, um die Wirkung der Architektur zu demonstrieren.
+
+# challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge

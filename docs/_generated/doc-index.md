@@ -33,6 +33,11 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-13_pretty-evidence-script/CONTEXT.md` | Experiment-Kontext: Pretty Evidence Script | adopted | operative |
+| `experiments/2026-04-13_pretty-evidence-script/INITIAL.md` | Ausgangszustand: Pretty Evidence Script | adopted | operative |
+| `experiments/2026-04-13_pretty-evidence-script/failure_modes.md` | Failure Modes (Template) | adopted | operative |
+| `experiments/2026-04-13_pretty-evidence-script/method.md` | Experiment-Methode: Pretty Evidence Script | adopted | operative |
+| `experiments/2026-04-13_pretty-evidence-script/results/result.md` | Experiment-Ergebnis: Pretty Evidence Script | adopted | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
