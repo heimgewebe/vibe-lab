@@ -25,6 +25,11 @@ canonicality: operative
 ### Flow (subjektive Qualität)
 <!-- Wie wurde die subjektive Qualität empfunden? -->
 
+## Deutung
+
+<!-- Was bedeuten diese Beobachtungen? Schlüsse, Hypothesenprüfung, Einschränkungen.
+     Beobachtet und Gedeutet trennen: Was war messbar/sichtbar — und was ist Interpretation? -->
+
 ## Verdict
 
 <!-- adopted / rejected / inconclusive — mit Begründung -->
