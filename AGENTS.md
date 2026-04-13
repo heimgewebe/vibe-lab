@@ -31,10 +31,10 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 
 - **canonical**: verbindliche, langfristige Referenz
 - **operative**: aktiv genutzte Arbeitsgrundlage
-- **derived**: abgeleitet aus anderen Quellen, nicht primär
-- **exploratory**: dokumentierter Denk- und Optionsraum. Bewusst nicht operativ bindend. Kann relevant sein ohne aktuelle Umsetzung (z.B. Konzepte, Hypothesen, zukünftige Härtungsideen).
+- **derived**: aus anderen Quellen abgeleitet, nicht primär
+- **exploratory**: dokumentierter Denk- und Optionsraum; bewusst nicht operativ bindend
 
-*Hinweis zu `status: designed`:* Dieser Status ist primär experimentnah. Er beschreibt geplante / vorbereitete Zustände und ist kein generischer globaler Dokumentstatus für beliebige Inhalte.
+*Hinweis zu `status: designed`:* designed ist primär experimentnah und bezeichnet geplante oder vorbereitete Zustände. Der Wert ist nicht als generischer Status für beliebige Dokumente zu verstehen.
 
 ## Generierte Artefakte
 

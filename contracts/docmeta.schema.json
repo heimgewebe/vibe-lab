@@ -24,7 +24,7 @@
         "active",
         "archived"
       ],
-      "description": "Operativer Status des Dokuments (designed ist prim\u00e4r experimentnah f\u00fcr geplante Zust\u00e4nde)"
+      "description": "Operativer Status des Dokuments"
     },
     "canonicality": {
       "type": "string",
@@ -36,7 +36,7 @@
         "derived",
         "exploratory"
       ],
-      "description": "Stellung in der Wahrheitshierarchie (exploratory: dokumentierter Denkraum, nicht bindend)"
+      "description": "Stellung in der Wahrheitshierarchie"
     },
     "schema_version": {
       "type": "string",
