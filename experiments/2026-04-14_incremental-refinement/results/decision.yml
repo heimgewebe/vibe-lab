@@ -3,32 +3,46 @@
 
 schema_version: "0.1.0"
 
-verdict: "adopted"
-confidence: "medium"
+verdict: "inconclusive"
+confidence: "low"
 date: "2026-04-14"
 reviewer: "copilot-agent"
 
 rationale: |
-  Incremental Refinement produziert in 3/3 Tasks messbar bessere Codequalität:
-  - 103% mehr Types/Interfaces (Ø 3.3 → 6.7)
-  - 770% mehr Error-Handling-Konstrukte (Ø 1.0 → 8.7)
-  - Modulare statt monolithische Architektur
-  - Deutlich bessere Testbarkeit (isolierte Exports)
-  - Weniger erwarteter Rework (<10% vs. 30-50%)
+  Incremental Refinement erzeugt in 3/3 Tasks sichtbar modulareren Code mit
+  mehr expliziten Typen, Fehlerklassen und Separation of Concerns. Die These
+  „Schrittzerlegung fördert Struktur" ist plausibel bis stark plausibel.
 
-  Trade-off: 6× mehr Prompts, 2.1× mehr Codezeilen. Confidence "medium",
-  weil nur ein Modell, ein Experimentator (Agent), und eine Zerlegungsstrategie
-  getestet wurde. Replikation mit anderen Modellen und menschlichen
-  Experimentatoren wäre nötig für höhere Confidence.
+  Jedoch reicht die vorliegende Evidenz nicht für ein belastbares „adopted":
+
+  1. Proxy-Metriken: Mehr Typen, mehr Error-Handling, mehr Dateien belegen
+     Modularität, aber nicht automatisch bessere Software. Architektur ist
+     kein Qualitätsbeweis ohne Laufzeit- und Testbelege.
+  2. Fehlende Tests: method.md definiert Schritt 6 als „Tests generieren",
+     aber keine Testdateien wurden erzeugt. Der Claim „bessere Testbarkeit"
+     bleibt architektonische Plausibilität, nicht empirisch nachgewiesen.
+  3. Rework nur geschätzt: Die Werte „<10% vs 30-50%" sind Einschätzungen,
+     keine gemessenen Patch-Diffs.
+  4. Laufzeitbug im Incremental-Arm: Task 2 incremental enthielt einen
+     doppelten i++-Bug im CLI-Parser, der Argumente überspringt — trotz
+     fehlerfreier Kompilierung. Typkorrekt ≠ laufzeitkorrekt.
+  5. Experimentator-Bias: Derselbe Agent erzeugte beide Arme. Incremental
+     bekam 6 Anläufe statt 1 — das misst teils „mehr Bearbeitungszeit +
+     Strukturzwang", nicht nur „Strategieeffekt".
+
+  Starker Designhinweis, aber noch kein robuster Wirknachweis.
 
 evidence_summary:
-  observations: 28
+  observations: 33
   positive: 8
-  negative: 0
-  neutral: 20
+  negative: 2
+  neutral: 23
 
 next_steps: |
-  - Catalog-Eintrag für Incremental Refinement als Technique erstellen
-  - Replikation mit anderem Modell (GPT-4o) anregen
-  - Kombinationsexperiment: Spec-First + Incremental Refinement
+  - Echte Tests pro Task ergänzen (Smoke-Tests, Unit-Tests)
+  - Laufzeittest / Anforderungsmatrix (erfüllt / teilweise / nicht erfüllt)
+  - Gemessene Nacharbeit in Patch-Zeilen statt Schätzung
+  - Replikation mit anderem Modell und/oder menschlichem Experimentator
+  - Decision Rule statt pauschales Verdict erwägen:
+    Single-Shot für einfach, Incremental für mittel, Spec-First+Incremental für komplex
 

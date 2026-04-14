@@ -18,19 +18,19 @@ export function parseAndValidateArgs(argv: string[]): CliOptions {
     switch (arg) {
       case '--input':
       case '-i':
-        options.inputPath = requireNextArg(args, i++, 'input');
+        options.inputPath = requireNextArg(args, i, 'input');
         i++;
         break;
 
       case '--output':
       case '-o':
-        options.outputPath = requireNextArg(args, i++, 'output');
+        options.outputPath = requireNextArg(args, i, 'output');
         i++;
         break;
 
       case '--delimiter':
       case '-d': {
-        const delim = requireNextArg(args, i++, 'delimiter');
+        const delim = requireNextArg(args, i, 'delimiter');
         i++;
         if (delim.length !== 1) {
           throw new InvalidArgumentError('delimiter', 'must be a single character');
@@ -41,7 +41,7 @@ export function parseAndValidateArgs(argv: string[]): CliOptions {
 
       case '--format':
       case '-f': {
-        const format = requireNextArg(args, i++, 'format');
+        const format = requireNextArg(args, i, 'format');
         i++;
         if (format !== 'csv' && format !== 'json') {
           throw new InvalidArgumentError('format', "must be 'csv' or 'json'");
@@ -52,14 +52,14 @@ export function parseAndValidateArgs(argv: string[]): CliOptions {
 
       case '--transform':
       case '-t': {
-        const spec = requireNextArg(args, i++, 'transform');
+        const spec = requireNextArg(args, i, 'transform');
         i++;
         options.transforms.push(parseTransformSpec(spec));
         break;
       }
 
       case '--filter': {
-        const spec = requireNextArg(args, i++, 'filter');
+        const spec = requireNextArg(args, i, 'filter');
         i++;
         options.filter = parseFilterSpec(spec);
         break;
@@ -67,7 +67,7 @@ export function parseAndValidateArgs(argv: string[]): CliOptions {
 
       case '--columns':
       case '-c': {
-        const cols = requireNextArg(args, i++, 'columns');
+        const cols = requireNextArg(args, i, 'columns');
         i++;
         options.selectColumns = cols.split(',').map((c) => c.trim());
         break;

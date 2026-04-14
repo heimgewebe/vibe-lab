@@ -6,7 +6,7 @@ schema_version: "0.1.0"
 experiment:
   name: "incremental-refinement"
   hypothesis: "Inkrementelle Code-Generierung durch viele kleine, gezielte Prompts führt zu besserer Codequalität und weniger Nacharbeit als Single-Shot-Generierung — auf Kosten höherer Prompt-Anzahl."
-  status: testing
+  status: inconclusive
   category: technique
   execution_status: executed
   execution_refs:

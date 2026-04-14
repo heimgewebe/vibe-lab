@@ -1,6 +1,6 @@
 ---
 title: "Incremental Refinement vs. Single-Shot — Initiale Situation"
-status: testing
+status: inconclusive
 canonicality: operative
 ---
 

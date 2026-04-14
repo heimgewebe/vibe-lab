@@ -33,11 +33,11 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
-| `experiments/2026-04-14_incremental-refinement/CONTEXT.md` | Incremental Refinement vs. Single-Shot — Kontext | testing | operative |
-| `experiments/2026-04-14_incremental-refinement/INITIAL.md` | Incremental Refinement vs. Single-Shot — Initiale Situation | testing | operative |
-| `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | testing | operative |
-| `experiments/2026-04-14_incremental-refinement/method.md` | Incremental Refinement vs. Single-Shot — Methode | testing | operative |
-| `experiments/2026-04-14_incremental-refinement/results/result.md` | Incremental Refinement vs. Single-Shot — Ergebnis | testing | operative |
+| `experiments/2026-04-14_incremental-refinement/CONTEXT.md` | Incremental Refinement vs. Single-Shot — Kontext | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/INITIAL.md` | Incremental Refinement vs. Single-Shot — Initiale Situation | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/method.md` | Incremental Refinement vs. Single-Shot — Methode | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/results/result.md` | Incremental Refinement vs. Single-Shot — Ergebnis | inconclusive | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
