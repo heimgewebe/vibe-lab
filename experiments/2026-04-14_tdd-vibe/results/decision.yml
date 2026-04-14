@@ -1,22 +1,41 @@
 # Entscheidung — TDD-Vibe
 
-verdict: iterate   # adopt | reject | iterate | inconclusive
+verdict: inconclusive   # adopt | reject | iterate | inconclusive
 
 rationale: |
-  Hypothese teilweise bestätigt. TDD-Vibe produziert nachweislich mehr Edge-Case-Abdeckung
-  (22 Fehlerfall-Tests vs. 0), bessere Code-Design-Entscheidungen (typisierte Envelopes,
-  extrahierte Helpers, _resetStore()) und macht Lücken explizit sichtbar.
+  Die Hypothese „weniger Nacharbeit + vollständigere Fehlerbehandlung" ist in
+  diesem Durchlauf nicht bestätigt.
 
-  Kein Vorteil bei HTTP-Status-Vollständigkeit (beide 6/7) — 500 fehlt in beiden Ansätzen.
-  TDD-Vibe löst das nicht automatisch: Tests begrenzen Implementierung auf das Explizite.
+  Harte Befunde gegen die Hypothese:
+  - Beide Ansätze erzeugen denselben Compile-Defekt (Express-5-Typing,
+    req.params.id) an strukturell identischen Stellen. Rework ist symmetrisch,
+    nicht asymmetrisch — TDD-Vibe spart hier nichts.
+  - HTTP-Status-Coverage ist in strenger Auslegung in beiden Ansätzen 6/7
+    (500 existiert nur als globaler Handler, nicht als getriggerter Pfad).
+  - _resetStore() wird im Test nie aufgerufen; der in v1 behauptete
+    Design-Gewinn ist funktional widerlegt. Genau diese Lücke lässt 2 von 40
+    Tests fallen.
 
-  Kerngewinn: Edge-Cases werden proaktiv formuliert, nicht reaktiv entdeckt.
-  Kosten: 2 Prompts statt 1, mehr Implementierungszeilen.
+  Was TDD-Vibe plausibel weiterhin leistet:
+  - Frühere Sichtbarkeit von Defekten durch maschinell ausführbare Prüfschicht
+    (der Compile-Fehler fällt beim ersten Jest-Lauf sofort auf, statt erst
+    beim ersten echten Request).
+  - Explizitere Typisierung (SuccessEnvelope<T>, ErrorEnvelope) — strukturell
+    identisch zu impl-first, aber compiler-gesichert.
+
+  Methodische Einschränkungen, die eine starke Schlussfolgerung verhindern:
+  - Vergleich ist asymmetrisch: Kontrollgruppe explizit ohne Tests, Treatment
+    explizit mit Tests. "Mehr Fehlerfall-Tests im Treatment" ist Trivialität.
+  - n = 1 Task, 1 Modell, 1 Experimentator (LLM-Agent in derselben Session).
+  - Einige Messungen in v1 waren nicht ausreichend operationalisiert
+    (z. B. "design_quality: besser als impl-first" ist Bewertung, nicht Messung).
 
 next_steps:
-  - "Iteration: Spec-First + TDD-Vibe Combo testen — Spec definiert explizit Error-Klassen, Tests setzen diese um"
-  - "TDD-Vibe-Prompt als Candidate für prompts/adopted/ dokumentieren (noch nicht adoptiert — erst nach Replikation)"
-  - "500-Lücke adressieren: Expliziten Error-Handler-Test in TDD-Vibe-Prompt einbauen"
+  - "Symmetrischer Vergleich: impl-first nachträglich mit unabhängig generierter Testsuite gegen dieselben Akzeptanzkriterien prüfen."
+  - "Replikationslauf mit anderem Modell (GPT-4o) und/oder zweiter Session, um Single-Agent-Bias zu isolieren."
+  - "Umframen der Forschungsfrage: statt 'besserer Code' → 'frühere Sichtbarkeit epistemischer Lücken'. Tragfähiger und ehrlicher zum erhobenen Befund."
+  - "Test-Isolation (beforeEach + _resetStore) als separater Prüfpunkt — Design-Abstraktion vs. tatsächlich genutzte Isolation."
+  - "Noch NICHT in prompts/adopted/ übernehmen. Promotion setzt replicated-Evidenz voraus; aktueller evidence_level: anecdotal."
 
 challenge_version: "rest-api-v1"
 compared_to: "experiments/2026-04-08_spec-first"
