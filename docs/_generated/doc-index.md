@@ -36,7 +36,6 @@
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | draft | operative |
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | draft | operative |
-| `experiments/2026-04-14_tdd-vibe/artifacts/.pytest_cache/README.md` | README | — | — |
 | `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | draft | operative |
 | `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe | draft | operative |
