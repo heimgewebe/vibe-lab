@@ -17,8 +17,7 @@
 - [ ] `results/result.md` fasst die Ergebnisse zusammen
 
 ### Ergebnis
-<!-- Kurzzusammenfassung: Was wurde beobachtet? Was ist das Verdict?
-     Jede Schlussfolgerung muss auf konkrete evidence.jsonl-Einträge oder benannte Belege rückführbar sein. -->
+<!-- Kurzzusammenfassung: Was wurde beobachtet? Was ist das Verdict? -->
 
 ### Nächste Schritte
 <!-- Iterate? Promote? Archive? -->
