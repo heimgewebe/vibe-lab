@@ -1,0 +1,27 @@
+# Decision — Incremental vs. Single-Shot: Debuggability
+# Validiert gegen: (kein eigenes Schema im MVP; Struktur orientiert sich an der Pipeline-Logik)
+
+schema_version: "0.1.0"
+
+verdict: ""
+confidence: ""
+date: ""
+reviewer: ""
+
+rationale: |
+  Noch nicht ausgeführt. Experiment im Status: designed.
+  Rationale wird nach Ausführung (execution_status: executed) befüllt.
+
+evidence_summary:
+  observations: 1
+  positive: 0
+  negative: 0
+  neutral: 1
+
+next_steps: |
+  Experiment ausführen:
+  1. Artefakte kopieren und Bug revertieren
+  2. 5 Test-Inputs ausführen (beide Varianten)
+  3. Metriken erheben (time_to_first_bug_detection, time_to_fix, hidden_bugs_count, patch_size)
+  4. evidence.jsonl befüllen
+  5. Dieses decision.yml und result.md abschließen

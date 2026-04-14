@@ -1,0 +1,31 @@
+# Experiment Manifest — Incremental vs. Single-Shot: Debuggability
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "incremental-debuggability"
+  hypothesis: "Incremental Refinement ermöglicht frühere Bug-Erkennung und schnellere Bug-Behebung als Single-Shot — gemessen an time_to_first_bug_detection, time_to_fix und hidden_bugs_count nach tatsächlicher Ausführung."
+  status: designed
+  category: technique
+  execution_status: designed
+  execution_refs: []
+  created: "2026-04-14"
+  updated: "2026-04-14"
+  author: "copilot-agent"
+  iteration: 1
+  evidence_level: experimental
+  related_idea: "experiments/2026-04-14_incremental-refinement"
+
+context:
+  tools:
+    - "GitHub Copilot"
+    - "Claude Sonnet (via Copilot Agent)"
+    - "Node.js (Laufzeitausführung)"
+    - "ts-node oder tsc + node"
+  language: "TypeScript"
+  environment: "Node.js"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
