@@ -1,6 +1,6 @@
 ---
 title: "Incremental vs. Single-Shot: Debuggability — Kontext"
-status: designed
+status: testing
 canonicality: operative
 relations:
   - type: derived_from

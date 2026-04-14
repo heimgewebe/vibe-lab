@@ -33,11 +33,11 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
-| `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` | Incremental vs. Single-Shot: Debuggability — Kontext | designed | operative |
-| `experiments/2026-04-14_incremental-debuggability/INITIAL.md` | Incremental vs. Single-Shot: Debuggability — Initiale Situation | designed | operative |
-| `experiments/2026-04-14_incremental-debuggability/failure_modes.md` | Failure Modes — Incremental vs. Single-Shot: Debuggability | designed | operative |
-| `experiments/2026-04-14_incremental-debuggability/method.md` | Incremental vs. Single-Shot: Debuggability — Methode | designed | operative |
-| `experiments/2026-04-14_incremental-debuggability/results/result.md` | Incremental vs. Single-Shot: Debuggability — Ergebnis | designed | operative |
+| `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` | Incremental vs. Single-Shot: Debuggability — Kontext | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/INITIAL.md` | Incremental vs. Single-Shot: Debuggability — Initiale Situation | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/failure_modes.md` | Failure Modes — Incremental vs. Single-Shot: Debuggability | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/method.md` | Incremental vs. Single-Shot: Debuggability — Methode | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/results/result.md` | Incremental vs. Single-Shot: Debuggability — Ergebnis | testing | operative |
 | `experiments/2026-04-14_incremental-refinement/CONTEXT.md` | Incremental Refinement vs. Single-Shot — Kontext | inconclusive | operative |
 | `experiments/2026-04-14_incremental-refinement/INITIAL.md` | Incremental Refinement vs. Single-Shot — Initiale Situation | inconclusive | operative |
 | `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | inconclusive | operative |

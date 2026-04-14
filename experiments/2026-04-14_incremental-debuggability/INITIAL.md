@@ -1,6 +1,6 @@
 ---
 title: "Incremental vs. Single-Shot: Debuggability — Initiale Situation"
-status: designed
+status: testing
 canonicality: operative
 ---
 

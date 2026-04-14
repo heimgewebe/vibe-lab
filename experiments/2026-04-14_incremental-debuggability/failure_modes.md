@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes — Incremental vs. Single-Shot: Debuggability"
-status: designed
+status: testing
 canonicality: operative
 ---
 
