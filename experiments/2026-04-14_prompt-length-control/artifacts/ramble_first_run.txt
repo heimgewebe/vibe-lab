@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /app/experiments/2026-04-14_prompt-length-control/artifacts
+collected 5 items
+
+test_ramble_first_parser.py ....F                                        [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_fail_on_escape_in_end __________________________
+
+    def test_fail_on_escape_in_end():
+        # If the text is **bold\**, it should NOT be extracted because the end is escaped.
+>       assert extract_bold_text(r"This is **not bold\**.") == []
+E       AssertionError: assert ['not bold\\'] == []
+E
+E         Left contains one more item: 'not bold\\'
+E         Use -v to get more diff
+
+test_ramble_first_parser.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED test_ramble_first_parser.py::test_fail_on_escape_in_end - AssertionErr...
+========================= 1 failed, 4 passed in 0.04s ==========================

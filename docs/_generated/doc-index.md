@@ -33,6 +33,11 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/CONTEXT.md` | Experiment-Kontext: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/INITIAL.md` | Initiale Prompt-/Setup-Situation: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/failure_modes.md` | Failure Modes: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/method.md` | Experiment-Methode: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/results/result.md` | Ergebnisse: Prompt-Length Control | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | inconclusive | operative |
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | inconclusive | operative |
 | `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | inconclusive | operative |
@@ -48,6 +53,7 @@
 | `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` | Failure Modes: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/method.md` | Experiment-Methode: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/results/result.md` | Ergebnisse: Upfront Structuring Replication | testing | operative |
+| `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |

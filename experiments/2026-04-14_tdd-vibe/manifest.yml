@@ -7,8 +7,10 @@ experiment:
   name: "TDD Vibe"
   hypothesis: "Test-Driven Development im Vibe-Coding-Kontext: Das LLM schreibt erst die Tests, dann den Code. Dies führt zu robusterem Code und weniger Iterationen für Fehlerbehebungen im Vergleich zu Code-First."
   status: inconclusive
+  cognitive_mode: executable
   category: style
   execution_status: executed
+  cognitive_mode: executable
   execution_refs: ["results/evidence.jsonl"]
   created: "2026-04-14"
   updated: "2026-04-14"

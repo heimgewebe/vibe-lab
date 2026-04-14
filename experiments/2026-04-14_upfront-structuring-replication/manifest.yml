@@ -7,8 +7,10 @@ experiment:
   name: "Upfront Structuring Replication"
   hypothesis: "Explizite Vorstrukturierung (Spec-First oder Test-First) vor der Code-Generierung führt im Vergleich zu Code-First replizierbar zu höherer Robustheit bei der Fehlerbehandlung in logiklastigen Aufgaben."
   status: testing
+  cognitive_mode: declarative
   category: technique
   execution_status: executed
+  cognitive_mode: declarative
   execution_refs: ["results/evidence.jsonl"]
   created: "2026-04-14"
   updated: "2026-04-14"

@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /app/experiments/2026-04-14_prompt-length-control/artifacts
+collected 5 items
+
+test_spec_first_parser.py .....                                          [100%]
+
+=============================== warnings summary ===============================
+spec_first_parser.py:8
+  /app/experiments/2026-04-14_prompt-length-control/artifacts/spec_first_parser.py:8: SyntaxWarning: invalid escape sequence '\*'
+    3. Asterisks preceded by a backslash (\*) are escaped and do not count.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================= 5 passed, 1 warning in 0.02s =========================

@@ -4,13 +4,12 @@
 schema_version: "0.1.0"
 
 experiment:
-  name: "Upfront Structuring Comparison"
-  hypothesis: "Explizite Vorstrukturierung vor Implementierung erhöht die Robustheit logiklastiger Agentenarbeit; TDD ist eine mögliche Form davon."
-  status: testing
-  cognitive_mode: declarative
+  name: "Prompt-Length Control"
+  hypothesis: "Der Leistungszugewinn von Spec/Test-First beruht auf der *inhaltlichen Strukturierung* des Constraints-Raums (Declarative/Executable Mode), nicht lediglich auf dem *Erzwingen einer längeren initialen Output-Generierung* (Token-Bloat als Chain-of-Thought Proxy)."
+  status: adopted
   category: technique
+  cognitive_mode: exploratory
   execution_status: executed
-  cognitive_mode: declarative
   execution_refs: ["results/evidence.jsonl"]
   created: "2026-04-14"
   updated: "2026-04-14"
