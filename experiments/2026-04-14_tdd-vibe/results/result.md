@@ -17,16 +17,20 @@ canonicality: operative
 | Metrik                              | Implementation-First | TDD-Vibe              |
 | ----------------------------------- | -------------------- | --------------------- |
 | Kompiliert out-of-the-box           | nein (4 TS2345)      | nein (4 TS2345)       |
-| HTTP-Status (strenge Auslegung)     | 6/7                  | 6/7                   |
+| Compile-Rework (Patches)            | 4                    | 4                     |
+| HTTP-Status (streng: operationalisiert) | 6/7              | 6/7                   |
 | HTTP-Status (strukturell inkl. 500) | 7/7                  | 7/7                   |
-| Generierte Test-Cases               | 0 (anweisungsbedingt)| 40                    |
-| Tests grün nach minimalem Patch     | n. a. (keine Tests)  | 38/40                 |
-| Fehlerfall-Tests (4xx)              | 0                    | 21 (52.5 %)           |
-| Happy-Path-Tests                    | 0                    | 19 (47.5 %)           |
+| Generierte Test-Cases               | 0 (anweisungsbedingt)| 40 (verifiziert)      |
+| Tests grün ¹                        | n. a.                | 38/40                 |
+| Fehlerfall-Tests 4xx (verifiziert)  | 0                    | **21** (52.5 %)       |
+| Happy-Path-Tests (verifiziert)      | 0                    | 19 (47.5 %)           |
+| Test-Isolations-Rework sichtbar     | nein (keine Tests)   | ja (2 rote Tests)     |
 | Implementierungszeilen              | 196                  | 288                   |
 | Benötigte Prompts                   | 1                    | 2                     |
 | `_resetStore()` exportiert          | nein                 | ja                    |
 | `_resetStore()` im Test verwendet   | n. a.                | **nein**              |
+
+¹ *38/40 nur nach minimalem Compile-Fix (4×`String(req.params.id)`). Nacktoutput läuft nicht.*
 
 ## Run-Evidenz
 
@@ -45,10 +49,18 @@ Zum ersten Mal in diesem Experiment liegt tatsächliche Ausführung vor
 
 ### Was dieses Experiment belegt
 
-**Compile-Defekt ist nicht methodenspezifisch.** Beide Implementierungen haben
-denselben TS2345-Fehler an strukturell gleichen Stellen. Die frühere Behauptung
-„TDD-Vibe produziert weniger Nacharbeit" stützt sich hier auf nichts — beide
-Ansätze brauchen identische 4 Patches, um überhaupt lauffähig zu werden.
+**Compile-Rework ist symmetrisch — aber das ist nur ein Teil des Reworks.**
+Beide Implementierungen brauchen 4 identische Patches, um den TS2345-Fehler
+zu beheben (Express-5-Typing, nicht methodenspezifisch). Soweit: gleich.
+
+Der TDD-Vibe-Pfad zeigt aber zusätzlich 2 rote Tests nach dem Compile-Fix —
+verursacht durch fehlende Test-Isolation (`_resetStore()` wird nie aufgerufen).
+Dieser Rework-Punkt ist in impl-first **ebenfalls vorhanden**, dort aber
+unsichtbar: kein Test läuft, kein Defekt wird angezeigt. TDD-Vibe macht
+latenten Rework sichtbar; impl-first versteckt ihn.
+
+Präzise Formulierung: *Compile-Rework gleich. Sichtbar gemachter Gesamt-Rework
+im TDD-Pfad höher — und transparenter.*
 
 **Abstraktion ohne Nutzung ist kein Designgewinn.** `_resetStore()` ist in
 TDD-Vibe exportiert, aber `grep -n 'beforeEach\|_resetStore' users.test.ts`

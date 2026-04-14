@@ -89,6 +89,20 @@ Ermöglicht direkten Vergleich mit den Spec-First-Ergebnissen aus 2026-04-08.
 | Fehlschlag-Signal  | Subjektiv einschätzbar              | Maschinell nachweisbar                |
 | Kombination möglich? | —                                   | Ja: Spec-First → TDD-Vibe als Combo  |
 
+## Metrik-Definitionen (operationalisiert)
+
+> Hinzugefügt nach Durchlauf 1: Metriken müssen vor dem nächsten Replikations-
+> versuch klar operationalisiert sein, damit Zählungen nicht zwischen Läufen driften.
+
+| Metrik | Definition | Zählung |
+| --- | --- | --- |
+| **Fehlerfall-Test** | Ein `it()`-Block, dessen erwarteter Status 4xx ist (via `expect(res.status).toBe(4xx)`) | Regex: `4\d\d\s*—` in Testbeschreibung; Verifikation durch Code-Review |
+| **HTTP-Status-Coverage (streng)** | Ein Statuscode zählt nur, wenn mindestens ein Code-Pfad ihn nachweislich auslöst (Route oder Test) | Manuell gezählt; 500 via globalem Handler zählt nur als „strukturell vorhanden", nicht als „erhoben" |
+| **Compile-Rework** | Patches, die ausschließlich dazu dienen, den Code zum Kompilieren zu bringen (kein Semantik-Effekt) | Zeilen-Diff zwischen Nacktoutput und kompilierender Version |
+| **Test-Isolations-Rework** | Patches, die Test-Interferenzen beheben (z. B. gemeinsamer Zustand zwischen Tests) | Zählt nur, wenn Tests tatsächlich laufen; bei impl-first (keine Tests) definitionsgemäß nicht sichtbar |
+| **Semantik-Rework** | Patches, die das Verhalten des Codes ändern (Logikfehler, fehlende Fälle) | Im vorliegenden Durchlauf nicht gemessen; Pflicht für symmetrischen Folgeversuch |
+| **Executed** | Zulässig nur, wenn mindestens ein echter Ausführungsnachweis existiert (Log, CI-Output o. Ä.) | Ohne Run-Artefakt: `prepared` verwenden |
+
 ## Risiken und Einschränkungen
 
 - Kleine Stichprobe (1 Benchmark-Task) begrenzt statistische Aussagekraft
