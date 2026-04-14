@@ -24,14 +24,17 @@ Verzeichnis generierten Test-Suite, sowie zwei kontrastierende Log-Dateien:
   nie aufrufen (`grep -n beforeEach users.test.ts` liefert nichts).
 
 - `users.ts`, `app.ts`, `users.test.ts` — patched Kopien; Original unangetastet.
-- `package.json`, `tsconfig.json` — Run-Konfiguration.
-- `node_modules/` — .gitignore'd; reproduzierbar via `npm install`.
+- `package.json`, `package-lock.json`, `tsconfig.json` — Run-Konfiguration.
+  Der Lockfile ist **Teil der Run-Evidenz** und bewusst committet: ohne
+  exakt eingefrorene Versionen von `ts-jest`, `jest`, `supertest` und
+  `express 5.x` ist die Rot-Grün-Evidenz nicht mehr reproduzierbar.
+- `node_modules/` — .gitignore'd; wiederherstellbar via `npm ci` (nutzt Lockfile).
 
 ## Reproduktion
 
 ```
 cd results/run-tdd-vibe
-npm install
+npm ci        # nutzt package-lock.json — deterministische Versionen
 npx jest
 ```
 

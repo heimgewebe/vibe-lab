@@ -306,11 +306,31 @@ describe("DELETE /users/:id", () => {
 // ---------------------------------------------------------------------------
 
 describe("GET /users", () => {
-  /** Seed n users so pagination tests start from a known state */
+  /**
+   * Seed n users so pagination tests start from a known state.
+   *
+   * Diagnostik-Hinweis (run-tdd-vibe-Kopie; NICHT im Original-Artefakt):
+   *   Der Originaltest ruft `_resetStore()` nicht zwischen Tests auf,
+   *   deshalb kollidieren `seed0@test.com` usw. über Tests hinweg. Ohne
+   *   expliziten Fehler gibt der Original-Test dann eine verwirrende
+   *   TypeError-Meldung (`Cannot read properties of undefined (reading 'id')`),
+   *   die die eigentliche Ursache (409 Conflict wegen Dubletten) verdeckt.
+   *
+   *   Dieser Block wirft bei erstem nicht-201-Status einen sprechenden Fehler
+   *   mit Status + Body. Das verändert kein Testverhalten in der grünen
+   *   Menge, macht aber den verbleibenden roten Fehler diagnostizierbar.
+   */
   async function seedUsers(n: number) {
     const results: string[] = [];
     for (let i = 0; i < n; i++) {
       const r = await createUser({ name: `Seed${i}`, email: `seed${i}@test.com` });
+      if (r.status !== 201) {
+        throw new Error(
+          `seedUsers(${n}) failed at i=${i}: ` +
+            `status=${r.status}, body=${JSON.stringify(r.body)}. ` +
+            `Wahrscheinliche Ursache: fehlender _resetStore()-Aufruf zwischen Tests.`,
+        );
+      }
       results.push(r.body.data.id);
     }
     return results;
