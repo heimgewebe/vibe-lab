@@ -70,15 +70,10 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 - **Claim-Disziplin.** Aussagen müssen Evidenz und Kontext widerspiegeln: Schmale oder `anecdotal` Evidenz (eine Session, ein Modell, ein Zeitpunkt) trägt keine allgemeinen Schlüsse — Schlussfolgerungen sind explizit als kontextspezifisch zu formulieren. Das Erzeugen von Artefakten ist keine epistemische Handlung; Erkenntnisgewinn entsteht nur durch belegte Beobachtung und explizite Auswertung. Schlussfolgerungen in `result.md`, `decision.yml` oder PR-Beschreibungen müssen auf konkrete Einträge in `evidence.jsonl` oder benannte Belege rückführbar sein; Interpretation und Hypothesen sind zulässig, müssen aber als solche erkennbar bleiben.
 - **Zieltypen explizit halten.** Analyse (Verstehen, Messen, Interpretieren) und Konstruktion (Bauen, Anlegen, Ändern) sind verschiedene Zieltypen. Agenten dürfen innerhalb einer Aufgabe nicht undeklariert zwischen ihnen wechseln; jeder Wechsel muss explizit benannt werden.
 - **Manifest-Felder spiegeln Ist-Zustand.** `status`, `execution_status` und `updated` im manifest.yml müssen den tatsächlichen Zustand des Experiments widerspiegeln — nicht den beabsichtigten. Bei Abweichung zwischen Manifest-Feldern und vorliegenden Artefakten muss die Abweichung sichtbar gemacht werden. Korrekturen dürfen nicht die zeitliche Entwicklung oder den ursprünglichen Zustand verdecken.
-- **Regeln bewusst erweitern oder ersetzen.** Neue Regeln sollen bestehende präzisieren, bündeln oder ersetzen. Addition ist nur zulässig, wenn ein klar neuer Fall vorliegt, der durch bestehende Regeln nicht sinnvoll erfasst wird.
+- **Regeln bewusst erweitern oder ersetzen.** Addition ist nur zulässig, wenn ein klar neuer Fall vorliegt, der durch bestehende Regeln nicht sinnvoll erfasst wird.
 
-  Vor jeder Ergänzung ist zu prüfen:
-  1) Wird hier nur etwas Bestehendes neu formuliert? → dann ersetzen oder bündeln
-  2) Ist das Problem strukturell lösbar (Schema, Constraints, Tooling)? → dann nicht hier
+  Vor jeder Ergänzung:
+  1) Ließe sich das durch Bündelung oder Präzisierung eines bestehenden lösen? → dann ersetzen
+  2) Ist es strukturell lösbar (Schema, Constraints, Tooling)? → dann nicht hier
 
-  Additive Regeln müssen begründen:
-  - warum bestehende Regeln nicht ausreichen
-  - warum keine Bündelung oder Ersetzung sinnvoll ist
-
-  Gleichzeitig gilt:
-  Bestehende Regeln sind bei Überlappung oder Redundanz aktiv zu bündeln oder zu entfernen.
+  Additive Regeln müssen begründen, warum beides verneint wird. Bestehende Regeln sind bei Überlappung aktiv zu bündeln oder zu entfernen.
