@@ -5,7 +5,7 @@ schema_version: "0.1.0"
 
 experiment:
   name: "incremental-debuggability"
-  hypothesis: "Incremental Refinement ermöglicht frühere Bug-Erkennung und schnellere Bug-Behebung als Single-Shot — gemessen an time_to_first_bug_detection, time_to_fix und hidden_bugs_count nach tatsächlicher Ausführung."
+  hypothesis: "Bei Task 2 (CSV CLI) und dem bekannten doppelten i++-Bug im CLI-Argument-Parser erlaubt der modulare Incremental-Artefaktzustand eine frühere Lokalisierung (first_failing_input_index) oder schnellere Behebung (time_to_fix) als der monolithische Single-Shot-Artefaktzustand — gemessen an tatsächlicher Ausführung mit 5 definierten Inputs."
   status: designed
   category: technique
   execution_status: designed

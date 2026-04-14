@@ -25,6 +25,46 @@ Der **bekannte Bug** im Incremental-Arm wird für die Execution-Phase absichtlic
 (Reverted auf den Bug-Stand), um die ursprüngliche Fehlerverteilung zu rekonstruieren und
 Bug-Detection zu messen.
 
+## Revert-Nachweis — Bug-Rekonstruktion
+
+Damit der Incremental-Arm auf dem ursprünglichen Bug-Stand getestet werden kann, muss der
+in `279e4bf` behobene Bug in `cli.ts` reproduzierbar wiederhergestellt werden.
+
+**Betroffene Datei:** `artifacts/task2-incremental/cli.ts`
+
+**Bug-Beschreibung:** Doppeltes `i++` in 7 wertverbrauchenden `switch`-Cases des CLI-Parsers.
+Jeder Case, der einen Flagwert liest (z. B. `--format json`), rückte `i` zweimal statt einmal
+vor — einmal korrekt zum Überspringen des Werts, einmal extra. In Kombination mit dem Loop-`i++`
+wurden Argumente übersprungen: `--format json` las `json` zwar korrekt, übersprang dann aber
+das folgende Argument.
+
+**Exaktes Revert-Muster** (gleich für alle 7 Value-Cases):
+
+```diff
+ case '--input':
+ case '-i':
+   options.inputPath = requireNextArg(args, i, 'input');
+   i++;
++  i++;  // BUG: doppeltes i++ — löschen um Bug zu entfernen
+   break;
+```
+
+Betroffen sind alle Cases mit `requireNextArg(...)` + `i++`:
+- `--input` / `-i`
+- `--output` / `-o`
+- `--delimiter` / `-d`
+- `--format` / `-f`
+- `--transform` / `-t`
+- `--filter`
+- `--columns` / `-c`
+
+**Verification:** Nach Revert muss `ts-node index.ts --input input.csv --format json` eine
+leere oder falsche Ausgabe erzeugen (nicht JSON), weil `--format`s Wert `json` übersprungen
+wird und `--format` im csv-Default bleibt.
+
+**Beleg:** Commit `279e4bf` dokumentiert den Fix explizit als "double i++ pattern in all
+switch-cases caused argument skipping at runtime despite clean compilation."
+
 ## Definierte Test-Inputs (5 Szenarien)
 
 Diese 5 CSV-Testdateien werden für beide Varianten identisch genutzt:
