@@ -70,4 +70,18 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 - **Claim-Disziplin.** Aussagen müssen Evidenz und Kontext widerspiegeln: Schmale oder `anecdotal` Evidenz (eine Session, ein Modell, ein Zeitpunkt) trägt keine allgemeinen Schlüsse — Schlussfolgerungen sind explizit als kontextspezifisch zu formulieren. Das Erzeugen von Artefakten ist keine epistemische Handlung; Erkenntnisgewinn entsteht nur durch belegte Beobachtung und explizite Auswertung. Schlussfolgerungen in `result.md`, `decision.yml` oder PR-Beschreibungen müssen auf konkrete Einträge in `evidence.jsonl` oder benannte Belege rückführbar sein; Interpretation und Hypothesen sind zulässig, müssen aber als solche erkennbar bleiben.
 - **Zieltypen explizit halten.** Analyse (Verstehen, Messen, Interpretieren) und Konstruktion (Bauen, Anlegen, Ändern) sind verschiedene Zieltypen. Agenten dürfen innerhalb einer Aufgabe nicht undeklariert zwischen ihnen wechseln; jeder Wechsel muss explizit benannt werden.
 - **Manifest-Felder spiegeln Ist-Zustand.** `status`, `execution_status` und `updated` im manifest.yml müssen den tatsächlichen Zustand des Experiments widerspiegeln — nicht den beabsichtigten. Bei Abweichung zwischen Manifest-Feldern und vorliegenden Artefakten muss die Abweichung sichtbar gemacht werden. Korrekturen dürfen nicht die zeitliche Entwicklung oder den ursprünglichen Zustand verdecken.
-- **Regeln bewusst erweitern oder ersetzen.** Neue Regeln sollen bestehende präzisieren, bündeln oder ersetzen. Eine additive Ergänzung ist nur zulässig, wenn sie einen klar neuen Fall abdeckt, der durch bestehende Regeln nicht sinnvoll erfasst werden kann. Vor jeder Ergänzung ist zu prüfen: (1) Deckt eine bestehende Regel diesen Fall bereits implizit ab? (2) Kann die neue Regel eine bestehende präzisieren, bündeln oder ersetzen? (3) Lässt sich das Problem besser durch Struktur (Schema, Constraints, Tooling) lösen? Wenn eine Regel additiv ergänzt wird, muss explizit benannt werden, warum sie nicht durch bestehende Regeln abgedeckt ist, warum Ersatz oder Konsolidierung nicht sinnvoll möglich ist, und warum sie nicht besser an einem anderen Ort aufgehoben ist. Additive Regeln ohne diese Begründung sind unzulässig.
+- **Regeln bewusst erweitern oder ersetzen.** Neue Regeln sollen bestehende präzisieren, bündeln oder ersetzen. Eine additive Ergänzung ist nur zulässig, wenn sie einen klar neuen Fall abdeckt, der durch bestehende Regeln nicht sinnvoll erfasst werden kann.
+
+  Vor jeder Ergänzung ist zu prüfen:
+  1. Deckt eine bestehende Regel diesen Fall bereits implizit ab?
+  2. Kann die neue Regel eine bestehende präzisieren, bündeln oder ersetzen?
+  3. Lässt sich das Problem besser durch Struktur (Schema, Constraints, Tooling) lösen?
+
+  Wenn eine Regel additiv ergänzt wird, muss explizit benannt werden:
+  - warum sie nicht durch bestehende Regeln abgedeckt ist
+  - warum Ersatz oder Konsolidierung nicht sinnvoll möglich ist
+  - warum sie nicht besser an einem anderen Ort aufgehoben ist
+
+  Zusätzlich gilt: Bestehende Regeln sind regelmäßig gegen neue Erkenntnisse zu prüfen und bei Redundanz oder Überlappung zu bündeln oder zu entfernen.
+
+  Additive Regeln ohne diese Begründung sind unzulässig.
