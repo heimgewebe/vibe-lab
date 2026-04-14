@@ -80,6 +80,6 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
   2) Ist es strukturell lösbar (Schema, Constraints, Tooling)? → dann nicht hier
 
   Wenn beides verneint wird:
-  → additive Regel zulässig, aber Begründung erforderlich
+  → additive Regel zulässig, aber Begründung muss im Änderungskontext sichtbar sein
 
   Bestehende Regeln sind bei Überlappung aktiv zu bündeln oder zu entfernen.
