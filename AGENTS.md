@@ -67,3 +67,19 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 - **Rohzonen bleiben roh.** Keine Begründungspflicht, keine Reviewerwartung in `raw-vibes/`.
 - **`designed ≠ executed`.** Entwurf, Durchführung, Beobachtung und Deutung müssen unterscheidbar bleiben. `execution_status: executed` oder `replicated` setzt nachvollziehbare Spur in `execution_refs` voraus (evidence.jsonl, Artefakt, Log, Ergebnisdatei).
 - **Aufwertung braucht sichtbare Begründung.** Jeder Anstieg epistemischen Status (adopted, pattern, best practice) muss nachvollziehbar begründet sein.
+- **Claim-Disziplin.** Aussagen müssen Evidenz und Kontext widerspiegeln: Schmale oder `anecdotal` Evidenz (eine Session, ein Modell, ein Zeitpunkt) trägt keine allgemeinen Schlüsse — Schlussfolgerungen sind explizit als kontextspezifisch zu formulieren. Das Erzeugen von Artefakten ist keine epistemische Handlung; Erkenntnisgewinn entsteht nur durch belegte Beobachtung und explizite Auswertung. Schlussfolgerungen in `result.md`, `decision.yml` oder PR-Beschreibungen müssen auf konkrete Einträge in `evidence.jsonl` oder benannte Belege rückführbar sein; Interpretation und Hypothesen sind zulässig, müssen aber als solche erkennbar bleiben.
+- **Zieltypen explizit halten.** Analyse (Verstehen, Messen, Interpretieren) und Konstruktion (Bauen, Anlegen, Ändern) sind verschiedene Zieltypen. Agenten dürfen innerhalb einer Aufgabe nicht undeklariert zwischen ihnen wechseln; jeder Wechsel muss explizit benannt werden.
+- **Manifest-Felder spiegeln Ist-Zustand.** `status`, `execution_status` und `updated` im manifest.yml müssen den tatsächlichen Zustand des Experiments widerspiegeln — nicht den beabsichtigten. Bei Abweichung zwischen Manifest-Feldern und vorliegenden Artefakten muss die Abweichung sichtbar gemacht werden. Korrekturen dürfen nicht die zeitliche Entwicklung oder den ursprünglichen Zustand verdecken.
+- **Regeln bewusst erweitern oder ersetzen.**
+
+  Neuer Fall?
+  → nein → bestehende Regel präzisieren oder bündeln
+  → ja → weiter prüfen:
+
+  1) Ließe sich das durch Präzisierung/Bündelung lösen? → dann ersetzen
+  2) Ist es strukturell lösbar (Schema, Constraints, Tooling)? → dann nicht hier
+
+  Wenn beides verneint wird:
+  → additive Regel zulässig, aber Begründung muss im Änderungskontext sichtbar sein
+
+  Bestehende Regeln sind bei Überlappung aktiv zu bündeln oder zu entfernen.
