@@ -1,0 +1,28 @@
+# Experiment Manifest — TDD-Vibe
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "tdd-vibe"
+  hypothesis: "Test-First-Prompting (LLM generiert zuerst Tests, dann Implementierung) produziert vollständigere Fehlerbehandlung und weniger Nacharbeit als Implementation-First-Prompting."
+  status: testing
+  category: technique
+  execution_status: prepared
+  execution_refs: []
+  created: "2026-04-14"
+  updated: "2026-04-14"
+  author: "claude-sonnet-4-6"
+  iteration: 1
+  evidence_level: experimental
+  related_idea: "raw-vibes/prompt-fragmente.md"
+
+context:
+  tools:
+    - "Claude claude-sonnet-4-6"
+  language: "TypeScript"
+  environment: "Node.js / Express.js"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

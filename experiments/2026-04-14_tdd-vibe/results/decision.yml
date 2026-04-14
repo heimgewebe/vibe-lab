@@ -1,0 +1,7 @@
+# Entscheidung — TDD-Vibe
+# Wird nach Abschluss des Experiments befüllt
+
+verdict: pending   # adopt | reject | iterate | inconclusive
+rationale: ""
+next_steps: []
+challenge_version: "rest-api-v1"
