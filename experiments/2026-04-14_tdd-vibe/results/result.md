@@ -10,7 +10,7 @@ canonicality: operative
 
 | Metrik                        | Implementation-First | TDD-Vibe              |
 | ----------------------------- | -------------------- | --------------------- |
-| HTTP-Status-Abdeckung (von 7) | 6/7                  | 6/7                   |
+| HTTP-Status-Abdeckung (von 7) | 7/7                  | 7/7 (6/7 assertiert)  |
 | Generierte Test-Cases         | 0                    | **41**                |
 | Fehlerfall-Tests (4xx)        | 0                    | **22 (54 %)**         |
 | Happy-Path-Tests              | 0                    | 19 (46 %)             |
@@ -49,7 +49,7 @@ canonicality: operative
 
 3. **Test-First erzwingt besseres Design** (kleiner, aber messbarer Effekt): `_resetStore()`, typisierte Envelopes und extrahierte Helpers entstanden, weil Tests es erforderten.
 
-4. **HTTP 500 ist blind Spot beider Ansätze** — weder Implementation-First noch TDD-Vibe adressierten Server-Errors. Ein Combo aus Spec-First → TDD-Vibe könnte dies strukturell lösen, indem die Spec explizit Error-Klassen definiert.
+4. **HTTP 500 ist in beiden Ansätzen vorhanden, aber ungetestet.** Der globale Error-Handler sitzt in `app.ts` (Express error-middleware). TDD-Vibe macht die fehlende Test-Abdeckung durch Abwesenheit sichtbar — kein Test löst einen unhandled-exception-Pfad aus. Das ist behebbar durch einen expliziten 500-Test-Case.
 
 5. **Messbarkeit als Nebenprodukt** — TDD-Vibe-Rework ist messbar (Tests laufen oder nicht). Impl-First-Rework ist subjektiv.
 
@@ -57,4 +57,4 @@ canonicality: operative
 
 → Siehe `decision.yml` — Verdict: `iterate`
 
-Hypothese **teilweise bestätigt**: TDD-Vibe liefert nachweislich mehr Edge-Case-Abdeckung und besseres Design, aber kein automatisches Vollständigkeits-Guarantee. Der nächste Iterationsschritt ist ein **Spec-First + TDD-Vibe Combo** — wo die Spec explizit Error-Klassen definiert, die dann als Test-Targets dienen.
+Hypothese **teilweise bestätigt**: TDD-Vibe liefert nachweislich mehr Edge-Case-Abdeckung und besseres Design. HTTP-Coverage ist technisch 7/7 in beiden Ansätzen (500-Handler in app.ts vorhanden), aber TDD-Vibe assertiert nur 6/7 direkt — was die Test-Lücke explizit sichtbar macht. Der nächste Iterationsschritt ist ein **Spec-First + TDD-Vibe Combo** — wo die Spec explizit Error-Klassen definiert, die dann als Test-Targets dienen.
