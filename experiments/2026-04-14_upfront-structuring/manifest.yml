@@ -4,10 +4,10 @@
 schema_version: "0.1.0"
 
 experiment:
-  name: "TDD Vibe"
-  hypothesis: "Test-Driven Development im Vibe-Coding-Kontext: Das LLM schreibt erst die Tests, dann den Code. Dies führt zu robusterem Code und weniger Iterationen für Fehlerbehebungen im Vergleich zu Code-First."
-  status: inconclusive
-  category: style
+  name: "Upfront Structuring Comparison"
+  hypothesis: "Explizite Vorstrukturierung vor Implementierung erhöht die Robustheit logiklastiger Agentenarbeit; TDD ist eine mögliche Form davon."
+  status: adopted
+  category: technique
   execution_status: executed
   execution_refs: ["results/evidence.jsonl"]
   created: "2026-04-14"

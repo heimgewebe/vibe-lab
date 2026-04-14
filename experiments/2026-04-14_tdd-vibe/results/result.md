@@ -1,14 +1,12 @@
 ---
-title: "Experiment-Ergebnisse: TDD Vibe"
-status: draft
+title: "Experiment-Ergebnisse: TDD Vibe (Vorstudie)"
+status: inconclusive
 canonicality: operative
-validates:
-  - "../../../catalog/styles/tdd-vibe.md"
 ---
 
 # result.md — Experiment-Ergebnisse
 
-> **Pflichtdokument für Adopt-Kandidaten.** Fasst die Ergebnisse und die getroffene Entscheidung zusammen.
+> **Vorstudie.** Fasst die Ergebnisse und die getroffene Entscheidung zusammen.
 
 ## Zusammenfassung der Ergebnisse
 
@@ -31,10 +29,9 @@ Siehe `evidence.jsonl`:
 
 ## Entscheidung
 
-**Urteil:** Adopt (mit Einschränkungen)
-**Begründung:** TDD Vibe hat seine Überlegenheit bei der Implementierung von isolierter, logik-lastiger Funktionalität klar bewiesen. Es führt zu robusterem Code und weniger Rework. Es sollte in den Katalog als validierter Style aufgenommen werden, spezifisch empfohlen für algorithmische Tasks und Utilities.
+**Urteil:** Inconclusive (als Vorstudie eingefroren)
+**Begründung:** Obwohl das Signal für TDD-Vibe sehr stark war, wurde methodisch nicht sauber unterschieden, ob der Erfolg durch *TDD an sich* oder einfach durch *irgendeine Form von expliziter Vorstrukturierung* zustande kam. Um zu verhindern, dass ein Artefakt der Vorstrukturierung fälschlicherweise als TDD-Spezifikum kanonisiert wird, wird dieses Experiment als Vorstudie eingefroren.
 
 ## Nächste Schritte
 
-- [x] Katalog-Eintrag für `TDD Vibe` unter `styles/` vorbereiten.
-- [x] Experiment-Status im Manifest auf `adopted` und `executed` setzen.
+- [x] Ein neues Folgeexperiment (`experiments/2026-04-14_upfront-structuring`) aufsetzen, um die Kausalfrage zu klären: Vergleiche `code-first`, `spec-first` und `test-first` bei identischer Aufgabe.

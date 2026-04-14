@@ -13,7 +13,6 @@
 | `benchmarks/challenges/legacy-refactoring-v1.md` | Legacy Refactoring Challenge v1 | active | operative |
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
-| `catalog/styles/tdd-vibe.md` | tdd-vibe | — | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
@@ -38,7 +37,12 @@
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | draft | operative |
 | `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | draft | operative |
-| `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe | draft | operative |
+| `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe (Vorstudie) | inconclusive | operative |
+| `experiments/2026-04-14_upfront-structuring/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Comparison | draft | operative |
+| `experiments/2026-04-14_upfront-structuring/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring | draft | operative |
+| `experiments/2026-04-14_upfront-structuring/failure_modes.md` | Failure Modes: Upfront Structuring | adopted | operative |
+| `experiments/2026-04-14_upfront-structuring/method.md` | Experiment-Methode: Upfront Structuring | draft | operative |
+| `experiments/2026-04-14_upfront-structuring/results/result.md` | Ergebnisse: Upfront Structuring Comparison | adopted | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
