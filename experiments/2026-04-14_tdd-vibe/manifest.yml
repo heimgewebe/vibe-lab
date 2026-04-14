@@ -8,8 +8,12 @@ experiment:
   hypothesis: "Test-First-Prompting (LLM generiert zuerst Tests, dann Implementierung) produziert vollständigere Fehlerbehandlung und weniger Nacharbeit als Implementation-First-Prompting."
   status: testing
   category: technique
-  execution_status: prepared
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/impl-first/users.ts"
+    - "artifacts/tdd-vibe/users.test.ts"
+    - "artifacts/tdd-vibe/users.ts"
+    - "results/evidence.jsonl"
   created: "2026-04-14"
   updated: "2026-04-14"
   author: "claude-sonnet-4-6"

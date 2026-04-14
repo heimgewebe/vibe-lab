@@ -1,7 +1,22 @@
 # Entscheidung — TDD-Vibe
-# Wird nach Abschluss des Experiments befüllt
 
-verdict: pending   # adopt | reject | iterate | inconclusive
-rationale: ""
-next_steps: []
+verdict: iterate   # adopt | reject | iterate | inconclusive
+
+rationale: |
+  Hypothese teilweise bestätigt. TDD-Vibe produziert nachweislich mehr Edge-Case-Abdeckung
+  (22 Fehlerfall-Tests vs. 0), bessere Code-Design-Entscheidungen (typisierte Envelopes,
+  extrahierte Helpers, _resetStore()) und macht Lücken explizit sichtbar.
+
+  Kein Vorteil bei HTTP-Status-Vollständigkeit (beide 6/7) — 500 fehlt in beiden Ansätzen.
+  TDD-Vibe löst das nicht automatisch: Tests begrenzen Implementierung auf das Explizite.
+
+  Kerngewinn: Edge-Cases werden proaktiv formuliert, nicht reaktiv entdeckt.
+  Kosten: 2 Prompts statt 1, mehr Implementierungszeilen.
+
+next_steps:
+  - "Iteration: Spec-First + TDD-Vibe Combo testen — Spec definiert explizit Error-Klassen, Tests setzen diese um"
+  - "TDD-Vibe-Prompt als Candidate für prompts/adopted/ dokumentieren (noch nicht adoptiert — erst nach Replikation)"
+  - "500-Lücke adressieren: Expliziten Error-Handler-Test in TDD-Vibe-Prompt einbauen"
+
 challenge_version: "rest-api-v1"
+compared_to: "experiments/2026-04-08_spec-first"
