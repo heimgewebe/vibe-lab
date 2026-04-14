@@ -4,8 +4,8 @@
 schema_version: "0.1.0"
 
 experiment:
-  name: "Upfront Structuring Comparison"
-  hypothesis: "Explizite Vorstrukturierung vor Implementierung erhöht die Robustheit logiklastiger Agentenarbeit; TDD ist eine mögliche Form davon."
+  name: "Upfront Structuring Replication"
+  hypothesis: "Explizite Vorstrukturierung (Spec-First oder Test-First) vor der Code-Generierung führt im Vergleich zu Code-First replizierbar zu höherer Robustheit bei der Fehlerbehandlung in logiklastigen Aufgaben."
   status: testing
   category: technique
   execution_status: executed
@@ -14,7 +14,8 @@ experiment:
   updated: "2026-04-14"
   author: "Jules"
   iteration: 1
-  evidence_level: experimental
+  evidence_level: replicated
+  replicated_from: "experiments/2026-04-14_upfront-structuring"
 
 context:
   tools: ["LLM-Agents", "Vibe-Coding"]

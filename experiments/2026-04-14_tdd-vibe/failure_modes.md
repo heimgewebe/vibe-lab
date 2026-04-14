@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes & Limitations (Template)"
-status: adopted
+status: inconclusive
 canonicality: operative
 ---
 

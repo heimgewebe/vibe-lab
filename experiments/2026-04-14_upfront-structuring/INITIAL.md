@@ -1,6 +1,6 @@
 ---
 title: "Initiale Prompt-/Setup-Situation: Upfront Structuring"
-status: draft
+status: testing
 canonicality: operative
 ---
 

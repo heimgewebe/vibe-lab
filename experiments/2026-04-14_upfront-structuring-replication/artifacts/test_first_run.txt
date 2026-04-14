@@ -1,0 +1,8 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /app/experiments/2026-04-14_upfront-structuring-replication/artifacts
+collected 4 items
+
+test_test_first_validator.py ....                                        [100%]
+
+============================== 4 passed in 0.03s ===============================

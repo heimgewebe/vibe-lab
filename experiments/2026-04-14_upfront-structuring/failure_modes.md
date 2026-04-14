@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes: Upfront Structuring"
-status: adopted
+status: testing
 canonicality: operative
 ---
 

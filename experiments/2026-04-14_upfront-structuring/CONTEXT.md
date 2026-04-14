@@ -1,6 +1,6 @@
 ---
 title: "Experiment-Kontext: Upfront Structuring Comparison"
-status: draft
+status: testing
 canonicality: operative
 ---
 

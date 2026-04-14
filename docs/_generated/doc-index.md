@@ -33,16 +33,21 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | draft | operative |
-| `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | draft | operative |
-| `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | adopted | operative |
-| `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | draft | operative |
+| `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | inconclusive | operative |
 | `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe (Vorstudie) | inconclusive | operative |
-| `experiments/2026-04-14_upfront-structuring/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Comparison | draft | operative |
-| `experiments/2026-04-14_upfront-structuring/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring | draft | operative |
-| `experiments/2026-04-14_upfront-structuring/failure_modes.md` | Failure Modes: Upfront Structuring | adopted | operative |
-| `experiments/2026-04-14_upfront-structuring/method.md` | Experiment-Methode: Upfront Structuring | draft | operative |
-| `experiments/2026-04-14_upfront-structuring/results/result.md` | Ergebnisse: Upfront Structuring Comparison | adopted | operative |
+| `experiments/2026-04-14_upfront-structuring/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Comparison | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/failure_modes.md` | Failure Modes: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/method.md` | Experiment-Methode: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/results/result.md` | Ergebnisse: Upfront Structuring Comparison (Zwischenstand) | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` | Failure Modes: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/method.md` | Experiment-Methode: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/results/result.md` | Ergebnisse: Upfront Structuring Replication | testing | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |

@@ -1,6 +1,6 @@
 ---
 title: "Experiment-Methode: Upfront Structuring"
-status: draft
+status: testing
 canonicality: operative
 ---
 
