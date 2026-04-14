@@ -1,0 +1,8 @@
+{"timestamp": "2026-04-14T10:00:00Z", "event_type": "observation", "metric": "setup", "value": 1, "context": "Setup experiment structure for TDD Vibe.", "iteration": 1}
+{"timestamp": "2026-04-14T10:05:00Z", "event_type": "run", "metric": "test_pass_rate", "value": 0.4, "context": "pytest test_baseline_roman.py", "exit_code": 1, "artifact_ref": "artifacts/baseline_run.txt", "iteration": 1}
+{"timestamp": "2026-04-14T10:05:30Z", "event_type": "measurement", "metric": "edge_cases_missed", "value": 3, "context": "baseline implementation failed to detect IIII, VV, IC", "iteration": 1}
+{"timestamp": "2026-04-14T10:06:00Z", "event_type": "observation", "metric": "code_first_failure", "value": 1, "context": "The model wrote naive code first, and tests failed because code lacked advanced validation logic.", "iteration": 1}
+{"timestamp": "2026-04-14T10:10:00Z", "event_type": "run", "metric": "test_pass_rate", "value": 1.0, "context": "pytest test_tdd_roman.py", "exit_code": 0, "artifact_ref": "artifacts/tdd_run.txt", "iteration": 1}
+{"timestamp": "2026-04-14T10:10:30Z", "event_type": "measurement", "metric": "edge_cases_missed", "value": 0, "context": "TDD implementation successfully caught IIII, VV, IC, etc.", "iteration": 1}
+{"timestamp": "2026-04-14T10:11:00Z", "event_type": "observation", "metric": "tdd_vibe_success", "value": 1, "context": "Forcing the model to write exhaustive tests first resulted in a significantly more robust implementation on the first try.", "iteration": 1}
+{"timestamp": "2026-04-14T10:12:00Z", "event_type": "decision", "metric": "hypothesis_confirmed", "value": 1, "context": "The TDD Vibe hypothesis is confirmed for logic-heavy utilities.", "iteration": 1}

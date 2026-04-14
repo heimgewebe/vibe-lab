@@ -13,6 +13,7 @@
 | `benchmarks/challenges/legacy-refactoring-v1.md` | Legacy Refactoring Challenge v1 | active | operative |
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
+| `catalog/styles/tdd-vibe.md` | tdd-vibe | — | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
@@ -33,6 +34,12 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | draft | operative |
+| `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | draft | operative |
+| `experiments/2026-04-14_tdd-vibe/artifacts/.pytest_cache/README.md` | README | — | — |
+| `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | adopted | operative |
+| `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | draft | operative |
+| `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe | draft | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
