@@ -80,7 +80,10 @@ ein Statuscode zählt nur, wenn ein Code-Pfad ihn nachweislich auslöst)
 haben beide Ansätze 6/7. 500 ist in beiden Ansätzen nur strukturell via
 globalem Error-Handler vorhanden, in keinem Ansatz getriggert oder getestet.
 
-**Kein Vorteil in Rework.** Gleicher Compile-Fehler, gleiche 4 Patches.
+**Kein Vorteil im Compile-Rework.** Beide Ansätze benötigen 4 identische Patches
+(Express-5-Typing). Darüber hinaus macht TDD-Vibe zusätzlichen latenten Rework
+sichtbar, der im impl-first-Pfad ohne Tests verborgen bleibt (2 rote
+Test-Isolations-Fehler nach Compile-Fix).
 
 **Kein sauberer Methodenvergleich.** Die Kontrollgruppe wurde explizit ohne
 Tests angewiesen. „Mehr Fehlerfall-Tests im Treatment" ist also konstruktions-
