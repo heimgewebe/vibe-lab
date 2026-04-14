@@ -1,0 +1,21 @@
+# Decision — Incremental Refinement vs. Single-Shot
+# Validiert gegen: (kein eigenes Schema im MVP; Struktur orientiert sich an der Pipeline-Logik)
+
+schema_version: "0.1.0"
+
+verdict: ""                   # adopted | rejected | inconclusive — ausstehend
+confidence: ""                # high | medium | low — ausstehend
+date: "2026-04-14"
+reviewer: ""
+
+rationale: |
+  Noch keine Entscheidung — Experiment befindet sich in der Design-Phase.
+
+evidence_summary:
+  observations: 0
+  positive: 0
+  negative: 0
+  neutral: 0
+
+next_steps: |
+  Experiment durchführen und Evidenz erheben.
