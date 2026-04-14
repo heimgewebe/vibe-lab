@@ -18,7 +18,7 @@
 
 ### Ergebnis
 <!-- Kurzzusammenfassung: Was wurde beobachtet? Was ist das Verdict?
-     Jede Schlussfolgerung muss auf konkrete evidence.jsonl-Einträge rückführbar sein. -->
+     Jede Schlussfolgerung muss auf konkrete evidence.jsonl-Einträge oder benannte Belege rückführbar sein. -->
 
 ### Nächste Schritte
 <!-- Iterate? Promote? Archive? -->
