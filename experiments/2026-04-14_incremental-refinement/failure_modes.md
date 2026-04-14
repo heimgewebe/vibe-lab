@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes — Incremental Refinement"
-status: designed
+status: testing
 canonicality: operative
 ---
 

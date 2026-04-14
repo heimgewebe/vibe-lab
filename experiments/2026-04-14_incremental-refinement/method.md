@@ -1,6 +1,6 @@
 ---
 title: "Incremental Refinement vs. Single-Shot — Methode"
-status: designed
+status: testing
 canonicality: operative
 ---
 
