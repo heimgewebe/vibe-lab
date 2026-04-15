@@ -38,13 +38,11 @@
 | `experiments/2026-04-14_prompt-length-control/failure_modes.md` | Failure Modes: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/method.md` | Experiment-Methode: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/results/result.md` | Ergebnisse: Prompt-Length Control | adopted | operative |
-| `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | TDD-Vibe — Experiment-Kontext | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/INITIAL.md` | TDD-Vibe — Initiale Situation | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes — TDD-Vibe | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/followups.md` | TDD-Vibe — Follow-Ups | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/method.md` | TDD-Vibe — Methode | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/results/result.md` | TDD-Vibe — Ergebnisse | testing | operative |
-| `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md` | TDD-Vibe — Run-Evidenz | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe (Vorstudie) | inconclusive | operative |
 | `experiments/2026-04-14_upfront-structuring/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Comparison | testing | operative |
 | `experiments/2026-04-14_upfront-structuring/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring | testing | operative |
 | `experiments/2026-04-14_upfront-structuring/failure_modes.md` | Failure Modes: Upfront Structuring | testing | operative |
