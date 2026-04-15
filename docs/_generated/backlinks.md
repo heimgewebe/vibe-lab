@@ -19,10 +19,6 @@
 - ← `catalog/techniques/spec-first-prompting.md` (validated_by)
 - ← `prompts/adopted/spec-first-api.md` (validated_by)
 
-## `experiments/2026-04-14_incremental-refinement/results/result.md`
-
-- ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
-
 ## `repo-plan.md`
 
 - ← `docs/masterplan.md` (derived_from)
