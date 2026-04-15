@@ -1,0 +1,24 @@
+{
+  "name": "tdd-vibe-run",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Isolated run environment for experiment 2026-04-14_tdd-vibe. Tests copied from ../../artifacts/tdd-vibe/. A minimal type-fix (req.params.id -> String(req.params.id)) was applied to users.ts to satisfy Express 5 typing; the unfixed original remains in artifacts/.",
+  "scripts": {
+    "test": "jest --ci --reporters=default"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.6.0",
+    "@types/supertest": "^7.2.0",
+    "express": "^5.2.1",
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.9",
+    "typescript": "^6.0.2"
+  }
+}
