@@ -13,6 +13,8 @@ relations:
     target: ../../schemas/experiment.manifest.schema.json
   - type: references
     target: ../../schemas/run_meta.schema.json
+  - type: references
+    target: ../../schemas/decision.schema.json
 ---
 
 # Blueprint v2 — Delta
@@ -85,34 +87,44 @@ aber kein Goldstandard. Neue Adoptionen — definiert als Experimente mit
 > Adoption ohne Execution-Proof ist nur als historischer Zustand zulässig,
 > nicht als zukünftiger.
 
-**Enforcement:** In Phase 1 als **Warnung** im
-`validate_execution_proof.py` umgesetzt (`adoption_basis: reconstructed` bei
-`created ≥ v2-Merge-Datum` → Warnung, kein Fehler). Hartes Enforcement folgt in
-Phase 1b zusammen mit Decision-Type-Separation, weil beide an derselben
-Fehlklasse arbeiten (unberechtigte Adoption).
+**Enforcement:** Seit Phase 1b hartes Enforcement im
+`validate_execution_proof.py`: `adoption_basis: reconstructed` bei
+`created ≥ v2-Merge-Datum` → **Fehler** (nicht-null Exit-Code). Gemeinsam mit
+Decision-Type-Separation umgesetzt, weil beide an derselben Fehlklasse arbeiten
+(unberechtigte Adoption).
 
-**Migration beim Einführen von v2 (einmalig):**
-- `2026-04-08_spec-first` — `status: adopted` → `execution_status: reconstructed`,
-  `adoption_basis: reconstructed`; sichtbarer Hinweis im `results/result.md`.
-- `2026-04-11_yolo-vs-spec-first` — `status: designed` → `execution_status: designed`.
-- `2026-04-12_spec-first-legacy` — `status: testing` → `execution_status: executed`
-  (Testlauf-Artefakte existieren), `run_meta.json` nachgereicht.
+**Migration beim Einführen von v2 (einmalig, abgeschlossen):** `spec-first` →
+`execution_status: reconstructed` + `adoption_basis: reconstructed` + Annotation
+im `result.md`; `yolo-vs-spec-first` → `execution_status: designed`;
+`spec-first-legacy` → `execution_status: executed` mit nachgereichter
+`run_meta.json`.
 
 ---
 
-## Phase 1b (nachgelagert, **nicht** in diesem PR) — Decision-Type + Übergangsregel-Enforcement
+## Phase 1b (aktiv) — Decision-Type + Übergangsregel-Enforcement
 
-**Offene Restschuld.** `execution-bound-epistemics.md §10.1–10.2` definiert drei
+**Fehlklasse:** `execution-bound-epistemics.md §10.1–10.2` definiert drei
 Assessment-Typen mit harter Regel „`adoption_assessment` nur bei
-`executed`/`replicated`" — aktuell nirgends erzwungen (`decision.yml` ist nur
-Template). Execution-Proof schließt die gröbste Fälschungslücke;
-Decision-Type bleibt die nächste offene Enforcement-Lücke.
+`executed`/`replicated`" — vor Phase 1b nicht erzwungen.
 
-**Geplanter Hebel (nicht hier):** `schemas/decision.schema.json` mit conditional
-`adoption_assessment` → Manifest-`execution_status ∈ {executed, replicated}`.
-Gleicher PR schließt dann auch den `created`-Datum-Check für die Übergangsregel.
+**Hebel:** Typisierung + cross-file-Bedingung statt zentraler Allowlist.
 
-**Nicht-Ziel jetzt:** Schema zweimal anfassen, bevor Phase 1 gelebt ist.
+**Minimale Änderung:**
+- `schemas/decision.schema.json` (neu): Diskriminator `decision_type`
+  (`execution_assessment` | `result_assessment` | `adoption_assessment`), pro
+  Typ eigene `verdict`-Enum und Pflichtfelder.
+- `scripts/docmeta/validate_schema.py::validate_decision_files()`: validiert
+  jede `experiments/*/results/decision.yml` und erzwingt cross-file: bei
+  `decision_type=adoption_assessment` muss das Geschwister-Manifest
+  `execution_status ∈ {executed, replicated}` tragen.
+- `validate_execution_proof.py`: `adoption_basis=reconstructed` bei
+  `created ≥ v2-Merge-Datum` → **Fehler** (zuvor Warnung).
+- Einmalige Migration: alle sieben bestehenden `decision.yml` (inkl. Template)
+  tragen `decision_type`.
+
+**Nicht-Ziel:** Verdict-Enums über die drei Adoption-Verdicts
+(`adopt` / `reject` / `defer`) hinaus ausbauen, bevor ein echtes
+Execution-Review-Experiment geschrieben wird.
 
 ---
 
@@ -155,15 +167,12 @@ freies `comparison_notes` in `method.md`).
 
 **Hebel:** Generierte Sichtbarkeitsebene, **kein** Autorfeld.
 
-**Minimale Änderung (in Form beschrieben, **Implementierung offen**):** Ein
-zukünftiger Generator unter `docs/_generated/` erzeugt pro Experiment einen
-abgeleiteten `epistemic_state`-Report. Felder sind **derived**, nicht im Manifest
-dupliziert:
-- `design_quality` — abgeleitet aus Vollständigkeit von `method.md` / `failure_modes.md`
-- `execution_state` — Spiegel von `execution_status`
-- `evidence_strength` — Spiegel von `evidence_level`
-- `interpretation_risk` — einziges echtes neues Feld; aus `result.md` extrahiert
-  oder manuell ergänzt, wenn Phase 2 greift
+**Minimale Änderung (Form, Implementierung offen):** Generator unter
+`docs/_generated/` erzeugt pro Experiment einen abgeleiteten
+`epistemic_state`-Report. Felder sind **derived**, nicht im Manifest dupliziert:
+`design_quality` (aus `method.md`/`failure_modes.md`), `execution_state`
+(Spiegel), `evidence_strength` (Spiegel), `interpretation_risk` (einziges
+echtes Neu-Feld; aus `result.md` bzw. Phase 2).
 
 **Nicht-Ziel:** Neue Pflichtfelder im Manifest. Keine doppelte Wahrheit.
 
@@ -176,16 +185,16 @@ dupliziert:
 - **Vollständige Meta-Lernschicht / `failure-atlas/`.** Bleibt dormant bis ≥ 3
   dokumentierte Fehlklassen aus echten Experimenten vorliegen.
 - **`expected_outputs.json` als Pflicht.** Post-Blueprint, nicht jetzt.
-- **Decision-Type-Enforcement.** Phase 1b, nicht in diesem PR.
-- **`created`-Datum-Check für Übergangsregel.** Zusammen mit 1b.
 
 ---
 
 ## Verifikation
 
-1. `python3 scripts/docmeta/validate_schema.py` grün.
+1. `python3 scripts/docmeta/validate_schema.py` grün (inkl. `decision.yml`-Zone).
 2. `python3 scripts/docmeta/validate_execution_proof.py` grün.
-3. Negativtest (lokal, nicht committen): `execution_status: executed` ohne
-   `run_meta.json` → Validator **muss** fehlschlagen. `status: adopted` ohne
-   `adoption_basis` → Validator **muss** fehlschlagen.
+3. Negativtests (lokal, nicht committen) — jeder muss fehlschlagen:
+   `execution_status: executed` ohne `run_meta.json`; `status: adopted` ohne
+   `adoption_basis`; `decision_type: adoption_assessment` bei
+   `execution_status ∈ {designed, reconstructed}`; `adoption_basis: reconstructed`
+   bei `created ≥ v2-Merge-Datum`.
 4. `make validate` grün.
