@@ -1,0 +1,11 @@
+{"event_type":"run_started","timestamp":"2026-04-15T01:10:00Z","iteration":14,"run_id":"run-014-exotic-injection-session-b","condition":"treatment"}
+{"event_type":"metric","timestamp":"2026-04-15T01:11:00Z","iteration":14,"run_id":"run-014-exotic-injection-session-b","metric":"test_pass_rate","value":"4/5"}
+{"event_type":"metric","timestamp":"2026-04-15T01:12:00Z","iteration":14,"run_id":"run-014-exotic-injection-session-b","metric":"exotic_blindspot_count","value":1,"notes":"micro_price"}
+{"event_type":"run_started","timestamp":"2026-04-15T01:20:00Z","iteration":15,"run_id":"run-015-extended-premortem","condition":"treatment"}
+{"event_type":"metric","timestamp":"2026-04-15T01:21:00Z","iteration":15,"run_id":"run-015-extended-premortem","metric":"test_pass_rate","value":"6/6"}
+{"event_type":"metric","timestamp":"2026-04-15T01:22:00Z","iteration":15,"run_id":"run-015-extended-premortem","metric":"edge_case_failures","value":0}
+{"event_type":"metric","timestamp":"2026-04-15T01:23:00Z","iteration":15,"run_id":"run-015-extended-premortem","metric":"exotic_blindspot_count","value":0}
+{"event_type":"metric","timestamp":"2026-04-15T01:24:00Z","iteration":15,"run_id":"run-015-extended-premortem","metric":"time_to_first_pass_seconds","value":0.224}
+{"event_type":"environment","timestamp":"2026-04-15T01:25:00Z","iteration":15,"metric":"pip_install_pyyaml","value":"failed","notes":"Proxy 403"}
+{"event_type":"environment","timestamp":"2026-04-15T01:26:00Z","iteration":15,"metric":"apt_install_python3_yaml","value":"failed","notes":"Proxy 403"}
+{"event_type":"environment","timestamp":"2026-04-15T01:27:00Z","iteration":15,"metric":"make_validate","value":"not_confirmed","notes":"missing pyyaml due to blocked installs"}

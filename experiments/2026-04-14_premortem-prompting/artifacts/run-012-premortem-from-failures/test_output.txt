@@ -1,0 +1,16 @@
+Validation Error: qty too large
+Validation Error: No items in order
+Validation Error: email missing/invalid
+Validation Error: price must be > 0
+Validation Error: qty must be > 0
+test_extreme_qty_rejected (test_injection.TestFailureInjection.test_extreme_qty_rejected) ... ok
+test_items_type_rejected (test_injection.TestFailureInjection.test_items_type_rejected) ... ok
+test_missing_email_rejected (test_injection.TestFailureInjection.test_missing_email_rejected) ... ok
+test_negative_price_rejected (test_injection.TestFailureInjection.test_negative_price_rejected) ... ok
+test_valid_baseline (test_injection.TestFailureInjection.test_valid_baseline) ... ok
+test_zero_qty_rejected (test_injection.TestFailureInjection.test_zero_qty_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK

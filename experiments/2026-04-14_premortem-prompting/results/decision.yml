@@ -1,0 +1,27 @@
+# Decision (Template)
+# Validiert gegen: (kein eigenes Schema im MVP; Struktur orientiert sich an der Pipeline-Logik)
+
+schema_version: "0.1.0"
+
+verdict: ""                   # adopted | rejected | inconclusive
+confidence: ""                # high | medium | low
+date: "YYYY-MM-DD"
+reviewer: ""
+
+rationale: |
+  <!-- Begründung der Entscheidung. Verweist auf konkrete Evidenz aus evidence.jsonl. -->
+
+evidence_summary:
+  observations: 0             # Anzahl Beobachtungen in evidence.jsonl
+  positive: 0                 # Positive Beobachtungen
+  negative: 0                 # Negative Beobachtungen
+  neutral: 0                  # Neutrale Beobachtungen
+
+next_steps: |
+  <!-- Was folgt aus dieser Entscheidung?
+  - adopted: Promotion-PR erstellen
+  - rejected: Dokumentation der Lernerfahrung
+  - inconclusive: Iterieren oder archivieren
+  -->
+
+# challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge

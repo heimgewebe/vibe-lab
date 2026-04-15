@@ -1,0 +1,44 @@
+test_db_failure_returns_false (test_processor.TestExpandedControl.test_db_failure_returns_false) ... ok
+test_email_failure_is_swallowed_and_true (test_processor.TestExpandedControl.test_email_failure_is_swallowed_and_true) ... ok
+test_empty_items_returns_false (test_processor.TestExpandedControl.test_empty_items_returns_false) ... ok
+test_invalid_email_format_returns_false (test_processor.TestExpandedControl.test_invalid_email_format_returns_false) ... ok
+test_invalid_json_returns_false (test_processor.TestExpandedControl.test_invalid_json_returns_false) ... ok
+test_missing_email_returns_false (test_processor.TestExpandedControl.test_missing_email_returns_false) ... ok
+test_missing_items_returns_false (test_processor.TestExpandedControl.test_missing_items_returns_false) ... ok
+test_missing_qty_returns_false (test_processor.TestExpandedControl.test_missing_qty_returns_false) ... ok
+test_negative_price_returns_false (test_processor.TestExpandedControl.test_negative_price_returns_false) ... FAIL
+test_qty_float_returns_false (test_processor.TestExpandedControl.test_qty_float_returns_false) ... ok
+test_string_price_should_fail_validation (test_processor.TestExpandedControl.test_string_price_should_fail_validation) ... ok
+test_success (test_processor.TestExpandedControl.test_success) ... ok
+test_zero_qty_returns_false (test_processor.TestExpandedControl.test_zero_qty_returns_false) ... FAIL
+
+======================================================================
+FAIL: test_negative_price_returns_false (test_processor.TestExpandedControl.test_negative_price_returns_false)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/test_processor.py", line 66, in test_negative_price_returns_false
+    self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":-10,"qty":1}]}'))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_zero_qty_returns_false (test_processor.TestExpandedControl.test_zero_qty_returns_false)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/test_processor.py", line 70, in test_zero_qty_returns_false
+    self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":10,"qty":0}]}'))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.002s
+
+FAILED (failures=2)
+Processing Error: db down
+Email Error (swallowed to match legacy behavior): smtp down
+Validation Error: No items in order
+Validation Error: email missing/invalid
+Parsing Error: Expecting value: line 1 column 10 (char 9)
+Validation Error: email missing/invalid
+Validation Error: No items in order
+Validation Error: Missing price/qty
+Validation Error: qty must be int
+Validation Error: price must be numeric
