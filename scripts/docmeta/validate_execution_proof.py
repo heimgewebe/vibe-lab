@@ -22,9 +22,10 @@ from pathlib import Path
 
 try:
     import yaml
-    from jsonschema import validate, ValidationError, SchemaError
+    from jsonschema import Draft202012Validator, ValidationError, SchemaError
+    from jsonschema.validators import validator_for
 except ImportError:
-    print("ERROR: Missing dependencies. Run: pip install pyyaml jsonschema")
+    print("ERROR: Missing dependencies. Run: pip install pyyaml jsonschema rfc3339-validator")
     sys.exit(1)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -54,7 +55,7 @@ def load_yaml(path: Path) -> dict:
         return yaml.safe_load(f) or {}
 
 
-def validate_run_meta_for_experiment(exp_dir: Path, schema: dict) -> None:
+def validate_run_meta_for_experiment(exp_dir: Path, validator: Draft202012Validator) -> None:
     """Prüft, dass mindestens eine valide run_meta.json vorhanden ist."""
     artifacts_dir = exp_dir / "artifacts"
     rel = exp_dir.relative_to(REPO_ROOT)
@@ -82,12 +83,9 @@ def validate_run_meta_for_experiment(exp_dir: Path, schema: dict) -> None:
             continue
 
         try:
-            validate(instance=data, schema=schema)
+            validator.validate(data)
         except ValidationError as e:
             errors.append(f"  ❌ {run_meta.relative_to(REPO_ROOT)}: {e.message}")
-            continue
-        except SchemaError as e:
-            errors.append(f"  ❌ run_meta schema error: {e.message}")
             continue
 
         # run_id muss mit Ordnername übereinstimmen
@@ -188,6 +186,19 @@ def main() -> None:
         sys.exit(1)
 
     schema = load_schema(RUN_META_SCHEMA)
+
+    # Schema einmalig selbst validieren, damit ein kaputtes Schema nicht
+    # pro Experiment neu zu Folgefehlern führt.
+    validator_cls = validator_for(schema, default=Draft202012Validator)
+    try:
+        validator_cls.check_schema(schema)
+    except SchemaError as e:
+        print(f"ERROR: run_meta schema itself invalid: {e.message}")
+        sys.exit(2)
+
+    # format_checker erzwingt "format": "date-time" u.a. (sonst nur informativ)
+    validator = validator_cls(schema, format_checker=validator_cls.FORMAT_CHECKER)
+
     experiments_dir = REPO_ROOT / "experiments"
 
     print("run_meta.json proofs:")
@@ -206,7 +217,7 @@ def main() -> None:
         exec_status = manifest.get("experiment", {}).get("execution_status")
         if exec_status in PROOF_REQUIRED_STATUSES:
             proof_checked += 1
-            validate_run_meta_for_experiment(exp_dir, schema)
+            validate_run_meta_for_experiment(exp_dir, validator)
 
     if proof_checked == 0:
         print("  (kein Experiment mit execution_status ∈ {executed, replicated})")

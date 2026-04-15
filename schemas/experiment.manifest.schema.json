@@ -120,6 +120,42 @@
           "then": {
             "required": ["adoption_basis"]
           }
+        },
+        {
+          "if": {
+            "required": ["adoption_basis"],
+            "properties": { "adoption_basis": { "const": "executed" } }
+          },
+          "then": {
+            "required": ["execution_status"],
+            "properties": {
+              "execution_status": { "enum": ["executed", "replicated"] }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["adoption_basis"],
+            "properties": { "adoption_basis": { "const": "replicated" } }
+          },
+          "then": {
+            "required": ["execution_status"],
+            "properties": {
+              "execution_status": { "const": "replicated" }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["adoption_basis"],
+            "properties": { "adoption_basis": { "const": "reconstructed" } }
+          },
+          "then": {
+            "required": ["execution_status"],
+            "properties": {
+              "execution_status": { "const": "reconstructed" }
+            }
+          }
         }
       ]
     },

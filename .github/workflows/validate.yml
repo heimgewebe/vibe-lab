@@ -21,7 +21,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install pyyaml jsonschema
+        run: pip install pyyaml jsonschema rfc3339-validator
 
       - name: Validate schemas
         run: python3 scripts/docmeta/validate_schema.py
