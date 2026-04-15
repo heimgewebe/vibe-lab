@@ -33,15 +33,23 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` | Incremental vs. Single-Shot: Debuggability — Kontext | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/INITIAL.md` | Incremental vs. Single-Shot: Debuggability — Initiale Situation | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/failure_modes.md` | Failure Modes — Incremental vs. Single-Shot: Debuggability | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/method.md` | Incremental vs. Single-Shot: Debuggability — Methode | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/results/result.md` | Incremental vs. Single-Shot: Debuggability — Ergebnis | testing | operative |
+| `experiments/2026-04-14_incremental-refinement/CONTEXT.md` | Incremental Refinement vs. Single-Shot — Kontext | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/INITIAL.md` | Incremental Refinement vs. Single-Shot — Initiale Situation | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/method.md` | Incremental Refinement vs. Single-Shot — Methode | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/results/result.md` | Incremental Refinement vs. Single-Shot — Ergebnis | inconclusive | operative |
 | `experiments/2026-04-14_prompt-length-control/CONTEXT.md` | Experiment-Kontext: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/INITIAL.md` | Initiale Prompt-/Setup-Situation: Prompt-Length Control | testing | operative |
-| `experiments/2026-04-14_prompt-length-control/artifacts/.pytest_cache/README.md` | README | — | — |
 | `experiments/2026-04-14_prompt-length-control/failure_modes.md` | Failure Modes: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/method.md` | Experiment-Methode: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/results/result.md` | Ergebnisse: Prompt-Length Control | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | Experiment-Kontext: TDD Vibe | inconclusive | operative |
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | Initiale Prompt-/Setup-Situation: TDD Vibe | inconclusive | operative |
-| `experiments/2026-04-14_tdd-vibe/artifacts/.pytest_cache/README.md` | README | — | — |
 | `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes & Limitations (Template) | inconclusive | operative |
 | `experiments/2026-04-14_tdd-vibe/method.md` | Experiment-Methode: TDD Vibe | inconclusive | operative |
 | `experiments/2026-04-14_tdd-vibe/results/result.md` | Experiment-Ergebnisse: TDD Vibe (Vorstudie) | inconclusive | operative |
@@ -52,7 +60,6 @@
 | `experiments/2026-04-14_upfront-structuring/results/result.md` | Ergebnisse: Upfront Structuring Comparison (Zwischenstand) | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring Replication | testing | operative |
-| `experiments/2026-04-14_upfront-structuring-replication/artifacts/.pytest_cache/README.md` | README | — | — |
 | `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` | Failure Modes: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/method.md` | Experiment-Methode: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/results/result.md` | Ergebnisse: Upfront Structuring Replication | testing | operative |

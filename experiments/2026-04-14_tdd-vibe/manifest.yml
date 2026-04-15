@@ -1,27 +1,42 @@
-# Experiment Manifest
+# Experiment Manifest — TDD-Vibe
 # Validiert gegen: schemas/experiment.manifest.schema.json
 
 schema_version: "0.1.0"
 
 experiment:
-  name: "TDD Vibe"
-  hypothesis: "Test-Driven Development im Vibe-Coding-Kontext: Das LLM schreibt erst die Tests, dann den Code. Dies führt zu robusterem Code und weniger Iterationen für Fehlerbehebungen im Vergleich zu Code-First."
+  name: "tdd-vibe"
+  hypothesis: "Test-First-Prompting (LLM generiert zuerst Tests, dann Implementierung) produziert vollständigere Fehlerbehandlung und weniger Nacharbeit als Implementation-First-Prompting."
   status: inconclusive
-  cognitive_mode: executable
-  category: style
+  category: technique
   execution_status: executed
-  cognitive_mode: executable
-  execution_refs: ["results/evidence.jsonl"]
+  execution_refs:
+    - "artifacts/impl-first/users.ts"
+    - "artifacts/impl-first/app.ts"
+    - "artifacts/tdd-vibe/users.test.ts"
+    - "artifacts/tdd-vibe/users.ts"
+    - "artifacts/tdd-vibe/app.ts"
+    - "results/run-tdd-vibe/jest-unfixed.log"
+    - "results/run-tdd-vibe/jest-patched.log"
+    - "results/run-tdd-vibe/README.md"
+    - "results/run-tdd-vibe/package-lock.json"
+    - "results/evidence.jsonl"
   created: "2026-04-14"
   updated: "2026-04-14"
-  author: "Jules"
+  author: "claude-sonnet-4-6"
   iteration: 1
-  evidence_level: experimental
+  evidence_level: anecdotal
+  related_idea: "raw-vibes/prompt-fragmente.md"
 
 context:
-  tools: ["LLM-Agents", "Vibe-Coding"]
-  language: "Python"
-  environment: "Vibe-Lab"
+  tools:
+    - "Claude Code (CLI)"
+    - "Claude claude-sonnet-4-6"
+    - "Jest 30"
+    - "ts-jest"
+    - "Supertest"
+    - "Node.js 22"
+  language: "TypeScript"
+  environment: "Node.js / Express.js"
 
 evidence:
   format: jsonl
