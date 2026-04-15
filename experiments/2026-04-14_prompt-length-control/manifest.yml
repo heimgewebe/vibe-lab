@@ -1,0 +1,28 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "Prompt-Length Control"
+  hypothesis: "Der Leistungszugewinn von Spec/Test-First beruht auf der *inhaltlichen Strukturierung* des Constraints-Raums (Declarative/Executable Mode), nicht lediglich auf dem *Erzwingen einer längeren initialen Output-Generierung* (Token-Bloat als Chain-of-Thought Proxy)."
+  status: adopted
+  category: technique
+  cognitive_mode: exploratory
+  execution_status: executed
+  execution_refs: ["results/evidence.jsonl"]
+  created: "2026-04-14"
+  updated: "2026-04-14"
+  author: "Jules"
+  iteration: 1
+  evidence_level: experimental
+  adoption_basis: executed
+
+context:
+  tools: ["LLM-Agents", "Vibe-Coding"]
+  language: "Python"
+  environment: "Vibe-Lab"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

@@ -35,6 +35,43 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` | Incremental vs. Single-Shot: Debuggability — Kontext | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/INITIAL.md` | Incremental vs. Single-Shot: Debuggability — Initiale Situation | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/failure_modes.md` | Failure Modes — Incremental vs. Single-Shot: Debuggability | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/method.md` | Incremental vs. Single-Shot: Debuggability — Methode | testing | operative |
+| `experiments/2026-04-14_incremental-debuggability/results/result.md` | Incremental vs. Single-Shot: Debuggability — Ergebnis | testing | operative |
+| `experiments/2026-04-14_incremental-refinement/CONTEXT.md` | Incremental Refinement vs. Single-Shot — Kontext | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/INITIAL.md` | Incremental Refinement vs. Single-Shot — Initiale Situation | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/method.md` | Incremental Refinement vs. Single-Shot — Methode | inconclusive | operative |
+| `experiments/2026-04-14_incremental-refinement/results/result.md` | Incremental Refinement vs. Single-Shot — Ergebnis | inconclusive | operative |
+| `experiments/2026-04-14_premortem-prompting/CONTEXT.md` | Kontext: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/INITIAL.md` | Initial: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem_quality.md` | premortem_quality | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem_quality.md` | premortem_quality | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/failure_injection.md` | failure_injection | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/failure_injection.md` | failure_injection | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/failure_extraction.md` | failure_extraction | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/premortem_from_failures.md` | premortem_from_failures | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/replication_notes.md` | replication_notes | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/exotic_injection.md` | exotic_injection | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/failure_modes.md` | Failure Modes: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/method.md` | Methode: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/results/result.md` | Ergebnis: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/CONTEXT.md` | Experiment-Kontext: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/INITIAL.md` | Initiale Prompt-/Setup-Situation: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/failure_modes.md` | Failure Modes: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/method.md` | Experiment-Methode: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/results/result.md` | Ergebnisse: Prompt-Length Control | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | TDD-Vibe — Experiment-Kontext | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | TDD-Vibe — Initiale Situation | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes — TDD-Vibe | testing | operative |
@@ -42,6 +79,17 @@
 | `experiments/2026-04-14_tdd-vibe/method.md` | TDD-Vibe — Methode | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/results/result.md` | TDD-Vibe — Ergebnisse | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md` | TDD-Vibe — Run-Evidenz | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Comparison | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/failure_modes.md` | Failure Modes: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/method.md` | Experiment-Methode: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/results/result.md` | Ergebnisse: Upfront Structuring Comparison (Zwischenstand) | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` | Failure Modes: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/method.md` | Experiment-Methode: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/results/result.md` | Ergebnisse: Upfront Structuring Replication | testing | operative |
+| `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |

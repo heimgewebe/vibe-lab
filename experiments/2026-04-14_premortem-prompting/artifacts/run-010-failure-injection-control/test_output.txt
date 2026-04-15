@@ -1,0 +1,44 @@
+Processing Error: string indices must be integers, not 'str'
+test_extreme_qty_rejected (test_injection.TestFailureInjection.test_extreme_qty_rejected) ... FAIL
+test_items_type_rejected (test_injection.TestFailureInjection.test_items_type_rejected) ... ok
+test_missing_email_rejected (test_injection.TestFailureInjection.test_missing_email_rejected) ... FAIL
+test_negative_price_rejected (test_injection.TestFailureInjection.test_negative_price_rejected) ... FAIL
+test_valid_baseline (test_injection.TestFailureInjection.test_valid_baseline) ... ok
+test_zero_qty_rejected (test_injection.TestFailureInjection.test_zero_qty_rejected) ... FAIL
+
+======================================================================
+FAIL: test_extreme_qty_rejected (test_injection.TestFailureInjection.test_extreme_qty_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_injection.py", line 34, in test_extreme_qty_rejected
+    self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":10,"qty":1000000000}]}'))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_missing_email_rejected (test_injection.TestFailureInjection.test_missing_email_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_injection.py", line 22, in test_missing_email_rejected
+    self.assertFalse(p.process_order('{"items":[{"price":10,"qty":1}]}'))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_negative_price_rejected (test_injection.TestFailureInjection.test_negative_price_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_injection.py", line 26, in test_negative_price_rejected
+    self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":-10,"qty":1}]}'))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_zero_qty_rejected (test_injection.TestFailureInjection.test_zero_qty_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_injection.py", line 30, in test_zero_qty_rejected
+    self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":10,"qty":0}]}'))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+FAILED (failures=4)

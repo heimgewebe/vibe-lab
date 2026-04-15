@@ -1,0 +1,37 @@
+import unittest
+from refactored_processor import OrderProcessorRefactored
+
+class DummyDBGateway:
+    def save_order(self, total):
+        self.saved_total = total
+
+class DummyEmailService:
+    def send_confirmation(self, email, total):
+        pass
+
+class TestExoticInjection(unittest.TestCase):
+    def make_processor(self):
+        return OrderProcessorRefactored(DummyDBGateway(), DummyEmailService())
+
+    def test_qty_over_upper_bound(self):
+        p = self.make_processor()
+        self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":10,"qty":1000001}]}'))
+
+    def test_items_null_rejected(self):
+        p = self.make_processor()
+        self.assertFalse(p.process_order('{"email":"a@b.c","items":null}'))
+
+    def test_price_string_scientific_rejected(self):
+        p = self.make_processor()
+        self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":"1e3","qty":1}]}'))
+
+    def test_micro_price_rejected(self):
+        p = self.make_processor()
+        self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":0.0000000001,"qty":1}]}'))
+
+    def test_baseline_valid(self):
+        p = self.make_processor()
+        self.assertTrue(p.process_order('{"email":"a@b.c","items":[{"price":10,"qty":1}]}'))
+
+if __name__ == '__main__':
+    unittest.main()

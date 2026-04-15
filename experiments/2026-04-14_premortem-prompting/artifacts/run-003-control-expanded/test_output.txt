@@ -1,0 +1,29 @@
+test_db_failure_returns_false (test_processor.TestExpandedControl.test_db_failure_returns_false) ... ok
+test_email_failure_is_swallowed_and_true (test_processor.TestExpandedControl.test_email_failure_is_swallowed_and_true) ... ok
+test_empty_items_returns_false (test_processor.TestExpandedControl.test_empty_items_returns_false) ... ok
+test_invalid_json_returns_false (test_processor.TestExpandedControl.test_invalid_json_returns_false) ... ok
+test_missing_email_returns_false (test_processor.TestExpandedControl.test_missing_email_returns_false) ... FAIL
+test_missing_items_returns_false (test_processor.TestExpandedControl.test_missing_items_returns_false) ... ok
+test_missing_qty_returns_false (test_processor.TestExpandedControl.test_missing_qty_returns_false) ... ok
+test_string_price_should_fail_validation (test_processor.TestExpandedControl.test_string_price_should_fail_validation) ... ok
+test_success (test_processor.TestExpandedControl.test_success) ... ok
+
+======================================================================
+FAIL: test_missing_email_returns_false (test_processor.TestExpandedControl.test_missing_email_returns_false)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/test_processor.py", line 42, in test_missing_email_returns_false
+    self.assertFalse(p.process_order('{"items":[{"price":10,"qty":1}]}'))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.003s
+
+FAILED (failures=1)
+Processing Error: db down
+Email Error (swallowed to match legacy behavior): smtp down
+Validation Error: No items in order
+Parsing Error: Expecting value: line 1 column 10 (char 9)
+Validation Error: No items in order
+Processing Error: 'qty'
+Processing Error: unsupported operand type(s) for +: 'int' and 'str'

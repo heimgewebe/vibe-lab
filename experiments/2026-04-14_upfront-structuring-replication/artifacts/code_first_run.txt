@@ -1,0 +1,39 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /app/experiments/2026-04-14_upfront-structuring-replication/artifacts
+collected 4 items
+
+test_code_first_validator.py ..FF                                        [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_missing_admin_id_for_admin ________________________
+
+    def test_missing_admin_id_for_admin():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test_code_first_validator.py:12: Failed
+____________________________ test_invalid_age_type _____________________________
+
+    def test_invalid_age_type():
+        with pytest.raises(ValueError):
+>           validate_user({'username': 'jules', 'age': '25', 'role': 'user'})
+
+test_code_first_validator.py:17:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = {'age': '25', 'role': 'user', 'username': 'jules'}
+
+    def validate_user(data: dict) -> bool:
+        if 'username' not in data or len(data['username']) < 3:
+            raise ValueError("Invalid username")
+>       if 'age' not in data or data['age'] < 18:
+                                ^^^^^^^^^^^^^^^^
+E       TypeError: '<' not supported between instances of 'str' and 'int'
+
+code_first_validator.py:4: TypeError
+=========================== short test summary info ============================
+FAILED test_code_first_validator.py::test_missing_admin_id_for_admin - Failed...
+FAILED test_code_first_validator.py::test_invalid_age_type - TypeError: '<' n...
+========================= 2 failed, 2 passed in 0.05s ==========================

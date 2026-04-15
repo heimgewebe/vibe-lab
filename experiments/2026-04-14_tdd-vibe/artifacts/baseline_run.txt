@@ -1,0 +1,37 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /app/experiments/2026-04-14_tdd-vibe/artifacts
+collected 5 items
+
+test_baseline_roman.py ..FFF                                             [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_invalid_format_iiii ___________________________
+
+    def test_invalid_format_iiii():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test_baseline_roman.py:14: Failed
+____________________________ test_invalid_format_vv ____________________________
+
+    def test_invalid_format_vv():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test_baseline_roman.py:18: Failed
+____________________________ test_invalid_format_ic ____________________________
+
+    def test_invalid_format_ic():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test_baseline_roman.py:22: Failed
+=========================== short test summary info ============================
+FAILED test_baseline_roman.py::test_invalid_format_iiii - Failed: DID NOT RAI...
+FAILED test_baseline_roman.py::test_invalid_format_vv - Failed: DID NOT RAISE...
+FAILED test_baseline_roman.py::test_invalid_format_ic - Failed: DID NOT RAISE...
+========================= 3 failed, 2 passed in 0.06s ==========================
