@@ -1,0 +1,10 @@
+test_calculator (test_processor.TestRefactoredProcessor.test_calculator) ... ok
+test_processor_failure (test_processor.TestRefactoredProcessor.test_processor_failure) ... ok
+test_processor_success (test_processor.TestRefactoredProcessor.test_processor_success) ... ok
+test_validation_fails (test_processor.TestRefactoredProcessor.test_validation_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+Validation Error: No items in order

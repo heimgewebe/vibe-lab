@@ -1,0 +1,11 @@
+{"event_type":"run","timestamp":"2026-04-15T01:10:00Z","iteration":14,"metric":"run_started","value":true,"context":{"run_id":"run-014-exotic-injection-session-b","condition":"treatment"},"artifact_ref":"artifacts/run-014-exotic-injection-session-b/test_output.txt"}
+{"event_type":"measurement","timestamp":"2026-04-15T01:11:00Z","iteration":14,"metric":"test_pass_rate","value":"4/5","context":{"run_id":"run-014-exotic-injection-session-b","suite":"test_exotic"}}
+{"event_type":"measurement","timestamp":"2026-04-15T01:12:00Z","iteration":14,"metric":"exotic_blindspot_count","value":1,"context":{"run_id":"run-014-exotic-injection-session-b","blindspot":"micro_price"}}
+{"event_type":"run","timestamp":"2026-04-15T01:20:00Z","iteration":15,"metric":"run_started","value":true,"context":{"run_id":"run-015-extended-premortem","condition":"treatment"},"artifact_ref":"artifacts/run-015-extended-premortem/test_output.txt"}
+{"event_type":"measurement","timestamp":"2026-04-15T01:21:00Z","iteration":15,"metric":"test_pass_rate","value":"6/6","context":{"run_id":"run-015-extended-premortem","suite":"test_exotic_v2"}}
+{"event_type":"measurement","timestamp":"2026-04-15T01:22:00Z","iteration":15,"metric":"edge_case_failures","value":0,"context":{"run_id":"run-015-extended-premortem"}}
+{"event_type":"measurement","timestamp":"2026-04-15T01:23:00Z","iteration":15,"metric":"exotic_blindspot_count","value":0,"context":{"run_id":"run-015-extended-premortem"}}
+{"event_type":"measurement","timestamp":"2026-04-15T01:24:00Z","iteration":15,"metric":"time_to_first_pass_seconds","value":0.224,"context":{"run_id":"run-015-extended-premortem","artifact":"artifacts/run-015-extended-premortem/time_to_first_pass_seconds.txt"}}
+{"event_type":"observation","timestamp":"2026-04-15T01:25:00Z","iteration":15,"metric":"pip_install_pyyaml","value":"failed","context":{"reason":"Proxy 403"}}
+{"event_type":"observation","timestamp":"2026-04-15T01:26:00Z","iteration":15,"metric":"apt_install_python3_yaml","value":"failed","context":{"reason":"Proxy 403"}}
+{"event_type":"decision","timestamp":"2026-04-15T01:27:00Z","iteration":15,"metric":"make_validate","value":"not_confirmed","context":{"reason":"missing pyyaml due to blocked installs"}}

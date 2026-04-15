@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (50 found):
+Documents not referenced by any other document via frontmatter relations (72 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
@@ -31,6 +31,28 @@ Documents not referenced by any other document via frontmatter relations (50 fou
 - `experiments/2026-04-14_incremental-refinement/INITIAL.md`
 - `experiments/2026-04-14_incremental-refinement/failure_modes.md`
 - `experiments/2026-04-14_incremental-refinement/method.md`
+- `experiments/2026-04-14_premortem-prompting/CONTEXT.md`
+- `experiments/2026-04-14_premortem-prompting/INITIAL.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem_quality.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem_quality.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/failure_injection.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/failure_injection.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/failure_extraction.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/premortem_from_failures.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/replication_notes.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/exotic_injection.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/failure_modes.md`
+- `experiments/2026-04-14_premortem-prompting/method.md`
+- `experiments/2026-04-14_premortem-prompting/results/result.md`
 - `experiments/2026-04-14_prompt-length-control/CONTEXT.md`
 - `experiments/2026-04-14_prompt-length-control/INITIAL.md`
 - `experiments/2026-04-14_prompt-length-control/failure_modes.md`

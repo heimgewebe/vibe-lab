@@ -1,0 +1,21 @@
+Validation Error: No items in order
+Validation Error: price must be numeric
+Validation Error: qty too large
+test_baseline_valid (test_exotic.TestExoticInjection.test_baseline_valid) ... ok
+test_items_null_rejected (test_exotic.TestExoticInjection.test_items_null_rejected) ... ok
+test_micro_price_rejected (test_exotic.TestExoticInjection.test_micro_price_rejected) ... FAIL
+test_price_string_scientific_rejected (test_exotic.TestExoticInjection.test_price_string_scientific_rejected) ... ok
+test_qty_over_upper_bound (test_exotic.TestExoticInjection.test_qty_over_upper_bound) ... ok
+
+======================================================================
+FAIL: test_micro_price_rejected (test_exotic.TestExoticInjection.test_micro_price_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/vibe-lab/experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/test_exotic.py", line 30, in test_micro_price_rejected
+    self.assertFalse(p.process_order('{"email":"a@b.c","items":[{"price":0.0000000001,"qty":1}]}'))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+FAILED (failures=1)

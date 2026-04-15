@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+
+verdict: "inconclusive"       # adopted | rejected | inconclusive
+confidence: "medium"          # high | medium | low
+date: "2026-04-15"
+reviewer: "codex-agent"
+
+rationale: |
+  triggered_by: "agent_review_corrections_2026-04-15"
+  Die Evidenz zeigt innerhalb des Kontexts einen klaren Fortschritt von run-014 auf run-015
+  (insbesondere: blindspot_count 1 → 0 im erweiterten Exotic-Set), aber weiterhin nur auf
+  einer schmalen Task-/Modell-/Zeitbasis. Zusätzlich ist die Repo-Gesamtvalidierung mit
+  `make validate` in dieser Umgebung nicht bestätigt (blocked dependency installs).
+  Daher bleibt der Stand explizit "inconclusive"/"testing" statt Adoption.
+
+evidence_summary:
+  observations: 11            # Anzahl Beobachtungen in evidence.jsonl
+  positive: 5                 # Positive Beobachtungen
+  negative: 4                 # Negative Beobachtungen
+  neutral: 2                  # Neutrale Beobachtungen
+
+next_steps: |
+  1) Cross-Model-Replikation ergänzen (unabhängige Session/Person).
+  2) Weitere Exotic-Familien ergänzen (z. B. Währungs-/Rundungsfälle).
+  3) `make validate` in freigeschalteter Umgebung nachziehen und protokollieren.
+
+# challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge

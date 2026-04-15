@@ -11,13 +11,13 @@ Hinweis: .vibe/ ist operative Wahrheit und wird NICHT übersprungen.
 """
 
 from pathlib import Path
+import importlib.util
 
-try:
+_YAML_SPEC = importlib.util.find_spec("yaml")
+if _YAML_SPEC is not None:
     import yaml as _yaml
-except ImportError:
-    import sys
-    print("ERROR: Missing dependency. Run: pip install pyyaml")
-    sys.exit(1)
+else:
+    _yaml = None
 
 # Verzeichnisse, die in allen Skripten konsistent übersprungen werden
 SKIP_DIR_NAMES: frozenset[str] = frozenset({
@@ -71,7 +71,23 @@ def extract_frontmatter(path: Path) -> dict | None:
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
-    try:
-        return _yaml.safe_load(parts[1]) or {}
-    except _yaml.YAMLError:
-        return None
+    yaml_block = parts[1]
+    if _yaml is not None:
+        try:
+            return _yaml.safe_load(yaml_block) or {}
+        except Exception:
+            return None
+
+    # Fallback ohne pyyaml: unterstützt nur flache "key: value"-Zeilen.
+    # Reicht für Navigation/Diagnose-Generatoren und hält make generate lauffähig.
+    out: dict[str, str] = {}
+    for raw_line in yaml_block.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key:
+            out[key] = value
+    return out or None
