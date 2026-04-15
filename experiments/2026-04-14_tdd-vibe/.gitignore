@@ -1,0 +1,5 @@
+results/run-tdd-vibe/node_modules/
+# package-lock.json ist absichtlich NICHT ignoriert:
+# Für reproduzierbare Replikation muss die exakte Dependency-Closure
+# (ts-jest, jest, supertest, express 5.x) eingefroren im Repo liegen.
+# Der Lockfile ist Teil der Run-Evidenz — nicht bauseitiger Artefakt.
