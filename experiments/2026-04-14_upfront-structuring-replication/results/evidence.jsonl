@@ -1,0 +1,8 @@
+{"timestamp": "2026-04-14T11:20:00Z", "event_type": "observation", "metric": "setup", "value": 1, "context": "Setup upfront structuring replication experiment", "iteration": 1}
+{"timestamp": "2026-04-14T11:21:00Z", "event_type": "run", "metric": "test_pass_rate_code_first", "value": 0.5, "context": "pytest test_code_first_validator.py", "exit_code": 1, "artifact_ref": "artifacts/code_first_run.txt", "iteration": 1}
+{"timestamp": "2026-04-14T11:21:30Z", "event_type": "measurement", "metric": "edge_cases_missed_code_first", "value": 2, "context": "Code-first missed missing_admin_id and invalid_age_type", "iteration": 1}
+{"timestamp": "2026-04-14T11:22:00Z", "event_type": "run", "metric": "test_pass_rate_spec_first", "value": 1.0, "context": "pytest test_spec_first_validator.py", "exit_code": 0, "artifact_ref": "artifacts/spec_first_run.txt", "iteration": 1}
+{"timestamp": "2026-04-14T11:22:30Z", "event_type": "measurement", "metric": "edge_cases_missed_spec_first", "value": 0, "context": "Spec-first caught all edge cases", "iteration": 1}
+{"timestamp": "2026-04-14T11:23:00Z", "event_type": "run", "metric": "test_pass_rate_test_first", "value": 1.0, "context": "pytest test_test_first_validator.py", "exit_code": 0, "artifact_ref": "artifacts/test_first_run.txt", "iteration": 1}
+{"timestamp": "2026-04-14T11:23:30Z", "event_type": "measurement", "metric": "edge_cases_missed_test_first", "value": 0, "context": "Test-first caught all edge cases", "iteration": 1}
+{"timestamp": "2026-04-14T11:24:00Z", "event_type": "decision", "metric": "hypothesis_confirmed", "value": 1, "context": "Replication successful. Both upfront structuring methods perfectly handled conditional logic and typing that naive code-first missed.", "iteration": 1}

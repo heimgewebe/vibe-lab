@@ -26,6 +26,11 @@
           "enum": ["idea", "designed", "testing", "adopted", "rejected", "blocked", "inconclusive"],
           "description": "Aktueller Status des Experiments"
         },
+        "cognitive_mode": {
+          "type": "string",
+          "enum": ["generative", "declarative", "executable", "exploratory"],
+          "description": "Kognitiver Modus, in den das Modell durch den Prompt gezwungen wird"
+        },
         "category": {
           "type": "string",
           "enum": ["style", "technology", "technique", "workflow", "combo"],

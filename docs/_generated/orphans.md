@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (34 found):
+Documents not referenced by any other document via frontmatter relations (50 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
@@ -31,6 +31,11 @@ Documents not referenced by any other document via frontmatter relations (34 fou
 - `experiments/2026-04-14_incremental-refinement/INITIAL.md`
 - `experiments/2026-04-14_incremental-refinement/failure_modes.md`
 - `experiments/2026-04-14_incremental-refinement/method.md`
+- `experiments/2026-04-14_prompt-length-control/CONTEXT.md`
+- `experiments/2026-04-14_prompt-length-control/INITIAL.md`
+- `experiments/2026-04-14_prompt-length-control/failure_modes.md`
+- `experiments/2026-04-14_prompt-length-control/method.md`
+- `experiments/2026-04-14_prompt-length-control/results/result.md`
 - `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
 - `experiments/2026-04-14_tdd-vibe/INITIAL.md`
 - `experiments/2026-04-14_tdd-vibe/failure_modes.md`
@@ -38,4 +43,15 @@ Documents not referenced by any other document via frontmatter relations (34 fou
 - `experiments/2026-04-14_tdd-vibe/method.md`
 - `experiments/2026-04-14_tdd-vibe/results/result.md`
 - `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md`
+- `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md`
+- `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md`
+- `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md`
+- `experiments/2026-04-14_upfront-structuring-replication/method.md`
+- `experiments/2026-04-14_upfront-structuring-replication/results/result.md`
+- `experiments/2026-04-14_upfront-structuring/CONTEXT.md`
+- `experiments/2026-04-14_upfront-structuring/INITIAL.md`
+- `experiments/2026-04-14_upfront-structuring/failure_modes.md`
+- `experiments/2026-04-14_upfront-structuring/method.md`
+- `experiments/2026-04-14_upfront-structuring/results/result.md`
+- `experiments/README.md`
 - `prompts/adopted/spec-first-api.md`

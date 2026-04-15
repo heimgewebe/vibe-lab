@@ -43,6 +43,11 @@
 | `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | inconclusive | operative |
 | `experiments/2026-04-14_incremental-refinement/method.md` | Incremental Refinement vs. Single-Shot — Methode | inconclusive | operative |
 | `experiments/2026-04-14_incremental-refinement/results/result.md` | Incremental Refinement vs. Single-Shot — Ergebnis | inconclusive | operative |
+| `experiments/2026-04-14_prompt-length-control/CONTEXT.md` | Experiment-Kontext: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/INITIAL.md` | Initiale Prompt-/Setup-Situation: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/failure_modes.md` | Failure Modes: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/method.md` | Experiment-Methode: Prompt-Length Control | testing | operative |
+| `experiments/2026-04-14_prompt-length-control/results/result.md` | Ergebnisse: Prompt-Length Control | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | TDD-Vibe — Experiment-Kontext | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | TDD-Vibe — Initiale Situation | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes — TDD-Vibe | testing | operative |
@@ -50,6 +55,17 @@
 | `experiments/2026-04-14_tdd-vibe/method.md` | TDD-Vibe — Methode | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/results/result.md` | TDD-Vibe — Ergebnisse | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md` | TDD-Vibe — Run-Evidenz | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Comparison | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/failure_modes.md` | Failure Modes: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/method.md` | Experiment-Methode: Upfront Structuring | testing | operative |
+| `experiments/2026-04-14_upfront-structuring/results/result.md` | Ergebnisse: Upfront Structuring Comparison (Zwischenstand) | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md` | Experiment-Kontext: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md` | Initiale Prompt-/Setup-Situation: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` | Failure Modes: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/method.md` | Experiment-Methode: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-14_upfront-structuring-replication/results/result.md` | Ergebnisse: Upfront Structuring Replication | testing | operative |
+| `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
