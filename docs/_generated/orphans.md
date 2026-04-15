@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (27 found):
+Documents not referenced by any other document via frontmatter relations (34 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
@@ -31,4 +31,11 @@ Documents not referenced by any other document via frontmatter relations (27 fou
 - `experiments/2026-04-14_incremental-refinement/INITIAL.md`
 - `experiments/2026-04-14_incremental-refinement/failure_modes.md`
 - `experiments/2026-04-14_incremental-refinement/method.md`
+- `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
+- `experiments/2026-04-14_tdd-vibe/INITIAL.md`
+- `experiments/2026-04-14_tdd-vibe/failure_modes.md`
+- `experiments/2026-04-14_tdd-vibe/followups.md`
+- `experiments/2026-04-14_tdd-vibe/method.md`
+- `experiments/2026-04-14_tdd-vibe/results/result.md`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md`
 - `prompts/adopted/spec-first-api.md`

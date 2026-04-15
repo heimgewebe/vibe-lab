@@ -43,6 +43,13 @@
 | `experiments/2026-04-14_incremental-refinement/failure_modes.md` | Failure Modes — Incremental Refinement | inconclusive | operative |
 | `experiments/2026-04-14_incremental-refinement/method.md` | Incremental Refinement vs. Single-Shot — Methode | inconclusive | operative |
 | `experiments/2026-04-14_incremental-refinement/results/result.md` | Incremental Refinement vs. Single-Shot — Ergebnis | inconclusive | operative |
+| `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | TDD-Vibe — Experiment-Kontext | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/INITIAL.md` | TDD-Vibe — Initiale Situation | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/failure_modes.md` | Failure Modes — TDD-Vibe | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/followups.md` | TDD-Vibe — Follow-Ups | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/method.md` | TDD-Vibe — Methode | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/results/result.md` | TDD-Vibe — Ergebnisse | testing | operative |
+| `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md` | TDD-Vibe — Run-Evidenz | testing | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
