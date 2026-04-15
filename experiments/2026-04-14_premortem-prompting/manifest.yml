@@ -1,0 +1,31 @@
+# Experiment Manifest
+schema_version: "0.1.0"
+
+experiment:
+  name: "Pre-Mortem Prompting"
+  hypothesis: "Ein kurzer Failure-Mode-Pre-Mortem vor dem ersten Implementierungs-Prompt reduziert Rework und vergessene Randfälle gegenüber einem direkten Start ohne Pre-Mortem."
+  status: testing
+  category: technique
+  execution_status: executed
+  execution_refs:
+    - "results/evidence.jsonl"
+    - "artifacts/run-015-extended-premortem/test_output.txt"
+    - "artifacts/run-015-extended-premortem/time_to_first_pass_seconds.txt"
+    - "artifacts/run-015-extended-premortem/premortem.md"
+  created: "2026-04-14"
+  updated: "2026-04-15"
+  author: "GPT-5.3-Codex"
+  iteration: 15
+  evidence_level: experimental
+
+context:
+  tools: ["LLM-Agent", "Vibe-Coding", "python3 -m unittest"]
+  language: "Python"
+  environment: "Vibe-Lab"
+  challenge_version: "legacy-refactoring-v1"
+  triggered_by: "User-Request + Follow-up: Replikation und exotische Unknowns"
+  validation_status: "not_confirmed_missing_pyyaml_due_to_proxy"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
