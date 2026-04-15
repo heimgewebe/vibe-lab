@@ -1,0 +1,7 @@
+{
+  "name": "task2-incremental",
+  "version": "1.0.0",
+  "scripts": { "start": "ts-node index.ts" },
+  "dependencies": { "typescript": "^5.3.0" },
+  "devDependencies": { "ts-node": "^10.9.2", "@types/node": "^20.0.0" }
+}

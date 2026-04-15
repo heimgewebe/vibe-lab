@@ -1,0 +1,52 @@
+# Decision — Incremental vs. Single-Shot: Debuggability
+# Validiert gegen: (kein eigenes Schema im MVP; Struktur orientiert sich an der Pipeline-Logik)
+
+schema_version: "0.1.0"
+
+verdict: "inconclusive"
+confidence: "low"
+date: "2026-04-14"
+reviewer: "copilot-agent"
+
+rationale: |
+  Das Experiment wurde vollständig ausgeführt. Die primäre Hypothese ist nicht direkt
+  prüfbar, weil der Sonderfall eingetreten ist: Single-Shot war bug-frei (5/5 korrekte
+  Outputs), der Incremental-Arm hatte 2–3 Laufzeitbugs.
+
+  Konkrete Messergebnisse:
+  - first_failing_input_index: Incremental=3, Single-Shot=undefined (keine Fehler)
+  - hidden_bugs_count: Incremental=3 (2 sichtbar, 1 latent), Single-Shot=0
+  - time_to_fix_unguided: Incremental=1 Iteration, Single-Shot=0 (kein Fix nötig)
+  - time_to_fix_guided: Incremental=1 Iteration, Single-Shot=0
+  - patch_size: Incremental=7 Zeilen in cli.ts, Single-Shot=N/A
+
+  Warum inconclusive:
+  1. Der Hauptvergleich (first_failing_input_index) ist nicht möglich, da ein Arm
+     bug-frei ist — ein vorhersehbarer Sonderfall, der in den Erfolgskriterien nicht
+     explizit geregelt war.
+  2. Modell-Leakage: Als KI-Agent mit Vorwissen über den Bug war time_to_fix nicht
+     unabhängig messbar. Guided und unguided ergaben beide 1 Iteration.
+  3. Latenter Bug auf Input 5: transform wurde übersprungen, aber der Effekt war
+     unsichtbar (uppercase auf Zahlen = no-op). Zeigt: hidden_bugs_count kann 
+     underversen.
+
+  Was das Experiment trotzdem liefert:
+  - Bestätigung: der doppelte i++-Bug ist compiletransparent (tsc 0 Errors bei beiden)
+  - Bestätigung: Bug wird auf Input 3 und 4 sichtbar, auf Input 5 latent
+  - Bestätigung: Fix ist auf ein Modul (cli.ts) lokalisiert, 7 Zeilen
+  - Befund: hidden_bugs_count ist für compiletransparente Bugs ein guter Primärindikator
+
+evidence_summary:
+  observations: 3
+  positive: 0
+  negative: 0
+  neutral: 3
+  measurements: 17
+  decision: 1
+
+next_steps: |
+  Für einen zweiten Ausführungslauf empfohlen:
+  1. Sonderfall "bugfreie Kontrolle" explizit in Erfolgskriterien aufnehmen
+  2. time_to_fix-Messung mit Human-Developer oder unabhängigem AI-Agent ohne Vorwissen
+  3. Input 5 mit nicht-numerischen Werten für Uppercase-Transform (um latenten Bug sichtbar zu machen)
+  4. Symmetrischer Test: Single-Shot-Arm mit äquivalentem Bug vorbereiten
