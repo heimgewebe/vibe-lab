@@ -330,6 +330,94 @@ def validate_decision_files():
         print("  (no decision.yml files found outside _template/_archive)")
 
 
+def validate_adoption_decision_coverage():
+    """Symmetrische cross-file Regel: echte Adoption braucht adoption_assessment.
+
+    Ergänzt ``validate_decision_files()`` um die Gegenrichtung. Dort wurde nur
+    die Eingangsrichtung erzwungen (``adoption_assessment`` → Manifest muss
+    ``execution_status ∈ {executed, replicated}`` tragen). Ohne die hier
+    implementierte Gegenrichtung bleibt die Umgehung offen, dass ein Manifest
+    Adoption behauptet, während das zugehörige ``decision.yml`` nur
+    ``result_assessment`` ist.
+
+    Pflichtregel:
+        experiment.status == "adopted"
+        und experiment.adoption_basis ∈ {"executed", "replicated"}
+        → ``results/decision.yml`` muss existieren und
+          ``decision_type == "adoption_assessment"`` tragen.
+
+    Historische Ausnahme:
+        experiment.status == "adopted" und adoption_basis == "reconstructed"
+        bleibt ohne adoption_assessment zulässig (Altbestand gem.
+        docs/blueprints/blueprint-v2.md Übergangsregel). Die sichtbare
+        Rekonstruktionsannotation wird separat in
+        ``validate_execution_proof.py`` geprüft.
+
+    Hintergrund: docs/concepts/execution-bound-epistemics.md §10.1–10.2.
+    """
+    experiments_dir = REPO_ROOT / "experiments"
+    checked = 0
+
+    for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
+        if manifest_path.parent.name.startswith("_"):
+            continue  # Skip _template, _archive
+
+        try:
+            manifest = load_yaml(manifest_path)
+        except Exception as e:
+            errors.append(f"  ❌ {manifest_path.relative_to(REPO_ROOT)}: YAML-Fehler — {e}")
+            continue
+
+        experiment = manifest.get("experiment", {})
+        status = experiment.get("status", "")
+        adoption_basis = experiment.get("adoption_basis", "")
+
+        if status != "adopted":
+            continue
+        if adoption_basis not in ADOPTION_ALLOWED_EXECUTION_STATUSES:
+            # reconstructed oder leer → Historische Ausnahme, hier nichts zu tun.
+            continue
+
+        checked += 1
+        exp_dir = manifest_path.parent
+        rel_exp = exp_dir.relative_to(REPO_ROOT)
+        decision_path = exp_dir / "results" / "decision.yml"
+
+        if not decision_path.is_file():
+            errors.append(
+                f"  ❌ {rel_exp}: Manifest behauptet Adoption "
+                f"(status=adopted, adoption_basis={adoption_basis}), aber "
+                f"results/decision.yml fehlt. Echte Adoption verlangt ein "
+                f"decision.yml mit decision_type=adoption_assessment "
+                f"(siehe docs/concepts/execution-bound-epistemics.md §10.1)."
+            )
+            continue
+
+        try:
+            decision = load_yaml(decision_path)
+        except Exception as e:
+            # YAML-Fehler meldet validate_decision_files() bereits separat.
+            # Hier nichts doppelt loggen.
+            continue
+
+        decision_type = decision.get("decision_type")
+        if decision_type != "adoption_assessment":
+            errors.append(
+                f"  ❌ {decision_path.relative_to(REPO_ROOT)}: Manifest behauptet "
+                f"Adoption (status=adopted, adoption_basis={adoption_basis}), "
+                f"also muss decision_type=adoption_assessment sein, "
+                f"gefunden: '{decision_type}'. "
+                f"Resultatsbewertung ≠ Adoptionsentscheidung "
+                f"(siehe docs/concepts/execution-bound-epistemics.md §10.1)."
+            )
+            continue
+
+        print(f"  ✅ {rel_exp}: adoption_basis={adoption_basis} ↔ adoption_assessment")
+
+    if checked == 0:
+        print("  (kein Experiment mit status=adopted + adoption_basis ∈ {executed, replicated})")
+
+
 def validate_failure_modes():
     """Prüft failure_modes.md für Experimente mit Status testing oder adopted.
 
@@ -452,6 +540,9 @@ def main():
     print()
     print("Decision Files:")
     validate_decision_files()
+    print()
+    print("Adoption ↔ Decision Coverage:")
+    validate_adoption_decision_coverage()
     print()
     print("Failure Modes:")
     validate_failure_modes()

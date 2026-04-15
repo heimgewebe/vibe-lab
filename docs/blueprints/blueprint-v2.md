@@ -87,17 +87,14 @@ aber kein Goldstandard. Neue Adoptionen — definiert als Experimente mit
 > Adoption ohne Execution-Proof ist nur als historischer Zustand zulässig,
 > nicht als zukünftiger.
 
-**Enforcement:** Seit Phase 1b hartes Enforcement im
+**Enforcement:** Seit Phase 1b hartes Enforcement in
 `validate_execution_proof.py`: `adoption_basis: reconstructed` bei
-`created ≥ v2-Merge-Datum` → **Fehler** (nicht-null Exit-Code). Gemeinsam mit
-Decision-Type-Separation umgesetzt, weil beide an derselben Fehlklasse arbeiten
-(unberechtigte Adoption).
+`created ≥ v2-Merge-Datum` → **Fehler**. Gemeinsam mit Decision-Type-Separation
+umgesetzt — selbe Fehlklasse (unberechtigte Adoption).
 
 **Migration beim Einführen von v2 (einmalig, abgeschlossen):** `spec-first` →
-`execution_status: reconstructed` + `adoption_basis: reconstructed` + Annotation
-im `result.md`; `yolo-vs-spec-first` → `execution_status: designed`;
-`spec-first-legacy` → `execution_status: executed` mit nachgereichter
-`run_meta.json`.
+`reconstructed` + Annotation; `yolo-vs-spec-first` → `designed`;
+`spec-first-legacy` → `executed` mit nachgereichter `run_meta.json`.
 
 ---
 
@@ -113,14 +110,17 @@ Assessment-Typen mit harter Regel „`adoption_assessment` nur bei
 - `schemas/decision.schema.json` (neu): Diskriminator `decision_type`
   (`execution_assessment` | `result_assessment` | `adoption_assessment`), pro
   Typ eigene `verdict`-Enum und Pflichtfelder.
-- `scripts/docmeta/validate_schema.py::validate_decision_files()`: validiert
-  jede `experiments/*/results/decision.yml` und erzwingt cross-file: bei
-  `decision_type=adoption_assessment` muss das Geschwister-Manifest
-  `execution_status ∈ {executed, replicated}` tragen.
+- `validate_decision_files()` + `validate_adoption_decision_coverage()` in
+  `validate_schema.py` erzwingen die Kopplung **symmetrisch**:
+  (a) `adoption_assessment` verlangt im Manifest `execution_status ∈
+  {executed, replicated}`; (b) umgekehrt verlangt ein Manifest mit
+  `status: adopted` + `adoption_basis ∈ {executed, replicated}` ein
+  `adoption_assessment`. Ausnahme: `adoption_basis: reconstructed`.
 - `validate_execution_proof.py`: `adoption_basis=reconstructed` bei
   `created ≥ v2-Merge-Datum` → **Fehler** (zuvor Warnung).
-- Einmalige Migration: alle sieben bestehenden `decision.yml` (inkl. Template)
-  tragen `decision_type`.
+- Migration: alle sieben bestehenden `decision.yml` (inkl. Template) tragen
+  `decision_type`; `prompt-length-control` bekommt das fehlende `decision.yml`
+  als `adoption_assessment` nachgezogen.
 
 **Nicht-Ziel:** Verdict-Enums über die drei Adoption-Verdicts
 (`adopt` / `reject` / `defer`) hinaus ausbauen, bevor ein echtes
@@ -182,8 +182,7 @@ echtes Neu-Feld; aus `result.md` bzw. Phase 2).
 
 - **`comparison_mode`-Enum.** Empirisch noch nicht gedeckt.
 - **Zentrale Allowlist für Altbestand.** Allowlists wachsen, Lokalannotation nicht.
-- **Vollständige Meta-Lernschicht / `failure-atlas/`.** Bleibt dormant bis ≥ 3
-  dokumentierte Fehlklassen aus echten Experimenten vorliegen.
+- **Meta-Lernschicht / `failure-atlas/`.** Dormant bis ≥ 3 dokumentierte Fehlklassen vorliegen.
 - **`expected_outputs.json` als Pflicht.** Post-Blueprint, nicht jetzt.
 
 ---
@@ -196,5 +195,6 @@ echtes Neu-Feld; aus `result.md` bzw. Phase 2).
    `execution_status: executed` ohne `run_meta.json`; `status: adopted` ohne
    `adoption_basis`; `decision_type: adoption_assessment` bei
    `execution_status ∈ {designed, reconstructed}`; `adoption_basis: reconstructed`
-   bei `created ≥ v2-Merge-Datum`.
+   bei `created ≥ v2-Merge-Datum`; `status: adopted` + `adoption_basis: executed`
+   mit `decision_type: result_assessment` (Gegenrichtung).
 4. `make validate` grün.

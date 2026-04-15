@@ -1,0 +1,42 @@
+# Decision — Prompt-Length Control
+# Validiert gegen: schemas/decision.schema.json
+# Semantik: docs/concepts/execution-bound-epistemics.md §10.1–10.2 (Decision-Type-Separation)
+
+schema_version: "0.1.0"
+
+# adoption_assessment — echte Übernahmeentscheidung. Zulässig, weil
+# das Manifest execution_status: executed und adoption_basis: executed trägt.
+decision_type: adoption_assessment
+verdict: adopt                  # adoption_assessment: adopt | reject | defer
+confidence: medium              # high | medium | low | none
+date: "2026-04-14"
+reviewer: "Jules"
+
+rationale: |
+  Die kausale Kontrollstudie entkoppelt Tokenlänge von Struktur. Der
+  Ramble-First-Arm (hohes Token-Volumen ohne inhaltliche Strukturierung) fiel
+  exakt in denselben Naiv-Regex-Fehler wie Code-First zurück (test_pass_rate
+  0.8), während Spec-First mit gleichem Token-Volumen 1.0 erreichte.
+
+  Damit ist die wichtigste alternative Erklärung für den Upfront-Structuring-
+  Effekt empirisch widerlegt: Der Zugewinn beruht nicht auf Token-Volumen als
+  Chain-of-Thought-Proxy, sondern auf dem Modus-Wechsel in Declarative/
+  Executable. Das härtet die theoretische Basis für
+  catalog/techniques/spec-first-prompting.md und rechtfertigt die Übernahme
+  in prompts/adopted/.
+
+  Confidence bleibt medium (nicht high), weil n=1 Task, 1 Modell, 1
+  Experimentator — Replikation auf weiteren Task-Typen ist offen.
+
+evidence_summary:
+  observations: 8
+  positive: 3                   # Spec-First pass_rate=1.0, Ramble-First widerlegt Token-CoT-Hypothese, Edge-Case-Miss korreliert mit Strukturmodus
+  negative: 0
+  neutral: 5                    # Setup/Messprotokoll-Einträge
+
+next_steps: |
+  - Replikation auf weiteren Task-Typen (nicht nur Text-Parsing).
+  - Zweites Modell (z.B. GPT-4o) gegen dieselbe Kontrollbedingung laufen lassen.
+  - Cognitive-Modes-Theorie im Katalog als eigenen Hintergrundartikel
+    ausbauen, damit catalog/techniques/spec-first-prompting.md darauf
+    verweisen kann.
