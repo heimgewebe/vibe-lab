@@ -1,0 +1,32 @@
+# Experiment Manifest — Incremental vs. Single-Shot: Debuggability
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "incremental-debuggability"
+  hypothesis: "Bei Task 2 (CSV CLI) und dem bekannten doppelten i++-Bug im CLI-Argument-Parser erlaubt der modulare Incremental-Artefaktzustand eine frühere Lokalisierung (first_failing_input_index) oder schnellere Behebung (time_to_fix) als der monolithische Single-Shot-Artefaktzustand — gemessen an tatsächlicher Ausführung mit 5 definierten Inputs."
+  status: testing
+  category: technique
+  execution_status: executed
+  execution_refs:
+    - "results/evidence.jsonl"
+  created: "2026-04-14"
+  updated: "2026-04-14"
+  author: "copilot-agent"
+  iteration: 1
+  evidence_level: experimental
+  related_idea: "experiments/2026-04-14_incremental-refinement"
+
+context:
+  tools:
+    - "GitHub Copilot"
+    - "Claude Sonnet (via Copilot Agent)"
+    - "Node.js (Laufzeitausführung)"
+    - "ts-node oder tsc + node"
+  language: "TypeScript"
+  environment: "Node.js"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

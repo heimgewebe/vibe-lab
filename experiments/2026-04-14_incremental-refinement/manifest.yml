@@ -1,0 +1,36 @@
+# Experiment Manifest — Incremental Refinement vs. Single-Shot
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "incremental-refinement"
+  hypothesis: "Inkrementelle Code-Generierung durch viele kleine, gezielte Prompts führt zu besserer Codequalität und weniger Nacharbeit als Single-Shot-Generierung — auf Kosten höherer Prompt-Anzahl."
+  status: inconclusive
+  category: technique
+  execution_status: executed
+  execution_refs:
+    - "results/evidence.jsonl"
+    - "results/result.md"
+    - "artifacts/task1-single-shot/index.ts"
+    - "artifacts/task1-incremental/index.ts"
+    - "artifacts/task2-single-shot/index.ts"
+    - "artifacts/task2-incremental/index.ts"
+    - "artifacts/task3-single-shot/index.ts"
+    - "artifacts/task3-incremental/index.ts"
+  created: "2026-04-14"
+  updated: "2026-04-14"
+  author: "copilot-agent"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools:
+    - "GitHub Copilot"
+    - "Claude Sonnet (via Copilot Agent)"
+  language: "TypeScript"
+  environment: "Node.js"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

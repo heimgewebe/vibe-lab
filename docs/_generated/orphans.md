@@ -3,17 +3,15 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (42 found):
+Documents not referenced by any other document via frontmatter relations (72 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
-- `catalog/techniques/spec-first-prompting.md`
 - `docs/concepts/execution-bound-epistemics.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
 - `experiments/2026-04-08_spec-first/method.md`
-- `experiments/2026-04-08_spec-first/results/result.md`
 - `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md`
 - `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md`
 - `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md`
@@ -24,6 +22,15 @@ Documents not referenced by any other document via frontmatter relations (42 fou
 - `experiments/2026-04-12_spec-first-legacy/failure_modes.md`
 - `experiments/2026-04-12_spec-first-legacy/method.md`
 - `experiments/2026-04-12_spec-first-legacy/results/result.md`
+- `experiments/2026-04-14_incremental-debuggability/CONTEXT.md`
+- `experiments/2026-04-14_incremental-debuggability/INITIAL.md`
+- `experiments/2026-04-14_incremental-debuggability/failure_modes.md`
+- `experiments/2026-04-14_incremental-debuggability/method.md`
+- `experiments/2026-04-14_incremental-debuggability/results/result.md`
+- `experiments/2026-04-14_incremental-refinement/CONTEXT.md`
+- `experiments/2026-04-14_incremental-refinement/INITIAL.md`
+- `experiments/2026-04-14_incremental-refinement/failure_modes.md`
+- `experiments/2026-04-14_incremental-refinement/method.md`
 - `experiments/2026-04-14_premortem-prompting/CONTEXT.md`
 - `experiments/2026-04-14_premortem-prompting/INITIAL.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
@@ -46,4 +53,27 @@ Documents not referenced by any other document via frontmatter relations (42 fou
 - `experiments/2026-04-14_premortem-prompting/failure_modes.md`
 - `experiments/2026-04-14_premortem-prompting/method.md`
 - `experiments/2026-04-14_premortem-prompting/results/result.md`
+- `experiments/2026-04-14_prompt-length-control/CONTEXT.md`
+- `experiments/2026-04-14_prompt-length-control/INITIAL.md`
+- `experiments/2026-04-14_prompt-length-control/failure_modes.md`
+- `experiments/2026-04-14_prompt-length-control/method.md`
+- `experiments/2026-04-14_prompt-length-control/results/result.md`
+- `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
+- `experiments/2026-04-14_tdd-vibe/INITIAL.md`
+- `experiments/2026-04-14_tdd-vibe/failure_modes.md`
+- `experiments/2026-04-14_tdd-vibe/followups.md`
+- `experiments/2026-04-14_tdd-vibe/method.md`
+- `experiments/2026-04-14_tdd-vibe/results/result.md`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md`
+- `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md`
+- `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md`
+- `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md`
+- `experiments/2026-04-14_upfront-structuring-replication/method.md`
+- `experiments/2026-04-14_upfront-structuring-replication/results/result.md`
+- `experiments/2026-04-14_upfront-structuring/CONTEXT.md`
+- `experiments/2026-04-14_upfront-structuring/INITIAL.md`
+- `experiments/2026-04-14_upfront-structuring/failure_modes.md`
+- `experiments/2026-04-14_upfront-structuring/method.md`
+- `experiments/2026-04-14_upfront-structuring/results/result.md`
+- `experiments/README.md`
 - `prompts/adopted/spec-first-api.md`
