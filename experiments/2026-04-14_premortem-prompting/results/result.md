@@ -8,7 +8,7 @@ canonicality: operative
 
 ## Zusammenfassung
 
-Mit `run-015` wurde der zuvor entdeckte `micro_price`-Blindspot geschlossen: Exotic-Set von 4/5 auf 6/6 verbessert.
+Mit `run-015` wurde der zuvor entdeckte `micro_price`-Blindspot geschlossen. Gegenüber `run-014` zeigt der neue Lauf auf einem **erweiterten** Exotic-Set keine Blindspots mehr (`exotic_blindspot_count = 0`). Der Vergleich ist damit ein belastbarer Fortschrittshinweis, aber keine strikte 1:1-Arithmetik auf identischem Testsatz.
 
 ## Beobachtungen
 

@@ -1,16 +1,26 @@
-Validation Error: No items in order
-Validation Error: price out of bounds
-Validation Error: price must be numeric
-Validation Error: qty out of bounds
-Validation Error: price out of bounds
 test_baseline_valid (test_exotic.TestExoticInjectionV2.test_baseline_valid) ... ok
 test_items_null_rejected (test_exotic.TestExoticInjectionV2.test_items_null_rejected) ... ok
 test_micro_price_rejected (test_exotic.TestExoticInjectionV2.test_micro_price_rejected) ... ok
+test_price_bool_rejected (test_exotic.TestExoticInjectionV2.test_price_bool_rejected) ... ok
 test_price_string_scientific_rejected (test_exotic.TestExoticInjectionV2.test_price_string_scientific_rejected) ... ok
+test_qty_bool_rejected (test_exotic.TestExoticInjectionV2.test_qty_bool_rejected) ... ok
 test_qty_over_upper_bound (test_exotic.TestExoticInjectionV2.test_qty_over_upper_bound) ... ok
+test_top_level_list_rejected (test_exotic.TestExoticInjectionV2.test_top_level_list_rejected) ... ok
+test_top_level_null_rejected (test_exotic.TestExoticInjectionV2.test_top_level_null_rejected) ... ok
+test_top_level_string_rejected (test_exotic.TestExoticInjectionV2.test_top_level_string_rejected) ... ok
 test_zero_price_rejected (test_exotic.TestExoticInjectionV2.test_zero_price_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 0.001s
+Ran 11 tests in 0.001s
 
 OK
+Validation Error: No items in order
+Validation Error: price out of bounds
+Validation Error: price must be numeric
+Validation Error: price must be numeric
+Validation Error: qty must be int
+Validation Error: qty out of bounds
+Validation Error: order must be object
+Validation Error: order must be object
+Validation Error: order must be object
+Validation Error: price out of bounds

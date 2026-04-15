@@ -6,6 +6,8 @@ MAX_QTY = 1_000_000
 
 class OrderValidator:
     def validate(self, order):
+        if not isinstance(order, dict):
+            raise ValueError('order must be object')
         if 'email' not in order or not isinstance(order['email'], str) or '@' not in order['email']:
             raise ValueError('email missing/invalid')
         if 'items' not in order or not isinstance(order['items'], list) or len(order['items']) == 0:
@@ -16,10 +18,14 @@ class OrderValidator:
                 raise ValueError('item must be object')
             if 'price' not in item or 'qty' not in item:
                 raise ValueError('Missing price/qty')
+            if isinstance(item['price'], bool):
+                raise ValueError('price must be numeric')
             if not isinstance(item['price'], (int, float)):
                 raise ValueError('price must be numeric')
             if not (MIN_PRICE <= item['price'] <= MAX_PRICE):
                 raise ValueError('price out of bounds')
+            if isinstance(item['qty'], bool):
+                raise ValueError('qty must be int')
             if not isinstance(item['qty'], int):
                 raise ValueError('qty must be int')
             if not (1 <= item['qty'] <= MAX_QTY):
