@@ -7,7 +7,7 @@ Documents not referenced by any other document via frontmatter relations (18 fou
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
-- `docs/concepts/execution-bound-epistemics.md`
+- `docs/blueprints/blueprint-v2.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
