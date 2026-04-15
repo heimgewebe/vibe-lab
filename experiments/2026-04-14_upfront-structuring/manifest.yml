@@ -7,7 +7,6 @@ experiment:
   name: "Upfront Structuring Comparison"
   hypothesis: "Explizite Vorstrukturierung vor Implementierung erhöht die Robustheit logiklastiger Agentenarbeit; TDD ist eine mögliche Form davon."
   status: testing
-  cognitive_mode: declarative
   category: technique
   execution_status: executed
   cognitive_mode: declarative
@@ -20,7 +19,7 @@ experiment:
 
 context:
   tools: ["LLM-Agents", "Vibe-Coding"]
-  language: "Diverse"
+  language: "Python"
   environment: "Vibe-Lab"
 
 evidence:

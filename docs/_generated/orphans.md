@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (39 found):
+Documents not referenced by any other document via frontmatter relations (42 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
@@ -24,16 +24,19 @@ Documents not referenced by any other document via frontmatter relations (39 fou
 - `experiments/2026-04-12_spec-first-legacy/results/result.md`
 - `experiments/2026-04-14_prompt-length-control/CONTEXT.md`
 - `experiments/2026-04-14_prompt-length-control/INITIAL.md`
+- `experiments/2026-04-14_prompt-length-control/artifacts/.pytest_cache/README.md`
 - `experiments/2026-04-14_prompt-length-control/failure_modes.md`
 - `experiments/2026-04-14_prompt-length-control/method.md`
 - `experiments/2026-04-14_prompt-length-control/results/result.md`
 - `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
 - `experiments/2026-04-14_tdd-vibe/INITIAL.md`
+- `experiments/2026-04-14_tdd-vibe/artifacts/.pytest_cache/README.md`
 - `experiments/2026-04-14_tdd-vibe/failure_modes.md`
 - `experiments/2026-04-14_tdd-vibe/method.md`
 - `experiments/2026-04-14_tdd-vibe/results/result.md`
 - `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md`
 - `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/.pytest_cache/README.md`
 - `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md`
 - `experiments/2026-04-14_upfront-structuring-replication/method.md`
 - `experiments/2026-04-14_upfront-structuring-replication/results/result.md`

@@ -19,7 +19,7 @@ experiment:
 
 context:
   tools: ["LLM-Agents", "Vibe-Coding"]
-  language: "Diverse"
+  language: "Python"
   environment: "Vibe-Lab"
 
 evidence:

@@ -30,7 +30,7 @@ def roman_to_int(s: str) -> int:
         value = roman_values[char]
 
         # Subtraction check
-        if i + 1 < n and roman_values[s[i+1]] > value:
+        if i + 1 < n and roman_values.get(s[i+1], 0) > value:
             next_char = s[i+1]
             if char not in valid_subtractions or next_char not in valid_subtractions[char]:
                 raise ValueError("Invalid roman numeral: invalid subtraction")

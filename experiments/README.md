@@ -17,4 +17,4 @@ Dies ist das operative Labor des Vibe-Labs. Hier werden Hypothesen getestet und 
 ## Vergleichende Anschlussanalysen
 - [Upfront Structuring Comparison](2026-04-14_upfront-structuring/CONTEXT.md)
 - [Upfront Structuring Replication](2026-04-14_upfront-structuring-replication/CONTEXT.md)
-- [Prompt-Length Control (in Planung)](2026-04-14_prompt-length-control/CONTEXT.md)
+- [Prompt-Length Control](2026-04-14_prompt-length-control/CONTEXT.md)
