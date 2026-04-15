@@ -6,6 +6,10 @@ Prüft:
 - catalog/**/*.md Frontmatter gegen schemas/catalog.entry.schema.json
 - catalog/combos/**/*.md Frontmatter gegen schemas/combo.schema.json
 - experiments/*/results/evidence.jsonl auf Struktur und Taxonomie
+- experiments/*/results/decision.yml gegen schemas/decision.schema.json,
+  plus cross-file Regel: decision_type=adoption_assessment erfordert
+  execution_status ∈ {executed, replicated} im Geschwister-manifest.yml
+  (gem. docs/concepts/execution-bound-epistemics.md §10.2)
 
 Benötigt: pip install pyyaml jsonschema
 """
@@ -32,7 +36,12 @@ SCHEMA_MAP = {
     "experiment_manifest": REPO_ROOT / "schemas" / "experiment.manifest.schema.json",
     "catalog_entry": REPO_ROOT / "schemas" / "catalog.entry.schema.json",
     "combo": REPO_ROOT / "schemas" / "combo.schema.json",
+    "decision": REPO_ROOT / "schemas" / "decision.schema.json",
 }
+
+# Erlaubte execution_status-Werte für decision_type=adoption_assessment
+# (gem. docs/concepts/execution-bound-epistemics.md §10.2)
+ADOPTION_ALLOWED_EXECUTION_STATUSES: frozenset[str] = frozenset({"executed", "replicated"})
 
 # Pflichtfelder für jede Zeile in evidence.jsonl
 EVIDENCE_REQUIRED_KEYS: frozenset[str] = frozenset({
@@ -216,6 +225,82 @@ def validate_evidence_files():
         print("  (no evidence.jsonl files found outside _template/_archive)")
 
 
+def validate_decision_files():
+    """Validiert experiments/*/results/decision.yml gegen decision.schema.json.
+
+    Zusätzlich zur Schema-Validierung erzwingt diese Funktion die cross-file Regel
+    aus execution-bound-epistemics.md §10.2:
+
+    Wenn ``decision_type == "adoption_assessment"``, muss das Geschwister-Manifest
+    (``../manifest.yml``) ``experiment.execution_status ∈ {executed, replicated}``
+    tragen. Andere Decision-Typen haben keine execution_status-Bedingung.
+    """
+    schema_path = SCHEMA_MAP["decision"]
+    if not schema_path.exists():
+        errors.append(f"  Schema not found: {schema_path}")
+        return
+
+    schema = load_schema(schema_path)
+    experiments_dir = REPO_ROOT / "experiments"
+
+    found = 0
+    for decision_path in sorted(experiments_dir.glob("*/results/decision.yml")):
+        # Skip _template, _archive (parent.parent ist der Experiment-Ordner)
+        if decision_path.parent.parent.name.startswith("_"):
+            continue
+        found += 1
+        rel = decision_path.relative_to(REPO_ROOT)
+
+        try:
+            data = load_yaml(decision_path)
+        except Exception as e:
+            errors.append(f"  ❌ {rel}: YAML-Fehler — {e}")
+            continue
+
+        try:
+            validate(instance=data, schema=schema)
+        except ValidationError as e:
+            errors.append(f"  ❌ {rel}: {e.message}")
+            continue
+        except SchemaError as e:
+            errors.append(f"  ❌ Schema error: {e.message}")
+            continue
+
+        # Cross-file Regel: adoption_assessment → execution_status ∈ {executed, replicated}
+        decision_type = data.get("decision_type")
+        if decision_type == "adoption_assessment":
+            manifest_path = decision_path.parent.parent / "manifest.yml"
+            if not manifest_path.is_file():
+                errors.append(
+                    f"  ❌ {rel}: decision_type=adoption_assessment, "
+                    f"aber Geschwister-manifest.yml fehlt unter {manifest_path.relative_to(REPO_ROOT)}"
+                )
+                continue
+
+            try:
+                manifest = load_yaml(manifest_path)
+            except Exception as e:
+                errors.append(
+                    f"  ❌ {manifest_path.relative_to(REPO_ROOT)}: YAML-Fehler — {e}"
+                )
+                continue
+
+            exec_status = manifest.get("experiment", {}).get("execution_status", "")
+            if exec_status not in ADOPTION_ALLOWED_EXECUTION_STATUSES:
+                errors.append(
+                    f"  ❌ {rel}: decision_type=adoption_assessment verlangt "
+                    f"execution_status ∈ {sorted(ADOPTION_ALLOWED_EXECUTION_STATUSES)} "
+                    f"im zugehörigen manifest.yml, aber execution_status='{exec_status}' "
+                    f"(siehe docs/concepts/execution-bound-epistemics.md §10.2)"
+                )
+                continue
+
+        print(f"  ✅ {rel} ({decision_type})")
+
+    if found == 0:
+        print("  (no decision.yml files found outside _template/_archive)")
+
+
 def validate_failure_modes():
     """Prüft failure_modes.md für Experimente mit Status testing oder adopted.
 
@@ -330,6 +415,9 @@ def main():
     print()
     print("Evidence Files:")
     validate_evidence_files()
+    print()
+    print("Decision Files:")
+    validate_decision_files()
     print()
     print("Failure Modes:")
     validate_failure_modes()
