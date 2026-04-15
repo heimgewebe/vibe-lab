@@ -37,6 +37,10 @@
 
 - ← `docs/masterplan.md` (derived_from)
 
+## `schemas/decision.schema.json`
+
+- ← `docs/blueprints/blueprint-v2.md` (references)
+
 ## `schemas/experiment.manifest.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)

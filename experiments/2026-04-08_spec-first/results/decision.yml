@@ -2,7 +2,13 @@
 
 schema_version: "0.1.0"
 
-verdict: adopted
+# decision_type=result_assessment: diese decision.yml bewertet die Ergebnisse.
+# Die Adoption selbst ist im manifest.yml via status=adopted + adoption_basis=reconstructed
+# dokumentiert. Ein adoption_assessment ist hier schema-blockiert, weil
+# execution_status=reconstructed (gem. execution-bound-epistemics.md §10.2 nur
+# bei executed/replicated zulässig).
+decision_type: result_assessment
+verdict: confirms
 confidence: high
 date: "2026-04-08"
 reviewer: "heimgewebe"
