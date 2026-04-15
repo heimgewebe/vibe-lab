@@ -22,7 +22,3 @@ build/
 .vscode/
 *.swp
 *.swo
-
-# Node.js runtime artifacts
-node_modules/
-package-lock.json

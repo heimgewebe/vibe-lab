@@ -1,111 +1,44 @@
 ---
-title: "TDD-Vibe — Methode"
-status: testing
+title: "Experiment-Methode: TDD Vibe"
+status: inconclusive
 canonicality: operative
 ---
 
 # method.md — Experiment-Methode
 
+> Beschreibt das strukturierte Vorgehen zur Prüfung der Hypothese.
+
 ## Hypothese
 
-Test-First-Prompting (TDD-Vibe) — wobei das LLM zuerst eine vollständige Test-Suite generiert, die das gewünschte Verhalten beschreibt, und erst danach die Implementierung schreibt — produziert:
-
-1. Mehr vollständige Fehlerbehandlung (Edge Cases werden im Test-Schritt explizit)
-2. Weniger manuelle Nacharbeit nach der Generierung
-3. Höheres Vertrauen in die Korrektheit des Ergebnisses
-
-...als der übliche Implementation-First-Ansatz (Code zuerst, Tests danach oder gar nicht).
-
-## Motivation
-
-In `raw-vibes/prompt-fragmente.md` existiert der Impuls:
-> "Write the tests for this component first. We will implement the component in the next step."
-
-Dieser Ansatz wurde bisher nie formal evaluiert. Er schließt konzeptuell an Spec-First an (2026-04-08), nutzt aber **ausführbare Tests** statt formaler Specs als Anker — mit dem Unterschied, dass Fehlschläge maschinell nachweisbar werden, nicht nur subjektiv einschätzbar.
+Test-Driven Development im Vibe-Coding-Kontext (erst Tests, dann Code generieren lassen) führt zu robusterem Code und weniger Iterationen für Fehlerbehebungen im Vergleich zum direkten Generieren von Code (Code-First), insbesondere bei komplexen Edge-Cases.
 
 ## Methode
 
 ### Vorgehen
 
-1. **Setup:** Frisches TypeScript/Node.js-Projekt (identisch für beide Gruppen)
-2. **Kontrollgruppe (Implementation-First):**
-   - Aufgabe direkt mit Beschreibung an das Modell übergeben
-   - Implementierung generieren
-   - Optional: Tests danach schreiben
-3. **Treatmentgruppe (TDD-Vibe):**
-   - Aufgabe übergeben mit expliziter Anweisung: *"Generiere zuerst nur Tests. Kein Implementierungscode."*
-   - Tests reviewen und validieren
-   - Zweiter Prompt: *"Implementiere nun den Code so, dass alle Tests bestehen."*
-4. **Beobachtung:** Ergebnisse anhand der definierten Metriken vergleichen
-5. **Dokumentation:** Beobachtungen kontinuierlich in evidence.jsonl festhalten
-
-### Benchmark
-
-Challenge: **REST-API CRUD v1** (`benchmarks/challenges/rest-api-v1.md`)  
-Ermöglicht direkten Vergleich mit den Spec-First-Ergebnissen aus 2026-04-08.
+1. **Setup:** Python-Umgebung mit `pytest` in `artifacts/` vorbereiten.
+2. **Kontrolle (Code-First):** Den Baseline Prompt an das Modell übergeben. Den Output (Code + Tests) speichern. Ausführen und prüfen, ob alle Edge-Cases abgedeckt sind und die Tests grün sind. Falls nicht, Anzahl der benötigten Iterationen notieren.
+3. **Treatment (TDD Vibe):** Den Treatment Prompt an das Modell übergeben (erst Tests, dann Implementierung in einem Durchgang, aber logisch getrennt). Den Output speichern. Ausführen und prüfen.
+4. **Beobachtungen:** Ergebnisse, Testabdeckung, Fehler und Erfolge in `evidence.jsonl` festhalten.
 
 ### Metriken
 
-**Wirksamkeit (Effektivität):**
-- Vollständigkeit der Fehlercodes (alle 7 geforderten HTTP-Status vorhanden?)
-- Edge-Case-Abdeckung: Wie viele der Tests testen Fehlerpfade (4xx/5xx), nicht nur Happy Path?
-- Validierungsabdeckung: Input-Validierung korrekt und vollständig?
-- Test-Pass-Rate direkt nach Generierung (ohne manuellen Fix)
-
-**Reibung (Aufwand):**
-- Anzahl Prompts bis zum lauffähigen Ergebnis
-- Manuelle Nacharbeit in Zeilen (Implementierungscode + Tests)
-- Zeit bis zur ersten grünen Test-Suite
-
-**Flow (subjektive Qualität):**
-- Vertrauen in die Korrektheit (1–5 Skala)
-- Gefühl der Kontrolle über die Implementierung (1–5 Skala)
+- Wirksamkeit: Anzahl der initial erkannten und korrekt abgefangenen Edge-Cases (z.B. "IIII", "VV", "IC").
+- Reibung: Anzahl der Prompts / Iterationen, bis ein valider, grüner Testlauf für alle Edge-Cases erreicht ist.
+- Code-Qualität: Subjektive Beurteilung der Test-Vollständigkeit und Klarheit der Implementierung.
 
 ### Erfolgskriterien
 
-**Hypothese bestätigt**, wenn TDD-Vibe in mindestens 2 von 3 Metriken besser abschneidet:
-- Mehr Fehlercodes vollständig implementiert
-- Weniger manuelle Nacharbeit (Zeilen)
-- Höhere Test-Pass-Rate direkt nach Generierung
-
-**Hypothese widerlegt**, wenn kein messbarer Unterschied oder Implementation-First besser abschneidet.
+Die Hypothese gilt als bestätigt, wenn der TDD Vibe Ansatz out-of-the-box (oder mit signifikant weniger Iterationen) eine höhere Edge-Case-Abdeckung und fehlerfreie Testläufe erzielt als der Code-First Ansatz.
 
 ## Variablen
 
-| Variable             | Kontrollgruppe              | Treatmentgruppe (TDD-Vibe)            |
-| -------------------- | --------------------------- | ------------------------------------- |
-| Prompt-Strategie     | Direkte Beschreibung → Code | Test-Generierung → Implementierung    |
-| Aufgabe              | REST-API CRUD v1            | REST-API CRUD v1 (identisch)          |
-| Modell               | Claude claude-sonnet-4-6         | Claude claude-sonnet-4-6                   |
-| Umgebung             | Node.js / Express.js        | Node.js / Express.js (identisch)      |
-| Formales Artefakt    | Keines                      | Test-Suite als ausführbare Spec       |
-
-## Abgrenzung zu Spec-First
-
-| Aspekt             | Spec-First (2026-04-08)              | TDD-Vibe (dieses Experiment)          |
-| ------------------ | ------------------------------------ | ------------------------------------- |
-| Vorangestelltes Artefakt | OpenAPI-Spec (Beschreibungsform)  | Jest-Tests (ausführbare Form)         |
-| Verifikation       | Manuell (spec review)               | Automatisch (npm test)                |
-| Fehlschlag-Signal  | Subjektiv einschätzbar              | Maschinell nachweisbar                |
-| Kombination möglich? | —                                   | Ja: Spec-First → TDD-Vibe als Combo  |
-
-## Metrik-Definitionen (operationalisiert)
-
-> Hinzugefügt nach Durchlauf 1: Metriken müssen vor dem nächsten Replikations-
-> versuch klar operationalisiert sein, damit Zählungen nicht zwischen Läufen driften.
-
-| Metrik | Definition | Zählung |
-| --- | --- | --- |
-| **Fehlerfall-Test** | Ein `it()`-Block, dessen erwarteter Status 4xx ist (via `expect(res.status).toBe(4xx)`) | Regex: `4\d\d\s*—` in Testbeschreibung; Verifikation durch Code-Review |
-| **HTTP-Status-Coverage (streng)** | Ein Statuscode zählt nur, wenn mindestens ein Code-Pfad ihn nachweislich auslöst (Route oder Test) | Manuell gezählt; 500 via globalem Handler zählt nur als „strukturell vorhanden", nicht als „erhoben" |
-| **Compile-Rework** | Patches, die ausschließlich dazu dienen, den Code zum Kompilieren zu bringen (kein Semantik-Effekt) | Zeilen-Diff zwischen Nacktoutput und kompilierender Version |
-| **Test-Isolations-Rework** | Patches, die Test-Interferenzen beheben (z. B. gemeinsamer Zustand zwischen Tests) | Zählt nur, wenn Tests tatsächlich laufen; bei impl-first (keine Tests) definitionsgemäß nicht sichtbar |
-| **Semantik-Rework** | Patches, die das Verhalten des Codes ändern (Logikfehler, fehlende Fälle) | Im vorliegenden Durchlauf nicht gemessen; Pflicht für symmetrischen Folgeversuch |
-| **Executed** | Zulässig nur, wenn mindestens ein echter Ausführungsnachweis existiert (Log, CI-Output o. Ä.) | Ohne Run-Artefakt: `prepared` verwenden |
+| Variable              | Beschreibung                    | Kontrolle / Treatment |
+| --------------------- | ------------------------------- | --------------------- |
+| Prompt-Struktur       | Reihenfolge der Anweisungen     | Code -> Tests vs. Tests -> Code |
+| Edge-Case Coverage    | Anteil abgedeckter Fehlerfälle  | Abhängige Variable |
+| Iterationen           | Zahl der Fixes bis 'grün'       | Abhängige Variable |
 
 ## Risiken und Einschränkungen
 
-- Kleine Stichprobe (1 Benchmark-Task) begrenzt statistische Aussagekraft
-- Ein einziger Experimentator — subjektive Bewertung der Metriken
-- Test-Qualität im Test-First-Schritt selbst nicht formal validiert
-- Modell-spezifische Ergebnisse: Claude claude-sonnet-4-6 könnte sich anders verhalten als GPT-4o
+Das Modell könnte beim TDD-Vibe Prompt in Schritt 1 stecken bleiben oder den Kontext für Schritt 2 verlieren. Wir verlangen beides in einem Prompt, um die Latenz gering zu halten. Falls dies scheitert, muss es auf zwei separate Prompts aufgeteilt werden (was dem wahren TDD-Spirit näher käme, aber mehr Friction bedeutet).

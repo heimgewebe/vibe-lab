@@ -1,83 +1,39 @@
 ---
-title: "TDD-Vibe — Initiale Situation"
-status: testing
+title: "Initiale Prompt-/Setup-Situation: TDD Vibe"
+status: inconclusive
 canonicality: operative
 ---
 
 # INITIAL.md — Initiale Situation
 
+> **Pflichtdokument für Adopt-Kandidaten.** Dokumentiert den exakten Ausgangszustand zu Beginn des Experiments.
+
 ## Initialer Prompt / Setup
 
-Das Experiment wurde über einen Subagent-Aufruf orchestriert. Die tatsächlich
-verwendeten Prompts sind unten rekonstruiert — wörtlich, so wie sie an den
-Generator-Agent gegangen sind. Wer das Experiment replizieren will, sollte diese
-Prompts identisch an Claude claude-sonnet-4-6 (oder ein vergleichbares Modell)
-geben.
+Die Aufgabe ist das Implementieren eines "Römische Zahlen zu Integer" Konverters (`roman_to_int`) inklusive Fehlererkennung für ungültige Formate (z.B. "IIII", "VV").
 
-### Gemeinsame Aufgabenbeschreibung
+### Baseline Prompt (Code-First)
 
 ```
-Benchmark: REST-API CRUD v1
-- TypeScript / Node.js / Express.js
-- Endpoints:
-    POST /users
-    GET  /users/:id
-    PUT  /users/:id
-    DELETE /users/:id
-    GET  /users    (paginated)
-- Requirements: Input validation, consistent response structure
-  (envelope pattern), correct HTTP status codes
-  (200, 201, 400, 404, 409, 422, 500),
-  pagination with `page` and `limit`
+Schreibe eine Python-Funktion `roman_to_int(s: str) -> int`, die römische Zahlen in Integer konvertiert.
+Die Funktion muss auch ungültige Formate (z.B. 'IIII', 'VV', 'IC') erkennen und einen ValueError werfen.
+Schreibe danach Tests mit pytest, um das zu validieren.
 ```
 
-### Kontrollgruppe (Implementation-First)
+### Treatment Prompt (TDD Vibe)
 
 ```
-Generate the complete implementation directly from the description above.
-Write all code, no tests needed.
+Wir wollen eine Python-Funktion `roman_to_int(s: str) -> int` implementieren, die römische Zahlen in Integer konvertiert und bei ungültigen Formaten (z.B. 'IIII', 'VV', 'IC') einen ValueError wirft.
+Schritt 1: Schreibe AUSSCHLIESSLICH die ausführlichen pytest-Tests für diese Funktion, inklusive aller Edge-Cases und Fehlerfälle.
+Schritt 2: Erst wenn die Tests vollständig und korrekt geschrieben sind, generiere die Implementierung der Funktion, sodass die Tests grün werden.
 ```
-
-→ Erwartetes Output: `users.ts`, `app.ts`.
-
-### Treatmentgruppe (TDD-Vibe) — zweistufig
-
-**Prompt 1 — nur Tests:**
-```
-First, generate ONLY tests (no implementation code).
-The tests should cover:
-- All 5 endpoints
-- Happy path AND error paths (4xx/5xx)
-- Input validation failures
-- Pagination behavior
-```
-
-→ Erwartetes Output: `users.test.ts`.
-
-**Prompt 2 — Implementierung gegen Tests:**
-```
-Then, generate the implementation to make those tests pass.
-```
-
-→ Erwartetes Output: `users.ts`, `app.ts`, sollte die Test-Suite grün machen.
 
 ## Systemkonfiguration
 
-- Claude Code (CLI), Agent-Tool mit subagent-Delegation.
-- Keine speziellen System-Prompts über Claude-Code-Default hinaus.
-- Node.js 22, Jest 30, ts-jest, Supertest für den späteren Testlauf.
-- Ausführungsumgebung für den Testlauf: `results/run-tdd-vibe/`.
+- Standard-Python-Umgebung mit `pytest`.
+- Ausführung erfolgt als bash-Skript in `experiments/2026-04-14_tdd-vibe/artifacts/`.
 
 ## Erwartete Baseline
 
-Ohne TDD-Vibe (= Kontrollgruppe): Funktionierender CRUD-Code, typische Lücken bei
-Fehlercodes und Edge Cases. Kein Testartefakt, Korrektheit nur durch Augenschein
-oder Nutzung prüfbar.
-
-Mit TDD-Vibe (Treatment): Test-Suite zuerst, Implementierung getrieben von den
-Test-Assertions. Erwartet: mehr explizite Fehlerfall-Abdeckung, grüne Test-Suite
-beim ersten Durchlauf.
-
-**Tatsächliches Baseline-Ergebnis** (siehe `results/run-tdd-vibe/jest-unfixed.log`):
-Die Test-Suite läuft **nicht** beim ersten Durchlauf — Compile-Fehler an 4 Stellen
-(Express-5-Typing). Der erwartete Vorteil bei "Rework" tritt also nicht ein.
+Beim Code-First Ansatz generiert das LLM oft zuerst eine naive Implementierung, die komplexe Fehlerfälle ("IC", "IIII") nicht richtig abfängt, und schreibt dann Tests, die entweder genau das falsche Verhalten testen (Bestätigungsfehler) oder fehlschlagen, was Nacharbeit erfordert.
+Wir erwarten, dass der TDD Vibe Ansatz umfassendere Tests generiert, da der Fokus zunächst nur auf den Anforderungen (Tests) liegt, und die darauffolgende Implementierung robuster ist.
