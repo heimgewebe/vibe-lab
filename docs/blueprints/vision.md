@@ -1,3 +1,8 @@
+---
+title: "Systemvision"
+status: active
+canonicality: canonical
+---
 # Vibe-Lab: Lernendes, prüfendes und schöpferisches System
 
 Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. **Das System verbessert nicht nur Coding, sondern sich selbst.** Dokumentation, Katalogisierung und Wissensspeicherung sind legitime Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.

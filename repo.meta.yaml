@@ -7,8 +7,8 @@ schema_version: "0.1.0"
 identity:
   name: vibe-lab
   purpose: "Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken"
-  vision: vision.md
-  plan: repo-plan.md
+  vision: docs/blueprints/vision.md
+  plan: docs/blueprints/repo-plan.md
 
 truth_model:
   # Kanonische Quellen sind Wahrheit. Alles andere leitet sich ab.
@@ -16,8 +16,8 @@ truth_model:
     - repo.meta.yaml
     - AGENTS.md
     - agent-policy.yaml
-    - vision.md
-    - repo-plan.md
+    - docs/blueprints/vision.md
+    - docs/blueprints/repo-plan.md
     - "contracts/*"
     - "schemas/*"
   navigation:

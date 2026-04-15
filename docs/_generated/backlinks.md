@@ -9,6 +9,14 @@
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
+## `docs/blueprints/repo-plan.md`
+
+- ← `docs/masterplan.md` (derived_from)
+
+## `docs/blueprints/vision.md`
+
+- ← `docs/masterplan.md` (derived_from)
+
 ## `docs/masterplan.md`
 
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
@@ -22,11 +30,3 @@
 ## `experiments/2026-04-14_incremental-refinement/results/result.md`
 
 - ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
-
-## `repo-plan.md`
-
-- ← `docs/masterplan.md` (derived_from)
-
-## `vision.md`
-
-- ← `docs/masterplan.md` (derived_from)
