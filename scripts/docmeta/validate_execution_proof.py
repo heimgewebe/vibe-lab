@@ -33,7 +33,15 @@ RUN_META_SCHEMA = REPO_ROOT / "schemas" / "run_meta.schema.json"
 PROOF_REQUIRED_STATUSES: frozenset[str] = frozenset({"executed", "replicated"})
 RECONSTRUCTED_MARKER = "adoption_basis: reconstructed"
 
+# Mini-Schutz für die Übergangsregel aus docs/blueprints/blueprint-v2.md:
+# Reconstructed Adoption ist nur für Altbestand zulässig. Experimente, die NACH
+# dem v2-Merge-Datum angelegt wurden, dürfen adoption_basis=reconstructed nicht
+# verwenden. Warnung (nicht Fehler) — vollständiges Enforcement folgt in Phase 1b
+# zusammen mit Decision-Type-Separation.
+V2_MERGE_DATE = "2026-04-15"
+
 errors: list[str] = []
+warnings: list[str] = []
 
 
 def load_schema(path: Path) -> dict:
@@ -154,6 +162,18 @@ def validate_adoption_basis(exp_dir: Path, manifest: dict) -> None:
             )
             return
 
+        # Mini-Schutz: created-Datum gegen V2-Merge-Datum prüfen
+        created = str(experiment.get("created", ""))
+        if created and created >= V2_MERGE_DATE:
+            warnings.append(
+                f"  ⚠️  {rel}: adoption_basis=reconstructed bei created={created} "
+                f"(≥ v2-Merge-Datum {V2_MERGE_DATE}). "
+                f"Reconstructed Adoption ist nur für Altbestand zulässig — "
+                f"neue Adoptionen müssen adoption_basis ∈ {{executed, replicated}} "
+                f"tragen (blueprint-v2 Übergangsregel). "
+                f"Hartes Enforcement folgt in Phase 1b."
+            )
+
         print(f"  ✅ {rel}: adoption_basis=reconstructed mit sichtbarer Annotation")
     else:
         print(f"  ✅ {rel}: adoption_basis={adoption_basis}")
@@ -213,6 +233,12 @@ def main() -> None:
         print("  (kein Experiment mit status=adopted)")
 
     print()
+    if warnings:
+        print("⚠️  Warnings (Übergangsregel):")
+        for w in warnings:
+            print(w)
+        print()
+
     if errors:
         print("❌ Execution-Proof FAILED:")
         for err in errors:

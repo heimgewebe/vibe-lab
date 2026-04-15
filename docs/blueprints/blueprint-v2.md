@@ -85,10 +85,11 @@ aber kein Goldstandard. Neue Adoptionen — definiert als Experimente mit
 > Adoption ohne Execution-Proof ist nur als historischer Zustand zulässig,
 > nicht als zukünftiger.
 
-**Enforcement:** In Phase 1 **nicht** als Validator-Check umgesetzt. Die
-`created`-Datum-Regel wird zusammen mit Phase 1b (Decision-Type-Enforcement)
-eingezogen, weil sie an derselben Fehlklasse arbeitet
-(unberechtigte Adoption).
+**Enforcement:** In Phase 1 als **Warnung** im
+`validate_execution_proof.py` umgesetzt (`adoption_basis: reconstructed` bei
+`created ≥ v2-Merge-Datum` → Warnung, kein Fehler). Hartes Enforcement folgt in
+Phase 1b zusammen mit Decision-Type-Separation, weil beide an derselben
+Fehlklasse arbeiten (unberechtigte Adoption).
 
 **Migration beim Einführen von v2 (einmalig):**
 - `2026-04-08_spec-first` — `status: adopted` → `execution_status: reconstructed`,
