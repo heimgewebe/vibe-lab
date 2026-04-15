@@ -25,9 +25,10 @@ from _paths import extract_frontmatter  # noqa: E402
 
 try:
     import yaml
-    from jsonschema import validate, ValidationError, SchemaError
+    from jsonschema import Draft202012Validator, ValidationError, SchemaError
+    from jsonschema.validators import validator_for
 except ImportError:
-    print("ERROR: Missing dependencies. Run: pip install pyyaml jsonschema")
+    print("ERROR: Missing dependencies. Run: pip install pyyaml jsonschema rfc3339-validator")
     sys.exit(1)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -75,6 +76,21 @@ def load_yaml(path: Path) -> dict:
         return yaml.safe_load(f) or {}
 
 
+def build_validator(schema: dict) -> Draft202012Validator:
+    """Erzeugt einen Validator mit aktivem format_checker.
+
+    ``jsonschema.validate()`` prüft ``format`` per Default NICHT. Ohne diesen
+    Helper würden Felder wie ``date`` (manifest.yml, decision.yml, combo.md,
+    catalog entries) nur syntaktisch als String akzeptiert, selbst wenn
+    ``"format": "date"`` im Schema steht. Siehe auch
+    ``validate_execution_proof.py``, das denselben Pattern für ``run_meta.json``
+    verwendet.
+    """
+    validator_cls = validator_for(schema, default=Draft202012Validator)
+    validator_cls.check_schema(schema)
+    return validator_cls(schema, format_checker=validator_cls.FORMAT_CHECKER)
+
+
 def validate_experiment_manifests():
     schema_path = SCHEMA_MAP["experiment_manifest"]
     if not schema_path.exists():
@@ -82,6 +98,12 @@ def validate_experiment_manifests():
         return
 
     schema = load_schema(schema_path)
+    try:
+        validator = build_validator(schema)
+    except SchemaError as e:
+        errors.append(f"  ❌ Schema error ({schema_path.name}): {e.message}")
+        return
+
     experiments_dir = REPO_ROOT / "experiments"
 
     for manifest in experiments_dir.glob("*/manifest.yml"):
@@ -89,12 +111,10 @@ def validate_experiment_manifests():
             continue  # Skip _template, _archive
         try:
             data = load_yaml(manifest)
-            validate(instance=data, schema=schema)
+            validator.validate(data)
             print(f"  ✅ {manifest.relative_to(REPO_ROOT)}")
         except ValidationError as e:
             errors.append(f"  ❌ {manifest.relative_to(REPO_ROOT)}: {e.message}")
-        except SchemaError as e:
-            errors.append(f"  ❌ Schema error: {e.message}")
 
 
 def validate_catalog_entries():
@@ -106,6 +126,12 @@ def validate_catalog_entries():
 
     schema = load_schema(schema_path)
     combo_schema = load_schema(combo_schema_path) if combo_schema_path.exists() else None
+    try:
+        entry_validator = build_validator(schema)
+        combo_validator = build_validator(combo_schema) if combo_schema else None
+    except SchemaError as e:
+        errors.append(f"  ❌ Schema error: {e.message}")
+        return
 
     catalog_dir = REPO_ROOT / "catalog"
     for md_file in catalog_dir.rglob("*.md"):
@@ -115,10 +141,10 @@ def validate_catalog_entries():
 
         # Use combo schema for combos/ entries
         is_combo = "combos" in md_file.relative_to(catalog_dir).parts
-        active_schema = combo_schema if (is_combo and combo_schema) else schema
+        active_validator = combo_validator if (is_combo and combo_validator) else entry_validator
 
         try:
-            validate(instance=fm, schema=active_schema)
+            active_validator.validate(fm)
             print(f"  ✅ {md_file.relative_to(REPO_ROOT)}")
         except ValidationError as e:
             errors.append(f"  ❌ {md_file.relative_to(REPO_ROOT)}: {e.message}")
@@ -241,6 +267,12 @@ def validate_decision_files():
         return
 
     schema = load_schema(schema_path)
+    try:
+        validator = build_validator(schema)
+    except SchemaError as e:
+        errors.append(f"  ❌ Schema error ({schema_path.name}): {e.message}")
+        return
+
     experiments_dir = REPO_ROOT / "experiments"
 
     found = 0
@@ -258,12 +290,9 @@ def validate_decision_files():
             continue
 
         try:
-            validate(instance=data, schema=schema)
+            validator.validate(data)
         except ValidationError as e:
             errors.append(f"  ❌ {rel}: {e.message}")
-            continue
-        except SchemaError as e:
-            errors.append(f"  ❌ Schema error: {e.message}")
             continue
 
         # Cross-file Regel: adoption_assessment → execution_status ∈ {executed, replicated}
@@ -368,6 +397,11 @@ def validate_docmeta_frontmatter():
         return
 
     schema = load_schema(DOCMETA_SCHEMA_PATH)
+    try:
+        validator = build_validator(schema)
+    except SchemaError as e:
+        errors.append(f"  ❌ Schema error (docmeta.schema.json): {e.message}")
+        return
 
     # Sammle alle Dateien (Set zur Deduplizierung)
     candidates: set[Path] = set()
@@ -394,7 +428,7 @@ def validate_docmeta_frontmatter():
             continue  # kein Frontmatter — kein Fehler in dieser Zone
 
         try:
-            validate(instance=fm, schema=schema)
+            validator.validate(fm)
             print(f"  ✅ {md_file.relative_to(REPO_ROOT)}")
             checked += 1
         except ValidationError as e:

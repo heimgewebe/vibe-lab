@@ -18,6 +18,7 @@ Benötigt: pip install pyyaml jsonschema
 
 import json
 import sys
+from datetime import date
 from pathlib import Path
 
 try:
@@ -39,7 +40,7 @@ RECONSTRUCTED_MARKER = "adoption_basis: reconstructed"
 # dem v2-Merge-Datum angelegt wurden, dürfen adoption_basis=reconstructed nicht
 # verwenden. Seit Phase 1b: harter Fehler (zuvor Warnung), gemeinsam mit
 # Decision-Type-Separation (siehe validate_schema.py::validate_decision_files).
-V2_MERGE_DATE = "2026-04-15"
+V2_MERGE_DATE = date(2026, 4, 15)
 
 errors: list[str] = []
 
@@ -159,12 +160,32 @@ def validate_adoption_basis(exp_dir: Path, manifest: dict) -> None:
             )
             return
 
-        # Übergangsregel: created-Datum gegen V2-Merge-Datum prüfen (hartes Enforcement seit Phase 1b)
-        created = str(experiment.get("created", ""))
-        if created and created >= V2_MERGE_DATE:
+        # Übergangsregel: created-Datum gegen V2-Merge-Datum prüfen (hartes Enforcement seit Phase 1b).
+        # created wird strikt als ISO-8601 YYYY-MM-DD geparst, damit der Vergleich nicht
+        # auf lexikographischer String-Ordnung beruht (z.B. "2026-4-9" würde sonst falsch
+        # einsortiert). Fehlendes/ungültiges Datum ist ein eigener Fehler.
+        created_raw = experiment.get("created")
+        if created_raw is None or created_raw == "":
             errors.append(
-                f"  ❌ {rel}: adoption_basis=reconstructed bei created={created} "
-                f"(≥ v2-Merge-Datum {V2_MERGE_DATE}). "
+                f"  ❌ {rel}: adoption_basis=reconstructed, aber created-Feld fehlt im Manifest "
+                f"(Pflicht für Übergangsregel-Prüfung gem. blueprint-v2)."
+            )
+            return
+
+        created_str = str(created_raw)
+        try:
+            created_date = date.fromisoformat(created_str)
+        except ValueError:
+            errors.append(
+                f"  ❌ {rel}: created='{created_str}' ist kein ISO-8601-Datum (YYYY-MM-DD). "
+                f"Pflicht für Übergangsregel-Prüfung bei adoption_basis=reconstructed."
+            )
+            return
+
+        if created_date >= V2_MERGE_DATE:
+            errors.append(
+                f"  ❌ {rel}: adoption_basis=reconstructed bei created={created_date.isoformat()} "
+                f"(≥ v2-Merge-Datum {V2_MERGE_DATE.isoformat()}). "
                 f"Reconstructed Adoption ist nur für Altbestand zulässig — "
                 f"neue Adoptionen müssen adoption_basis ∈ {{executed, replicated}} "
                 f"tragen (siehe docs/blueprints/blueprint-v2.md Übergangsregel)."
