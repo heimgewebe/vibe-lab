@@ -16,7 +16,9 @@
 - [ ] `CONTEXT.md` und `INITIAL.md` sind vorhanden und vollständig
 - [ ] `evidence.jsonl` enthält mindestens einen maschinenlesbaren Eintrag
 - [ ] `decision.yml` enthält `verdict: adopted`
-- [ ] Schema-Validierung bestanden (`make validate`)
+- [ ] Manifest enthält `adoption_basis`: `executed` oder `replicated` bei neuen Promotions. `reconstructed` ist **nur für Altbestand** mit expliziter Legacy-Begründung zulässig (siehe `docs/blueprints/blueprint-v2.md` → Übergangsregel)
+- [ ] Falls `execution_status ∈ {executed, replicated}`: `artifacts/<run-id>/run_meta.json` vorhanden und schema-valide; `test_output_file` existiert
+- [ ] Schema- und Execution-Proof-Validierung bestanden (`make validate`)
 - [ ] Katalogeintrag / Prompt / Combo liegt im korrekten Zielordner
 - [ ] Frontmatter entspricht dem jeweiligen Schema (`catalog.entry.schema.json` / `combo.schema.json`)
 - [ ] Keine manuellen Edits an generierten Artefakten

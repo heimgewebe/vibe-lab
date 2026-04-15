@@ -57,8 +57,8 @@
         },
         "execution_status": {
           "type": "string",
-          "enum": ["designed", "prepared", "executed", "replicated"],
-          "description": "Durchführungsgrad (orthogonal zu status und evidence_level): designed (nur Entwurf), prepared (Setup angelegt, kein Run), executed (tatsächlicher Run mit Spur in execution_refs), replicated (belastbar und unabhängig wiederholt)"
+          "enum": ["designed", "prepared", "executed", "replicated", "reconstructed"],
+          "description": "Durchführungsgrad (orthogonal zu status und evidence_level): designed (nur Entwurf), prepared (Setup angelegt, kein Run), executed (tatsächlicher Run mit Spur in execution_refs), replicated (belastbar und unabhängig wiederholt), reconstructed (historische Einstufung — Experiment fand statt, aber ohne erfassten Execution-Proof; nur für Altbestand zulässig, gem. docs/concepts/execution-bound-epistemics.md §11.1)"
         },
         "execution_refs": {
           "type": "array",
@@ -73,6 +73,11 @@
         "replicated_from": {
           "type": "string",
           "description": "Pfad zum Original-Experiment bei Replikation"
+        },
+        "adoption_basis": {
+          "type": "string",
+          "enum": ["executed", "replicated", "reconstructed"],
+          "description": "Execution-Grundlage, auf der eine Adoption fußt. Pflicht bei status: adopted. 'reconstructed' kennzeichnet historische Adoptionen ohne erfassten Execution-Proof (nur für Altbestand zulässig); siehe docs/blueprints/blueprint-v2.md Übergangsregel."
         },
         "related_idea": {
           "type": "string",
@@ -109,6 +114,51 @@
               "execution_refs": {
                 "minItems": 1
               }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "status": { "const": "adopted" } },
+            "required": ["status"]
+          },
+          "then": {
+            "required": ["adoption_basis"]
+          }
+        },
+        {
+          "if": {
+            "required": ["adoption_basis"],
+            "properties": { "adoption_basis": { "const": "executed" } }
+          },
+          "then": {
+            "required": ["execution_status"],
+            "properties": {
+              "execution_status": { "const": "executed" }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["adoption_basis"],
+            "properties": { "adoption_basis": { "const": "replicated" } }
+          },
+          "then": {
+            "required": ["execution_status"],
+            "properties": {
+              "execution_status": { "const": "replicated" }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["adoption_basis"],
+            "properties": { "adoption_basis": { "const": "reconstructed" } }
+          },
+          "then": {
+            "required": ["execution_status"],
+            "properties": {
+              "execution_status": { "const": "reconstructed" }
             }
           }
         }

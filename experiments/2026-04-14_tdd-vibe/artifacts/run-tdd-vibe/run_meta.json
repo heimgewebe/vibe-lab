@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-tdd-vibe",
+  "generated_at": "2026-04-14T00:00:00Z",
+  "executor": "local:claude-sonnet-4-6",
+  "command": "cd results/run-tdd-vibe && npm ci && npx jest",
+  "exit_code": 1,
+  "test_output_file": "results/run-tdd-vibe/jest-patched.log",
+  "provenance_level": "self_reported"
+}

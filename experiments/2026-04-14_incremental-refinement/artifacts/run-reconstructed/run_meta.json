@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-reconstructed",
+  "generated_at": "2026-04-14T00:00:00Z",
+  "executor": "local:unknown-agent",
+  "command": "n/a (evidence.jsonl als Run-Protokoll, kein separater Test-Output)",
+  "exit_code": 0,
+  "test_output_file": "results/evidence.jsonl",
+  "provenance_level": "self_reported"
+}
