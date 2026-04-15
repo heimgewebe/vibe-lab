@@ -1,0 +1,36 @@
+FAIL ./users.test.ts
+  ● GET /users › happy path › 200 — hasNextPage is true when more pages exist
+
+    TypeError: Cannot read properties of undefined (reading 'id')
+
+      312 |     for (let i = 0; i < n; i++) {
+      313 |       const r = await createUser({ name: `Seed${i}`, email: `seed${i}@test.com` });
+    > 314 |       results.push(r.body.data.id);
+          |                                ^
+      315 |     }
+      316 |     return results;
+      317 |   }
+
+      at seedUsers (users.test.ts:314:32)
+      at Object.<anonymous> (users.test.ts:361:7)
+
+  ● GET /users › happy path › 200 — hasPrevPage is true on page 2+
+
+    TypeError: Cannot read properties of undefined (reading 'id')
+
+      312 |     for (let i = 0; i < n; i++) {
+      313 |       const r = await createUser({ name: `Seed${i}`, email: `seed${i}@test.com` });
+    > 314 |       results.push(r.body.data.id);
+          |                                ^
+      315 |     }
+      316 |     return results;
+      317 |   }
+
+      at seedUsers (users.test.ts:314:32)
+      at Object.<anonymous> (users.test.ts:373:7)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 38 passed, 40 total
+Snapshots:   0 total
+Time:        4.073 s
+Ran all test suites.
