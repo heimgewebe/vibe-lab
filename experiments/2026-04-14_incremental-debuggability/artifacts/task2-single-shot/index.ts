@@ -81,6 +81,10 @@ function applyTransforms(rows: CsvRow[], headers: string[], transforms: Transfor
         if (rule.args?.newName) {
           const idx = currentHeaders.indexOf(rule.column);
           if (idx >= 0) {
+            if (currentHeaders.includes(rule.args.newName)) {
+              console.warn(`Warning: column '${rule.args.newName}' already exists — skipping rename`);
+              break;
+            }
             currentHeaders[idx] = rule.args.newName;
             rows.forEach(r => {
               r[rule.args!.newName!] = r[rule.column];

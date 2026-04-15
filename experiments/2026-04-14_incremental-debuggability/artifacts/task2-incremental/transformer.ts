@@ -83,6 +83,10 @@ export class TransformEngine {
           return { headers };
         }
         const newHeaders = [...headers];
+        if (newHeaders.includes(rule.args.newName)) {
+          console.warn(`Warning: column '${rule.args.newName}' already exists — skipping rename`);
+          return { headers };
+        }
         newHeaders[idx] = rule.args.newName;
         for (const row of rows) {
           row[rule.args.newName] = row[rule.column] ?? '';

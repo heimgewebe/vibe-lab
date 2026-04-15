@@ -3,3 +3,5 @@ results/run-tdd-vibe/node_modules/
 # Für reproduzierbare Replikation muss die exakte Dependency-Closure
 # (ts-jest, jest, supertest, express 5.x) eingefroren im Repo liegen.
 # Der Lockfile ist Teil der Run-Evidenz — nicht bauseitiger Artefakt.
+# Negation: überschreibt root-.gitignore (package-lock.json global ignoriert)
+!results/run-tdd-vibe/package-lock.json

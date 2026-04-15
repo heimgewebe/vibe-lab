@@ -111,8 +111,8 @@ app.get('/bookmarks', (req: Request, res: Response) => {
   let results = Array.from(bookmarks.values());
   const q = req.query.q as string | undefined;
   const tags = req.query.tags as string | string[] | undefined;
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 20;
+  const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+  const limit = Math.max(parseInt(req.query.limit as string) || 20, 1);
 
   // Full-text search
   if (q) {

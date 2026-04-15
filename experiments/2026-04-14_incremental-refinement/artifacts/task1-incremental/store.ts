@@ -68,8 +68,8 @@ export class BookmarkStore {
     }
 
     const total = results.length;
-    const page = params.page ?? 1;
-    const limit = params.limit ?? 20;
+    const page = Math.max(params.page ?? 1, 1);
+    const limit = Math.max(params.limit ?? 20, 1);
     const totalPages = Math.ceil(total / limit);
     const start = (page - 1) * limit;
     const data = results.slice(start, start + limit);
