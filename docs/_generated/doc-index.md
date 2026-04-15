@@ -33,6 +33,28 @@
 | `experiments/2026-04-12_spec-first-legacy/failure_modes.md` | Failure Modes: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/method.md` | Methodik: Spec-First Legacy Refactoring | testing | operative |
 | `experiments/2026-04-12_spec-first-legacy/results/result.md` | Ergebnisse: Spec-First Legacy Refactoring | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/CONTEXT.md` | Kontext: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/INITIAL.md` | Initial: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem_quality.md` | premortem_quality | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/edit_trace.md` | edit_trace | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem_quality.md` | premortem_quality | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/failure_injection.md` | failure_injection | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/failure_injection.md` | failure_injection | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/failure_extraction.md` | failure_extraction | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/premortem_from_failures.md` | premortem_from_failures | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/replication_notes.md` | replication_notes | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/exotic_injection.md` | exotic_injection | — | — |
+| `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/premortem.md` | premortem | — | — |
+| `experiments/2026-04-14_premortem-prompting/failure_modes.md` | Failure Modes: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/method.md` | Methode: Pre-Mortem Prompting | testing | operative |
+| `experiments/2026-04-14_premortem-prompting/results/result.md` | Ergebnis: Pre-Mortem Prompting | testing | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |
 | `vision.md` | vision | — | — |
