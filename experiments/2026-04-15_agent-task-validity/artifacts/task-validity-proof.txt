@@ -1,0 +1,20 @@
+# Repo Locator Proof (Iteration 2)
+timestamp: 2026-04-16T00:00:00Z
+
+## T1
+66:n## Laufende Versuche
+
+## T2
+24:        run: pip install pyyaml jsonschema rfc3339-validator
+
+## T3
+14:Benötigt: pip install pyyaml jsonschema
+
+## T4
+35:> `failure_modes.md`, `CONTEXT.md` und `INITIAL.md` werden erst bei Promotion zur Pflicht. Für laufende Experimente sind sie empfohlen, aber nicht erzwungen.
+
+## T5
+33:1. Erstelle einen PR mit dem Template **Promotion**
+
+## T6
+21:Ohne ausreichend hohes M0 ist die Kernhypothese **nicht testbar**.

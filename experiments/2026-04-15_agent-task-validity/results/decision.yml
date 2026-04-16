@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+
+decision_type: result_assessment
+verdict: "inconclusive"
+confidence: "low"
+date: "2026-04-16"
+reviewer: "codex-agent"
+
+rationale: |
+  triggered_by: "user_feedback_epistemic_deglossing_2026-04-16"
+  Iteration 1 wurde ausgeführt, maß jedoch primär Task-Operationalisierbarkeit statt
+  der Kernhypothese (Protokolleffekt auf Scope-Drift/Review/Rework bei realen Änderungen).
+  Iteration 2 wurde ebenfalls ausgeführt, aber nur als methodischer Korrekturschritt:
+  M0-Gate (Task Validity) inkl. Repo-Locator-Nachweis.
+  Der eigentliche Kernhypothesentest (Control vs Treatment mit echten Codeänderungen)
+  wurde noch nicht ausgeführt. Deshalb ist der Befund ausdrücklich inconclusive.
+
+evidence_summary:
+  observations: 7
+  positive: 3
+  negative: 1
+  neutral: 3
+
+next_steps:
+  - "Iteration 3 ausführen: echte Codeänderungen mit dem frischen Set in tasks.iteration3.jsonl (Control vs Treatment)."
+  - "Blind-Review-Kommentare und Rework-Commits pro Task erfassen."
+  - "Scope-Drift nur für tatsächlich ausgeführte Tasks vergleichen."
