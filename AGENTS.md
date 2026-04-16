@@ -19,17 +19,21 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 | Ebene        | Quellen                                               | Charakter              |
 | ------------ | ----------------------------------------------------- | ---------------------- |
 | Wahrheit     | `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`   | Kanonisch, handgepflegt |
-| Wahrheit     | `vision.md`, `repo-plan.md`, `contracts/*`, `schemas/*` | Kanonisch             |
+| Wahrheit     | `contracts/*`, `schemas/*` | Kanonisch             |
+| Grundlagen   | `docs/foundations/vision.md`, `docs/foundations/repo-plan.md` | Richtungsgebend |
 | Operativ     | `README.md`, `CONTRIBUTING.md`, `.vibe/*`             | Handgepflegt           |
 | Navigation   | `docs/index.md`                                       | Wegweiser              |
 | Diagnose     | `docs/_generated/*`                                   | Maschinell, read-only  |
 
 **Regel:** Bei Widersprüchen gilt die höhere Ebene.
 
+Grundlagenquellen sind keine operativen Steuerungsdokumente, aber sie sind auch nicht bloß unverbindlicher Kontext. Im Konfliktfall stehen sie unterhalb der bindenden Steuerungsdokumente.
+
 
 ### Definitionen (canonicality & status)
 
 - **canonical**: verbindliche, langfristige Referenz
+- **foundational**: stabile Grundlagendokumente, richtungsgebend, aber nicht operative Steuerung
 - **operative**: aktiv genutzte Arbeitsgrundlage
 - **navigation**: orientierende Einstiegs- und Wegweiserdokumente; helfen beim Auffinden relevanter kanonischer oder operativer Inhalte
 - **diagnosis**: diagnostische Sicht auf Zustände, Prüfungen oder abgeleitete Befunde; informativ, aber nicht maßgeblich gegenüber kanonischen Quellen

@@ -1,3 +1,8 @@
+---
+title: "Repository-Plan"
+status: active
+canonicality: foundational
+---
 # Repository-Plan für vibe-lab
 
 ## Zielbild: Exekutierbarer Erkenntnisraum
@@ -175,7 +180,10 @@ vibe-lab/
   README.md
   CONTRIBUTING.md           # Operatives Einstiegssystem
   .env.example              # Beispiel für erlaubte lokale Konfiguration
-  vision.md
+  docs/
+    foundations/
+      vision.md
+      repo-plan.md
   repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
   agent-policy.yaml         # Agentensteuerung
   AGENTS.md                 # Bindende Leseregeln für Agenten

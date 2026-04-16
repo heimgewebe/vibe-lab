@@ -78,21 +78,22 @@ vibe-lab/
 | `repo.meta.yaml`      | Maschinenlesbare Repo-Verfassung    | Kanonisch       |
 | `AGENTS.md`           | Bindende Leseregeln für Agenten     | Kanonisch       |
 | `agent-policy.yaml`   | Operative Agentensteuerung          | Kanonisch       |
-| `vision.md`           | Systemvision                        | Kanonisch       |
-| `repo-plan.md`        | Architektur- und Umsetzungsplan     | Kanonisch       |
+| `docs/foundations/vision.md`          | Systemvision                        | Grundlagendokument / Zielbild           |
+| `docs/foundations/repo-plan.md`       | Architektur- und Umsetzungsplan     | Grundlagendokument / Umsetzungsrahmen     |
 
 **Wahrheitshierarchie:**
 
-1. **Kanonische Quellen** — `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`, `vision.md`, `repo-plan.md`, `contracts/*`, `schemas/*`
-2. **Operative Dokumente** — `README.md`, `CONTRIBUTING.md`, `.vibe/*`
-3. **Navigation** — `docs/index.md` (Wegweiser, nicht Wahrheit)
-4. **Diagnose** — `docs/_generated/*` (maschinell, read-only)
+1. **Kanonische Steuerungsquellen** — `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`, `contracts/*`, `schemas/*`
+2. **Grundlagenquellen** — `docs/foundations/vision.md`, `docs/foundations/repo-plan.md`
+3. **Operative Dokumente** — `README.md`, `CONTRIBUTING.md`, `.vibe/*`
+4. **Navigation** — `docs/index.md` (Wegweiser, nicht Wahrheit)
+5. **Diagnose** — `docs/_generated/*` (maschinell, read-only)
 
 </details>
 
 ## Weiterführend
 
 - [Contributing](CONTRIBUTING.md) — Phasenmodell, Beitragstypen, Qualitätsanforderungen
-- [Vision](vision.md)
-- [Repo-Plan](repo-plan.md)
+- [Vision](docs/foundations/vision.md)
+- [Repo-Plan](docs/foundations/repo-plan.md)
 - [Dokumentation](docs/index.md)
