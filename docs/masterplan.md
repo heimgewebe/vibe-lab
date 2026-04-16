@@ -4,9 +4,9 @@ status: active
 canonicality: operative
 relations:
   - type: derived_from
-    target: blueprints/vision.md
+    target: foundations/vision.md
   - type: derived_from
-    target: blueprints/repo-plan.md
+    target: foundations/repo-plan.md
 ---
 
 # Masterplan
@@ -44,7 +44,9 @@ Sonderstatus: `blocked`, `inconclusive`, `deprecated`, `rejected`.
 ## Wahrheitsarchitektur
 
 ```
-Kanonische Quellen (repo.meta.yaml, AGENTS.md, agent-policy.yaml, vision.md, contracts/*, schemas/*)
+Kanonische Steuerungsquellen (repo.meta.yaml, AGENTS.md, agent-policy.yaml, contracts/*, schemas/*)
+  ↓
+Grundlagenquellen (docs/foundations/vision.md, docs/foundations/repo-plan.md)
   ↓
 Operative Dokumente (README.md, CONTRIBUTING.md, .vibe/*)
   ↓
@@ -55,6 +57,6 @@ Diagnose (docs/_generated/*)
 
 ## Referenzen
 
-- [Vision](blueprints/vision.md) — Systemvision und Layer-Architektur
-- [Repo-Plan](blueprints/repo-plan.md) — Detaillierter Architektur- und Umsetzungsplan
+- [Vision](foundations/vision.md) — Systemvision und Layer-Architektur
+- [Repo-Plan](foundations/repo-plan.md) — Detaillierter Architektur- und Umsetzungsplan
 - [Contribution Contract](../CONTRIBUTING.md) — Beitragstypen und Qualitätsanforderungen

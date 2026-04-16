@@ -20,12 +20,14 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 | ------------ | ----------------------------------------------------- | ---------------------- |
 | Wahrheit     | `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`   | Kanonisch, handgepflegt |
 | Wahrheit     | `contracts/*`, `schemas/*` | Kanonisch             |
-| Kontext      | `docs/blueprints/vision.md`, `docs/blueprints/repo-plan.md` | Richtungsgebend, aber nicht operativ verbindlich |
+| Grundlagen   | `docs/foundations/vision.md`, `docs/foundations/repo-plan.md` | Kanonisch, richtungsgebend |
 | Operativ     | `README.md`, `CONTRIBUTING.md`, `.vibe/*`             | Handgepflegt           |
 | Navigation   | `docs/index.md`                                       | Wegweiser              |
 | Diagnose     | `docs/_generated/*`                                   | Maschinell, read-only  |
 
 **Regel:** Bei Widersprüchen gilt die höhere Ebene.
+
+Grundlagenquellen sind keine operativen Steuerungsdokumente, aber sie sind auch nicht bloß unverbindlicher Kontext. Im Konfliktfall stehen sie unterhalb der bindenden Steuerungsdokumente.
 
 
 ### Definitionen (canonicality & status)

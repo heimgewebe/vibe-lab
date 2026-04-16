@@ -24,6 +24,6 @@ Das Repository realisiert die Pipeline **Sammlung → Erprobung → Validierung 
 
 ## Referenz
 
-- Vision: `docs/blueprints/vision.md`
-- Plan: `docs/blueprints/repo-plan.md`
+- Vision: `docs/foundations/vision.md`
+- Plan: `docs/foundations/repo-plan.md`
 - Verfassung: `repo.meta.yaml`

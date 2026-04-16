@@ -1,7 +1,7 @@
 ---
 title: "Systemvision"
 status: active
-canonicality: exploratory
+canonicality: canonical
 ---
 # Vibe-Lab: Lernendes, prüfendes und schöpferisches System
 

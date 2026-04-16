@@ -7,8 +7,8 @@ schema_version: "0.1.0"
 identity:
   name: vibe-lab
   purpose: "Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken"
-  vision: docs/blueprints/vision.md
-  plan: docs/blueprints/repo-plan.md
+  vision: docs/foundations/vision.md
+  plan: docs/foundations/repo-plan.md
 
 truth_model:
   # Kanonische Quellen sind Wahrheit. Alles andere leitet sich ab.
@@ -18,9 +18,9 @@ truth_model:
     - agent-policy.yaml
     - "contracts/*"
     - "schemas/*"
-  context_sources:
-    - docs/blueprints/vision.md
-    - docs/blueprints/repo-plan.md
+  foundational_sources:
+    - docs/foundations/vision.md
+    - docs/foundations/repo-plan.md
   navigation:
     - docs/index.md
   diagnosis:
@@ -28,6 +28,7 @@ truth_model:
   # Wahrheitshierarchie: canonical > operative > navigation > diagnosis
   hierarchy:
     - canonical_sources
+    - foundational_sources
     - operative_documents
     - navigation
     - diagnosis

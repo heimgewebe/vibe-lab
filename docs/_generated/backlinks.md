@@ -9,11 +9,11 @@
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
-## `docs/blueprints/repo-plan.md`
+## `docs/foundations/repo-plan.md`
 
 - ← `docs/masterplan.md` (derived_from)
 
-## `docs/blueprints/vision.md`
+## `docs/foundations/vision.md`
 
 - ← `docs/masterplan.md` (derived_from)
 
