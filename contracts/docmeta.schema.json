@@ -30,6 +30,7 @@
       "type": "string",
       "enum": [
         "canonical",
+        "foundational",
         "operative",
         "navigation",
         "diagnosis",

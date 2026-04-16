@@ -1,7 +1,7 @@
 ---
 title: "Repository-Plan"
 status: active
-canonicality: canonical
+canonicality: foundational
 ---
 # Repository-Plan für vibe-lab
 

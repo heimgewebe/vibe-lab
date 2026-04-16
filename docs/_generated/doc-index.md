@@ -17,8 +17,8 @@
 | `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
-| `docs/foundations/repo-plan.md` | Repository-Plan | active | canonical |
-| `docs/foundations/vision.md` | Systemvision | active | canonical |
+| `docs/foundations/repo-plan.md` | Repository-Plan | active | foundational |
+| `docs/foundations/vision.md` | Systemvision | active | foundational |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
