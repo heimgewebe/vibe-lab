@@ -3,7 +3,7 @@ title: "Blueprint v2 — Roadmap / offene Punkte"
 status: active
 canonicality: navigation
 created: "2026-04-15"
-updated: "2026-04-15"
+updated: "2026-04-16"
 relations:
   - type: derived_from
     target: ./blueprint-v2.md
@@ -19,29 +19,6 @@ man den nächsten Schritt erkennt**.
 
 Verankert in `blueprint-v2.md`. Jeder Eintrag nennt die Fehlklasse, den
 geplanten Hebel und ein Sichtbarkeits-Kriterium, ab wann Umsetzung sinnvoll ist.
-
----
-
-## Phase 1b — Decision-Type-Separation + Übergangsregel-Enforcement
-
-**Fehlklasse:** `decision.yml` ist Template ohne Schema; `adoption_assessment`
-kann ohne `execution_status ∈ {executed, replicated}` geschrieben werden.
-Zweiter Aspekt: `adoption_basis: reconstructed` bei neuem Experiment
-(`created ≥ v2-Merge-Datum`) ist in Phase 1 nur Warnung.
-
-**Hebel:**
-- `schemas/decision.schema.json` neu, mit `decision_type` ∈
-  `{execution_assessment, result_assessment, adoption_assessment}`.
-- Conditional: `adoption_assessment` → Manifest-`execution_status` ∈
-  `{executed, replicated}`.
-- Warn-Regel aus `validate_execution_proof.py` (Created-Datum vs. v2-Merge) auf
-  Fehler hochstufen.
-
-**Sichtbarkeits-Kriterium:** Phase 1b lohnt, sobald das zweite neue adoptierte
-Experiment nach v2-Merge ansteht.
-
-**Referenzen:** `docs/concepts/execution-bound-epistemics.md §10.1–10.2`,
-`blueprint-v2.md` → „Phase 1b".
 
 ---
 
@@ -126,3 +103,17 @@ Experimenten vorliegen. Bis dahin bewusst nicht anlegen.
 - **Phase 1 — Altbestand-Migration:** spec-first (reconstructed, mit
   Annotation), yolo-vs-spec-first (designed), spec-first-legacy (executed
   mit run_meta.json).
+- **Phase 1b — Decision-Type-Separation:** `schemas/decision.schema.json`
+  mit Diskriminator `decision_type` (`execution_assessment` |
+  `result_assessment` | `adoption_assessment`); cross-file Kopplung
+  symmetrisch erzwungen in `validate_schema.py`: (a) `adoption_assessment`
+  verlangt `execution_status ∈ {executed, replicated}`; (b) `status: adopted`
+  + `adoption_basis ∈ {executed, replicated}` verlangt `adoption_assessment`.
+  Historische Ausnahme `adoption_basis: reconstructed` bleibt.
+- **Phase 1b — Übergangsregel (hart):** `adoption_basis: reconstructed` bei
+  `created ≥ 2026-04-15` → **Fehler** (zuvor Warnung). Datumsvergleich via
+  `datetime.date.fromisoformat()`, nicht lexikographisch.
+- **Phase 1b — Format-Enforcement:** `validate_schema.py` nutzt uniform
+  `Draft202012Validator` + `FORMAT_CHECKER`, damit `"format": "date"` in
+  allen Schemas (manifest / catalog / combo / decision / docmeta) tatsächlich
+  geprüft wird.
