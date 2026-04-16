@@ -8,9 +8,8 @@ experiment:
   hypothesis: "Der 'YOLO'-Ansatz erzeugt schnelleren Code, führt aber zu mehr Rework. 'Spec-First' senkt die initiale Geschwindigkeit, verbessert aber Code-Qualität und Iterierbarkeit erheblich."
   status: designed
   category: workflow
-  execution_status: designed
   created: "2026-04-11"
-  updated: "2026-04-15"
+  updated: "2026-04-11"
   author: "Agent"
   iteration: 1
   evidence_level: anecdotal

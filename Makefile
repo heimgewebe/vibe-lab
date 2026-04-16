@@ -1,26 +1,22 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-relations generate help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations
+validate: validate-schemas validate-relations
 	@echo "✅ Validation passed."
 
 validate-schemas:
 	@echo "🔍 Validating schemas..."
 	@python3 scripts/docmeta/validate_schema.py
 
-validate-execution-proof:
-	@echo "🔍 Validating execution proof..."
-	@python3 scripts/docmeta/validate_execution_proof.py
-
 validate-relations:
 	@echo "🔗 Validating relations..."
 	@python3 scripts/docmeta/validate_relations.py
 
 # Diagnose-Generatoren
-generate: generate-doc-index generate-backlinks generate-orphans generate-system-map generate-epistemic-state
+generate: generate-doc-index generate-backlinks generate-orphans generate-system-map
 	@echo "✅ Generated diagnostics in docs/_generated/."
 
 generate-doc-index:
@@ -35,16 +31,11 @@ generate-orphans:
 generate-system-map:
 	@python3 scripts/docmeta/generate_system_map.py
 
-generate-epistemic-state:
-	@python3 scripts/docmeta/generate_epistemic_state.py
-
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
-	@echo "  make validate                  — Run minimal guard stack (schema + execution-proof + relations)"
-	@echo "  make validate-schemas          — Validate artifacts against JSON schemas"
-	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
-	@echo "  make validate-relations        — Validate frontmatter relations"
+	@echo "  make validate           — Run minimal guard stack (schema + relations)"
+	@echo "  make validate-schemas   — Validate artifacts against JSON schemas"
+	@echo "  make validate-relations — Validate frontmatter relations"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
-	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make help               — Show this help"

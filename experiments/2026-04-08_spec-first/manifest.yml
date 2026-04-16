@@ -8,13 +8,11 @@ experiment:
   hypothesis: "Ein vorangestellter Spezifikationsschritt (Spec-First) verbessert Konsistenz und Vollständigkeit von LLM-generiertem API-Code messbar."
   status: adopted
   category: technique
-  execution_status: reconstructed
   created: "2026-04-08"
-  updated: "2026-04-15"
+  updated: "2026-04-10"
   author: "heimgewebe"
   iteration: 1
   evidence_level: experimental
-  adoption_basis: reconstructed
   related_idea: "#1"
 
 context:

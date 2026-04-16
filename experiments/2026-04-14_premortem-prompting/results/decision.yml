@@ -1,7 +1,6 @@
 schema_version: "0.1.0"
 
-decision_type: result_assessment
-verdict: "inconclusive"       # result_assessment: confirms | refutes | mixed | inconclusive
+verdict: "inconclusive"       # adopted | rejected | inconclusive
 confidence: "medium"          # high | medium | low
 date: "2026-04-15"
 reviewer: "codex-agent"

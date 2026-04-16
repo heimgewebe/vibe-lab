@@ -6,13 +6,8 @@ experiment:
   hypothesis: "Der 'Spec-First'-Ansatz führt bei Legacy-Code zu einer besseren Testbarkeit und Fehlerbehandlung als unstrukturierte Refaktorierung."
   status: testing
   category: workflow
-  execution_status: executed
-  execution_refs:
-    - "artifacts/run-2026-04-12-001/run_meta.json"
-    - "artifacts/test_output.txt"
-    - "results/evidence.jsonl"
   created: "2026-04-12"
-  updated: "2026-04-15"
+  updated: "2026-04-12"
   author: "unknown-agent"
   iteration: 1
   evidence_level: experimental

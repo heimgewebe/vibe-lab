@@ -32,7 +32,7 @@ Lege eine Markdown-Datei in `raw-vibes/` an. Schreib auf, was dir auffällt — 
 - `INITIAL.md` — initiale Prompt-/Setup-Situation
 - `failure_modes.md` — bekannte Grenzen und Fehlannahmen
 
-> `failure_modes.md`, `CONTEXT.md` und `INITIAL.md` sind erst bei Promotion verpflichtend. Für laufende Experimente sind sie empfohlen, aber nicht erzwungen.
+> `failure_modes.md`, `CONTEXT.md` und `INITIAL.md` werden erst bei Promotion zur Pflicht. Für laufende Experimente sind sie empfohlen, aber nicht erzwungen.
 
 **Schema-Validierung:** `make validate` prüft Manifest und Evidenz.
 

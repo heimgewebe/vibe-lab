@@ -18,10 +18,6 @@ experiment:
   evidence_level: experimental  # anecdotal | experimental | replicated
   # replicated_from: ""      # Pfad zum Original-Experiment bei Replikation
   # related_idea: ""          # Referenz auf Idea-Issue (z.B. #42)
-  # adoption_basis: executed  # executed | replicated | reconstructed
-                              # Pflicht bei status: adopted. 'reconstructed' nur für Altbestand zulässig
-                              # (Adoption ohne erfassten Execution-Proof, nur historisch).
-                              # Siehe docs/blueprints/blueprint-v2.md Übergangsregel.
 
 context:
   tools: []                   # Verwendete Tools und Modelle

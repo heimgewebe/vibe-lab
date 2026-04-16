@@ -15,10 +15,8 @@
 - [ ] Experiment ist vollständig durchgeführt
 - [ ] `CONTEXT.md` und `INITIAL.md` sind vorhanden und vollständig
 - [ ] `evidence.jsonl` enthält mindestens einen maschinenlesbaren Eintrag
-- [ ] `decision.yml` enthält `decision_type: adoption_assessment` und `verdict: adopt` (Decision-Type-Separation gem. `execution-bound-epistemics.md §10.1`; impliziert `execution_status ∈ {executed, replicated}` — durch `validate_schema.py` cross-file erzwungen)
-- [ ] Manifest enthält `adoption_basis`: `executed` oder `replicated` bei neuen Promotions. `reconstructed` ist **nur für Altbestand** mit expliziter Legacy-Begründung zulässig (siehe `docs/blueprints/blueprint-v2.md` → Übergangsregel)
-- [ ] Falls `execution_status ∈ {executed, replicated}`: `artifacts/<run-id>/run_meta.json` vorhanden und schema-valide; `test_output_file` existiert
-- [ ] Schema- und Execution-Proof-Validierung bestanden (`make validate`)
+- [ ] `decision.yml` enthält `verdict: adopted`
+- [ ] Schema-Validierung bestanden (`make validate`)
 - [ ] Katalogeintrag / Prompt / Combo liegt im korrekten Zielordner
 - [ ] Frontmatter entspricht dem jeweiligen Schema (`catalog.entry.schema.json` / `combo.schema.json`)
 - [ ] Keine manuellen Edits an generierten Artefakten

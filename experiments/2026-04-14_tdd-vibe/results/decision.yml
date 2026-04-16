@@ -1,12 +1,6 @@
 # Entscheidung — TDD-Vibe
 
-schema_version: "0.1.0"
-
-decision_type: result_assessment
-verdict: inconclusive          # result_assessment: confirms | refutes | mixed | inconclusive
-confidence: low                # high | medium | low | none
-date: "2026-04-14"
-reviewer: "heimgewebe"
+verdict: inconclusive   # adopt | reject | iterate | inconclusive
 
 rationale: |
   Die Hypothese „weniger Nacharbeit + vollständigere Fehlerbehandlung" ist in

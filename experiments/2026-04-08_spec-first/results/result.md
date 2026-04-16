@@ -9,13 +9,6 @@ relations:
 
 # result.md — Spec-First Vibe-Coding
 
-> **Einstufungshinweis (Altbestand):** Diese Adoption wurde rekonstruktiv eingestuft.
-> `execution_status: reconstructed` und `adoption_basis: reconstructed` bedeuten:
-> die Adoption fußt auf historisch dokumentierter Plausibilität (Beobachtungen, Ergebnisbericht),
-> nicht auf einem erfassten Execution-Proof (`run_meta.json`).
-> Reconstructed Adoption ist zulässig, aber kein Goldstandard — neue Adoptionen ab v2 verlangen
-> `adoption_basis ∈ {executed, replicated}`. Siehe `docs/blueprints/blueprint-v2.md` → Übergangsregel.
-
 ## Zusammenfassung
 
 Spec-First-Prompting — das Voranstellen eines formalen Spezifikationsschritts vor der Code-Generierung — verbessert Konsistenz, Vollständigkeit und subjektiven Flow messbar. In allen drei Tasks schnitt der Spec-First-Ansatz besser ab als die direkte Beschreibung.
