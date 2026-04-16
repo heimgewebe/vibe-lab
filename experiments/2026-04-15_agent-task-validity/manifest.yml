@@ -6,27 +6,33 @@ experiment:
   hypothesis: "Ein explizites Task-Protokoll verbessert Änderungsqualität nur dann messbar, wenn Aufgaben zuvor operationalisiert sind (Datei + Zielstelle + Änderungsart)."
   status: testing
   category: workflow
-  execution_status: prepared
+  execution_status: executed
   execution_refs:
     - "results/evidence.jsonl"
+    - "results/result.md"
     - "artifacts/run-001-control.md"
     - "artifacts/run-002-treatment.md"
+    - "artifacts/run-003-control/execution.txt"
+    - "artifacts/run-003-control/run_meta.json"
+    - "artifacts/run-004-treatment/execution.txt"
+    - "artifacts/run-004-treatment/run_meta.json"
+    - "artifacts/review-notes.md"
     - "artifacts/task-validity-check.md"
     - "artifacts/task-validity-proof.txt"
     - "artifacts/metrics.json"
   created: "2026-04-15"
   updated: "2026-04-16"
   author: "GPT-5.3-Codex"
-  iteration: 2
+  iteration: 3
   evidence_level: experimental
 
 context:
   tools: ["LLM-Agent", "Git", "Pull Requests", "Code Review", "rg"]
   language: "Mixed"
   environment: "Vibe-Lab"
-  triggered_by: "User feedback: verdict/status entglätten, M0 mit Repo-Nachweis belegen"
-  execution_scope: "Executed only for task-validity gate (M0) and methodological correction; primary control-vs-treatment hypothesis run with real code changes not executed yet"
-  taskset_note: "Iteration-2 proof uses tasks.jsonl; Iteration-3 run should use tasks.iteration3.jsonl to avoid circular reuse."
+  triggered_by: "User prompt: Folge-PR Iteration 3 als echter Control-vs-Treatment-Run"
+  execution_scope: "Iteration 3 executed with real Control-vs-Treatment task run on tasks.iteration3.jsonl; includes diffs, per-arm logs, metrics, and conservative result assessment."
+  taskset_note: "Iteration-3 execution used tasks.iteration3.jsonl; tasks.jsonl remains iteration-2 method-correction set."
 
 evidence:
   format: jsonl

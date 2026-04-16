@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-004-treatment",
+  "generated_at": "2026-04-16T13:28:00Z",
+  "executor": "local:codex-agent",
+  "command": "targeted exact_before/exact_after replacements for T2,T4,T6 with per-task protocol logging",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-004-treatment/execution.txt",
+  "provenance_level": "self_reported"
+}
