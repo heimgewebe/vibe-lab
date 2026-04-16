@@ -9,6 +9,15 @@
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
+## `docs/blueprints/blueprint-v2.md`
+
+- ← `docs/blueprints/blueprint-v2-roadmap.md` (derived_from)
+
+## `docs/concepts/execution-bound-epistemics.md`
+
+- ← `docs/blueprints/blueprint-v2-roadmap.md` (references)
+- ← `docs/blueprints/blueprint-v2.md` (derived_from)
+
 ## `docs/foundations/repo-plan.md`
 
 - ← `docs/masterplan.md` (derived_from)
@@ -19,6 +28,7 @@
 
 ## `docs/masterplan.md`
 
+- ← `docs/blueprints/blueprint-v2.md` (informs)
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
 
 ## `experiments/2026-04-08_spec-first/results/result.md`
@@ -30,3 +40,15 @@
 ## `experiments/2026-04-14_incremental-refinement/results/result.md`
 
 - ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
+
+## `schemas/decision.schema.json`
+
+- ← `docs/blueprints/blueprint-v2.md` (references)
+
+## `schemas/experiment.manifest.schema.json`
+
+- ← `docs/blueprints/blueprint-v2.md` (references)
+
+## `schemas/run_meta.schema.json`
+
+- ← `docs/blueprints/blueprint-v2.md` (references)

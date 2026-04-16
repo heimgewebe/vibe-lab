@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-003-control",
+  "generated_at": "2026-04-16T13:13:00Z",
+  "executor": "local:codex-agent",
+  "command": "targeted exact_before/exact_after replacements for T1,T3,T5 from tasks.iteration3.jsonl",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-003-control/execution.txt",
+  "provenance_level": "self_reported"
+}

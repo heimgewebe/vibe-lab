@@ -14,6 +14,8 @@
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
+| `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |
+| `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/foundations/repo-plan.md` | Repository-Plan | active | foundational |
 | `docs/foundations/vision.md` | Systemvision | active | foundational |
@@ -89,5 +91,14 @@
 | `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` | Failure Modes: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/method.md` | Experiment-Methode: Upfront Structuring Replication | testing | operative |
 | `experiments/2026-04-14_upfront-structuring-replication/results/result.md` | Ergebnisse: Upfront Structuring Replication | testing | operative |
+| `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md` | AGENT_INSTRUCTION | — | — |
+| `experiments/2026-04-15_agent-task-validity/CONTEXT.md` | Kontext: Agent Task Validity | draft | operative |
+| `experiments/2026-04-15_agent-task-validity/INITIAL.md` | INITIAL | — | — |
+| `experiments/2026-04-15_agent-task-validity/artifacts/review-notes.md` | review-notes | — | — |
+| `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md` | run-001-control | — | — |
+| `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md` | run-002-treatment | — | — |
+| `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md` | task-validity-check | — | — |
+| `experiments/2026-04-15_agent-task-validity/method.md` | Methodik: Agent Task Validity Experiment | draft | operative |
+| `experiments/2026-04-15_agent-task-validity/results/result.md` | result | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
