@@ -2,6 +2,7 @@
 title: "Repository-Plan"
 status: active
 canonicality: exploratory
+document_role: plan
 ---
 # Repository-Plan für vibe-lab
 

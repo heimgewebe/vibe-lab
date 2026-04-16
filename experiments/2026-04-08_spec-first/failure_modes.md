@@ -2,6 +2,7 @@
 title: "Failure Modes — Spec-First Vibe-Coding"
 status: adopted
 canonicality: operative
+document_role: experiment
 ---
 
 # Failure Modes — Spec-First Vibe-Coding

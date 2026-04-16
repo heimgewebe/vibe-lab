@@ -2,6 +2,7 @@
 title: "Incremental Refinement vs. Single-Shot — Initiale Situation"
 status: inconclusive
 canonicality: operative
+document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

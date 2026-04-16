@@ -2,6 +2,7 @@
 title: "Kanban Board UI/State Challenge v1"
 status: active
 canonicality: operative
+document_role: report
 ---
 
 # Benchmark Challenge: Kanban Board (v1)

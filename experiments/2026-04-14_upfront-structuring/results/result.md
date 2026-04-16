@@ -2,6 +2,7 @@
 title: "Ergebnisse: Upfront Structuring Comparison (Zwischenstand)"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # result.md — Experiment-Ergebnisse

@@ -5,6 +5,7 @@ canonicality: operative
 relations:
   - type: informs
     target: ../../catalog/techniques/spec-first-prompting.md
+document_role: experiment
 ---
 
 # CONTEXT.md — Spec-First Vibe-Coding

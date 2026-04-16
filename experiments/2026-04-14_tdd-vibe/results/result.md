@@ -2,6 +2,7 @@
 title: "TDD-Vibe — Ergebnisse"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # result.md — Ergebnisse

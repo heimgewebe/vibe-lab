@@ -4,6 +4,7 @@ status: testing
 canonicality: operative
 validates:
   - "../../../catalog/techniques/spec-first-prompting.md"
+document_role: experiment
 ---
 
 # result.md — Experiment-Ergebnisse

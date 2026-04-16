@@ -2,6 +2,7 @@
 title: "Incremental vs. Single-Shot: Debuggability — Methode"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # method.md — Experiment-Methode

@@ -5,6 +5,7 @@ canonicality: operative
 relations:
   - type: validates
     target: ../../../catalog/techniques/spec-first-prompting.md
+document_role: experiment
 ---
 
 # result.md — Spec-First Vibe-Coding

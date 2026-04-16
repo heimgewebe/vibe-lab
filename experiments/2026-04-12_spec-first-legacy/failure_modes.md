@@ -2,6 +2,7 @@
 title: "Failure Modes: Spec-First Legacy Refactoring"
 status: "testing"
 canonicality: "operative"
+document_role: experiment
 ---
 
 # Failure Modes

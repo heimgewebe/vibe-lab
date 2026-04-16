@@ -2,6 +2,7 @@
 title: "YOLO vs. Spec-First — Ergebnisse"
 status: designed
 canonicality: operative
+document_role: experiment
 ---
 
 # Ergebnisse: YOLO vs. Spec-First

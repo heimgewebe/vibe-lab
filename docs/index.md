@@ -2,6 +2,7 @@
 title: "Dokumentation — Navigation"
 status: active
 canonicality: navigation
+document_role: index
 ---
 
 # Vibe-Lab Dokumentation

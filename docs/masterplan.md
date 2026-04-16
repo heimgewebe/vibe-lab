@@ -7,6 +7,7 @@ relations:
     target: blueprints/vision.md
   - type: derived_from
     target: blueprints/repo-plan.md
+document_role: plan
 ---
 
 # Masterplan

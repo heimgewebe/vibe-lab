@@ -2,6 +2,7 @@
 title: "Experiment-Methode (Template)"
 status: draft
 canonicality: operative
+document_role: experiment
 ---
 
 # method.md — Experiment-Methode

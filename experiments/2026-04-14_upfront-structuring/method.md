@@ -2,6 +2,7 @@
 title: "Experiment-Methode: Upfront Structuring"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # method.md — Experiment-Methode

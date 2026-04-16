@@ -2,6 +2,7 @@
 title: "Initiale Prompt-/Setup-Situation (Template)"
 status: draft
 canonicality: operative
+document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

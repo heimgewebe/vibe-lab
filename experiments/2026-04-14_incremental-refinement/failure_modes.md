@@ -2,6 +2,7 @@
 title: "Failure Modes — Incremental Refinement"
 status: inconclusive
 canonicality: operative
+document_role: experiment
 ---
 
 # Failure Modes — Incremental Refinement

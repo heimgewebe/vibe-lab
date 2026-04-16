@@ -2,6 +2,7 @@
 title: "Failure Modes — Incremental vs. Single-Shot: Debuggability"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # Failure Modes — Incremental Debuggability

@@ -2,6 +2,7 @@
 title: "Privacy- und Ethik-Policy"
 status: active
 canonicality: operative
+document_role: policy
 ---
 
 # Privacy- und Ethik-Policy

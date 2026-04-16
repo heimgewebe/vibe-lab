@@ -2,6 +2,7 @@
 title: "Incremental Refinement vs. Single-Shot — Ergebnis"
 status: inconclusive
 canonicality: operative
+document_role: experiment
 ---
 
 # result.md — Experiment-Ergebnis

@@ -2,6 +2,7 @@
 title: "TDD-Vibe — Methode"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # method.md — Experiment-Methode

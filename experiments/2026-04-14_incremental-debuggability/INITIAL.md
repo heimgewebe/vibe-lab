@@ -2,6 +2,7 @@
 title: "Incremental vs. Single-Shot: Debuggability — Initiale Situation"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

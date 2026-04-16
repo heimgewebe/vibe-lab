@@ -2,6 +2,7 @@
 title: "Initial: Pre-Mortem Prompting"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

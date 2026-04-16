@@ -2,6 +2,7 @@
 title: "Failure Modes: Prompt-Length Control"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # failure_modes.md — Fehler & Grenzen

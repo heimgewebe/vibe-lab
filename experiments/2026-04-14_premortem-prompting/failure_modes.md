@@ -2,6 +2,7 @@
 title: "Failure Modes: Pre-Mortem Prompting"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # Failure Modes — Pre-Mortem Prompting

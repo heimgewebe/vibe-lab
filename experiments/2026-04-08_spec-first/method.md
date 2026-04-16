@@ -2,6 +2,7 @@
 title: "Spec-First Vibe-Coding — Methode"
 status: adopted
 canonicality: operative
+document_role: experiment
 ---
 
 # method.md — Experiment-Methode

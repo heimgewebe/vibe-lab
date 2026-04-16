@@ -2,6 +2,7 @@
 title: "TDD-Vibe — Initiale Situation"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

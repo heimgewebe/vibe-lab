@@ -2,6 +2,7 @@
 title: "Spec-First Vibe-Coding — Initiale Situation"
 status: adopted
 canonicality: operative
+document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

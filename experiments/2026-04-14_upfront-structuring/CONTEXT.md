@@ -2,6 +2,7 @@
 title: "Experiment-Kontext: Upfront Structuring Comparison"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # CONTEXT.md — Experiment-Kontext

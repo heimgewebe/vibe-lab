@@ -2,6 +2,7 @@
 title: "REST-API CRUD Challenge v1"
 status: active
 canonicality: operative
+document_role: report
 ---
 
 # Benchmark Challenge: REST-API CRUD (v1)

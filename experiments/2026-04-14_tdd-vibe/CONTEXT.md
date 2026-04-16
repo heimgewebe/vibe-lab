@@ -2,6 +2,7 @@
 title: "TDD-Vibe — Experiment-Kontext"
 status: testing
 canonicality: operative
+document_role: experiment
 ---
 
 # CONTEXT.md — TDD-Vibe

@@ -15,6 +15,7 @@ tags:
 relations:
   - type: references
     target: ../../experiments/2026-04-08_spec-first/results/result.md
+document_role: concept
 ---
 
 # Anti-Pattern: Vague-Prompt-and-Fix
