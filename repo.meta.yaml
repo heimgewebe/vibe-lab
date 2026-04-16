@@ -16,10 +16,11 @@ truth_model:
     - repo.meta.yaml
     - AGENTS.md
     - agent-policy.yaml
-    - docs/blueprints/vision.md
-    - docs/blueprints/repo-plan.md
     - "contracts/*"
     - "schemas/*"
+  context_sources:
+    - docs/blueprints/vision.md
+    - docs/blueprints/repo-plan.md
   navigation:
     - docs/index.md
   diagnosis:

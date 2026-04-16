@@ -1,7 +1,7 @@
 ---
 title: "Repository-Plan"
 status: active
-canonicality: canonical
+canonicality: exploratory
 ---
 # Repository-Plan für vibe-lab
 
@@ -180,7 +180,10 @@ vibe-lab/
   README.md
   CONTRIBUTING.md           # Operatives Einstiegssystem
   .env.example              # Beispiel für erlaubte lokale Konfiguration
-  vision: docs/blueprints/vision.md
+  docs/
+    blueprints/
+      vision.md
+      repo-plan.md
   repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
   agent-policy.yaml         # Agentensteuerung
   AGENTS.md                 # Bindende Leseregeln für Agenten
