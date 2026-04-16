@@ -13,7 +13,7 @@ Prüft die Kopplung zwischen deklariertem Durchführungsgrad und tatsächlichem 
    ``adoption_basis: reconstructed`` enthalten (sichtbare Annotation gem.
    docs/blueprints/blueprint-v2.md Übergangsregel).
 
-Benötigt: pip install pyyaml jsonschema
+Benötigt: python3 -m pip install pyyaml jsonschema rfc3339-validator
 """
 
 import json

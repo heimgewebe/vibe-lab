@@ -17,7 +17,7 @@ task T3:
   file: scripts/docmeta/validate_schema.py
   locator: "Benötigt: pip install pyyaml jsonschema"
   exact_before_found: true
-  diff_summary: "dependency comment list aligned by adding rfc3339-validator"
+  diff_summary: "dependency hint normalized to python3 -m pip and package list aligned by adding rfc3339-validator"
   scope_strict: true
 
 task T5:
