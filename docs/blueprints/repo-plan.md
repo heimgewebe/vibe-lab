@@ -181,7 +181,7 @@ vibe-lab/
   CONTRIBUTING.md           # Operatives Einstiegssystem
   .env.example              # Beispiel für erlaubte lokale Konfiguration
   docs/
-    foundations/
+    blueprints/
       vision.md
       repo-plan.md
   repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
@@ -268,7 +268,6 @@ vibe-lab/
     syntheses/            # Verdichtete Erkenntnisse
     rules/                # Operationalisierte Regeln
     blueprints/           # Überführung in Praxis
-    foundations/
     policies/
       privacy-and-ethics.md
     reference/
