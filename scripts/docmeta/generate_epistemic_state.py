@@ -44,9 +44,23 @@ def load_manifest(manifest_path: Path) -> dict:
     Ein defektes Manifest wird nicht still übersprungen — ein Visibility-
     Report, der fehlerhafte Einträge unsichtbar macht, ist epistemisch
     schlechter als kein Report.
+
+    Strukturprüfungen:
+    - YAML-Root muss ein Mapping/Object sein (kein [], "string", 42, …)
+    - manifest["experiment"], falls vorhanden, muss ebenfalls ein Mapping sein
     """
     with open(manifest_path, encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
+        data = yaml.safe_load(f) or {}
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"manifest root must be a mapping/object, got {type(data).__name__}"
+        )
+    exp = data.get("experiment")
+    if exp is not None and not isinstance(exp, dict):
+        raise ValueError(
+            f"manifest.experiment must be a mapping/object, got {type(exp).__name__}"
+        )
+    return data
 
 
 def derive_design_quality(exp_dir: Path) -> str:

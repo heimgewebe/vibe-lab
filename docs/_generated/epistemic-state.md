@@ -16,7 +16,6 @@
 | `2026-04-14_incremental-refinement` | inconclusive | structured | executed | experimental | unassessed |
 | `2026-04-14_premortem-prompting` | testing | structured | executed | experimental | unassessed |
 | `2026-04-14_prompt-length-control` | adopted | structured | executed | experimental | unassessed |
-| `2026-04-14_tdd-vibe` | inconclusive | structured | executed | anecdotal | unassessed |
 | `2026-04-14_upfront-structuring` | testing | structured | executed | experimental | unassessed |
 | `2026-04-14_upfront-structuring-replication` | testing | structured | executed | replicated | unassessed |
 
