@@ -38,13 +38,15 @@ OUTPUT = REPO_ROOT / "docs" / "_generated" / "epistemic-state.md"
 _CONTENT_THRESHOLD = 300
 
 
-def load_manifest(manifest_path: Path) -> dict | None:
-    """Lädt manifest.yml; gibt None bei Fehler zurück."""
-    try:
-        with open(manifest_path, encoding="utf-8") as f:
-            return yaml.safe_load(f) or {}
-    except Exception:
-        return None
+def load_manifest(manifest_path: Path) -> dict:
+    """Lädt manifest.yml; wirft bei Fehler eine Exception (fail loud).
+
+    Ein defektes Manifest wird nicht still übersprungen — ein Visibility-
+    Report, der fehlerhafte Einträge unsichtbar macht, ist epistemisch
+    schlechter als kein Report.
+    """
+    with open(manifest_path, encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
 
 
 def derive_design_quality(exp_dir: Path) -> str:
@@ -80,14 +82,18 @@ def derive_interpretation_risk(exp_dir: Path) -> str:
 
 def main() -> None:
     experiments: list[dict[str, str]] = []
+    manifest_errors: list[str] = []
 
     for manifest_path in sorted(EXPERIMENTS_DIR.glob("*/manifest.yml")):
         exp_dir = manifest_path.parent
         if exp_dir.name.startswith("_"):
             continue  # _template, _archive
 
-        manifest = load_manifest(manifest_path)
-        if manifest is None:
+        try:
+            manifest = load_manifest(manifest_path)
+        except Exception as exc:
+            rel = manifest_path.relative_to(REPO_ROOT)
+            manifest_errors.append(f"  ❌ {rel}: {exc}")
             continue
 
         exp = manifest.get("experiment", {})
@@ -134,10 +140,12 @@ def main() -> None:
     lines.extend([
         "## Legende",
         "",
-        "**Design Quality** (abgeleitet aus `method.md` + `failure_modes.md`):",
-        "- **structured** — beide vorhanden und mit Substanz",
-        "- **partial** — genau eine vorhanden mit Substanz",
-        "- **minimal** — keine oder nur leere Vorlagen",
+        "**Design Quality** — heuristische Strukturindikation, keine semantische Qualitätsbewertung.",
+        "Abgeleitet aus Vorhandensein und Mindestsubstanz von `method.md` / `failure_modes.md`",
+        "(Substanz wird über eine Byte-Schwelle approximiert, nicht durch Inhaltsanalyse geprüft):",
+        "- **structured** — beide Dateien vorhanden und über Mindestsubstanz-Schwelle",
+        "- **partial** — genau eine Datei vorhanden und über Schwelle",
+        "- **minimal** — keine Datei über Schwelle (Template-Stub oder fehlend)",
         "",
         "**Execution State** — Spiegel von `execution_status` im Manifest.",
         "",
@@ -152,6 +160,13 @@ def main() -> None:
     written = write_if_changed(OUTPUT, content)
     status_sym = "✅" if written else "✔️ (unchanged)"
     print(f"{status_sym} Generated {OUTPUT.relative_to(REPO_ROOT)} ({len(experiments)} experiments)")
+
+    if manifest_errors:
+        print()
+        print("❌ Manifest-Ladefehler — Report ist unvollständig:")
+        for err in manifest_errors:
+            print(err)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

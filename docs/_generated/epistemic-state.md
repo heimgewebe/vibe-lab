@@ -22,10 +22,12 @@
 
 ## Legende
 
-**Design Quality** (abgeleitet aus `method.md` + `failure_modes.md`):
-- **structured** — beide vorhanden und mit Substanz
-- **partial** — genau eine vorhanden mit Substanz
-- **minimal** — keine oder nur leere Vorlagen
+**Design Quality** — heuristische Strukturindikation, keine semantische Qualitätsbewertung.
+Abgeleitet aus Vorhandensein und Mindestsubstanz von `method.md` / `failure_modes.md`
+(Substanz wird über eine Byte-Schwelle approximiert, nicht durch Inhaltsanalyse geprüft):
+- **structured** — beide Dateien vorhanden und über Mindestsubstanz-Schwelle
+- **partial** — genau eine Datei vorhanden und über Schwelle
+- **minimal** — keine Datei über Schwelle (Template-Stub oder fehlend)
 
 **Execution State** — Spiegel von `execution_status` im Manifest.
 
