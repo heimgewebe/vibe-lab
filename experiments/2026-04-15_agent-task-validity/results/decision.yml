@@ -44,6 +44,8 @@ rationale: |
   Blind-Review bleiben Review-Friction-Metriken unbelegbar.
 
   Verdict bleibt konservativ inconclusive:
+  - Iteration-4-Primärrun durchgeführt, aber Iteration 4 nach eigenem Design
+    noch NICHT ABGESCHLOSSEN (Blind-Review + Replikation fehlen)
   - Task-Komplexität wurde erhöht, aber Drift trat nicht auf
   - Dies könnte bedeuten: (a) Protokoll und kein Protokoll sind bei dieser
     Komplexität äquivalent, (b) der Executor war zu diszipliniert für Drift,
@@ -52,10 +54,10 @@ rationale: |
     unterschieden werden
 
 evidence_summary:
-  observations: 46
+  observations: 45
   positive: 12
   negative: 0
-  neutral: 34
+  neutral: 33
 
 next_steps:
   - "Externes Blind-Review für Iteration 4 Diffs durchführen (verpflichtend)."
