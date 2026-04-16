@@ -4,6 +4,7 @@ status: active
 canonicality: navigation
 created: "2026-04-15"
 updated: "2026-04-16"
+triggered_by: "copilot/overview-v2-blueprint-roadmap — Derived Visibility"
 relations:
   - type: derived_from
     target: ./blueprint-v2.md
@@ -57,22 +58,6 @@ zweite echte Vergleichsexperiment geschrieben wird. Bis dahin freies
 
 ---
 
-## Derived Visibility — `epistemic_state`-Report
-
-**Fehlklasse:** Manifest-Felder korrekt, aber schwer als Gesamtbild zu lesen.
-
-**Hebel:** Generator unter `scripts/docmeta/` der pro Experiment einen
-abgeleiteten Report erzeugt. Felder `execution_state` / `evidence_strength` sind
-Spiegel (nicht Autorfelder); `interpretation_risk` ist das einzige echte neue
-Feld (greift Phase 2).
-
-**Nicht-Ziel:** Manifest-Duplikation.
-
-**Sichtbarkeits-Kriterium:** Wenn ≥ 5 Experimente existieren und ein manueller
-Überblick erkennbar nicht mehr skaliert.
-
----
-
 ## Dormant — Meta-Learning (`meta/failure-atlas/`)
 
 **Aktivierung erst, wenn:** ≥ 3 dokumentierte Fehlklassen aus echten
@@ -117,3 +102,11 @@ Experimenten vorliegen. Bis dahin bewusst nicht anlegen.
   `Draft202012Validator` + `FORMAT_CHECKER`, damit `"format": "date"` in
   allen Schemas (manifest / catalog / combo / decision / docmeta) tatsächlich
   geprüft wird.
+- **Derived Visibility — `epistemic_state`-Report:**
+  `scripts/docmeta/generate_epistemic_state.py` erzeugt
+  `docs/_generated/epistemic-state.md` mit abgeleiteten Feldern pro
+  Experiment: `design_quality` (aus `method.md` / `failure_modes.md`),
+  `execution_state` (Spiegel), `evidence_strength` (Spiegel),
+  `interpretation_risk` (unassessed bis Phase 2). Sichtbarkeits-Kriterium
+  erfüllt: 10 Experimente ≥ 5. Im Makefile als `generate-epistemic-state`
+  verdrahtet.
