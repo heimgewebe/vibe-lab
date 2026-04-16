@@ -19,6 +19,7 @@
 | `2026-04-14_tdd-vibe` | inconclusive | structured | executed | anecdotal | unassessed |
 | `2026-04-14_upfront-structuring` | testing | structured | executed | experimental | unassessed |
 | `2026-04-14_upfront-structuring-replication` | testing | structured | executed | replicated | unassessed |
+| `2026-04-15_agent-task-validity` | testing | partial | prepared | experimental | unassessed |
 
 ## Legende
 

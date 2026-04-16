@@ -1,0 +1,24 @@
+{
+  "run_id": "pilot-002-reframed",
+  "date": "2026-04-16",
+  "metrics": {
+    "M0_task_validity_rate_baseline": 0.0,
+    "M0_task_validity_rate_iteration2": 1.0,
+    "scope_drift_signal_available": false,
+    "review_friction_signal_available": false,
+    "rework_signal_available": false
+  },
+  "diagnostic": {
+    "primary_hypothesis_testable_in_iteration1": false,
+    "blocking_cause": "non-operationalized tasks",
+    "primary_hypothesis_testable_in_iteration2": true,
+    "m0_iteration2_verification_method": "rg locator checks",
+    "m0_iteration2_verification_artifact": "artifacts/task-validity-proof.txt"
+  },
+  "next_execution_plan": {
+    "control_tasks": ["T1", "T3", "T5"],
+    "treatment_tasks": ["T2", "T4", "T6"],
+    "requires_real_code_changes": true,
+    "requires_blind_review": true
+  }
+}
