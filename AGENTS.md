@@ -33,7 +33,7 @@ Grundlagenquellen sind keine operativen Steuerungsdokumente, aber sie sind auch 
 ### Definitionen (canonicality & status)
 
 - **canonical**: verbindliche, langfristige Referenz
-- **foundational**: stabile Grundlagendokumente; richtungsgebend und dauerhaft referenzierbar, aber nicht dieselbe operative Steuerungsebene wie die kanonischen Quellen
+- **foundational**: stabile Grundlagendokumente; richtungsgebend und dauerhaft referenzierbar, unterhalb der kanonischen Steuerungsquellen aber oberhalb der operativen Ebene
 - **operative**: aktiv genutzte Arbeitsgrundlage
 - **navigation**: orientierende Einstiegs- und Wegweiserdokumente; helfen beim Auffinden relevanter kanonischer oder operativer Inhalte
 - **diagnosis**: diagnostische Sicht auf Zustände, Prüfungen oder abgeleitete Befunde; informativ, aber nicht maßgeblich gegenüber kanonischen Quellen
