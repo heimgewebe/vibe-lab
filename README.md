@@ -30,7 +30,7 @@ Wenn eine Idee reif genug zum Testen ist:
 
 Erst wenn ein Experiment belastbare Evidenz liefert:
 
-1. Erstelle einen PR mit dem Template **Promotion**
+1. Erstelle einen Pull Request mit dem Template **Promotion**
 2. Alle Pflichtartefakte müssen vollständig sein (`make validate`)
 3. Review + Merge = adoptierte Praxis
 
