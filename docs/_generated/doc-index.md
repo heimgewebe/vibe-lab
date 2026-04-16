@@ -92,10 +92,12 @@
 | `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md` | AGENT_INSTRUCTION | — | — |
 | `experiments/2026-04-15_agent-task-validity/CONTEXT.md` | Kontext: Agent Task Validity | draft | operative |
 | `experiments/2026-04-15_agent-task-validity/INITIAL.md` | INITIAL | — | — |
+| `experiments/2026-04-15_agent-task-validity/artifacts/review-notes.md` | review-notes | — | — |
 | `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md` | run-001-control | — | — |
 | `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md` | run-002-treatment | — | — |
 | `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md` | task-validity-check | — | — |
 | `experiments/2026-04-15_agent-task-validity/method.md` | Methodik: Agent Task Validity Experiment | draft | operative |
+| `experiments/2026-04-15_agent-task-validity/results/result.md` | result | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `repo-plan.md` | repo-plan | — | — |

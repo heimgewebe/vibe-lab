@@ -26,7 +26,7 @@ try:
     from jsonschema import Draft202012Validator, ValidationError, SchemaError
     from jsonschema.validators import validator_for
 except ImportError:
-    print("ERROR: Missing dependencies. Run: pip install pyyaml jsonschema rfc3339-validator")
+    print("ERROR: Missing dependencies. Run: python3 -m pip install pyyaml jsonschema rfc3339-validator")
     sys.exit(1)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
