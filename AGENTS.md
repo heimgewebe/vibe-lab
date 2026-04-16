@@ -20,7 +20,7 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 | ------------ | ----------------------------------------------------- | ---------------------- |
 | Wahrheit     | `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`   | Kanonisch, handgepflegt |
 | Wahrheit     | `contracts/*`, `schemas/*` | Kanonisch             |
-| Grundlagen   | `docs/foundations/vision.md`, `docs/foundations/repo-plan.md` | Kanonisch, richtungsgebend |
+| Grundlagen   | `docs/foundations/vision.md`, `docs/foundations/repo-plan.md` | Richtungsgebend |
 | Operativ     | `README.md`, `CONTRIBUTING.md`, `.vibe/*`             | Handgepflegt           |
 | Navigation   | `docs/index.md`                                       | Wegweiser              |
 | Diagnose     | `docs/_generated/*`                                   | Maschinell, read-only  |

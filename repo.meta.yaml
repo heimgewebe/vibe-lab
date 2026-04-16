@@ -25,7 +25,7 @@ truth_model:
     - docs/index.md
   diagnosis:
     - "docs/_generated/*"
-  # Wahrheitshierarchie: canonical > operative > navigation > diagnosis
+  # Wahrheitshierarchie: canonical > foundational > operative > navigation > diagnosis
   hierarchy:
     - canonical_sources
     - foundational_sources
