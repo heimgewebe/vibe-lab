@@ -69,7 +69,7 @@ canonicality: navigation
 | [schemas/combo.schema.json](../schemas/combo.schema.json) | Combo-Eintrag                       |
 
 
-n## Laufende Versuche
+## Laufende Versuche
 - [Experimenten-Labor](../experiments/README.md)
 
 ## Konzepte (latent)

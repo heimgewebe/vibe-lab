@@ -1,0 +1,39 @@
+# Experiment Manifest
+schema_version: "0.1.0"
+
+experiment:
+  name: "Agent Task Validity"
+  hypothesis: "Ein explizites Task-Protokoll verbessert Änderungsqualität nur dann messbar, wenn Aufgaben zuvor operationalisiert sind (Datei + Zielstelle + Änderungsart)."
+  status: testing
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - "results/evidence.jsonl"
+    - "results/result.md"
+    - "artifacts/run-001-control.md"
+    - "artifacts/run-002-treatment.md"
+    - "artifacts/run-003-control/execution.txt"
+    - "artifacts/run-003-control/run_meta.json"
+    - "artifacts/run-004-treatment/execution.txt"
+    - "artifacts/run-004-treatment/run_meta.json"
+    - "artifacts/review-notes.md"
+    - "artifacts/task-validity-check.md"
+    - "artifacts/task-validity-proof.txt"
+    - "artifacts/metrics.json"
+  created: "2026-04-15"
+  updated: "2026-04-16"
+  author: "GPT-5.3-Codex"
+  iteration: 3
+  evidence_level: experimental
+
+context:
+  tools: ["LLM-Agent", "Git", "Pull Requests", "Code Review", "rg"]
+  language: "Mixed"
+  environment: "Vibe-Lab"
+  triggered_by: "User prompt: Folge-PR Iteration 3 als echter Control-vs-Treatment-Run"
+  execution_scope: "Iteration 3 executed with real Control-vs-Treatment task run on tasks.iteration3.jsonl; includes diffs, per-arm logs, metrics, and conservative result assessment."
+  taskset_note: "Iteration-3 execution used tasks.iteration3.jsonl; tasks.jsonl remains iteration-2 method-correction set."
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

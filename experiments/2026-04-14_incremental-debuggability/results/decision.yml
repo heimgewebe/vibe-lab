@@ -3,7 +3,8 @@
 
 schema_version: "0.1.0"
 
-verdict: "inconclusive"
+decision_type: result_assessment
+verdict: "inconclusive"       # result_assessment: confirms | refutes | mixed | inconclusive
 confidence: "low"
 date: "2026-04-14"
 reviewer: "copilot-agent"

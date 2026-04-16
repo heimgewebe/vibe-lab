@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/decision.schema.json",
+  "title": "Decision",
+  "description": "Schema für results/decision.yml in Experiment-Ordnern. Spiegelt die Decision-Type-Separation aus docs/concepts/execution-bound-epistemics.md §10.1–10.2. Drei Assessment-Typen mit unterschiedlichen Pflichten; die harte Regel `adoption_assessment` → `execution_status ∈ {executed, replicated}` ist cross-file und wird in scripts/docmeta/validate_schema.py erzwungen.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version dieses Schemas (semver)"
+    },
+    "decision_type": {
+      "type": "string",
+      "enum": ["execution_assessment", "result_assessment", "adoption_assessment"],
+      "description": "Bewertungstyp gem. execution-bound-epistemics.md §10.1: execution_assessment (Ausführungsstatus), result_assessment (Ergebnis-Bewertung), adoption_assessment (Übernahme in kanonische Pfade — nur bei execution_status ∈ {executed, replicated})"
+    },
+    "verdict": {
+      "type": "string",
+      "description": "Urteil; erlaubte Werte hängen von decision_type ab (siehe allOf)"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "none"],
+      "description": "Konfidenz des Urteils"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Datum der Entscheidung (ISO 8601)"
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Wer hat die Entscheidung getroffen (Person oder Agent-Kennung)"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Begründung mit Verweis auf konkrete Evidenz"
+    },
+    "evidence_summary": {
+      "type": "object",
+      "description": "Zusammenfassung der Evidenzlage (freie Struktur — typisch: observations/positive/negative/neutral als Integer-Zähler)"
+    },
+    "next_steps": {
+      "description": "Folgeaktionen aus der Entscheidung",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "challenge_version": {
+      "type": "string",
+      "description": "Optionale Benchmark-/Challenge-Version, auf die sich das Verdikt bezieht"
+    },
+    "compared_to": {
+      "type": "string",
+      "description": "Optionaler Verweis auf ein verglichenes Experiment"
+    }
+  },
+  "required": ["schema_version", "decision_type", "verdict", "date", "reviewer", "rationale"],
+  "allOf": [
+    {
+      "if": {
+        "required": ["decision_type"],
+        "properties": { "decision_type": { "const": "execution_assessment" } }
+      },
+      "then": {
+        "properties": {
+          "verdict": {
+            "enum": ["executed", "reconstructed", "not_executed", "insufficient_proof"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["decision_type"],
+        "properties": { "decision_type": { "const": "result_assessment" } }
+      },
+      "then": {
+        "required": ["confidence"],
+        "properties": {
+          "verdict": {
+            "enum": ["confirms", "refutes", "mixed", "inconclusive"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["decision_type"],
+        "properties": { "decision_type": { "const": "adoption_assessment" } }
+      },
+      "then": {
+        "required": ["confidence", "evidence_summary"],
+        "properties": {
+          "verdict": {
+            "enum": ["adopt", "reject", "defer"]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

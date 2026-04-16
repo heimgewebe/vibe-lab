@@ -1,10 +1,20 @@
+schema_version: "0.1.0"
+
+# decision_type=execution_assessment: das Experiment wurde nicht ausgeführt,
+# sondern aus qualitativen Beobachtungen rekonstruiert. §10.2 erlaubt
+# execution_assessment auch bei execution_status=designed.
+decision_type: execution_assessment
 verdict: not_executed
 confidence: none
+date: "2026-04-11"
+reviewer: "heimgewebe"
 
-summary: >
-  Dieses Experiment wurde aus qualitativen Beobachtungen rekonstruiert,
-  jedoch nicht im aktuellen System ausgeführt.
-
-reason:
+rationale: |
+  Dieses Experiment wurde aus qualitativen Beobachtungen rekonstruiert, jedoch
+  nicht im aktuellen System ausgeführt. Begründung:
   - keine Benchmark-Durchläufe
   - keine reproduzierbare Datengenerierung
+
+  Solange execution_status=designed bleibt, ist dies keine Ergebnis-Bewertung
+  (result_assessment) und keine Adoption-Entscheidung (adoption_assessment),
+  sondern eine Feststellung des Durchführungsstands.
