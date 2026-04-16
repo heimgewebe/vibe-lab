@@ -7,15 +7,11 @@ Documents not referenced by any other document via frontmatter relations (86 fou
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
-- `catalog/techniques/spec-first-prompting.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
-- `docs/blueprints/blueprint-v2.md`
-- `docs/concepts/execution-bound-epistemics.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
 - `experiments/2026-04-08_spec-first/method.md`
-- `experiments/2026-04-08_spec-first/results/result.md`
 - `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md`
 - `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md`
 - `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md`
@@ -35,7 +31,6 @@ Documents not referenced by any other document via frontmatter relations (86 fou
 - `experiments/2026-04-14_incremental-refinement/INITIAL.md`
 - `experiments/2026-04-14_incremental-refinement/failure_modes.md`
 - `experiments/2026-04-14_incremental-refinement/method.md`
-- `experiments/2026-04-14_incremental-refinement/results/result.md`
 - `experiments/2026-04-14_premortem-prompting/CONTEXT.md`
 - `experiments/2026-04-14_premortem-prompting/INITIAL.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
