@@ -36,7 +36,8 @@ context:
   language: "Mixed"
   environment: "Vibe-Lab"
   triggered_by: "PR-Prompt: Iteration 4 mit höherer Task-Komplexität, verpflichtendem Blind-Review und Replikation"
-  execution_scope: "Iteration 4 executed with logic-level tasks from tasks.iteration4.jsonl; Control (T1,T3,T5,T7) vs Treatment (T2,T4,T6,T8). Blind-Review and replication pending."
+  execution_scope: "Iteration 4 PRIMÄRRUN ausgeführt (run-005-control, run-006-treatment). execution_status=executed bedeutet hier: Primärrun mit Artefaktspur vorhanden. Es bedeutet NICHT: vollständige Iteration 4 abgeschlossen. Verpflichtende Bestandteile fehlen noch (Blind-Review, Replikation)."
+  completion_note: "UNVOLLSTÄNDIG — Iteration 4 nach eigenem Design (method.md) noch nicht abgeschlossen. Blind-Review: ausstehend. Replikation: ausstehend. Merge nicht zulässig per Stop-Kriterium bis beide Bedingungen erfüllt sind."
   taskset_note: "Iteration-4 uses tasks.iteration4.jsonl targeting Python validation scripts and CI workflow. tasks.iteration3.jsonl remains iteration-3 set; tasks.jsonl remains iteration-2 method-correction set."
 
 evidence:
