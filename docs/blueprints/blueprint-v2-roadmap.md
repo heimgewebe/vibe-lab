@@ -4,7 +4,7 @@ status: active
 canonicality: navigation
 created: "2026-04-15"
 updated: "2026-04-16"
-triggered_by: "copilot/overview-v2-blueprint-roadmap — Derived Visibility"
+triggered_by: "v2 roadmap: Derived Visibility — Sichtbarkeits-Kriterium erfüllt (10 Experimente ≥ 5)"
 relations:
   - type: derived_from
     target: ./blueprint-v2.md

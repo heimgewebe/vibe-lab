@@ -110,7 +110,7 @@ def main() -> None:
         "",
         "# Epistemic State — Experiment-Übersicht",
         "",
-        "> Abgeleitete Sichtbarkeitsebene gem. [blueprint-v2.md](../../docs/blueprints/blueprint-v2.md).",
+        "> Abgeleitete Sichtbarkeitsebene gem. [blueprint-v2.md](../blueprints/blueprint-v2.md).",
         "> Alle Felder sind **derived** — sie spiegeln Manifest-Daten oder leiten aus",
         "> Artefakt-Existenz ab. Kein Feld ist Autorfeld.",
         "",
