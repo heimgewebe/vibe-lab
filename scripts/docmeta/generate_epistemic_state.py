@@ -170,17 +170,16 @@ def main() -> None:
         "",
     ])
 
+    if manifest_errors:
+        print("❌ Manifest-Ladefehler — Report wird nicht geschrieben:")
+        for err in manifest_errors:
+            print(err)
+        sys.exit(1)
+
     content = "\n".join(lines)
     written = write_if_changed(OUTPUT, content)
     status_sym = "✅" if written else "✔️ (unchanged)"
     print(f"{status_sym} Generated {OUTPUT.relative_to(REPO_ROOT)} ({len(experiments)} experiments)")
-
-    if manifest_errors:
-        print()
-        print("❌ Manifest-Ladefehler — Report ist unvollständig:")
-        for err in manifest_errors:
-            print(err)
-        sys.exit(1)
 
 
 if __name__ == "__main__":
