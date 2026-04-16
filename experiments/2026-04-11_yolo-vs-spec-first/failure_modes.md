@@ -2,7 +2,6 @@
 title: "YOLO vs. Spec-First — Failure Modes"
 status: designed
 canonicality: operative
-document_role: experiment
 ---
 
 # Failure Modes

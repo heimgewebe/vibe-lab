@@ -2,7 +2,6 @@
 title: "Experiment-Kontext (Template)"
 status: draft
 canonicality: operative
-document_role: experiment
 ---
 
 # CONTEXT.md — Experiment-Kontext

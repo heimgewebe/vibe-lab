@@ -2,7 +2,6 @@
 title: "Repository-Plan"
 status: active
 canonicality: exploratory
-document_role: plan
 ---
 # Repository-Plan für vibe-lab
 
@@ -182,7 +181,7 @@ vibe-lab/
   CONTRIBUTING.md           # Operatives Einstiegssystem
   .env.example              # Beispiel für erlaubte lokale Konfiguration
   docs/
-    blueprints/
+    foundations/
       vision.md
       repo-plan.md
   repo.meta.yaml            # Maschinenlesbare Repo-Verfassung
@@ -269,6 +268,7 @@ vibe-lab/
     syntheses/            # Verdichtete Erkenntnisse
     rules/                # Operationalisierte Regeln
     blueprints/           # Überführung in Praxis
+    foundations/
     policies/
       privacy-and-ethics.md
     reference/

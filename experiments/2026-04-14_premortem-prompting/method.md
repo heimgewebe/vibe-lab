@@ -2,7 +2,6 @@
 title: "Methode: Pre-Mortem Prompting"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # method.md — Experiment-Methode

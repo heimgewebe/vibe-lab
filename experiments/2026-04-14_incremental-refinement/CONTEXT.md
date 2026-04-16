@@ -2,7 +2,6 @@
 title: "Incremental Refinement vs. Single-Shot — Kontext"
 status: inconclusive
 canonicality: operative
-document_role: experiment
 ---
 
 # CONTEXT.md — Experiment-Kontext

@@ -2,7 +2,6 @@
 title: "Experiment-Ergebnis (Template)"
 status: draft
 canonicality: operative
-document_role: experiment
 ---
 
 # result.md — Experiment-Ergebnis

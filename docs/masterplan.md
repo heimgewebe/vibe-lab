@@ -4,10 +4,9 @@ status: active
 canonicality: operative
 relations:
   - type: derived_from
-    target: blueprints/vision.md
+    target: foundations/vision.md
   - type: derived_from
-    target: blueprints/repo-plan.md
-document_role: plan
+    target: foundations/repo-plan.md
 ---
 
 # Masterplan
@@ -56,6 +55,6 @@ Diagnose (docs/_generated/*)
 
 ## Referenzen
 
-- [Vision](blueprints/vision.md) — Systemvision und Layer-Architektur
-- [Repo-Plan](blueprints/repo-plan.md) — Detaillierter Architektur- und Umsetzungsplan
+- [Vision](foundations/vision.md) — Systemvision und Layer-Architektur
+- [Repo-Plan](foundations/repo-plan.md) — Detaillierter Architektur- und Umsetzungsplan
 - [Contribution Contract](../CONTRIBUTING.md) — Beitragstypen und Qualitätsanforderungen

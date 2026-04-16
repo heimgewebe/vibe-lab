@@ -2,7 +2,6 @@
 title: "TDD-Vibe — Run-Evidenz"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # Run-Evidenz — Tatsächlicher Ausführungsnachweis

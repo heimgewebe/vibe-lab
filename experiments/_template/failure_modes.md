@@ -2,7 +2,6 @@
 title: "Failure Modes (Template)"
 status: draft
 canonicality: operative
-document_role: experiment
 ---
 
 # Failure Modes — [Experiment Name]

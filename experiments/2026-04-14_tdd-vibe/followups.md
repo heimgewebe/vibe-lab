@@ -2,7 +2,6 @@
 title: "TDD-Vibe — Follow-Ups"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # followups.md — Getrennt geführte Folgepfade

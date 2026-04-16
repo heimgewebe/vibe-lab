@@ -2,7 +2,6 @@
 title: "Incremental Refinement vs. Single-Shot — Methode"
 status: inconclusive
 canonicality: operative
-document_role: experiment
 ---
 
 # method.md — Experiment-Methode

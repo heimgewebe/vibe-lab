@@ -2,7 +2,6 @@
 title: "YOLO vs. Spec-First — Kontext"
 status: designed
 canonicality: operative
-document_role: experiment
 ---
 
 # Kontext

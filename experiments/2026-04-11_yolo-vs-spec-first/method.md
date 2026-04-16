@@ -2,7 +2,6 @@
 title: "YOLO vs. Spec-First — Methode"
 status: designed
 canonicality: operative
-document_role: experiment
 ---
 
 # Methode: YOLO vs. Spec-First

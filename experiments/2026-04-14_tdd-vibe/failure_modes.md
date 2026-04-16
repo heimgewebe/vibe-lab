@@ -2,7 +2,6 @@
 title: "Failure Modes — TDD-Vibe"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # Failure Modes — TDD-Vibe

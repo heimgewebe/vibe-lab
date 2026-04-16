@@ -2,7 +2,6 @@
 title: "Kontext: Pre-Mortem Prompting"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # CONTEXT.md — Experiment-Kontext

@@ -13,7 +13,6 @@ tags:
   - concept
   - execution
   - epistemics
-document_role: concept
 ---
 
 # Konzept: Execution-Bound Epistemics für Vibe-Lab

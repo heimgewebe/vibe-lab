@@ -2,7 +2,6 @@
 title: "Initiale Prompt-/Setup-Situation: Upfront Structuring Replication"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

@@ -16,7 +16,6 @@ tags:
 relations:
   - type: validated_by
     target: ../../experiments/2026-04-08_spec-first/results/result.md
-document_role: concept
 ---
 
 # Spec-First Prompting

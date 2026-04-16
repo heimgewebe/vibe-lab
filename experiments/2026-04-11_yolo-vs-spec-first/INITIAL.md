@@ -2,7 +2,6 @@
 title: "YOLO vs. Spec-First — Initial State"
 status: designed
 canonicality: operative
-document_role: experiment
 ---
 
 # Initial State

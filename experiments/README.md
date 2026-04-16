@@ -2,7 +2,6 @@
 title: "Experimenten-Labor (Index)"
 status: active
 canonicality: navigation
-document_role: experiment
 ---
 
 # 🔬 Experimenten-Labor

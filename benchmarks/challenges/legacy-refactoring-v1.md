@@ -2,7 +2,6 @@
 title: "Legacy Refactoring Challenge v1"
 status: active
 canonicality: operative
-document_role: blueprint
 ---
 
 # Benchmark Challenge: Legacy Refactoring (v1)

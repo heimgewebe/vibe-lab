@@ -2,7 +2,6 @@
 title: "Dokumentation — Navigation"
 status: active
 canonicality: navigation
-document_role: index
 ---
 
 # Vibe-Lab Dokumentation
@@ -15,9 +14,15 @@ document_role: index
 | ------------------------------------- | ---------------------------------------- |
 | [README](../README.md)               | Projekteinstieg und Schnellstart         |
 | [CONTRIBUTING](../CONTRIBUTING.md)    | Contribution Contract und Beitragstypen  |
-| [Vision](blueprints/vision.md)               | Systemvision und Layer-Architektur       |
-| [Repo-Plan](blueprints/repo-plan.md)         | Architektur- und Umsetzungsplan          |
 | [Masterplan](masterplan.md)           | Inhaltlicher Anker und Zielbild          |
+
+
+## Grundlagen
+
+| Dokument                                      | Zweck                               |
+| --------------------------------------------- | ----------------------------------- |
+| [Vision](foundations/vision.md)               | Systemvision und Layer-Architektur  |
+| [Repo-Plan](foundations/repo-plan.md)         | Architektur- und Umsetzungsplan     |
 
 ## Steuerungsdokumente
 

@@ -2,7 +2,6 @@
 title: "Failure Modes: Upfront Structuring Replication"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # failure_modes.md — Fehler & Grenzen

@@ -97,22 +97,6 @@
         ]
       },
       "description": "Gerichtete Beziehungen zu anderen Dokumenten"
-    },
-    "document_role": {
-      "type": "string",
-      "enum": [
-        "vision",
-        "plan",
-        "blueprint",
-        "roadmap",
-        "concept",
-        "policy",
-        "index",
-        "report",
-        "template",
-        "experiment",
-        "unknown"
-      ]
     }
   },
   "required": [

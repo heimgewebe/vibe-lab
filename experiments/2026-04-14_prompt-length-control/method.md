@@ -2,7 +2,6 @@
 title: "Experiment-Methode: Prompt-Length Control"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # method.md — Experiment-Methode

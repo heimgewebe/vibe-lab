@@ -14,9 +14,9 @@
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
-| `docs/blueprints/repo-plan.md` | Repository-Plan | active | exploratory |
-| `docs/blueprints/vision.md` | Systemvision | active | exploratory |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
+| `docs/foundations/repo-plan.md` | Repository-Plan | active | exploratory |
+| `docs/foundations/vision.md` | Systemvision | active | exploratory |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |

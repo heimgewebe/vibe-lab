@@ -2,7 +2,6 @@
 title: "Ergebnis: Pre-Mortem Prompting"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # result.md — Experiment-Ergebnis

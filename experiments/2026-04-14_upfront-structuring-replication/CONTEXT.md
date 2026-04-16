@@ -2,7 +2,6 @@
 title: "Experiment-Kontext: Upfront Structuring Replication"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # CONTEXT.md — Experiment-Kontext

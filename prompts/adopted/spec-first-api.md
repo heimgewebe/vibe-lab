@@ -7,7 +7,6 @@ relations:
     target: ../../catalog/techniques/spec-first-prompting.md
   - type: validated_by
     target: ../../experiments/2026-04-08_spec-first/results/result.md
-document_role: unknown
 ---
 
 # Spec-First API Prompt

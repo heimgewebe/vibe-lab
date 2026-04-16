@@ -28,26 +28,6 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 **Regel:** Bei Widersprüchen gilt die höhere Ebene.
 
 
-### document_role (Dokumentfunktion)
-
-Beschreibt die funktionale Rolle eines Dokuments unabhängig von seiner epistemischen Stellung (`canonicality`).
-
-Beispiele:
-- vision → langfristige Zielbilder, nicht operativ bindend
-- plan → strukturierte Umsetzungsabsicht
-- blueprint → konkrete Architektur-/Delta-Beschreibung
-- roadmap → offene Punkte / Entwicklungspfad
-- concept → Ideenraum / theoretische Grundlage
-- policy → Regeln / Governance
-- index → Navigation
-- report → Auswertung / Ergebnisdarstellung
-- template → Vorlage
-- experiment → experimentelle Artefakte
-
-Wichtig:
-canonicality = epistemischer Status
-document_role = funktionale Gattung
-
 ### Definitionen (canonicality & status)
 
 - **canonical**: verbindliche, langfristige Referenz

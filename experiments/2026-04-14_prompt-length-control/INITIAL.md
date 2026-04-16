@@ -2,7 +2,6 @@
 title: "Initiale Prompt-/Setup-Situation: Prompt-Length Control"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # INITIAL.md — Initiale Situation

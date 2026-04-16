@@ -2,7 +2,6 @@
 title: "Context: Spec-First Legacy Refactoring"
 status: "testing"
 canonicality: "operative"
-document_role: experiment
 ---
 
 # CONTEXT

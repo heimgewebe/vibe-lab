@@ -2,7 +2,6 @@
 title: "Experiment-Methode: Upfront Structuring Replication"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # method.md — Experiment-Methode

@@ -5,7 +5,6 @@ canonicality: operative
 relations:
   - type: derived_from
     target: ../../experiments/2026-04-14_incremental-refinement/results/result.md
-document_role: experiment
 ---
 
 # CONTEXT.md — Experiment-Kontext

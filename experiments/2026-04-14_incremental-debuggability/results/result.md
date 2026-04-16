@@ -2,7 +2,6 @@
 title: "Incremental vs. Single-Shot: Debuggability — Ergebnis"
 status: testing
 canonicality: operative
-document_role: experiment
 ---
 
 # result.md — Experiment-Ergebnis
