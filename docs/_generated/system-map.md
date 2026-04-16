@@ -14,7 +14,7 @@
 | `contracts/` | 🏛️ Governance | 1 | 0 |
 | `decisions/` | 🏛️ Governance | 4 | 0 |
 | `docs/` | 📖 Dokumentation | 15 | 6 |
-| `docs/_generated/` | ⚙️ Generiert | 5 | 4 |
+| `docs/_generated/` | ⚙️ Generiert | 6 | 5 |
 | `experiments/` | 🔬 Labor | 279 | 85 |
 | `exports/` | ⚙️ Generiert | 2 | 0 |
 | `instruction-blocks/` | 📚 Bibliothek | 1 | 0 |
@@ -24,4 +24,4 @@
 | `scripts/` | 🔧 Tooling | 9 | 0 |
 | `tools/` | 🔧 Tooling | 1 | 0 |
 
-**Total:** 349 files in 16 directories
+**Total:** 351 files in 16 directories

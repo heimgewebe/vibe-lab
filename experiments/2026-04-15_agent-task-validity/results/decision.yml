@@ -4,25 +4,61 @@ decision_type: result_assessment
 verdict: "inconclusive"
 confidence: "low"
 date: "2026-04-16"
-reviewer: "codex-agent"
+reviewer: "copilot-agent"
 
 rationale: |
-  triggered_by: "user_prompt_followup_pr_iteration3_execute"
-  Iteration 3 wurde mit dem frischen Set tasks.iteration3.jsonl als echter
-  Control-vs-Treatment-Lauf durchgeführt (6/6 Tasks ausgeführt, echte Diffs,
-  keine Abbrüche). Die Vergleichsdaten zeigen in diesem Lauf keinen Unterschied
-  in Scope-Drift oder unabhängigen Änderungen (beide Arme 0).
-  Gleichzeitig fehlt unabhängiges Blind-Review, wodurch review_comments/
-  review_friction nur eingeschränkt belastbar sind. Aufgrund dieser dünnen und
-  teilweise nicht blind erhobenen Evidenz bleibt das Urteil konservativ
-  inconclusive statt confirms/refutes.
+  triggered_by: "pr_iteration4_agent_task_validity"
+
+  Iteration 4 wurde mit dem Set tasks.iteration4.jsonl als erweiterter
+  Control-vs-Treatment-Lauf durchgeführt (8/8 Tasks ausgeführt, Logic-Level-Edits
+  statt Text-Replacements). Die Task-Komplexität ist gegenüber Iteration 3
+  nachweislich gestiegen (isinstance-Guards, Variable-Renames, CI-Workflow-Edits
+  statt einfache String-Swaps).
+
+  Vorläufige Ergebnisse:
+  - Scope-Drift: 0 (Control) vs 0 (Treatment) — gleich wie Iteration 3
+  - Drift-Temptation: 3/4 (Control) vs 4/4 (Treatment) dokumentiert
+  - Treatment-Overhead: ~28% höhere Ausführungszeit (23 vs 18 min)
+
+  Neue Signale gegenüber Iteration 3:
+  - Drift-Temptations wurden erstmals systematisch dokumentiert
+  - Im Treatment-Arm wurde jede Temptation durch das Protokoll explizit geblockt
+  - Im Control-Arm blieben Temptations undokumentiert bis zur nachträglichen Analyse
+
+  Fehlende Signale (epistemische Lücken):
+  - Kein unabhängiges Blind-Review → review_comments nicht belastbar
+  - Keine Replikation → keine Generalisierbarkeit über diesen einzelnen Lauf
+  - Gleicher Executor für beide Arme → potentieller Bias
+
+  Bewertung kombiniert Iteration 3 + 4:
+  - Iteration 3: 6 Tasks (Text-Level), 0 vs 0 Drift, kein Blind-Review
+  - Iteration 4: 8 Tasks (Logic-Level), 0 vs 0 Drift, kein Blind-Review
+  - Gesamtbild: 14 Tasks über 2 Iterationen, keine messbare Drift-Differenz
+  - Hypothese weder bestätigt noch widerlegt — Drift scheint bei diesen
+    Komplexitätsstufen generell nicht aufzutreten (Ceiling-Effekt?)
+
+  Bewertung der Replikation: NICHT VORHANDEN — ohne Replikation ist keine
+  Aussage über Reproduzierbarkeit möglich.
+
+  Bewertung der externen Review-Signale: NICHT VORHANDEN — ohne externes
+  Blind-Review bleiben Review-Friction-Metriken unbelegbar.
+
+  Verdict bleibt konservativ inconclusive:
+  - Task-Komplexität wurde erhöht, aber Drift trat nicht auf
+  - Dies könnte bedeuten: (a) Protokoll und kein Protokoll sind bei dieser
+    Komplexität äquivalent, (b) der Executor war zu diszipliniert für Drift,
+    oder (c) die Tasks waren noch nicht komplex genug
+  - Ohne externes Review und Replikation kann zwischen (a), (b), (c) nicht
+    unterschieden werden
 
 evidence_summary:
-  observations: 24
-  positive: 8
+  observations: 46
+  positive: 12
   negative: 0
-  neutral: 16
+  neutral: 34
 
 next_steps:
-  - "Iteration 4 mit höherer Task-Komplexität und verpflichtendem externem Blind-Review durchführen."
-  - "Mindestens eine unabhängige Replikation (separate Session/Reviewer) ergänzen."
+  - "Externes Blind-Review für Iteration 4 Diffs durchführen (verpflichtend)."
+  - "Mindestens eine unabhängige Replikation mit anderem Executor/Session (verpflichtend)."
+  - "Bei weiterhin 0 Drift: Task-Komplexität auf Architektur-Level (Level 3) anheben oder synthetische Drift-Fallen designen."
+  - "Alternative Methodik erwägen: absichtlich mehrdeutige Tasks statt 'realistischere' Tasks."

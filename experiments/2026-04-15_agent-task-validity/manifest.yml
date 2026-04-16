@@ -16,23 +16,28 @@ experiment:
     - "artifacts/run-003-control/run_meta.json"
     - "artifacts/run-004-treatment/execution.txt"
     - "artifacts/run-004-treatment/run_meta.json"
+    - "artifacts/run-005-control/execution.txt"
+    - "artifacts/run-005-control/run_meta.json"
+    - "artifacts/run-006-treatment/execution.txt"
+    - "artifacts/run-006-treatment/run_meta.json"
     - "artifacts/review-notes.md"
+    - "artifacts/review-notes-iteration4.md"
     - "artifacts/task-validity-check.md"
     - "artifacts/task-validity-proof.txt"
     - "artifacts/metrics.json"
   created: "2026-04-15"
   updated: "2026-04-16"
   author: "GPT-5.3-Codex"
-  iteration: 3
+  iteration: 4
   evidence_level: experimental
 
 context:
   tools: ["LLM-Agent", "Git", "Pull Requests", "Code Review", "rg"]
   language: "Mixed"
   environment: "Vibe-Lab"
-  triggered_by: "User prompt: Folge-PR Iteration 3 als echter Control-vs-Treatment-Run"
-  execution_scope: "Iteration 3 executed with real Control-vs-Treatment task run on tasks.iteration3.jsonl; includes diffs, per-arm logs, metrics, and conservative result assessment."
-  taskset_note: "Iteration-3 execution used tasks.iteration3.jsonl; tasks.jsonl remains iteration-2 method-correction set."
+  triggered_by: "PR-Prompt: Iteration 4 mit höherer Task-Komplexität, verpflichtendem Blind-Review und Replikation"
+  execution_scope: "Iteration 4 executed with logic-level tasks from tasks.iteration4.jsonl; Control (T1,T3,T5,T7) vs Treatment (T2,T4,T6,T8). Blind-Review and replication pending."
+  taskset_note: "Iteration-4 uses tasks.iteration4.jsonl targeting Python validation scripts and CI workflow. tasks.iteration3.jsonl remains iteration-3 set; tasks.jsonl remains iteration-2 method-correction set."
 
 evidence:
   format: jsonl
