@@ -20,7 +20,7 @@ relations:
 # Blueprint v2 — Delta
 
 Dies ist **kein** Zielbild und **keine** neue Architektur. Zielbild steht in
-`docs/foundations/vision.md`, Prinzipien in `docs/masterplan.md`, Semantik in
+`vision.md`, Prinzipien in `docs/masterplan.md`, Semantik in
 `docs/concepts/execution-bound-epistemics.md`. Dieses Dokument beschreibt **nur**
 das operative Delta von v1 nach v2: welche **benannten Fehlklassen** mit welchen
 **minimalen Hebeln** geschlossen werden, und wo bewusst **nicht** eingegriffen wird.
