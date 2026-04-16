@@ -25,4 +25,4 @@ Das Experiment testet, ob ein explizites Task-Protokoll diese Probleme reduziert
 - **triggered_by:** User-Request zur Operationalisierung inkl. Diagnose-Gate und Stop-Regeln
 - **policy:** repo.meta.yaml, AGENTS.md, agent-policy.yaml
 - **action:** Neues Experimentdesign + Ausführungsinstruktion als reproduzierbares Paket angelegt
-- **outcome:** Experiment bereit zur Durchführung, keine Run-Evidenz erhoben
+- **outcome:** Run-Evidenz und Artefakte wurden erhoben (Iteration 1 und 2), jedoch ohne vollständigen Execution-Proof für die Kernhypothese

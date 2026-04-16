@@ -15,6 +15,13 @@ Vergleiche normale Änderungen vs. Änderungen mit explizitem Task-Protokoll.
 
 ## Ablauf pro Task
 
+- Task auf Ausführbarkeit prüfen
+- nur bei gültigem Task fortfahren
+- (Treatment) Task-Protokoll erstellen
+- Änderungen gegen expected_changes prüfen
+- strikt im Scope bleiben
+- Ergebnisse loggen
+- bei Unsicherheit abbrechen
 
 ## Phasentrennung
 

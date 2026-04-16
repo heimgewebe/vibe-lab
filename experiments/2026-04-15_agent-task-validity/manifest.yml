@@ -6,7 +6,7 @@ experiment:
   hypothesis: "Ein explizites Task-Protokoll verbessert Änderungsqualität nur dann messbar, wenn Aufgaben zuvor operationalisiert sind (Datei + Zielstelle + Änderungsart)."
   status: testing
   category: workflow
-  execution_status: executed
+  execution_status: prepared
   execution_refs:
     - "results/evidence.jsonl"
     - "artifacts/run-001-control.md"

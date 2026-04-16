@@ -16,10 +16,10 @@ rationale: |
   wurde noch nicht ausgeführt. Deshalb ist der Befund ausdrücklich inconclusive.
 
 evidence_summary:
-  observations: 7
+  observations: 8
   positive: 3
   negative: 1
-  neutral: 3
+  neutral: 4
 
 next_steps:
   - "Iteration 3 ausführen: echte Codeänderungen mit dem frischen Set in tasks.iteration3.jsonl (Control vs Treatment)."
