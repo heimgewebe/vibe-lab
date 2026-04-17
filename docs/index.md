@@ -85,7 +85,7 @@ relations:
 ## Konzepte (latent)
 
 - [Execution-Bound Epistemics](concepts/execution-bound-epistemics.md)
-- [Experiment-Ontologie](concepts/experiment-ontology.md)
+- [Iteration, Execution Scope und Reconciliation](concepts/experiment-ontology.md)
 
 ## Playbooks
 

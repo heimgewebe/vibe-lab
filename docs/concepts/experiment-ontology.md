@@ -158,15 +158,13 @@ Konsistenz wiederherstellen — nicht Ergebnisse verbessern.
 
 ## 6. PR-Typen
 
-Pull Requests im Experiment-Kontext lassen sich sinnvoll in zwei operative Kategorien einteilen:
+Pull Requests im Experiment-Kontext lassen sich in drei operative Kategorien einteilen:
 
 | PR-Typ                        | Zweck                                                  | Evidenz-Erwartung          |
 | ----------------------------- | ------------------------------------------------------ | -------------------------- |
 | `experiment_run`              | Neue Ausführung oder Iteration eines Experiments       | Neue `evidence.jsonl`-Einträge erwartet |
+| `experiment_review`           | Redaktionelle, analytische oder strukturierende Änderungen ohne neue Ausführung | Keine neue Evidenz erforderlich |
 | `experiment_reconciliation`   | Reparatur inkonsistenter Zustände                      | Keine neue Evidenz; bestehende darf nicht entfernt werden |
-
-> `experiment_review` (redaktionelle Korrekturen ohne Reconciliation-Hintergrund) ist
-> konzeptuell denkbar, aber aktuell kein eigenständiger Template-Typ.
 
 ### Regeln
 
