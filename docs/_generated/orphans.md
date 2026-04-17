@@ -3,11 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (82 found):
+Documents not referenced by any other document via frontmatter relations (80 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
-- `docs/blueprints/blueprint-agent-operability.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
@@ -84,6 +83,5 @@ Documents not referenced by any other document via frontmatter relations (82 fou
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md`
-- `experiments/2026-04-15_agent-task-validity/method.md`
 - `experiments/2026-04-15_agent-task-validity/results/result.md`
 - `prompts/adopted/spec-first-api.md`

@@ -4,6 +4,8 @@ status: active
 canonicality: navigation
 relations:
   - type: references
+    target: blueprints/blueprint-agent-operability.md
+  - type: references
     target: policies/interpretation-budget.md
 ---
 
@@ -81,6 +83,10 @@ relations:
 
 ## Laufende Versuche
 - [Experimenten-Labor](../experiments/README.md)
+
+## Blueprints
+
+- [Minimaler Agent-Operability-Kern](blueprints/blueprint-agent-operability.md)
 
 ## Konzepte (latent)
 
