@@ -19,7 +19,7 @@ Messen, ob der Leistungsvorteil von Spec-First auf inhaltlicher Strukturierung (
 | `test_pass_rate` | `test_pass_rate_code_first`, `test_pass_rate_spec_first`, `test_pass_rate_ramble_first` |
 | `edge_cases_missed` | `edge_cases_missed_code_first`, `edge_cases_missed_spec_first`, `edge_cases_missed_ramble_first` |
 
-- **test_pass_rate** — Anteil bestandener Tests pro Arm (pytest exit code 0 = 1.0, sonst < 1.0)
+- **test_pass_rate** — Anteil bestandener Tests pro Arm (= bestandene Tests / Gesamtanzahl Tests in der Suite; pytest exit code dient nur als Grobsignal)
 - **edge_cases_missed** — Anzahl nicht abgedeckter Randfälle im generierten Parser-Code
 
 ## Sekundäre Metriken
@@ -30,7 +30,7 @@ Keine. Das Experiment ist bewusst auf eine einzelne Vergleichsdimension beschrä
 
 - Drei Arme (Code-First, Spec-First, Ramble-First) generieren jeweils einen Parser
 - Jeder Arm wird gegen dieselbe pytest-Testsuite ausgeführt
-- Ergebnisse in `results/evidence.jsonl` protokolliert (Felder: `metric`, `value`, `context`, `artifact_ref`)
+- Ergebnisse in `results/evidence.jsonl` protokolliert (measurement-Events enthalten typischerweise `metric`, `value`, `context`; `artifact_ref` ist optional und wird nur gesetzt, wenn auf ein konkretes Artefakt verwiesen wird)
 - Referenzierte Artefakte: `artifacts/code_first_run.txt`, `artifacts/spec_first_run.txt`, `artifacts/ramble_first_run.txt`
 
 ## Einschränkungen
