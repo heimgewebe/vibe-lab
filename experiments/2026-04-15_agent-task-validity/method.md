@@ -26,6 +26,7 @@ Iteration 2 validiert nur Testbarkeit und Aufgabenqualität, nicht die Kernhypot
 
 - `tasks.jsonl`: dokumentiert das für Iteration 2 operationalisierte Set (M0-Gate-Nachweis).
 - `tasks.iteration3.jsonl`: frisches Vergleichs-Set für den echten Control-vs-Treatment-Run in Iteration 3.
+- `tasks.iteration4.jsonl`: erweitertes Set für Iteration 4 mit höherer Komplexität (Logic-Level-Edits).
 
 ## Versuchsaufbau
 
@@ -120,3 +121,40 @@ Bearbeitungszeit pro Task in Minuten.
 - Strikte Stop-Regeln können Abbruchrate erhöhen
 - Reviewer-Varianz kann Friction-Metrik beeinflussen
 - Niedriges M0 macht die Kernhypothese untestbar
+
+## Iteration 4 — Erweitertes Design
+
+### Änderungen gegenüber Iteration 3
+
+1. **Task-Komplexität ↑**: Logic-Level-Edits in Python-Validierungsskripten und CI-Workflow
+   statt atomarer Text-Replacements. Jeder Task hat mehrere plausible Umsetzungspfade,
+   sodass Drift erstmals realistisch möglich wird.
+
+2. **Externes Blind-Review (verpflichtend, ausstehend)**: Reviewer ist nicht der Executor.
+   Reviewer kennt weder Control/Treatment-Zugehörigkeit noch Task-Protokoll-Existenz.
+   Erfasst: review_comments, qualitative Friction, geforderte Änderungen.
+
+3. **Replikation (verpflichtend, ausstehend)**: Mindestens ein zweiter Run mit anderem
+   Executor oder anderer Session. Getrennte Artefakte.
+
+### Task-Komplexitätskriterien
+
+Geeignet:
+- Validator-Edgecases (Typprüfung, Leerstring-Guards)
+- CI-Workflow-Korrekturen mit Nebenbedingungen
+- Variable-Shadowing-Fixes mit Downstream-Auswirkung
+- Defensive Checks mit Entscheidungen über Fehlerbehandlung
+
+Nicht geeignet:
+- Reine Wortlautänderungen
+- Kosmetische Änderungen
+- Trivial deterministische Edits (1:1 String-Swap)
+
+### Stop-Kriterien (hart)
+
+PR darf nicht gemerged werden, wenn:
+- kein externes Blind-Review durchgeführt wurde
+- keine Replikation vorhanden ist
+- Tasks wieder trivial sind
+- Evidence nicht zwischen Control/Treatment trennt
+- Iteration 3 und 4 nicht klar separiert sind

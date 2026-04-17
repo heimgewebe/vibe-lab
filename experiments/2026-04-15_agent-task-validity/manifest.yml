@@ -17,22 +17,25 @@ experiment:
     - "artifacts/run-004-treatment/execution.txt"
     - "artifacts/run-004-treatment/run_meta.json"
     - "artifacts/review-notes.md"
+    - "artifacts/review-notes-iteration4.md"
     - "artifacts/task-validity-check.md"
     - "artifacts/task-validity-proof.txt"
     - "artifacts/metrics.json"
+    - "artifacts/iteration4-reconciliation.md"
   created: "2026-04-15"
   updated: "2026-04-16"
   author: "GPT-5.3-Codex"
-  iteration: 3
+  iteration: 4
   evidence_level: experimental
 
 context:
   tools: ["LLM-Agent", "Git", "Pull Requests", "Code Review", "rg"]
   language: "Mixed"
   environment: "Vibe-Lab"
-  triggered_by: "User prompt: Folge-PR Iteration 3 als echter Control-vs-Treatment-Run"
-  execution_scope: "Iteration 3 executed with real Control-vs-Treatment task run on tasks.iteration3.jsonl; includes diffs, per-arm logs, metrics, and conservative result assessment."
-  taskset_note: "Iteration-3 execution used tasks.iteration3.jsonl; tasks.jsonl remains iteration-2 method-correction set."
+  triggered_by: "Consistency review: iteration-4 execution claims not backed by repo diffs"
+  execution_scope: "Letzter evidenztragender Ausführungsstand ist Iteration 3 (run-003-control, run-004-treatment). Iteration 4 Taskset vorbereitet (tasks.iteration4.jsonl), aber Ausführungsclaims (run-005, run-006) nicht durch Repo-Diffs belegt — zurückgebaut. execution_status=executed basiert auf Iteration-3-Runs."
+  completion_note: "Iteration 4 bleibt nach method.md unvollständig (keine belegten Repo-Diffs, Blind-Review und Replikation ausstehend). Dieser PR dient der epistemischen Korrektur und Vorbereitung, nicht der methodischen Vollendung von Iteration 4. Ein späterer PR ist für die tatsächliche Iteration-4-Ausführung nötig."
+  taskset_note: "Iteration-4 uses tasks.iteration4.jsonl targeting Python validation scripts and CI workflow. tasks.iteration3.jsonl remains iteration-3 set; tasks.jsonl remains iteration-2 method-correction set."
 
 evidence:
   format: jsonl

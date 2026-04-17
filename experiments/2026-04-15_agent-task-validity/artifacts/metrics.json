@@ -13,13 +13,17 @@
       "treatment": 0
     },
     "review_comments": {
-      "control": 0,
-      "treatment": 0,
-      "blind_review_available": false
+      "control": null,
+      "treatment": null,
+      "blind_review_available": false,
+      "measurement_status": "not_measured",
+      "note": "Kein externes Blind-Review durchgeführt — review_comments nicht erhoben."
     },
     "rework_commits": {
-      "control": 0,
-      "treatment": 0
+      "control": null,
+      "treatment": null,
+      "measurement_status": "not_measured",
+      "note": "Rework setzt abgeschlossenes Blind-Review voraus — nicht messbar."
     },
     "abort_rate": {
       "control": 0.0,
@@ -44,7 +48,8 @@
     }
   },
   "epistemic_limits": [
-    "Kein unabhängiges Blind-Review im Run-Kontext; review_friction nur schwach belastbar.",
+    "Kein unabhängiges Blind-Review im Run-Kontext; review_comments und rework_commits nicht erhoben.",
     "Single-run Evidenz, keine Replikation über Sessions/Reviewer hinweg."
-  ]
+  ],
+  "iteration4_note": "Iteration-4-Metrics-Block entfernt — Ausführungsclaims (run-005, run-006) waren nicht durch Repo-Diffs belegt. Siehe artifacts/iteration4-reconciliation.md."
 }
