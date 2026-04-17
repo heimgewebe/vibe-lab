@@ -31,6 +31,10 @@
 - ← `docs/blueprints/blueprint-v2.md` (informs)
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
 
+## `docs/policies/interpretation-budget.md`
+
+- ← `docs/index.md` (references)
+
 ## `experiments/2026-04-08_spec-first/results/result.md`
 
 - ← `catalog/anti-patterns/vague-prompt-and-fix.md` (references)
