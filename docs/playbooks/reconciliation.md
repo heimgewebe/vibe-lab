@@ -128,28 +128,3 @@ Beide Befehle müssen ohne Fehler durchlaufen.
 
 Reconciliation ist ein epistemischer Reparaturmodus. Das Ziel ist ausschließlich,
 den dokumentierten Zustand mit dem tatsächlichen Zustand in Einklang zu bringen.
-
----
-
-## Sichtbarkeit im Epistemic State
-
-Der [Epistemic State Report](../_generated/epistemic-state.md) zeigt den
-Reconciliation-Zustand jedes Experiments als abgeleitetes Feld:
-
-| Wert | Bedeutung |
-| ---- | --------- |
-| **active** | Explizites Reconciliation-Artefakt gefunden (`reconciliation.md` oder `iteration*-reconciliation.md` in `artifacts/`) |
-| **inferred** | Mögliche Inkonsistenz erkannt: `execution_status` ist `designed`/`prepared`, aber `evidence.jsonl` enthält Einträge |
-| **none** | Kein Reconciliation-Signal erkannt |
-
-**Hinweis:** Die Erkennung ist *heuristisch und indikativ*. Ein `none`-Wert
-bedeutet nicht zwingend Konsistenz — er bedeutet nur, dass kein automatisch
-erkennbares Signal vorliegt. Umgekehrt kann `active` auch einen bereits
-abgeschlossenen Reconciliation-Prozess anzeigen.
-
-### Typischer Workflow
-
-1. `epistemic-state.md` zeigt `inferred` oder `active` → Signal zur Prüfung
-2. Manueller Review: Ist das Experiment tatsächlich inkonsistent?
-3. Falls ja: Reconciliation-Ablauf (siehe oben) durchführen
-4. Nach erfolgreichem Reconciliation: `make generate` → Zustand aktualisiert sich automatisch
