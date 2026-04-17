@@ -34,7 +34,7 @@ context:
   environment: "Vibe-Lab"
   triggered_by: "Consistency review: iteration-4 execution claims not backed by repo diffs"
   execution_scope: "Letzter evidenztragender Ausführungsstand ist Iteration 3 (run-003-control, run-004-treatment). Iteration 4 Taskset vorbereitet (tasks.iteration4.jsonl), aber Ausführungsclaims (run-005, run-006) nicht durch Repo-Diffs belegt — zurückgebaut. execution_status=executed basiert auf Iteration-3-Runs."
-  completion_note: "UNVOLLSTÄNDIG — Iteration 4 nicht ausgeführt (keine belegten Repo-Diffs). Blind-Review: ausstehend. Replikation: ausstehend. Merge nicht zulässig per Stop-Kriterium."
+  completion_note: "Iteration 4 bleibt nach method.md unvollständig (keine belegten Repo-Diffs, Blind-Review und Replikation ausstehend). Dieser PR dient der epistemischen Korrektur und Vorbereitung, nicht der methodischen Vollendung von Iteration 4. Ein späterer PR ist für die tatsächliche Iteration-4-Ausführung nötig."
   taskset_note: "Iteration-4 uses tasks.iteration4.jsonl targeting Python validation scripts and CI workflow. tasks.iteration3.jsonl remains iteration-3 set; tasks.jsonl remains iteration-2 method-correction set."
 
 evidence:
