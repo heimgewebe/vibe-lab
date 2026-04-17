@@ -38,7 +38,7 @@ Bedingungen zutrifft:
 - **Veraltete Decision:** `decision.yml` basiert auf einer Iteration, die nicht
   mehr dem aktuellen Stand entspricht
 - **Status-Drift:** Manifest-Felder spiegeln nicht den tatsächlichen Ist-Zustand
-  wider (vgl. AGENTS.md: „Manifest-Felder spiegeln Ist-Zustand")
+  wider (vgl. AGENTS.md: „Manifest-Felder spiegeln Ist-Zustand“)
 
 ---
 
@@ -61,7 +61,7 @@ Diese Regeln sind **harte Constraints** — keine Empfehlungen:
 
 1. **Keine neuen Execution-Claims ohne Evidenz.**
    `execution_status` darf nicht auf `executed` gesetzt werden,
-   wenn keine passende `evidence.jsonl`-Einträge vorliegen.
+   wenn keine passenden Einträge in `evidence.jsonl` vorliegen.
 
 2. **Keine Evidenz still löschen oder umschreiben.**
    Bestehende Einträge in `evidence.jsonl` sollen nicht entfernt oder verändert werden.

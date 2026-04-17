@@ -52,7 +52,9 @@ execution_status:
 Im Schema: Enum mit 5 Werten. Schema-Constraints:
 - `executed` und `replicated` erfordern `execution_refs` mit mindestens einem Eintrag
 - `evidence_level = replicated` schließt `designed` und `prepared` aus
-- Muss den **tatsächlichen Ist-Zustand** widerspiegeln (vgl. AGENTS.md)
+
+Operative Regel (vgl. AGENTS.md):
+- Manifest-Felder müssen den tatsächlichen Ist-Zustand widerspiegeln
 
 | Wert            | Schema-Constraint                                   |
 | --------------- | --------------------------------------------------- |

@@ -3,10 +3,8 @@
 ### PR-Typ (genau einen auswählen)
 
 - [ ] experiment_run
+- [ ] experiment_review
 - [ ] experiment_reconciliation
-
-<!-- experiment_review ist kein eigenständiger PR-Typ in diesem Template;
-     Reviews ohne Reconciliation-Hintergrund nutzen keinen separaten Typ. -->
 
 ### Experiment
 - **Name:** <!-- Experiment-Name -->
