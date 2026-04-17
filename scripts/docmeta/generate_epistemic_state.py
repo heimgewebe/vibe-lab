@@ -27,6 +27,8 @@ Heuristiken:
       4. Adoption Basis:        bei adopted: adoption_basis=reconstructed erhöht Risiko
       5. Interpretation Budget: bei adopted: Fehlen des Budget-Blocks in result.md
                                 erhöht Risiko
+      6. Status Consistency:    execution_status beansprucht keine Ausführung,
+                                aber evidence.jsonl hat Einträge → erhöht Risiko
 
     Stufen:
       low:     hinreichende Evidenz, execution_status ∈ {executed, replicated},
@@ -180,7 +182,7 @@ def _has_interpretation_budget(exp_dir: Path) -> bool:
 def derive_interpretation_risk(exp_dir: Path, exp: dict) -> str:
     """Leitet interpretation_risk heuristisch ab.
 
-    Mehrdimensionale Heuristik — kombiniert fünf Signale zu einer Risikostufe.
+    Mehrdimensionale Heuristik — kombiniert sechs Signale zu einer Risikostufe.
     Explizit dokumentiert, indikativ, nicht wahrheitsgarantierend.
 
     Signale (jedes kann das Risiko erhöhen):
@@ -204,10 +206,16 @@ def derive_interpretation_risk(exp_dir: Path, exp: dict) -> str:
       5. Interpretation Budget (nur bei adopted)
          - adopted ohne ## Interpretation Budget in result.md → +risk
 
+      6. Status Consistency
+         - execution_status beansprucht keine Ausführung, aber Evidenz vorhanden → +risk
+
     Aggregation:
-      Risiko-Signale werden gezählt. Bei 0 Signalen → low, bei 1–2 → medium,
-      bei ≥ 3 oder bei fehlendem Evidence → high.
-      Sonderfälle: kein exp-Block → unknown.
+      Risiko-Signale werden gezählt.
+      - Bei 0 Signalen → low
+      - Bei 1–2 Signalen → medium
+      - Bei ≥ 3 Signalen → high
+      - Bei fehlendem Evidence (0 Einträge) → high (unabhängig von anderen Signalen)
+      - Kein exp-Block → unknown
     """
     if not exp:
         return "unknown"
