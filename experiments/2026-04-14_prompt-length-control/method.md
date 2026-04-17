@@ -2,6 +2,9 @@
 title: "Experiment-Methode: Prompt-Length Control"
 status: testing
 canonicality: operative
+relations:
+  - type: references
+    target: ./metrics.md
 ---
 
 # method.md — Experiment-Methode
@@ -25,4 +28,24 @@ Der Leistungszugewinn von Spec/Test-First beruht auf der *inhaltlichen Strukturi
 
 ### Erfolgskriterien
 
-Hypothese bestätigt, falls `Spec-First` signifikant besser abschneidet als `Ramble-First` und `Code-First`.
+Hypothese bestätigt im Einzelvergleich, falls `Spec-First` in beiden primären Metriken (`test_pass_rate` und `edge_cases_missed`) besser abschneidet als sowohl `Ramble-First` als auch `Code-First` (keine statistische Absicherung, da einzelne Aufgabe ohne Wiederholung — siehe `metrics.md`).
+
+## Confound Isolation
+
+### Konstant gehalten
+- **Aufgabe:** Identisches Text-Parsing-Szenario (escaped asterisk) für alle drei Arme
+- **Testsuite:** Dieselbe pytest-Testsuite gegen alle generierten Parser
+- **Modell:** Gleiches LLM für alle Arme
+- **Umgebung:** Gleiche Python/Vibe-Lab-Umgebung
+
+### Variiert
+- **Prompt-Strategie:** Code-First (direkt), Spec-First (Edge-Case-Deklaration vor Code), Ramble-First (irrelevante Textgenerierung vor Code)
+
+### Potenzielle Confounds
+- **Ramble-Pivot** (dokumentiert in `failure_modes.md`): Das Modell könnte den generierten Ramble-Text implizit zur Strukturierung des Parsing-Problems nutzen, wodurch Ramble-First nicht mehr als reine Token-Bloat-Kontrolle fungiert
+- **Aufgabenkomplexität:** Ein einziges Parsing-Szenario könnte zu einfach sein, um Unterschiede zuverlässig zu zeigen
+
+### Nicht kontrollierte Variablen
+- **Modell-Varianz zwischen Aufrufen:** Stochastische Unterschiede zwischen einzelnen LLM-Aufrufen (kein Seed/Temperature-Control dokumentiert)
+- **Prompt-Formulierung:** Exakte Wortwahl der drei Prompts könnte den Effekt über die Strategie hinaus beeinflussen
+- **Reihenfolge der Ausführung:** Nicht dokumentiert, ob die Arme in fester oder randomisierter Reihenfolge ausgeführt wurden
