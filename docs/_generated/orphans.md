@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (83 found):
+Documents not referenced by any other document via frontmatter relations (82 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
@@ -86,5 +86,4 @@ Documents not referenced by any other document via frontmatter relations (83 fou
 - `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md`
 - `experiments/2026-04-15_agent-task-validity/method.md`
 - `experiments/2026-04-15_agent-task-validity/results/result.md`
-- `experiments/README.md`
 - `prompts/adopted/spec-first-api.md`

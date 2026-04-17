@@ -85,3 +85,12 @@ relations:
 ## Konzepte (latent)
 
 - [Execution-Bound Epistemics](concepts/execution-bound-epistemics.md)
+- [Experiment-Ontologie](concepts/experiment-ontology.md)
+
+## Playbooks
+
+- [Reconciliation](playbooks/reconciliation.md)
+
+## Referenz
+
+- [Manifest-Schema-Semantik](reference/manifest-schema.md)

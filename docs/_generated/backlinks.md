@@ -17,6 +17,13 @@
 
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (derived_from)
+- ← `docs/concepts/experiment-ontology.md` (references)
+- ← `docs/playbooks/reconciliation.md` (references)
+
+## `docs/concepts/experiment-ontology.md`
+
+- ← `docs/playbooks/reconciliation.md` (informed_by)
+- ← `docs/reference/manifest-schema.md` (informed_by)
 
 ## `docs/foundations/repo-plan.md`
 
@@ -31,9 +38,17 @@
 - ← `docs/blueprints/blueprint-v2.md` (informs)
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
 
+## `docs/playbooks/reconciliation.md`
+
+- ← `docs/concepts/experiment-ontology.md` (informs)
+
 ## `docs/policies/interpretation-budget.md`
 
 - ← `docs/index.md` (references)
+
+## `docs/reference/manifest-schema.md`
+
+- ← `docs/concepts/experiment-ontology.md` (informs)
 
 ## `experiments/2026-04-08_spec-first/results/result.md`
 
@@ -45,6 +60,10 @@
 
 - ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
 
+## `experiments/README.md`
+
+- ← `docs/concepts/experiment-ontology.md` (informs)
+
 ## `schemas/decision.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
@@ -52,6 +71,7 @@
 ## `schemas/experiment.manifest.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
+- ← `docs/reference/manifest-schema.md` (references)
 
 ## `schemas/run_meta.schema.json`
 

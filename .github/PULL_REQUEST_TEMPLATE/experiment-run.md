@@ -1,5 +1,11 @@
 ## Experiment Run
 
+### PR-Typ
+
+- [ ] experiment_run
+- [ ] experiment_review
+- [ ] experiment_reconciliation
+
 ### Experiment
 - **Name:** <!-- Experiment-Name -->
 - **Ordner:** `experiments/<name>/`
@@ -20,6 +26,12 @@
 
 ### Ergebnis
 <!-- Kurzzusammenfassung: Was wurde beobachtet? Was ist das Verdict? -->
+
+### Reconciliation (falls zutreffend)
+
+- [ ] Keine neuen Execution-Claims hinzugefügt
+- [ ] Manifest auf evidenztragenden Zustand zurückgeführt
+- [ ] Iteration korrekt als prepared markiert (falls nicht ausgeführt)
 
 ### Nächste Schritte
 <!-- Iterate? Promote? Archive? -->
