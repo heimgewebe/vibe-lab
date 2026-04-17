@@ -64,6 +64,10 @@
 
 - ← `experiments/2026-04-14_prompt-length-control/method.md` (references)
 
+## `experiments/2026-04-15_agent-task-validity/CONTEXT.md`
+
+- ← `docs/blueprints/blueprint-agent-operability.md` (derived_from)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
