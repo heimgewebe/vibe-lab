@@ -21,6 +21,7 @@
 | `docs/foundations/vision.md` | Systemvision | active | foundational |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
+| `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
 | `experiments/2026-04-08_spec-first/CONTEXT.md` | Spec-First Vibe-Coding — Experiment-Kontext | adopted | operative |
 | `experiments/2026-04-08_spec-first/INITIAL.md` | Spec-First Vibe-Coding — Initiale Situation | adopted | operative |
