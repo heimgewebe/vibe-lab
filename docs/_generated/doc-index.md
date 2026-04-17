@@ -94,6 +94,7 @@
 | `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md` | AGENT_INSTRUCTION | — | — |
 | `experiments/2026-04-15_agent-task-validity/CONTEXT.md` | Kontext: Agent Task Validity | draft | operative |
 | `experiments/2026-04-15_agent-task-validity/INITIAL.md` | INITIAL | — | — |
+| `experiments/2026-04-15_agent-task-validity/artifacts/iteration4-reconciliation.md` | iteration4-reconciliation | — | — |
 | `experiments/2026-04-15_agent-task-validity/artifacts/review-notes-iteration4.md` | review-notes-iteration4 | — | — |
 | `experiments/2026-04-15_agent-task-validity/artifacts/review-notes.md` | review-notes | — | — |
 | `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md` | run-001-control | — | — |

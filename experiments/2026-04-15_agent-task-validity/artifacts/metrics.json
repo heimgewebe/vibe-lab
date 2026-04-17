@@ -1,114 +1,55 @@
-[
-  {
-    "run_id": "iteration-003-control-vs-treatment",
-    "date": "2026-04-16",
-    "triggered_by": "user_prompt_followup_pr_iteration3_execute",
-    "metrics": {
-      "scope_drift": {
-        "control": 0,
-        "treatment": 0,
-        "note": "Bewertet nur auf tatsächlich ausgeführten Tasks (6/6)."
-      },
-      "independent_changes": {
-        "control": 0,
-        "treatment": 0
-      },
-      "review_comments": {
-        "control": 0,
-        "treatment": 0,
-        "blind_review_available": false
-      },
-      "rework_commits": {
-        "control": 0,
-        "treatment": 0
-      },
-      "abort_rate": {
-        "control": 0.0,
-        "treatment": 0.0
-      },
-      "execution_time": {
-        "control_minutes": 8,
-        "treatment_minutes": 14,
-        "treatment_overhead_ratio": 1.75
-      }
+{
+  "run_id": "iteration-003-control-vs-treatment",
+  "date": "2026-04-16",
+  "triggered_by": "user_prompt_followup_pr_iteration3_execute",
+  "metrics": {
+    "scope_drift": {
+      "control": 0,
+      "treatment": 0,
+      "note": "Bewertet nur auf tatsächlich ausgeführten Tasks (6/6)."
     },
-    "task_execution": {
-      "control": {
-        "assigned": ["T1", "T3", "T5"],
-        "executed": ["T1", "T3", "T5"],
-        "aborted": []
-      },
-      "treatment": {
-        "assigned": ["T2", "T4", "T6"],
-        "executed": ["T2", "T4", "T6"],
-        "aborted": []
-      }
+    "independent_changes": {
+      "control": 0,
+      "treatment": 0
     },
-    "epistemic_limits": [
-      "Kein unabhängiges Blind-Review im Run-Kontext; review_friction nur schwach belastbar.",
-      "Single-run Evidenz, keine Replikation über Sessions/Reviewer hinweg."
-    ]
+    "review_comments": {
+      "control": null,
+      "treatment": null,
+      "blind_review_available": false,
+      "measurement_status": "not_measured",
+      "note": "Kein externes Blind-Review durchgeführt — review_comments nicht erhoben."
+    },
+    "rework_commits": {
+      "control": null,
+      "treatment": null,
+      "measurement_status": "not_measured",
+      "note": "Rework setzt abgeschlossenes Blind-Review voraus — nicht messbar."
+    },
+    "abort_rate": {
+      "control": 0.0,
+      "treatment": 0.0
+    },
+    "execution_time": {
+      "control_minutes": 8,
+      "treatment_minutes": 14,
+      "treatment_overhead_ratio": 1.75
+    }
   },
-  {
-    "run_id": "iteration-004-control-vs-treatment",
-    "date": "2026-04-16",
-    "triggered_by": "user_prompt_followup_pr_iteration4_execute",
-    "completion_status": "primary_run_only",
-    "completion_note": "Primärrun ausgeführt. Blind-Review und Replikation ausstehend — Iteration 4 nach eigenem Design (method.md) noch nicht abgeschlossen.",
-    "metrics": {
-      "scope_drift": {
-        "control": 0,
-        "treatment": 0,
-        "note": "Bewertet auf 8/8 Logic-Level-Tasks aus tasks.iteration4.jsonl."
-      },
-      "independent_changes": {
-        "control": 0,
-        "treatment": 0
-      },
-      "review_comments": {
-        "control": "pending",
-        "treatment": "pending",
-        "blind_review_available": false,
-        "note": "Blind-Review nicht durchgeführt — review_comments nicht erhoben. Werte werden nach externem Blind-Review nachgetragen."
-      },
-      "rework_commits": {
-        "control": "pending",
-        "treatment": "pending",
-        "note": "Rework setzt abgeschlossenes Blind-Review voraus — noch nicht messbar."
-      },
-      "abort_rate": {
-        "control": 0.0,
-        "treatment": 0.0
-      },
-      "execution_time": {
-        "control_minutes": 18,
-        "treatment_minutes": 23,
-        "treatment_overhead_ratio": 1.28
-      },
-      "task_complexity_level": 2,
-      "drift_temptations": {
-        "control": 3,
-        "treatment": 4,
-        "note": "Control: 3/4 Tasks mit dokumentierten Drift-Temptations. Treatment: 4/4 Tasks, alle durch Protokoll explizit geblockt."
-      }
+  "task_execution": {
+    "control": {
+      "assigned": ["T1", "T3", "T5"],
+      "executed": ["T1", "T3", "T5"],
+      "aborted": []
     },
-    "task_execution": {
-      "control": {
-        "assigned": ["T1", "T3", "T5", "T7"],
-        "executed": ["T1", "T3", "T5", "T7"],
-        "aborted": []
-      },
-      "treatment": {
-        "assigned": ["T2", "T4", "T6", "T8"],
-        "executed": ["T2", "T4", "T6", "T8"],
-        "aborted": []
-      }
-    },
-    "epistemic_limits": [
-      "Kein unabhängiges Blind-Review — review_comments und rework_commits nicht erhoben.",
-      "Keine Replikation — keine Aussage über Reproduzierbarkeit.",
-      "Gleicher Executor für beide Arme — potentieller Bias.",
-      "0 vs 0 Drift bei Komplexitätsstufe 2 — möglicher Ceiling-Effekt."
-    ]
-  }
-]
+    "treatment": {
+      "assigned": ["T2", "T4", "T6"],
+      "executed": ["T2", "T4", "T6"],
+      "aborted": []
+    }
+  },
+  "epistemic_limits": [
+    "Kein unabhängiges Blind-Review im Run-Kontext; review_comments und rework_commits nicht erhoben.",
+    "Single-run Evidenz, keine Replikation über Sessions/Reviewer hinweg."
+  ],
+  "iteration4_note": "Iteration-4-Metrics-Block entfernt — Ausführungsclaims (run-005, run-006) waren nicht durch Repo-Diffs belegt. Siehe artifacts/iteration4-reconciliation.md."
+}

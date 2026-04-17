@@ -26,7 +26,8 @@ Das Experiment testet, ob ein explizites Task-Protokoll diese Probleme reduziert
 - **policy:** repo.meta.yaml, AGENTS.md, agent-policy.yaml
 - **action:** Neues Experimentdesign + Ausführungsinstruktion als reproduzierbares Paket angelegt
 - **outcome (Iteration 1–3):** Run-Evidenz und Artefakte erhoben; Iteration 3 als echter Control-vs-Treatment-Lauf durchgeführt; verdict inconclusive wegen fehlendem Blind-Review.
-- **outcome (Iteration 4 — Primärrun):** Primärrun durchgeführt (run-005-control, run-006-treatment); Logic-Level-Tasks mit dokumentierten Drift-Temptations; artifact-Spur vorhanden.
-- **outcome (Iteration 4 — Blind-Review):** AUSSTEHEND — verpflichtend per method.md Stop-Kriterium; PR darf nicht gemerged werden bis abgeschlossen.
-- **outcome (Iteration 4 — Replikation):** AUSSTEHEND — verpflichtend per method.md Stop-Kriterium; PR darf nicht gemerged werden bis abgeschlossen.
-- **Iteration-4-Abschluss:** NICHT ABGESCHLOSSEN — Primärrun ≠ vollständige Iteration 4.
+- **outcome (Iteration 4 — Taskset):** tasks.iteration4.jsonl mit 8 Logic-Level-Tasks vorbereitet; Blind-Review-Template angelegt (review-notes-iteration4.md).
+- **outcome (Iteration 4 — Ausführung):** NICHT BELEGT — Ausführungsclaims (run-005-control, run-006-treatment) geprüft: 0 von 8 Ziel-Datei-Änderungen im Repo vorhanden. Claims zurückgebaut. Siehe artifacts/iteration4-reconciliation.md.
+- **outcome (Blind-Review):** AUSSTEHEND — verpflichtend per method.md Stop-Kriterium.
+- **outcome (Replikation):** AUSSTEHEND — verpflichtend per method.md Stop-Kriterium.
+- **Evidenztragender Stand:** Iteration 3 (run-003-control, run-004-treatment).
