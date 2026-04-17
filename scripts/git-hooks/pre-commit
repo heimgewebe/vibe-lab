@@ -2,10 +2,4 @@
 set -euo pipefail
 
 make generate
-
-if ! git diff --quiet -- docs/_generated/; then
-  echo "ERROR: docs/_generated/ was updated."
-  echo "Please review and commit these changes:"
-  echo "  git add docs/_generated/"
-  exit 1
-fi
+make check-generated-clean

@@ -46,7 +46,7 @@ prepare-commit: generate validate check-generated-clean
 	@echo "✅ Repo vorbereitet."
 
 check-generated-clean:
-	@if git status --porcelain docs/_generated/ | grep -q .; then \
+	@if ! git diff --quiet -- docs/_generated/ || [ -n "$(git ls-files --others --exclude-standard docs/_generated/)" ]; then \
 		echo "❌ docs/_generated/ ist nicht synchron."; \
 		echo "Bitte ausführen:"; \
 		echo "  make generate"; \
@@ -65,5 +65,5 @@ help:
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make prepare-commit     — Run generate + validate + generated-drift check"
-	@echo "  make check-generated-clean — Fail if docs/_generated/ has unstaged or staged drift"
+	@echo "  make check-generated-clean — Fail if docs/_generated/ has unstaged or untracked drift"
 	@echo "  make help               — Show this help"

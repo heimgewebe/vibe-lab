@@ -125,6 +125,8 @@ git config core.hooksPath scripts/git-hooks
 chmod +x scripts/git-hooks/pre-commit
 ```
 
+Hinweis: `git config core.hooksPath scripts/git-hooks` ersetzt den Hook-Pfad für diesen lokalen Klon. Falls bereits eigene Hooks verwendet werden, den Hook bitte manuell integrieren oder verlinken.
+
 ## Steuerungsdokumente
 
 Die kanonischen Steuerungsdokumente des Repositories sind:
