@@ -111,7 +111,7 @@ Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `
   "task_id": "T1",
   "description": "Überschrift in docs/index.md korrigieren",
   "target_files": ["docs/index.md"],
-  "target_lines": "\n## Laufende Versuche",
+  "target_lines": "## Laufende Versuche",
   "change_type": "edit",
   "exact_before": "\n## Laufende Versuche",
   "exact_after": "## Laufende Versuche",
