@@ -18,3 +18,30 @@ Dies ist das operative Labor des Vibe-Labs. Hier werden Hypothesen getestet und 
 - [Upfront Structuring Comparison](2026-04-14_upfront-structuring/CONTEXT.md)
 - [Upfront Structuring Replication](2026-04-14_upfront-structuring-replication/CONTEXT.md)
 - [Prompt-Length Control](2026-04-14_prompt-length-control/CONTEXT.md)
+
+---
+
+## Iteration und Ausführung
+
+`iteration` und `execution_status` sind im aktuellen Repo nicht immer selbsterklärend.
+Für Grenzfälle gilt die ergänzende Begriffsklärung in
+[`docs/concepts/experiment-ontology.md`](../docs/concepts/experiment-ontology.md).
+
+Kurzfassung:
+
+- **iteration** zählt die Iterationsstufen des Experiments und kann erhöht werden,
+  ohne dass eine Ausführung stattgefunden hat.
+- **execution_status** beschreibt den tatsächlichen Durchführungsgrad. Er bezieht
+  sich auf evidenzgetragene Runs, nicht auf Planungsfortschritte.
+- Wenn `iteration` erhöht wurde, aber noch kein neuer Run vorliegt, muss der
+  dokumentierte Ausführungsstand dies klar widerspiegeln.
+
+## Reconciliation
+
+Experimente dürfen korrigiert werden, wenn ihr dokumentierter Zustand nicht mehr dem tatsächlichen Zustand entspricht. Dabei gilt:
+
+- **Korrektur ≠ neue Ausführung.** Reconciliation bringt Manifest, Decision und Ergebnisse mit der tatsächlichen Evidenzlage in Einklang.
+- **Dokumentation ist Pflicht.** Jede Reconciliation muss in der PR-Beschreibung als solche deklariert werden (PR-Typ: `experiment_reconciliation`).
+- **Keine epistemische Aufwertung.** Reconciliation darf den Status, das Evidence-Level oder die Adoption-Basis nicht erhöhen.
+
+→ Operativer Ablauf: [Playbook: Reconciliation](../docs/playbooks/reconciliation.md)
