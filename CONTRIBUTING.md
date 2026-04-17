@@ -101,6 +101,32 @@ make validate
 
 Dieser Befehl führt den minimalen Guard-Stack aus (Schema- und Relations-Validierung). Er prüft `experiments/`, `catalog/` und `prompts/` — **nicht** `raw-vibes/`.
 
+## Generierte Dateien synchron halten
+
+Bei Änderungen an:
+
+- Markdown
+- Frontmatter
+- Relationen
+- Repo-Struktur
+
+vor Commit ausführen:
+
+```bash
+make prepare-commit
+```
+
+Die CI schlägt fehl, wenn `docs/_generated/` nicht aktuell ist.
+
+Optionaler lokaler Guard per Git-Hook (ohne Auto-Staging):
+
+```bash
+git config core.hooksPath scripts/git-hooks
+chmod +x scripts/git-hooks/pre-commit
+```
+
+Hinweis: `git config core.hooksPath scripts/git-hooks` ersetzt den Hook-Pfad für diesen lokalen Klon. Falls bereits eigene Hooks verwendet werden, den Hook bitte manuell integrieren oder verlinken.
+
 ## Steuerungsdokumente
 
 Die kanonischen Steuerungsdokumente des Repositories sind:
