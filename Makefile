@@ -1,5 +1,5 @@
 # Makefile — Schlanke Routine-Frontdoor
-# Siehe: repo-plan.md → Scaffolding-CLI & Frontdoor
+# Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
 .PHONY: validate validate-schemas validate-execution-proof validate-relations generate generate-epistemic-state help
 

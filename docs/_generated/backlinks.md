@@ -18,6 +18,14 @@
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (derived_from)
 
+## `docs/foundations/repo-plan.md`
+
+- ← `docs/masterplan.md` (derived_from)
+
+## `docs/foundations/vision.md`
+
+- ← `docs/masterplan.md` (derived_from)
+
 ## `docs/masterplan.md`
 
 - ← `docs/blueprints/blueprint-v2.md` (informs)
@@ -33,10 +41,6 @@
 
 - ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
 
-## `repo-plan.md`
-
-- ← `docs/masterplan.md` (derived_from)
-
 ## `schemas/decision.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
@@ -48,7 +52,3 @@
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
-
-## `vision.md`
-
-- ← `docs/masterplan.md` (derived_from)

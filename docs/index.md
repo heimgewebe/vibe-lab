@@ -14,9 +14,15 @@ canonicality: navigation
 | ------------------------------------- | ---------------------------------------- |
 | [README](../README.md)               | Projekteinstieg und Schnellstart         |
 | [CONTRIBUTING](../CONTRIBUTING.md)    | Contribution Contract und Beitragstypen  |
-| [Vision](../vision.md)               | Systemvision und Layer-Architektur       |
-| [Repo-Plan](../repo-plan.md)         | Architektur- und Umsetzungsplan          |
 | [Masterplan](masterplan.md)           | Inhaltlicher Anker und Zielbild          |
+
+
+## Grundlagen
+
+| Dokument                                      | Zweck                               |
+| --------------------------------------------- | ----------------------------------- |
+| [Vision](foundations/vision.md)               | Systemvision und Layer-Architektur  |
+| [Repo-Plan](foundations/repo-plan.md)         | Architektur- und Umsetzungsplan     |
 
 ## Steuerungsdokumente
 
