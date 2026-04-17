@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics generate generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -18,6 +18,10 @@ validate-execution-proof:
 validate-relations:
 	@echo "🔗 Validating relations..."
 	@python3 scripts/docmeta/validate_relations.py
+
+validate-epistemics:
+	@echo "🧠 Validating interpretation budget..."
+	@python3 scripts/docmeta/validate_interpretation_budget.py
 
 # Diagnose-Generatoren
 generate: generate-doc-index generate-backlinks generate-orphans generate-system-map generate-epistemic-state
@@ -41,10 +45,11 @@ generate-epistemic-state:
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
-	@echo "  make validate                  — Run minimal guard stack (schema + execution-proof + relations)"
+	@echo "  make validate                  — Run minimal guard stack (schema + execution-proof + relations + epistemics)"
 	@echo "  make validate-schemas          — Validate artifacts against JSON schemas"
 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
 	@echo "  make validate-relations        — Validate frontmatter relations"
+	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make help               — Show this help"
