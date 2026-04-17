@@ -46,8 +46,8 @@ prepare-commit: generate validate check-generated-clean
 	@echo "✅ Repo vorbereitet."
 
 check-generated-clean:
-	@if ! git diff --quiet -- docs/_generated/ || [ -n "$(git ls-files --others --exclude-standard docs/_generated/)" ]; then \
-		echo "❌ docs/_generated/ ist nicht synchron."; \
+	@if ! git diff --quiet -- docs/_generated/ || [ -n "$$(git ls-files --others --exclude-standard docs/_generated/)" ]; then \
+		echo "❌ docs/_generated/ hat unstaged oder untracked Drift."; \
 		echo "Bitte ausführen:"; \
 		echo "  make generate"; \
 		echo "  git add docs/_generated/"; \
