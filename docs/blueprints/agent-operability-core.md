@@ -14,7 +14,7 @@ relations:
     target: "../../experiments/2026-04-15_agent-task-validity/method.md"
 ---
 
-# Minimaler Agent-Operability-Kern
+## Minimaler Agent-Operability-Kern
 
 ## Ziel
 
@@ -31,6 +31,7 @@ Die beschriebenen Strukturen zur Task-Ausfuehrung sind konzeptionell und derzeit
 Blueprint -> Task -> Commands -> Execution -> Ergebnis
 
 Kein:
+
 - Signal-System
 - Policy Engine
 - Emergenz
@@ -49,6 +50,7 @@ Die heute im Repo belegte Vorstufe ist stark task-zentriert (z.B. `tasks.jsonl` 
 Zweck: Strukturierte, ueberpruefbare Aktion basierend auf der etablierten `task.jsonl` Praxis.
 
 #### C1: command.read_context
+
 ```yaml
 id: command.read_context
 type: command
@@ -60,9 +62,11 @@ output:
 constraints:
   - must_reference_files
 ```
+
 Ersetzt: "lies repo", "analysiere code"
 
 #### C2: command.write_change
+
 ```yaml
 id: command.write_change
 type: command
@@ -77,9 +81,11 @@ constraints:
   - target_proof_required
   - no_generated_files
 ```
+
 Verbindet sich direkt mit der bestehenden Diagnose-Regel und den Eigenschaften aus `experiments/2026-04-15_agent-task-validity/tasks.jsonl`.
 
 #### C3: command.validate_change
+
 ```yaml
 id: command.validate_change
 type: command
@@ -93,8 +99,10 @@ checks:
   - test
   - docs-guard
 ```
+
 Warum genau diese drei?
 Weil sie exakt abdecken:
+
 - Phase Verstehen: `read_context`
 - Phase Handeln: `write_change`
 - Phase Pruefen: `validate_change`
@@ -106,6 +114,7 @@ Weitere Commands sind in dieser Phase iterativer Overhead.
 Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `tasks.jsonl` als Fundament.
 
 #### Minimal-Template
+
 ```json
 {
   "task_id": "T1",
@@ -118,6 +127,7 @@ Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `
   "forbidden_changes": ["new sections", "content restructuring"]
 }
 ```
+
 Hinweis: Das fuehrende `\n` in `target_lines`/`exact_before` ist hier absichtlich gesetzt, um einen newline-sensitiven Matcher zu demonstrieren (Ueberschrift als Block-Anker statt Substring-Treffer).
 WICHTIG: Task != allgemeine Beschreibung. Task = eng geschnittener, maschinenlesbarer Ausfuehrungsvertrag.
 
@@ -151,6 +161,7 @@ Um Tasks sauber zu begrenzen, sind folgende Assertions als geplante Invarianten 
 7. sonst -> `write_change`, danach `validate_change`
 
 ### Agent-Loop
+
 1. read_context
 2. decide (implizit im Agent)
 3. write_change
@@ -159,6 +170,7 @@ Um Tasks sauber zu begrenzen, sind folgende Assertions als geplante Invarianten 
 Kein Planner-Agent in dieser Iteration erforderlich.
 
 ### Execution
+
 Ein spaeterer CLI- oder Make-Einstiegspunkt ist denkbar; konkrete Entrypoints (wie `tools/vibe-cli/` oder `scripts/`) sind aktuell noch nicht entschieden, abhaengig von der Pilotierung.
 
 ## Integration in bestehende Repo-Mechaniken
@@ -168,6 +180,7 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
 1. **Experiment-Struktur:** Bereits in `experiments/` vorhanden, gesteuert via `manifest.yml`, `method.md`, und Output in `evidence.jsonl`.
 2. **Evidence-Log (`evidence.jsonl`):** Bereits strikt definiert.
    Beispiel-Nutzung fuer den Agent-Layer (`event_type` muss aus dem erlaubten Vokabular stammen, z.B. `observation`, `measurement`, `decision`, `run`; Pflichtfelder wie `iteration` und `value` muessen gesetzt sein; `context` kann je nach Eintrag auch strukturiert als Objekt vorliegen):
+
    ```json
    {
       "event_type": "observation",
@@ -181,6 +194,7 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
       "timestamp": "2026-04-09T12:00:00Z"
    }
    ```
+
    Aktueller Validator-Stand (`scripts/docmeta/validate_schema.py`): Pflichtfelder + `event_type`-Allowlist werden erzwungen; `context` wird nicht auf einen konkreten Datentyp eingeschraenkt.
 3. **Decision Artifacts:** Bereits bindend in `decisions/` fuer architekturrelevante Entscheidungen.
 4. **Golden Example:** Ist eine bestehende Anforderung fuer Promotion von `experiments/` zu `catalog/`.
@@ -190,30 +204,36 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
 ## Roadmap
 
 ### Ausfuehrungsprinzip
+
 - Jede Phase beginnt mit Diagnose (Ist-Zustand erfassen)
 - Keine Implementierung ohne Target-Proof
 - Jede Aktion muss auf konkrete Dateien/Outputs referenzieren
 - Die Roadmap ist kein To-do, sondern ein kontrollierter Ausfuehrungsprozess
 
 ### Phase 1: Minimaler Kern (Command & Task Definitionen)
+
 - **Ziel:** Erstellung der ersten drei Commands und Validierung gegen bestehende `tasks.jsonl`.
 - **Stop-Kriterium:** Konkret festgelegte und belegte Zielpfade fuer Commands.
 
 ### Phase 2: Execution Engine
+
 - **Ziel:** Minimaler Ausfuehrungs-Runner; konkreter Einstiegspfad erst nach Pilotklaerung entscheiden.
 - **Stop-Kriterium:** Sprache entschieden, Minimalumfang (Runner kann genau 1 Task ausfuehren) entschieden.
 
 ### Phase 3: Integration & Erprobung
+
 - **Ziel:** Vollstaendiger Durchlauf einer Task.
 - **Stop-Kriterium:** Eindeutiger, nachweisbarer Erfolgsnachweis des gesamten Loops (read -> write -> validate).
 
 ## Aktivierung
 
 Diese Blaupause wird angewendet, wenn:
+
 - Agent Entwicklungsaufgaben ausfuehrt
 - Blueprint -> Implementation ueberfuehrt wird
 - PR-Erstellung automatisiert wird
 
 Nicht anzuwenden fuer:
+
 - reine Analyse
 - Dokumentationsaufgaben ohne Codeaenderung
