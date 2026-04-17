@@ -50,3 +50,21 @@ Spec-First-Prompting — das Voranstellen eines formalen Spezifikationsschritts 
 - ✅ Promotion-PR für Katalogeintrag
 - ✅ Adopted Prompt erstellen
 - ⬜ Follow-up: Test mit Claude 3.5 Sonnet
+
+## Interpretation Budget
+
+### Allowed Claims
+- Spec-First-Prompting verbessert Konsistenz und Vollständigkeit bei REST-API-Generierung im getesteten Setup (3 Tasks, GPT-4, 1 Person).
+- Der Spezifikationsschritt erzwingt eine Präzisierung, die Nacharbeit messbar reduziert (Faktor 5–6× weniger Zeilen bei Task 1).
+- OpenAPI eignet sich als Spec-Format für REST-API-Tasks.
+
+### Disallowed Claims
+- Spec-First ist generell überlegen – die Studie ist zu klein (3 Tasks, 1 Modell, 1 Person) für generelle Aussagen.
+- Das Ergebnis überträgt sich direkt auf andere Domänen (CLI, UI, non-REST-APIs) oder andere LLMs.
+- Spec-First ist immer die optimale Strategie – bei sehr einfachen Tasks kann der Overhead überwiegen.
+- Die Adoption ist ein Goldstandard-Befund – sie basiert auf rekonstruierter Evidenz (kein run_meta.json).
+
+### Evidence Basis
+- Direkt beobachtet: Fehlercodes, Validierungsregeln, Konsistenz von Response-Envelopes, Nacharbeit-Zeilenzahl, subjektive Flow-Scores (3 Tasks)
+- Indirekt gestützt: Bestätigt durch 2026-04-14_prompt-length-control (kausale Kontrollstudie)
+- Nicht getestet: Andere LLMs, andere Domänen, größere Task-Stichproben, Team-Settings
