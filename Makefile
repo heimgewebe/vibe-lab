@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics generate generate-epistemic-state test-docmeta help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics generate generate-epistemic-state help
 
 # Minimaler Guard-Stack
 validate: validate-schemas validate-execution-proof validate-relations validate-epistemics
@@ -42,10 +42,6 @@ generate-system-map:
 generate-epistemic-state:
 	@python3 scripts/docmeta/generate_epistemic_state.py
 
-test-docmeta:
-	@echo "🧪 Running docmeta unit tests..."
-	@python3 -m unittest discover -s scripts/docmeta -p 'test_*.py'
-
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
@@ -56,5 +52,4 @@ help:
 	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
-	@echo "  make test-docmeta       — Run docmeta unit tests (scripts/docmeta/test_*.py)"
 	@echo "  make help               — Show this help"

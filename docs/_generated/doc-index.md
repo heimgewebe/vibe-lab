@@ -14,6 +14,7 @@
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
+| `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | idea | exploratory |
 | `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
@@ -77,7 +78,6 @@
 | `experiments/2026-04-14_prompt-length-control/INITIAL.md` | Initiale Prompt-/Setup-Situation: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/failure_modes.md` | Failure Modes: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/method.md` | Experiment-Methode: Prompt-Length Control | testing | operative |
-| `experiments/2026-04-14_prompt-length-control/metrics.md` | Metrics: Prompt-Length Control | testing | operative |
 | `experiments/2026-04-14_prompt-length-control/results/result.md` | Ergebnisse: Prompt-Length Control | adopted | operative |
 | `experiments/2026-04-14_tdd-vibe/CONTEXT.md` | TDD-Vibe — Experiment-Kontext | testing | operative |
 | `experiments/2026-04-14_tdd-vibe/INITIAL.md` | TDD-Vibe — Initiale Situation | testing | operative |
