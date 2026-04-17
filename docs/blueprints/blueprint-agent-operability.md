@@ -111,14 +111,13 @@ Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `
   "task_id": "T1",
   "description": "Überschrift in docs/index.md korrigieren",
   "target_files": ["docs/index.md"],
-  "target_lines": "\n## Laufende Versuche",
+  "target_lines": "## Laufende Versuche",
   "change_type": "edit",
-  "exact_before": "\n## Laufende Versuche",
+  "exact_before": "## Laufende Versuche",
   "exact_after": "## Laufende Versuche",
   "forbidden_changes": ["new sections", "content restructuring"]
 }
 ```
-Hinweis: Das führende `\n` in `target_lines`/`exact_before` ist hier absichtlich gesetzt, um einen newline-sensitiven Matcher zu demonstrieren (Überschrift als Block-Anker statt Substring-Treffer).
 WICHTIG: Task ≠ allgemeine Beschreibung. Task = eng geschnittener, maschinenlesbarer Ausführungsvertrag.
 
 ### Geplanter Validierungslayer für Agent-Tasks
@@ -167,21 +166,17 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
 
 1. **Experiment-Struktur:** Bereits in `experiments/` vorhanden, gesteuert via `manifest.yml`, `method.md`, und Output in `evidence.jsonl`.
 2. **Evidence-Log (`evidence.jsonl`):** Bereits strikt definiert.
-   Beispiel-Nutzung für den Agent-Layer (`event_type` muss aus dem erlaubten Vokabular stammen, z.B. `observation`, `measurement`, `decision`, `run`; Pflichtfelder wie `iteration` und `value` müssen gesetzt sein; `context` kann je nach Eintrag auch strukturiert als Objekt vorliegen):
+   Beispiel-Nutzung für den Agent-Layer (`event_type` muss aus dem erlaubten Vokabular stammen, z.B. `observation`, `measurement`, `decision`, `run`; Pflichtfelder wie `iteration` und `value` müssen gesetzt sein):
    ```json
    {
-      "event_type": "observation",
-      "context": {
-        "target": "target_files",
-        "status": "submission_failed"
-      },
-      "metric": "failed_submissions",
-      "iteration": 1,
-      "value": 7,
-      "timestamp": "2026-04-09T12:00:00Z"
+     "event_type": "observation",
+     "context": "submission_failed in target target_files",
+     "metric": "failed_submissions",
+     "iteration": 1,
+     "value": 7,
+     "timestamp": "2026-04-09T12:00:00Z"
    }
    ```
-   Aktueller Validator-Stand (`scripts/docmeta/validate_schema.py`): Pflichtfelder + `event_type`-Allowlist werden erzwungen; `context` wird nicht auf einen konkreten Datentyp eingeschränkt.
 3. **Decision Artifacts:** Bereits bindend in `decisions/` für architekturrelevante Entscheidungen.
 4. **Golden Example:** Ist eine bestehende Anforderung für Promotion von `experiments/` zu `catalog/`.
 5. **Schema-Versionierung:** Wird via `contracts/` und `schemas/` für alle Kern-Artefakte validiert.
