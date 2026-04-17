@@ -8,19 +8,19 @@
 > Artefakt-Existenz ab. Kein Feld ist Autorfeld.
 >
 > **Interpretation Risk** und **Reconciliation State** sind *heuristisch abgeleitet*
-> und *indikativ* — sie zeigen, wo das Repo sich selbst noch nicht trauen sollte,
-> sind aber keine Wahrheitsgarantie. Siehe Legende für Details.
+> und *indikativ* — sie zeigen, wo das Repo seinen eigenen Claims epistemisch
+> misstrauen sollte. Keine Wahrheitsgarantie. Siehe Legende für Details.
 
 | Experiment | Status | Design Quality | Execution State | Evidence Strength | Interpretation Risk | Reconciliation |
 | ---------- | ------ | -------------- | --------------- | ----------------- | ------------------- | -------------- |
-| `2026-04-08_spec-first` | adopted | structured | reconstructed | experimental | low | none |
+| `2026-04-08_spec-first` | adopted | structured | reconstructed | experimental | medium | none |
 | `2026-04-11_yolo-vs-spec-first` | designed | structured | designed | anecdotal | medium | inferred |
 | `2026-04-12_spec-first-legacy` | testing | minimal | executed | experimental | low | none |
 | `2026-04-14_incremental-debuggability` | testing | structured | executed | experimental | low | none |
 | `2026-04-14_incremental-refinement` | inconclusive | structured | executed | experimental | low | none |
 | `2026-04-14_premortem-prompting` | testing | structured | executed | experimental | low | none |
 | `2026-04-14_prompt-length-control` | adopted | structured | executed | experimental | low | none |
-| `2026-04-14_tdd-vibe` | inconclusive | structured | executed | anecdotal | low | none |
+| `2026-04-14_tdd-vibe` | inconclusive | structured | executed | anecdotal | medium | none |
 | `2026-04-14_upfront-structuring` | testing | structured | executed | experimental | low | none |
 | `2026-04-14_upfront-structuring-replication` | testing | structured | executed | replicated | low | none |
 | `2026-04-15_agent-task-validity` | testing | partial | executed | experimental | low | active |
@@ -38,15 +38,23 @@ Abgeleitet aus Vorhandensein und Mindestsubstanz von `method.md` / `failure_mode
 
 **Evidence Strength** — Spiegel von `evidence_level` im Manifest.
 
-**Interpretation Risk** — heuristisch abgeleitet aus Evidenz-Existenz,
-Evidenz-Dichte und Konsistenz mit `execution_status`. *Indikativ, nicht wahrheitsgarantierend.*
-- **low** — `evidence.jsonl` vorhanden mit ≥ 3 gültigen Einträgen, `execution_status` konsistent
-- **medium** — Evidenz vorhanden aber dünn (< 3 Einträge) oder inkonsistent mit Execution-Claim
-- **high** — kein `evidence.jsonl` oder Datei leer (0 gültige JSON-Zeilen)
+**Interpretation Risk** — mehrdimensionale Heuristik, die signalisiert,
+wo das Repo seinen eigenen Claims epistemisch misstrauen sollte.
+*Indikativ, nicht wahrheitsgarantierend.* Kombiniert folgende Signale:
+- Evidence Sufficiency (Existenz und Dichte von `evidence.jsonl`)
+- Execution Quality (`execution_status` — `reconstructed` erhöht Risiko)
+- Evidence Level (`anecdotal` erhöht Risiko, `replicated` ist neutral)
+- Adoption Basis (`adopted` + `adoption_basis: reconstructed` erhöht Risiko)
+- Interpretation Budget (bei `adopted`: Fehlen des Blocks erhöht Risiko)
+
+Stufen:
+- **low** — keine Risiko-Signale aktiv
+- **medium** — mindestens ein Risiko-Signal aktiv
+- **high** — keine Evidenz vorhanden, oder mehrere Risiko-Signale
 - **unknown** — nicht bestimmbar (kein `experiment`-Block im Manifest)
 
-**Reconciliation** — heuristisch abgeleitet aus Artefakt-Existenz.
-*Indikativ, nicht wahrheitsgarantierend.*
+**Reconciliation** — heuristisch abgeleitet aus Artefakt-Existenz
+und Manifest-Inkonsistenz. *Indikativ, nicht wahrheitsgarantierend.*
 - **active** — explizites Reconciliation-Artefakt gefunden (`reconciliation.md`
   oder `iteration*-reconciliation.md` in `artifacts/`)
 - **inferred** — mögliche Inkonsistenz: `execution_status` ist `designed`/`prepared`,

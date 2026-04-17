@@ -10,20 +10,35 @@ Felder:
   - design_quality:        abgeleitet aus Existenz/Gehalt von method.md + failure_modes.md
   - execution_state:       Spiegel von experiment.execution_status
   - evidence_strength:     Spiegel von experiment.evidence_level
-  - interpretation_risk:   heuristisch abgeleitet aus Evidenz-Existenz und -Konsistenz
-  - reconciliation_state:  heuristisch abgeleitet aus Artefakt-Existenz und PR-Typ-Signalen
+  - interpretation_risk:   mehrdimensionale Heuristik (siehe unten)
+  - reconciliation_state:  heuristisch abgeleitet aus Artefakt-Existenz
 
 Heuristiken:
-  interpretation_risk — bewertet, wie belastbar die epistemische Grundlage eines
-  Experiments ist. Stufen:
-    low:     evidence.jsonl vorhanden, ≥ 3 Einträge, execution_status konsistent
-    medium:  evidence.jsonl vorhanden, aber dünn (< 3 Einträge) oder
-             execution_status nicht konsistent mit Evidenzlage
-    high:    kein evidence.jsonl oder Datei leer (0 Bytes / 0 gültige JSON-Zeilen)
-    unknown: nicht bestimmbar (kein experiment-Block im Manifest)
+
+  interpretation_risk — bewertet, wo das Repo seinen eigenen Claims epistemisch
+  misstrauen sollte. Kombiniert mehrere Signale:
+
+    Eingangssignale:
+      1. Evidence Sufficiency:  evidence.jsonl Existenz + Anzahl gültiger Einträge
+      2. Execution Quality:     execution_status — reconstructed ist epistemisch
+                                schwächer als executed/replicated
+      3. Evidence Level:        evidence_level — anecdotal ist schwächer als
+                                experimental/replicated
+      4. Adoption Basis:        bei adopted: adoption_basis=reconstructed erhöht Risiko
+      5. Interpretation Budget: bei adopted: Fehlen des Budget-Blocks in result.md
+                                erhöht Risiko
+
+    Stufen:
+      low:     hinreichende Evidenz, execution_status ∈ {executed, replicated},
+               evidence_level ≥ experimental, keine strukturellen Schwächen
+      medium:  Evidenz vorhanden, aber mindestens ein Risikosignal aktiv
+               (z.B. reconstructed, anecdotal, dünne Evidenz, adopted ohne Budget)
+      high:    keine Evidenz, oder schwerwiegende strukturelle Schwäche
+      unknown: nicht bestimmbar (kein experiment-Block im Manifest)
 
   reconciliation_state — erkennt heuristisch ob ein Experiment im
-  Reconciliation-Zustand ist:
+  Reconciliation-Zustand ist. Basiert ausschließlich auf Artefakt-Existenz
+  und Manifest-Inkonsistenz:
     active:   reconciliation.md oder iteration*-reconciliation.md im
               artifacts/-Verzeichnis vorhanden
     inferred: execution_status ist designed/prepared, aber evidence.jsonl
@@ -40,6 +55,7 @@ Benötigt: pip install pyyaml
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -60,11 +76,19 @@ OUTPUT = REPO_ROOT / "docs" / "_generated" / "epistemic-state.md"
 # liegen bei den Templates um 150–250 Bytes; alles darüber hat echten Inhalt.
 _CONTENT_THRESHOLD = 300
 
-# Mindestanzahl gültiger Evidence-Einträge für "low" interpretation_risk.
+# Mindestanzahl gültiger Evidence-Einträge für hinreichende Evidenz.
 _EVIDENCE_MIN_ENTRIES = 3
 
-# Execution-Statuswerte, die eine tatsächliche Ausführung implizieren.
-_EXECUTED_STATES = frozenset({"executed", "replicated", "reconstructed"})
+# Execution-Statuswerte, die eine tatsächliche artefaktbelegte Ausführung
+# implizieren und epistemisch gleichwertig behandelt werden.
+_STRONG_EXECUTION_STATES = frozenset({"executed", "replicated"})
+
+# Alle Execution-Statuswerte, die irgendeine Form von Ausführung beanspruchen
+# (einschließlich der epistemisch schwächeren Rekonstruktion).
+_ANY_EXECUTION_STATES = frozenset({"executed", "replicated", "reconstructed"})
+
+# Interpretation Budget: Marker im result.md
+_BUDGET_SECTION_RE = re.compile(r"^##\s+Interpretation Budget", re.MULTILINE)
 
 
 def load_manifest(manifest_path: Path) -> dict:
@@ -137,20 +161,53 @@ def _count_evidence_entries(evidence_path: Path) -> int:
     return count
 
 
+def _has_interpretation_budget(exp_dir: Path) -> bool:
+    """Prüft ob results/result.md einen ``## Interpretation Budget``-Block enthält.
+
+    Prüft nur Existenz des Abschnitts-Headers, nicht inhaltliche Qualität —
+    das ist Aufgabe von validate_interpretation_budget.py.
+    """
+    result_md = exp_dir / "results" / "result.md"
+    if not result_md.is_file():
+        return False
+    try:
+        text = result_md.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    return bool(_BUDGET_SECTION_RE.search(text))
+
+
 def derive_interpretation_risk(exp_dir: Path, exp: dict) -> str:
     """Leitet interpretation_risk heuristisch ab.
 
-    Heuristik (explizit dokumentiert — indikativ, nicht wahrheitsgarantierend):
+    Mehrdimensionale Heuristik — kombiniert fünf Signale zu einer Risikostufe.
+    Explizit dokumentiert, indikativ, nicht wahrheitsgarantierend.
 
-    1. Kein experiment-Block im Manifest → 'unknown'
-    2. evidence.jsonl nicht vorhanden oder 0 gültige Einträge → 'high'
-    3. evidence.jsonl vorhanden mit < _EVIDENCE_MIN_ENTRIES Einträgen
-       ODER execution_status impliziert Ausführung aber evidence ist dünn → 'medium'
-    4. evidence.jsonl vorhanden mit ≥ _EVIDENCE_MIN_ENTRIES Einträgen
-       UND execution_status konsistent → 'low'
+    Signale (jedes kann das Risiko erhöhen):
 
-    Konsistenz-Check: execution_status ∈ {executed, replicated, reconstructed}
-    erfordert vorhandene Evidenz für 'low'.
+      1. Evidence Sufficiency
+         - Keine Evidenz (0 gültige Einträge) → high
+         - Dünne Evidenz (< _EVIDENCE_MIN_ENTRIES) → +risk
+
+      2. Execution Quality
+         - reconstructed ist epistemisch schwächer als executed/replicated
+         - reconstructed → +risk
+
+      3. Evidence Level
+         - anecdotal ist schwächer als experimental/replicated
+         - anecdotal → +risk
+         - replicated kann Risiko senken
+
+      4. Adoption Basis
+         - adopted + adoption_basis=reconstructed → mindestens medium
+
+      5. Interpretation Budget (nur bei adopted)
+         - adopted ohne ## Interpretation Budget in result.md → +risk
+
+    Aggregation:
+      Risiko-Signale werden gezählt. Bei 0 Signalen → low, bei 1–2 → medium,
+      bei ≥ 3 oder bei fehlendem Evidence → high.
+      Sonderfälle: kein exp-Block → unknown.
     """
     if not exp:
         return "unknown"
@@ -158,29 +215,54 @@ def derive_interpretation_risk(exp_dir: Path, exp: dict) -> str:
     evidence_path = exp_dir / "results" / "evidence.jsonl"
     entry_count = _count_evidence_entries(evidence_path)
     execution_status = exp.get("execution_status", "")
+    evidence_level = exp.get("evidence_level", "")
+    status = exp.get("status", "")
+    adoption_basis = exp.get("adoption_basis", "")
 
-    # Kein Evidence → high risk
+    # Kein Evidence → high risk (stärkstes negatives Signal)
     if entry_count == 0:
         return "high"
 
-    # Konsistenz-Prüfung: executed-Status mit dünner Evidenz → medium
-    claims_execution = execution_status in _EXECUTED_STATES
-    is_thin = entry_count < _EVIDENCE_MIN_ENTRIES
+    # Risiko-Signale sammeln
+    risk_signals = 0
 
-    if is_thin:
+    # Signal 1: Dünne Evidenz
+    if entry_count < _EVIDENCE_MIN_ENTRIES:
+        risk_signals += 1
+
+    # Signal 2: Execution Quality — reconstructed ist epistemisch schwächer
+    if execution_status == "reconstructed":
+        risk_signals += 1
+
+    # Signal 3: Evidence Level — anecdotal ist schwächer
+    if evidence_level == "anecdotal":
+        risk_signals += 1
+
+    # Signal 4: Adoption Basis — adopted + reconstructed = epistemisch fragil
+    if status == "adopted" and adoption_basis == "reconstructed":
+        risk_signals += 1
+
+    # Signal 5: Interpretation Budget (nur bei adopted Experimenten)
+    if status == "adopted" and not _has_interpretation_budget(exp_dir):
+        risk_signals += 1
+
+    # Signal 6: Inkonsistenz — execution_status sagt "nicht ausgeführt" trotz Evidenz
+    if execution_status not in _ANY_EXECUTION_STATES and entry_count > 0:
+        risk_signals += 1
+
+    # Aggregation
+    if risk_signals >= 3:
+        return "high"
+    if risk_signals >= 1:
         return "medium"
-
-    # Inkonsistenz: Evidenz vorhanden aber Status sagt "nicht ausgeführt"
-    if not claims_execution and entry_count > 0:
-        return "medium"
-
     return "low"
 
 
 def derive_reconciliation_state(exp_dir: Path, exp: dict) -> str:
     """Leitet reconciliation_state heuristisch ab.
 
-    Heuristik (explizit dokumentiert — indikativ, nicht wahrheitsgarantierend):
+    Heuristik (explizit dokumentiert — indikativ, nicht wahrheitsgarantierend).
+    Basiert ausschließlich auf Artefakt-Existenz und Manifest-Inkonsistenz:
 
     1. 'active': Im artifacts/-Verzeichnis existiert eine Datei namens
        reconciliation.md oder passend zu iteration*-reconciliation.md.
@@ -239,9 +321,9 @@ def main() -> None:
         interpretation_risk = derive_interpretation_risk(exp_dir, exp)
         reconciliation_state = derive_reconciliation_state(exp_dir, exp)
 
-        # CI-Warnung: high interpretation_risk bei execution_status ∈ executed-Gruppe
+        # CI-Warnung: high interpretation_risk bei execution_status, die Ausführung beansprucht
         execution_status = exp.get("execution_status", "")
-        if interpretation_risk == "high" and execution_status in _EXECUTED_STATES:
+        if interpretation_risk == "high" and execution_status in _ANY_EXECUTION_STATES:
             print(
                 f"  ⚠️  {name}: interpretation_risk=high but "
                 f"execution_status={execution_status} — evidence may be missing or empty"
@@ -269,8 +351,8 @@ def main() -> None:
         "> Artefakt-Existenz ab. Kein Feld ist Autorfeld.",
         ">",
         "> **Interpretation Risk** und **Reconciliation State** sind *heuristisch abgeleitet*",
-        "> und *indikativ* — sie zeigen, wo das Repo sich selbst noch nicht trauen sollte,",
-        "> sind aber keine Wahrheitsgarantie. Siehe Legende für Details.",
+        "> und *indikativ* — sie zeigen, wo das Repo seinen eigenen Claims epistemisch",
+        "> misstrauen sollte. Keine Wahrheitsgarantie. Siehe Legende für Details.",
         "",
         "| Experiment | Status | Design Quality | Execution State | Evidence Strength | Interpretation Risk | Reconciliation |",
         "| ---------- | ------ | -------------- | --------------- | ----------------- | ------------------- | -------------- |",
@@ -304,15 +386,23 @@ def main() -> None:
         "",
         "**Evidence Strength** — Spiegel von `evidence_level` im Manifest.",
         "",
-        "**Interpretation Risk** — heuristisch abgeleitet aus Evidenz-Existenz,",
-        "Evidenz-Dichte und Konsistenz mit `execution_status`. *Indikativ, nicht wahrheitsgarantierend.*",
-        "- **low** — `evidence.jsonl` vorhanden mit ≥ 3 gültigen Einträgen, `execution_status` konsistent",
-        "- **medium** — Evidenz vorhanden aber dünn (< 3 Einträge) oder inkonsistent mit Execution-Claim",
-        "- **high** — kein `evidence.jsonl` oder Datei leer (0 gültige JSON-Zeilen)",
+        "**Interpretation Risk** — mehrdimensionale Heuristik, die signalisiert,",
+        "wo das Repo seinen eigenen Claims epistemisch misstrauen sollte.",
+        "*Indikativ, nicht wahrheitsgarantierend.* Kombiniert folgende Signale:",
+        "- Evidence Sufficiency (Existenz und Dichte von `evidence.jsonl`)",
+        "- Execution Quality (`execution_status` — `reconstructed` erhöht Risiko)",
+        "- Evidence Level (`anecdotal` erhöht Risiko, `replicated` ist neutral)",
+        "- Adoption Basis (`adopted` + `adoption_basis: reconstructed` erhöht Risiko)",
+        "- Interpretation Budget (bei `adopted`: Fehlen des Blocks erhöht Risiko)",
+        "",
+        "Stufen:",
+        "- **low** — keine Risiko-Signale aktiv",
+        "- **medium** — mindestens ein Risiko-Signal aktiv",
+        "- **high** — keine Evidenz vorhanden, oder mehrere Risiko-Signale",
         "- **unknown** — nicht bestimmbar (kein `experiment`-Block im Manifest)",
         "",
-        "**Reconciliation** — heuristisch abgeleitet aus Artefakt-Existenz.",
-        "*Indikativ, nicht wahrheitsgarantierend.*",
+        "**Reconciliation** — heuristisch abgeleitet aus Artefakt-Existenz",
+        "und Manifest-Inkonsistenz. *Indikativ, nicht wahrheitsgarantierend.*",
         "- **active** — explizites Reconciliation-Artefakt gefunden (`reconciliation.md`",
         "  oder `iteration*-reconciliation.md` in `artifacts/`)",
         "- **inferred** — mögliche Inkonsistenz: `execution_status` ist `designed`/`prepared`,",

@@ -181,17 +181,21 @@ Das Repository unterscheidet drei Schichten epistemischer Information:
 | Schicht | Was | Quelle | Beispiel |
 | ------- | --- | ------ | -------- |
 | **Daten (Evidence)** | Beobachtungen und Messungen | `evidence.jsonl` | `{"event_type":"observation", "metric":"rework_lines", "value":"23"}` |
-| **Bewertung (Interpretation Risk)** | Wie belastbar ist die Evidenzlage? | Abgeleitet in `epistemic-state.md` | `low` / `medium` / `high` / `unknown` |
+| **Bewertung (Interpretation Risk)** | Wo sollte das Repo seinen Claims misstrauen? | Abgeleitet in `epistemic-state.md` | `low` / `medium` / `high` / `unknown` |
 | **Zustand (Reconciliation)** | Ist das Experiment intern konsistent? | Abgeleitet in `epistemic-state.md` | `none` / `active` / `inferred` |
 
 ### Interpretation Risk
 
 Interpretation Risk wird *heuristisch abgeleitet* — nicht manuell gesetzt. Die Ableitung
-basiert auf:
+kombiniert mehrere bereits im Repo vorhandene epistemische Signale:
 
-- **Existenz** von `evidence.jsonl` (vorhanden vs. fehlend)
-- **Dichte** der Evidenz (Anzahl gültiger JSON-Einträge)
-- **Konsistenz** zwischen `execution_status` und Evidenzlage
+- **Evidence Sufficiency** — Existenz und Dichte von `evidence.jsonl`
+- **Execution Quality** — `execution_status` (`reconstructed` ist epistemisch schwächer
+  als `executed`/`replicated`)
+- **Evidence Level** — `evidence_level` (`anecdotal` erhöht Risiko)
+- **Adoption Basis** — bei `adopted`: `adoption_basis: reconstructed` erhöht Risiko
+- **Interpretation Budget** — bei `adopted`: Fehlen des Budget-Blocks in `result.md`
+  erhöht Risiko
 
 Die Stufen (`low`, `medium`, `high`, `unknown`) sind im
 [Epistemic State Report](../../docs/_generated/epistemic-state.md) dokumentiert.
@@ -204,10 +208,23 @@ falsch-negative Ergebnisse produzieren.
 
 - **Interpretation Budget** (→ `result.md`) ist ein *manuell verfasstes* Feld:
   es dokumentiert, welche Claims erlaubt sind und welche nicht.
+  Es ist claim-/deutungsnah.
 - **Interpretation Risk** ist ein *abgeleitetes* Feld:
-  es bewertet die Belastbarkeit der Evidenzlage automatisch.
+  es bewertet, wo strukturelle Schwächen auf epistemische Vorsicht hindeuten.
+  Es ist status-/artefaktnah.
 
 Beide sind komplementär: Budget setzt Grenzen, Risk zeigt Schwächen.
+Ein Experiment kann ein sauberes Budget haben und trotzdem `medium` Risk tragen
+(z.B. weil `reconstructed`). Umgekehrt kann ein Experiment ohne Budget `low` Risk
+haben, wenn es nicht `adopted` ist — dort greift das Budget-Signal nicht.
+
+### Mögliche zukünftige Trennung
+
+Die aktuelle Heuristik kombiniert daten-/artefaktnahe Signale (Evidence Sufficiency)
+mit status-/claimnahen Signalen (Execution Quality, Adoption Basis) in einem
+einzigen Feld. Eine spätere Trennung in zwei Felder (z.B. *Evidence Sufficiency* +
+*Interpretation Risk*) ist als Designoption dokumentiert, aber nicht Teil des
+aktuellen Standes.
 
 ---
 
