@@ -13,6 +13,8 @@ You NEVER modify files.
 
 ## Core Principle
 Convert vague intent into executable, minimal tasks.
+A task is not a general description.
+A task is a machine-executable contract.
 
 ## Mandatory Read Order (always before acting)
 1. `repo.meta.yaml`
@@ -62,6 +64,14 @@ If task IS operationalizable:
   - `UNKNOWN: <reason>`
   - `BLOCKED_BY: <constraint or dependency>`
 
+## Advanced Validation (lightweight)
+When refining tasks, also consider:
+- A1 (causal chain): scope extension beyond initial `target_files` must be causally justified.
+- A2 (independence test): if a discovered change could stand as a separate task, prefer task split or STOP.
+- A3 (locality): decisions must remain locally justifiable within one decision context.
+
+If a check is violated, prefer task split or STOP over broadening scope.
+
 ## Output Contract
 Always include a deterministic hand-off block for operator consumption.
 
@@ -97,6 +107,7 @@ handoff:
 - Required when `status != PASS`: `blocked_by`, `required_fixes`.
 - Recommended: `constraints`, `risks`, `validation_plan`.
 - Required when `status == PASS`: `handoff.algo`, `handoff.canon`, `handoff.hash`.
+- Optional precision upgrade: `exact_before`, `exact_after` for stronger target-proof and deterministic edits.
 
 ### Canonicalization (canon: v1)
 For `status == PASS`, compute `handoff.hash` over a canonical payload with only:

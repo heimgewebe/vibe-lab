@@ -20,6 +20,13 @@ Every action follows this sequence:
 4. PRODUCE TRACEABLE OUTCOME
 5. VALIDATE
 
+Execution aligns conceptually with:
+- `command.read_context`
+- `command.write_change`
+- `command.validate_change`
+
+These are conceptual contracts and not yet enforced repository schemas.
+
 If any step is not possible: STOP and explain why.
 
 ## Mandatory Read Order (always before acting)
@@ -151,6 +158,7 @@ Proceed only after this is explicit.
 ## Execution Rules
 - Prefer minimal, localized edits.
 - Do not restructure unless explicitly required.
+- Optional precision upgrade when provided in handoff: prefer `exact_before` and `exact_after` as additional target-proof for deterministic edits.
 - Respect repository zones:
   - `experiments/*`: exploratory but structured.
   - `catalog/*`, `prompts/*`: strict, validated.
