@@ -111,9 +111,9 @@ Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `
   "task_id": "T1",
   "description": "Überschrift in docs/index.md korrigieren",
   "target_files": ["docs/index.md"],
-  "target_lines": "n## Laufende Versuche",
+  "target_lines": "## Laufende Versuche",
   "change_type": "edit",
-  "exact_before": "n## Laufende Versuche",
+  "exact_before": "## Laufende Versuche",
   "exact_after": "## Laufende Versuche",
   "forbidden_changes": ["new sections", "content restructuring"]
 }
@@ -166,12 +166,14 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
 
 1. **Experiment-Struktur:** Bereits in `experiments/` vorhanden, gesteuert via `manifest.yml`, `method.md`, und Output in `evidence.jsonl`.
 2. **Evidence-Log (`evidence.jsonl`):** Bereits strikt definiert.
-   Beispiel-Nutzung für den Agent-Layer (WICHTIG: `context` und `metric` müssen Strings sein, und `event_type` stammt aus dem erlaubten Vokabular wie `run`, `observation`, `error`):
+   Beispiel-Nutzung für den Agent-Layer (`event_type` muss aus dem erlaubten Vokabular stammen, z.B. `observation`, `measurement`, `decision`, `run`; Pflichtfelder wie `iteration` und `value` müssen gesetzt sein):
    ```json
    {
-     "event_type": "error",
+     "event_type": "observation",
      "context": "submission_failed in target target_files",
-     "metric": "count: 7",
+     "metric": "failed_submissions",
+     "iteration": 1,
+     "value": 7,
      "timestamp": "2026-04-09T12:00:00Z"
    }
    ```
