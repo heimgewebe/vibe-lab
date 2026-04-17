@@ -38,3 +38,21 @@ Siehe `evidence.jsonl`:
 ## Nächste Schritte
 
 - Weiterer Ausbau der Cognitive-Modes-Theorie im Projekt.
+
+## Interpretation Budget
+
+### Allowed Claims
+- Der Leistungszugewinn von Spec-First beruht nicht auf Token-Volumen oder Chain-of-Thought-Proxy-Effekten (kausaler Kontrollbeweis für diesen Task und dieses Modell).
+- Der Wechsel in einen deklarativen/ausführbaren Modus (aktives Formulieren von Constraints) ist der kausale Mechanismus für den Spec-First-Effekt bei diesem Task.
+- Ramble-First (hohes Token-Volumen ohne Struktur) bringt keinen Vorteil gegenüber Code-First.
+
+### Disallowed Claims
+- Dieser Befund gilt für alle Task-Typen – er basiert auf einem einzelnen Text-Parsing-Task.
+- Die Theorie der Cognitive Modes ist damit vollständig bewiesen – sie ist gestützt, aber nicht erschöpfend getestet.
+- Das Ergebnis gilt modellübergreifend – nur ein LLM wurde getestet.
+- Token-Volumen ist niemals relevant – der Befund gilt spezifisch für die getestete Aufgabenklasse.
+
+### Evidence Basis
+- Direkt beobachtet: test_pass_rate für Code-First (0.8), Spec-First (1.0), Ramble-First (0.8) an einem Text-Parsing-Task
+- Indirekt gestützt: Konvergiert mit Beobachtungen aus 2026-04-08_spec-first und 2026-04-14_upfront-structuring
+- Nicht getestet: Andere Task-Typen, andere Modelle, multi-step Tasks, Teams
