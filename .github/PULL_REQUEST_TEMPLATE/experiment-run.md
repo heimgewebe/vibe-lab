@@ -3,8 +3,10 @@
 ### PR-Typ (genau einen auswählen)
 
 - [ ] experiment_run
-- [ ] experiment_review
 - [ ] experiment_reconciliation
+
+<!-- experiment_review ist kein eigenständiger PR-Typ in diesem Template;
+     Reviews ohne Reconciliation-Hintergrund nutzen keinen separaten Typ. -->
 
 ### Experiment
 - **Name:** <!-- Experiment-Name -->
@@ -31,7 +33,7 @@
 
 - [ ] Keine neuen Execution-Claims hinzugefügt
 - [ ] Manifest auf evidenztragenden Zustand zurückgeführt
-- [ ] Iteration korrekt als prepared markiert (falls nicht ausgeführt)
+- [ ] Dokumentierter Iterationsstand klar von evidenzgetragenem Ausführungsstand getrennt (falls nicht ausgeführt)
 
 ### Nächste Schritte
 <!-- Iterate? Promote? Archive? -->

@@ -19,14 +19,16 @@ tags:
 
 # Referenz: Manifest-Schema-Semantik
 
-> **Zweck:** Dokumentation der semantischen Bedeutung von Manifest-Feldern,
-> die über die reine Schema-Validierung hinausgeht.
+> **Zweck:** Dokumentation der semantischen Bedeutung von Manifest-Feldern.
 > Das technische Schema liegt unter `schemas/experiment.manifest.schema.json`.
-> Dieses Dokument beschreibt die **Bedeutung** und **Verwendungsregeln** der Felder.
+> Dieses Dokument ist in drei Ebenen gegliedert: aktueller Schema-Stand, ergänzende
+> Arbeitssemantik für Grenzfälle, und geplante Erweiterungen.
 
 ---
 
-## Kernfelder
+## Ebene 1: Aktueller Schema-Stand
+
+Felder, die das Schema heute tatsächlich trägt und validiert.
 
 ### iteration
 
@@ -36,12 +38,8 @@ iteration:
   minimum: 1
 ```
 
-**Semantik:** Aktuell vorbereitete Iteration des Experiments.
-
-- Wird bei jeder strukturellen Weiterentwicklung erhöht
-- Sagt **nichts** über den Ausführungszustand aus
-- Eine Iteration kann `prepared` sein, ohne je ausgeführt worden zu sein
-- Siehe [Experiment-Ontologie §1](../concepts/experiment-ontology.md#1-iteration)
+Im Schema: Integer ohne inhaltliche Einschränkung.
+Semantik ist im aktuellen Repo noch nicht vollständig formalisiert — siehe Ebene 2.
 
 ### execution_status
 
@@ -51,20 +49,18 @@ execution_status:
   enum: [designed, prepared, executed, replicated, reconstructed]
 ```
 
-**Semantik:** Durchführungsgrad der letzten evidenztragenden Iteration.
-
-- Orthogonal zu `status` (Lebenszyklus) und `evidence_level` (epistemisches Niveau)
+Im Schema: Enum mit 5 Werten. Schema-Constraints:
 - `executed` und `replicated` erfordern `execution_refs` mit mindestens einem Eintrag
-- `reconstructed` ist nur für Altbestand zulässig
+- `evidence_level = replicated` schließt `designed` und `prepared` aus
 - Muss den **tatsächlichen Ist-Zustand** widerspiegeln (vgl. AGENTS.md)
 
-| Wert            | Voraussetzung                                       |
+| Wert            | Schema-Constraint                                   |
 | --------------- | --------------------------------------------------- |
-| `designed`      | Nur Entwurf vorhanden                               |
-| `prepared`      | Setup angelegt, aber kein tatsächlicher Run          |
-| `executed`      | Run mit Spur in `execution_refs`                    |
-| `replicated`    | Unabhängig wiederholt, belastbar                    |
-| `reconstructed` | Historisch — nur für Altbestand                     |
+| `designed`      | Keine zusätzliche Pflicht                           |
+| `prepared`      | Keine zusätzliche Pflicht                           |
+| `executed`      | `execution_refs` mit ≥1 nicht-leerem Eintrag        |
+| `replicated`    | `execution_refs` mit ≥1 nicht-leerem Eintrag        |
+| `reconstructed` | Nur für Altbestand zulässig                         |
 
 ### execution_refs
 
@@ -76,11 +72,9 @@ execution_refs:
     minLength: 1
 ```
 
-**Semantik:** Spurverweise auf Ausführungsartefakte.
-
-- Pflicht bei `execution_status ∈ {executed, replicated}` (Schema erzwingt `minItems: 1` auf Array-Ebene und `minLength: 1` auf Item-Ebene — d.h. mindestens ein nicht-leerer Eintrag)
-- Typische Einträge: Pfade zu `evidence.jsonl`, `artifacts/<run-id>/run_meta.json`, Logs
-- Sollte bei `designed` oder `prepared` leer bleiben
+Pflicht bei `execution_status ∈ {executed, replicated}` (Schema erzwingt `minItems: 1`
+auf Array-Ebene und `minLength: 1` auf Item-Ebene — mindestens ein nicht-leerer Eintrag).
+Typische Inhalte: Pfade zu `evidence.jsonl`, `artifacts/<run-id>/run_meta.json`, Logs.
 
 ### evidence_level
 
@@ -90,11 +84,9 @@ evidence_level:
   enum: [anecdotal, experimental, replicated]
 ```
 
-**Semantik:** Epistemisches Niveau der vorliegenden Evidenz.
-
 - `anecdotal`: einzelne Beobachtung
 - `experimental`: kontrollierter Test
-- `replicated`: unabhängig reproduziert (erfordert `replicated_from`)
+- `replicated`: unabhängig reproduziert — erfordert `replicated_from`
 
 ### adoption_basis
 
@@ -104,52 +96,74 @@ adoption_basis:
   enum: [executed, replicated, reconstructed]
 ```
 
-**Semantik:** Execution-Grundlage, auf der eine Adoption fußt.
-
-- Pflicht bei `status: adopted`
-- Muss konsistent mit `execution_status` sein (Schema erzwingt Gleichheit)
-- `reconstructed` nur für Altbestand mit expliziter Legacy-Begründung
+Pflicht bei `status: adopted`. Schema erzwingt Konsistenz mit `execution_status`.
+`reconstructed` nur für Altbestand mit expliziter Legacy-Begründung.
 
 ---
 
-## Geplante Felder (Klasse B — erst dokumentieren, dann validieren)
+## Ebene 2: Ergänzende Arbeitssemantik
 
-Die folgenden Felder sind konzeptuell definiert, aber noch nicht im Schema formalisiert.
+Lesarten, die bei Grenzfällen helfen, aber aktuell nicht schema-erzwungen sind.
 
-### last_evidenced_iteration (geplant)
+### iteration — empfohlene Lesart
+
+Im aktuellen Arbeitsgebrauch sollte `iteration` als die aktuell vorbereitete
+Iterationsstufe gelesen werden. Das heißt: `iteration` kann erhöht werden, ohne dass
+eine Ausführung stattgefunden hat. `iteration` allein sagt nichts über den
+Ausführungszustand aus.
+
+### execution_status — Grenzfall-Lesart
+
+Im Grenzfall kann `execution_status` sinnvoll auf den letzten evidenztragenden Stand
+bezogen gelesen werden, wenn `iteration` zwischenzeitlich erhöht wurde.
+Diese Lesart ist derzeit noch nicht vollständig formalisiert.
+
+### prepared — konzeptuelle Einordnung
+
+`prepared` ist im Schema-Enum vorhanden, aber in `execution-bound-epistemics.md`
+noch nicht vollständig operationalisiert. Das engere Kernmodell dort arbeitet mit
+`designed`, `executed`, `replicated`, `reconstructed`. `prepared` sollte als
+strukturelle Zwischenstufe gelesen werden: Setup angelegt, aber kein evidenzgetragener
+Run vorhanden.
+
+---
+
+## Ebene 3: Geplante Felder
+
+Konzeptuelle Arbeitskategorien, die noch **nicht im Schema** vorhanden sind.
+Keine aktuelle Validator-Wahrheit — nur konzeptuelle Vorstufe.
+
+### last_evidenced_iteration (geplant, Klasse B)
 
 ```yaml
+# GEPLANT — nicht im aktuellen Schema
 last_evidenced_iteration:
   type: integer
   minimum: 1
 ```
 
-**Semantik:** Letzte Iteration, für die gültige Ausführung und Evidenz vorliegt.
+Letzte Iteration, für die gültige Ausführung und Evidenz vorliegt.
+Wenn `last_evidenced_iteration < iteration`, ist der Ausführungsstand der aktuellen
+Iteration nicht evidenzgetragen.
+Siehe [Konzept §1](../concepts/experiment-ontology.md#1-iteration)
 
-- Darf nie größer als `iteration` sein
-- Wenn `last_evidenced_iteration < iteration`, ist die aktuelle Iteration `prepared`
-- Siehe [Experiment-Ontologie §1](../concepts/experiment-ontology.md#1-iteration)
-
-### execution_scope (geplant)
+### execution_scope (geplant, Klasse B)
 
 ```yaml
+# GEPLANT — nicht im aktuellen Schema
 execution_scope:
   type: string
-  enum: [current_iteration_only, historical_execution, mixed]
+  # mögliche Werte: current_iteration_only | historical_execution | mixed
 ```
 
-**Semantik:** Zeitlicher Bezug der Ausführung.
-
-- `current_iteration_only`: Evidenz bezieht sich auf die aktuelle Iteration
-- `historical_execution`: Evidenz stammt aus früheren Iterationen
-- `mixed`: Evidenz aus verschiedenen Iterationen
-- Siehe [Experiment-Ontologie §4](../concepts/experiment-ontology.md#4-execution-scope)
+Zeitlicher Bezug der Ausführung. Kategorien sind konzeptuelle Vorschläge.
+Siehe [Konzept §4](../concepts/experiment-ontology.md#4-execution-scope)
 
 ---
 
 ## Validierungsregeln
 
-Die folgenden Regeln werden durch `make validate` geprüft:
+Die folgenden Regeln werden heute durch `make validate` geprüft:
 
 | Regel                                                            | Validator                       | Schwere  |
 | ---------------------------------------------------------------- | ------------------------------- | -------- |
@@ -158,13 +172,11 @@ Die folgenden Regeln werden durch `make validate` geprüft:
 | `status = adopted` → `adoption_basis` vorhanden                 | `validate_schema.py`            | FAIL     |
 | `execution_status ∈ {executed, replicated}` → `run_meta.json` vorhanden | `validate_execution_proof.py` | FAIL     |
 
-### Geplante Validierungsregeln (Klasse C — Vorbereitung)
+### Geplante Validierungsregeln (Klasse C)
 
-Die folgenden Regeln sind für eine spätere Einführung vorgesehen.
-Sie sollen zunächst als Warnungen, nicht als harte Fehler implementiert werden:
+Für eine spätere Einführung vorgesehen — zunächst als Warnungen, nicht als harte Fehler:
 
 | Regel                                                                   | Schwere (geplant) |
 | ----------------------------------------------------------------------- | ------------------ |
-| `iteration > last_evidenced_iteration` → Warnung                        | WARN               |
+| `iteration > last_evidenced_iteration` → Hinweis                        | WARN               |
 | `execution_status = executed` ohne passende `evidence.jsonl`            | FAIL               |
-| `experiment_reconciliation` PR mit neuer Execution                      | FAIL               |

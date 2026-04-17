@@ -23,13 +23,18 @@ Dies ist das operative Labor des Vibe-Labs. Hier werden Hypothesen getestet und 
 
 ## Iteration und Ausführung
 
-`iteration` und `execution_status` sind voneinander unabhängig:
+`iteration` und `execution_status` sind im aktuellen Repo nicht immer selbsterklärend.
+Für Grenzfälle gilt die ergänzende Begriffsklärung in
+[`docs/concepts/experiment-ontology.md`](../docs/concepts/experiment-ontology.md).
 
-- **iteration** ist die aktuell vorbereitete Iterationsstufe des Experiments. Sie kann erhöht werden, ohne dass eine Ausführung stattfindet.
-- **execution_status** beschreibt den tatsächlichen Durchführungsgrad. Er bezieht sich auf evidenzgetragene Runs, nicht auf Planungsfortschritte.
-- Die aktuelle Iteration kann `prepared` sein — das bedeutet, dass die Struktur bereit ist, aber keine Ausführung stattgefunden hat.
+Kurzfassung:
 
-→ Vollständige Definition: [Experiment-Ontologie](../docs/concepts/experiment-ontology.md)
+- **iteration** zählt die Iterationsstufen des Experiments und kann erhöht werden,
+  ohne dass eine Ausführung stattgefunden hat.
+- **execution_status** beschreibt den tatsächlichen Durchführungsgrad. Er bezieht
+  sich auf evidenzgetragene Runs, nicht auf Planungsfortschritte.
+- Wenn `iteration` erhöht wurde, aber noch kein neuer Run vorliegt, muss der
+  dokumentierte Ausführungsstand dies klar widerspiegeln.
 
 ## Reconciliation
 

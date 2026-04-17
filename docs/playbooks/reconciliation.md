@@ -31,7 +31,8 @@ Ein Experiment braucht Reconciliation, wenn mindestens eine der folgenden
 Bedingungen zutrifft:
 
 - **Iteration ohne Execution:** `iteration` wurde erhöht, ohne dass eine neue
-  Ausführung stattfand (aktuelle Iteration ist `prepared`, nicht `executed`)
+  Ausführung stattfand — der dokumentierte Ausführungsstand deckt die aktuelle
+  Iteration nicht ab
 - **Evidenz-Manifest-Widerspruch:** `evidence.jsonl` widerspricht den Claims
   im `manifest.yml` (z.B. `execution_status: executed` ohne passende Evidenz)
 - **Veraltete Decision:** `decision.yml` basiert auf einer Iteration, die nicht
@@ -62,13 +63,16 @@ Diese Regeln sind **harte Constraints** — keine Empfehlungen:
    `execution_status` darf nicht auf `executed` gesetzt werden,
    wenn keine passende `evidence.jsonl`-Einträge vorliegen.
 
-2. **Keine Evidenz löschen.**
-   Bestehende Einträge in `evidence.jsonl` sind unveränderlich.
-   Auch fehlerhafte Einträge bleiben erhalten (ggf. mit Korrekturnotiz ergänzen).
+2. **Keine Evidenz still löschen oder umschreiben.**
+   Bestehende Einträge in `evidence.jsonl` sollen nicht entfernt oder verändert werden.
+   Korrekturen werden durch ergänzende Einträge oder eine dokumentierte Reconciliation-Spur
+   sichtbar gemacht. Falls das Repo künftig explizite Korrekturmarkierungen in JSONL
+   einführt, gilt diese Regel entsprechend.
 
-3. **Keine Iteration „nachziehen" ohne Status.**
-   Wenn `iteration` erhöht wird, muss `execution_status` den tatsächlichen
-   Zustand widerspiegeln (typisch: `prepared` statt `executed`).
+3. **Keine Iteration „nachziehen" ohne Klarstellung.**
+   Wenn `iteration` erhöht wird, darf daraus kein unbelegter Execution-Claim entstehen.
+   Der dokumentierte Zustand muss klar machen, dass die neue Iteration nicht
+   evidenzgetragen ist.
 
 4. **Keine epistemische Aufwertung.**
    Reconciliation darf `evidence_level`, `status` oder `adoption_basis` nicht

@@ -1,5 +1,5 @@
 ---
-title: "Konzept: Experiment-Ontologie"
+title: "Konzept: Iteration, Execution Scope und Reconciliation"
 status: active
 canonicality: operative
 relations:
@@ -16,24 +16,26 @@ created: "2026-04-17"
 updated: "2026-04-17"
 author: "heimgewebe"
 tags:
-  - ontology
+  - concept
   - iteration
   - execution
   - reconciliation
 ---
 
-# Konzept: Experiment-Ontologie
+# Konzept: Iteration, Execution Scope und Reconciliation
 
-> **Zweck:** Kanonische Begriffsebene für Experimente im Vibe-Lab.
-> Dieses Dokument definiert die verbindlichen Begriffe, Zustände und Unterscheidungen,
-> die für die Arbeit mit Experimenten gelten. Es ist die Referenz für Agenten, Reviewer
-> und Autoren gleichermaßen.
+> **Zweck:** Ergänzende Begriffsklärung für offene semantische Kanten im Vibe-Lab.
+> Dieses Dokument präzisiert Begriffe, die im aktuellen Repo-Zustand noch nicht
+> vollständig schema-formalisiert sind oder im Arbeitsgebrauch häufig zu Mehrdeutigkeiten
+> führen. Es ergänzt `execution-bound-epistemics.md` und ist **kein neues Grundgesetz**.
 
 ---
 
 ## 1. Iteration
 
-**iteration** = aktuell vorbereitete Iteration des Experiments.
+Im hier vorgeschlagenen Arbeitsverständnis bezeichnet **`iteration`** die aktuell vorbereitete
+Iterationsstufe des Experiments. Das Repo modelliert diese Bedeutung derzeit noch nicht
+vollständig explizit — `iteration` ist im Schema ein Integer ohne semantische Einschränkung.
 
 Eine Iteration ist eine diskrete Stufe in der Entwicklung eines Experiments.
 Sie wird im Manifest als Integer geführt und bei jeder strukturellen Weiterentwicklung erhöht.
@@ -43,15 +45,15 @@ Sie wird im Manifest als Integer geführt und bei jeder strukturellen Weiterentw
 
 **last_evidenced_iteration** = letzte Iteration mit gültiger Ausführung und Evidenz.
 
-> *Dieses Feld existiert aktuell nicht im Schema.* Es wird hier als Konzept definiert
-> und soll in einem späteren Schema-Update formalisiert werden (Klasse B — erst
+> *Dieses Feld existiert aktuell nicht im Schema.* Es wird hier als konzeptuelle Arbeitskategorie
+> eingeführt und soll in einem späteren Schema-Update formalisiert werden (Klasse B — erst
 > dokumentieren, dann validieren).
 
 ### Zusammenhang
 
-| Feld                        | Bedeutung                                      | Schema-Status     |
+| Feld                        | Bedeutung (Arbeitsverständnis)                 | Schema-Status     |
 | --------------------------- | ---------------------------------------------- | ----------------- |
-| `iteration`                 | Aktuell vorbereitete Iteration                 | vorhanden         |
+| `iteration`                 | Aktuell vorbereitete Iteration                 | vorhanden (Integer, keine Semantik-Einschränkung) |
 | `last_evidenced_iteration`  | Letzte evidenzgetragene Iteration              | geplant (Klasse B)|
 
 ---
@@ -61,6 +63,8 @@ Sie wird im Manifest als Integer geführt und bei jeder strukturellen Weiterentw
 Der `execution_status` beschreibt den Durchführungsgrad eines Experiments.
 Er ist orthogonal zu `status` (Lebenszyklus) und `evidence_level` (epistemisches Niveau).
 
+Das aktuelle Schema kennt die folgenden Werte:
+
 | Zustand         | Bedeutung                                                                 |
 | --------------- | ------------------------------------------------------------------------- |
 | `designed`      | Nur Entwurf vorhanden, keine Vorbereitung                                |
@@ -69,16 +73,22 @@ Er ist orthogonal zu `status` (Lebenszyklus) und `evidence_level` (epistemisches
 | `replicated`    | Belastbar und unabhängig wiederholt                                       |
 | `reconstructed` | Historische Einstufung — nur für Altbestand zulässig (vgl. §11.1 in execution-bound-epistemics.md) |
 
+> **Hinweis zu `prepared`:** Dieser Wert ist im Schema-Enum vorhanden, aber in
+> `execution-bound-epistemics.md` noch nicht vollständig operationalisiert. Das engere
+> Kernmodell dort orientiert sich an `designed`, `executed`, `replicated`, `reconstructed`.
+> `prepared` sollte sinnvoll als Zwischenstufe gelesen werden, bis seine Semantik
+> vollständig formalisiert ist.
+
 ---
 
-## 3. Prepared vs Executed (kritische Unterscheidung)
+## 3. Prepared vs Executed (wichtige Grenzfallunterscheidung)
 
-Diese Unterscheidung ist zentral für die epistemische Integrität des Repos.
+Diese Unterscheidung ist für Reconciliation-Situationen relevant.
 
-### prepared
+### prepared (konzeptuelle Arbeitskategorie)
 
 - Experiment ist strukturell vorhanden (manifest.yml, method.md, etc.)
-- **Keine Evidenz** vorhanden
+- **Keine Evidenz** vorhanden oder Evidenz passt nicht zur aktuellen Iteration
 - `execution_refs` sollte leer sein
 - `evidence.jsonl` ist leer oder nicht vorhanden
 - Keine Execution-Claims zulässig
@@ -92,13 +102,15 @@ Diese Unterscheidung ist zentral für die epistemische Integrität des Repos.
 ### Grenzfall
 
 Wenn `iteration` erhöht wurde, aber keine neue Evidenz vorliegt:
-→ die aktuelle Iteration ist `prepared`, auch wenn frühere Iterationen `executed` waren.
+→ der dokumentierte Ausführungsstand der aktuellen Iteration muss klar von
+evidenzgetragenem Stand früherer Iterationen getrennt sein.
 
 ---
 
 ## 4. Execution Scope
 
 Der Execution Scope beschreibt, auf welchen Zeitraum sich die Ausführung eines Experiments bezieht.
+Dies ist eine **konzeptuelle Arbeitskategorie** — kein aktuelles Schema-Feld.
 
 | Scope                      | Bedeutung                                                         |
 | -------------------------- | ----------------------------------------------------------------- |
@@ -106,11 +118,12 @@ Der Execution Scope beschreibt, auf welchen Zeitraum sich die Ausführung eines 
 | `historical_execution`     | Evidenz stammt aus früheren Iterationen                           |
 | `mixed`                    | Evidenz aus verschiedenen Iterationen vorhanden                   |
 
-> *Dieses Feld existiert aktuell nicht im Schema.* Es wird hier als Konzept definiert
-> und soll bei Bedarf in einem späteren Schema-Update formalisiert werden (Klasse B).
+> *Dieses Feld existiert aktuell nicht im Schema.* Es wird hier als konzeptuelle
+> Arbeitskategorie eingeführt und soll bei Bedarf in einem späteren Schema-Update
+> formalisiert werden (Klasse B).
 
-**Regel:** Keine Freitext-Interpretation des Execution Scope. Nur die oben definierten
-Werte sind zulässig.
+Die oben genannten Werte sind als sinnvolle Kategorisierung gedacht; sie sind noch keine
+schema-erzwungene Einschränkung.
 
 ---
 
@@ -145,17 +158,19 @@ Konsistenz wiederherstellen — nicht Ergebnisse verbessern.
 
 ## 6. PR-Typen
 
-Pull Requests im Experiment-Kontext fallen in drei Kategorien:
+Pull Requests im Experiment-Kontext lassen sich sinnvoll in zwei operative Kategorien einteilen:
 
 | PR-Typ                        | Zweck                                                  | Evidenz-Erwartung          |
 | ----------------------------- | ------------------------------------------------------ | -------------------------- |
 | `experiment_run`              | Neue Ausführung oder Iteration eines Experiments       | Neue `evidence.jsonl`-Einträge erwartet |
-| `experiment_review`           | Review, Korrektur oder Ergänzung ohne neue Ausführung  | Keine neue Evidenz nötig   |
 | `experiment_reconciliation`   | Reparatur inkonsistenter Zustände                      | Keine neue Evidenz; bestehende darf nicht entfernt werden |
+
+> `experiment_review` (redaktionelle Korrekturen ohne Reconciliation-Hintergrund) ist
+> konzeptuell denkbar, aber aktuell kein eigenständiger Template-Typ.
 
 ### Regeln
 
-- Ein PR darf nur **einen** Typ haben
+- Ein PR sollte nur **einen** Typ haben
 - Der Typ wird im PR-Template deklariert
 - Bei `experiment_reconciliation` gelten die Reconciliation-Regeln (siehe Abschnitt 5)
 
@@ -168,5 +183,5 @@ Pull Requests im Experiment-Kontext fallen in drei Kategorien:
 Diese Frage ist bewusst offen gelassen. Sie entscheidet darüber, ob `iteration`
 langfristig im Schema verbleibt oder durch rein evidenzbasierte Zählung ersetzt wird.
 
-**Aktueller Konsens:** `iteration` bleibt als Planungsobjekt im Schema, wird aber
-durch die konzeptuelle Unterscheidung zu `last_evidenced_iteration` epistemisch entschärft.
+Das Arbeitsverständnis dieses Dokuments (Planungsobjekt) ist eine sinnvolle Auflösung
+der Ambiguität, aber keine bereits repo-kanonisierte Entscheidung.
