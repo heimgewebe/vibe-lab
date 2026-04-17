@@ -19,7 +19,7 @@ Heuristiken:
   misstrauen sollte. Kombiniert mehrere Signale:
 
     Eingangssignale:
-      1. Evidence Sufficiency:  evidence.jsonl Existenz + Anzahl gültiger Einträge
+      1. Evidence Sufficiency:  evidence.jsonl Existenz + Anzahl parsebarer JSON-Objekte
       2. Execution Quality:     execution_status — reconstructed ist epistemisch
                                 schwächer als executed/replicated
       3. Evidence Level:        evidence_level — anecdotal ist schwächer als
@@ -83,10 +83,6 @@ _EVIDENCE_MIN_ENTRIES = 3
 
 # Execution-Statuswerte, die eine tatsächliche artefaktbelegte Ausführung
 # implizieren und epistemisch gleichwertig behandelt werden.
-_STRONG_EXECUTION_STATES = frozenset({"executed", "replicated"})
-
-# Alle Execution-Statuswerte, die irgendeine Form von Ausführung beanspruchen
-# (einschließlich der epistemisch schwächeren Rekonstruktion).
 _ANY_EXECUTION_STATES = frozenset({"executed", "replicated", "reconstructed"})
 
 # Interpretation Budget: Marker im result.md
@@ -139,9 +135,10 @@ def derive_design_quality(exp_dir: Path) -> str:
 
 
 def _count_evidence_entries(evidence_path: Path) -> int:
-    """Zählt gültige JSON-Zeilen in einer evidence.jsonl-Datei.
+    """Zählt syntaktisch parsebare JSON-Objekte in einer evidence.jsonl-Datei.
 
-    Leere Zeilen und nicht-parseable Zeilen werden übersprungen.
+    Nur Zeilen, die nach json.loads() ein dict ergeben, werden gezählt.
+    Primitive Werte, Listen und nicht-parsebare Zeilen werden übersprungen.
     Gibt 0 zurück, wenn die Datei nicht existiert oder leer ist.
     """
     if not evidence_path.is_file():
@@ -156,8 +153,9 @@ def _count_evidence_entries(evidence_path: Path) -> int:
         if not stripped:
             continue
         try:
-            json.loads(stripped)
-            count += 1
+            parsed = json.loads(stripped)
+            if isinstance(parsed, dict):
+                count += 1
         except (json.JSONDecodeError, ValueError):
             pass
     return count
@@ -188,8 +186,8 @@ def derive_interpretation_risk(exp_dir: Path, exp: dict) -> str:
     Signale (jedes kann das Risiko erhöhen):
 
       1. Evidence Sufficiency
-         - Keine Evidenz (0 gültige Einträge) → high
-         - Dünne Evidenz (< _EVIDENCE_MIN_ENTRIES) → +risk
+         - Keine Evidenz (0 parsebare JSON-Objekte) → high
+         - Dünne Evidenz (< _EVIDENCE_MIN_ENTRIES JSON-Objekte) → +risk
 
       2. Execution Quality
          - reconstructed ist epistemisch schwächer als executed/replicated
@@ -198,7 +196,7 @@ def derive_interpretation_risk(exp_dir: Path, exp: dict) -> str:
       3. Evidence Level
          - anecdotal ist schwächer als experimental/replicated
          - anecdotal → +risk
-         - replicated kann Risiko senken
+         - experimental und replicated erzeugen kein zusätzliches Risikosignal
 
       4. Adoption Basis
          - adopted + adoption_basis=reconstructed → mindestens medium

@@ -198,7 +198,7 @@ kombiniert mehrere bereits im Repo vorhandene epistemische Signale:
   erhöht Risiko
 
 Die Stufen (`low`, `medium`, `high`, `unknown`) sind im
-[Epistemic State Report](../../docs/_generated/epistemic-state.md) dokumentiert.
+[Epistemic State Report](../_generated/epistemic-state.md) dokumentiert.
 
 **Wichtig:** Interpretation Risk ist *indikativ* — es zeigt, wo genauer hingeschaut
 werden sollte, nicht wo ein Fehler *ist*. Die Heuristik kann falsch-positive und

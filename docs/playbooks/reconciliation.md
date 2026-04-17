@@ -133,7 +133,7 @@ den dokumentierten Zustand mit dem tatsächlichen Zustand in Einklang zu bringen
 
 ## Sichtbarkeit im Epistemic State
 
-Der [Epistemic State Report](../../docs/_generated/epistemic-state.md) zeigt den
+Der [Epistemic State Report](../_generated/epistemic-state.md) zeigt den
 Reconciliation-Zustand jedes Experiments als abgeleitetes Feld:
 
 | Wert | Bedeutung |
