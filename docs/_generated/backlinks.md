@@ -60,6 +60,10 @@
 
 - ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
 
+## `experiments/2026-04-14_prompt-length-control/metrics.md`
+
+- ← `experiments/2026-04-14_prompt-length-control/method.md` (references)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)

@@ -2,6 +2,9 @@
 title: "Experiment-Methode: Prompt-Length Control"
 status: testing
 canonicality: operative
+relations:
+  - type: references
+    target: ./metrics.md
 ---
 
 # method.md — Experiment-Methode
@@ -25,7 +28,7 @@ Der Leistungszugewinn von Spec/Test-First beruht auf der *inhaltlichen Strukturi
 
 ### Erfolgskriterien
 
-Hypothese bestätigt, falls `Spec-First` signifikant besser abschneidet als `Ramble-First` und `Code-First`.
+Hypothese bestätigt im Einzelvergleich, falls `Spec-First` in den primären Metriken dieses Experiments klar besser abschneidet als `Ramble-First` und `Code-First` (keine statistische Absicherung, da einzelne Aufgabe ohne Wiederholung — siehe `metrics.md`).
 
 ## Confound Isolation
 

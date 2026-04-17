@@ -12,6 +12,13 @@ Messen, ob der Leistungsvorteil von Spec-First auf inhaltlicher Strukturierung (
 
 ## Primäre Metriken
 
+`test_pass_rate` und `edge_cases_missed` sind abstrakte Vergleichsmetriken; in `results/evidence.jsonl` sind sie pro Arm als konkrete Metriken mit Suffix operationalisiert:
+
+| Abstrakte Metrik | Operationalisierung pro Arm |
+|---|---|
+| `test_pass_rate` | `test_pass_rate_code_first`, `test_pass_rate_spec_first`, `test_pass_rate_ramble_first` |
+| `edge_cases_missed` | `edge_cases_missed_code_first`, `edge_cases_missed_spec_first`, `edge_cases_missed_ramble_first` |
+
 - **test_pass_rate** — Anteil bestandener Tests pro Arm (pytest exit code 0 = 1.0, sonst < 1.0)
 - **edge_cases_missed** — Anzahl nicht abgedeckter Randfälle im generierten Parser-Code
 
@@ -32,3 +39,7 @@ Keine. Das Experiment ist bewusst auf eine einzelne Vergleichsdimension beschrä
 - **Einzelne Iteration:** Kein Wiederholungslauf, keine statistische Absicherung.
 - **Keine Zeitmessung:** Ausführungsdauer pro Arm nicht erfasst.
 - **Kein Confound-Schutz gegen Ramble-Pivot:** Mögliches Risiko, dass das Modell den Essay-Text implizit zur Strukturierung nutzt (dokumentiert in `failure_modes.md`).
+
+---
+
+*Dieses metrics.md ist ein Phase-3-Artefakt (Blueprint v2 — Method Calibration) und gilt nur für dieses Experiment: `adoption_basis: executed`, explizites Vergleichsdesign (3 Arme). Es ist kein Pflichtmuster für alle Experimente.*
