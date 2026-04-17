@@ -118,6 +118,7 @@ Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `
   "forbidden_changes": ["new sections", "content restructuring"]
 }
 ```
+Hinweis: Das führende `\n` in `target_lines`/`exact_before` ist hier absichtlich gesetzt, um einen newline-sensitiven Matcher zu demonstrieren (Überschrift als Block-Anker statt Substring-Treffer).
 WICHTIG: Task ≠ allgemeine Beschreibung. Task = eng geschnittener, maschinenlesbarer Ausführungsvertrag.
 
 ### Geplanter Validierungslayer für Agent-Tasks
