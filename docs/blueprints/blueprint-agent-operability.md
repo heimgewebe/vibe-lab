@@ -177,9 +177,10 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
       "metric": "failed_submissions",
       "iteration": 1,
       "value": 7,
-     "timestamp": "2026-04-09T12:00:00Z"
+      "timestamp": "2026-04-09T12:00:00Z"
    }
    ```
+   Aktueller Validator-Stand (`scripts/docmeta/validate_schema.py`): Pflichtfelder + `event_type`-Allowlist werden erzwungen; `context` wird nicht auf einen konkreten Datentyp eingeschränkt.
 3. **Decision Artifacts:** Bereits bindend in `decisions/` für architekturrelevante Entscheidungen.
 4. **Golden Example:** Ist eine bestehende Anforderung für Promotion von `experiments/` zu `catalog/`.
 5. **Schema-Versionierung:** Wird via `contracts/` und `schemas/` für alle Kern-Artefakte validiert.
