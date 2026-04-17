@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics generate generate-epistemic-state prepare-commit check-generated-clean help
 
 # Minimaler Guard-Stack
 validate: validate-schemas validate-execution-proof validate-relations validate-epistemics
@@ -42,6 +42,18 @@ generate-system-map:
 generate-epistemic-state:
 	@python3 scripts/docmeta/generate_epistemic_state.py
 
+prepare-commit: generate validate check-generated-clean
+	@echo "✅ Repo vorbereitet."
+
+check-generated-clean:
+	@if ! git diff --quiet -- docs/_generated/ || [ -n "$$(git ls-files --others --exclude-standard docs/_generated/)" ]; then \
+		echo "❌ docs/_generated/ hat unstaged oder untracked Drift."; \
+		echo "Bitte ausführen:"; \
+		echo "  make generate"; \
+		echo "  git add docs/_generated/"; \
+		exit 1; \
+	fi
+
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
@@ -52,4 +64,6 @@ help:
 	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
+	@echo "  make prepare-commit     — Run generate + validate + generated-drift check"
+	@echo "  make check-generated-clean — Fail if docs/_generated/ has unstaged or untracked drift"
 	@echo "  make help               — Show this help"
