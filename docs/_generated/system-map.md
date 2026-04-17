@@ -13,7 +13,7 @@
 | `catalog/` | 📚 Bibliothek | 6 | 2 |
 | `contracts/` | 🏛️ Governance | 1 | 0 |
 | `decisions/` | 🏛️ Governance | 4 | 0 |
-| `docs/` | 📖 Dokumentation | 17 | 8 |
+| `docs/` | 📖 Dokumentation | 18 | 9 |
 | `docs/_generated/` | ⚙️ Generiert | 6 | 5 |
 | `experiments/` | 🔬 Labor | 282 | 87 |
 | `exports/` | ⚙️ Generiert | 2 | 0 |
@@ -21,7 +21,7 @@
 | `prompts/` | 📚 Bibliothek | 1 | 1 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
 | `schemas/` | 🏛️ Governance | 5 | 0 |
-| `scripts/` | 🔧 Tooling | 9 | 0 |
+| `scripts/` | 🔧 Tooling | 11 | 0 |
 | `tools/` | 🔧 Tooling | 1 | 0 |
 
-**Total:** 354 files in 16 directories
+**Total:** 357 files in 16 directories

@@ -41,3 +41,20 @@ canonicality: operative
 ## Nächste Schritte
 
 <!-- Iterate? Promote? Archive? -->
+
+## Interpretation Budget
+
+<!-- Pflicht bei adopted status / promotion-relevanten Experimenten (catalog/, prompts/). Muss ausgefüllt sein, bevor promoted wird. -->
+
+### Allowed Claims
+<!-- Was darf aus diesem Experiment direkt gefolgert werden? -->
+- ...
+
+### Disallowed Claims
+<!-- Was darf NICHT gefolgert werden? Grenzen, Übertragbarkeits-Einschränkungen. -->
+- ...
+
+### Evidence Basis
+- Direkt beobachtet:
+- Indirekt gestützt:
+- Nicht getestet:

@@ -2,6 +2,9 @@
 title: "Dokumentation — Navigation"
 status: active
 canonicality: navigation
+relations:
+  - type: references
+    target: policies/interpretation-budget.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -47,6 +50,13 @@ canonicality: navigation
 | [reference/](reference/)  | Nachschlagewerke und Referenzmaterial       |
 | [playbooks/](playbooks/)  | Triage-Runbooks und operative Anleitungen   |
 | [onboarding/](onboarding/) | Einstiegsdokumentation                     |
+
+## Policies (direkte Referenzen)
+
+| Dokument | Zweck |
+| -------- | ----- |
+| [policies/privacy-and-ethics.md](policies/privacy-and-ethics.md) | Datenschutz- und Ethikvorgaben |
+| [policies/interpretation-budget.md](policies/interpretation-budget.md) | Guard gegen Overclaiming bei Promotion |
 
 ## Diagnose (Generiert)
 

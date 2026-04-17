@@ -13,7 +13,9 @@
 - [ ] `CONTEXT.md` dokumentiert den Ausgangszustand
 - [ ] `INITIAL.md` dokumentiert die initiale Prompt-/Setup-Situation
 - [ ] `evidence.jsonl` enthält maschinenlesbare Beobachtungen
-- [ ] `results/decision.yml` enthält ein Verdict (`adopted`, `rejected`, `inconclusive`)
+- [ ] `results/decision.yml` nutzt gültige Decision-Type-Separation:
+	`result_assessment` → `confirms | refutes | mixed | inconclusive`
+	`adoption_assessment` → `adopt | reject | defer`
 - [ ] `results/result.md` fasst die Ergebnisse zusammen
 
 ### Ergebnis
