@@ -8,6 +8,10 @@ author: "unknown-agent"
 relations:
   - type: derived_from
     target: "../../experiments/2026-04-15_agent-task-validity/CONTEXT.md"
+  - type: references
+    target: "../concepts/execution-bound-epistemics.md"
+  - type: references
+    target: "../../experiments/2026-04-15_agent-task-validity/method.md"
 ---
 
 # Minimaler Agent-Operability-Kern
@@ -39,6 +43,8 @@ Nur Durchstich von Denken → Handeln
 
 WICHTIG:
 Diese Commands sind konzeptionelle Contracts und müssen perspektivisch in `contracts/` als maschinenvalidierbare Schemas formalisiert werden. Maßgeblich ist dabei JSON Schema als kanonisches Format, konsistent zur bestehenden Contract-Struktur und Validierung im Repo.
+
+Die heute im Repo belegte Vorstufe ist stark task-zentriert (z.B. `tasks.jsonl` mit engen Änderungsverträgen). Das hier vorgeschlagene Command-Modell ist ein möglicher zukünftiger Abstraktionsrahmen über diese Praxis, nicht bereits die native kanonische Struktur des Repos.
 
 Zweck: Strukturierte, überprüfbare Aktion basierend auf der etablierten `task.jsonl` Praxis.
 
@@ -103,13 +109,13 @@ Zweck: Strukturierte Arbeitssequenz. Nutzt die im Repo existierende Praxis aus `
 ```json
 {
   "task_id": "T1",
-  "description": "Formularübermittlung implementieren",
+  "description": "Überschrift in docs/index.md korrigieren",
   "target_files": ["docs/index.md"],
   "target_lines": "n## Laufende Versuche",
   "change_type": "edit",
   "exact_before": "n## Laufende Versuche",
   "exact_after": "## Laufende Versuche",
-  "forbidden_changes": ["content restructuring", "new sections"]
+  "forbidden_changes": ["new sections", "content restructuring"]
 }
 ```
 WICHTIG: Task ≠ allgemeine Beschreibung. Task = eng geschnittener, maschinenlesbarer Ausführungsvertrag.
@@ -152,7 +158,7 @@ Um Tasks sauber zu begrenzen, sind folgende Assertions als geplante Invarianten 
 Kein Planner-Agent in dieser Iteration erforderlich.
 
 ### Execution
-CLI (bewusst simpel, angebunden an etablierte Entrypoints): `tools/vibe-cli/ task run T1` oder `make run-task T1`
+Ein späterer CLI- oder Make-Einstiegspunkt ist denkbar; konkrete Entrypoints (wie `tools/vibe-cli/` oder `scripts/`) sind aktuell noch nicht entschieden, abhängig von der Pilotierung.
 
 ## Integration in bestehende Repo-Mechaniken
 
@@ -187,7 +193,7 @@ Der Agent-Operability-Kern implementiert keine neuen epistemischen Grundstruktur
 - **Stop-Kriterium:** Konkret festgelegte und belegte Zielpfade für Commands.
 
 ### Phase 2: Execution Engine
-- **Ziel:** Minimaler Ausführungs-Runner für Agenten-Tasks über `tools/vibe-cli/`.
+- **Ziel:** Minimaler Ausführungs-Runner; konkreter Einstiegspfad erst nach Pilotklärung entscheiden.
 - **Stop-Kriterium:** Sprache entschieden, Minimalumfang (Runner kann genau 1 Task ausführen) entschieden.
 
 ### Phase 3: Integration & Erprobung

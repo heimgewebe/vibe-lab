@@ -9,12 +9,17 @@
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
+## `docs/blueprints/blueprint-agent-operability.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/blueprints/blueprint-v2.md`
 
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (derived_from)
 
 ## `docs/concepts/execution-bound-epistemics.md`
 
+- ← `docs/blueprints/blueprint-agent-operability.md` (references)
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (derived_from)
 - ← `docs/concepts/experiment-ontology.md` (references)
@@ -67,6 +72,10 @@
 ## `experiments/2026-04-15_agent-task-validity/CONTEXT.md`
 
 - ← `docs/blueprints/blueprint-agent-operability.md` (derived_from)
+
+## `experiments/2026-04-15_agent-task-validity/method.md`
+
+- ← `docs/blueprints/blueprint-agent-operability.md` (references)
 
 ## `experiments/README.md`
 
