@@ -3,10 +3,11 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (82 found):
+Documents not referenced by any other document via frontmatter relations (83 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
+- `docs/blueprints/blueprint-agent-operability.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
