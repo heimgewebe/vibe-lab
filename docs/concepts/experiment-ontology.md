@@ -174,7 +174,44 @@ Pull Requests im Experiment-Kontext lassen sich in drei operative Kategorien ein
 
 ---
 
-## 7. Offene epistemische Frage
+## 7. Epistemische Ableitungsebenen
+
+Das Repository unterscheidet drei Schichten epistemischer Information:
+
+| Schicht | Was | Quelle | Beispiel |
+| ------- | --- | ------ | -------- |
+| **Daten (Evidence)** | Beobachtungen und Messungen | `evidence.jsonl` | `{"event_type":"observation", "metric":"rework_lines", "value":"23"}` |
+| **Bewertung (Interpretation Risk)** | Wie belastbar ist die Evidenzlage? | Abgeleitet in `epistemic-state.md` | `low` / `medium` / `high` / `unknown` |
+| **Zustand (Reconciliation)** | Ist das Experiment intern konsistent? | Abgeleitet in `epistemic-state.md` | `none` / `active` / `inferred` |
+
+### Interpretation Risk
+
+Interpretation Risk wird *heuristisch abgeleitet* — nicht manuell gesetzt. Die Ableitung
+basiert auf:
+
+- **Existenz** von `evidence.jsonl` (vorhanden vs. fehlend)
+- **Dichte** der Evidenz (Anzahl gültiger JSON-Einträge)
+- **Konsistenz** zwischen `execution_status` und Evidenzlage
+
+Die Stufen (`low`, `medium`, `high`, `unknown`) sind im
+[Epistemic State Report](../../docs/_generated/epistemic-state.md) dokumentiert.
+
+**Wichtig:** Interpretation Risk ist *indikativ* — es zeigt, wo genauer hingeschaut
+werden sollte, nicht wo ein Fehler *ist*. Die Heuristik kann falsch-positive und
+falsch-negative Ergebnisse produzieren.
+
+### Unterschied zu Interpretation Budget
+
+- **Interpretation Budget** (→ `result.md`) ist ein *manuell verfasstes* Feld:
+  es dokumentiert, welche Claims erlaubt sind und welche nicht.
+- **Interpretation Risk** ist ein *abgeleitetes* Feld:
+  es bewertet die Belastbarkeit der Evidenzlage automatisch.
+
+Beide sind komplementär: Budget setzt Grenzen, Risk zeigt Schwächen.
+
+---
+
+## 8. Offene epistemische Frage
 
 > Soll `iteration` ein Planungsobjekt oder ein Messobjekt sein?
 
