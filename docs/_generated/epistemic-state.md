@@ -6,24 +6,20 @@
 > Abgeleitete Sichtbarkeitsebene gem. [blueprint-v2.md](../blueprints/blueprint-v2.md).
 > Alle Felder sind **derived** — sie spiegeln Manifest-Daten oder leiten aus
 > Artefakt-Existenz ab. Kein Feld ist Autorfeld.
->
-> **Interpretation Risk** und **Reconciliation State** sind *heuristisch abgeleitet*
-> und *indikativ* — sie zeigen, wo das Repo seinen eigenen Claims epistemisch
-> misstrauen sollte. Keine Wahrheitsgarantie. Siehe Legende für Details.
 
-| Experiment | Status | Design Quality | Execution State | Evidence Strength | Interpretation Risk | Reconciliation |
-| ---------- | ------ | -------------- | --------------- | ----------------- | ------------------- | -------------- |
-| `2026-04-08_spec-first` | adopted | structured | reconstructed | experimental | medium | none |
-| `2026-04-11_yolo-vs-spec-first` | designed | structured | designed | anecdotal | medium | inferred |
-| `2026-04-12_spec-first-legacy` | testing | minimal | executed | experimental | low | none |
-| `2026-04-14_incremental-debuggability` | testing | structured | executed | experimental | low | none |
-| `2026-04-14_incremental-refinement` | inconclusive | structured | executed | experimental | low | none |
-| `2026-04-14_premortem-prompting` | testing | structured | executed | experimental | low | none |
-| `2026-04-14_prompt-length-control` | adopted | structured | executed | experimental | low | none |
-| `2026-04-14_tdd-vibe` | inconclusive | structured | executed | anecdotal | medium | none |
-| `2026-04-14_upfront-structuring` | testing | structured | executed | experimental | low | none |
-| `2026-04-14_upfront-structuring-replication` | testing | structured | executed | replicated | low | none |
-| `2026-04-15_agent-task-validity` | testing | partial | executed | experimental | low | active |
+| Experiment | Status | Design Quality | Execution State | Evidence Strength | Interpretation Risk |
+| ---------- | ------ | -------------- | --------------- | ----------------- | ------------------- |
+| `2026-04-08_spec-first` | adopted | structured | reconstructed | experimental | unassessed |
+| `2026-04-11_yolo-vs-spec-first` | designed | structured | designed | anecdotal | unassessed |
+| `2026-04-12_spec-first-legacy` | testing | minimal | executed | experimental | unassessed |
+| `2026-04-14_incremental-debuggability` | testing | structured | executed | experimental | unassessed |
+| `2026-04-14_incremental-refinement` | inconclusive | structured | executed | experimental | unassessed |
+| `2026-04-14_premortem-prompting` | testing | structured | executed | experimental | unassessed |
+| `2026-04-14_prompt-length-control` | adopted | structured | executed | experimental | unassessed |
+| `2026-04-14_tdd-vibe` | inconclusive | structured | executed | anecdotal | unassessed |
+| `2026-04-14_upfront-structuring` | testing | structured | executed | experimental | unassessed |
+| `2026-04-14_upfront-structuring-replication` | testing | structured | executed | replicated | unassessed |
+| `2026-04-15_agent-task-validity` | testing | partial | executed | experimental | unassessed |
 
 ## Legende
 
@@ -38,25 +34,5 @@ Abgeleitet aus Vorhandensein und Mindestsubstanz von `method.md` / `failure_mode
 
 **Evidence Strength** — Spiegel von `evidence_level` im Manifest.
 
-**Interpretation Risk** — mehrdimensionale Heuristik, die signalisiert,
-wo das Repo seinen eigenen Claims epistemisch misstrauen sollte.
-*Indikativ, nicht wahrheitsgarantierend.* Kombiniert folgende Signale:
-- Evidence Sufficiency (Existenz und Dichte von `evidence.jsonl`)
-- Execution Quality (`execution_status` — `reconstructed` erhöht Risiko)
-- Evidence Level (`anecdotal` erhöht Risiko, `replicated` ist neutral)
-- Adoption Basis (`adopted` + `adoption_basis: reconstructed` erhöht Risiko)
-- Interpretation Budget (bei `adopted`: Fehlen des Blocks erhöht Risiko)
-
-Stufen:
-- **low** — keine Risiko-Signale aktiv
-- **medium** — mindestens ein Risiko-Signal aktiv
-- **high** — keine Evidenz vorhanden, oder mehrere Risiko-Signale
-- **unknown** — nicht bestimmbar (kein `experiment`-Block im Manifest)
-
-**Reconciliation** — heuristisch abgeleitet aus Artefakt-Existenz
-und Manifest-Inkonsistenz. *Indikativ, nicht wahrheitsgarantierend.*
-- **active** — explizites Reconciliation-Artefakt gefunden (`reconciliation.md`
-  oder `iteration*-reconciliation.md` in `artifacts/`)
-- **inferred** — mögliche Inkonsistenz: `execution_status` ist `designed`/`prepared`,
-  aber `evidence.jsonl` enthält Einträge
-- **none** — kein Reconciliation-Signal erkannt
+**Interpretation Risk** — abgeleitet aus `interpretation_budget` (Phase 2).
+Solange Phase 2 nicht umgesetzt ist: `unassessed`.

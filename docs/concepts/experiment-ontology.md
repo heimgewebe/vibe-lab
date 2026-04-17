@@ -174,61 +174,7 @@ Pull Requests im Experiment-Kontext lassen sich in drei operative Kategorien ein
 
 ---
 
-## 7. Epistemische Ableitungsebenen
-
-Das Repository unterscheidet drei Schichten epistemischer Information:
-
-| Schicht | Was | Quelle | Beispiel |
-| ------- | --- | ------ | -------- |
-| **Daten (Evidence)** | Beobachtungen und Messungen | `evidence.jsonl` | `{"event_type":"observation", "metric":"rework_lines", "value":"23"}` |
-| **Bewertung (Interpretation Risk)** | Wo sollte das Repo seinen Claims misstrauen? | Abgeleitet in `epistemic-state.md` | `low` / `medium` / `high` / `unknown` |
-| **Zustand (Reconciliation)** | Ist das Experiment intern konsistent? | Abgeleitet in `epistemic-state.md` | `none` / `active` / `inferred` |
-
-### Interpretation Risk
-
-Interpretation Risk wird *heuristisch abgeleitet* — nicht manuell gesetzt. Die Ableitung
-kombiniert mehrere bereits im Repo vorhandene epistemische Signale:
-
-- **Evidence Sufficiency** — Existenz und Dichte von `evidence.jsonl`
-- **Execution Quality** — `execution_status` (`reconstructed` ist epistemisch schwächer
-  als `executed`/`replicated`)
-- **Evidence Level** — `evidence_level` (`anecdotal` erhöht Risiko)
-- **Adoption Basis** — bei `adopted`: `adoption_basis: reconstructed` erhöht Risiko
-- **Interpretation Budget** — bei `adopted`: Fehlen des Budget-Blocks in `result.md`
-  erhöht Risiko
-
-Die Stufen (`low`, `medium`, `high`, `unknown`) sind im
-[Epistemic State Report](../_generated/epistemic-state.md) dokumentiert.
-
-**Wichtig:** Interpretation Risk ist *indikativ* — es zeigt, wo genauer hingeschaut
-werden sollte, nicht wo ein Fehler *ist*. Die Heuristik kann falsch-positive und
-falsch-negative Ergebnisse produzieren.
-
-### Unterschied zu Interpretation Budget
-
-- **Interpretation Budget** (→ `result.md`) ist ein *manuell verfasstes* Feld:
-  es dokumentiert, welche Claims erlaubt sind und welche nicht.
-  Es ist claim-/deutungsnah.
-- **Interpretation Risk** ist ein *abgeleitetes* Feld:
-  es bewertet, wo strukturelle Schwächen auf epistemische Vorsicht hindeuten.
-  Es ist status-/artefaktnah.
-
-Beide sind komplementär: Budget setzt Grenzen, Risk zeigt Schwächen.
-Ein Experiment kann ein sauberes Budget haben und trotzdem `medium` Risk tragen
-(z.B. weil `reconstructed`). Umgekehrt kann ein Experiment ohne Budget `low` Risk
-haben, wenn es nicht `adopted` ist — dort greift das Budget-Signal nicht.
-
-### Mögliche zukünftige Trennung
-
-Die aktuelle Heuristik kombiniert daten-/artefaktnahe Signale (Evidence Sufficiency)
-mit status-/claimnahen Signalen (Execution Quality, Adoption Basis) in einem
-einzigen Feld. Eine spätere Trennung in zwei Felder (z.B. *Evidence Sufficiency* +
-*Interpretation Risk*) ist als Designoption dokumentiert, aber nicht Teil des
-aktuellen Standes.
-
----
-
-## 8. Offene epistemische Frage
+## 7. Offene epistemische Frage
 
 > Soll `iteration` ein Planungsobjekt oder ein Messobjekt sein?
 

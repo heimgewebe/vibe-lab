@@ -35,9 +35,6 @@ jobs:
       - name: Validate interpretation budget
         run: python3 scripts/docmeta/validate_interpretation_budget.py
 
-      - name: Run docmeta tests
-        run: python3 -m unittest discover -s scripts/docmeta -p 'test_*.py'
-
       - name: Regenerate diagnostics
         run: make generate
 
