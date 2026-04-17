@@ -44,7 +44,7 @@ canonicality: operative
 
 ## Interpretation Budget
 
-<!-- Pflichtfeld bei Promotion (catalog/, prompts/). Muss ausgefüllt sein, bevor ein adopted Experiment promotet wird. -->
+<!-- Pflicht bei adopted status / promotion-relevanten Experimenten (catalog/, prompts/). Muss ausgefüllt sein, bevor promoted wird. -->
 
 ### Allowed Claims
 <!-- Was darf aus diesem Experiment direkt gefolgert werden? -->

@@ -14,6 +14,8 @@ Ein Experiment erzeugt Daten. Diese Daten erlauben bestimmte Schlüsse — und s
 
 **Pflicht:** Jedes Experiment mit `status: adopted` muss einen ausgefüllten `## Interpretation Budget` Block in `results/result.md` haben, bevor es in `catalog/` oder `prompts/` promotet werden darf.
 
+**Klarstellung zur Guard-Kopplung:** Der Guard hängt aktuell an `manifest.yml` → `experiment.status=adopted`, weil Adoption im Repo-Modell nicht in allen Fällen als `adoption_assessment` in `results/decision.yml` vorliegt (z. B. historische oder rekonstruierte Adoptionen).
+
 ## Wann ist der Block Pflicht?
 
 | Experiment-Status | Pflicht? |
