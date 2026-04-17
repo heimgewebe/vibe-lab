@@ -1,6 +1,6 @@
 ## Experiment Run
 
-### PR-Typ
+### PR-Typ (genau einen auswählen)
 
 - [ ] experiment_run
 - [ ] experiment_review

@@ -78,7 +78,7 @@ execution_refs:
 
 **Semantik:** Spurverweise auf Ausführungsartefakte.
 
-- Pflicht bei `execution_status ∈ {executed, replicated}` (Schema erzwingt `minItems: 1`)
+- Pflicht bei `execution_status ∈ {executed, replicated}` (Schema erzwingt `minItems: 1` auf Array-Ebene und `minLength: 1` auf Item-Ebene — d.h. mindestens ein nicht-leerer Eintrag)
 - Typische Einträge: Pfade zu `evidence.jsonl`, `artifacts/<run-id>/run_meta.json`, Logs
 - Sollte bei `designed` oder `prepared` leer bleiben
 
