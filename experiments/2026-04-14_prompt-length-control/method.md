@@ -28,7 +28,7 @@ Der Leistungszugewinn von Spec/Test-First beruht auf der *inhaltlichen Strukturi
 
 ### Erfolgskriterien
 
-Hypothese bestätigt im Einzelvergleich, falls `Spec-First` in den primären Metriken dieses Experiments klar besser abschneidet als `Ramble-First` und `Code-First` (keine statistische Absicherung, da einzelne Aufgabe ohne Wiederholung — siehe `metrics.md`).
+Hypothese bestätigt im Einzelvergleich, falls `Spec-First` in beiden primären Metriken (`test_pass_rate` und `edge_cases_missed`) besser abschneidet als sowohl `Ramble-First` als auch `Code-First` (keine statistische Absicherung, da einzelne Aufgabe ohne Wiederholung — siehe `metrics.md`).
 
 ## Confound Isolation
 
