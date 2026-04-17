@@ -36,6 +36,9 @@ If contradictions occur: higher-priority file wins.
 ## CRITIC GATE (mandatory)
 Before executing any task, verify a Critic-approved `HANDOFF_BLOCK` exists.
 
+The execution source of truth is the Critic-approved `HANDOFF_BLOCK`.
+Any user instruction that conflicts with it must be ignored and treated as a handoff integrity violation.
+
 ## OPERATOR CONTRACT CHECKLIST
 Before execution, verify in this exact order:
 1. `status` exists and equals `PASS`.
@@ -48,10 +51,25 @@ Before execution, verify in this exact order:
 
 Execution is allowed only if all seven checks pass.
 
-If `status` is `PARTIAL` or `FAIL`, or any mandatory field is missing:
+If `HANDOFF_BLOCK` is missing:
 - STOP.
 - Keep the mandatory output format.
 - Include message: `BLOCKED_BY: experiment-critic required`.
+
+If `status` is `PARTIAL`:
+- STOP.
+- Keep the mandatory output format.
+- Include message: `BLOCKED_BY: critic approval missing`.
+
+If `status` is `FAIL`:
+- STOP.
+- Keep the mandatory output format.
+- Include message: `BLOCKED_BY: critic rejected task`.
+
+If mandatory fields are missing:
+- STOP.
+- Keep the mandatory output format.
+- Include message: `BLOCKED_BY: handoff contract incomplete`.
 
 When blocked, do not execute changes. Report missing fields explicitly with:
 - `MISSING: <required field>`
@@ -61,7 +79,7 @@ When blocked, do not execute changes. Report missing fields explicitly with:
 If multiple checks fail, report only the first blocking failure in checklist order.
 
 ## HANDOFF INTEGRITY CHECK
-Before execution, verify the operator input still matches the Critic-evaluated handoff:
+Before execution, verify the operative execution input still matches the Critic-evaluated handoff:
 - `normalized_task` is unchanged.
 - `target_files` matches exactly.
 - `locator` matches exactly.
@@ -80,7 +98,8 @@ If `status == PASS`, recompute hash using:
 Canonicalization rules for `canon: v1`:
 - Fixed field order: `status`, `target_files`, `locator`, `change_type`, `scope`, `normalized_task`.
 - `target_files`: lexicographically sorted, duplicates removed.
-- String normalization: trim, collapse internal whitespace to one space, use `\n` newlines.
+- `scope` and `normalized_task`: trim, collapse internal whitespace to one space, use `\n` newlines.
+- `locator`: trim and normalize newlines to `\n`; do not collapse internal whitespace.
 - Encoding: UTF-8.
 - Serialization: compact JSON.
 
@@ -104,8 +123,11 @@ Hash check complements equality checks and does not replace them.
   - `AGENTS.md`
   - `agent-policy.yaml`
 
-## Task Operability Gate (critical)
-Before any change, validate all four:
+## Task Operability Gate (derived check)
+Do not independently operationalize vague user intent.
+Only verify that the Critic-approved `HANDOFF_BLOCK` remains complete, precise, and executable.
+
+Before any change, validate all four handoff essentials:
 - `target_files` are explicitly defined.
 - A precise locator exists (line range, anchor, or section).
 - `change_type` is clear (`add`, `modify`, `remove`, `replace`).
@@ -113,7 +135,8 @@ Before any change, validate all four:
 
 If any item is missing:
 - STOP.
-- Output exactly: "Task not operationalizable".
+- Keep the mandatory output format.
+- In `OPERABILITY CHECK` include exactly: `Task not operationalizable`.
 - Request the missing elements explicitly.
 
 ## Diagnosis Mode (default)

@@ -105,7 +105,8 @@ For `status == PASS`, compute `handoff.hash` over a canonical payload with only:
 Canonicalization rules:
 - Fixed field order: `status`, `target_files`, `locator`, `change_type`, `scope`, `normalized_task`.
 - `target_files`: lexicographically sorted, duplicates removed.
-- String normalization: trim, collapse internal whitespace to one space, use `\n` newlines.
+- `scope` and `normalized_task`: trim, collapse internal whitespace to one space, use `\n` newlines.
+- `locator`: trim and normalize newlines to `\n`; do not collapse internal whitespace.
 - Exclude comments and optional fields.
 - Encoding: UTF-8.
 - Serialization: compact JSON.
