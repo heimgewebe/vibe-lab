@@ -10,7 +10,7 @@ canonicality: operative
 
 Das Interpretation Budget verhindert Overclaiming: Es erzwingt eine explizite Trennung zwischen *was beobachtet wurde* und *was daraus gefolgert werden darf*.
 
-Ein Experiment erzeugt Daten. Diese Daten erlauben bestimmte Schlüsse — und schließen andere aus. Ohne explizite Grenzziehung wandern Befunde stillen schritts von „unter diesen Bedingungen beobachtet" zu „generell wahr". Dieser Validator unterbricht diesen Drift an der einzig sinnvollen Stelle: beim Übergang zur Promotion.
+Ein Experiment erzeugt Daten. Diese Daten erlauben bestimmte Schlüsse — und schließen andere aus. Ohne explizite Grenzziehung wandern Befunde stillen Schrittes von „unter diesen Bedingungen beobachtet" zu „generell wahr". Dieser Validator unterbricht diesen Drift an der einzig sinnvollen Stelle: beim Übergang zur Promotion.
 
 **Pflicht:** Jedes Experiment mit `status: adopted` muss einen ausgefüllten `## Interpretation Budget` Block in `results/result.md` haben, bevor es in `catalog/` oder `prompts/` promotet werden darf.
 
