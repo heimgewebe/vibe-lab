@@ -30,11 +30,17 @@ EXPERIMENTS_DIR = REPO_ROOT / "experiments"
 
 # Marker-Strings
 BUDGET_SECTION_PATTERN = re.compile(r"^##\s+Interpretation Budget", re.MULTILINE)
+BUDGET_SECTION_EXTRACT_PATTERN = re.compile(
+    r"^##\s+Interpretation Budget\s*\n(.*?)(?=^##\s+|\Z)",
+    re.MULTILINE | re.DOTALL,
+)
 ALLOWED_CLAIMS_PATTERN = re.compile(
-    r"###\s+Allowed Claims\s*\n(.*?)(?=###|\Z)", re.DOTALL
+    r"###\s+Allowed Claims\s*\n(.*?)(?=^###\s+|^##\s+|\Z)",
+    re.MULTILINE | re.DOTALL,
 )
 DISALLOWED_CLAIMS_PATTERN = re.compile(
-    r"###\s+Disallowed Claims\s*\n(.*?)(?=###|\Z)", re.DOTALL
+    r"###\s+Disallowed Claims\s*\n(.*?)(?=^###\s+|^##\s+|\Z)",
+    re.MULTILINE | re.DOTALL,
 )
 
 # Platzhalter-Werte, die als "leer" gelten
@@ -51,6 +57,14 @@ def _extract_claims(block_text: str) -> list[str]:
             if value and value not in PLACEHOLDER_VALUES and value != "...":
                 claims.append(value)
     return claims
+
+
+def _extract_budget_section(text: str) -> str | None:
+    """Extrahiert ausschließlich den Inhalt von ``## Interpretation Budget``."""
+    match = BUDGET_SECTION_EXTRACT_PATTERN.search(text)
+    if not match:
+        return None
+    return match.group(1)
 
 
 def validate_experiment(exp_dir: Path) -> list[str]:
@@ -90,8 +104,16 @@ def validate_experiment(exp_dir: Path) -> list[str]:
         )
         return errs
 
+    budget_section = _extract_budget_section(text)
+    if budget_section is None:
+        errs.append(
+            f"{exp_name}: '## Interpretation Budget' konnte nicht isoliert werden."
+            f" Prüfe die Section-Struktur in results/result.md"
+        )
+        return errs
+
     # ### Allowed Claims prüfen
-    allowed_match = ALLOWED_CLAIMS_PATTERN.search(text)
+    allowed_match = ALLOWED_CLAIMS_PATTERN.search(budget_section)
     if not allowed_match:
         errs.append(f"{exp_name}: '### Allowed Claims' fehlt im Interpretation Budget Block.")
     else:
@@ -103,7 +125,7 @@ def validate_experiment(exp_dir: Path) -> list[str]:
             )
 
     # ### Disallowed Claims prüfen
-    disallowed_match = DISALLOWED_CLAIMS_PATTERN.search(text)
+    disallowed_match = DISALLOWED_CLAIMS_PATTERN.search(budget_section)
     if not disallowed_match:
         errs.append(f"{exp_name}: '### Disallowed Claims' fehlt im Interpretation Budget Block.")
     else:
@@ -122,7 +144,7 @@ def main() -> None:
         print(f"ERROR: experiments/ Verzeichnis nicht gefunden: {EXPERIMENTS_DIR}")
         sys.exit(1)
 
-    # Importiere should_skip aus _paths.py
+    # Importiere SKIP_DIR_NAMES aus _paths.py
     sys.path.insert(0, str(Path(__file__).parent))
     from _paths import SKIP_DIR_NAMES
 
