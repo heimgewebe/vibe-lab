@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/agent.handoff.schema.json",
+  "title": "Agent Handoff Block",
+  "description": "Schema for Critic -> Operator HANDOFF_BLOCK used by experiment-critic and experiment-operator.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["PASS", "PARTIAL", "FAIL"]
+    },
+    "target_files": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "change_type": {
+      "type": "string",
+      "enum": ["add", "modify", "remove", "replace"]
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalized_task": {
+      "type": "string",
+      "minLength": 1
+    },
+    "critic_signature": {
+      "type": "string",
+      "const": "experiment-critic/v1"
+    },
+    "blocked_by": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "required_fixes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "exact_before": {
+      "type": "string"
+    },
+    "exact_after": {
+      "type": "string"
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "validation_plan": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "handoff": {
+      "type": "object",
+      "properties": {
+        "algo": {
+          "type": "string",
+          "const": "sha256"
+        },
+        "canon": {
+          "type": "string",
+          "const": "v1"
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": ["algo", "canon", "hash"],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "status",
+    "target_files",
+    "locator",
+    "change_type",
+    "scope",
+    "normalized_task",
+    "critic_signature"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "PASS" } },
+        "required": ["status"]
+      },
+      "then": {
+        "required": ["handoff"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "status": { "enum": ["PARTIAL", "FAIL"] } },
+        "required": ["status"]
+      },
+      "then": {
+        "required": ["blocked_by", "required_fixes"]
+      }
+    }
+  ],
+  "additionalProperties": true
+}
