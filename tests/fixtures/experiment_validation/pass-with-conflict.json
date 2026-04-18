@@ -1,0 +1,16 @@
+{
+  "experiment_id": "2026-04-15_agent-task-validity",
+  "status_assessment": "inconclusive",
+  "evidence_integrity": {
+    "missing_files": [],
+    "schema_violations": [],
+    "consistency_issues": ["decision.yml verdict 'confirms' but manifest status is 'testing'"]
+  },
+  "decision_consistency": {
+    "declared": "confirms",
+    "derived": "inconclusive",
+    "conflict": true
+  },
+  "next_action": "Review decision.yml — declared verdict does not align with manifest status",
+  "confidence": 0.55
+}

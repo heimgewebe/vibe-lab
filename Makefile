@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-experiment-validation validate-experiment-validation-tests generate generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-experiment-validation validate-experiment-validation-tests
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -34,6 +34,14 @@ validate-agent-handoff:
 validate-agent-handoff-tests:
 	@echo "🧪 Running agent handoff regression tests..."
 	@python3 scripts/docmeta/test_validate_agent_handoff.py
+
+validate-experiment-validation:
+	@echo "🔬 Validating experiment validation fixtures..."
+	@python3 scripts/docmeta/validate_experiment_validation.py
+
+validate-experiment-validation-tests:
+	@echo "🧪 Running experiment validation regression tests..."
+	@python3 scripts/docmeta/test_validate_experiment_validation.py
 
 # Diagnose-Generatoren
 generate: generate-doc-index generate-backlinks generate-orphans generate-system-map generate-epistemic-state
@@ -65,6 +73,8 @@ help:
 	@echo "  make validate-epistemics-tests — Run interpretation_budget unit regression tests"
 	@echo "  make validate-agent-handoff    — Validate HANDOFF_BLOCK schema/hash fixtures"
 	@echo "  make validate-agent-handoff-tests — Run HANDOFF_BLOCK unit regression tests"
+	@echo "  make validate-experiment-validation — Validate Phase-1c experiment validation fixtures"
+	@echo "  make validate-experiment-validation-tests — Run experiment validation unit regression tests"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make help               — Show this help"

@@ -1,0 +1,17 @@
+{
+  "experiment_id": "2026-04-14_prompt-length-control",
+  "status_assessment": "adopted",
+  "evidence_integrity": {
+    "missing_files": [],
+    "schema_violations": [],
+    "consistency_issues": []
+  },
+  "decision_consistency": {
+    "declared": "adopt",
+    "derived": "adopted",
+    "conflict": false
+  },
+  "next_action": "No action required",
+  "confidence": 1.5,
+  "expected_error": "contract_invalid"
+}

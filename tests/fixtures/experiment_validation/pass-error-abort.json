@@ -1,0 +1,4 @@
+{
+  "error": "insufficient_input",
+  "missing": ["manifest.yml", "results/evidence.jsonl"]
+}
