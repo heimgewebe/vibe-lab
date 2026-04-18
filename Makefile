@@ -57,7 +57,7 @@ generate-epistemic-state:
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
-	@echo "  make validate                  — Run minimal guard stack (schema + execution-proof + relations + epistemics)"
+	@echo "  make validate                  — Run schema, execution-proof, relations, interpretation-budget, handoff, and regression-test guards"
 	@echo "  make validate-schemas          — Validate artifacts against JSON schemas"
 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
 	@echo "  make validate-relations        — Validate frontmatter relations"
