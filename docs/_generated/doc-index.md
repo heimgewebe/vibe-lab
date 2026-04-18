@@ -14,6 +14,7 @@
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
+| `docs/blueprints/blueprint-agent-operability-phase-1c.md` | Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns | active | exploratory |
 | `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | idea | exploratory |
 | `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
