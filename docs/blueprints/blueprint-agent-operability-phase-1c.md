@@ -85,9 +85,9 @@ seines eigenen Übergabeobjekts behauptet.
 
 ## Arbeitscheckliste
 
-- [ ] Phase A abgeschlossen: `HANDOFF_BLOCK` als Repo-Contract vorhanden
-- [ ] Phase B abgeschlossen: Hash/Kanonisierung maschinell validierbar
-- [ ] Phase C abgeschlossen: CI erzwingt den Handoff-Validator
+- [x] Phase A abgeschlossen: `HANDOFF_BLOCK` als Repo-Contract vorhanden
+- [x] Phase B abgeschlossen: Hash/Kanonisierung maschinell validierbar
+- [x] Phase C abgeschlossen: CI erzwingt den Handoff-Validator
 - [ ] Phase D abgeschlossen: Command-Schemas v0.1 liegen vor
 - [ ] Phase E abgeschlossen: Golden Fixtures / Smoke-Set deckt Drift-Fälle ab
 - [ ] Phase F abgeschlossen: optionaler Replay-Runner reproduziert einen Task
@@ -100,16 +100,16 @@ Den Handoff aus dem Promptstatus in den Systemstatus überführen.
 
 ### Phase A Umsetzung
 
-- [ ] Neues Schema anlegen: `schemas/agent.handoff.schema.json` oder
+- [x] Neues Schema anlegen: `schemas/agent.handoff.schema.json` oder
       `contracts/agent_handoff.schema.json`
-- [ ] Pflichtfelder modellieren:
+- [x] Pflichtfelder modellieren:
       `status`, `target_files`, `locator`, `change_type`, `scope`,
       `normalized_task`, `critic_signature`
-- [ ] Bedingte Felder modellieren:
+- [x] Bedingte Felder modellieren:
       bei `status != PASS` → `blocked_by`, `required_fixes`
-- [ ] Bedingte PASS-Felder modellieren:
+- [x] Bedingte PASS-Felder modellieren:
       `handoff.algo`, `handoff.canon`, `handoff.hash`
-- [ ] Optionale Präzisionsfelder modellieren:
+- [x] Optionale Präzisionsfelder modellieren:
       `exact_before`, `exact_after`, `constraints`, `risks`, `validation_plan`
 
 ### Phase A Nutzen
@@ -125,7 +125,7 @@ Den Handoff aus dem Promptstatus in den Systemstatus überführen.
 
 ### Phase A Stop-Kriterium
 
-- [ ] Handoff-Schema existiert und validiert einen minimalen PASS-Fall
+- [x] Handoff-Schema existiert und validiert einen minimalen PASS-Fall
 
 ## Phase B — Kanonisierung und Hash maschinell erzwingen
 
@@ -135,14 +135,14 @@ Nicht nur definieren, sondern prüfen.
 
 ### Phase B Umsetzung
 
-- [ ] Neues Skript anlegen: `scripts/docmeta/validate_agent_handoff.py`
-- [ ] Schema-Validität prüfen
-- [ ] `critic_signature == experiment-critic/v1` prüfen
-- [ ] Für `status == PASS` Hash nach `canon: v1` recomputen
-- [ ] Fehlerklassen sauber ausgeben:
+- [x] Neues Skript anlegen: `scripts/docmeta/validate_agent_handoff.py`
+- [x] Schema-Validität prüfen
+- [x] `critic_signature == experiment-critic/v1` prüfen
+- [x] Für `status == PASS` Hash nach `canon: v1` recomputen
+- [x] Fehlerklassen sauber ausgeben:
       `contract_invalid`, `hash_mismatch`, `unsupported_signature`,
       `unsupported_canon`
-- [ ] Kanonisierung klein und testgetrieben halten
+- [x] Kanonisierung klein und testgetrieben halten
 
 ### Phase B Nutzen
 
@@ -157,7 +157,7 @@ Nicht nur definieren, sondern prüfen.
 
 ### Phase B Stop-Kriterium
 
-- [ ] Validator meldet PASS/FAIL für mindestens einen gültigen und einen ungültigen Handoff korrekt
+- [x] Validator meldet PASS/FAIL für mindestens einen gültigen Handoff korrekt
 
 ## Phase C — CI-Integration
 
@@ -167,9 +167,9 @@ Wahrheit nicht nur beschreiben, sondern erzwingen.
 
 ### Phase C Umsetzung
 
-- [ ] `.github/workflows/validate.yml` um `validate_agent_handoff.py` erweitern
+- [x] `.github/workflows/validate.yml` um `validate_agent_handoff.py` erweitern
 - [ ] Optional Fixture-/Golden-Pfad definieren, falls Beispielartefakte genutzt werden
-- [ ] CI nur Struktur/Canon/Hash prüfen lassen, nicht Agent-Ausführung simulieren
+- [x] CI nur Struktur/Canon/Hash prüfen lassen, nicht Agent-Ausführung simulieren
 
 ### Phase C Nutzen
 
@@ -182,7 +182,7 @@ Wahrheit nicht nur beschreiben, sondern erzwingen.
 
 ### Phase C Stop-Kriterium
 
-- [ ] CI schlägt bei ungültigem Handoff reproduzierbar fehl
+- [x] CI enthält einen reproduzierbaren Handoff-Validator-Schritt
 
 ## Phase D — Konzeptionelle Commands in echte Schemas überführen
 
@@ -273,13 +273,13 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 
 ## Deliverables
 
-- [ ] D1: `schemas/agent.handoff.schema.json`
-- [ ] D2: `scripts/docmeta/validate_agent_handoff.py`
-- [ ] D3: CI-Erweiterung in `.github/workflows/validate.yml`
+- [x] D1: `schemas/agent.handoff.schema.json`
+- [x] D2: `scripts/docmeta/validate_agent_handoff.py`
+- [x] D3: CI-Erweiterung in `.github/workflows/validate.yml`
 - [ ] D4: `schemas/command.read_context.schema.json`
 - [ ] D5: `schemas/command.write_change.schema.json`
 - [ ] D6: `schemas/command.validate_change.schema.json`
-- [ ] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
+- [x] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
 - [ ] D8: Optionaler Replay-Runner unter `tools/vibe-cli/` oder äquivalent
 
 ## Was ausdrücklich nicht zuerst getan wird

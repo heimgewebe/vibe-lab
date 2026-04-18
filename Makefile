@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff generate generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -22,6 +22,10 @@ validate-relations:
 validate-epistemics:
 	@echo "🧠 Validating interpretation budget..."
 	@python3 scripts/docmeta/validate_interpretation_budget.py
+
+validate-agent-handoff:
+	@echo "🤝 Validating agent handoff fixtures..."
+	@python3 scripts/docmeta/validate_agent_handoff.py
 
 # Diagnose-Generatoren
 generate: generate-doc-index generate-backlinks generate-orphans generate-system-map generate-epistemic-state
@@ -50,6 +54,7 @@ help:
 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
 	@echo "  make validate-relations        — Validate frontmatter relations"
 	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"
+	@echo "  make validate-agent-handoff    — Validate HANDOFF_BLOCK schema/hash fixtures"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make help               — Show this help"
