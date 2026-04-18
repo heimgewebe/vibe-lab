@@ -141,7 +141,7 @@ Nicht nur definieren, sondern prüfen.
 - [x] Für `status == PASS` Hash nach `canon: v1` recomputen
 - [x] Fehlerklassen sauber ausgeben:
       primär `contract_invalid` (Schema als SSOT) und `hash_mismatch`
-- [x] Kanonisierung klein und testgetrieben halten
+- [x] Kanonisierung klein und fixture-basiert abgesichert halten
 
 ### Phase B Nutzen
 
@@ -300,6 +300,8 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 ### Risikoklassen
 
 - technisch: falsche Kanonisierung erzeugt Fehlalarme
+- testdisziplin: fixture-Assertions ersetzen keine dedizierten Unit-Regressionstests für
+      `canonical_payload_v1()`, `display_path()` und `validate_one()`
 - organisatorisch: mehr Friktion im Beitragspfad
 - semantisch: zu frühe Contract-Verhärtung kann Praxisfälle ausschließen
 - strategisch: Replay zu früh begonnen → Overengineering
