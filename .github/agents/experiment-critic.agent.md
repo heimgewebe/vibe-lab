@@ -88,6 +88,8 @@ blocked_by:
 required_fixes:
   - <explicit missing element>
 normalized_task: <single execution-ready instruction>
+exact_before: <optional exact matched content>
+exact_after: <optional exact replacement content>
 constraints:
   - <relevant repo rule>
 risks:
@@ -108,6 +110,8 @@ handoff:
 - Recommended: `constraints`, `risks`, `validation_plan`.
 - Required when `status == PASS`: `handoff.algo`, `handoff.canon`, `handoff.hash`.
 - Optional precision upgrade: `exact_before`, `exact_after` for stronger target-proof and deterministic edits.
+
+Hash is required only for executable handoff states (`PASS`), because `PARTIAL` and `FAIL` are non-executable diagnostic states.
 
 ### Canonicalization (canon: v1)
 For `status == PASS`, compute `handoff.hash` over a canonical payload with only:

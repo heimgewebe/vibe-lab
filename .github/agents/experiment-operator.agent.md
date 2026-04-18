@@ -56,6 +56,8 @@ Before execution, verify in this exact order:
 6. `scope` and `normalized_task` both exist and are bounded/executable.
 7. `handoff.algo`, `handoff.canon`, and `handoff.hash` exist for `PASS` and match: `sha256`, `v1`, `<hex>`.
 
+A precise locator must identify a uniquely actionable region (for example: exact line range, unique heading anchor, or unambiguous section marker).
+
 Execution is allowed only if all seven checks pass.
 
 If `HANDOFF_BLOCK` is missing:
@@ -90,6 +92,7 @@ Before execution, verify the operative execution input still matches the Critic-
 - `normalized_task` is unchanged.
 - `target_files` matches exactly.
 - `locator` matches exactly.
+- If provided, `exact_before` and `exact_after` match exactly.
 
 If any mismatch is detected:
 - STOP.
@@ -117,6 +120,7 @@ If hash mismatch is detected:
 - Include message: `BLOCKED_BY: handoff hash mismatch`.
 
 Hash check complements equality checks and does not replace them.
+Hash is required only for executable handoff states (`PASS`), because `PARTIAL` and `FAIL` are non-executable diagnostic states.
 
 ## Hard Constraints
 - NEVER modify generated files:
@@ -165,7 +169,7 @@ Proceed only after this is explicit.
   - `raw-vibes/*`: no interpretation.
 
 ## Promotion Awareness
-When operating near `catalog/` or `prompts/`, verify all are present before proceeding:
+When operating on promotion-like or content-changing work near `catalog/` or `prompts/`, verify all are present before proceeding:
 - A corresponding experiment exists.
 - `evidence.jsonl` exists.
 - `CONTEXT.md` and `INITIAL.md` exist.
