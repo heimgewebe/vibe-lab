@@ -3,14 +3,23 @@
 
 # Backlinks
 
+## `agent-policy.yaml`
+
+- ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (references)
+
 ## `catalog/techniques/spec-first-prompting.md`
 
 - ← `experiments/2026-04-08_spec-first/CONTEXT.md` (informs)
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
+## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/blueprints/blueprint-agent-operability.md`
 
+- ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (derived_from)
 - ← `docs/index.md` (references)
 
 ## `docs/blueprints/blueprint-v2.md`
@@ -19,6 +28,7 @@
 
 ## `docs/concepts/execution-bound-epistemics.md`
 
+- ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (references)
 - ← `docs/blueprints/blueprint-agent-operability.md` (references)
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (derived_from)
@@ -67,6 +77,7 @@
 
 ## `experiments/2026-04-15_agent-task-validity/CONTEXT.md`
 
+- ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (derived_from)
 - ← `docs/blueprints/blueprint-agent-operability.md` (derived_from)
 
 ## `experiments/2026-04-15_agent-task-validity/method.md`

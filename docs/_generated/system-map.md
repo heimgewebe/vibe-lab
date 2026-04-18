@@ -7,13 +7,13 @@
 
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
-| `./` | 📁 Root | 9 | 3 |
+| `./` | 📁 Root | 8 | 3 |
 | `.vibe/` | 🏛️ Governance | 3 | 1 |
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
 | `catalog/` | 📚 Bibliothek | 6 | 2 |
 | `contracts/` | 🏛️ Governance | 1 | 0 |
 | `decisions/` | 🏛️ Governance | 4 | 0 |
-| `docs/` | 📖 Dokumentation | 22 | 13 |
+| `docs/` | 📖 Dokumentation | 23 | 14 |
 | `docs/_generated/` | ⚙️ Generiert | 6 | 5 |
 | `experiments/` | 🔬 Labor | 282 | 87 |
 | `exports/` | ⚙️ Generiert | 2 | 0 |

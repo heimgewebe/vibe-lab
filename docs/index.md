@@ -6,6 +6,8 @@ relations:
   - type: references
     target: blueprints/blueprint-agent-operability.md
   - type: references
+    target: blueprints/blueprint-agent-operability-phase-1c.md
+  - type: references
     target: policies/interpretation-budget.md
 ---
 
@@ -87,6 +89,7 @@ relations:
 ## Blueprints
 
 - [Minimaler Agent-Operability-Kern](blueprints/blueprint-agent-operability.md)
+- [Phase 1c: Systemverankerung des Agent-Operability-Kerns](blueprints/blueprint-agent-operability-phase-1c.md)
 
 ## Konzepte (latent)
 
