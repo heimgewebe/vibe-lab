@@ -82,9 +82,6 @@ def detect_expected_error(path: Path) -> str | None:
 def classify_error(local_errors: list[str]) -> str | None:
     if not local_errors:
         return None
-    first = local_errors[0]
-    if "contract_invalid" in first:
-        return "contract_invalid"
     return "contract_invalid"
 
 
