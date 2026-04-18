@@ -44,6 +44,12 @@ jobs:
       - name: Test agent handoff validator
         run: python3 scripts/docmeta/test_validate_agent_handoff.py
 
+      - name: Validate experiment validation
+        run: python3 scripts/docmeta/validate_experiment_validation.py
+
+      - name: Test experiment validation validator
+        run: python3 scripts/docmeta/test_validate_experiment_validation.py
+
       - name: Regenerate diagnostics
         run: make generate
 

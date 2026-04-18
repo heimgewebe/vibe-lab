@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment.validation.schema.json",
+  "title": "Experiment Validation Result",
+  "description": "Schema for Phase-1c experiment validation output. Produced by experiment-critic as a machine-checkable handoff artifact. Two variants: a validation result (experiment_id present) or an abort error (error present).",
+  "oneOf": [
+    { "$ref": "#/$defs/validation_result" },
+    { "$ref": "#/$defs/validation_error" }
+  ],
+  "$defs": {
+    "validation_result": {
+      "type": "object",
+      "properties": {
+        "experiment_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Directory name of the experiment under experiments/"
+        },
+        "status_assessment": {
+          "type": "string",
+          "enum": ["adopted", "rejected", "inconclusive"],
+          "description": "Derived assessment — no new categories permitted"
+        },
+        "evidence_integrity": {
+          "type": "object",
+          "properties": {
+            "missing_files": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "description": "Required files that are absent"
+            },
+            "schema_violations": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "description": "Schema or structural violations found"
+            },
+            "consistency_issues": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "description": "Cross-file consistency issues"
+            }
+          },
+          "required": ["missing_files", "schema_violations", "consistency_issues"],
+          "additionalProperties": false
+        },
+        "decision_consistency": {
+          "type": "object",
+          "properties": {
+            "declared": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Status/verdict declared in decision.yml"
+            },
+            "derived": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Status/verdict derived from evidence"
+            },
+            "conflict": {
+              "type": "boolean",
+              "description": "True if declared and derived contradict each other"
+            }
+          },
+          "required": ["declared", "derived", "conflict"],
+          "additionalProperties": false
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Recommended next action based on validation findings"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Confidence score for the assessment (0.0 = no confidence, 1.0 = full confidence)"
+        }
+      },
+      "required": [
+        "experiment_id",
+        "status_assessment",
+        "evidence_integrity",
+        "decision_consistency",
+        "next_action",
+        "confidence"
+      ],
+      "additionalProperties": false
+    },
+    "validation_error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "enum": ["insufficient_input"],
+          "description": "Error class — abort reason"
+        },
+        "missing": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "description": "List of missing prerequisites that caused the abort"
+        }
+      },
+      "required": ["error", "missing"],
+      "additionalProperties": false
+    }
+  }
+}
