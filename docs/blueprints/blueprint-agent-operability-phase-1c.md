@@ -141,7 +141,7 @@ Nicht nur definieren, sondern prüfen.
 - [x] Für `status == PASS` Hash nach `canon: v1` recomputen
 - [x] Fehlerklassen sauber ausgeben:
       primär `contract_invalid` (Schema als SSOT) und `hash_mismatch`
-- [x] Kanonisierung klein und testgetrieben halten
+- [ ] Kanonisierung klein und testgetrieben halten
 
 ### Phase B Nutzen
 
@@ -278,7 +278,7 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 - [ ] D4: `schemas/command.read_context.schema.json`
 - [ ] D5: `schemas/command.write_change.schema.json`
 - [ ] D6: `schemas/command.validate_change.schema.json`
-- [x] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
+- [ ] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
 - [ ] D8: Optionaler Replay-Runner unter `tools/vibe-cli/` oder äquivalent
 
 ## Was ausdrücklich nicht zuerst getan wird
