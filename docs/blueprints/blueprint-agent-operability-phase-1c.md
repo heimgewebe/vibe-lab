@@ -141,7 +141,7 @@ Nicht nur definieren, sondern prüfen.
 - [x] Für `status == PASS` Hash nach `canon: v1` recomputen
 - [x] Fehlerklassen sauber ausgeben:
       primär `contract_invalid` (Schema als SSOT) und `hash_mismatch`
-- [ ] Kanonisierung klein und testgetrieben halten
+- [x] Kanonisierung klein und fixture-basiert abgesichert halten
 
 ### Phase B Nutzen
 
@@ -278,7 +278,7 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 - [ ] D4: `schemas/command.read_context.schema.json`
 - [ ] D5: `schemas/command.write_change.schema.json`
 - [ ] D6: `schemas/command.validate_change.schema.json`
-- [ ] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
+- [x] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
 - [ ] D8: Optionaler Replay-Runner unter `tools/vibe-cli/` oder äquivalent
 
 ## Was ausdrücklich nicht zuerst getan wird
@@ -300,6 +300,8 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 ### Risikoklassen
 
 - technisch: falsche Kanonisierung erzeugt Fehlalarme
+- testdisziplin: fixture-Assertions ersetzen keine dedizierten Unit-Regressionstests für
+      `canonical_payload_v1()`, `display_path()` und `validate_one()`
 - organisatorisch: mehr Friktion im Beitragspfad
 - semantisch: zu frühe Contract-Verhärtung kann Praxisfälle ausschließen
 - strategisch: Replay zu früh begonnen → Overengineering

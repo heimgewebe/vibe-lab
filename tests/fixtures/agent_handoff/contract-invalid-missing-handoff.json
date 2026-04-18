@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "target_files": [
+    "schemas/agent.handoff.schema.json"
+  ],
+  "locator": "schemas/agent.handoff.schema.json",
+  "change_type": "modify",
+  "scope": "Demonstrate PASS without handoff object",
+  "normalized_task": "Create contract-invalid fixture for missing handoff in PASS",
+  "critic_signature": "experiment-critic/v1",
+  "expected_error": "contract_invalid"
+}

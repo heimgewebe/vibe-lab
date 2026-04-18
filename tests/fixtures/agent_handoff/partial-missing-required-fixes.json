@@ -1,0 +1,15 @@
+{
+  "status": "PARTIAL",
+  "target_files": [
+    "scripts/docmeta/validate_agent_handoff.py"
+  ],
+  "locator": "scripts/docmeta/validate_agent_handoff.py",
+  "change_type": "modify",
+  "scope": "Demonstrate PARTIAL without required_fixes",
+  "normalized_task": "Create contract-invalid fixture for missing required_fixes",
+  "critic_signature": "experiment-critic/v1",
+  "expected_error": "contract_invalid",
+  "blocked_by": [
+    "required_fixes missing by design"
+  ]
+}
