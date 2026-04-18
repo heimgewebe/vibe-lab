@@ -140,8 +140,7 @@ Nicht nur definieren, sondern prüfen.
 - [x] `critic_signature == experiment-critic/v1` prüfen
 - [x] Für `status == PASS` Hash nach `canon: v1` recomputen
 - [x] Fehlerklassen sauber ausgeben:
-      `contract_invalid`, `hash_mismatch`, `unsupported_signature`,
-      `unsupported_canon`
+      primär `contract_invalid` (Schema als SSOT) und `hash_mismatch`
 - [x] Kanonisierung klein und testgetrieben halten
 
 ### Phase B Nutzen

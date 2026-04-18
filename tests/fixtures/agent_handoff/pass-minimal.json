@@ -1,28 +1,16 @@
 {
   "status": "PASS",
   "target_files": [
-    ".github/agents/experiment-critic.agent.md",
-    ".github/agents/experiment-operator.agent.md"
+    "schemas/agent.handoff.schema.json"
   ],
-  "locator": "## OPERATOR CONTRACT CHECKLIST",
-  "change_type": "modify",
-  "scope": "Refine handoff validation semantics.",
-  "normalized_task": "Update operator checklist and handoff integrity checks.",
+  "locator": "schemas/agent.handoff.schema.json",
+  "change_type": "add",
+  "scope": "Define agent handoff schema contract",
+  "normalized_task": "Create schema for critic-operator handoff validation",
   "critic_signature": "experiment-critic/v1",
-  "exact_before": "old content marker",
-  "exact_after": "new content marker",
-  "constraints": [
-    "generated paths are never edited"
-  ],
-  "risks": [
-    "minor wording drift"
-  ],
-  "validation_plan": [
-    "python3 scripts/docmeta/validate_agent_handoff.py"
-  ],
   "handoff": {
     "algo": "sha256",
     "canon": "v1",
-    "hash": "ccae34dc7cbbf45c048d3f798b9e1a2dacae08660972c26be5145d679f291ac6"
+    "hash": "28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2"
   }
 }

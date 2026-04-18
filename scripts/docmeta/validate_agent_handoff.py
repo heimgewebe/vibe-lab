@@ -3,8 +3,7 @@
 
 Checks:
 1. Fixture JSON validates against schemas/agent.handoff.schema.json
-2. critic_signature is supported (experiment-critic/v1)
-3. For status == PASS: handoff hash is recomputed using canon v1 and must match
+2. For status == PASS: handoff hash is recomputed using canon v1 and must match
 
 Canonicalization (canon v1):
 - field order: status, target_files, locator, change_type, scope, normalized_task
@@ -46,6 +45,14 @@ CANON_FIELDS = (
 WS_RE = re.compile(r"\s+")
 
 
+def display_path(path: Path) -> str:
+    """Return repo-relative path where possible, otherwise absolute path."""
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
 def _normalize_newlines(value: str) -> str:
     return value.replace("\r\n", "\n").replace("\r", "\n")
 
@@ -72,7 +79,6 @@ def canonical_payload_v1(handoff: dict) -> dict:
         "normalized_task": _normalize_scope_or_task(str(handoff.get("normalized_task", ""))),
     }
 
-    # Keep order deterministic.
     return {k: payload[k] for k in CANON_FIELDS}
 
 
@@ -90,46 +96,27 @@ def load_validator(schema_path: Path) -> Draft202012Validator:
 
 def validate_one(path: Path, validator: Draft202012Validator) -> list[str]:
     local_errors: list[str] = []
+    label = display_path(path)
 
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
-        return [f"{path.relative_to(REPO_ROOT)}: invalid JSON — {exc}"]
+        return [f"{label}: contract_invalid: invalid JSON — {exc}"]
 
     try:
         validator.validate(data)
     except ValidationError as exc:
-        return [f"{path.relative_to(REPO_ROOT)}: schema validation failed — {exc.message}"]
+        return [f"{label}: contract_invalid: schema validation failed — {exc.message}"]
 
-    status = data.get("status")
-    sig = data.get("critic_signature")
-    if sig != "experiment-critic/v1":
-        local_errors.append(
-            f"{path.relative_to(REPO_ROOT)}: unsupported_signature '{sig}' (expected experiment-critic/v1)"
-        )
-
-    if status == "PASS":
+    if data.get("status") == "PASS":
         handoff_meta = data.get("handoff", {})
-        algo = handoff_meta.get("algo")
-        canon = handoff_meta.get("canon")
         expected_hash = handoff_meta.get("hash")
-
-        if algo != "sha256":
+        actual_payload = canonical_payload_v1(data)
+        actual_hash = compute_sha256_hex(actual_payload)
+        if expected_hash != actual_hash:
             local_errors.append(
-                f"{path.relative_to(REPO_ROOT)}: unsupported algo '{algo}' (expected sha256)"
+                f"{label}: hash_mismatch expected={expected_hash} actual={actual_hash}"
             )
-        if canon != "v1":
-            local_errors.append(
-                f"{path.relative_to(REPO_ROOT)}: unsupported canon '{canon}' (expected v1)"
-            )
-
-        if not local_errors:
-            actual_payload = canonical_payload_v1(data)
-            actual_hash = compute_sha256_hex(actual_payload)
-            if expected_hash != actual_hash:
-                local_errors.append(
-                    f"{path.relative_to(REPO_ROOT)}: hash_mismatch expected={expected_hash} actual={actual_hash}"
-                )
 
     return local_errors
 
@@ -145,23 +132,23 @@ def main() -> None:
     args = parser.parse_args()
 
     if not SCHEMA_PATH.is_file():
-        print(f"ERROR: schema missing: {SCHEMA_PATH}")
+        print(f"ERROR: schema missing: {display_path(SCHEMA_PATH)}")
         sys.exit(2)
 
     try:
         validator = load_validator(SCHEMA_PATH)
     except SchemaError as exc:
-        print(f"ERROR: schema invalid ({SCHEMA_PATH.relative_to(REPO_ROOT)}): {exc.message}")
+        print(f"ERROR: schema invalid ({display_path(SCHEMA_PATH)}): {exc.message}")
         sys.exit(2)
 
     fixtures_dir = (REPO_ROOT / args.fixtures).resolve() if not args.fixtures.is_absolute() else args.fixtures
     if not fixtures_dir.is_dir():
-        print(f"ERROR: fixtures directory missing: {fixtures_dir}")
+        print(f"ERROR: fixtures directory missing: {display_path(fixtures_dir)}")
         sys.exit(2)
 
     fixture_files = sorted(fixtures_dir.rglob("*.json"))
     if not fixture_files:
-        print(f"ERROR: no handoff fixtures found in {fixtures_dir}")
+        print(f"ERROR: no handoff fixtures found in {display_path(fixtures_dir)}")
         sys.exit(2)
 
     print("🔍 Agent Handoff Validation")
@@ -171,7 +158,7 @@ def main() -> None:
         if local:
             errs.extend(local)
         else:
-            print(f"  ✅ {fixture.relative_to(REPO_ROOT)}")
+            print(f"  ✅ {display_path(fixture)}")
 
     if errs:
         print("\n❌ Agent handoff validation failed:")
