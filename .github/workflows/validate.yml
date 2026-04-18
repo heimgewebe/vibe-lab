@@ -35,6 +35,9 @@ jobs:
       - name: Validate interpretation budget
         run: python3 scripts/docmeta/validate_interpretation_budget.py
 
+      - name: Test interpretation budget validator
+        run: python3 scripts/docmeta/test_validate_interpretation_budget.py
+
       - name: Validate agent handoff
         run: python3 scripts/docmeta/validate_agent_handoff.py
 

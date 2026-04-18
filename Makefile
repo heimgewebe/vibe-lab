@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff validate-agent-handoff-tests generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests generate generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff validate-agent-handoff-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -22,6 +22,10 @@ validate-relations:
 validate-epistemics:
 	@echo "🧠 Validating interpretation budget..."
 	@python3 scripts/docmeta/validate_interpretation_budget.py
+
+validate-epistemics-tests:
+	@echo "🧪 Running interpretation budget regression tests..."
+	@python3 scripts/docmeta/test_validate_interpretation_budget.py
 
 validate-agent-handoff:
 	@echo "🤝 Validating agent handoff fixtures..."
@@ -58,6 +62,7 @@ help:
 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
 	@echo "  make validate-relations        — Validate frontmatter relations"
 	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"
+	@echo "  make validate-epistemics-tests — Run interpretation_budget unit regression tests"
 	@echo "  make validate-agent-handoff    — Validate HANDOFF_BLOCK schema/hash fixtures"
 	@echo "  make validate-agent-handoff-tests — Run HANDOFF_BLOCK unit regression tests"
 	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
