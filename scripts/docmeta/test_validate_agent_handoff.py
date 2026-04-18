@@ -47,7 +47,7 @@ class ValidateAgentHandoffTests(unittest.TestCase):
 
     def test_display_path_internal_and_external(self) -> None:
         internal = vah.REPO_ROOT / "schemas" / "agent.handoff.schema.json"
-        external = Path("/tmp/agent-handoff-outside.json")
+        external = (vah.REPO_ROOT.parent / "__outside_repo__" / "agent-handoff-outside.json").resolve()
 
         self.assertEqual(vah.display_path(internal), "schemas/agent.handoff.schema.json")
         self.assertEqual(vah.display_path(external), str(external))
