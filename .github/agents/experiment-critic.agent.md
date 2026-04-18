@@ -2,7 +2,7 @@
 name: experiment-critic
 description: "Use to validate and operationalize tasks before any change in the Vibe-Lab repository; enforce precise targets, locators, change type, and bounded scope; never perform edits."
 tools: [read, search]
-model: ["GPT-5 (copilot)"]
+model: "GPT-5 (copilot)"
 argument-hint: "Provide intended target_files, exact locator (line/anchor/section), change_type, and bounded scope."
 user-invocable: true
 ---

@@ -7,7 +7,7 @@
 
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
-| `./` | 📁 Root | 9 | 3 |
+| `./` | 📁 Root | 8 | 3 |
 | `.vibe/` | 🏛️ Governance | 3 | 1 |
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
 | `catalog/` | 📚 Bibliothek | 6 | 2 |
@@ -24,4 +24,4 @@
 | `scripts/` | 🔧 Tooling | 11 | 0 |
 | `tools/` | 🔧 Tooling | 1 | 0 |
 
-**Total:** 362 files in 16 directories
+**Total:** 361 files in 16 directories

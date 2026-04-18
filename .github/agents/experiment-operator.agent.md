@@ -2,7 +2,7 @@
 name: experiment-operator
 description: "Use for precisely scoped, evidence-aligned repository changes after critic approval; execute minimal edits with strict traceability and validation."
 tools: [read, search, edit, execute]
-model: ["GPT-5 (copilot)"]
+model: "GPT-5 (copilot)"
 argument-hint: "Provide critic-approved target_files, locator, change_type, and bounded scope."
 user-invocable: true
 agents: [experiment-critic]
@@ -92,6 +92,8 @@ Before execution, verify the operative execution input still matches the Critic-
 - `normalized_task` is unchanged.
 - `target_files` matches exactly.
 - `locator` matches exactly.
+- `change_type` matches exactly.
+- `scope` matches exactly.
 - If provided, `exact_before` and `exact_after` match exactly.
 
 If any mismatch is detected:
@@ -105,13 +107,8 @@ If `status == PASS`, recompute hash using:
 - `canon: v1`
 - Canonical payload fields only: `status`, `target_files`, `locator`, `change_type`, `scope`, `normalized_task`.
 
-Canonicalization rules for `canon: v1`:
-- Fixed field order: `status`, `target_files`, `locator`, `change_type`, `scope`, `normalized_task`.
-- `target_files`: lexicographically sorted, duplicates removed.
-- `scope` and `normalized_task`: trim, collapse internal whitespace to one space, use `\n` newlines.
-- `locator`: trim and normalize newlines to `\n`; do not collapse internal whitespace.
-- Encoding: UTF-8.
-- Serialization: compact JSON.
+Canonicalization rules for `canon: v1` are defined in `.github/agents/experiment-critic.agent.md`, which is the single source of truth.
+Apply that definition verbatim when recomputing the handoff hash; do not redefine or vary it in this file.
 
 If hash mismatch is detected:
 - STOP.
@@ -126,6 +123,7 @@ Hash is required only for executable handoff states (`PASS`), because `PARTIAL` 
 - NEVER modify generated files:
   - `docs/_generated/*`
   - `exports/*`
+  - `.cursor/rules/*`
 - NEVER invent structure, schemas, or fields.
 - NEVER perform broad refactoring without explicit instruction.
 - NEVER act without a clearly defined target.
@@ -165,7 +163,7 @@ Proceed only after this is explicit.
 - Optional precision upgrade when provided in handoff: prefer `exact_before` and `exact_after` as additional target-proof for deterministic edits.
 - Respect repository zones:
   - `experiments/*`: exploratory but structured.
-  - `catalog/*`, `prompts/*`: strict, validated.
+  - `catalog/*`, `prompts/*`, `benchmarks/*`, `instruction-blocks/*`: strict, validated.
   - `raw-vibes/*`: no interpretation.
 
 ## Promotion Awareness
