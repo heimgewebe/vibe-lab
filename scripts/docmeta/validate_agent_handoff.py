@@ -121,6 +121,32 @@ def validate_one(path: Path, validator: Draft202012Validator) -> list[str]:
     return local_errors
 
 
+def detect_expected_error(path: Path) -> str | None:
+    """Read optional expected_error marker from fixture JSON.
+
+    Supported classes: contract_invalid, hash_mismatch.
+    """
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    marker = data.get("expected_error") if isinstance(data, dict) else None
+    if isinstance(marker, str) and marker in {"contract_invalid", "hash_mismatch"}:
+        return marker
+    return None
+
+
+def classify_error(local_errors: list[str]) -> str | None:
+    if not local_errors:
+        return None
+    first = local_errors[0]
+    if "hash_mismatch" in first:
+        return "hash_mismatch"
+    if "contract_invalid" in first:
+        return "contract_invalid"
+    return "contract_invalid"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate agent handoff fixtures")
     parser.add_argument(
@@ -128,6 +154,15 @@ def main() -> None:
         type=Path,
         default=DEFAULT_FIXTURE_DIR,
         help="Directory containing handoff JSON fixtures (default: tests/fixtures/agent_handoff)",
+    )
+    parser.add_argument(
+        "--mode",
+        choices=("assert-fixtures", "strict"),
+        default="assert-fixtures",
+        help=(
+            "assert-fixtures: pass when expected_error markers match observed failures; "
+            "strict: fail on any real validation error"
+        ),
     )
     args = parser.parse_args()
 
@@ -154,11 +189,39 @@ def main() -> None:
     print("🔍 Agent Handoff Validation")
     errs: list[str] = []
     for fixture in fixture_files:
+        expected_error = detect_expected_error(fixture)
         local = validate_one(fixture, validator)
-        if local:
-            errs.extend(local)
+        observed_error = classify_error(local)
+
+        if args.mode == "strict":
+            if local:
+                errs.extend(local)
+            else:
+                print(f"  ✅ {display_path(fixture)}")
+            continue
+
+        # Default mode: mixed fixture assertions (positive + expected negatives)
+        if expected_error is None:
+            if local:
+                errs.append(
+                    f"{display_path(fixture)}: unexpected_failure expected=none observed={observed_error}"
+                )
+                errs.extend(local)
+            else:
+                print(f"  ✅ {display_path(fixture)}")
+            continue
+
+        if observed_error == expected_error:
+            print(f"  ✅ {display_path(fixture)} (expected {expected_error})")
+        elif observed_error is None:
+            errs.append(
+                f"{display_path(fixture)}: expected_failure_missing expected={expected_error} observed=none"
+            )
         else:
-            print(f"  ✅ {display_path(fixture)}")
+            errs.append(
+                f"{display_path(fixture)}: wrong_failure_class expected={expected_error} observed={observed_error}"
+            )
+            errs.extend(local)
 
     if errs:
         print("\n❌ Agent handoff validation failed:")
