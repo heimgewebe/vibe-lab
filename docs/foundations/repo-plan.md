@@ -194,7 +194,7 @@ vibe-lab/
       experiment-proposal.yml # Typed Intake (Experiment)
       promotion-request.yml   # Typed Intake (Catalog/Combo/Prompt)
     PULL_REQUEST_TEMPLATE/
-      experiment-run.md
+      # [DEPRECATED] experiment-run.md removed in favor of default template
       promotion.md        # Das harte Gate
     workflows/
       validate.yml        # CI Schema-Prüfung
