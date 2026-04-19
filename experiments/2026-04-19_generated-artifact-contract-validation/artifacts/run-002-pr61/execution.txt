@@ -1,0 +1,27 @@
+Run ID: run-002-pr61
+PR: https://github.com/heimgewebe/vibe-lab/pull/61
+Branch: exp/run-002-instrumented
+Base: main
+
+Scope:
+- One source-doc change in docs/blueprints/blueprint-v2.md
+- Generated update in docs/_generated/orphans.md
+- Instrumented evidence in results/evidence.jsonl
+
+Determinism check:
+- Command sequence: make generate, then make generate again
+- Result: second run produced no additional diff
+
+CI observation:
+- Initial blocking failure observed on validate:
+  https://github.com/heimgewebe/vibe-lab/actions/runs/24627460149/job/72008863248
+- Incremental fix applied (evidence schema compatibility) and pushed
+- Subsequent checks passed:
+  validate: https://github.com/heimgewebe/vibe-lab/actions/runs/24627485640/job/72008926688
+  derived-diagnostics: https://github.com/heimgewebe/vibe-lab/actions/runs/24627485640/job/72008926689
+  ephemeral-diagnostics: https://github.com/heimgewebe/vibe-lab/actions/runs/24627485640/job/72008926690
+
+Observed metrics (Run-002):
+- ci_blocking_failures: 1 before fix, then 0 after fix
+- manual_regen_steps: 2
+- diagnosis_clarity_score: 3 at failure, 5 after diagnosis and fix

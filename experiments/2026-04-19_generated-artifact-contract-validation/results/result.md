@@ -8,11 +8,11 @@ canonicality: operative
 
 ## Zusammenfassung
 
-**Stand nach PR-58 (vollständig, mit Folge-Commits):** Ein realer PR-Run (Run-001) ist dokumentiert. Ein zweiter PR-Run (Run-002) existiert noch nicht — die Hypothese ist noch nicht hypothesenprüfbar.
+**Stand nach PR-58 und PR-61:** Zwei reale PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 liegt als unabhaengiger PR-Run auf PR-61 vor. Die Evidenzlage ist klarer, aber fuer eine belastbare Hypothesenbewertung weiterhin noch nicht ausreichend.
 
 Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
 
-Getrennt davon wurde eine epistemische Verfügbarkeitsbeobachtung dokumentiert: Run-002 ist derzeit nicht als unabhängiger PR-Run belegbar.
+Die frühere Verfügbarkeitslücke ist geschlossen: Run-002 ist nun als unabhängiger PR-Run mit Artefakten (`artifacts/run-002-pr61/*`) belegbar.
 
 ## Beobachtungen
 
@@ -43,26 +43,26 @@ Folgende Reibungspunkte wurden innerhalb PR-58 beobachtet (nicht als separater R
 
 > Interpretation, explizit als solche markiert.
 
-Die beobachteten Reibungspunkte (drei Regen-Zyklen eines canonical artifacts in einem PR) könnten auf unzureichende Tooling-Stabilität des Generators hindeuten — aber das ist Interpretation auf Basis eines einzigen PRs. Belastbare Aussagen über Friction-Reduktion gegen Baseline setzen mindestens Run-002 voraus.
+Die beobachteten Reibungspunkte (drei Regen-Zyklen eines canonical artifacts in PR-58 sowie ein blockierender CI-Fehler mit Fix-Zyklus in PR-61) deuten auf reale Prozessfriktion hin. Das bleibt jedoch Interpretation bei noch schmaler Vergleichsbasis.
 
-Die Klassentrennung canonical/derived/ephemeral macht Drift im Diff auswertbar — das ist eine Beobachtung. Ob sie CI-Friction reduziert, ist noch nicht messbar.
+Die Klassentrennung canonical/derived/ephemeral macht Drift im Diff auswertbar — das ist weiterhin beobachtbar. Ob sie CI-Friction reduziert, ist noch nicht robust quantifizierbar.
 
 ## Verdict
 
-Offen. Execution begonnen (Run-001 + In-PR-Beobachtungen). Hypothesenprüfung erfordert mindestens Run-002 unter neuem Contract-System mit vollständiger Metrikerhebung.
+Vorläufig offen. Execution ist jetzt mit zwei unabhängigen PR-Runs belegt (Run-001/PR-58 und Run-002/PR-61). Ein finaler Hypothesenentscheid bleibt bis zu einer weiteren vergleichbaren Messung mit stabiler Baseline vertagt.
 
 ## Lessons Learned
 
 - Canonical artifacts erwiesen sich als anfälliger als erwartet: generator-bugs (path resolution, .venv-leak) lösten mehrfache Regenerationszyklen innerhalb eines PRs aus.
 - `ci_blocking_failures` und `manual_regen_steps` sind die kritischsten Metriken, wurden aber in Run-001 nicht vollständig gemessen.
-- Metrikerhebung muss für Run-002 explizit vorbereitet werden (CI-Log-Zugriff, explizite Regen-Zählung).
+- Run-002 hat gezeigt, dass die Metrikerhebung bei CI-Fehlern und Fix-Zyklen praktisch umsetzbar ist, aber die Vergleichsbasis bleibt schmal.
 
 ## Nächste Schritte
 
-- Run-002 unter neuem echten PR erfassen (kein weiterer Push auf PR-58)
-- CI-Statuschecks und manuelle Eingriffe per Run protokollieren
-- `ci_blocking_failures`, `manual_regen_steps`, `diagnosis_clarity_score` vollständig erheben
-- Danach: Wechsel auf `result_assessment` in `decision.yml` prüfen
+- Run-002-Konsolidierung sauber halten: Manifest, Decision und Result auf denselben Stand referenzieren
+- Für den nächsten Run dieselbe Scope-Klasse beibehalten (eine Quelländerung + Generator-Interaktion)
+- Metriken pro Run weiter strikt erfassen (`ci_blocking_failures`, `manual_regen_steps`, `diagnosis_clarity_score`)
+- Danach: Wechsel auf `result_assessment` in `decision.yml` erneut prüfen
 
 ## Interpretation Budget
 
@@ -75,7 +75,7 @@ Offen. Execution begonnen (Run-001 + In-PR-Beobachtungen). Hypothesenprüfung er
 ### Disallowed Claims
 - Dass das Contract-Modell CI-Friction reduziert (nicht gemessen, kein Baseline-Vergleich).
 - Verallgemeinerungen über "den PR-Prozess" auf Basis eines einzigen Runs.
-- Adoption-Empfehlungen vor Run-002 + Hypothesenprüfung.
+- Adoption-Empfehlungen vor zusätzlicher Vergleichsmessung und belastbarer Hypothesenprüfung.
 
 ### Evidence Basis
 - Direkt beobachtet: Run-001 (PR-58), Diff-Klassifikation, In-PR canonical regen × 3 (commits d561893, 7c44b07)
