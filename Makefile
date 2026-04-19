@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests generate generate-canonical generate-derived generate-ephemeral generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
 validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests
@@ -44,8 +44,24 @@ validate-phase1c-fixture-tests:
 	@python3 scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py
 
 # Diagnose-Generatoren
-generate: generate-doc-index generate-backlinks generate-orphans generate-system-map generate-epistemic-state
+generate: generate-canonical generate-derived generate-ephemeral
 	@echo "✅ Generated diagnostics in docs/_generated/."
+
+generate-canonical: generate-doc-index generate-system-map
+	@echo "✅ Generated canonical diagnostics in docs/_generated/."
+
+generate-derived: generate-backlinks generate-orphans
+	@echo "✅ Generated derived diagnostics in docs/_generated/."
+
+generate-ephemeral: generate-epistemic-state
+	@echo "✅ Generated ephemeral diagnostics in docs/_generated/."
+
+# Backward-compatible aliases
+generate-stable: generate-canonical
+generate-volatile: generate-derived generate-ephemeral
+
+diagnose: generate-derived generate-ephemeral
+	@echo "✅ Generated non-blocking diagnostics for local inspection."
 
 generate-doc-index:
 	@python3 scripts/docmeta/generate_doc_index.py
@@ -75,6 +91,12 @@ help:
 	@echo "  make validate-agent-handoff-tests — Run HANDOFF_BLOCK unit regression tests"
 	@echo "  make validate-phase1c-fixtures — Validate Phase-1c fixture corpus against expected outcomes"
 	@echo "  make validate-phase1c-fixture-tests — Run Phase-1c fixture checker unit regression tests"
-	@echo "  make generate           — Generate all diagnostics in docs/_generated/"
+	@echo "  make generate           — Generate canonical, derived, and ephemeral diagnostics"
+	@echo "  make generate-canonical — Generate contract-relevant diagnostics (blocking in CI)"
+	@echo "  make generate-derived   — Generate reconstructable diagnostics (non-blocking in CI)"
+	@echo "  make generate-ephemeral — Generate runtime-only diagnostics (artifact-first)"
+	@echo "  make generate-stable    — Alias for make generate-canonical"
+	@echo "  make generate-volatile  — Alias for make generate-derived + make generate-ephemeral"
+	@echo "  make diagnose           — Alias for non-blocking diagnostics"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make help               — Show this help"
