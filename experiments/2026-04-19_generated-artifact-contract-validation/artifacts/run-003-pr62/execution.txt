@@ -1,0 +1,50 @@
+Run-003 Execution Summary
+=========================
+run_id:       run-003-pr62
+pr_ref:       https://github.com/heimgewebe/vibe-lab/pull/62
+branch:       exp/run-003-instrumented
+base_ref:     origin/main (e05a59a)
+date:         2026-04-19
+
+Scope
+-----
+Canonical source change:   docs/foundations/repo-plan.md
+  - Added `updated: "2026-04-19"` to frontmatter
+  - Extended Phase A Intelligence Layer checklist item to document the
+    generated artifact contract (canonical/derived/ephemeral classification)
+Changed canonical docs:    1
+
+Generator runs
+--------------
+Run 1:  make generate → orphans.md changed (8 insertions)
+Run 2:  make generate → no additional diff (determinism: CONFIRMED)
+Manual regen steps:        1 (run 1 applied pending derived update)
+
+Commit structure
+----------------
+c33eb5c  docs(repo-plan): add updated date and document generated artifact contract
+d1f685f  generate: update derived diagnostics after repo-plan change
+
+Artifact counts
+---------------
+Changed canonical count:   0  (doc-index.md, system-map.md: unchanged)
+Changed derived count:     1  (orphans.md)
+Changed ephemeral count:   0
+
+CI results
+----------
+validate:              pass (12s)
+derived-diagnostics:   pass  (9s)
+ephemeral-diagnostics: pass  (7s)
+ci_blocking_failures:  0
+ci_non_blocking_warnings: 0
+unnecessary_commit_delta: 0
+
+Diagnosis clarity score:   5/5 (clean run, no friction observed)
+
+Notes
+-----
+Run-003 is the first run with zero CI blocking failures from first push.
+Compared to Run-002: Run-002 had 1 blocking CI failure (evidence schema
+compatibility) requiring an incremental fix cycle. Run-003 had none.
+This marks the first clean end-to-end instrumented run in this experiment.

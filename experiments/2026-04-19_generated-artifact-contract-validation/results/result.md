@@ -8,11 +8,9 @@ canonicality: operative
 
 ## Zusammenfassung
 
-**Stand nach PR-58 (vollständig, mit Folge-Commits):** Ein realer PR-Run (Run-001) ist dokumentiert. Ein zweiter PR-Run (Run-002) existiert noch nicht — die Hypothese ist noch nicht hypothesenprüfbar.
+**Stand nach PR-62 (Run-003):** Zwei unabhängige PR-Runs sind dokumentiert (Run-001 / PR-58 und Run-003 / PR-62). Die Hypothese ist jetzt vorsichtig beurteilbar — noch kein Baseline-Vergleich, aber erste Messkontraste liegen vor.
 
-Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
-
-Getrennt davon wurde eine epistemische Verfügbarkeitsbeobachtung dokumentiert: Run-002 ist derzeit nicht als unabhängiger PR-Run belegbar.
+Run-001 (PR-58) zeigte ausgeprägte In-PR-Friction: drei canonical-Regenerationszyklen für `doc-index.md` innerhalb eines einzigen PRs (path resolution bug + .venv-Leck). Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures, kein Fix-Zyklus, Determinismus bestätigt.
 
 ## Beobachtungen
 
@@ -24,44 +22,51 @@ Die Klassentrennung `canonical/derived/ephemeral` ist im PR-Diff auswertbar. In 
 - 1 derived (docs/_generated/orphans.md)
 - 1 ephemeral (docs/_generated/epistemic-state.md)
 
-Zusätzliche Reibungsbeobachtungen in diesem Fortschritt betreffen bisher nur canonical-Artefakte.
-
-Wirksamkeitsmessung im Sinne der Hypothese (Reduktion von CI-Friction) ist auf Basis eines Runs noch nicht möglich.
+In PR-62 waren betroffen:
+- 0 canonical (doc-index.md, system-map.md: unverändert)
+- 1 derived (docs/_generated/orphans.md)
+- 0 ephemeral
 
 ### Reibung (Aufwand)
-Folgende Reibungspunkte wurden innerhalb PR-58 beobachtet (nicht als separater Run — In-PR-Beobachtungen):
 
-- **Commit d561893** (Apr 19, 10:27): Canonical artifact `doc-index.md` und `system-map.md` wurden ein zweites Mal regeneriert nach einem Bug in `resolve_generated_artifact_paths.py`.
-- **Commit 7c44b07** (Apr 19, 10:52): Canonical artifact `doc-index.md` wurde ein drittes Mal regeneriert. Ursache: `.venv`-Verzeichnis wurde vom canonical generator fälschlicherweise gescannt (doc count: 122 statt 120). Fix durch Ausschluss von `.venv` und `venv` in `_paths.py`.
-- Beide Fälle belegen reale manuelle Nacharbeit (Bugfix + Regen) für canonical artifacts innerhalb eines PRs.
-- `ci_blocking_failures` und `manual_regen_steps` als vollständige Metriken: **nicht gemessen** (kein CI-Log-Zugriff, keine explizite Zählung der Regen-Commands).
+**Run-001 / PR-58** (in-PR, nicht als separater Run):
+- **Commit d561893**: Canonical artifact `doc-index.md` und `system-map.md` zweites Mal regeneriert nach Bug in `resolve_generated_artifact_paths.py`.
+- **Commit 7c44b07**: `doc-index.md` drittes Mal regeneriert. `.venv`-Verzeichnis fälschlicherweise gescannt. Fix + Regen.
+- `ci_blocking_failures`: nicht gemessen. `manual_regen_steps`: nicht gemessen.
+
+**Run-003 / PR-62** (vollständig gemessen):
+- `ci_blocking_failures`: 0
+- `ci_non_blocking_warnings`: 0
+- `manual_regen_steps`: 1 (erster generate-Lauf; zweiter war Determinismus-Check, idempotent)
+- `unnecessary_commit_delta`: 0
+- `diagnosis_clarity_score`: 5/5
 
 ### Diagnosis Clarity
-`diagnosis_clarity_score`: **nicht gemessen**. Die Quelle der Nicht-Determinismus-Bugs war im Nachhinein über die Commit-Messages nachvollziehbar, aber nicht über das CI-System beobachtet.
+Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen).
 
 ## Deutung
 
 > Interpretation, explizit als solche markiert.
 
-Die beobachteten Reibungspunkte (drei Regen-Zyklen eines canonical artifacts in einem PR) könnten auf unzureichende Tooling-Stabilität des Generators hindeuten — aber das ist Interpretation auf Basis eines einzigen PRs. Belastbare Aussagen über Friction-Reduktion gegen Baseline setzen mindestens Run-002 voraus.
+Run-003 zeigt, dass das canonical/derived/ephemeral-Contract-Modell im Prinzip reibungsarme PRs ermöglicht — aber das ist Interpretation auf Basis eines sauberen Runs. Die Friction in Run-001 war primär generator-bug-bedingt, nicht contract-bedingt. Es ist noch nicht sauber trennbar, ob das Modell Friction reduziert oder nur sichtbar macht.
 
-Die Klassentrennung canonical/derived/ephemeral macht Drift im Diff auswertbar — das ist eine Beobachtung. Ob sie CI-Friction reduziert, ist noch nicht messbar.
+Der Kontrast (Run-001: mehrere Regenerationszyklen, Run-003: null Failures) ist ein erster Messpunkt. Nicht mehr, nicht weniger.
 
 ## Verdict
 
-Offen. Execution begonnen (Run-001 + In-PR-Beobachtungen). Hypothesenprüfung erfordert mindestens Run-002 unter neuem Contract-System mit vollständiger Metrikerhebung.
+Vorläufig offen. Zwei unabhängige PR-Runs dokumentiert. Erste Messkontrastdaten liegen vor. Hypothesenprüfung möglich, aber noch nicht belastbar — für ein stabiles Urteil fehlt mindestens ein dritter vergleichbarer Run mit vollständiger Metrikerhebung für alle fünf primären Metriken.
 
 ## Lessons Learned
 
-- Canonical artifacts erwiesen sich als anfälliger als erwartet: generator-bugs (path resolution, .venv-leak) lösten mehrfache Regenerationszyklen innerhalb eines PRs aus.
-- `ci_blocking_failures` und `manual_regen_steps` sind die kritischsten Metriken, wurden aber in Run-001 nicht vollständig gemessen.
-- Metrikerhebung muss für Run-002 explizit vorbereitet werden (CI-Log-Zugriff, explizite Regen-Zählung).
+- Canonical artifacts erwiesen sich in Run-001 als anfällig: generator-bugs lösten mehrfache Regenerationszyklen aus.
+- Run-003 war der erste vollständig metrik-erfasste saubere Lauf: alle Zielmetriken explizit erhoben, keine Doppelfelder in evidence.jsonl.
+- Evidence-Einträge ohne Zusatzfelder (`type`, `event`, `details`, `metrics`) sind lesbarer und reduzieren semantischen Drift.
+- Die Determinismus-Prüfung (double-run check) ist reproduzierbar und schnell.
 
 ## Nächste Schritte
 
-- Run-002 unter neuem echten PR erfassen (kein weiterer Push auf PR-58)
-- CI-Statuschecks und manuelle Eingriffe per Run protokollieren
-- `ci_blocking_failures`, `manual_regen_steps`, `diagnosis_clarity_score` vollständig erheben
+- Dritten vollständigen vergleichbaren Messlauf erfassen (Run-004 auf eigenem PR)
+- Alle fünf Metriken konsistent über alle Runs erfassen: `ci_blocking_failures`, `manual_regen_steps`, `changed_canonical_count`, `diagnosis_clarity_score`, `unnecessary_commit_delta`
 - Danach: Wechsel auf `result_assessment` in `decision.yml` prüfen
 
 ## Interpretation Budget
@@ -69,13 +74,15 @@ Offen. Execution begonnen (Run-001 + In-PR-Beobachtungen). Hypothesenprüfung er
 > Pflicht bei adopted status / promotion-relevanten Experimenten. Wird befüllt vor Promotion.
 
 ### Allowed Claims
-- Die Klassentrennung canonical/derived/ephemeral ist im PR-Diff beobachtbar und auswertbar (belegt durch Run-001, PR-58).
+- Die Klassentrennung canonical/derived/ephemeral ist im PR-Diff beobachtbar und auswertbar (belegt durch Run-001, PR-58 und Run-003, PR-62).
 - In PR-58 wurden canonical artifacts mehrfach (3x) regeneriert — beobachtet, nicht quantitativ ausgewertet.
+- In PR-62 wurden null CI-Blocking-Failures beobachtet und alle Metriken vollständig erhoben.
+- Run-003 ist der erste vollständig metrik-erfasste saubere Lauf in diesem Experiment.
 
 ### Disallowed Claims
-- Dass das Contract-Modell CI-Friction reduziert (nicht gemessen, kein Baseline-Vergleich).
-- Verallgemeinerungen über "den PR-Prozess" auf Basis eines einzigen Runs.
-- Adoption-Empfehlungen vor Run-002 + Hypothesenprüfung.
+- Dass das Contract-Modell CI-Friction reduziert (kein Baseline-Vergleich, zwei Runs mit unterschiedlicher Friction-Ursache).
+- Verallgemeinerungen über den PR-Prozess auf Basis von zwei Runs.
+- Adoption-Empfehlungen vor mindestens einem weiteren vergleichbaren Run.
 
 ### Evidence Basis
 - Direkt beobachtet: Run-001 (PR-58), Diff-Klassifikation, In-PR canonical regen × 3 (commits d561893, 7c44b07)
