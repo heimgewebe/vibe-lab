@@ -90,6 +90,7 @@ Vorläufig offen. Fünf dokumentierte PR-Runs liegen vor. Die Vergleichsbasis is
 
 ## Nächste Schritte
 
+- Cross-Run-Entscheidungsoberfläche in `results/cross-run-assessment.md` pflegen und als Pflichtreferenz vor jedem Switch auf `result_assessment` verwenden.
 - Messdefinitionen über Run-001/Run-002/Run-003 harmonisieren (gleiches Feldset, gleiche Scope-Interpretation).
 - Für den nächsten vergleichbaren Run dieselbe Scope-Klasse beibehalten (eine Quelländerung + Generator-Interaktion).
 - Danach: Wechsel auf `result_assessment` in `decision.yml` erneut prüfen.

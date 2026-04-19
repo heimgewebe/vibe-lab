@@ -45,7 +45,7 @@ evidence_summary:
   neutral: 57                 # Neutral: setup, run recording, friction, fix cycles
 
 next_steps: |
-  Keep decision_type at execution_assessment for this consolidation state. Consolidate metric definitions across Run-001/Run-002/Run-003, then re-evaluate switching to result_assessment with an explicit baseline comparison.
+  Keep decision_type at execution_assessment for this consolidation state. Use results/cross-run-assessment.md as the normalized decision surface. Re-evaluate switching to result_assessment only after explicit baseline framing and stable cross-run comparison semantics.
 
 # challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge
 # compared_to: ""            # Optional: Referenz auf verglichenes Experiment
