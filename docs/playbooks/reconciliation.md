@@ -118,8 +118,8 @@ Beide Befehle müssen ohne Fehler durchlaufen.
 
 - PR-Template: `pull_request_template.md` (Default)
 - [DEPRECATED] `experiment-run.md` wurde entfernt
-- PR-Typ: `experiment_reconciliation` ankreuzen
-- Reconciliation-Sektion vollständig ausfüllen
+- Reconciliation-Charakter im Abschnitt `Change Summary` explizit markieren
+- Reconciliation-spezifische Checks kurz unter `Validation` aufführen
 
 ---
 
