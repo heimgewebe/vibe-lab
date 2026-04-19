@@ -44,6 +44,12 @@ jobs:
       - name: Test agent handoff validator
         run: python3 scripts/docmeta/test_validate_agent_handoff.py
 
+      - name: Validate Phase-1c fixture checker corpus
+        run: python3 scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py
+
+      - name: Test Phase-1c fixture checker
+        run: python3 scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py
+
       - name: Regenerate diagnostics
         run: make generate
 
