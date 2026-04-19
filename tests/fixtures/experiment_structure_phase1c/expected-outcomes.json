@@ -1,0 +1,39 @@
+{
+  "cases": {
+    "valid": {
+      "fixture_path": "tests/fixtures/experiment_structure_phase1c/valid",
+      "expected_verdict": "VALID",
+      "expected_status_assessment": "adopted",
+      "expected_confidence": 1.0,
+      "notes": [
+        "all required files present and non-empty",
+        "manifest and decision are schema-valid",
+        "3 valid evidence entries => strong_evidence",
+        "decision, evidence, and result agree on adoption"
+      ]
+    },
+    "inconsistent": {
+      "fixture_path": "tests/fixtures/experiment_structure_phase1c/inconsistent",
+      "expected_verdict": "INCONSISTENT",
+      "expected_status_assessment": "inconclusive",
+      "expected_confidence": 0.5,
+      "notes": [
+        "all required files present and non-empty",
+        "manifest and decision are schema-valid",
+        "3 valid evidence entries => strong_evidence",
+        "decision says inconclusive while result states clear adoption",
+        "decision_vs_result conflict expected"
+      ]
+    },
+    "insufficient_input": {
+      "fixture_path": "tests/fixtures/experiment_structure_phase1c/insufficient_input",
+      "expected_verdict": "ERROR",
+      "expected_status_assessment": null,
+      "expected_confidence": 0.0,
+      "notes": [
+        "critical artifact missing: results/result.md",
+        "hard abort condition should trigger insufficient_input"
+      ]
+    }
+  }
+}

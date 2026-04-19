@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "phase1c-insufficient-input"
+  hypothesis: "A missing critical artifact should force an error verdict."
+  status: blocked
+  cognitive_mode: declarative
+  category: technique
+  execution_status: executed
+  execution_refs:
+    - results/evidence.jsonl
+  created: "2026-04-19"
+  updated: "2026-04-19"
+  author: "copilot-agent"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools:
+    - GPT-5.4
+  language: "markdown"
+  environment: "fixture"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

@@ -1,0 +1,3 @@
+{"id":"E1","timestamp":"2026-04-19T12:00:00Z","event_type":"measurement","iteration":1,"metric":"artifact_presence_check","value":0,"context":"results/result.md is intentionally missing in this fixture.","artifact_ref":"results/result.md"}
+{"id":"E2","timestamp":"2026-04-19T12:01:00Z","event_type":"measurement","iteration":1,"metric":"schema_validation","value":1,"context":"manifest.yml validates successfully for the abort-path fixture.","artifact_ref":"manifest.yml"}
+{"id":"E3","timestamp":"2026-04-19T12:02:00Z","event_type":"decision","iteration":1,"metric":"abort_condition_expected","value":1,"context":"Hard abort should occur before result consistency can be checked.","artifact_ref":"results/decision.yml"}
