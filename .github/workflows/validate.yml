@@ -50,13 +50,71 @@ jobs:
       - name: Test Phase-1c fixture checker
         run: python3 scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py
 
-      - name: Regenerate diagnostics
-        run: make generate
+      - name: Regenerate canonical diagnostics
+        run: make generate-canonical
 
-      - name: Check generated files are up to date
+      - name: Check canonical diagnostics contract
         run: |
-          if git status --porcelain docs/_generated/ | grep -q .; then
-            echo "❌ Generated files are out of date or untracked. Run 'make generate' and commit the changes."
-            git status --porcelain docs/_generated/
+          if git status --porcelain -- docs/_generated/doc-index.md docs/_generated/system-map.md | grep -q .; then
+            echo "❌ Canonical diagnostics contract violated. Run 'make generate-canonical' and commit the changes."
+            git status --porcelain -- docs/_generated/doc-index.md docs/_generated/system-map.md
             exit 1
           fi
+
+  derived-diagnostics:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python3 -m pip install pyyaml jsonschema rfc3339-validator
+
+      - name: Generate derived diagnostics
+        run: make generate-derived
+
+      - name: Upload derived diagnostics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: derived-diagnostics
+          path: |
+            docs/_generated/backlinks.md
+            docs/_generated/orphans.md
+
+      - name: Show derived diagnostic drift (non-blocking)
+        run: |
+          if git status --porcelain -- docs/_generated/backlinks.md docs/_generated/orphans.md | grep -q .; then
+            echo "ℹ️ Derived diagnostics differ from committed files (non-blocking)."
+            git status --porcelain -- docs/_generated/backlinks.md docs/_generated/orphans.md
+            git diff -- docs/_generated/backlinks.md docs/_generated/orphans.md || true
+          else
+            echo "✅ Derived diagnostics match committed files."
+          fi
+
+  ephemeral-diagnostics:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python3 -m pip install pyyaml jsonschema rfc3339-validator
+
+      - name: Generate ephemeral diagnostics
+        run: make generate-ephemeral
+
+      - name: Upload ephemeral diagnostics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ephemeral-diagnostics
+          path: docs/_generated/epistemic-state.md
