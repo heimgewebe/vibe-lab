@@ -27,6 +27,8 @@ SKIP_DIR_NAMES: frozenset[str] = frozenset({
     "node_modules",
     "__pycache__",
     "_archive",
+    ".venv",
+    "venv",
 })
 
 

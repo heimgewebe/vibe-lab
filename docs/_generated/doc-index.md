@@ -5,8 +5,6 @@
 
 | Path | Title | Status | Canonicality |
 | ---- | ----- | ------ | ------------ |
-| `.venv/lib/python3.10/site-packages/pip/_vendor/idna/LICENSE.md` | LICENSE | — | — |
-| `.venv/lib/python3.10/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md` | LICENSE | — | — |
 | `.vibe/intent.md` | intent | — | — |
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
