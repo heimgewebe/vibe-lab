@@ -199,4 +199,4 @@ echtes Neu-Feld; aus `result.md` bzw. Phase 2).
    mit `decision_type: result_assessment` (Gegenrichtung).
 4. `make validate` grün.
 5. Für generator-sensitive Änderungen: `make generate` zweimal nacheinander;
-  der zweite Lauf darf keinen Diff erzeugen.
+   der zweite Lauf darf keinen Diff erzeugen.
