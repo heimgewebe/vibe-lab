@@ -12,71 +12,62 @@ relations:
 ## 1. Bewertungsrahmen
 
 ### Zielhypothese
-Die Trennung in `canonical` / `derived` / `ephemeral` plus das CI-Splitting in `blocking` / `non-blocking` / `artifact-only` reduziert operative Friktion oder macht sie klarer, lokalisierbarer und billiger zu beheben.
+Die Trennung in `canonical` / `derived` / `ephemeral` plus das CI-Splitting in `blocking` / `non-blocking` / `artifact-only` reduziert Friktion oder macht sie klarer lokalisierbar.
 
-### Bewertungsmodus
-Diese Auswertung dient als Grundlage fuer einen moeglichen Wechsel von `decision_type: execution_assessment` zu `decision_type: result_assessment`.
+### Diagnosefokus dieses PRs
+Dieser PR bewertet nicht "noch einen Run", sondern isoliert ein wiederkehrendes Strukturmuster:
+- stale `docs/_generated/system-map.md` nach Hinzufügen von Run-Artefakten,
+- wiederholter Konsolidierungs-Fix-Commit,
+- offene Einordnung: Workflow-Artefakt vs Architekturproblem.
 
-### Entscheidungsregel
-Ein Wechsel auf `result_assessment` ist gerechtfertigt, wenn:
-1. mehrere unabhaengige PR-Runs vorliegen,
-2. die Kernmetriken harmonisiert sind,
-3. Beobachtung und Interpretation getrennt bleiben,
-4. die Hypothese selbst teilweise bewertbar ist.
+### Trigger
+`triggered_by: user-request-new-pr-structural-friction-isolation-2026-04-19`
 
-## 2. Run-Matrix
+## 2. Run-Matrix (nur Run-003 bis Run-006)
 
-| Run | PR | Typ | Scope-Klasse | evaluation_role | Friction-Profil | Harmonisiert | Bewertbar fuer Hypothese |
-|---|---|---|---|---|---|---|---|
-| Run-001 | PR-58 | real | frueh / heterogen | historical_baseline | hohe reale In-PR-Friktion | teilweise | eingeschraenkt |
-| Run-002 | PR-61 | real | klein, instrumentiert | transitional | blocking failure + fix cycle | besser | ja, eingeschraenkt |
-| Run-003 | PR-62 | real | klein, sauber | clean_reference | clean run | gut | ja |
-| Run-004 | PR-63 | kontrolliert | klein, kontrollierte Friktion | controlled_probe | semantic + structural | gut | bedingt |
-| Run-005 | PR-64 | kontrolliert | klein, kalibriert | calibration | semantic + structural | gut | bedingt |
-| Run-006 | PR-67 | real | klein, natuerlich | natural_probe | structural only (consolidation) | gut | ja, begrenzt |
+| Run | PR | stale system-map | Wann | Lokaler Vorlauf | Auslöser | Zusatz-Commit |
+|---|---|---|---|---|---|---|
+| Run-003 | PR-62 | ja | nach Artifact-Write, im PR-CI | lokal unauffällig dokumentiert | Konsolidierungs-Commit mit neuen run-003 Artefakten | ja (1x) |
+| Run-004 | PR-63 | ja | nach Artifact-Write, im PR-CI | kein lokaler Vorabfail dokumentiert | Konsolidierungs-Commit mit neuen run-004 Artefakten | ja (1x) |
+| Run-005 | PR-64 | ja | nach Artifact-Write, im PR-CI | kein lokaler Vorabfail dokumentiert | Konsolidierungs-Commit mit neuen run-005 Artefakten | ja (1x) |
+| Run-006 | PR-67 | ja | nach Artifact-Write, im PR-CI | vor Artifact-Write clean (double-generate + validate) | Write von run-006 Artefakten und anschliessender validate-Lauf | ja (1x) |
 
-### Rollen-Semantik
-- `historical_baseline`: frueher Realzustand mit hoher Friktion und unvollstaendiger Metrikdisziplin
-- `transitional`: erste instrumentierte Zwischenform
-- `clean_reference`: sauberer Referenzlauf ohne initiale blocking failures
-- `controlled_probe`: gezielt gestoerter Lauf zur Messung von semantic friction
-- `calibration`: Wiederholung kontrollierter Friktion mit stabileren Metriken
-- `natural_probe`: natuerlicher Minimal-Run ohne Injektion
+## 3. Strukturelles Friktionsmuster (Diagnoseoberfläche)
 
-## 3. Kernmetriken (normalisierte Sicht)
+### 3.1 Belegt
+- In allen Runs 003-006 trat stale `system-map.md` im PR-CI nach Konsolidierung auf.
+- Pro Run war ein zusätzlicher Commit zur canonical-Regeneration nötig.
+- Die jeweilige `system-map`-Diff zeigt konsistent +2 Dateien im Block `experiments/` und +2 im Total.
+- Generatorlogik zählt getrackte Dateien via `git ls-files`; neue Artefaktdateien sind damit direkt relevant für die `system-map`.
 
-### 3.1 Erfasste Metriken
-- `ci_blocking_failures_total`
-- `manual_regen_steps`
-- `diagnosis_clarity_score`
-- `unnecessary_commit_delta`
-- `detection_latency_seconds`
-- `fix_duration_seconds`
+### 3.2 Plausibel
+- Primärer Treiber ist die Workflow-Reihenfolge: Artefakte werden geschrieben, danach wird canonical state nicht sofort nachgezogen.
+- Das Muster ist deterministisch genug, um als stabiler Konsolidierungspfad zu gelten (kein sporadischer Zufall, kein einmaliger Ausrutscher).
 
-### 3.2 Friction-Klassen
-- `semantic_friction`
-- `structural_friction`
+### 3.3 Offen
+- Ob die Friktion nur ein Workflow-Artefakt ist, bleibt offen, solange canonical/blocking `system-map` auf run-interne Artefakte reagiert, die im selben Durchlauf entstehen.
+- Damit bleibt eine architekturelle Restfrage: Ist die aktuelle Kopplung (run writes artifacts -> canonical drift -> blocking gate) gewollte Strenge oder unnötige Selbstkopplung.
 
-## 4. Beobachtungen (nur belegt)
+## 4. Workflow-Artefakt vs Architekturproblem
 
-### Run-001
-- Mehrfache canonical-Regenerationszyklen innerhalb eines PRs.
-- Path-resolution bug und .venv leak beobachtet.
-- Hohe reale Friktion bei unvollstaendiger Metrikdisziplin.
+### Vorläufige Einordnung
+- Arbeitsdiagnose: primär workflowbedingt.
+- Begründung: Trigger sitzt konsistent nach Artifact-Write, Fix ist konsistent `generate-canonical`, und Ursache ist in der Zähllogik transparent.
 
-### Run-002
-- Unabhaengiger PR-Run mit einem blocking failure und Fix-Zyklus.
-- Metrikdisziplin besser als Run-001, aber noch Uebergangscharakter.
+### Architektureller Restzweifel
+- Die Workflow-Diagnose schließt einen Architekturanteil nicht aus.
+- Solange dieselbe Run-Durchführung zwingend artefaktinduzierte canonical-Drift erzeugen kann, bleibt die Frage nach der Contract-Grenze offen.
+
+## 5. Beobachtungen (nur belegt)
 
 ### Run-003
-- Erster sauberer End-to-End-Lauf.
-- 0 initiale blocking failures.
-- Determinism check bestanden.
+- Vor Konsolidierung keine canonical-Änderung in system-map.
+- Nach run-003 Artifact-Konsolidierung stale system-map im validate-Job.
 
 ### Run-004
 - Kontrollierte semantic_friction injiziert.
 - Blocking failure absichtlich erzeugt und schnell lokalisiert.
-- Zusaetzlicher structural failure bei Konsolidierung (stale system-map).
+- Zusätzlicher structural failure bei Konsolidierung (stale system-map).
 
 ### Run-005
 - Kontrollierte semantic_friction erneut injiziert.
@@ -84,30 +75,44 @@ Ein Wechsel auf `result_assessment` ist gerechtfertigt, wenn:
 - Structural consolidation failure erneut beobachtet.
 
 ### Run-006
-- Natuerlicher Minimal-Run ohne kontrollierte Injektion.
+- Natürlicher Minimal-Run ohne kontrollierte Injektion.
 - Pre-artifact Generatorlauf sauber und deterministisch.
 - Structural consolidation failure (`stale system-map`) erneut beobachtet.
 
-## 5. Kontrastive Deutung
+## 6. Minimaler Beweisplan (abgehakt)
+
+1. Welche tracked files fließen in system-map ein?
+- Abgehakt: `generate_system_map.py` basiert auf `git ls-files`.
+
+2. Gehen Artifact-Dateien unter `artifacts/run-*` in die Zählung ein?
+- Abgehakt: Ja, indirekt über Top-Level-Aggregation `experiments/`; alle vier Fix-Commits zeigen +2 Dateien in diesem Block.
+
+3. Entsteht Drift erst nach Artifact-Write?
+- Abgehakt: Run-006 dokumentiert pre-artifact clean und post-artifact stale.
+
+4. Bleibt Effekt bei reinem Doku-PR ohne neue Artefakte aus?
+- Nicht vollständig abgehakt in diesem Datensatz; als Leerstelle markiert.
+
+## 7. Kontrastive Deutung
 
 ### Deutung A (optimistisch)
 Die Architektur entmischt Friktion:
 - semantic failures werden schnell lokalisierbar,
 - structural failures werden als eigener Typ sichtbar,
-- clean runs bleiben moeglich,
+- clean runs bleiben möglich,
 - kontrollierte Friktion ist reproduzierbar messbar.
 
 ### Deutung B (skeptisch)
-Die Architektur koennte Friktion eher umlagern als reduzieren:
+Die Architektur könnte Friktion eher umlagern als reduzieren:
 - ein Teil der Kosten verschiebt sich in formale Fehlerklassen,
 - Konsolidierungsfehler (`stale system-map`) treten wiederholt auf,
-- der staerkste Vorteil liegt eventuell in Diagnoseklarheit statt Friktionssenkung.
+- der stärkste Vorteil liegt eventuell in Diagnoseklarheit statt Friktionssenkung.
 
-## 6. Zwischenfazit
+## 8. Zwischenfazit
 
 ### Belastbar sagbar
 - Friktion ist klarer klassifizierbar als vor dem Contract-Split.
-- Clean runs sind moeglich.
+- Saubere initiale Läufe sind möglich, aber nicht stabil garantiert.
 - Semantic friction ist schnell detektierbar und behebbar.
 - Structural friction bei Konsolidierung zeigt ein wiederkehrendes Muster.
 - Kontrollierte Friktion ist reproduzierbar messbar.
@@ -115,17 +120,17 @@ Die Architektur koennte Friktion eher umlagern als reduzieren:
 ### Noch nicht belastbar sagbar
 - Dass das Modell Friktion insgesamt reduziert.
 - Dass das CI-System insgesamt effizienter ist.
-- Dass die Architektur bereits adoptable ist.
+- Dass die Architektur bereits für den produktiven Einsatz geeignet ist.
 - Dass der beobachtete Vorteil generalisiert.
 
-## 7. Structural Friction Pattern
+## 9. Structural Friction Pattern
 
 Beobachtung:
 - Wiederholter CI-Fehler: stale `system-map.md` bei Artefakt-Konsolidierung.
 
 Eigenschaften:
 - tritt nach Artifact-Adds auf,
-- unabhaengig von semantic_friction,
+- unabhängig von semantic_friction,
 - deterministisch reproduzierbar in mehreren Runs.
 
 Offene Frage:
@@ -133,16 +138,17 @@ Offene Frage:
 - oder Architekturproblem (unexpected)
 
 Status:
-- Noch nicht isoliert; verhindert `confirms`.
+- Triggerpfad ist hinreichend isoliert für ein `mixed`-Urteil.
+- Vollständige Trennung Workflow-only vs Architekturanteil bleibt offen.
 
-## 8. Vorschlag fuer Decision-Switch
+## 10. Vorschlag für Decision-Switch
 
 ### Auf `result_assessment` wechseln, wenn
-- Friktionstypen und Messung ueber mehrere Runs stabil vergleichbar sind,
+- Friktionstypen und Messung über mehrere Runs stabil vergleichbar sind,
 - die Hypothese teilweise inhaltlich beurteilt werden kann,
 - und das Urteil explizit begrenzt formuliert wird.
 
-## 9. Candidate Verdict Mapping
+## 11. Candidate Verdict Mapping
 
 ### `mixed`
 Wenn belegt ist:
@@ -156,11 +162,6 @@ Nur wenn belegt ist:
 - Friktion wird im Mittel geringer oder billiger,
 - structural failure pattern ist verstanden oder behoben.
 
-### `mixed`
-Wenn belegt ist:
-- Diagnoseklarheit steigt,
-- Friktion sinkt aber nicht klar,
-- oder Friktionstypen eher getrennt als reduziert werden.
 
 ### `inconclusive`
 Wenn belegt ist:
@@ -173,32 +174,32 @@ Nur wenn belegt ist:
 - clean runs bleiben Ausnahme,
 - Wiederholung verbessert nichts.
 
-## 10. Abschlussurteil
+## 12. Abschlussurteil
 
 Urteil: `result_assessment: mixed`.
 
 Warum `mixed`:
 - Semantic friction ist gut lokalisierbar und behebbar.
-- Structural friction ist wiederkehrend und eigenstaendig.
-- Clean runs sind moeglich, aber nicht stabil garantiert.
+- Structural friction ist wiederkehrend und an den Konsolidierungspfad gekoppelt.
+- Clean runs sind möglich, aber nicht stabil garantiert.
 
 Warum nicht `confirms`:
-- Keine belastbare Evidenz fuer robuste Gesamtsenkung der Friktion.
+- Keine belastbare Evidenz für robuste Gesamtsenkung der Friktion.
 
 Warum nicht `adopt`:
 - Structural pattern ist nicht isoliert; Architekturreife bleibt offen.
 
-Delegierte Leerstelle fuer Folgeexperiment:
-- Isolieren, ob `stale system-map` primaer Workflow-Artefakt oder Architekturproblem ist.
+Delegierte Leerstelle für Folgeexperiment:
+- Isolieren, ob `stale system-map` primär Workflow-Artefakt oder Architekturproblem ist.
 
-## 11. Aktueller methodischer Default
+## 13. Aktueller methodischer Default
 
-Empfohlener Zielkorridor fuer einen spaeteren `result_assessment`: `mixed` oder `inconclusive`.
+Empfohlener Zielkorridor für einen späteren `result_assessment`: `mixed` oder `inconclusive`.
 Noch nicht freigeben, bis Vergleichsnormalisierung explizit abgeschlossen ist.
 
-## 12. Offene Leerstelle
+## 14. Offene Leerstelle
 
 Es fehlt:
 - eine explizite Baseline-Definition ohne Contract,
 - eine bereinigte Vergleichsmatrix ohne Altlastverzerrung,
-- eine belastbare Entscheidung, ob `stale system-map` primaer Workflow-Artefakt oder Architekturfehler ist.
+- ein sauberer Gegenlauf ohne neue Run-Artefakte, um Workflow-only gegen Architekturanteil härter zu trennen.
