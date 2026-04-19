@@ -8,13 +8,15 @@ canonicality: operative
 
 ## Zusammenfassung
 
-**Stand nach PR-58, PR-61, PR-62 und PR-63:** Vier PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62, Run-004 als unabhängiger PR-Run auf PR-63.
+**Stand nach PR-58, PR-61, PR-62, PR-63 und PR-64:** Fünf PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62, Run-004 als unabhängiger PR-Run auf PR-63, Run-005 als unabhängiger PR-Run auf PR-64.
 
 Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
 
 Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures im initialen CI-Lauf, kein Fix-Zyklus, Determinismus bestätigt.
 
 Run-004 (PR-63) wurde als bewusst leicht gestörter Lauf erfasst: eine kleine, kontrollierte Schema-Abweichung in `results/evidence.jsonl` erzeugte genau einen blockierenden Validate-Fehler und wurde in einem Fix-Schritt behoben.
+
+Run-005 (PR-64) wurde als Kalibrierungslauf mit identischer kontrollierter Schema-Injektion ausgeführt. Die Friction blieb semantisch und lokal: ein blockierender Validate-Fehler, schnelle Lokalisierung, kurzer Fix-Zyklus bis wieder alle Checks grün waren.
 
 ## Beobachtungen
 
@@ -54,8 +56,19 @@ In PR-62 waren betroffen:
 - Wie schnell erkannt: 47 Sekunden von erstem Failed-Timestamp bis expliziter Fehleridentifikation
 - Schritte zur Behebung: 2 (fehlenden `context`-Key ergänzt; danach `system-map.md` per Generate regeneriert und committed)
 
+**Run-005 / PR-64** (kalibrierte kontrollierte Friction):
+- `ci_blocking_failures_total`: 1
+- `manual_regen_steps`: 1
+- `diagnosis_clarity_score`: 5/5
+- `unnecessary_commit_delta`: 1
+- `detection_latency_seconds`: 48
+- `fix_duration_seconds`: 50
+- Friction-Klasse: semantic_friction (Hauptfehler), structural_friction (ein Regenerationsschritt zur State-Kohärenz)
+- Was schief lief: kontrolliert injizierter Schema-Verstoß (fehlender required key `context` in einer Evidence-Zeile)
+- Schritte zur Behebung: 1 schema-fix commit; danach CI direkt grün
+
 ### Diagnosis Clarity
-Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle).
+Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle). Run-005: 5/5 (lokaler, eindeutig klassifizierter Fehler mit direkter Behebung).
 
 ## Deutung
 
@@ -65,7 +78,7 @@ Der Kontrast zwischen Run-001 (mehrere Regenerationszyklen), Run-002 (ein blocki
 
 ## Verdict
 
-Vorläufig offen. Vier dokumentierte PR-Runs liegen vor, aber die Vergleichsbasis ist methodisch noch nicht stabil genug für einen belastbaren Hypothesenentscheid.
+Vorläufig offen. Fünf dokumentierte PR-Runs liegen vor. Die Vergleichsbasis ist gegenüber Run-004 konsistenter, aber weiterhin noch nicht belastbar genug für einen finalen Hypothesenentscheid.
 
 ## Lessons Learned
 
@@ -73,6 +86,7 @@ Vorläufig offen. Vier dokumentierte PR-Runs liegen vor, aber die Vergleichsbasi
 - Run-002 zeigte, dass CI-Fehler/Fix-Zyklen metrikfähig dokumentierbar sind.
 - Run-003 war der erste initial saubere End-to-End-Lauf mit vollständiger Metrikerhebung.
 - Die Determinismus-Prüfung (double-run check) ist reproduzierbar und schnell.
+- Run-005 bestätigt, dass kontrollierte semantische Friktion reproduzierbar injizierbar und mit stabilen Zeitmetriken messbar ist.
 
 ## Nächste Schritte
 

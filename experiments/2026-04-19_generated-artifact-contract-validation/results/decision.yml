@@ -31,14 +31,18 @@ rationale: |
 
   Detection speed and remediation were explicitly measured for Run-004: detection_latency_seconds=47, fix_steps_required=2, diagnosis_clarity_score=4, unnecessary_commit_delta=2.
 
-  Decision type remains execution_assessment: four PR runs are now documented, but metric definitions and scopes were not fully harmonized from the start. A robust result_assessment still needs explicit cross-run normalization and baseline framing.
+  Run-005 is documented as an independent PR run on PR-64 (branch exp/run-005-controlled-friction) with artifacts under artifacts/run-005-pr64/. It was executed as a calibration run with fixed scope and one controlled semantic friction injection (missing `context` in one evidence entry). The run produced one blocking validate failure, was localized in 48 seconds, and reached all-green checks 50 seconds after explicit localization.
+
+  Run-005 measured outcomes: ci_blocking_failures_total=1, fix_steps_required=1, manual_regen_steps=1, diagnosis_clarity_score=5, unnecessary_commit_delta=1, detection_latency_seconds=48, fix_duration_seconds=50.
+
+  Decision type remains execution_assessment: five PR runs are now documented. Run-005 improves metric normalization and friction-class labeling but does not yet provide a sufficient non-contract baseline for result_assessment.
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 40            # Anzahl Evidence-Entries in evidence.jsonl
+  observations: 55            # Anzahl Evidence-Entries in evidence.jsonl
   positive: 0                 # Positive Beobachtungen
   negative: 0                 # Negative Beobachtungen
-  neutral: 40                 # Neutral: setup, run recording, friction, fix cycles
+  neutral: 55                 # Neutral: setup, run recording, friction, fix cycles
 
 next_steps: |
   Keep decision_type at execution_assessment for this consolidation state. Consolidate metric definitions across Run-001/Run-002/Run-003, then re-evaluate switching to result_assessment with an explicit baseline comparison.
