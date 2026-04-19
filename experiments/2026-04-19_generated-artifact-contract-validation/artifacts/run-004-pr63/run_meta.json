@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-004-pr63",
+  "generated_at": "2026-04-19T17:37:00Z",
+  "executor": "local:github-copilot",
+  "command": "gh pr checks 63",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-004-pr63/execution.txt",
+  "provenance_level": "self_reported"
+}

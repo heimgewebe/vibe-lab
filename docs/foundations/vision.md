@@ -2,6 +2,7 @@
 title: "Systemvision"
 status: active
 canonicality: foundational
+updated: "2026-04-19"
 ---
 # Vibe-Lab: Lernendes, prüfendes und schöpferisches System
 
