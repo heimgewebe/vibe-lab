@@ -95,7 +95,7 @@ Die Run-Serie zeigt keine robuste Gesamtsenkung von Friktion, aber eine belastba
 - semantic friction ist reproduzierbar lokalisierbar und schnell behebbar (Run-004/005),
 - structural friction tritt wiederkehrend bei Konsolidierung auf (Run-003/004/005/006), auch ohne semantische Injektion (Run-006).
 
-Der beobachtete Nutzen liegt aktuell staerker in Diagnoseklarheit und Typisierbarkeit als in gesicherter Friktionsreduktion.
+Der beobachtete Nutzen liegt aktuell stärker in Diagnoseklarheit und Typisierbarkeit als in gesicherter Friktionsreduktion.
 
 ## Verdict
 
@@ -108,10 +108,10 @@ Warum `mixed`:
 
 Warum nicht `confirms`:
 - Eine robuste Gesamtsenkung der Friktion ist nicht belegt.
-- Der wiederkehrende stale-system-map-Pfad wurde zwar eingegrenzt, aber nicht vollstaendig als rein workflowbedingt widerlegt oder als Architekturproblem abschliessend bestaetigt.
+- Der wiederkehrende stale-system-map-Pfad wurde zwar eingegrenzt, aber nicht vollständig als rein workflowbedingt widerlegt oder als Architekturproblem abschließend bestätigt.
 
 Warum nicht nur `inconclusive`:
-- Die Hypothese ist inzwischen teilweise bewertbar, nicht nur ausfuehrbar.
+- Die Hypothese ist inzwischen teilweise bewertbar, nicht nur ausführbar.
 
 ## Lessons Learned
 
