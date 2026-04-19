@@ -8,11 +8,13 @@ canonicality: operative
 
 ## Zusammenfassung
 
-**Stand nach PR-58, PR-61 und PR-62:** Drei PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62.
+**Stand nach PR-58, PR-61, PR-62 und PR-63:** Vier PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62, Run-004 als unabhängiger PR-Run auf PR-63.
 
 Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
 
 Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures im initialen CI-Lauf, kein Fix-Zyklus, Determinismus bestätigt.
+
+Run-004 (PR-63) wurde als bewusst leicht gestörter Lauf erfasst: eine kleine, kontrollierte Schema-Abweichung in `results/evidence.jsonl` erzeugte genau einen blockierenden Validate-Fehler und wurde in einem Fix-Schritt behoben.
 
 ## Beobachtungen
 
@@ -43,8 +45,17 @@ In PR-62 waren betroffen:
 - `unnecessary_commit_delta`: 0
 - `diagnosis_clarity_score`: 5/5
 
+**Run-004 / PR-63** (kontrollierte Friction):
+- `ci_blocking_failures`: 1
+- `manual_regen_steps`: 0
+- `diagnosis_clarity_score`: 4/5
+- `unnecessary_commit_delta`: 1
+- Was schief lief: Schema-Verstoß in `results/evidence.jsonl` (fehlender required key `context`, line 31)
+- Wie schnell erkannt: 47 Sekunden von erstem Failed-Timestamp bis expliziter Fehleridentifikation
+- Schritte zur Behebung: 1 (fehlenden `context`-Key ergänzt)
+
 ### Diagnosis Clarity
-Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen).
+Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle).
 
 ## Deutung
 
@@ -54,7 +65,7 @@ Der Kontrast zwischen Run-001 (mehrere Regenerationszyklen), Run-002 (ein blocki
 
 ## Verdict
 
-Vorläufig offen. Drei dokumentierte PR-Runs liegen vor, aber die Vergleichsbasis ist methodisch noch nicht stabil genug für einen belastbaren Hypothesenentscheid.
+Vorläufig offen. Vier dokumentierte PR-Runs liegen vor, aber die Vergleichsbasis ist methodisch noch nicht stabil genug für einen belastbaren Hypothesenentscheid.
 
 ## Lessons Learned
 

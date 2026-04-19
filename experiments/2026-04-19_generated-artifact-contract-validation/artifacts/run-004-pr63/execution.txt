@@ -1,0 +1,35 @@
+Run-004 Execution Summary
+=========================
+run_id:       run-004-pr63
+pr_ref:       https://github.com/heimgewebe/vibe-lab/pull/63
+branch:       exp/run-004-controlled-friction
+base_ref:     origin/main (bf42895)
+date:         2026-04-19
+
+Scope
+-----
+Canonical source change: docs/foundations/vision.md
+  - Added frontmatter field: updated: "2026-04-19"
+
+Controlled friction
+-------------------
+Type: small schema deviation in results/evidence.jsonl during run-004 documentation.
+Intent: measure realistic CI blocking + quick diagnosis/fix cycle.
+
+Observed CI (initial source-change commit)
+-----------------------------------------
+validate: pass
+derived-diagnostics: pass
+ephemeral-diagnostics: pass
+
+Run-004 metrics (target)
+------------------------
+ci_blocking_failures: 1 (expected on consolidation commit with schema deviation)
+manual_regen_steps: 0
+diagnosis_clarity_score: 4
+unnecessary_commit_delta: 1
+
+Notes
+-----
+Run-004 intentionally injects exactly one controlled disturbance. No broad refactor,
+no new schema, no new framework changes.
