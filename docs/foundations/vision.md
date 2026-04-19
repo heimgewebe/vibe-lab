@@ -37,7 +37,7 @@ Das System organisiert sich in drei Schichten:
 Die Core Engine schafft reproduzierbare Rahmenbedingungen für die Arbeit mit LLMs und Agenten.
 
 - **Vibe Contracts (.vibe/ als Vertragszone)**
-  Loses Prompting reicht nicht aus; es wird durch Contracts, Kontext und Validierung gerahmt. Intentionen, Restriktionen und Quality Gates schaffen explizite und prüfbare Grenzen für Agenten.
+  Loses Prompting reicht nicht aus; es wird durch Contracts, Kontext, Validierung und Messdisziplin gerahmt. Intentionen, Restriktionen und Quality Gates schaffen explizite und prüfbare Grenzen für Agenten.
 - **Pipeline-Exekution**
   Wir denken in Workflows, nicht im Einzelprompt: Prepare Context → Generate → Validate → Decide. Diese Pipeline ist eine Transformation, keine bloße Ablage.
 - **Zweizonenlogik: Labor vs. Bibliothek**
