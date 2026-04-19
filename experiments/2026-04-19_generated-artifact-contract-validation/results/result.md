@@ -8,9 +8,11 @@ canonicality: operative
 
 ## Zusammenfassung
 
-**Stand nach PR-62 (Run-003):** Zwei unabhängige PR-Runs sind dokumentiert (Run-001 / PR-58 und Run-003 / PR-62). Die Hypothese ist jetzt vorsichtig beurteilbar — noch kein Baseline-Vergleich, aber erste Messkontraste liegen vor.
+**Stand nach PR-58, PR-61 und PR-62:** Drei reale PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62.
 
-Run-001 (PR-58) zeigte ausgeprägte In-PR-Friction: drei canonical-Regenerationszyklen für `doc-index.md` innerhalb eines einzigen PRs (path resolution bug + .venv-Leck). Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures, kein Fix-Zyklus, Determinismus bestätigt.
+Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
+
+Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures vor dem ersten Push, kein Fix-Zyklus im initialen Lauf, Determinismus bestätigt.
 
 ## Beobachtungen
 
@@ -48,26 +50,24 @@ Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursa
 
 > Interpretation, explizit als solche markiert.
 
-Run-003 zeigt, dass das canonical/derived/ephemeral-Contract-Modell im Prinzip reibungsarme PRs ermöglicht — aber das ist Interpretation auf Basis eines sauberen Runs. Die Friction in Run-001 war primär generator-bug-bedingt, nicht contract-bedingt. Es ist noch nicht sauber trennbar, ob das Modell Friction reduziert oder nur sichtbar macht.
-
-Der Kontrast (Run-001: mehrere Regenerationszyklen, Run-003: null Failures) ist ein erster Messpunkt. Nicht mehr, nicht weniger.
+Der Kontrast zwischen Run-001 (mehrere Regenerationszyklen), Run-002 (ein blockierender CI-Fehler mit Fix-Zyklus) und Run-003 (initial sauberer Lauf) deutet auf sinkende Friction hin. Das bleibt Interpretation, weil Ursachenmix und Messdisziplin über die Runs noch nicht vollständig vereinheitlicht sind.
 
 ## Verdict
 
-Vorläufig offen. Zwei unabhängige PR-Runs dokumentiert. Erste Messkontrastdaten liegen vor. Hypothesenprüfung möglich, aber noch nicht belastbar — für ein stabiles Urteil fehlt mindestens ein dritter vergleichbarer Run mit vollständiger Metrikerhebung für alle fünf primären Metriken.
+Vorläufig offen. Drei dokumentierte PR-Runs liegen vor, aber die Vergleichsbasis ist methodisch noch nicht stabil genug für einen belastbaren Hypothesenentscheid.
 
 ## Lessons Learned
 
 - Canonical artifacts erwiesen sich in Run-001 als anfällig: generator-bugs lösten mehrfache Regenerationszyklen aus.
-- Run-003 war der erste vollständig metrik-erfasste saubere Lauf: alle Zielmetriken explizit erhoben, keine Doppelfelder in evidence.jsonl.
-- Evidence-Einträge ohne Zusatzfelder (`type`, `event`, `details`, `metrics`) sind lesbarer und reduzieren semantischen Drift.
+- Run-002 zeigte, dass CI-Fehler/Fix-Zyklen metrikfähig dokumentierbar sind.
+- Run-003 war der erste initial saubere End-to-End-Lauf mit vollständiger Metrikerhebung.
 - Die Determinismus-Prüfung (double-run check) ist reproduzierbar und schnell.
 
 ## Nächste Schritte
 
-- Dritten vollständigen vergleichbaren Messlauf erfassen (Run-004 auf eigenem PR)
-- Alle fünf Metriken konsistent über alle Runs erfassen: `ci_blocking_failures`, `manual_regen_steps`, `changed_canonical_count`, `diagnosis_clarity_score`, `unnecessary_commit_delta`
-- Danach: Wechsel auf `result_assessment` in `decision.yml` prüfen
+- Messdefinitionen über Run-001/Run-002/Run-003 harmonisieren (gleiches Feldset, gleiche Scope-Interpretation).
+- Für den nächsten vergleichbaren Run dieselbe Scope-Klasse beibehalten (eine Quelländerung + Generator-Interaktion).
+- Danach: Wechsel auf `result_assessment` in `decision.yml` erneut prüfen.
 
 ## Interpretation Budget
 
@@ -80,9 +80,9 @@ Vorläufig offen. Zwei unabhängige PR-Runs dokumentiert. Erste Messkontrastdate
 - Run-003 ist der erste vollständig metrik-erfasste saubere Lauf in diesem Experiment.
 
 ### Disallowed Claims
-- Dass das Contract-Modell CI-Friction reduziert (kein Baseline-Vergleich, zwei Runs mit unterschiedlicher Friction-Ursache).
-- Verallgemeinerungen über den PR-Prozess auf Basis von zwei Runs.
-- Adoption-Empfehlungen vor mindestens einem weiteren vergleichbaren Run.
+- Dass das Contract-Modell CI-Friction robust reduziert (keine harmonisierte Baseline, Ursachenmix über drei Runs).
+- Verallgemeinerungen über "den PR-Prozess" ohne zusätzliche vergleichbare Messungen.
+- Adoption-Empfehlungen ohne belastbare result_assessment-Entscheidung.
 
 ### Evidence Basis
 - Direkt beobachtet: Run-001 (PR-58), Diff-Klassifikation, In-PR canonical regen × 3 (commits d561893, 7c44b07)
