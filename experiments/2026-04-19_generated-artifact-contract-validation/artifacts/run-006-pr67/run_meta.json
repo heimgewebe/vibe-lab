@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-006-pr67",
+  "generated_at": "2026-04-19T19:05:00Z",
+  "executor": "local:github-copilot",
+  "command": "make generate && make generate && make validate && gh pr checks 67",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-006-pr67/execution.txt",
+  "provenance_level": "self_reported"
+}

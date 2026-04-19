@@ -8,7 +8,7 @@ canonicality: operative
 
 ## Zusammenfassung
 
-**Stand nach PR-58, PR-61, PR-62, PR-63 und PR-64:** Fünf PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62, Run-004 als unabhängiger PR-Run auf PR-63, Run-005 als unabhängiger PR-Run auf PR-64.
+**Stand nach PR-58, PR-61, PR-62, PR-63, PR-64 und PR-67:** Sechs PR-Runs sind dokumentiert. Run-001 liegt auf PR-58, Run-002 als unabhängiger PR-Run auf PR-61, Run-003 als unabhängiger PR-Run auf PR-62, Run-004 als unabhängiger PR-Run auf PR-63, Run-005 als unabhängiger PR-Run auf PR-64, Run-006 als unabhängiger natürlicher clean_reference-Run auf PR-67.
 
 Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
 
@@ -17,6 +17,8 @@ Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failure
 Run-004 (PR-63) wurde als bewusst leicht gestörter Lauf erfasst: eine kleine, kontrollierte Schema-Abweichung in `results/evidence.jsonl` erzeugte genau einen blockierenden Validate-Fehler und wurde in einem Fix-Schritt behoben.
 
 Run-005 (PR-64) wurde als Kalibrierungslauf mit identischer kontrollierter Schema-Injektion ausgeführt. Die Friction blieb semantisch und lokal: ein blockierender Validate-Fehler, schnelle Lokalisierung, kurzer Fix-Zyklus bis wieder alle Checks grün waren.
+
+Run-006 (PR-67) wurde als natürlicher clean_reference-Lauf ohne künstliche Friktion ausgeführt. Scope: eine kleine canonical Formulierungsänderung in `docs/foundations/vision.md`, danach deterministischer double-run mit `make generate`.
 
 ## Beobachtungen
 
@@ -67,8 +69,18 @@ In PR-62 waren betroffen:
 - Was schief lief: kontrolliert injizierter Schema-Verstoß (fehlender required key `context` in einer Evidence-Zeile)
 - Schritte zur Behebung: 2 (schema-fix commit; danach system-map-Regeneration für canonical contract)
 
+**Run-006 / PR-67** (natürliche clean_reference ohne Injektion):
+- `ci_blocking_failures_total`: pending (PR-Checks laufen noch)
+- `manual_regen_steps`: 0
+- `diagnosis_clarity_score`: pending
+- `unnecessary_commit_delta`: pending
+- `detection_latency_seconds`: n/a (kein Fehler lokal beobachtet)
+- `fix_duration_seconds`: n/a (kein Fix-Zyklus lokal beobachtet)
+- Friction-Klasse: none
+- Was passierte: minimaler canonical Change in `docs/foundations/vision.md`; zwei Generate-Läufe ohne zusätzlichen Diff.
+
 ### Diagnosis Clarity
-Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle). Run-005: 5/5 (lokaler, eindeutig klassifizierter Fehler mit direkter Behebung).
+Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle). Run-005: 5/5 (lokaler, eindeutig klassifizierter Fehler mit direkter Behebung). Run-006: pending (wird nach PR-Checks finalisiert).
 
 ## Deutung
 
@@ -78,7 +90,7 @@ Der Kontrast zwischen Run-001 (mehrere Regenerationszyklen), Run-002 (ein blocki
 
 ## Verdict
 
-Vorläufig offen. Fünf dokumentierte PR-Runs liegen vor. Die Vergleichsbasis ist gegenüber Run-004 konsistenter, aber weiterhin noch nicht belastbar genug für einen finalen Hypothesenentscheid.
+Vorläufig offen. Sechs dokumentierte PR-Runs liegen vor; Run-006 ist als natürlicher clean_reference-Vergleichspunkt angelegt und wird nach finalen PR-Checks bewertet.
 
 ## Lessons Learned
 
@@ -87,12 +99,13 @@ Vorläufig offen. Fünf dokumentierte PR-Runs liegen vor. Die Vergleichsbasis is
 - Run-003 war der erste initial saubere End-to-End-Lauf mit vollständiger Metrikerhebung.
 - Die Determinismus-Prüfung (double-run check) ist reproduzierbar und schnell.
 - Run-005 bestätigt, dass kontrollierte semantische Friktion reproduzierbar injizierbar und mit stabilen Zeitmetriken messbar ist.
+- Run-006 stärkt den Vergleichsraum nur dann entscheidend, wenn die PR-Checks ohne Fix-Zyklus grün bleiben.
 
 ## Nächste Schritte
 
 - Cross-Run-Entscheidungsoberfläche in `results/cross-run-assessment.md` pflegen und als Pflichtreferenz vor jedem Switch auf `result_assessment` verwenden.
 - Messdefinitionen über Run-001/Run-002/Run-003 harmonisieren (gleiches Feldset, gleiche Scope-Interpretation).
-- Für den nächsten vergleichbaren Run dieselbe Scope-Klasse beibehalten (eine Quelländerung + Generator-Interaktion).
+- Run-006 PR-Checks finalisieren und die Pending-Metriken ohne Zusatzstruktur in evidence/result nachtragen.
 - Danach: Wechsel auf `result_assessment` in `decision.yml` erneut prüfen.
 
 ## Interpretation Budget

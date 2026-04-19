@@ -6,7 +6,7 @@ updated: "2026-04-19"
 ---
 # Vibe-Lab: Lernendes, prüfendes und schöpferisches System
 
-Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. **Das System verbessert nicht nur Coding, sondern sich selbst.** Dokumentation, Katalogisierung und Wissensspeicherung sind legitime Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.
+Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. **Das System verbessert nicht nur Coding, sondern sich selbst.** Dokumentation, Katalogisierung und Wissensspeicherung sind notwendige Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.
 
 Die Vision beruht auf vier Pfeilern: **Sammlung, Erprobung, Validierung und Kreation**. **Das System besteht aus vier Zuständen**, durch die Ideen transformiert werden. Ideen sind keine bloßen Inhalte, sondern **Zustandsobjekte im Wandel**:
 1. **roh** (Sammlung)
