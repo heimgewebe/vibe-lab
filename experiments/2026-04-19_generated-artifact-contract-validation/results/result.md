@@ -21,9 +21,9 @@ Run-004 (PR-63) wurde als bewusst leicht gestörter Lauf erfasst: eine kleine, k
 
 Run-005 (PR-64) wurde als Kalibrierungslauf mit identischer kontrollierter Schema-Injektion ausgeführt. Die Friction blieb semantisch und lokal: ein blockierender Validate-Fehler, schnelle Lokalisierung, kurzer Fix-Zyklus bis wieder alle Checks grün waren.
 
-Run-006 (PR-67) wurde als natuerlicher clean_reference-Lauf ohne kuenstliche Friktion gestartet. Scope: eine kleine canonical Formulierungsaenderung in `docs/foundations/vision.md`, danach deterministischer double-run mit `make generate`. Im PR trat dennoch einmal strukturelle Konsolidierungsfriktion auf (stale `system-map.md`), die mit einem einzelnen canonical-Regenerationscommit behoben wurde.
+Run-006 (PR-67) wurde als natürlicher clean_reference-Lauf ohne künstliche Friktion gestartet. Scope: eine kleine canonical Formulierungsänderung in `docs/foundations/vision.md`, danach deterministischer double-run mit `make generate`. Im PR trat dennoch einmal strukturelle Konsolidierungsfriktion auf (stale `system-map.md`), die mit einem einzelnen canonical-Regenerationscommit behoben wurde.
 
-Damit ist der alte PR nicht nur "noch ein Run", sondern ein Stabilitaetsbeleg fuer das Muster: selbst ohne semantische Injektion bleibt die strukturelle Friktion entlang des Artifact-Konsolidierungspfads reproduzierbar.
+Damit ist der alte PR nicht nur "noch ein Run", sondern ein Stabilitätsbeleg für das Muster: selbst ohne semantische Injektion bleibt die strukturelle Friktion entlang des Artifact-Konsolidierungspfads reproduzierbar.
 
 ## Beobachtungen
 
