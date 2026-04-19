@@ -46,13 +46,13 @@ In PR-62 waren betroffen:
 - `diagnosis_clarity_score`: 5/5
 
 **Run-004 / PR-63** (kontrollierte Friction):
-- `ci_blocking_failures`: 1
-- `manual_regen_steps`: 0
+- `ci_blocking_failures`: 2 (1x schema validate, 1x canonical contract bei Konsolidierung)
+- `manual_regen_steps`: 1
 - `diagnosis_clarity_score`: 4/5
-- `unnecessary_commit_delta`: 1
+- `unnecessary_commit_delta`: 2
 - Was schief lief: Schema-Verstoß in `results/evidence.jsonl` (fehlender required key `context`, line 31)
 - Wie schnell erkannt: 47 Sekunden von erstem Failed-Timestamp bis expliziter Fehleridentifikation
-- Schritte zur Behebung: 1 (fehlenden `context`-Key ergänzt)
+- Schritte zur Behebung: 2 (fehlenden `context`-Key ergänzt; danach `system-map.md` per Generate regeneriert und committed)
 
 ### Diagnosis Clarity
 Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle).
