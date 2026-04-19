@@ -1,3 +1,4 @@
+---
 title: "Initiale Situation: Generated Artifact Contract Validation"
 status: draft
 canonicality: operative

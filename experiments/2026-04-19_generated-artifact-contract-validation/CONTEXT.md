@@ -1,3 +1,4 @@
+---
 title: "Kontext: Generated Artifact Contract Validation"
 status: draft
 canonicality: operative

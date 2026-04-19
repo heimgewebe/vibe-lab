@@ -1,1 +1,1 @@
-{"event_type":"observation","timestamp":"YYYY-MM-DDTHH:MM:SSZ","iteration":1,"metric":"","value":"","context":"","notes":""}
+{"event_type":"observation","timestamp":"2026-04-19T08:50:00Z","iteration":1,"metric":"scaffold_created","value":1,"context":"Experiment scaffold for generated artifact contract validation created and schema-validated.","notes":"No execution run yet; this entry only documents setup completion."}

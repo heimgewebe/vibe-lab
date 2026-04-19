@@ -1,3 +1,4 @@
+---
 title: "Methode: Generated Artifact Contract Validation"
 status: draft
 canonicality: operative
