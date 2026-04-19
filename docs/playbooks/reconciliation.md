@@ -116,9 +116,10 @@ Beide Befehle müssen ohne Fehler durchlaufen.
 
 ### 5. PR erstellen
 
-- PR-Template: `experiment-run.md`
-- PR-Typ: `experiment_reconciliation` ankreuzen
-- Reconciliation-Sektion vollständig ausfüllen
+- PR-Template: `pull_request_template.md` (Default)
+- [DEPRECATED] `experiment-run.md` wurde entfernt
+- Reconciliation-Charakter im Abschnitt `Change Summary` explizit markieren
+- Reconciliation-spezifische Checks kurz unter `Validation` aufführen
 
 ---
 
