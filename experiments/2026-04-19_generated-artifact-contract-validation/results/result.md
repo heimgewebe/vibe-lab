@@ -57,15 +57,15 @@ In PR-62 waren betroffen:
 - Schritte zur Behebung: 2 (fehlenden `context`-Key ergänzt; danach `system-map.md` per Generate regeneriert und committed)
 
 **Run-005 / PR-64** (kalibrierte kontrollierte Friction):
-- `ci_blocking_failures_total`: 1
-- `manual_regen_steps`: 1
+- `ci_blocking_failures_total`: 2
+- `manual_regen_steps`: 2
 - `diagnosis_clarity_score`: 5/5
-- `unnecessary_commit_delta`: 1
+- `unnecessary_commit_delta`: 2
 - `detection_latency_seconds`: 48
-- `fix_duration_seconds`: 50
-- Friction-Klasse: semantic_friction (Hauptfehler), structural_friction (ein Regenerationsschritt zur State-Kohärenz)
+- `fix_duration_seconds`: 241
+- Friction-Klasse: semantic_friction (Hauptfehler), structural_friction (zusätzlicher canonical-contract Drift bei Konsolidierung)
 - Was schief lief: kontrolliert injizierter Schema-Verstoß (fehlender required key `context` in einer Evidence-Zeile)
-- Schritte zur Behebung: 1 schema-fix commit; danach CI direkt grün
+- Schritte zur Behebung: 2 (schema-fix commit; danach system-map-Regeneration für canonical contract)
 
 ### Diagnosis Clarity
 Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursachen). Run-004: 4/5 (schnell lokalisierbarer Schema-Fehler mit präziser Fehlstelle). Run-005: 5/5 (lokaler, eindeutig klassifizierter Fehler mit direkter Behebung).

@@ -35,16 +35,16 @@ Timing
 first_failed_timestamp:   2026-04-19T18:01:48Z
 error_localized_at:       2026-04-19T18:02:36Z
 detection_latency_sec:    48
-all_checks_green_at:      2026-04-19T18:03:26Z
-fix_duration_sec:         50
+all_checks_green_at:      2026-04-19T18:06:37Z
+fix_duration_sec:         241
 
 Fix and cost
 ------------
-fix_steps_required:       1
-manual_regen_steps:       1
-unnecessary_commit_delta: 1
+fix_steps_required:       2
+manual_regen_steps:       2
+unnecessary_commit_delta: 2
 diagnosis_clarity_score:  5
-ci_blocking_failures_total: 1
+ci_blocking_failures_total: 2
 
 Notes
 -----
