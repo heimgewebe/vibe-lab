@@ -8,15 +8,15 @@ schema_version: "0.1.0"
 #   execution_assessment : Bewertet den Ausführungsstatus (zulässig auch bei designed / reconstructed)
 #   result_assessment    : Bewertet Ergebnisse auf Basis vorhandener Evidenz
 #   adoption_assessment  : Übernahme-Entscheidung — NUR bei execution_status ∈ {executed, replicated}
-decision_type: "execution_assessment"
+decision_type: "result_assessment"
 
 # Erlaubte verdict-Werte pro Typ (Schema erzwingt):
 #   execution_assessment  : executed | reconstructed | not_executed | insufficient_proof
 #   result_assessment     : confirms | refutes | mixed | inconclusive
 #   adoption_assessment   : adopt | reject | defer
-verdict: "executed"
+verdict: "mixed"
 
-confidence: "low"             # high | medium | low | none  (Pflicht bei result_/adoption_assessment)
+confidence: "medium"             # high | medium | low | none  (Pflicht bei result_/adoption_assessment)
 date: "2026-04-19"             # updated: 2026-04-19 (gap assessment)
 reviewer: "TBD"
 
@@ -37,21 +37,21 @@ rationale: |
 
   Run-006 was executed as an independent natural clean_reference attempt on branch exp/run-006-clean-reference with artifacts under artifacts/run-006-pr67/. Scope remained intentionally minimal (one small canonical wording change in docs/foundations/vision.md), no controlled friction injection, no schema deviation.
 
-  Observed Run-006 outcome: initial validate failed once due to structural canonical-contract drift (stale docs/_generated/system-map.md after adding run-006 artifacts). A single canonical regeneration commit resolved the issue; final PR checks are all green.
+  Run-006 did not satisfy clean_reference criteria: initial validate failed once due to structural canonical-contract drift (stale docs/_generated/system-map.md after adding run-006 artifacts). A single canonical regeneration commit resolved the issue; final PR checks are all green.
 
   Final Run-006 metrics: ci_blocking_failures_total=1, manual_regen_steps=1, diagnosis_clarity_score=5, unnecessary_commit_delta=1, detection_latency_seconds=97, fix_duration_seconds=36, friction_class=structural_friction.
 
-  Decision type remains execution_assessment: Run-006 did not satisfy clean_reference criteria because structural consolidation friction re-occurred in a natural run.
+  Ergebnisurteil ist daher mixed: semantic friction ist im aktuellen Setup gut detektierbar und schnell behebbar (Run-004/005), structural friction ist als eigenes wiederkehrendes Muster sichtbar (Run-003/004/005/006 Konsolidierung), und clean runs sind moeglich aber nicht stabil garantiert. Damit ist die Hypothese teilweise bewertbar (Friktion entmischt und besser lokalisierbar), aber eine robuste Gesamtsenkung der Friktion ist nicht belegt.
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 75            # Anzahl Evidence-Entries in evidence.jsonl
+  observations: 77            # Anzahl Evidence-Entries in evidence.jsonl
   positive: 0                 # Positive Beobachtungen
   negative: 0                 # Negative Beobachtungen
-  neutral: 75                 # Neutral: setup, run recording, friction, fix cycles
+  neutral: 77                 # Neutral: setup, run recording, friction, fix cycles
 
 next_steps: |
-  Keep decision_type at execution_assessment. Run-006 confirms structural consolidation friction can appear even without injected semantic friction. Evaluate result_assessment switch only after obtaining a second true clean_reference run or isolating/explaining the structural pattern as stable workflow behavior.
+  Abschluss dieses Experiments mit result_assessment:mixed beibehalten. Folgearbeit in ein separates, enges Folgeexperiment auslagern: "Ist stale system-map primaer Workflow-Artefakt oder Architekturproblem?".
 
 # challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge
 # compared_to: ""            # Optional: Referenz auf verglichenes Experiment

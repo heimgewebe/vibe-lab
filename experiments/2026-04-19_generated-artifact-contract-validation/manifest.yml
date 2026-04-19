@@ -6,7 +6,7 @@ schema_version: "0.1.0"
 experiment:
   name: "Generated Artifact Contract Validation"                    # Kurzname des Experiments
   hypothesis: "Die Trennung in canonical/derived/ephemeral und blocking/non-blocking/artifact-only reduziert CI-Reibung, manuellen Eingriff und kognitive Last."              # Zu prüfende Hypothese
-  status: testing                # idea | designed | testing | adopted | rejected | blocked | inconclusive — Ist-Zustand
+  status: inconclusive                # idea | designed | testing | adopted | rejected | blocked | inconclusive — Ist-Zustand
   category: workflow         # style | technology | technique | workflow | combo
   execution_status: executed  # designed | prepared | executed | replicated — Ist-Zustand; Abweichungen von vorliegenden Artefakten sichtbar machen, nicht still übergehen
                               # (Durchführungsgrad, orthogonal zu status und evidence_level)
@@ -25,7 +25,7 @@ experiment:
     - "artifacts/run-006-pr67/run_meta.json"
     - "artifacts/run-006-pr67/execution.txt"
   created: "2026-04-19"
-  updated: "2026-04-19"       # Letzte Aktualisierung des Evidenzstands inkl. Run-006 / PR-67.
+  updated: "2026-04-19"       # Letzte Aktualisierung inkl. Abschluss als result_assessment (mixed).
   author: "GPT-5.3-Codex"
   iteration: 6
   evidence_level: experimental  # anecdotal | experimental | replicated

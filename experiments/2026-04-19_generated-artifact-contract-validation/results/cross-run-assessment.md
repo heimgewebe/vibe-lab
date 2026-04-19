@@ -2,6 +2,9 @@
 title: "Cross-Run-Auswertung: Generated Artifact Contract Validation"
 status: draft
 canonicality: operative
+relations:
+  - type: informed_by
+    target: result.md
 ---
 
 # Cross-Run-Auswertung — Generated Artifact Contract Validation
@@ -15,21 +18,30 @@ Die Trennung in `canonical` / `derived` / `ephemeral` plus das CI-Splitting in `
 Diese Auswertung dient als Grundlage fuer einen moeglichen Wechsel von `decision_type: execution_assessment` zu `decision_type: result_assessment`.
 
 ### Entscheidungsregel
-Ein Wechsel auf `result_assessment` ist nur dann gerechtfertigt, wenn:
-1. mindestens 3 unabhaengige PR-Runs vorliegen,
-2. die Kernmetriken ausreichend harmonisiert sind,
-3. Beobachtung und Interpretation sauber getrennt bleiben,
-4. die Hypothese selbst bewertbar wird (nicht nur Run-Ausfuehrung).
+Ein Wechsel auf `result_assessment` ist gerechtfertigt, wenn:
+1. mehrere unabhaengige PR-Runs vorliegen,
+2. die Kernmetriken harmonisiert sind,
+3. Beobachtung und Interpretation getrennt bleiben,
+4. die Hypothese selbst teilweise bewertbar ist.
 
 ## 2. Run-Matrix
 
-| Run | PR | Typ | Scope-Klasse | Friction-Profil | Harmonisiert | Bewertbar fuer Hypothese |
-|---|---|---|---|---|---|---|
-| Run-001 | PR-58 | real | frueh / heterogen | hohe reale In-PR-Friktion | teilweise | eingeschraenkt |
-| Run-002 | PR-61 | real | klein, instrumentiert | blocking failure + fix cycle | besser | ja, eingeschraenkt |
-| Run-003 | PR-62 | real | klein, sauber | clean run | gut | ja |
-| Run-004 | PR-63 | kontrolliert | klein, kontrollierte Friktion | semantic + structural | gut | bedingt |
-| Run-005 | PR-64 | kontrolliert | klein, kalibriert | semantic + structural | gut | bedingt |
+| Run | PR | Typ | Scope-Klasse | evaluation_role | Friction-Profil | Harmonisiert | Bewertbar fuer Hypothese |
+|---|---|---|---|---|---|---|---|
+| Run-001 | PR-58 | real | frueh / heterogen | historical_baseline | hohe reale In-PR-Friktion | teilweise | eingeschraenkt |
+| Run-002 | PR-61 | real | klein, instrumentiert | transitional | blocking failure + fix cycle | besser | ja, eingeschraenkt |
+| Run-003 | PR-62 | real | klein, sauber | clean_reference | clean run | gut | ja |
+| Run-004 | PR-63 | kontrolliert | klein, kontrollierte Friktion | controlled_probe | semantic + structural | gut | bedingt |
+| Run-005 | PR-64 | kontrolliert | klein, kalibriert | calibration | semantic + structural | gut | bedingt |
+| Run-006 | PR-67 | real | klein, natuerlich | natural_probe | structural only (consolidation) | gut | ja, begrenzt |
+
+### Rollen-Semantik
+- `historical_baseline`: frueher Realzustand mit hoher Friktion und unvollstaendiger Metrikdisziplin
+- `transitional`: erste instrumentierte Zwischenform
+- `clean_reference`: sauberer Referenzlauf ohne initiale blocking failures
+- `controlled_probe`: gezielt gestoerter Lauf zur Messung von semantic friction
+- `calibration`: Wiederholung kontrollierter Friktion mit stabileren Metriken
+- `natural_probe`: natuerlicher Minimal-Run ohne Injektion
 
 ## 3. Kernmetriken (normalisierte Sicht)
 
@@ -71,6 +83,11 @@ Ein Wechsel auf `result_assessment` ist nur dann gerechtfertigt, wenn:
 - Reproduzierbare Messung mit konsistenten Zeitmetriken.
 - Structural consolidation failure erneut beobachtet.
 
+### Run-006
+- Natuerlicher Minimal-Run ohne kontrollierte Injektion.
+- Pre-artifact Generatorlauf sauber und deterministisch.
+- Structural consolidation failure (`stale system-map`) erneut beobachtet.
+
 ## 5. Kontrastive Deutung
 
 ### Deutung A (optimistisch)
@@ -101,18 +118,37 @@ Die Architektur koennte Friktion eher umlagern als reduzieren:
 - Dass die Architektur bereits adoptable ist.
 - Dass der beobachtete Vorteil generalisiert.
 
-## 7. Vorschlag fuer Decision-Switch
+## 7. Structural Friction Pattern
 
-### Bei `execution_assessment` bleiben, wenn
-- strukturelle Friktion nicht isoliert ist,
-- Run-001 methodisch zu heterogen bleibt,
-- kein expliziter Baseline-Vergleich vorliegt.
+Beobachtung:
+- Wiederholter CI-Fehler: stale `system-map.md` bei Artefakt-Konsolidierung.
+
+Eigenschaften:
+- tritt nach Artifact-Adds auf,
+- unabhaengig von semantic_friction,
+- deterministisch reproduzierbar in mehreren Runs.
+
+Offene Frage:
+- Workflow-Artefakt (expected)
+- oder Architekturproblem (unexpected)
+
+Status:
+- Noch nicht isoliert; verhindert `confirms`.
+
+## 8. Vorschlag fuer Decision-Switch
 
 ### Auf `result_assessment` wechseln, wenn
-- ein weiterer sauber harmonisierter Run vorliegt, oder
-- die vorhandenen Runs in einer expliziten Vergleichsmatrix mit stabiler Semantik ueberfuehrt sind.
+- Friktionstypen und Messung ueber mehrere Runs stabil vergleichbar sind,
+- die Hypothese teilweise inhaltlich beurteilt werden kann,
+- und das Urteil explizit begrenzt formuliert wird.
 
-## 8. Candidate Verdict Mapping
+## 9. Candidate Verdict Mapping
+
+### `mixed`
+Wenn belegt ist:
+- Diagnoseklarheit steigt,
+- Friktionstypen werden getrennt und lokalisierbar,
+- aber Gesamtreduktion der Friktion bleibt unbelegt.
 
 ### `confirms`
 Nur wenn belegt ist:
@@ -137,12 +173,30 @@ Nur wenn belegt ist:
 - clean runs bleiben Ausnahme,
 - Wiederholung verbessert nichts.
 
-## 9. Aktueller methodischer Default
+## 10. Abschlussurteil
+
+Urteil: `result_assessment: mixed`.
+
+Warum `mixed`:
+- Semantic friction ist gut lokalisierbar und behebbar.
+- Structural friction ist wiederkehrend und eigenstaendig.
+- Clean runs sind moeglich, aber nicht stabil garantiert.
+
+Warum nicht `confirms`:
+- Keine belastbare Evidenz fuer robuste Gesamtsenkung der Friktion.
+
+Warum nicht `adopt`:
+- Structural pattern ist nicht isoliert; Architekturreife bleibt offen.
+
+Delegierte Leerstelle fuer Folgeexperiment:
+- Isolieren, ob `stale system-map` primaer Workflow-Artefakt oder Architekturproblem ist.
+
+## 11. Aktueller methodischer Default
 
 Empfohlener Zielkorridor fuer einen spaeteren `result_assessment`: `mixed` oder `inconclusive`.
 Noch nicht freigeben, bis Vergleichsnormalisierung explizit abgeschlossen ist.
 
-## 10. Offene Leerstelle
+## 12. Offene Leerstelle
 
 Es fehlt:
 - eine explizite Baseline-Definition ohne Contract,

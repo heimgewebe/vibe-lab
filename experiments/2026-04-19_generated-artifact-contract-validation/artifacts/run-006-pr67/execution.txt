@@ -26,12 +26,17 @@ e31cc5f  experiment(run-006): natural clean-reference run
 
 Artifact counts
 ---------------
+Pre-artifact measurement (vor artifacts/run-006-pr67):
 Changed canonical count:   0  (doc-index.md, system-map.md unchanged)
 Changed derived count:     0
 Changed ephemeral count:   0
 
-CI results
-----------
+Local validation
+----------------
+make validate:         pass
+
+CI results (PR #67)
+-------------------
 validate:              fail (initial) -> pass (after canonical fix)
 derived-diagnostics:   pass
 ephemeral-diagnostics: pass

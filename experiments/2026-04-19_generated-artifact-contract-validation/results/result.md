@@ -2,6 +2,9 @@
 title: "Experiment-Ergebnis: Generated Artifact Contract Validation"
 status: draft
 canonicality: operative
+relations:
+	- type: informs
+		target: cross-run-assessment.md
 ---
 
 # result.md — Experiment-Ergebnis
@@ -86,11 +89,24 @@ Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursa
 
 > Interpretation, explizit als solche markiert.
 
-Der Kontrast zwischen Run-001 (mehrere Regenerationszyklen), Run-002 (ein blockierender CI-Fehler mit Fix-Zyklus) und Run-003 (initial sauberer Lauf) deutet auf sinkende Friction hin. Das bleibt Interpretation, weil Ursachenmix und Messdisziplin über die Runs noch nicht vollständig vereinheitlicht sind.
+Die Run-Serie zeigt inzwischen keine robuste Gesamtsenkung von Friktion, aber eine belastbare Entmischung in diagnostische Objekte: semantic friction ist reproduzierbar lokalisierbar und schnell behebbar (Run-004/005), structural friction tritt wiederkehrend als eigenständiges Muster bei Konsolidierung auf (Run-003/004/005/006).
+
+Der beobachtete Nutzen liegt damit aktuell stärker in Diagnoseklarheit und Typisierbarkeit als in gesicherter Reduktion der Gesamtfriktion.
 
 ## Verdict
 
-Vorläufig offen. Sechs dokumentierte PR-Runs liegen vor. Run-006 lieferte einen natürlichen Vergleichspunkt, erfüllte aber die clean_reference-Kriterien nicht, weil strukturelle Konsolidierungsfriktion weiterhin auftrat.
+Ergebnisurteil: `mixed`.
+
+Warum `mixed`:
+- Friktion ist besser typisierbar und lokalisierbar.
+- Semantic friction ist kontrollierbar.
+- Structural friction ist real und wiederkehrend.
+
+Warum nicht `confirms`:
+- Eine robuste Gesamtsenkung der Friktion ist nicht belegt.
+
+Warum nicht nur `inconclusive`:
+- Die Hypothese ist inzwischen teilweise bewertbar, nicht nur ausfuehrbar.
 
 ## Lessons Learned
 
@@ -101,12 +117,17 @@ Vorläufig offen. Sechs dokumentierte PR-Runs liegen vor. Run-006 lieferte einen
 - Run-005 bestätigt, dass kontrollierte semantische Friktion reproduzierbar injizierbar und mit stabilen Zeitmetriken messbar ist.
 - Run-006 zeigt, dass strukturelle Konsolidierungsfriktion auch ohne künstliche semantische Injektion auftreten kann.
 
+## Abschlussstatus
+
+Das Experiment wird methodisch als `result_assessment: mixed` abgeschlossen.
+Eine Adoption-Entscheidung wird nicht getroffen.
+
 ## Nächste Schritte
 
 - Cross-Run-Entscheidungsoberfläche in `results/cross-run-assessment.md` pflegen und als Pflichtreferenz vor jedem Switch auf `result_assessment` verwenden.
 - Messdefinitionen über Run-001/Run-002/Run-003 harmonisieren (gleiches Feldset, gleiche Scope-Interpretation).
-- Für einen Wechsel auf `result_assessment` einen weiteren natürlichen Lauf ohne Konsolidierungsfix anstreben oder das strukturelle Pattern als erwartetes Workflow-Verhalten explizit isolieren.
-- Danach: Wechsel auf `result_assessment` in `decision.yml` erneut prüfen.
+- Folgearbeit in ein neues, engeres Experiment auslagern: Isolierung von `stale system-map` als Workflow-Artefakt vs. Architekturproblem.
+- Kein weiterer gleichartiger Run in diesem Experiment.
 
 ## Interpretation Budget
 

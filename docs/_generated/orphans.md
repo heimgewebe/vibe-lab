@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (96 found):
+Documents not referenced by any other document via frontmatter relations (95 found):
 
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
@@ -91,7 +91,6 @@ Documents not referenced by any other document via frontmatter relations (96 fou
 - `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md`
-- `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md`
