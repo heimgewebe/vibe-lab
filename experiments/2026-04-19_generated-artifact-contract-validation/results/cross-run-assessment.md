@@ -123,7 +123,7 @@ Die Architektur koennte Friktion eher umlagern als reduzieren:
 - Dass die Architektur bereits adoptable ist.
 - Dass der beobachtete Vorteil generalisiert.
 
-## 7. Structural Friction Pattern
+## 9. Structural Friction Pattern
 
 Beobachtung:
 - Wiederholter CI-Fehler: stale `system-map.md` bei Artefakt-Konsolidierung.
@@ -141,14 +141,14 @@ Status:
 - Triggerpfad ist hinreichend isoliert fuer ein `mixed`-Urteil.
 - Vollstaendige Trennung Workflow-only vs Architekturanteil bleibt offen.
 
-## 9. Vorschlag fuer Decision-Switch
+## 10. Vorschlag fuer Decision-Switch
 
 ### Auf `result_assessment` wechseln, wenn
 - Friktionstypen und Messung ueber mehrere Runs stabil vergleichbar sind,
 - die Hypothese teilweise inhaltlich beurteilt werden kann,
 - und das Urteil explizit begrenzt formuliert wird.
 
-## 10. Candidate Verdict Mapping
+## 11. Candidate Verdict Mapping
 
 ### `mixed`
 Wenn belegt ist:
@@ -179,7 +179,7 @@ Nur wenn belegt ist:
 - clean runs bleiben Ausnahme,
 - Wiederholung verbessert nichts.
 
-## 11. Abschlussurteil
+## 12. Abschlussurteil
 
 Urteil: `result_assessment: mixed`.
 
@@ -197,12 +197,12 @@ Warum nicht `adopt`:
 Delegierte Leerstelle fuer Folgeexperiment:
 - Isolieren, ob `stale system-map` primaer Workflow-Artefakt oder Architekturproblem ist.
 
-## 12. Aktueller methodischer Default
+## 13. Aktueller methodischer Default
 
 Empfohlener Zielkorridor fuer einen spaeteren `result_assessment`: `mixed` oder `inconclusive`.
 Noch nicht freigeben, bis Vergleichsnormalisierung explizit abgeschlossen ist.
 
-## 13. Offene Leerstelle
+## 14. Offene Leerstelle
 
 Es fehlt:
 - eine explizite Baseline-Definition ohne Contract,
