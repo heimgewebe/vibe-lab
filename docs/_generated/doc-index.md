@@ -110,3 +110,11 @@
 | `experiments/2026-04-15_agent-task-validity/results/result.md` | result | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
+| `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md` | CONTEXT | — | — |
+| `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md` | INITIAL | — | — |
+| `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md` | Phase-1c Inconsistent Fixture | draft | operative |
+| `tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md` | CONTEXT | — | — |
+| `tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md` | INITIAL | — | — |
+| `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md` | CONTEXT | — | — |
+| `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md` | INITIAL | — | — |
+| `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | Phase-1c Valid Fixture | draft | operative |
