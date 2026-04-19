@@ -3,8 +3,8 @@ title: "Experiment-Ergebnis: Generated Artifact Contract Validation"
 status: draft
 canonicality: operative
 relations:
-	- type: informs
-		target: cross-run-assessment.md
+  - type: informs
+    target: cross-run-assessment.md
 ---
 
 # result.md — Experiment-Ergebnis

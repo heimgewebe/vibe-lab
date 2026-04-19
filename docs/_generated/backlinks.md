@@ -84,6 +84,10 @@
 
 - ← `docs/blueprints/blueprint-agent-operability.md` (references)
 
+## `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md`
+
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` (informs)
+
 ## `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md`
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
