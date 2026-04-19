@@ -21,23 +21,21 @@ date: "2026-04-19"             # updated: 2026-04-19 (gap assessment)
 reviewer: "TBD"
 
 rationale: |
-  Run-001 on PR-58 is documented with execution-proof artifacts. Two additional in-PR friction observations were added for PR-58 (canonical generator non-determinism: path resolution bug + .venv leak, causing at least three canonical regeneration states in one PR). These are not a separate run — they are part of PR-58.
+  Run-001 on PR-58 remains documented with execution-proof artifacts.
 
-  Separate from in-PR friction, one epistemic gap observation was added: Run-002 is currently not available as an independent PR run in the workspace.
+  Run-002 is now documented as an independent PR run on PR-61 (branch exp/run-002-instrumented) with run artifacts under artifacts/run-002-pr61/. The run contains: explicit discovery definition, one source-document change, generator double-run determinism check, CI observation, one blocking CI failure before any fix, one incremental fix cycle, and subsequent green checks.
 
-  Run-002 assessment: no second independent PR run exists in the workspace. The two post-Run-001 commits (d561893, 7c44b07) are continuation commits on the same PR-58 branch — not a distinct PR run. Candidate matrix verdict: rejected (not a distinct pr_ref).
-
-  result_assessment remains blocked until Run-002 is captured on a new, independent PR. The hypothesis (canonical/derived/ephemeral split reduces CI friction) cannot yet be evaluated — one run with incomplete metrics is insufficient.
+  Decision type remains execution_assessment because the new state primarily improves execution-proof quality and run completeness. A full result_assessment is still premature: baseline comparison and broader metric stability are not yet sufficient for a robust hypothesis verdict.
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 10            # Anzahl Evidence-Entries in evidence.jsonl (gesamt; 7 original + 3 added)
+  observations: 19            # Anzahl Evidence-Entries in evidence.jsonl
   positive: 0                 # Positive Beobachtungen
-  negative: 0                 # Negative Beobachtungen — friction observed but not classified as positive/negative yet
-  neutral: 10                 # Neutral: setup, run recording, metric gaps, friction observations
+  negative: 0                 # Negative Beobachtungen
+  neutral: 19                 # Neutral: setup, run recording, friction, fix cycles
 
 next_steps: |
-  Capture Run-002 on the next independent PR under the canonical/derived/ephemeral contract. For that run, explicitly measure: ci_blocking_failures (CI log access required), manual_regen_steps (count regeneration commands), diagnosis_clarity_score (subjective 1-5). Then switch to result_assessment.
+  Keep decision_type at execution_assessment for this consolidation state. Prepare the next run with comparable scope and stricter baseline tracking. Re-evaluate switch to result_assessment after one additional independent run with stable measurement capture.
 
 # challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge
 # compared_to: ""            # Optional: Referenz auf verglichenes Experiment
