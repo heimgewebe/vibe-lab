@@ -21,7 +21,9 @@ Run-004 (PR-63) wurde als bewusst leicht gestörter Lauf erfasst: eine kleine, k
 
 Run-005 (PR-64) wurde als Kalibrierungslauf mit identischer kontrollierter Schema-Injektion ausgeführt. Die Friction blieb semantisch und lokal: ein blockierender Validate-Fehler, schnelle Lokalisierung, kurzer Fix-Zyklus bis wieder alle Checks grün waren.
 
-Run-006 (PR-67) wurde als natürlicher clean_reference-Lauf ohne künstliche Friktion gestartet. Scope: eine kleine canonical Formulierungsänderung in `docs/foundations/vision.md`, danach deterministischer double-run mit `make generate`. Im PR trat dennoch einmal strukturelle Konsolidierungsfriktion auf (stale `system-map.md`), die mit einem einzelnen canonical-Regenerationscommit behoben wurde.
+Run-006 (PR-67) wurde als natuerlicher clean_reference-Lauf ohne kuenstliche Friktion gestartet. Scope: eine kleine canonical Formulierungsaenderung in `docs/foundations/vision.md`, danach deterministischer double-run mit `make generate`. Im PR trat dennoch einmal strukturelle Konsolidierungsfriktion auf (stale `system-map.md`), die mit einem einzelnen canonical-Regenerationscommit behoben wurde.
+
+Damit ist der alte PR nicht nur "noch ein Run", sondern ein Stabilitaetsbeleg fuer das Muster: selbst ohne semantische Injektion bleibt die strukturelle Friktion entlang des Artifact-Konsolidierungspfads reproduzierbar.
 
 ## Beobachtungen
 
@@ -89,9 +91,11 @@ Run-001: nicht gemessen. Run-003: 5/5 (sauber, keine Unklarheit über Fehlerursa
 
 > Interpretation, explizit als solche markiert.
 
-Die Run-Serie zeigt inzwischen keine robuste Gesamtsenkung von Friktion, aber eine belastbare Entmischung in diagnostische Objekte: semantic friction ist reproduzierbar lokalisierbar und schnell behebbar (Run-004/005), structural friction tritt wiederkehrend als eigenständiges Muster bei Konsolidierung auf (Run-003/004/005/006).
+Die Run-Serie zeigt keine robuste Gesamtsenkung von Friktion, aber eine belastbare Entmischung in diagnostische Objekte:
+- semantic friction ist reproduzierbar lokalisierbar und schnell behebbar (Run-004/005),
+- structural friction tritt wiederkehrend bei Konsolidierung auf (Run-003/004/005/006), auch ohne semantische Injektion (Run-006).
 
-Der beobachtete Nutzen liegt damit aktuell stärker in Diagnoseklarheit und Typisierbarkeit als in gesicherter Reduktion der Gesamtfriktion.
+Der beobachtete Nutzen liegt aktuell staerker in Diagnoseklarheit und Typisierbarkeit als in gesicherter Friktionsreduktion.
 
 ## Verdict
 
@@ -100,10 +104,11 @@ Ergebnisurteil: `mixed`.
 Warum `mixed`:
 - Friktion ist besser typisierbar und lokalisierbar.
 - Semantic friction ist kontrollierbar.
-- Structural friction ist real und wiederkehrend.
+- Structural friction bleibt wiederkehrend.
 
 Warum nicht `confirms`:
 - Eine robuste Gesamtsenkung der Friktion ist nicht belegt.
+- Der wiederkehrende stale-system-map-Pfad wurde zwar eingegrenzt, aber nicht vollstaendig als rein workflowbedingt widerlegt oder als Architekturproblem abschliessend bestaetigt.
 
 Warum nicht nur `inconclusive`:
 - Die Hypothese ist inzwischen teilweise bewertbar, nicht nur ausfuehrbar.
@@ -121,6 +126,11 @@ Warum nicht nur `inconclusive`:
 
 Das Experiment wird methodisch als `result_assessment: mixed` abgeschlossen.
 Eine Adoption-Entscheidung wird nicht getroffen.
+
+Kalibrierte Kernbotschaft:
+- semantic friction: beherrschbar
+- structural friction: wiederkehrend
+- deshalb: `mixed` statt `confirms`
 
 ## Nächste Schritte
 

@@ -41,6 +41,8 @@ rationale: |
 
   Final Run-006 metrics: ci_blocking_failures_total=1, manual_regen_steps=1, diagnosis_clarity_score=5, unnecessary_commit_delta=1, detection_latency_seconds=97, fix_duration_seconds=36, friction_class=structural_friction.
 
+  Fuer Run-003 bis Run-006 ist der Triggerpfad konsistent: stale system-map tritt nach Artifact-Write im PR-CI auf und erfordert jeweils einen zusaetzlichen canonical-Regenerationscommit. Damit ist eine workflowzentrierte Erklaerung stark plausibel (Reihenfolge/Konsolidierung), aber ein Architekturanteil bleibt als Restfrage offen, weil canonical/blocking diagnostics auf run-interne Artefaktzugaenge reagieren.
+
   Ergebnisurteil ist daher mixed: semantic friction ist im aktuellen Setup gut detektierbar und schnell behebbar (Run-004/005), structural friction ist als eigenes wiederkehrendes Muster sichtbar (Run-003/004/005/006 Konsolidierung), und clean runs sind moeglich aber nicht stabil garantiert. Damit ist die Hypothese teilweise bewertbar (Friktion entmischt und besser lokalisierbar), aber eine robuste Gesamtsenkung der Friktion ist nicht belegt.
 
 # Pflicht bei adoption_assessment, optional sonst:
