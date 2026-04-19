@@ -23,9 +23,9 @@ Wenn das Contract-Modell `canonical/derived/ephemeral` plus CI-Split `blocking/n
 1. Baseline definieren (letzte 2 bis 3 PRs vor Contract-Split, soweit verfuegbar).
 2. Mindestens 2 reale PRs unter neuem Contract-System durchlaufen.
 3. Pro PR erfassen:
-	- Drift in `canonical`, `derived`, `ephemeral`
-	- betroffene CI-Jobs und deren Ausgang
-	- notwendige manuelle Eingriffe (Regen, Commit-Nachzug, Re-Run)
+   - Drift in `canonical`, `derived`, `ephemeral`
+   - betroffene CI-Jobs und deren Ausgang
+   - notwendige manuelle Eingriffe (Regen, Commit-Nachzug, Re-Run)
 4. Beobachtungen strukturiert in `results/evidence.jsonl` loggen.
 5. Vergleich Baseline vs. neues System in `results/result.md` dokumentieren.
 6. Fuer jeden Run das Format aus `artifacts/run-template.md` verwenden.

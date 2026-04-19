@@ -15,7 +15,14 @@ import argparse
 import sys
 from pathlib import Path
 
-import yaml
+try:
+    import yaml
+except ImportError:
+    print(
+        "ERROR: PyYAML is required. Install with: python3 -m pip install PyYAML",
+        file=sys.stderr,
+    )
+    raise SystemExit(1)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 CONTRACT_FILE = REPO_ROOT / ".vibe" / "generated-artifacts.yml"

@@ -5,6 +5,8 @@
 
 | Path | Title | Status | Canonicality |
 | ---- | ----- | ------ | ------------ |
+| `.venv/lib/python3.10/site-packages/pip/_vendor/idna/LICENSE.md` | LICENSE | — | — |
+| `.venv/lib/python3.10/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md` | LICENSE | — | — |
 | `.vibe/intent.md` | intent | — | — |
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
@@ -108,6 +110,13 @@
 | `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md` | task-validity-check | — | — |
 | `experiments/2026-04-15_agent-task-validity/method.md` | Methodik: Agent Task Validity Experiment | draft | operative |
 | `experiments/2026-04-15_agent-task-validity/results/result.md` | result | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/CONTEXT.md` | Kontext: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/INITIAL.md` | Initiale Situation: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md` | README | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md` | run-template | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` | Failure Modes: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/method.md` | Methode: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis (Template) | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md` | CONTEXT | — | — |
