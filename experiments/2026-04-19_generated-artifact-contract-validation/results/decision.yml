@@ -31,7 +31,7 @@ rationale: |
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 10            # Anzahl Beobachtungen in evidence.jsonl (7 original + 3 added)
+  observations: 10            # Anzahl Evidence-Entries in evidence.jsonl (gesamt; 7 original + 3 added)
   positive: 0                 # Positive Beobachtungen
   negative: 0                 # Negative Beobachtungen — friction observed but not classified as positive/negative yet
   neutral: 10                 # Neutral: setup, run recording, metric gaps, friction observations

@@ -10,7 +10,7 @@ canonicality: operative
 
 **Stand nach PR-58 (vollständig, mit Folge-Commits):** Ein realer PR-Run (Run-001) ist dokumentiert. Ein zweiter PR-Run (Run-002) existiert noch nicht — die Hypothese ist noch nicht hypothesenprüfbar.
 
-Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände fuer `doc-index.md` innerhalb eines einzigen PRs.
+Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
 
 Getrennt davon wurde eine epistemische Verfügbarkeitsbeobachtung dokumentiert: Run-002 ist derzeit nicht als unabhängiger PR-Run belegbar.
 
@@ -24,7 +24,7 @@ Die Klassentrennung `canonical/derived/ephemeral` ist im PR-Diff auswertbar. In 
 - 1 derived (docs/_generated/orphans.md)
 - 1 ephemeral (docs/_generated/epistemic-state.md)
 
-Zusaetzliche Reibungsbeobachtungen in diesem Fortschritt betreffen bisher nur canonical-Artefakte.
+Zusätzliche Reibungsbeobachtungen in diesem Fortschritt betreffen bisher nur canonical-Artefakte.
 
 Wirksamkeitsmessung im Sinne der Hypothese (Reduktion von CI-Friction) ist auf Basis eines Runs noch nicht möglich.
 

@@ -114,7 +114,7 @@
 | `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md` | run-template | — | — |
 | `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` | Failure Modes: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/method.md` | Methode: Generated Artifact Contract Validation | draft | operative |
-| `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis (Template) | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis: Generated Artifact Contract Validation | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
 | `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md` | CONTEXT | — | — |
