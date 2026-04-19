@@ -2,6 +2,7 @@
 title: "Repository-Plan"
 status: active
 canonicality: foundational
+updated: "2026-04-19"
 ---
 # Repository-Plan für vibe-lab
 
@@ -42,7 +43,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 - [ ] **Promotion-Gate:** Zwingende PR-Templates (`promotion.md`) regeln den Aufstieg in den Katalog.
 - [ ] **Scaffolding-CLI & Frontdoor:** Ein minimales `Makefile` (`make validate`, `make vibe`) und/oder `tools/vibe-cli` (z.B. `new experiment`) existieren, um Boilerplate zu senken.
 - [ ] **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` erklären Repo-Ziel, Beitragstypen und den Ablauf auf einen Blick (< 10 Minuten Lesezeit).
-- [ ] **Intelligence Layer (Basis):** `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` existieren in erster Version. Die Basis-Navigationsdokumente `docs/index.md` und `docs/masterplan.md` sind angelegt. Die Basis-Diagnosegeneratoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) sowie die Validatoren (`validate_schema.py`, `validate_relations.py`) liegen ausführbar bereit.
+- [ ] **Intelligence Layer (Basis):** `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` existieren in erster Version. Die Basis-Navigationsdokumente `docs/index.md` und `docs/masterplan.md` sind angelegt. Die Basis-Diagnosegeneratoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) sowie die Validatoren (`validate_schema.py`, `validate_relations.py`) liegen ausführbar bereit. Der Generated-Artifact-Contract (`.vibe/generated-artifacts.yml`) klassifiziert alle generierten Ausgaben in `canonical`, `derived` und `ephemeral` und legt CI-Verhalten (blocking vs. non-blocking vs. artifact-only) für jede Klasse fest.
 
 **Akzeptanzkriterien für Phase A (MVP abgeschlossen, wenn):**
 - [ ] Ein Issue lässt sich über ein typisiertes YAML-Formular erstellen.

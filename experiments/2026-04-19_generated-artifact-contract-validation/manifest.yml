@@ -15,11 +15,13 @@ experiment:
     - "artifacts/run-001-pr58/run_meta.json"
     - "artifacts/run-001-pr58/execution.txt"
     - "artifacts/run-002-pr61/run_meta.json"
-    - "artifacts/run-002-pr61/execution.txt"          # Spurverweise — befuellen sobald execution_status executed/replicated
+    - "artifacts/run-002-pr61/execution.txt"
+    - "artifacts/run-003-pr62/run_meta.json"
+    - "artifacts/run-003-pr62/execution.txt"          # Spurverweise — befüllen sobald execution_status executed/replicated
   created: "2026-04-19"
-  updated: "2026-04-19"       # Letzte Aktualisierung des Evidenzstands inkl. Run-002 / PR-61.
+  updated: "2026-04-19"       # Letzte Aktualisierung des Evidenzstands inkl. Run-002 / PR-61 und Run-003 / PR-62.
   author: "GPT-5.3-Codex"
-  iteration: 2
+  iteration: 3
   evidence_level: experimental  # anecdotal | experimental | replicated
   # replicated_from: ""      # Pfad zum Original-Experiment bei Replikation
   # related_idea: ""          # Referenz auf Idea-Issue (z.B. #42)
