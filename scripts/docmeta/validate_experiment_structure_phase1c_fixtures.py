@@ -36,12 +36,23 @@ RESULT_VERDICT_RE = re.compile(
     r"^## Verdict\s*$\n+([\s\S]*?)(?:^##\s+|\Z)", re.MULTILINE
 )
 STATUS_TOKEN_RE = re.compile(r"\b(adopted|rejected|inconclusive|blocked)\b", re.IGNORECASE)
+MANIFEST_SCHEMA_PATH = REPO_ROOT / "schemas" / "experiment.manifest.schema.json"
+DECISION_SCHEMA_PATH = REPO_ROOT / "schemas" / "decision.schema.json"
 
 _YAML_SPEC = importlib.util.find_spec("yaml")
 if _YAML_SPEC is not None:
     import yaml  # type: ignore
 else:
     yaml = None
+
+_JSONSCHEMA_SPEC = importlib.util.find_spec("jsonschema")
+if _JSONSCHEMA_SPEC is not None:
+    from jsonschema import Draft202012Validator, SchemaError
+    from jsonschema.validators import validator_for
+else:
+    Draft202012Validator = None  # type: ignore[assignment]
+    SchemaError = Exception  # type: ignore[assignment]
+    validator_for = None  # type: ignore[assignment]
 
 
 def display_path(path: Path) -> str:
@@ -53,6 +64,18 @@ def display_path(path: Path) -> str:
 
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_schema_validator(schema_path: Path):
+    if Draft202012Validator is None or validator_for is None:
+        raise RuntimeError("BLOCKED_BY: schema_validation_not_executable (missing jsonschema dependency)")
+    if not schema_path.is_file():
+        raise FileNotFoundError(f"MISSING: schema file {display_path(schema_path)}")
+
+    schema = load_json(schema_path)
+    validator_cls = validator_for(schema, default=Draft202012Validator)
+    validator_cls.check_schema(schema)
+    return validator_cls(schema, format_checker=validator_cls.FORMAT_CHECKER)
 
 
 def load_expected_cases(fixtures_dir: Path) -> dict[str, dict]:
@@ -101,6 +124,14 @@ def load_yaml_or_minimal(path: Path) -> dict:
     return _minimal_yaml_parse(text)
 
 
+def validate_against_schema(path: Path, data: dict, validator) -> list[str]:
+    errors: list[str] = []
+    for validation_error in sorted(validator.iter_errors(data), key=lambda e: list(e.path)):
+        field_path = ".".join(str(part) for part in validation_error.path) or "<root>"
+        errors.append(f"{display_path(path)}:{field_path}: {validation_error.message}")
+    return errors
+
+
 def read_required_file(case_dir: Path, relative_path: str) -> tuple[Path, str | None, str | None]:
     path = case_dir / relative_path
     if not path.is_file():
@@ -138,16 +169,40 @@ def extract_result_status(result_text: str) -> str | None:
     return token.group(1).lower()
 
 
-def map_decision_verdict_to_status(decision_verdict: str | None) -> str | None:
-    mapping = {
-        "confirms": "adopted",
-        "refutes": "rejected",
-        "mixed": "inconclusive",
-        "inconclusive": "inconclusive",
-    }
-    if decision_verdict is None:
+def map_decision_to_status(decision_type: str | None, decision_verdict: str | None) -> str | None:
+    if decision_type is None or decision_verdict is None:
         return None
-    return mapping.get(decision_verdict.strip().lower())
+
+    normalized_type = decision_type.strip().lower()
+    normalized_verdict = decision_verdict.strip().lower()
+
+    if normalized_type == "result_assessment":
+        mapping = {
+            "confirms": "adopted",
+            "refutes": "rejected",
+            "mixed": "inconclusive",
+            "inconclusive": "inconclusive",
+        }
+        return mapping.get(normalized_verdict)
+
+    if normalized_type == "adoption_assessment":
+        mapping = {
+            "adopt": "adopted",
+            "reject": "rejected",
+            "defer": "inconclusive",
+        }
+        return mapping.get(normalized_verdict)
+
+    if normalized_type == "execution_assessment":
+        mapping = {
+            "executed": "inconclusive",
+            "reconstructed": "inconclusive",
+            "not_executed": "blocked",
+            "insufficient_proof": "blocked",
+        }
+        return mapping.get(normalized_verdict)
+
+    return None
 
 
 def compute_confidence(
@@ -174,7 +229,7 @@ def compute_confidence(
     return bounded
 
 
-def evaluate_case(case_name: str, case_dir: Path) -> dict:
+def evaluate_case(case_name: str, case_dir: Path, manifest_validator, decision_validator) -> dict:
     missing_or_empty: list[str] = []
     parsing_errors: list[str] = []
     loaded_texts: dict[str, str] = {}
@@ -191,7 +246,7 @@ def evaluate_case(case_name: str, case_dir: Path) -> dict:
             "case_name": case_name,
             "derived_case": "insufficient_input",
             "observed_verdict": "ERROR",
-            "observed_status_assessment": None,
+            "observed_status_assessment": "blocked",
             "observed_confidence": 0.0,
             "details": missing_or_empty,
         }
@@ -211,13 +266,29 @@ def evaluate_case(case_name: str, case_dir: Path) -> dict:
         decision_data = {}
         format_checks_passed = False
 
+    if format_checks_passed:
+        manifest_schema_errors = validate_against_schema(case_dir / "manifest.yml", manifest_data, manifest_validator)
+        if manifest_schema_errors:
+            parsing_errors.extend(manifest_schema_errors)
+            format_checks_passed = False
+
+    if format_checks_passed:
+        decision_schema_errors = validate_against_schema(
+            case_dir / "results/decision.yml", decision_data, decision_validator
+        )
+        if decision_schema_errors:
+            parsing_errors.extend(decision_schema_errors)
+            format_checks_passed = False
+
     valid_entries, jsonl_errors = validate_jsonl(case_dir / "results/evidence.jsonl")
     if jsonl_errors:
         parsing_errors.extend(jsonl_errors)
         format_checks_passed = False
 
+    decision_type = decision_data.get("decision_type") if isinstance(decision_data, dict) else None
+    decision_verdict = decision_data.get("verdict") if isinstance(decision_data, dict) else None
     result_status = extract_result_status(loaded_texts["results/result.md"])
-    decision_status = map_decision_verdict_to_status(decision_data.get("verdict") if isinstance(decision_data, dict) else None)
+    decision_status = map_decision_to_status(decision_type, decision_verdict)
     manifest_status = None
     if isinstance(manifest_data, dict):
         experiment = manifest_data.get("experiment")
@@ -227,7 +298,9 @@ def evaluate_case(case_name: str, case_dir: Path) -> dict:
                 manifest_status = raw_status.strip().lower()
 
     if decision_status is None:
-        parsing_errors.append("results/decision.yml: verdict missing or unsupported")
+        parsing_errors.append(
+            "results/decision.yml: decision_type/verdict combination missing or unsupported"
+        )
         format_checks_passed = False
     if result_status is None:
         parsing_errors.append("results/result.md: verdict section missing or unsupported")
@@ -257,7 +330,7 @@ def evaluate_case(case_name: str, case_dir: Path) -> dict:
         "inconsistent": "INCONSISTENT",
         "insufficient_input": "ERROR",
     }[derived_case]
-    observed_status_assessment = None if derived_case == "insufficient_input" else decision_status
+    observed_status_assessment = "blocked" if derived_case == "insufficient_input" else decision_status
     observed_confidence = compute_confidence(
         all_required_present=True,
         format_checks_passed=format_checks_passed,
@@ -318,6 +391,13 @@ def main() -> None:
         print(f"ERROR: {exc}")
         sys.exit(2)
 
+    try:
+        manifest_validator = load_schema_validator(MANIFEST_SCHEMA_PATH)
+        decision_validator = load_schema_validator(DECISION_SCHEMA_PATH)
+    except (RuntimeError, FileNotFoundError, SchemaError, json.JSONDecodeError) as exc:
+        print(f"ERROR: {exc}")
+        sys.exit(2)
+
     print("🔍 Phase-1c Fixture Validation")
 
     errors: list[str] = []
@@ -332,7 +412,7 @@ def main() -> None:
             errors.append(f"{case_name}: MISSING: fixture directory {display_path(case_dir)}")
             continue
 
-        observed = evaluate_case(case_name, case_dir)
+        observed = evaluate_case(case_name, case_dir, manifest_validator, decision_validator)
         mismatches = compare_case(case_name, observed, expected)
         if mismatches:
             errors.extend(mismatches)

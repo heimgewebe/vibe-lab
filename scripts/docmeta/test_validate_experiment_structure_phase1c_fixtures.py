@@ -28,6 +28,8 @@ class ValidateExperimentStructurePhase1cFixturesTests(unittest.TestCase):
         self.fixture_dir = (
             self.mod.REPO_ROOT / "tests" / "fixtures" / "experiment_structure_phase1c"
         )
+        self.manifest_validator = self.mod.load_schema_validator(self.mod.MANIFEST_SCHEMA_PATH)
+        self.decision_validator = self.mod.load_schema_validator(self.mod.DECISION_SCHEMA_PATH)
 
     def test_expected_cases_load(self) -> None:
         cases = self.mod.load_expected_cases(self.fixture_dir)
@@ -36,14 +38,24 @@ class ValidateExperimentStructurePhase1cFixturesTests(unittest.TestCase):
     def test_valid_fixture_matches_expected(self) -> None:
         cases = self.mod.load_expected_cases(self.fixture_dir)
         case = cases["valid"]
-        observed = self.mod.evaluate_case("valid", self.mod.REPO_ROOT / case["fixture_path"])
+        observed = self.mod.evaluate_case(
+            "valid",
+            self.mod.REPO_ROOT / case["fixture_path"],
+            self.manifest_validator,
+            self.decision_validator,
+        )
         mismatches = self.mod.compare_case("valid", observed, case)
         self.assertEqual(mismatches, [])
 
     def test_inconsistent_fixture_matches_expected(self) -> None:
         cases = self.mod.load_expected_cases(self.fixture_dir)
         case = cases["inconsistent"]
-        observed = self.mod.evaluate_case("inconsistent", self.mod.REPO_ROOT / case["fixture_path"])
+        observed = self.mod.evaluate_case(
+            "inconsistent",
+            self.mod.REPO_ROOT / case["fixture_path"],
+            self.manifest_validator,
+            self.decision_validator,
+        )
         mismatches = self.mod.compare_case("inconsistent", observed, case)
         self.assertEqual(mismatches, [])
 
@@ -51,7 +63,10 @@ class ValidateExperimentStructurePhase1cFixturesTests(unittest.TestCase):
         cases = self.mod.load_expected_cases(self.fixture_dir)
         case = cases["insufficient_input"]
         observed = self.mod.evaluate_case(
-            "insufficient_input", self.mod.REPO_ROOT / case["fixture_path"]
+            "insufficient_input",
+            self.mod.REPO_ROOT / case["fixture_path"],
+            self.manifest_validator,
+            self.decision_validator,
         )
         mismatches = self.mod.compare_case("insufficient_input", observed, case)
         self.assertEqual(mismatches, [])

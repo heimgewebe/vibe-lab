@@ -185,6 +185,10 @@ Result: populate `consistency_checks` section.
 
 ### Step 4 – Status Derivation (conservative)
 
+Use `decision_type`/`verdict` semantics from `schemas/decision.schema.json`:
+- `result_assessment`: `confirms -> adopted`, `refutes -> rejected`, `mixed|inconclusive -> inconclusive`
+- `adoption_assessment`: `adopt -> adopted`, `reject -> rejected`, `defer -> inconclusive`
+
 Derive **only** one of:
 
 - `adopted` (all checks pass, decision consistent with evidence, result validated)

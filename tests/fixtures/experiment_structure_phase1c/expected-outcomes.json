@@ -28,7 +28,7 @@
     "insufficient_input": {
       "fixture_path": "tests/fixtures/experiment_structure_phase1c/insufficient_input",
       "expected_verdict": "ERROR",
-      "expected_status_assessment": null,
+      "expected_status_assessment": "blocked",
       "expected_confidence": 0.0,
       "notes": [
         "critical artifact missing: results/result.md",
