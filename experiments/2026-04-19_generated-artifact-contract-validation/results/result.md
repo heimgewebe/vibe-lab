@@ -12,7 +12,7 @@ canonicality: operative
 
 Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände für `doc-index.md` innerhalb eines einzigen PRs.
 
-Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures im initialen CI-Lauf, kein Fix-Zyklus im initialen Lauf, Determinismus bestätigt.
+Run-003 (PR-62) war der erste saubere End-to-End-Lauf: keine CI-Blocking-Failures im initialen CI-Lauf, kein Fix-Zyklus, Determinismus bestätigt.
 
 ## Beobachtungen
 
