@@ -15,7 +15,7 @@ experiment:
     - "artifacts/run-001-pr58/run_meta.json"
     - "artifacts/run-001-pr58/execution.txt"          # Spurverweise — befüllen sobald execution_status executed/replicated
   created: "2026-04-19"
-  updated: "2026-04-19"       # Ist-Zustand. Letzte inhaltliche Änderung: Run-002 gap assessment + in-PR friction evidence entries.
+  updated: "2026-04-19"       # Letzte Aktualisierung des Evidenzstands innerhalb von Run-001 / PR-58.
   author: "GPT-5.3-Codex"
   iteration: 1
   evidence_level: experimental  # anecdotal | experimental | replicated

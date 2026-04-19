@@ -10,7 +10,9 @@ canonicality: operative
 
 **Stand nach PR-58 (vollständig, mit Folge-Commits):** Ein realer PR-Run (Run-001) ist dokumentiert. Ein zweiter PR-Run (Run-002) existiert noch nicht — die Hypothese ist noch nicht hypothesenprüfbar.
 
-Neben Run-001 wurden drei In-PR-Beobachtungen auf PR-58 gemacht, die direkt zur CI-Friction-Messung beitragen: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck), was drei Regenerationsläufe des canonical artifacts `doc-index.md` innerhalb eines einzigen PRs auslöste.
+Neben Run-001 wurden auf PR-58 zwei zusätzliche In-PR-Friction-Beobachtungen gemacht: der canonical generator produzierte innerhalb desselben PRs zweimal nicht-deterministische Ausgabe (path resolution bug, .venv-Leck). Zusammen mit dem initialen Run-001-Zustand ergeben sich mindestens drei canonical-Regenerationszustände fuer `doc-index.md` innerhalb eines einzigen PRs.
+
+Getrennt davon wurde eine epistemische Verfügbarkeitsbeobachtung dokumentiert: Run-002 ist derzeit nicht als unabhängiger PR-Run belegbar.
 
 ## Beobachtungen
 
@@ -21,6 +23,8 @@ Die Klassentrennung `canonical/derived/ephemeral` ist im PR-Diff auswertbar. In 
 - 2 canonical (docs/_generated/doc-index.md, docs/_generated/system-map.md)
 - 1 derived (docs/_generated/orphans.md)
 - 1 ephemeral (docs/_generated/epistemic-state.md)
+
+Zusaetzliche Reibungsbeobachtungen in diesem Fortschritt betreffen bisher nur canonical-Artefakte.
 
 Wirksamkeitsmessung im Sinne der Hypothese (Reduktion von CI-Friction) ist auf Basis eines Runs noch nicht möglich.
 
@@ -76,5 +80,3 @@ Offen. Execution begonnen (Run-001 + In-PR-Beobachtungen). Hypothesenprüfung er
 ### Evidence Basis
 - Direkt beobachtet: Run-001 (PR-58), Diff-Klassifikation, In-PR canonical regen × 3 (commits d561893, 7c44b07)
 - Nicht gemessen: CI-blocking-failures, manual_regen_steps (explizit), diagnosis_clarity_score, baseline PRs
-- Indirekt gestützt:
-- Nicht getestet:
