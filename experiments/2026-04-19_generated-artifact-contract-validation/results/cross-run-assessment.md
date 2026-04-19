@@ -112,7 +112,7 @@ Die Architektur könnte Friktion eher umlagern als reduzieren:
 
 ### Belastbar sagbar
 - Friktion ist klarer klassifizierbar als vor dem Contract-Split.
-- Clean runs sind möglich.
+- Saubere initiale Läufe sind möglich, aber nicht stabil garantiert.
 - Semantic friction ist schnell detektierbar und behebbar.
 - Structural friction bei Konsolidierung zeigt ein wiederkehrendes Muster.
 - Kontrollierte Friktion ist reproduzierbar messbar.
@@ -120,7 +120,7 @@ Die Architektur könnte Friktion eher umlagern als reduzieren:
 ### Noch nicht belastbar sagbar
 - Dass das Modell Friktion insgesamt reduziert.
 - Dass das CI-System insgesamt effizienter ist.
-- Dass die Architektur bereits adoptable ist.
+- Dass die Architektur bereits für den produktiven Einsatz geeignet ist.
 - Dass der beobachtete Vorteil generalisiert.
 
 ## 9. Structural Friction Pattern
