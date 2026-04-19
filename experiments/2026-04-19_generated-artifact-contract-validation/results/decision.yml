@@ -14,24 +14,24 @@ decision_type: "execution_assessment"
 #   execution_assessment  : executed | reconstructed | not_executed | insufficient_proof
 #   result_assessment     : confirms | refutes | mixed | inconclusive
 #   adoption_assessment   : adopt | reject | defer
-verdict: "not_executed"
+verdict: "executed"
 
-confidence: "none"            # high | medium | low | none  (Pflicht bei result_/adoption_assessment)
+confidence: "low"             # high | medium | low | none  (Pflicht bei result_/adoption_assessment)
 date: "2026-04-19"
 reviewer: "TBD"
 
 rationale: |
-  Current state is scaffold-only. There is setup evidence, but no executed run evidence, so the correct execution verdict is not_executed.
+  One real PR run (PR 58) is now documented with execution-proof artifacts and evidence entries. Result assessment remains pending until 2-3 runs are captured.
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 1             # Anzahl Beobachtungen in evidence.jsonl
+  observations: 3             # Anzahl Beobachtungen in evidence.jsonl
   positive: 0                 # Positive Beobachtungen
   negative: 0                 # Negative Beobachtungen
-  neutral: 1                  # Neutrale Beobachtungen
+  neutral: 3                  # Neutrale Beobachtungen
 
 next_steps: |
-  Execute 2-3 PR runs under the new contract and record observations in results/evidence.jsonl.
+  Capture run-002 and run-003 on real PRs, then switch to result_assessment with confirms/refutes/mixed/inconclusive based on aggregated evidence.
 
 # challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge
 # compared_to: ""            # Optional: Referenz auf verglichenes Experiment

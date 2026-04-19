@@ -10,17 +10,17 @@ canonicality: operative
 
 ## Zusammenfassung
 
-<!-- Kurze Zusammenfassung: Was wurde beobachtet? Was ist das Gesamtergebnis? -->
+Run-001 wurde auf PR 58 dokumentiert. Die Klassentrennung erscheint im realen Diff sichtbar (canonical, derived, ephemeral jeweils betroffen), aber CI-Friction und manuelle Nacharbeit wurden in diesem ersten Lauf noch nicht vollstaendig erhoben.
 
 ## Beobachtungen
 
 <!-- Messbar/sichtbar Beobachtetes, gestützt auf evidence.jsonl. Keine Schlüsse hier — die gehören in ## Deutung. -->
 
 ### Wirksamkeit (Effektivität)
-<!-- Wie wirksam war die getestete Praxis? -->
+Im ersten Lauf ist die Contract-Sicht auf Artefaktklassen direkt aus dem PR-Diff auswertbar.
 
 ### Reibung (Aufwand)
-<!-- Wie hoch war der Aufwand? -->
+Noch nicht belastbar gemessen; wird in Run-002 und Run-003 explizit erhoben.
 
 ### Flow (subjektive Qualität)
 <!-- Wie wurde die subjektive Qualität empfunden? -->
@@ -32,7 +32,7 @@ canonicality: operative
 
 ## Verdict
 
-<!-- adopted / rejected / inconclusive — mit Begründung -->
+Vorlaeufig: noch offen. Execution ist gestartet, Ergebnisbewertung folgt nach weiteren Runs.
 
 ## Lessons Learned
 
@@ -40,7 +40,9 @@ canonicality: operative
 
 ## Nächste Schritte
 
-<!-- Iterate? Promote? Archive? -->
+- Run-002 und Run-003 unter realen PRs erfassen
+- CI-Statuschecks je Lauf miterheben
+- danach `decision.yml` auf result_assessment umstellen
 
 ## Interpretation Budget
 

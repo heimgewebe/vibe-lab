@@ -28,6 +28,7 @@ Wenn das Contract-Modell `canonical/derived/ephemeral` plus CI-Split `blocking/n
 	- notwendige manuelle Eingriffe (Regen, Commit-Nachzug, Re-Run)
 4. Beobachtungen strukturiert in `results/evidence.jsonl` loggen.
 5. Vergleich Baseline vs. neues System in `results/result.md` dokumentieren.
+6. Fuer jeden Run das Format aus `artifacts/run-template.md` verwenden.
 
 ### Metriken
 
