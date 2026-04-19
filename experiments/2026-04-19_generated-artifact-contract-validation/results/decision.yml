@@ -35,21 +35,23 @@ rationale: |
 
   Run-005 measured outcomes: ci_blocking_failures_total=2, fix_steps_required=2, manual_regen_steps=2, diagnosis_clarity_score=5, unnecessary_commit_delta=2, detection_latency_seconds=48, fix_duration_seconds=241.
 
-  Run-006 is prepared as an independent natural clean_reference run on branch exp/run-006-clean-reference with artifacts under artifacts/run-006-pr67/. Scope remains intentionally minimal (one small canonical wording change in docs/foundations/vision.md), no controlled friction injection, no schema deviation.
+  Run-006 was executed as an independent natural clean_reference attempt on branch exp/run-006-clean-reference with artifacts under artifacts/run-006-pr67/. Scope remained intentionally minimal (one small canonical wording change in docs/foundations/vision.md), no controlled friction injection, no schema deviation.
 
-  Local run characteristics for Run-006 before PR checks: generator double-run determinism passed with no generated diff in either pass, manual_regen_steps=0, and friction_class=none.
+  Observed Run-006 outcome: initial validate failed once due to structural canonical-contract drift (stale docs/_generated/system-map.md after adding run-006 artifacts). A single canonical regeneration commit resolved the issue; final PR checks are all green.
 
-  Decision type remains execution_assessment until Run-006 PR checks complete and metrics can be finalized in evidence/result. If Run-006 ends clean (0 blocking failures, 0 unnecessary commit delta, no structural consolidation friction), threshold conditions for evaluating result_assessment become materially stronger.
+  Final Run-006 metrics: ci_blocking_failures_total=1, manual_regen_steps=1, diagnosis_clarity_score=5, unnecessary_commit_delta=1, detection_latency_seconds=97, fix_duration_seconds=36, friction_class=structural_friction.
+
+  Decision type remains execution_assessment: Run-006 did not satisfy clean_reference criteria because structural consolidation friction re-occurred in a natural run.
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 65            # Anzahl Evidence-Entries in evidence.jsonl
+  observations: 75            # Anzahl Evidence-Entries in evidence.jsonl
   positive: 0                 # Positive Beobachtungen
   negative: 0                 # Negative Beobachtungen
-  neutral: 65                 # Neutral: setup, run recording, friction, fix cycles
+  neutral: 75                 # Neutral: setup, run recording, friction, fix cycles
 
 next_steps: |
-  Complete Run-006 PR checks and then record final metrics for ci_blocking_failures_total, diagnosis_clarity_score, and unnecessary_commit_delta. If clean_reference criteria are met, evaluate switching from execution_assessment to result_assessment against the cross-run decision surface.
+  Keep decision_type at execution_assessment. Run-006 confirms structural consolidation friction can appear even without injected semantic friction. Evaluate result_assessment switch only after obtaining a second true clean_reference run or isolating/explaining the structural pattern as stable workflow behavior.
 
 # challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge
 # compared_to: ""            # Optional: Referenz auf verglichenes Experiment

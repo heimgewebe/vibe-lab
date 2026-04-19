@@ -17,11 +17,12 @@ Generator runs
 --------------
 Run 1:  make generate -> no generated file changes
 Run 2:  make generate -> no additional diff (determinism: CONFIRMED)
-Manual regen steps:        0
+Manual regen steps:        1 (`make generate-canonical` after CI canonical-contract failure)
 
 Commit structure
 ----------------
-(run commit hashes recorded after commit/push)
+e31cc5f  experiment(run-006): natural clean-reference run
+67df2dd  generate: refresh canonical diagnostics for run-006 artifacts
 
 Artifact counts
 ---------------
@@ -31,15 +32,21 @@ Changed ephemeral count:   0
 
 CI results
 ----------
-validate:              pending
-derived-diagnostics:   pending
-ephemeral-diagnostics: pending
-ci_blocking_failures_total: pending
-unnecessary_commit_delta:   pending
+validate:              fail (initial) -> pass (after canonical fix)
+derived-diagnostics:   pass
+ephemeral-diagnostics: pass
+ci_blocking_failures_total: 1
+unnecessary_commit_delta:   1
 
-Diagnosis clarity score:   pending
-Friction class:            none (expected)
+Error and fix metrics
+---------------------
+detection_latency_seconds:  97
+fix_duration_seconds:       36
+
+Diagnosis clarity score:   5/5
+Friction class:            structural_friction
 
 Notes
 -----
-Run-006 is designed as a natural clean_reference run without controlled friction injection.
+Run-006 was started as a natural clean_reference run without controlled friction injection.
+Result: not clean_reference due one structural canonical-contract failure during consolidation.
