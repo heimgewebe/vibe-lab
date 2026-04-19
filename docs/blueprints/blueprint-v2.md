@@ -3,7 +3,7 @@ title: "Blueprint v2 — Delta"
 status: active
 canonicality: operative
 created: "2026-04-15"
-updated: "2026-04-15"
+updated: "2026-04-19"
 relations:
   - type: derived_from
     target: ../concepts/execution-bound-epistemics.md
@@ -198,3 +198,5 @@ echtes Neu-Feld; aus `result.md` bzw. Phase 2).
    bei `created ≥ v2-Merge-Datum`; `status: adopted` + `adoption_basis: executed`
    mit `decision_type: result_assessment` (Gegenrichtung).
 4. `make validate` grün.
+5. Für generator-sensitive Änderungen: `make generate` zweimal nacheinander;
+  der zweite Lauf darf keinen Diff erzeugen.
