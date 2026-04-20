@@ -417,14 +417,24 @@ class TestSourceHashConsistency(unittest.TestCase):
 
 
 class TestExportDriftGuard(unittest.TestCase):
-    """Verifies no orphaned exports and no missing exports relative to sources."""
+    """Validates committed source↔export parity without mutating state.
+
+    These tests read the current repository state directly — they do NOT call
+    generate_exports() before asserting. Calling the generator first would
+    repair any drift before measurement, making the guard ineffective
+    (the doctor takes the temperature after giving ibuprofen).
+
+    Generator repair behavior (stale removal, missing creation) is covered
+    separately in TestEdgeCases using isolated temporary directories.
+    """
 
     def test_no_orphaned_exports(self):
         """Every file in exports/ must correspond to a source in instruction-blocks/."""
-        generate_exports()
         source_names = {f.name for f in SOURCE_DIR.glob("*.md")}
 
         for target_system, target_dir in EXPORT_TARGETS.items():
+            if not target_dir.exists():
+                continue
             for export_file in target_dir.iterdir():
                 self.assertIn(
                     export_file.name,
@@ -434,10 +444,12 @@ class TestExportDriftGuard(unittest.TestCase):
 
     def test_no_missing_exports(self):
         """Every source in instruction-blocks/ must have a corresponding export."""
-        generate_exports()
-
         for target_system, target_dir in EXPORT_TARGETS.items():
-            export_names = {f.name for f in target_dir.iterdir()}
+            export_names = (
+                {f.name for f in target_dir.iterdir()}
+                if target_dir.exists()
+                else set()
+            )
             for source_file in SOURCE_DIR.glob("*.md"):
                 self.assertIn(
                     source_file.name,

@@ -113,7 +113,7 @@ def _build_export(
     rel_source = source_file.relative_to(REPO_ROOT)
     source_hash = compute_source_hash(text)
 
-    header = _build_header(str(rel_source), target_system, source_hash)
+    header = _build_header(rel_source.as_posix(), target_system, source_hash)
     return f"{header}\n# {title}\n{body}"
 
 
