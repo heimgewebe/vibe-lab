@@ -45,7 +45,7 @@ def load_paths(group: str) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("group", choices=["canonical", "derived", "ephemeral"])
+    parser.add_argument("group", choices=["canonical", "derived", "ephemeral", "exports"])
     args = parser.parse_args()
 
     try:

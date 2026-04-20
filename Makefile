@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests generate generate-canonical generate-derived generate-ephemeral generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -55,11 +55,15 @@ validate-epistemic-state-tests:
 	@echo "🧪 Running epistemic state regression tests..."
 	@python3 scripts/docmeta/test_generate_epistemic_state.py
 
+validate-exports-tests:
+	@echo "🧪 Running export generator regression tests..."
+	@python3 scripts/exports/test_generate_exports.py
+
 # Diagnose-Generatoren
 generate: generate-canonical generate-derived generate-ephemeral
 	@echo "✅ Generated diagnostics in docs/_generated/."
 
-generate-canonical: generate-doc-index generate-system-map
+generate-canonical: generate-doc-index generate-system-map generate-exports
 	@echo "✅ Generated canonical diagnostics in docs/_generated/."
 
 generate-derived: generate-backlinks generate-orphans
@@ -90,6 +94,9 @@ generate-system-map:
 generate-epistemic-state:
 	@python3 scripts/docmeta/generate_epistemic_state.py
 
+generate-exports:
+	@python3 scripts/exports/generate_exports.py
+
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
@@ -106,6 +113,7 @@ help:
 	@echo "  make validate-adoption-completeness — Validate adopted experiments have catalog extractions"
 	@echo "  make validate-adoption-completeness-tests — Run adoption completeness regression tests (path-match)"
 	@echo "  make validate-epistemic-state-tests — Run interpretation risk regression tests"
+	@echo "  make validate-exports-tests — Run export generator regression tests"
 	@echo "  make generate           — Generate canonical, derived, and ephemeral diagnostics"
 	@echo "  make generate-canonical — Generate contract-relevant diagnostics (blocking in CI)"
 	@echo "  make generate-derived   — Generate reconstructable diagnostics (non-blocking in CI)"
@@ -114,4 +122,5 @@ help:
 	@echo "  make generate-volatile  — Alias for make generate-derived + make generate-ephemeral"
 	@echo "  make diagnose           — Alias for non-blocking diagnostics"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
+	@echo "  make generate-exports   — Generate exports from instruction-blocks"
 	@echo "  make help               — Show this help"

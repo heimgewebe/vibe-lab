@@ -126,6 +126,16 @@
 | `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` | Cross-Run-Auswertung: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis: Generated Artifact Contract Validation | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
+| `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
+| `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
+| `exports/copilot/no-vague-prompts.md` | no-vague-prompts | — | — |
+| `exports/copilot/spec-first.md` | spec-first | — | — |
+| `exports/copilot/validate-against-spec.md` | validate-against-spec | — | — |
+| `exports/cursor/constraint-before-code.md` | constraint-before-code | — | — |
+| `exports/cursor/edge-case-enumeration.md` | edge-case-enumeration | — | — |
+| `exports/cursor/no-vague-prompts.md` | no-vague-prompts | — | — |
+| `exports/cursor/spec-first.md` | spec-first | — | — |
+| `exports/cursor/validate-against-spec.md` | validate-against-spec | — | — |
 | `instruction-blocks/constraint-before-code.md` | Constraint-Before-Code | adopted | operative |
 | `instruction-blocks/edge-case-enumeration.md` | Edge-Case-Enumeration | adopted | operative |
 | `instruction-blocks/no-vague-prompts.md` | No-Vague-Prompts | adopted | operative |
