@@ -30,7 +30,7 @@ Dieser PR bewertet nicht "noch einen Run", sondern isoliert ein wiederkehrendes 
 | Run-003 | PR-62 | ja | nach Artifact-Write, im PR-CI | lokal unauffällig dokumentiert | Konsolidierungs-Commit mit neuen run-003 Artefakten | ja (1x) |
 | Run-004 | PR-63 | ja | nach Artifact-Write, im PR-CI | kein lokaler Vorabfail dokumentiert | Konsolidierungs-Commit mit neuen run-004 Artefakten | ja (1x) |
 | Run-005 | PR-64 | ja | nach Artifact-Write, im PR-CI | kein lokaler Vorabfail dokumentiert | Konsolidierungs-Commit mit neuen run-005 Artefakten | ja (1x) |
-| Run-006 | PR-67 | ja | nach Artifact-Write, im PR-CI | vor Artifact-Write clean (double-generate + validate) | Write von run-006 Artefakten und anschliessender validate-Lauf | ja (1x) |
+| Run-006 | PR-67 | ja | nach Artifact-Write, im PR-CI | vor Artifact-Write clean (double-generate + validate) | Write von run-006 Artefakten und anschließender validate-Lauf | ja (1x) |
 
 ## 3. Strukturelles Friktionsmuster (Diagnoseoberfläche)
 

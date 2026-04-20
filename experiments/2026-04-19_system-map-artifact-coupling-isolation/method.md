@@ -15,7 +15,8 @@ Schreiben von Artifact-Dateien kein sofortiger canonical refresh erfolgt.
 **Was H1 stützen würde:**
 - Gegenlauf ohne Artifact-Write zeigt kein stale system-map (kein CI-Blocking-Fehler).
 - Das Muster ist ausschließlich an `artifact_write_performed = true` geknüpft.
-- `make generate` nach jedem Artifact-Write verhindert das Problem vollständig.
+- `make generate` nach jedem Artifact-Write würde H1 stark stützen, aber nicht
+  allein vollständig beweisen.
 
 **Implikation wenn H1:** Das Problem ist lösbar durch Workflow-Disziplin. Kein
 Architekturanteil. Keine Grenzänderung nötig.
@@ -66,6 +67,12 @@ run-interne Artefakte Teil der canonical diagnostics sein oder nicht?
 **Interpretation:**
 - Kein stale → stützt H1 (Workflow-Erklärung)
 - stale trotzdem → stützt H2 (Boundary-Erklärung)
+
+**Explizite Grenzregel für spätere Auswertung:**
+- Ein grüner T-1-Lauf ohne Artifact-Write stützt H1 stark.
+- Ein grüner T-1-Lauf widerlegt H2 nicht vollständig, weil die Boundary-Frage
+  (ob run-interne Artefakte canonical-relevant sein sollen) eine separate
+  Designentscheidung bleibt.
 
 ### T-2: Kontrollfall mit Artifact-Write (Replik des bekannten Musters)
 
@@ -123,6 +130,10 @@ Keine freien Bewertungen.
 
 Wenn T-1 nur teilweise trennt (z.B. stale tritt in T-1 auf, aber aus einem anderen Grund
 als erwartet), muss das explizit notiert werden. Keine scheinharte Ursachenbehauptung.
+
+Wenn T-1 grün bleibt, darf daraus nicht automatisch "Workflow confirmed" als
+abschließende Aussage werden. Zulässig ist nur: H1 wird gestützt, H2 bleibt als
+Designfrage partiell offen.
 
 ---
 

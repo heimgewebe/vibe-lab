@@ -46,7 +46,7 @@ Contract-Grenze (was zählt als canonical-relevant?) wäre zu überdenken.
 ## Umgebung
 
 - **Tools:** `make generate`, `make validate`, `git`, GitHub Actions
-- **Generator:** `scripts/generate_system_map.py` (basiert auf `git ls-files`)
+- **Generator:** `scripts/docmeta/generate_system_map.py` (basiert auf `git ls-files`)
 - **Sprache:** Mixed (Python-Skripte, Markdown-Artefakte)
 - **Projekttyp:** Meta-Experiment-Repository (vibe-lab)
 - **Modell(e):** Nicht relevant für dieses Diagnose-Experiment
@@ -55,7 +55,7 @@ Contract-Grenze (was zählt als canonical-relevant?) wäre zu überdenken.
 
 - `experiments/2026-04-19_generated-artifact-contract-validation/` — Predecessor (6 Runs, stale-Muster etabliert)
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` — Diagnoseoberfläche, Leerstelle dokumentiert
-- `scripts/generate_system_map.py` — Zähllogik via `git ls-files` (relevant für Trigger-Analyse)
+- `scripts/docmeta/generate_system_map.py` — Zähllogik via `git ls-files` (relevant für Trigger-Analyse)
 
 ## Einschränkungen
 
