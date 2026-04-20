@@ -9,6 +9,32 @@ relations:
     target: blueprints/blueprint-agent-operability-phase-1c.md
   - type: references
     target: policies/interpretation-budget.md
+  - type: references
+    target: playbooks/reconciliation.md
+  - type: references
+    target: playbooks/build-reliable-prompt.md
+  - type: references
+    target: ../catalog/combos/spec-first-constraint-control.md
+  - type: references
+    target: ../catalog/combos/spec-first-anti-pattern-awareness.md
+  - type: references
+    target: ../catalog/workflows/spec-first-api-generation.md
+  - type: references
+    target: ../catalog/workflows/causal-control-study.md
+  - type: references
+    target: ../catalog/styles/constraint-first.md
+  - type: references
+    target: ../catalog/styles/structured-specification.md
+  - type: references
+    target: ../instruction-blocks/spec-first.md
+  - type: references
+    target: ../instruction-blocks/constraint-before-code.md
+  - type: references
+    target: ../instruction-blocks/validate-against-spec.md
+  - type: references
+    target: ../instruction-blocks/no-vague-prompts.md
+  - type: references
+    target: ../instruction-blocks/edge-case-enumeration.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -100,6 +126,30 @@ relations:
 ## Playbooks
 
 - [Reconciliation](playbooks/reconciliation.md)
+- [Build a Reliable Prompt](playbooks/build-reliable-prompt.md)
+
+## Bibliothek
+
+### Catalog
+
+| Zone | Inhalt |
+| ---- | ------ |
+| [catalog/techniques/](../catalog/techniques/) | Validierte Prompting-Techniken |
+| [catalog/anti-patterns/](../catalog/anti-patterns/) | Dokumentierte Anti-Pattern |
+| [catalog/combos/](../catalog/combos/) | Kuratierte Technique-Kombinationen |
+| [catalog/workflows/](../catalog/workflows/) | Operative Workflows |
+| [catalog/styles/](../catalog/styles/) | Prompting-Stile |
+| [prompts/adopted/](../prompts/adopted/) | Adoptierte Prompt-Templates |
+
+### Instruction Blocks
+
+Portable Denkbausteine für Prompts und Workflows:
+
+- [Spec-First](../instruction-blocks/spec-first.md)
+- [Constraint-Before-Code](../instruction-blocks/constraint-before-code.md)
+- [Validate-Against-Spec](../instruction-blocks/validate-against-spec.md)
+- [No-Vague-Prompts](../instruction-blocks/no-vague-prompts.md)
+- [Edge-Case-Enumeration](../instruction-blocks/edge-case-enumeration.md)
 
 ## Referenz
 

@@ -3,10 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (94 found):
+Documents not referenced by any other document via frontmatter relations (93 found):
 
 - `.vibe/intent.md`
-- `catalog/anti-patterns/vague-prompt-and-fix.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
@@ -57,7 +56,6 @@ Documents not referenced by any other document via frontmatter relations (94 fou
 - `experiments/2026-04-14_prompt-length-control/INITIAL.md`
 - `experiments/2026-04-14_prompt-length-control/failure_modes.md`
 - `experiments/2026-04-14_prompt-length-control/method.md`
-- `experiments/2026-04-14_prompt-length-control/results/result.md`
 - `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
 - `experiments/2026-04-14_tdd-vibe/INITIAL.md`
 - `experiments/2026-04-14_tdd-vibe/failure_modes.md`
@@ -90,6 +88,7 @@ Documents not referenced by any other document via frontmatter relations (94 fou
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
+- `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md`
