@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""validate_adoption_completeness.py — Adoption-Completeness-Validator.
+"""validate_adoption_completeness.py — Adoption Completeness Validator.
 
 Prüft, ob jedes Experiment mit ``status: adopted`` die erwarteten
 Katalog-Artefakte erzeugt hat. Fehlende Artefakte werden als Fehler

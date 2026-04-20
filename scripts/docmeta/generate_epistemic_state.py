@@ -103,7 +103,9 @@ def derive_interpretation_risk(exp_dir: Path, manifest: dict) -> str:
     risk_signals = 0
 
     # Signal 1: evidence_sufficiency — evidence.jsonl vorhanden und nicht trivial?
-    # Threshold: minimal JSONL entry is ~80+ bytes; below 50 = empty or broken
+    # Threshold 50 Bytes: ein leeres oder einzeiliges JSONL-File (Header-only)
+    # liegt typischerweise darunter; ein echter JSONL-Eintrag ist 80–120 Bytes.
+    # Die niedrigere Grenze (50) gibt auch minimalen Kurzeinträgen noch Spielraum.
     _MIN_EVIDENCE_SIZE_BYTES = 50
     evidence_path = exp_dir / "results" / "evidence.jsonl"
     if not evidence_path.is_file():
