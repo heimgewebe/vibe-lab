@@ -2,7 +2,6 @@
 <!-- source: instruction-blocks/spec-first.md -->
 <!-- target-system: cursor -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- generated: 2026-04-20 -->
 
 # Spec-First
 Before generating any code:

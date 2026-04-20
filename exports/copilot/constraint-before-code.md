@@ -2,7 +2,6 @@
 <!-- source: instruction-blocks/constraint-before-code.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- generated: 2026-04-20 -->
 
 # Constraint-Before-Code
 Before writing any implementation:

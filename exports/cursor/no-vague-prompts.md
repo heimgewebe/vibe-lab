@@ -2,7 +2,6 @@
 <!-- source: instruction-blocks/no-vague-prompts.md -->
 <!-- target-system: cursor -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- generated: 2026-04-20 -->
 
 # No-Vague-Prompts
 Never give a vague task description and then iteratively fix the output.

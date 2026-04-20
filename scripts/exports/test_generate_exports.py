@@ -48,16 +48,20 @@ class TestStripFrontmatter(unittest.TestCase):
 
 class TestBuildHeader(unittest.TestCase):
     def test_header_contains_required_fields(self):
-        header = _build_header("instruction-blocks/test.md", "copilot", "2026-04-20")
+        header = _build_header("instruction-blocks/test.md", "copilot")
         self.assertIn("GENERATED FILE", header)
         self.assertIn("DO NOT EDIT MANUALLY", header)
         self.assertIn("instruction-blocks/test.md", header)
         self.assertIn("copilot", header)
         self.assertIn(GENERATOR_ID, header)
-        self.assertIn("2026-04-20", header)
+
+    def test_header_contains_no_date(self):
+        """Header must not contain a calendar date — dates break determinism."""
+        header = _build_header("instruction-blocks/test.md", "copilot")
+        self.assertNotIn("generated:", header)
 
     def test_header_is_html_comment(self):
-        header = _build_header("src.md", "cursor", "2026-01-01")
+        header = _build_header("src.md", "cursor")
         for line in header.strip().splitlines():
             self.assertTrue(line.startswith("<!--"), f"Not a comment: {line}")
             self.assertTrue(line.endswith("-->"), f"Not a comment: {line}")
@@ -67,15 +71,14 @@ class TestDeterministicGeneration(unittest.TestCase):
     """Verifies that running the generator twice produces identical output."""
 
     def test_idempotent_output(self):
-        fixed_date = "2026-04-20"
-        result1 = generate_exports(generated_date=fixed_date)
-        # Capture file contents
+        """Default (no-arg) call must produce identical output on re-run."""
+        result1 = generate_exports()
         contents1 = {}
         for target_system, target_dir in EXPORT_TARGETS.items():
             for f in sorted(target_dir.iterdir()):
                 contents1[f"{target_system}/{f.name}"] = f.read_text(encoding="utf-8")
 
-        result2 = generate_exports(generated_date=fixed_date)
+        result2 = generate_exports()
         contents2 = {}
         for target_system, target_dir in EXPORT_TARGETS.items():
             for f in sorted(target_dir.iterdir()):
@@ -83,6 +86,21 @@ class TestDeterministicGeneration(unittest.TestCase):
 
         self.assertEqual(result1, result2)
         self.assertEqual(contents1, contents2)
+
+    def test_no_date_in_exported_files(self):
+        """Exports must not contain a calendar date that would cause day-drift."""
+        generate_exports()
+        import re
+        date_pattern = re.compile(r"\d{4}-\d{2}-\d{2}")
+        for target_system, target_dir in EXPORT_TARGETS.items():
+            for export_file in target_dir.iterdir():
+                content = export_file.read_text(encoding="utf-8")
+                match = date_pattern.search(content)
+                if match is not None:
+                    self.fail(
+                        f"Calendar date found in {target_system}/{export_file.name}: "
+                        f"'{match.group()}' — this breaks determinism across days."
+                    )
 
 
 class TestCompleteCapture(unittest.TestCase):
@@ -92,7 +110,7 @@ class TestCompleteCapture(unittest.TestCase):
         source_files = sorted(SOURCE_DIR.glob("*.md"))
         self.assertGreater(len(source_files), 0, "No source files found")
 
-        generate_exports(generated_date="2026-04-20")
+        generate_exports()
 
         for target_system, target_dir in EXPORT_TARGETS.items():
             exported = {f.name for f in target_dir.iterdir()}
@@ -108,7 +126,7 @@ class TestStablePathLogic(unittest.TestCase):
     """Verifies filename mapping is stable and predictable."""
 
     def test_filenames_match_source(self):
-        generate_exports(generated_date="2026-04-20")
+        generate_exports()
         source_names = {f.name for f in SOURCE_DIR.glob("*.md")}
 
         for target_system, target_dir in EXPORT_TARGETS.items():
@@ -120,7 +138,7 @@ class TestExportContent(unittest.TestCase):
     """Verifies export content structure."""
 
     def test_exports_contain_header_and_body(self):
-        generate_exports(generated_date="2026-04-20")
+        generate_exports()
 
         for target_system, target_dir in EXPORT_TARGETS.items():
             for export_file in target_dir.iterdir():
@@ -133,7 +151,7 @@ class TestExportContent(unittest.TestCase):
                 self.assertGreater(len(lines), 6, f"Export too short: {export_file}")
 
     def test_no_frontmatter_in_exports(self):
-        generate_exports(generated_date="2026-04-20")
+        generate_exports()
 
         for _, target_dir in EXPORT_TARGETS.items():
             for export_file in target_dir.iterdir():
@@ -167,7 +185,7 @@ class TestEdgeCases(unittest.TestCase):
             }
 
             try:
-                stats = mod.generate_exports(generated_date="2026-04-20")
+                stats = mod.generate_exports()
                 for target, count in stats.items():
                     self.assertEqual(count, 0, f"Expected 0 exports for {target}")
                 # Target dirs should exist but be empty
@@ -211,7 +229,7 @@ class TestEdgeCases(unittest.TestCase):
                 for td in mod.EXPORT_TARGETS.values():
                     self.assertFalse(td.exists())
 
-                stats = mod.generate_exports(generated_date="2026-04-20")
+                stats = mod.generate_exports()
 
                 for td in mod.EXPORT_TARGETS.values():
                     self.assertTrue(td.exists())

@@ -2,7 +2,6 @@
 <!-- source: instruction-blocks/edge-case-enumeration.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- generated: 2026-04-20 -->
 
 # Edge-Case-Enumeration
 Before implementation, enumerate edge cases explicitly:

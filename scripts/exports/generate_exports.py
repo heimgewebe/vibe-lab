@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """generate_exports.py — Exportiert instruction-blocks/ nach exports/copilot/ und exports/cursor/.
 
-Jeder Export enthält einen maschinenlesbaren Header, der Herkunft, Generator
-und Zeitstempel dokumentiert. Die Erzeugung ist deterministisch: gleiche
-Eingabe → gleiche Ausgabe (Zeitstempel wird auf Tagesebene fixiert).
+Jeder Export enthält einen maschinenlesbaren Header, der Herkunft und Generator
+dokumentiert. Die Erzeugung ist echt deterministisch: gleiche Quelldateien →
+identische Ausgabe, unabhängig vom Ausführungszeitpunkt.
+
+Kein Datum im Header: Ein kalendergebundener Zeitstempel würde bei gleicher Quelle
+tägliche Diffs erzeugen und steht im Widerspruch zu deterministic: true im Contract.
 
 Quelle:  instruction-blocks/*.md
 Ziele:   exports/copilot/*.md, exports/cursor/*.md
@@ -13,7 +16,6 @@ Vertrag: .vibe/generated-artifacts.yml → exports
 from __future__ import annotations
 
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 # Repo-Root relativ zu diesem Skript: scripts/exports/ → ../../
@@ -42,21 +44,24 @@ def _strip_frontmatter(text: str) -> str:
     return parts[2].lstrip("\n")
 
 
-def _build_header(source_path: str, target_system: str, generated_date: str) -> str:
-    """Erzeugt einen einheitlichen Export-Header."""
+def _build_header(source_path: str, target_system: str) -> str:
+    """Erzeugt einen einheitlichen, deterministischen Export-Header.
+
+    Kein Datum: Ein kalendergebundener Zeitstempel würde tägliche Diffs ohne
+    Quelländerung erzeugen und ist unvereinbar mit deterministic: true im Contract.
+    Provenienz ist durch source + generator vollständig gegeben.
+    """
     return (
         f"<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->\n"
         f"<!-- source: {source_path} -->\n"
         f"<!-- target-system: {target_system} -->\n"
         f"<!-- generator: {GENERATOR_ID} -->\n"
-        f"<!-- generated: {generated_date} -->\n"
     )
 
 
 def _build_export(
     source_file: Path,
     target_system: str,
-    generated_date: str,
 ) -> str:
     """Baut den vollständigen Export-Inhalt für eine Quelldatei."""
     text = source_file.read_text(encoding="utf-8")
@@ -65,19 +70,16 @@ def _build_export(
     title = fm.get("title", source_file.stem) if fm else source_file.stem
     rel_source = source_file.relative_to(REPO_ROOT)
 
-    header = _build_header(str(rel_source), target_system, generated_date)
+    header = _build_header(str(rel_source), target_system)
     return f"{header}\n# {title}\n{body}"
 
 
-def generate_exports(generated_date: str | None = None) -> dict[str, int]:
+def generate_exports() -> dict[str, int]:
     """Hauptlogik: liest instruction-blocks/, schreibt nach exports/.
 
     Returns:
         dict mit target_system → Anzahl exportierter Dateien.
     """
-    if generated_date is None:
-        generated_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
     source_files = sorted(SOURCE_DIR.glob("*.md"))
 
     stats: dict[str, int] = {}
@@ -95,7 +97,7 @@ def generate_exports(generated_date: str | None = None) -> dict[str, int]:
         exported_names: set[str] = set()
 
         for src in source_files:
-            content = _build_export(src, target_system, generated_date)
+            content = _build_export(src, target_system)
             out_file = target_dir / src.name
             write_if_changed(out_file, content)
             exported_names.add(src.name)

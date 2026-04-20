@@ -16,13 +16,13 @@
 | `docs/` | 📖 Dokumentation | 24 | 15 |
 | `docs/_generated/` | ⚙️ Generiert | 5 | 4 |
 | `experiments/` | 🔬 Labor | 306 | 95 |
-| `exports/` | ⚙️ Generiert | 2 | 0 |
+| `exports/` | ⚙️ Generiert | 10 | 10 |
 | `instruction-blocks/` | 📚 Bibliothek | 5 | 5 |
 | `prompts/` | 📚 Bibliothek | 2 | 2 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
 | `schemas/` | 🏛️ Governance | 6 | 0 |
-| `scripts/` | 🔧 Tooling | 20 | 0 |
+| `scripts/` | 🔧 Tooling | 23 | 0 |
 | `tests/` | 📁 Root | 22 | 8 |
 | `tools/` | 🔧 Tooling | 1 | 0 |
 
-**Total:** 429 files in 17 directories
+**Total:** 440 files in 17 directories

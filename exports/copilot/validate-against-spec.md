@@ -2,7 +2,6 @@
 <!-- source: instruction-blocks/validate-against-spec.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- generated: 2026-04-20 -->
 
 # Validate-Against-Spec
 After generating code from a specification:
