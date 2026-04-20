@@ -23,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 # Gemeinsame Hilfsfunktionen aus docmeta
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "docmeta"))
-from _paths import write_if_changed, extract_frontmatter  # noqa: E402
+from _paths import write_if_changed  # noqa: E402
 
 SOURCE_DIR = REPO_ROOT / "instruction-blocks"
 EXPORT_TARGETS: dict[str, Path] = {
@@ -32,6 +32,37 @@ EXPORT_TARGETS: dict[str, Path] = {
 }
 
 GENERATOR_ID = "scripts/exports/generate_exports.py"
+
+
+def _parse_frontmatter(text: str) -> dict | None:
+    """Liest YAML-Frontmatter aus bereits geladenem Markdown-Text.
+
+    Vermeidet ein zweites Dateilesen in _build_export.
+    Gibt None zurück, wenn kein Frontmatter vorhanden oder nicht parsebar ist.
+    """
+    if not text.startswith("---"):
+        return None
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return None
+    yaml_block = parts[1]
+    try:
+        import yaml as _yaml  # noqa: PLC0415 — optional dep, lazy import
+        return _yaml.safe_load(yaml_block) or {}
+    except Exception:
+        pass
+    # Fallback ohne pyyaml: unterstützt nur flache "key: value"-Zeilen
+    out: dict[str, str] = {}
+    for raw_line in yaml_block.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key:
+            out[key] = value
+    return out or None
 
 
 def _strip_frontmatter(text: str) -> str:
@@ -65,7 +96,7 @@ def _build_export(
 ) -> str:
     """Baut den vollständigen Export-Inhalt für eine Quelldatei."""
     text = source_file.read_text(encoding="utf-8")
-    fm = extract_frontmatter(source_file)
+    fm = _parse_frontmatter(text)
     body = _strip_frontmatter(text)
     title = fm.get("title", source_file.stem) if fm else source_file.stem
     rel_source = source_file.relative_to(REPO_ROOT)
@@ -117,12 +148,12 @@ def main() -> int:
         print(f"ERROR: Source directory not found: {SOURCE_DIR}", file=sys.stderr)
         return 1
 
+    stats = generate_exports()
+
     source_files = sorted(SOURCE_DIR.glob("*.md"))
     if not source_files:
-        print(f"WARNING: No *.md files found in {SOURCE_DIR}", file=sys.stderr)
+        print(f"WARNING: No *.md files found in {SOURCE_DIR} — export directories cleared", file=sys.stderr)
         return 0
-
-    stats = generate_exports()
 
     for target, count in sorted(stats.items()):
         print(f"✅ Exported {count} instruction-blocks to exports/{target}/")

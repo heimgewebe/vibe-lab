@@ -5,6 +5,7 @@ Nutzung:
   python3 scripts/docmeta/resolve_generated_artifact_paths.py canonical
   python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
   python3 scripts/docmeta/resolve_generated_artifact_paths.py ephemeral
+  python3 scripts/docmeta/resolve_generated_artifact_paths.py exports
 
 Ausgabe: Ein Pfad pro Zeile.
 """

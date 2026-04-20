@@ -11,8 +11,6 @@ Tests:
 
 from __future__ import annotations
 
-import os
-import shutil
 import sys
 import tempfile
 import unittest
@@ -88,19 +86,29 @@ class TestDeterministicGeneration(unittest.TestCase):
         self.assertEqual(contents1, contents2)
 
     def test_no_date_in_exported_files(self):
-        """Exports must not contain a calendar date that would cause day-drift."""
-        generate_exports()
+        """Generator-added header lines must not contain a calendar date.
+
+        Only the HTML comment block (lines starting with <!--) is inspected.
+        The body may legitimately contain dates (examples, specs, user content).
+        """
         import re
+        generate_exports()
         date_pattern = re.compile(r"\d{4}-\d{2}-\d{2}")
         for target_system, target_dir in EXPORT_TARGETS.items():
             for export_file in target_dir.iterdir():
                 content = export_file.read_text(encoding="utf-8")
-                match = date_pattern.search(content)
-                if match is not None:
-                    self.fail(
-                        f"Calendar date found in {target_system}/{export_file.name}: "
-                        f"'{match.group()}' — this breaks determinism across days."
-                    )
+                header_lines = [
+                    ln for ln in content.splitlines()
+                    if ln.startswith("<!--") and ln.endswith("-->")
+                ]
+                for line in header_lines:
+                    match = date_pattern.search(line)
+                    if match is not None:
+                        self.fail(
+                            f"Calendar date in generator header of "
+                            f"{target_system}/{export_file.name}: "
+                            f"'{line}' — breaks determinism across days."
+                        )
 
 
 class TestCompleteCapture(unittest.TestCase):
@@ -199,6 +207,53 @@ class TestEdgeCases(unittest.TestCase):
             finally:
                 mod.SOURCE_DIR = original_src
                 mod.EXPORT_TARGETS = original_targets
+
+    def test_stale_exports_removed_when_source_becomes_empty(self):
+        """Stale exports must be deleted when all source files are removed.
+
+        This guards the mirror-consistency invariant: if instruction-blocks/ is
+        emptied, exports/ must become empty too — not silently keep old files.
+        The fix is that generate_exports() is called even on an empty source set.
+        """
+        import generate_exports as mod
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            src_dir = tmp_path / "instruction-blocks"
+            src_dir.mkdir()
+
+            original_src = mod.SOURCE_DIR
+            original_targets = mod.EXPORT_TARGETS
+            original_root = mod.REPO_ROOT
+            mod.SOURCE_DIR = src_dir
+            mod.REPO_ROOT = tmp_path
+            mod.EXPORT_TARGETS = {
+                "copilot": tmp_path / "exports" / "copilot",
+                "cursor": tmp_path / "exports" / "cursor",
+            }
+
+            try:
+                # First: generate with one source file
+                (src_dir / "example.md").write_text(
+                    "---\ntitle: Example\n---\nContent\n", encoding="utf-8"
+                )
+                mod.generate_exports()
+                for td in mod.EXPORT_TARGETS.values():
+                    self.assertEqual(len(list(td.iterdir())), 1, "Stale file should exist")
+
+                # Then: remove the source file and regenerate
+                (src_dir / "example.md").unlink()
+                mod.generate_exports()
+                for td in mod.EXPORT_TARGETS.values():
+                    self.assertEqual(
+                        list(td.iterdir()),
+                        [],
+                        f"Stale export not removed from {td}",
+                    )
+            finally:
+                mod.SOURCE_DIR = original_src
+                mod.EXPORT_TARGETS = original_targets
+                mod.REPO_ROOT = original_root
 
     def test_target_directory_created_if_missing(self):
         """Generator should create target dirs if they don't exist."""
