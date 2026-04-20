@@ -53,6 +53,9 @@ jobs:
       - name: Validate adoption completeness
         run: python3 scripts/adoption/validate_adoption_completeness.py
 
+      - name: Test adoption completeness validator
+        run: python3 scripts/adoption/test_validate_adoption_completeness.py
+
       - name: Test epistemic state generator
         run: python3 scripts/docmeta/test_generate_epistemic_state.py
 

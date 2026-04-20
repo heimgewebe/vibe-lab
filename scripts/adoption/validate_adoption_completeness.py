@@ -71,11 +71,51 @@ def _extract_frontmatter(path: Path) -> dict | None:
         return None
 
 
-def _find_catalog_references(experiment_path: str) -> dict[str, list[str]]:
+def _matches_experiment(value: str, base_dir: Path, exp_dir: Path) -> bool:
+    """Prüft, ob ein Frontmatter-Pfadwert auf das angegebene Experiment zeigt.
+
+    Verwendet exakte Pfad-Vergleiche statt Substring-Match, um Falsch-Positive
+    bei ähnlich benannten Experimenten (z.B. upfront-structuring vs.
+    upfront-structuring-replication) zu vermeiden.
+
+    Args:
+        value:    Wert aus ``evidence_source`` oder ``relations[].target``.
+        base_dir: Verzeichnis, gegen das relative Pfade aufgelöst werden.
+                  - Für ``evidence_source`` (repo-root-relativ): ``REPO_ROOT``
+                  - Für ``relations[].target`` (datei-relativ): ``containing_file.parent``
+        exp_dir:  Absoluter Pfad zum Experiment-Verzeichnis.
+
+    Returns:
+        True, wenn der normalisierte Pfad auf ``exp_dir`` zeigt oder darunter liegt.
+    """
+    if not value:
+        return False
+
+    try:
+        candidate = Path(value)
+        if candidate.is_absolute():
+            resolved = candidate.resolve()
+        else:
+            resolved = (base_dir / candidate).resolve()
+    except Exception:
+        return False
+
+    try:
+        # Treffer wenn resolved == exp_dir oder resolved liegt innerhalb exp_dir
+        resolved.relative_to(exp_dir)
+        return True
+    except ValueError:
+        return False
+
+
+def _find_catalog_references(exp_dir: Path) -> dict[str, list[str]]:
     """Durchsucht Katalog und Prompts nach Referenzen auf ein Experiment.
 
     Gibt ein Dict zurück: { category: [dateiname, ...] }
     category ∈ {technique, anti-pattern, prompt, combo, workflow, style, instruction-block}
+
+    Pfad-Matching ist exakt (kein Substring-Match), um Falsch-Positive bei
+    ähnlich benannten Experimenten zu verhindern.
     """
     refs: dict[str, list[str]] = {
         "technique": [],
@@ -87,8 +127,7 @@ def _find_catalog_references(experiment_path: str) -> dict[str, list[str]]:
         "instruction-block": [],
     }
 
-    # Experiment-Pfad normalisieren: z.B. "experiments/2026-04-08_spec-first/"
-    exp_slug = experiment_path.rstrip("/")
+    # exp_dir ist bereits der absolute Pfad zum Experiment-Verzeichnis
 
     # 1. catalog/ durchsuchen
     search_dirs: list[tuple[Path, str]] = [
@@ -106,15 +145,13 @@ def _find_catalog_references(experiment_path: str) -> dict[str, list[str]]:
             fm = _extract_frontmatter(md_file)
             if fm is None:
                 continue
-            # Prüfe evidence_source
-            evidence_source = fm.get("evidence_source", "")
-            if exp_slug in str(evidence_source):
+            # Prüfe evidence_source (repo-root-relativ → base REPO_ROOT)
+            if _matches_experiment(fm.get("evidence_source", ""), REPO_ROOT, exp_dir):
                 refs[category].append(md_file.name)
                 continue
-            # Prüfe relations
+            # Prüfe relations (datei-relativ → base md_file.parent)
             for rel in fm.get("relations", []) or []:
-                target = rel.get("target", "")
-                if exp_slug in str(target):
+                if _matches_experiment(rel.get("target", ""), md_file.parent, exp_dir):
                     refs[category].append(md_file.name)
                     break
 
@@ -125,8 +162,7 @@ def _find_catalog_references(experiment_path: str) -> dict[str, list[str]]:
             if fm is None:
                 continue
             for rel in fm.get("relations", []) or []:
-                target = rel.get("target", "")
-                if exp_slug in str(target):
+                if _matches_experiment(rel.get("target", ""), md_file.parent, exp_dir):
                     refs["prompt"].append(md_file.name)
                     break
 
@@ -136,13 +172,11 @@ def _find_catalog_references(experiment_path: str) -> dict[str, list[str]]:
             fm = _extract_frontmatter(md_file)
             if fm is None:
                 continue
-            evidence_source = fm.get("evidence_source", "")
-            if exp_slug in str(evidence_source):
+            if _matches_experiment(fm.get("evidence_source", ""), REPO_ROOT, exp_dir):
                 refs["instruction-block"].append(md_file.name)
                 continue
             for rel in fm.get("relations", []) or []:
-                target = rel.get("target", "")
-                if exp_slug in str(target):
+                if _matches_experiment(rel.get("target", ""), md_file.parent, exp_dir):
                     refs["instruction-block"].append(md_file.name)
                     break
 
@@ -169,9 +203,8 @@ def validate_experiment(exp_dir: Path) -> tuple[list[str], list[str]]:
     if status != "adopted":
         return errors, warnings
 
-    # Experiment-Pfad relativ zum Repo
-    exp_rel = f"experiments/{exp_name}"
-    refs = _find_catalog_references(exp_rel)
+    # Experiment-Verzeichnis (absoluter Pfad für exaktes Matching)
+    refs = _find_catalog_references(exp_dir.resolve())
 
     # Hard: ≥1 Technique
     if not refs["technique"]:
