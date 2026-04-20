@@ -18,6 +18,18 @@ generated_artifact_contract:
       - docs/_generated/backlinks.md
       - docs/_generated/orphans.md
 
+  exports:
+    description: "Abgeleitete, toolspezifische Repräsentationen aus instruction-blocks/"
+    commit_policy: "commit-required"
+    ci_policy: "blocking"
+    regenerable: true
+    deterministic: true
+    source: "instruction-blocks/*.md"
+    generator: "scripts/exports/generate_exports.py"
+    files:
+      - exports/copilot/
+      - exports/cursor/
+
   ephemeral:
     description: "Laufzeitdiagnose; wird als CI-Artefakt bereitgestellt"
     commit_policy: "do-not-commit"

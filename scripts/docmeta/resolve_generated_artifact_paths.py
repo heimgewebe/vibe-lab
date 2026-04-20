@@ -5,6 +5,7 @@ Nutzung:
   python3 scripts/docmeta/resolve_generated_artifact_paths.py canonical
   python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
   python3 scripts/docmeta/resolve_generated_artifact_paths.py ephemeral
+  python3 scripts/docmeta/resolve_generated_artifact_paths.py exports
 
 Ausgabe: Ein Pfad pro Zeile.
 """
@@ -45,7 +46,7 @@ def load_paths(group: str) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("group", choices=["canonical", "derived", "ephemeral"])
+    parser.add_argument("group", choices=["canonical", "derived", "ephemeral", "exports"])
     args = parser.parse_args()
 
     try:

@@ -59,6 +59,9 @@ jobs:
       - name: Test epistemic state generator
         run: python3 scripts/docmeta/test_generate_epistemic_state.py
 
+      - name: Test export generator
+        run: python3 scripts/exports/test_generate_exports.py
+
       - name: Regenerate canonical diagnostics
         run: make generate-canonical
 
@@ -75,6 +78,20 @@ jobs:
             echo "❌ Canonical diagnostics contract violated. Run 'make generate-canonical' and commit the changes."
             git status --porcelain -- "${canonical_paths[@]}"
             git diff -- "${canonical_paths[@]}" || true
+            exit 1
+          fi
+
+      - name: Check exports contract
+        run: |
+          mapfile -t export_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py exports)
+          if [[ "${#export_paths[@]}" -eq 0 ]]; then
+            echo "ERROR: exports path list from .vibe/generated-artifacts.yml is empty"
+            exit 1
+          fi
+          if git status --porcelain -- "${export_paths[@]}" | grep -q .; then
+            echo "❌ Exports contract violated. Run 'make generate-exports' and commit the changes."
+            git status --porcelain -- "${export_paths[@]}"
+            git diff -- "${export_paths[@]}" || true
             exit 1
           fi
 

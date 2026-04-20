@@ -100,6 +100,17 @@ relations:
 | [_generated/orphans.md](_generated/orphans.md)         | derived | non-blocking | Verwaiste Dokumente |
 | `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral | artifact-only | Abgeleiteter Zustands-Snapshot |
 
+## Exports (Generiert)
+
+> Abgeleitete, toolspezifische Repräsentationen aus `instruction-blocks/`. Exports sind keine eigenständige Wahrheitsquelle — sie leiten sich vollständig aus den Quelldateien ab und werden deterministisch regeneriert.
+
+| Zielordner | Quelle | Regeneration |
+| ---------- | ------ | ------------ |
+| [`exports/copilot/`](../exports/copilot/) | `instruction-blocks/*.md` | `make generate-exports` |
+| [`exports/cursor/`](../exports/cursor/) | `instruction-blocks/*.md` | `make generate-exports` |
+
+Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen Inhalt, sondern transformieren validierte Instruction-Blocks in eine konsumierbare Form für externe Tools. Die Quelldateien in `instruction-blocks/` bleiben die einzige Wahrheitsquelle.
+
 ## Schemas und Verträge
 
 | Datei                                                      | Zweck                               |
