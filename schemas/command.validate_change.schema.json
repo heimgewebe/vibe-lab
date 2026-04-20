@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/command.validate_change.schema.json",
+  "title": "Command: validate_change (v0.1)",
+  "description": "Minimal v0.1 schema for the conceptual command `validate_change`. Scope per Phase D of blueprint-agent-operability-phase-1c.md: only practically evidenced fields. The checks[] vocabulary mirrors the blueprint's C3 definition (lint, test, docs-guard) and stays open for extension via additionalProperties.",
+  "type": "object",
+  "properties": {
+    "command": {
+      "type": "string",
+      "const": "validate_change"
+    },
+    "version": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["lint", "test", "docs-guard"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "required": ["command", "version", "checks", "success", "errors"],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "success": { "const": true } },
+        "required": ["success"]
+      },
+      "then": {
+        "properties": {
+          "errors": { "maxItems": 0 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "success": { "const": false } },
+        "required": ["success"]
+      },
+      "then": {
+        "properties": {
+          "errors": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

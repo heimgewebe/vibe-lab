@@ -1,0 +1,6 @@
+{
+  "command": "read_context",
+  "version": "v0.1",
+  "target_files": [],
+  "expected_error": "contract_invalid"
+}

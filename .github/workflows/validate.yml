@@ -44,6 +44,12 @@ jobs:
       - name: Test agent handoff validator
         run: python3 scripts/docmeta/test_validate_agent_handoff.py
 
+      - name: Validate agent commands
+        run: python3 scripts/docmeta/validate_agent_commands.py
+
+      - name: Test agent command validator
+        run: python3 scripts/docmeta/test_validate_agent_commands.py
+
       - name: Validate Phase-1c fixture checker corpus
         run: python3 scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py
 

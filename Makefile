@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -34,6 +34,14 @@ validate-agent-handoff:
 validate-agent-handoff-tests:
 	@echo "🧪 Running agent handoff regression tests..."
 	@python3 scripts/docmeta/test_validate_agent_handoff.py
+
+validate-agent-commands:
+	@echo "🤖 Validating agent command fixtures..."
+	@python3 scripts/docmeta/validate_agent_commands.py
+
+validate-agent-commands-tests:
+	@echo "🧪 Running agent command regression tests..."
+	@python3 scripts/docmeta/test_validate_agent_commands.py
 
 validate-phase1c-fixtures:
 	@echo "🧭 Validating Phase-1c fixture corpus..."
@@ -108,6 +116,8 @@ help:
 	@echo "  make validate-epistemics-tests — Run interpretation_budget unit regression tests"
 	@echo "  make validate-agent-handoff    — Validate HANDOFF_BLOCK schema/hash fixtures"
 	@echo "  make validate-agent-handoff-tests — Run HANDOFF_BLOCK unit regression tests"
+	@echo "  make validate-agent-commands   — Validate agent command fixtures against command.*.schema.json"
+	@echo "  make validate-agent-commands-tests — Run agent command unit regression tests"
 	@echo "  make validate-phase1c-fixtures — Validate Phase-1c fixture corpus against expected outcomes"
 	@echo "  make validate-phase1c-fixture-tests — Run Phase-1c fixture checker unit regression tests"
 	@echo "  make validate-adoption-completeness — Validate adopted experiments have catalog extractions"
