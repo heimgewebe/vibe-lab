@@ -239,7 +239,7 @@ class TestEdgeCases(unittest.TestCase):
                 )
                 mod.generate_exports()
                 for td in mod.EXPORT_TARGETS.values():
-                    self.assertEqual(len(list(td.iterdir())), 1, "Stale file should exist")
+                    self.assertEqual(len(list(td.iterdir())), 1, "Export should exist after generation")
 
                 # Then: remove the source file and regenerate
                 (src_dir / "example.md").unlink()
