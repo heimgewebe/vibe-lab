@@ -103,10 +103,12 @@ def derive_interpretation_risk(exp_dir: Path, manifest: dict) -> str:
     risk_signals = 0
 
     # Signal 1: evidence_sufficiency — evidence.jsonl vorhanden und nicht trivial?
+    # Threshold: minimal JSONL entry is ~80+ bytes; below 50 = empty or broken
+    _MIN_EVIDENCE_SIZE_BYTES = 50
     evidence_path = exp_dir / "results" / "evidence.jsonl"
     if not evidence_path.is_file():
         risk_signals += 1
-    elif evidence_path.stat().st_size < 50:
+    elif evidence_path.stat().st_size < _MIN_EVIDENCE_SIZE_BYTES:
         risk_signals += 1
 
     # Signal 2: execution_quality — rekonstruierte Experimente haben höheres Risiko
@@ -120,16 +122,10 @@ def derive_interpretation_risk(exp_dir: Path, manifest: dict) -> str:
         risk_signals += 1
 
     # Signal 4: adoption_basis-Konsistenz — adoption_basis sollte zum
-    #   execution_status passen
+    #   execution_status passen (z.B. basis=executed → status muss executed sein)
     adoption_basis = exp.get("adoption_basis", "")
-    if adoption_basis and execution_status:
-        # executed/replicated → Basis sollte matching sein
-        if adoption_basis not in (execution_status, ""):
-            # Mismatch: z.B. adoption_basis=executed aber execution_status=reconstructed
-            if adoption_basis == "executed" and execution_status != "executed":
-                risk_signals += 1
-            elif adoption_basis == "replicated" and execution_status != "replicated":
-                risk_signals += 1
+    if adoption_basis in ("executed", "replicated") and adoption_basis != execution_status:
+        risk_signals += 1
 
     # Signal 5: interpretation_budget — bei adopted Experimenten pflicht
     status = exp.get("status", "")

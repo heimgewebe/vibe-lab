@@ -42,7 +42,7 @@ PROMPTS_DIR = REPO_ROOT / "prompts" / "adopted"
 INSTRUCTION_BLOCKS_DIR = REPO_ROOT / "instruction-blocks"
 
 # Mindestgröße für failure_modes.md "mit Substanz"
-_CONTENT_THRESHOLD = 300
+_FAILURE_MODES_MIN_SIZE_BYTES = 300
 
 
 def _load_manifest(path: Path) -> dict:
@@ -190,7 +190,7 @@ def validate_experiment(exp_dir: Path) -> tuple[list[str], list[str]]:
     # Conditional hard: ≥1 Anti-Pattern wenn failure_modes.md Substanz hat
     fm_path = exp_dir / "failure_modes.md"
     has_substantive_fm = (
-        fm_path.is_file() and fm_path.stat().st_size > _CONTENT_THRESHOLD
+        fm_path.is_file() and fm_path.stat().st_size > _FAILURE_MODES_MIN_SIZE_BYTES
     )
     if has_substantive_fm and not refs["anti-pattern"]:
         errors.append(
