@@ -85,7 +85,9 @@ def generate_exports(generated_date: str | None = None) -> dict[str, int]:
     for target_system, target_dir in sorted(EXPORT_TARGETS.items()):
         target_dir.mkdir(parents=True, exist_ok=True)
 
-        # Entferne .gitkeep falls vorhanden (Exporte ersetzen den Platzhalter)
+        # Entferne .gitkeep falls vorhanden — Exporte ersetzen den Platzhalter.
+        # Dieser Seiteneffekt ist durch den Export-Contract in
+        # .vibe/generated-artifacts.yml gedeckt (triggered_by: generate-exports).
         gitkeep = target_dir / ".gitkeep"
         if gitkeep.exists():
             gitkeep.unlink()
