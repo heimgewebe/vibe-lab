@@ -17,6 +17,7 @@ Referenz: docs/blueprints/blueprint-v2.md → Derived Visibility
 Benötigt: pip install pyyaml
 """
 
+import json
 import sys
 from pathlib import Path
 
@@ -102,20 +103,30 @@ def derive_interpretation_risk(exp_dir: Path, manifest: dict) -> str:
     exp = manifest.get("experiment", {})
     risk_signals = 0
 
-    # Signal 1: evidence_sufficiency — evidence.jsonl vorhanden und nicht trivial?
-    # Threshold 50 Bytes: ein leeres oder einzeiliges JSONL-File (Header-only)
-    # liegt typischerweise darunter; ein echter JSONL-Eintrag ist 80–120 Bytes.
-    # Die niedrigere Grenze (50) gibt auch minimalen Kurzeinträgen noch Spielraum.
-    _MIN_EVIDENCE_SIZE_BYTES = 50
+    # Signal 1: evidence_sufficiency — evidence.jsonl vorhanden und mind. eine
+    # parsierbare JSONL-Zeile enthalten? Ein File-Byte-Check würde Template-artige
+    # Einträge oder abgeschnittene Dateien durchlassen; ein echter Parse-Versuch
+    # stellt sicher, dass der Eintrag strukturell valide ist.
     evidence_path = exp_dir / "results" / "evidence.jsonl"
     if not evidence_path.is_file():
         risk_signals += 1
-    elif evidence_path.stat().st_size < _MIN_EVIDENCE_SIZE_BYTES:
-        risk_signals += 1
+    else:
+        _has_parseable_entry = False
+        try:
+            for raw_line in evidence_path.read_text(encoding="utf-8").splitlines():
+                stripped = raw_line.strip()
+                if stripped:
+                    json.loads(stripped)
+                    _has_parseable_entry = True
+                    break
+        except Exception:
+            pass
+        if not _has_parseable_entry:
+            risk_signals += 1
 
     # Signal 2: execution_quality — rekonstruierte Experimente haben höheres Risiko
     execution_status = exp.get("execution_status", "")
-    if execution_status in ("reconstructed", "designed", "not_executed"):
+    if execution_status in ("reconstructed", "designed", "prepared"):
         risk_signals += 1
 
     # Signal 3: evidence_level — anekdotisch oder fehlend erhöht Risiko

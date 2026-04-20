@@ -177,8 +177,69 @@ class DeriveInterpretationRiskTests(unittest.TestCase):
             self.assertEqual(result, "medium", "Missing budget + reconstructed should be medium risk")
 
     # ------------------------------------------------------------------
-    # High-risk: vollständig defektes adopted Experiment (6 Signale)
+    # Medium-risk: `prepared` execution_status triggers Signal 2
+    # (was a dead branch with the old, incorrect `not_executed` value)
     # ------------------------------------------------------------------
+    def test_prepared_execution_status_triggers_signal_2(self) -> None:
+        """execution_status=prepared → Signal 2 feuert (Schema-korrekter Wert)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            exp_dir = _build_exp_dir(
+                Path(tmp),
+                result_md_content=None,
+                decision_yml=False,
+            )
+            # Signal 2 (prepared) + Signal 3 (anecdotal) = 2 → medium
+            manifest = _manifest(
+                status="testing",
+                execution_status="prepared",  # Signal 2
+                evidence_level="anecdotal",   # Signal 3
+                adoption_basis="",
+            )
+            result = self.mod.derive_interpretation_risk(exp_dir, manifest)
+            self.assertEqual(result, "medium", "prepared + anecdotal should be medium risk (signals 2+3)")
+
+    # ------------------------------------------------------------------
+    # Signal 1: non-parseable evidence.jsonl triggers risk signal
+    # ------------------------------------------------------------------
+    def test_non_parseable_evidence_triggers_signal_1(self) -> None:
+        """evidence.jsonl enthält nur nicht-parsierbare Zeilen → Signal 1 feuert."""
+        with tempfile.TemporaryDirectory() as tmp:
+            exp_dir = _build_exp_dir(
+                Path(tmp),
+                # Datei existiert, aber kein valides JSON
+                evidence_content="not valid json at all\n",
+                result_md_content=None,
+                decision_yml=False,
+            )
+            manifest = _manifest(
+                status="testing",
+                execution_status="executed",
+                evidence_level="experimental",
+                adoption_basis="",
+            )
+            result = self.mod.derive_interpretation_risk(exp_dir, manifest)
+            # Signal 1 (unparseable evidence) only → still low (≤1 signals)
+            self.assertEqual(result, "low", "Single non-parseable evidence triggers only signal 1 → low")
+
+    def test_empty_evidence_file_triggers_signal_1(self) -> None:
+        """Leeres evidence.jsonl (keine Zeilen) → Signal 1 feuert."""
+        with tempfile.TemporaryDirectory() as tmp:
+            exp_dir = _build_exp_dir(
+                Path(tmp),
+                evidence_content="",  # existiert, aber leer
+                result_md_content=None,
+                decision_yml=False,
+            )
+            manifest = _manifest(
+                status="testing",
+                execution_status="executed",
+                evidence_level="experimental",
+                adoption_basis="",
+            )
+            result = self.mod.derive_interpretation_risk(exp_dir, manifest)
+            self.assertEqual(result, "low", "Empty evidence file triggers only signal 1 → low")
+
+
     def test_fully_broken_adopted_is_high_risk(self) -> None:
         """Adopted Experiment ohne Evidenz, designed, anecdotal, Mismatch, kein Budget, kein decision.yml → high."""
         with tempfile.TemporaryDirectory() as tmp:

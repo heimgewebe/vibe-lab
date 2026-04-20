@@ -13,8 +13,9 @@ Erwartete Extraktion pro adopted Experiment:
     Substanz enthält
 
 Optionale Extraktion (kein harter Fehler, aber Warnung):
-  - Combo          (catalog/combos/)
-  - Workflow        (catalog/workflows/)
+  - Combo             (catalog/combos/)
+  - Workflow           (catalog/workflows/)
+  - Instruction-Block  (instruction-blocks/)
 
 Gate-Logik:
   - Nur ``status: adopted`` Experimente werden geprüft.
@@ -236,6 +237,13 @@ def validate_experiment(exp_dir: Path) -> tuple[list[str], list[str]]:
         warnings.append(
             f"{exp_name}: Kein Combo-Eintrag referenziert dieses Experiment."
             f" Prüfe, ob eine Kombination mit anderen Techniques sinnvoll wäre."
+        )
+
+    # Soft: Workflow
+    if not refs["workflow"]:
+        warnings.append(
+            f"{exp_name}: Kein Workflow-Eintrag referenziert dieses Experiment."
+            f" Prüfe, ob ein reproduzierbarer Ablauf extrahierbar wäre."
         )
 
     # Soft: Instruction-Block
