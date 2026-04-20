@@ -50,6 +50,9 @@ jobs:
       - name: Test Phase-1c fixture checker
         run: python3 scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py
 
+      - name: Validate adoption completeness
+        run: python3 scripts/adoption/promote.py
+
       - name: Regenerate canonical diagnostics
         run: make generate-canonical
 

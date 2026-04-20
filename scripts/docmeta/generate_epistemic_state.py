@@ -83,15 +83,85 @@ def derive_design_quality(exp_dir: Path) -> str:
     return "minimal"
 
 
-def derive_interpretation_risk(exp_dir: Path) -> str:
-    """Leitet interpretation_risk ab.
+def derive_interpretation_risk(exp_dir: Path, manifest: dict) -> str:
+    """Leitet interpretation_risk über eine 6-Signal-Heuristik ab.
 
-    Phase 2 (Interpretation Protection) ist noch nicht umgesetzt — daher
-    ist der ehrliche abgeleitete Wert für alle Experimente 'unassessed'.
-    Sobald Phase 2 interpretation_budget einführt, wird diese Funktion
-    erweitert.
+    Signale (jedes kann den Risikowert erhöhen):
+      1. evidence_sufficiency  — Hat das Experiment ausreichend Evidenz?
+      2. execution_quality     — Rekonstruierte Experimente haben höheres Risiko
+      3. evidence_level        — Anekdotische Evidenz erhöht Risiko
+      4. adoption_basis        — Mismatch adoption_basis / execution_status
+      5. interpretation_budget — Fehlendes Budget bei adopted erhöht Risiko
+      6. status_consistency    — Manifest-Widersprüche erhöhen Risiko
+
+    Rückgabe:
+      - "low"    — 0-1 Signale aktiv
+      - "medium" — 2-3 Signale aktiv
+      - "high"   — 4+ Signale aktiv
     """
-    return "unassessed"
+    exp = manifest.get("experiment", {})
+    risk_signals = 0
+
+    # Signal 1: evidence_sufficiency — evidence.jsonl vorhanden und nicht trivial?
+    evidence_path = exp_dir / "results" / "evidence.jsonl"
+    if not evidence_path.is_file():
+        risk_signals += 1
+    elif evidence_path.stat().st_size < 50:
+        risk_signals += 1
+
+    # Signal 2: execution_quality — rekonstruierte Experimente haben höheres Risiko
+    execution_status = exp.get("execution_status", "")
+    if execution_status in ("reconstructed", "designed", "not_executed"):
+        risk_signals += 1
+
+    # Signal 3: evidence_level — anekdotisch oder fehlend erhöht Risiko
+    evidence_level = exp.get("evidence_level", "")
+    if evidence_level in ("anecdotal", "") or evidence_level is None:
+        risk_signals += 1
+
+    # Signal 4: adoption_basis-Konsistenz — adoption_basis sollte zum
+    #   execution_status passen
+    adoption_basis = exp.get("adoption_basis", "")
+    if adoption_basis and execution_status:
+        # executed/replicated → Basis sollte matching sein
+        if adoption_basis not in (execution_status, ""):
+            # Mismatch: z.B. adoption_basis=executed aber execution_status=reconstructed
+            if adoption_basis == "executed" and execution_status != "executed":
+                risk_signals += 1
+            elif adoption_basis == "replicated" and execution_status != "replicated":
+                risk_signals += 1
+
+    # Signal 5: interpretation_budget — bei adopted Experimenten pflicht
+    status = exp.get("status", "")
+    if status == "adopted":
+        result_md = exp_dir / "results" / "result.md"
+        has_budget = False
+        if result_md.is_file():
+            try:
+                text = result_md.read_text(encoding="utf-8")
+                has_budget = "## Interpretation Budget" in text
+            except Exception:
+                pass
+        if not has_budget:
+            risk_signals += 1
+
+    # Signal 6: status_consistency — Widersprüche zwischen Manifest-Feldern
+    #   z.B. status=adopted aber kein decision.yml, oder status=adopted ohne
+    #   execution_status ∈ {executed, replicated, reconstructed}
+    if status == "adopted":
+        decision_path = exp_dir / "results" / "decision.yml"
+        if not decision_path.is_file():
+            risk_signals += 1
+        elif execution_status not in ("executed", "replicated", "reconstructed"):
+            risk_signals += 1
+
+    # Risiko-Klassifikation
+    if risk_signals <= 1:
+        return "low"
+    elif risk_signals <= 3:
+        return "medium"
+    else:
+        return "high"
 
 
 def main() -> None:
@@ -120,7 +190,7 @@ def main() -> None:
             "design_quality": derive_design_quality(exp_dir),
             "execution_state": exp.get("execution_status", "—"),
             "evidence_strength": exp.get("evidence_level", "—"),
-            "interpretation_risk": derive_interpretation_risk(exp_dir),
+            "interpretation_risk": derive_interpretation_risk(exp_dir, manifest),
         })
 
     # Tabelle bauen
@@ -165,8 +235,13 @@ def main() -> None:
         "",
         "**Evidence Strength** — Spiegel von `evidence_level` im Manifest.",
         "",
-        "**Interpretation Risk** — abgeleitet aus `interpretation_budget` (Phase 2).",
-        "Solange Phase 2 nicht umgesetzt ist: `unassessed`.",
+        "**Interpretation Risk** — abgeleitet über 6-Signal-Heuristik:",
+        "- **low** — 0-1 Risikosignale aktiv (Evidenz, Execution, Budget, Konsistenz intakt)",
+        "- **medium** — 2-3 Risikosignale aktiv (einige epistemische Lücken)",
+        "- **high** — 4+ Risikosignale aktiv (erhebliche Interpretationsunsicherheit)",
+        "",
+        "Signale: evidence_sufficiency, execution_quality, evidence_level,",
+        "adoption_basis-Konsistenz, interpretation_budget-Vollständigkeit, status_consistency.",
         "",
     ])
 
