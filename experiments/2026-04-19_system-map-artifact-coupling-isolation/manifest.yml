@@ -1,0 +1,29 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "System-Map Artifact Coupling Isolation"
+  hypothesis: "Der wiederkehrende stale-system-map-Fehler ist primär ein Workflow-Artefakt (Reihenfolge Artifact-Write vs. canonical refresh) und nicht ein fundamentales Architektur-/Boundary-Problem — prüfbar durch einen Gegenlauf ohne Artifact-Write vor dem Validate-Schritt."
+  status: designed              # idea | designed | testing | adopted | rejected | blocked | inconclusive
+  category: workflow            # style | technology | technique | workflow | combo
+  execution_status: designed    # designed | prepared | executed | replicated
+                                # Kein echter Run bisher. Experiment ist Design- und Diagnoseexperiment.
+  execution_refs: []            # Leer bis echter Run mit belegbarem Execution-Proof
+  created: "2026-04-20"
+  updated: "2026-04-20"
+  author: "GitHub Copilot / Claude Sonnet 4.6"
+  iteration: 1
+  evidence_level: anecdotal     # anecdotal | experimental | replicated
+                                # Nur Vorarbeit aus predecessor experiment; eigene Messungen noch nicht erhoben.
+
+context:
+  tools: ["make", "Python 3.11", "git", "GitHub Actions"]
+  language: "Mixed"
+  environment: "vibe-lab"
+  triggered_by: "user-request-2026-04-20-followup-coupling-isolation"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
