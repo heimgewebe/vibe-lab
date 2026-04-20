@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/command.validate_change.schema.json",
   "title": "Command: validate_change (v0.1)",
-  "description": "Minimal v0.1 schema for the conceptual command `validate_change`. Scope per Phase D of blueprint-agent-operability-phase-1c.md: only practically evidenced fields. The checks[] vocabulary mirrors the blueprint's C3 definition (lint, test, docs-guard) and stays open for extension via additionalProperties.",
+  "description": "Minimal v0.1 schema for the conceptual command `validate_change`. Scope per Phase D of blueprint-agent-operability-phase-1c.md: only practically evidenced fields. checks[] is intentionally an open string list — not an enum — to avoid locking in check vocabulary before practical use confirms the right set. Recommended values per blueprint §C3: lint, test, docs-guard.",
   "type": "object",
   "properties": {
     "command": {
@@ -17,7 +17,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["lint", "test", "docs-guard"]
+        "minLength": 1
       },
       "minItems": 1,
       "uniqueItems": true

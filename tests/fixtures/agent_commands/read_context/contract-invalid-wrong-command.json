@@ -1,0 +1,6 @@
+{
+  "command": "read_context_v2",
+  "version": "v0.1",
+  "target_files": ["docs/index.md"],
+  "expected_error": "contract_invalid"
+}

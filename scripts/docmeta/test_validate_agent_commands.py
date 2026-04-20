@@ -37,6 +37,13 @@ class ValidateAgentCommandsTests(unittest.TestCase):
         self.assertTrue(errors)
         self.assertIn("contract_invalid", errors[0])
 
+    def test_read_context_contract_invalid_wrong_command(self) -> None:
+        validator = self._validator_for("read_context")
+        path = self.fixture_root / "read_context" / "contract-invalid-wrong-command.json"
+        errors = vac.validate_one(path, validator)
+        self.assertTrue(errors)
+        self.assertIn("contract_invalid", errors[0])
+
     # write_change --------------------------------------------------------
     def test_write_change_valid_minimal(self) -> None:
         validator = self._validator_for("write_change")
@@ -46,6 +53,13 @@ class ValidateAgentCommandsTests(unittest.TestCase):
     def test_write_change_contract_invalid_missing_locator(self) -> None:
         validator = self._validator_for("write_change")
         path = self.fixture_root / "write_change" / "contract-invalid-missing-locator.json"
+        errors = vac.validate_one(path, validator)
+        self.assertTrue(errors)
+        self.assertIn("contract_invalid", errors[0])
+
+    def test_write_change_contract_invalid_wrong_version(self) -> None:
+        validator = self._validator_for("write_change")
+        path = self.fixture_root / "write_change" / "contract-invalid-wrong-version.json"
         errors = vac.validate_one(path, validator)
         self.assertTrue(errors)
         self.assertIn("contract_invalid", errors[0])
@@ -67,6 +81,17 @@ class ValidateAgentCommandsTests(unittest.TestCase):
             self.fixture_root
             / "validate_change"
             / "contract-invalid-success-with-errors.json"
+        )
+        errors = vac.validate_one(path, validator)
+        self.assertTrue(errors)
+        self.assertIn("contract_invalid", errors[0])
+
+    def test_validate_change_contract_invalid_failure_empty_errors(self) -> None:
+        validator = self._validator_for("validate_change")
+        path = (
+            self.fixture_root
+            / "validate_change"
+            / "contract-invalid-failure-empty-errors.json"
         )
         errors = vac.validate_one(path, validator)
         self.assertTrue(errors)

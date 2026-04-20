@@ -89,7 +89,7 @@ seines eigenen Übergabeobjekts behauptet.
 - [x] Phase B abgeschlossen: Hash/Kanonisierung maschinell validierbar
 - [x] Phase C abgeschlossen: CI erzwingt den Handoff-Validator
 - [x] Phase D abgeschlossen: Command-Schemas v0.1 liegen vor
-- [ ] Phase E abgeschlossen: Golden Fixtures / Smoke-Set deckt Drift-Fälle ab
+- [ ] Phase E abgeschlossen: Golden Fixtures / Smoke-Set deckt Drift-Fälle ab (teilweise begonnen: Minimal-Fixtures pro Command vorhanden, erweiterter Drift-Smoke-Set noch offen)
 - [ ] Phase F abgeschlossen: optionaler Replay-Runner reproduziert einen Task
 
 ## Phase A — HANDOFF_BLOCK als echtes Repo-Contract-Artefakt
@@ -232,8 +232,9 @@ Nicht nur Theorie prüfen, sondern Vollzugssituationen.
 
 ### Phase E Umsetzung
 
-- [ ] Fixture-Sammlung mit 6–8 Fällen anlegen
-- [ ] Folgende Fälle mindestens abdecken:
+- [x] Minimal-Fixtures pro Command vorhanden (je Positiv + mindestens 2 Negativfälle) unter `tests/fixtures/agent_commands/`
+- [ ] Fixture-Sammlung auf 6–8 Fälle pro Command ausgebaut
+- [ ] Folgende Fälle für den Handoff-Validator mindestens abdecken:
       PASS, FAIL ohne `target_files`, PARTIAL ohne Locator, `hash_mismatch`,
       `unsupported_canon`, Integrity-Mismatch bei `normalized_task`,
       optional `exact_before`/`exact_after`, promotion-naher Fall
@@ -283,17 +284,22 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 
 ### Status D4–D6 (Phase D)
 
-Ergänzend zu den drei Command-Schemas existieren jetzt Golden-Fixtures pro Command
-unter `tests/fixtures/agent_commands/<command>/` (je ein Positiv- und mindestens
-ein `expected_error: contract_invalid`-Fall). Die Prüfung läuft über
-`scripts/docmeta/validate_agent_commands.py` (Stil-Spiegelbild zu
-`validate_agent_handoff.py`) und ist in `make validate` sowie in
-`.github/workflows/validate.yml` verdrahtet.
+Ergänzend zu den drei Command-Schemas existieren Golden-Fixtures pro Command
+unter `tests/fixtures/agent_commands/<command>/` (Positiv- und mehrere
+`expected_error: contract_invalid`-Fälle, darunter falscher `command`-Wert,
+falsche `version`, fehlende Lokalitätsprüfung, ungültige `success`/`errors`-Kombination).
+Die Prüfung läuft über `scripts/docmeta/validate_agent_commands.py`
+(Stil-Spiegelbild zu `validate_agent_handoff.py`) und ist in `make validate`
+sowie in `.github/workflows/validate.yml` verdrahtet.
 
-Bewusste Beschränkung: v0.1 modelliert nur die im Blueprint (Phase D /
-`blueprint-agent-operability.md` §C1–C3) bereits belegten Felder. Ausführung
-(Phase F / D8) bleibt ausdrücklich ausgeschlossen, um eine „halbe Execution
-Engine“ zu vermeiden.
+Bewusste Designentscheidungen v0.1:
+
+- `checks[]` in `command.validate_change` ist eine offene String-Liste (kein Enum),
+  um frühe Vocab-Verhärtung zu vermeiden; die empfohlenen Werte nach §C3 der Blaupause
+  (`lint`, `test`, `docs-guard`) sind in der Schema-Beschreibung dokumentiert.
+- `additionalProperties: true` in allen drei Schemas: explizit als Leitplanken-Contract
+  gerahmt, nicht als harter Ausführungsvertrag. Verhärtung ist Phase-E/F-Arbeit.
+- Ausführung (Phase F / D8) bleibt ausdrücklich ausgeschlossen.
 
 ## Was ausdrücklich nicht zuerst getan wird
 
