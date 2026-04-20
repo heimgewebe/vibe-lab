@@ -1,0 +1,29 @@
+# Decision
+# Validiert gegen: schemas/decision.schema.json
+
+schema_version: "0.1.0"
+
+# execution_assessment: Bewertet den Ausführungsstatus (zulässig auch bei designed)
+decision_type: "execution_assessment"
+
+# not_executed: kein echter Lauf bisher
+verdict: "not_executed"
+
+date: "2026-04-20"
+reviewer: "TBD"
+
+rationale: |
+  Dieses Experiment wurde als Diagnose- und Designexperiment angelegt.
+  Kein echter Testlauf (T-1 oder T-2) wurde durchgeführt.
+
+  Der designierte Testfall T-1 (Gegenlauf ohne Artifact-Write) ist vollständig
+  spezifiziert in method.md, aber noch nicht ausgeführt. Alle Messfelder sind
+  explizit als not_measured markiert (evidence.jsonl, design-phase-Eintrag).
+
+  Ein Wechsel zu result_assessment ist erst zulässig, wenn T-1 mit belegbarem
+  Execution-Proof (artifacts/run-*/run_meta.json, CI-Ergebnis) dokumentiert ist.
+
+  Keine Adoption-Entscheidung in diesem Stadium.
+
+evidence_summary:
+  observations: 1    # design_note-Eintrag; kein echter Run-Datenpunkt
