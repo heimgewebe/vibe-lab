@@ -51,7 +51,10 @@ jobs:
         run: python3 scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py
 
       - name: Validate adoption completeness
-        run: python3 scripts/adoption/promote.py
+        run: python3 scripts/adoption/validate_adoption_completeness.py
+
+      - name: Test epistemic state generator
+        run: python3 scripts/docmeta/test_generate_epistemic_state.py
 
       - name: Regenerate canonical diagnostics
         run: make generate-canonical

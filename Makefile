@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness generate generate-canonical generate-derived generate-ephemeral generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-epistemic-state-tests generate generate-canonical generate-derived generate-ephemeral generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-epistemic-state-tests
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -45,7 +45,11 @@ validate-phase1c-fixture-tests:
 
 validate-adoption-completeness:
 	@echo "📦 Validating adoption completeness..."
-	@python3 scripts/adoption/promote.py
+	@python3 scripts/adoption/validate_adoption_completeness.py
+
+validate-epistemic-state-tests:
+	@echo "🧪 Running epistemic state regression tests..."
+	@python3 scripts/docmeta/test_generate_epistemic_state.py
 
 # Diagnose-Generatoren
 generate: generate-canonical generate-derived generate-ephemeral
@@ -96,6 +100,7 @@ help:
 	@echo "  make validate-phase1c-fixtures — Validate Phase-1c fixture corpus against expected outcomes"
 	@echo "  make validate-phase1c-fixture-tests — Run Phase-1c fixture checker unit regression tests"
 	@echo "  make validate-adoption-completeness — Validate adopted experiments have catalog extractions"
+	@echo "  make validate-epistemic-state-tests — Run interpretation risk regression tests"
 	@echo "  make generate           — Generate canonical, derived, and ephemeral diagnostics"
 	@echo "  make generate-canonical — Generate contract-relevant diagnostics (blocking in CI)"
 	@echo "  make generate-derived   — Generate reconstructable diagnostics (non-blocking in CI)"

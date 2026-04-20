@@ -3,17 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (105 found):
+Documents not referenced by any other document via frontmatter relations (93 found):
 
 - `.vibe/intent.md`
-- `catalog/combos/spec-first-anti-pattern-awareness.md`
-- `catalog/combos/spec-first-constraint-control.md`
-- `catalog/styles/constraint-first.md`
-- `catalog/styles/structured-specification.md`
-- `catalog/workflows/causal-control-study.md`
-- `catalog/workflows/spec-first-api-generation.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
-- `docs/playbooks/build-reliable-prompt.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
@@ -95,11 +88,6 @@ Documents not referenced by any other document via frontmatter relations (105 fo
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
-- `instruction-blocks/constraint-before-code.md`
-- `instruction-blocks/edge-case-enumeration.md`
-- `instruction-blocks/no-vague-prompts.md`
-- `instruction-blocks/spec-first.md`
-- `instruction-blocks/validate-against-spec.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`

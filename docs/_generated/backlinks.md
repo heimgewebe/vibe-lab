@@ -16,6 +16,22 @@
 - ← `docs/playbooks/build-reliable-prompt.md` (references)
 - ← `instruction-blocks/no-vague-prompts.md` (derived_from)
 
+## `catalog/combos/spec-first-anti-pattern-awareness.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/combos/spec-first-constraint-control.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/styles/constraint-first.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/styles/structured-specification.md`
+
+- ← `docs/index.md` (references)
+
 ## `catalog/techniques/prompt-length-control.md`
 
 - ← `catalog/anti-patterns/token-bloat-as-quality-proxy.md` (references)
@@ -37,6 +53,14 @@
 - ← `instruction-blocks/spec-first.md` (derived_from)
 - ← `instruction-blocks/validate-against-spec.md` (derived_from)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
+
+## `catalog/workflows/causal-control-study.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/workflows/spec-first-api-generation.md`
+
+- ← `docs/index.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
@@ -78,9 +102,14 @@
 - ← `docs/blueprints/blueprint-v2.md` (informs)
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
 
+## `docs/playbooks/build-reliable-prompt.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/playbooks/reconciliation.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
+- ← `docs/index.md` (references)
 
 ## `docs/policies/interpretation-budget.md`
 
@@ -130,6 +159,26 @@
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
+
+## `instruction-blocks/constraint-before-code.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/edge-case-enumeration.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/no-vague-prompts.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/spec-first.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/validate-against-spec.md`
+
+- ← `docs/index.md` (references)
 
 ## `schemas/decision.schema.json`
 
