@@ -2,6 +2,7 @@
 <!-- source: instruction-blocks/validate-against-spec.md -->
 <!-- target-system: cursor -->
 <!-- generator: scripts/exports/generate_exports.py -->
+<!-- source-hash: 8061256b2d87019356f345a5cb5789f1a0a26d71398854604c6c5229f6b220ba -->
 
 # Validate-Against-Spec
 After generating code from a specification:

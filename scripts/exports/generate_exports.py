@@ -15,6 +15,7 @@ Vertrag: .vibe/generated-artifacts.yml → exports
 
 from __future__ import annotations
 
+import hashlib
 import sys
 from pathlib import Path
 
@@ -75,18 +76,28 @@ def _strip_frontmatter(text: str) -> str:
     return parts[2].lstrip("\n")
 
 
-def _build_header(source_path: str, target_system: str) -> str:
+def compute_source_hash(content: str) -> str:
+    """Berechnet einen deterministischen SHA-256-Hash des Quellinhalts.
+
+    Der Hash ist quellgebunden und laufzeitunabhängig: gleicher Inhalt →
+    gleicher Hash, unabhängig von Zeitpunkt oder Ausführungsumgebung.
+    """
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+
+def _build_header(source_path: str, target_system: str, source_hash: str) -> str:
     """Erzeugt einen einheitlichen, deterministischen Export-Header.
 
     Kein Datum: Ein kalendergebundener Zeitstempel würde tägliche Diffs ohne
     Quelländerung erzeugen und ist unvereinbar mit deterministic: true im Contract.
-    Provenienz ist durch source + generator vollständig gegeben.
+    Provenienz ist durch source + generator + source-hash vollständig gegeben.
     """
     return (
         f"<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->\n"
         f"<!-- source: {source_path} -->\n"
         f"<!-- target-system: {target_system} -->\n"
         f"<!-- generator: {GENERATOR_ID} -->\n"
+        f"<!-- source-hash: {source_hash} -->\n"
     )
 
 
@@ -100,8 +111,9 @@ def _build_export(
     body = _strip_frontmatter(text)
     title = fm.get("title", source_file.stem) if fm else source_file.stem
     rel_source = source_file.relative_to(REPO_ROOT)
+    source_hash = compute_source_hash(text)
 
-    header = _build_header(str(rel_source), target_system)
+    header = _build_header(str(rel_source), target_system, source_hash)
     return f"{header}\n# {title}\n{body}"
 
 
