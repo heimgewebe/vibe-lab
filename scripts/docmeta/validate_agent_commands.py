@@ -82,36 +82,15 @@ def detect_expected_error(path: Path) -> str | None:
 
 
 def classify_error(local_errors: list[str]) -> str | None:
-    if not local_errors:
-        return None
-    first = local_errors[0]
-    if "contract_invalid" in first:
-        return "contract_invalid"
-    return "contract_invalid"
+    return "contract_invalid" if local_errors else None
 
 
 def run_for_command(
     command: str,
-    fixtures_root: Path,
+    validator: Draft202012Validator,
+    fixture_files: list[Path],
     mode: str,
 ) -> list[str]:
-    schema_path = schema_path_for(command)
-    if not schema_path.is_file():
-        return [f"ERROR: schema missing: {display_path(schema_path)}"]
-
-    try:
-        validator = load_validator(schema_path)
-    except SchemaError as exc:
-        return [f"ERROR: schema invalid ({display_path(schema_path)}): {exc.message}"]
-
-    fixture_dir = fixtures_root / command
-    if not fixture_dir.is_dir():
-        return [f"ERROR: fixtures directory missing: {display_path(fixture_dir)}"]
-
-    fixture_files = sorted(fixture_dir.rglob("*.json"))
-    if not fixture_files:
-        return [f"ERROR: no command fixtures found in {display_path(fixture_dir)}"]
-
     print(f"🔍 Command: {command}")
     errs: list[str] = []
     for fixture in fixture_files:
@@ -179,10 +158,35 @@ def main() -> None:
         print(f"ERROR: fixtures root missing: {display_path(fixtures_root)}")
         sys.exit(2)
 
+    # Pre-flight: verify all schemas and fixture dirs exist (setup errors → exit 2)
+    validators: dict[str, Draft202012Validator] = {}
+    fixture_lists: dict[str, list[Path]] = {}
+    for command in COMMANDS:
+        schema_path = schema_path_for(command)
+        if not schema_path.is_file():
+            print(f"ERROR: schema missing: {display_path(schema_path)}")
+            sys.exit(2)
+        try:
+            validators[command] = load_validator(schema_path)
+        except SchemaError as exc:
+            print(f"ERROR: schema invalid ({display_path(schema_path)}): {exc.message}")
+            sys.exit(2)
+        fixture_dir = fixtures_root / command
+        if not fixture_dir.is_dir():
+            print(f"ERROR: fixtures directory missing: {display_path(fixture_dir)}")
+            sys.exit(2)
+        files = sorted(fixture_dir.rglob("*.json"))
+        if not files:
+            print(f"ERROR: no command fixtures found in {display_path(fixture_dir)}")
+            sys.exit(2)
+        fixture_lists[command] = files
+
     print("🔍 Agent Command Validation")
     all_errs: list[str] = []
     for command in COMMANDS:
-        all_errs.extend(run_for_command(command, fixtures_root, args.mode))
+        all_errs.extend(
+            run_for_command(command, validators[command], fixture_lists[command], args.mode)
+        )
 
     if all_errs:
         print("\n❌ Agent command validation failed:")
