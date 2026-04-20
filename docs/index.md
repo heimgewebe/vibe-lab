@@ -102,7 +102,7 @@ relations:
 
 ## Exports (Generiert)
 
-> Abgeleitete, toolspezifische Repräsentationen aus `instruction-blocks/`. Exports sind keine eigenständige Wahrheitsquelle — sie leiten sich vollständig aus den Quelldateien ab und werden deterministisch regeneriert.
+> Abgeleitete, toolspezifische Repräsentationen aus `instruction-blocks/`. Exports sind keine eigenständige Wahrheitsquelle — sie leiten sich vollständig aus den Quelldateien ab und werden deterministisch regeneriert. Jeder Export enthält eine quellgebundene Herkunftsmarkierung (`source-hash`), die eine eindeutige Zuordnung zur Quelldatei sicherstellt.
 
 | Zielordner | Quelle | Regeneration |
 | ---------- | ------ | ------------ |

@@ -2,6 +2,7 @@
 <!-- source: instruction-blocks/spec-first.md -->
 <!-- target-system: cursor -->
 <!-- generator: scripts/exports/generate_exports.py -->
+<!-- source-hash: 55df5ea6ad086731fa9a432fb1f8bcb9e384d9af17a57cc49c09acd1e105dc92 -->
 
 # Spec-First
 Before generating any code:

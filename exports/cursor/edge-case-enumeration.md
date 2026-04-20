@@ -2,6 +2,7 @@
 <!-- source: instruction-blocks/edge-case-enumeration.md -->
 <!-- target-system: cursor -->
 <!-- generator: scripts/exports/generate_exports.py -->
+<!-- source-hash: 1f1ac431bd0fb1d9cc89316270dd07a1149b5fbde30ddf6e1861d2fda6a30015 -->
 
 # Edge-Case-Enumeration
 Before implementation, enumerate edge cases explicitly:

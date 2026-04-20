@@ -2,6 +2,7 @@
 <!-- source: instruction-blocks/no-vague-prompts.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
+<!-- source-hash: a1c2295964137d6862192ad8a3bf1b2c6e50e444e55a27d718e92ce004af4aa5 -->
 
 # No-Vague-Prompts
 Never give a vague task description and then iteratively fix the output.
