@@ -1,0 +1,39 @@
+{
+  "handoff": {
+    "status": "PASS",
+    "target_files": ["docs/index.md"],
+    "locator": "## Laufende Versuche",
+    "change_type": "modify",
+    "scope": "Add one entry to the running experiments list",
+    "normalized_task": "Append a single dash entry under the Laufende Versuche heading",
+    "critic_signature": "experiment-critic/v1",
+    "handoff": {
+      "algo": "sha256",
+      "canon": "v1",
+      "hash": "0b327ba0e3a38afed841659cce2fc2a34c738a66cc73e2083a903ef8b6838fea"
+    }
+  },
+  "chain": [
+    {
+      "command": "read_context",
+      "version": "v0.1",
+      "target_files": ["docs/index.md", "docs/extra.md"]
+    },
+    {
+      "command": "write_change",
+      "version": "v0.1",
+      "target_files": ["docs/index.md", "docs/extra.md"],
+      "locator": "## Laufende Versuche",
+      "change_type": "modify",
+      "forbidden_changes": []
+    },
+    {
+      "command": "validate_change",
+      "version": "v0.1",
+      "checks": ["lint"],
+      "success": true,
+      "errors": []
+    }
+  ],
+  "expected_errors": ["handoff_target_drift"]
+}

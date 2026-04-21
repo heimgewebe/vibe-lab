@@ -248,9 +248,7 @@ durch das Fixture-Korpus unter `tests/fixtures/cross_contract/`.
 
 ### Invariants
 
-- ⚙️ **Chain-Check** `handoff.target_files` ⊆ jeder `target_files`-Liste
-  der Chain-Commands mit `target_files`-Feld (`read_context`,
-  `write_change`). Verletzung → `handoff_target_drift`.
+- ⚙️ **Chain-Check** `handoff.target_files` und `target_files` jedes Chain-Records mit `target_files`-Feld (`read_context`, `write_change`) müssen identisch sein — kein File darf fehlen, kein File darf außerhalb des Handoff-Scopes hinzukommen. Verletzung → `handoff_target_drift`.
 - ⚙️ **Chain-Check** `handoff.change_type` ∈ {`add`, `modify`, `remove`,
   `replace`} **muss** durch einen `write_change`-Record mit **identischem**
   `change_type` erfüllt sein. Fehlt der Record oder weicht der
@@ -265,8 +263,9 @@ durch das Fixture-Korpus unter `tests/fixtures/cross_contract/`.
 
 ### Anti-Invariants
 
-- ⚙️ **Chain-Check** Chain operiert auf einer Datei, die nicht in
-  `handoff.target_files` steht → `handoff_target_drift` (stille Drift).
+- ⚙️ **Chain-Check** Chain-Record enthält Dateien, die nicht in
+  `handoff.target_files` stehen, oder Handoff-Dateien fehlen in einem
+  Chain-Record → `handoff_target_drift` (stille Drift in beide Richtungen).
 - ⚙️ **Chain-Check** Handoff verlangt eine Änderung, die Chain enthält
   aber keinen `write_change` oder ein `write_change` mit anderem
   `change_type` → `handoff_intent_mismatch`.
@@ -279,9 +278,9 @@ durch das Fixture-Korpus unter `tests/fixtures/cross_contract/`.
 | `code`                       | Bedeutung                                                                                                 | Status |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------- | ------ |
 | `handoff_contract_invalid`   | Handoff-Objekt verletzt `agent.handoff.schema.json` oder Schema fehlt.                                    | ⚙️ Chain-Check |
-| `handoff_target_drift`       | `handoff.target_files` nicht in jedem Chain-Record mit `target_files` enthalten.                          | ⚙️ Chain-Check |
+| `handoff_target_drift`       | `handoff.target_files` und `target_files` eines Chain-Records (mit `target_files`-Feld) stimmen nicht überein — Dateien fehlen oder sind außerhalb des Handoff-Scopes. | ⚙️ Chain-Check |
 | `handoff_intent_mismatch`    | `handoff.change_type` wird durch die Chain nicht erfüllt (kein `write_change` oder abweichender `change_type`). | ⚙️ Chain-Check |
-| `handoff_state_drift`        | `handoff.exact_before`/`exact_after` wird stille im `write_change` weggelassen oder verändert.            | ⚙️ Chain-Check |
+| `handoff_state_drift`        | `handoff.exact_before`/`exact_after` wird still im `write_change` weggelassen oder verändert.            | ⚙️ Chain-Check |
 
 ### Scope-Disziplin (v0.1)
 

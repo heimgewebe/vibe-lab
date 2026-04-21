@@ -20,6 +20,7 @@ from __future__ import annotations
 import copy
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -80,8 +81,14 @@ class CrossContractNegativeTests(unittest.TestCase):
         return observed_codes, sorted(set(expected))
 
     def test_target_drift_fails(self) -> None:
-        """Handoff targets file A, chain operates on file B."""
+        """Handoff targets file A, chain operates on file B (missing coverage)."""
         observed, expected = self._observed("invalid/target_drift.json")
+        self.assertIn("handoff_target_drift", observed)
+        self.assertEqual(observed, expected)
+
+    def test_target_drift_extra_fails(self) -> None:
+        """Chain write_change includes a file not listed in handoff.target_files."""
+        observed, expected = self._observed("invalid/target_drift_extra.json")
         self.assertIn("handoff_target_drift", observed)
         self.assertEqual(observed, expected)
 
@@ -139,6 +146,47 @@ class CrossContractNegativeTests(unittest.TestCase):
             f"cross-contract codes emitted after handoff_contract_invalid: "
             f"{codes & cross_contract_codes}",
         )
+
+
+class CrossContractLoaderTests(unittest.TestCase):
+    """Guards the fixture loader against malformed input."""
+
+    def test_malformed_chain_element_is_setup_error(self) -> None:
+        """A chain element that is not a JSON object must produce exit code 2.
+
+        Rationale: a non-dict element would cause a silent AttributeError or
+        TypeError later in the validator. The loader must catch it early and
+        abort cleanly.
+        """
+        fixture_data = {
+            "handoff": {
+                "status": "PASS",
+                "target_files": ["docs/index.md"],
+                "locator": "## Laufende Versuche",
+                "change_type": "modify",
+                "scope": "test",
+                "normalized_task": "test",
+                "critic_signature": "experiment-critic/v1",
+                "handoff": {
+                    "algo": "sha256",
+                    "canon": "v1",
+                    "hash": "0b327ba0e3a38afed841659cce2fc2a34c738a66cc73e2083a903ef8b6838fea",
+                },
+            },
+            "chain": [42, "not_a_dict"],
+            "expected_errors": [],
+        }
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json", delete=False, encoding="utf-8"
+        ) as fh:
+            json.dump(fixture_data, fh)
+            tmp = Path(fh.name)
+        try:
+            with self.assertRaises(SystemExit) as ctx:
+                vcc.load_cross_contract_fixture(tmp)
+            self.assertEqual(ctx.exception.code, 2)
+        finally:
+            tmp.unlink(missing_ok=True)
 
 
 class CrossContractErrorSurfaceTests(unittest.TestCase):

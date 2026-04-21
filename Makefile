@@ -170,7 +170,7 @@ help:
 	@echo "  make validate-agent-handoff-tests — Run HANDOFF_BLOCK unit regression tests"
 	@echo "  make validate-agent-commands   — Validate agent command fixtures against command.*.schema.json"
 	@echo "  make validate-agent-commands-tests — Run agent command unit regression tests"
-	@echo "  make validate-command-chain    — Validate command chain fixtures (cross-contract)"
+	@echo "  make validate-command-chain    — Validate command chain fixtures"
 	@echo "  make validate-command-chain-tests — Run command chain regression tests"
 	@echo "  make validate-cross-contract   — Validate Handoff ↔ Chain cross-contract fixtures"
 	@echo "  make validate-cross-contract-tests — Run cross-contract regression tests"

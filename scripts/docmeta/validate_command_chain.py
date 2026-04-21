@@ -506,15 +506,24 @@ def _first_record(
 def _validate_handoff_target_drift(
     handoff: dict[str, Any], chain: list[dict[str, Any]], label: str
 ) -> list[ChainError]:
-    """Every handoff.target_files entry must appear in every chain command
-    that has a ``target_files`` field (``read_context``, ``write_change``).
+    """Symmetric scope-binding: handoff.target_files and every chain record
+    with a ``target_files`` field (``read_context``, ``write_change``) must
+    name exactly the same set of files.
 
-    Rationale: the handoff names the files under operation. A chain that
-    operates on a disjoint set silently drifts from the handoff intent.
+    Two drift directions are detected and reported with the same code:
+
+    a) A handoff file is absent from a chain record's ``target_files``
+       (chain covers less than the handoff scope).
+    b) A chain record's ``target_files`` contains a file not listed in
+       ``handoff.target_files`` (chain reaches outside the handoff scope).
+
+    Rationale: the handoff is the authoritative scope declaration. Silent
+    additions and silent omissions are equally unacceptable drifts.
     """
     handoff_files = _handoff_target_files(handoff)
     if not handoff_files:
         return []
+    handoff_set = set(handoff_files)
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):
         if not isinstance(record, dict):
@@ -526,14 +535,27 @@ def _validate_handoff_target_drift(
         if not isinstance(rec_files, list):
             continue
         rec_set = {f for f in rec_files if isinstance(f, str)}
-        missing = [f for f in handoff_files if f not in rec_set]
+        missing = sorted(handoff_set - rec_set)
+        extra = sorted(rec_set - handoff_set)
         if missing:
             errors.append(
                 ChainError(
                     code="handoff_target_drift",
                     message=(
                         f"{command}.target_files does not cover "
-                        f"handoff.target_files; missing={sorted(missing)}"
+                        f"handoff.target_files; missing={missing}"
+                    ),
+                    command_index=idx,
+                    path=label,
+                )
+            )
+        if extra:
+            errors.append(
+                ChainError(
+                    code="handoff_target_drift",
+                    message=(
+                        f"{command}.target_files contains files outside "
+                        f"handoff.target_files; extra={extra}"
                     ),
                     command_index=idx,
                     path=label,
@@ -709,6 +731,13 @@ def load_cross_contract_fixture(
     if not isinstance(chain, list):
         print(f"ERROR: fixture {display_path(path)} is missing array 'chain'")
         sys.exit(2)
+    for i, item in enumerate(chain):
+        if not isinstance(item, dict):
+            print(
+                f"ERROR: fixture {display_path(path)}: "
+                f"chain[{i}] must be a JSON object, got {type(item).__name__}"
+            )
+            sys.exit(2)
     expected = data.get("expected_errors", [])
     if not isinstance(expected, list) or not all(isinstance(c, str) for c in expected):
         print(
