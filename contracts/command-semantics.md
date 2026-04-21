@@ -44,6 +44,21 @@ erfüllt sein.
   separate Input/Output-Schemas ist **explizit nach v0.2 verschoben**
   (siehe "Evolution Constraints" unten).
 
+## Operationalisierungs-Status (Notation)
+
+In diesem Dokument kennzeichnet jede Invariante / Anti-Invariante ihren
+aktuellen Durchsetzungsgrad:
+
+| Symbol | Bedeutung |
+| ------ | --------- |
+| ✅ **Schema** | Strukturell erzwungen durch `schemas/command.*.schema.json` — gilt für jede einzelne Record-Validierung. |
+| ⚙️ **Chain-Check** | Semantisch operationalisiert in `scripts/docmeta/validate_command_chain.py` — gilt nur im Kettenkontext. |
+| 📋 **Dokumentiert** | Semantisch definiert und als Ziel festgehalten. In v0.1 **nicht maschinell erzwungen**. Markiert die Evolutionsrichtung nach v0.2. |
+
+Diese Kennzeichnung macht den Unterschied zwischen Dokumentation,
+Beabsichtigung und Durchsetzung sichtbar — und verhindert stille
+Überbehauptungen.
+
 ## Normalisiertes Vokabular
 
 | Begriff             | Bedeutung in v0.1                                                          |
@@ -58,7 +73,7 @@ erfüllt sein.
 | `forbidden_changes` | Negative Scope-Definition. Freie Strings; Konvention ohne enum.            |
 | `checks`            | Offene Liste prüfbarer Checks. Empfohlene Werte: `lint`, `test`, `docs-guard`. |
 | `success` / `errors`| Binäres Resultat + detaillierte Fehlerzeilen.                              |
-- "Drift"             | Zustand, in dem ein Command-Record strukturell valide, aber semantisch widersprüchlich ist — isoliert oder im Kettenkontext. Drift-Fälle werden vom Chain-Validator als `semantic_contradiction` (innerhalb eines Records) oder als eine der Cross-Command-Codes (`target_files_mismatch`, `locator_continuity_violation`, `command_sequence_invalid`) gemeldet. |
+| "Drift"             | Zustand, in dem ein Command-Record strukturell valide, aber semantisch widersprüchlich ist — isoliert oder im Kettenkontext. Drift-Fälle werden vom Chain-Validator als `semantic_contradiction` (innerhalb eines Records) oder als eine der Cross-Command-Codes (`target_files_mismatch`, `locator_continuity_violation`, `command_sequence_invalid`) gemeldet. |
 
 ## Error-Klassen (strukturiertes Modell)
 
@@ -67,13 +82,13 @@ gibt strukturierte Fehler mit folgenden `code`-Werten aus. Der bestehende
 Einzel-Validator `validate_agent_commands.py` bleibt unverändert bei
 String-basiertem `contract_invalid`.
 
-| `code`                         | Bedeutung                                                        |
-| ------------------------------ | ---------------------------------------------------------------- |
-| `contract_invalid`             | Schema-Validierung eines Einzel-Records fehlgeschlagen.          |
-| `command_sequence_invalid`     | Reihenfolge in der Kette falsch (z. B. `validate_change` vor `write_change`). |
-| `target_files_mismatch`        | `write_change.target_files` nicht Teilmenge von `read_context.target_files`. |
-| `locator_continuity_violation` | `write_change.locator` fehlt oder steht im Widerspruch zu `read_context.extracted_facts`. |
-| `semantic_contradiction`       | Feld-Kombination innerhalb eines Records widerspricht sich (siehe Anti-Invarianten). |
+| `code`                         | Bedeutung                                                        | Status |
+| ------------------------------ | ---------------------------------------------------------------- | ------ |
+| `contract_invalid`             | Schema-Validierung eines Einzel-Records fehlgeschlagen.          | ⚙️ Chain-Check (via Schema-Delegation) |
+| `command_sequence_invalid`     | Reihenfolge in der Kette falsch (z. B. `validate_change` vor `write_change`), oder gemischte Versionen. | ⚙️ Chain-Check |
+| `target_files_mismatch`        | `write_change.target_files` nicht Teilmenge von `read_context.target_files`. | ⚙️ Chain-Check |
+| `locator_continuity_violation` | `write_change.locator` ist leer oder enthält nur Whitespace. **Hinweis v0.1:** Eine weitergehende Kopplung an `read_context.extracted_facts` ist in v0.1 **nicht implementiert** (📋 Dokumentiert für v0.2). | ⚙️ Chain-Check (eingeschränkter Scope, siehe Hinweis) |
+| `semantic_contradiction`       | Feld-Kombination innerhalb eines Records widerspricht sich (siehe Anti-Invarianten). | ⚙️ Chain-Check |
 
 Exit-Codes wie gewohnt: `0` OK, `1` Validation-Fehler, `2` Setup-Fehler
 (fehlende Schemas, fehlende Fixtures). Das entspricht der Konvention
@@ -83,19 +98,22 @@ aller bestehenden Validatoren.
 
 ### Invariants
 
-- `target_files` enthält mindestens einen Pfad (Schema).
-- Jeder Pfad ist **repo-relativ**, ohne `./` oder `../`-Prefix.
-- Wenn `extracted_facts` gesetzt ist, referenzieren die Fakten **nur**
+- ✅ **Schema** `target_files` enthält mindestens einen Pfad.
+- 📋 **Dokumentiert** Jeder Pfad ist **repo-relativ**, ohne `./` oder `../`-Prefix.
+- 📋 **Dokumentiert** Wenn `extracted_facts` gesetzt ist, referenzieren die Fakten **nur**
   Inhalte aus `target_files`. Externe Quellen gelten als Interpolation.
-- `uncertainties` dokumentiert bewusst offene Punkte; leere Liste ist
+  (In v0.1 nicht maschinell prüfbar ohne Datei-I/O.)
+- 📋 **Dokumentiert** `uncertainties` dokumentiert bewusst offene Punkte; leere Liste ist
   ausdrücklich erlaubt.
 
 ### Anti-Invariants
 
-- `target_files` enthält denselben Pfad mehrfach (redundante Lesung).
-- `extracted_facts` enthält einen Fakt, der in keinem `target_file`
-  verifizierbar ist (stille Interpolation).
-- `target_files` enthält Globs (`**/*.py`) — in v0.1 nicht erlaubt.
+- ⚙️ **Chain-Check** `target_files` enthält denselben Pfad mehrfach (redundante Lesung).
+- 📋 **Dokumentiert** `extracted_facts` enthält einen Fakt, der in keinem `target_file`
+  verifizierbar ist (stille Interpolation). In v0.1 nicht maschinell prüfbar
+  ohne Dateilesen.
+- 📋 **Dokumentiert** `target_files` enthält Globs (`**/*.py`) — in v0.1 nicht erlaubt,
+  aber nicht strukturell geblockt.
 
 ### Tolerated Ambiguity
 
@@ -114,27 +132,27 @@ aller bestehenden Validatoren.
 
 ### Invariants
 
-- Mindestens eines von `locator` oder `target_lines` ist gesetzt
-  (Schema-`anyOf`).
-- `forbidden_changes` ist immer gesetzt (Schema-`required`), kann aber
+- ✅ **Schema** Mindestens eines von `locator` oder `target_lines` ist gesetzt
+  (`anyOf`).
+- ✅ **Schema** `forbidden_changes` ist immer gesetzt (`required`), kann aber
   leer sein. Eine leere Liste bedeutet: keine expliziten Ausschlüsse.
-- `change_type` ist genau einer von `add`, `modify`, `remove`, `replace`.
-- Wenn `exact_before` gesetzt ist, referenziert es eine Stelle, die im
-  Original-File existiert (im Chain-Kontext prüfbar).
-- Wenn `exact_after` gesetzt ist, ist der Post-Change-Zustand
+- ✅ **Schema** `change_type` ist genau einer von `add`, `modify`, `remove`, `replace`.
+- 📋 **Dokumentiert** Wenn `exact_before` gesetzt ist, referenziert es eine Stelle, die im
+  Original-File existiert. In v0.1 **nicht maschinell geprüft** (erfordert
+  Datei-I/O, das im Design explizit ausgeschlossen ist).
+- 📋 **Dokumentiert** Wenn `exact_after` gesetzt ist, ist der Post-Change-Zustand
   deterministisch (kein Platzhalter, kein Timestamp).
 
 ### Anti-Invariants
 
-- `change_type: "remove"` mit gesetztem `exact_after`. Ein Remove hat
+- ⚙️ **Chain-Check** `change_type: "remove"` mit gesetztem `exact_after`. Ein Remove hat
   keinen Nachher-Zustand.
-- `change_type: "add"` mit gesetztem `exact_before`. Ein Add hat keinen
+- ⚙️ **Chain-Check** `change_type: "add"` mit gesetztem `exact_before`. Ein Add hat keinen
   Vorher-Zustand an derselben Stelle.
-- `exact_before == exact_after`. Kein echter Change.
-- `target_files` enthält Pfade, die nicht in `read_context.target_files`
+- ⚙️ **Chain-Check** `exact_before == exact_after`. Kein echter Change.
+- ⚙️ **Chain-Check** `target_files` enthält Pfade, die nicht in `read_context.target_files`
   vorkamen — im Chain-Kontext: `target_files_mismatch`.
-- `locator` ist leer, aber gesetzt (vom Schema per `minLength: 1`
-  geblockt; hier als Semantik-Anker dokumentiert).
+- ✅ **Schema** `locator` ist leer (geblockt per `minLength: 1` im Schema).
 
 ### Tolerated Ambiguity
 
@@ -158,20 +176,20 @@ aller bestehenden Validatoren.
 
 ### Invariants
 
-- `checks[]` ist nicht leer (Schema).
-- `success: true` → `errors` ist leer (Schema `if/then`).
-- `success: false` → `errors` hat mindestens einen Eintrag (Schema `if/then`).
-- Jeder `errors[]`-Eintrag ist auf mindestens einen `checks[]`-Eintrag
-  **referenzierbar** (per Präfix `lint: ...`, `test: ...` etc.). Nicht
-  schematisch erzwungen — semantisch erwartet.
+- ✅ **Schema** `checks[]` ist nicht leer.
+- ✅ **Schema** `success: true` → `errors` ist leer (`if/then`).
+- ✅ **Schema** `success: false` → `errors` hat mindestens einen Eintrag (`if/then`).
+- 📋 **Dokumentiert** Jeder `errors[]`-Eintrag ist auf mindestens einen `checks[]`-Eintrag
+  **referenzierbar** (per Präfix `lint: ...`, `test: ...` etc.). In v0.1 nicht
+  maschinell erzwungen.
 
 ### Anti-Invariants
 
-- `success: true` mit nicht-leerem `errors` (Schema-Blocker).
-- `success: false` mit leerem `errors` (Schema-Blocker).
-- `validate_change` steht in einer Chain **vor** `write_change`
+- ✅ **Schema** `success: true` mit nicht-leerem `errors`.
+- ✅ **Schema** `success: false` mit leerem `errors`.
+- ⚙️ **Chain-Check** `validate_change` steht in einer Chain **vor** `write_change`
   (`command_sequence_invalid`).
-- `checks[]` enthält Duplikate (Schema-`uniqueItems`).
+- ✅ **Schema** `checks[]` enthält Duplikate (`uniqueItems`).
 
 ### Tolerated Ambiguity
 
@@ -196,24 +214,26 @@ read_context → write_change → validate_change
 
 ### Chain Invariants
 
-- Reihenfolge ist fest. Keine andere Permutation ist in v0.1 gültig.
-- `write_change.target_files` ⊆ `read_context.target_files`
+- ⚙️ **Chain-Check** Reihenfolge ist fest: nur `read_context → write_change → validate_change`
+  ist in v0.1 gültig.
+- ⚙️ **Chain-Check** `write_change.target_files` ⊆ `read_context.target_files`
   (Locator-Continuity auf File-Ebene).
-- `write_change.locator` oder `write_change.target_lines` bezieht sich
-  auf ein File aus dem gelesenen Kontext.
-- `validate_change.success = true` **impliziert** `validate_change.errors = []`.
-  Das gilt auch Record-intern (Schema), aber wird auf Chain-Ebene erneut
-  geprüft, damit eine Chain-Zusammenfassung nicht widersprüchlich ist.
+- 📋 **Dokumentiert** `write_change.locator` oder `write_change.target_lines` bezieht sich
+  auf ein File aus dem gelesenen Kontext. In v0.1 wird nur der leere/whitespace-Locator
+  als `locator_continuity_violation` gemeldet. Eine Kopplung an
+  `extracted_facts` (inhaltliche Kontinuität) ist **nicht implementiert**.
+- ✅ **Schema** `validate_change.success = true` impliziert `validate_change.errors = []`
+  (direkt durch Schema-`if/then` auf Record-Ebene erzwungen, keine separate
+  Chain-Level-Prüfung).
 
 ### Chain Anti-Invariants
 
-- `write_change.target_files \ read_context.target_files ≠ ∅`
+- ⚙️ **Chain-Check** `write_change.target_files \ read_context.target_files ≠ ∅`
   → `target_files_mismatch`.
-- Reihenfolge gebrochen (z. B. zwei `write_change` hintereinander,
+- ⚙️ **Chain-Check** Reihenfolge gebrochen (z. B. zwei `write_change` hintereinander,
   `read_context` fehlt) → `command_sequence_invalid`.
-- `validate_change.success = false`, aber `errors` enthält keinen Bezug
-  zu einem `checks`-Eintrag → **toleriert** (nicht als Anti-Invariant in
-  v0.1, nur Hinweis).
+- 📋 **Dokumentiert** `validate_change.success = false`, aber `errors` enthält keinen Bezug
+  zu einem `checks`-Eintrag → in v0.1 toleriert, nicht als Anti-Invariant erzwungen.
 
 ## Versionsstrategie
 
@@ -250,5 +270,6 @@ read_context → write_change → validate_change
 - `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 - `scripts/docmeta/validate_agent_commands.py`
 - `scripts/docmeta/validate_command_chain.py` (neu in dieser Phase)
-- `tools/vibe-cli/replay_minimal.py` (neu in dieser Phase, strikter
-  Simulations-Pfad ohne Datei-Mutation)
+- `tools/vibe-cli/replay_minimal.py` (neu in dieser Phase — deterministischer
+  Simulation-Trace-Generator; kein Execution-Runner, keine Datei-Mutation,
+  kein echter Replay im Sinne von Befehlsausführung)

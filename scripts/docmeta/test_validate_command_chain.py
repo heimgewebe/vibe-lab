@@ -137,6 +137,50 @@ class ChainValidatorTests(unittest.TestCase):
         codes = {e.code for e in errors}
         self.assertIn("semantic_contradiction", codes)
 
+    def test_locator_continuity_v01_scope_empty_locator(self) -> None:
+        """locator_continuity_violation is triggered by empty/whitespace locator.
+
+        This test encodes the v0.1 boundary: only the empty-locator case
+        is checked. A non-empty locator that has no corresponding entry in
+        read_context.extracted_facts does NOT trigger
+        locator_continuity_violation in v0.1.
+        See contracts/command-semantics.md §Chain Invariants.
+        """
+        # A non-empty locator with no extracted_facts coupling must NOT raise
+        # locator_continuity_violation in v0.1.
+        chain_no_violation = [
+            {
+                "command": "read_context",
+                "version": "v0.1",
+                "target_files": ["docs/index.md"],
+                "extracted_facts": ["some fact unrelated to locator"],
+            },
+            {
+                "command": "write_change",
+                "version": "v0.1",
+                "target_files": ["docs/index.md"],
+                "locator": "## A Section Not In extracted_facts",
+                "change_type": "modify",
+                "forbidden_changes": [],
+            },
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint"],
+                "success": True,
+                "errors": [],
+            },
+        ]
+        errors = vcc.validate_chain(chain_no_violation, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertNotIn(
+            "locator_continuity_violation",
+            codes,
+            "v0.1 must NOT raise locator_continuity_violation for a valid "
+            "non-empty locator that has no extracted_facts counterpart — "
+            "that coupling is documented for v0.2 only.",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

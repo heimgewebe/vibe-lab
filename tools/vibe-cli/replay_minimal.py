@@ -1,24 +1,34 @@
 #!/usr/bin/env python3
-"""replay_minimal.py — Deterministic, non-mutating chain simulator.
+"""replay_minimal.py — Deterministic, non-mutating chain simulation trace generator.
 
 Scope
 -----
-This is the *minimal* replay corridor described in Phase F-light of the
-Phase-1c blueprint. It is **not** an execution engine. It:
+This tool produces a **deterministic contract-validation trace** for a
+predefined command chain. It is **not** an execution engine and does
+**not** replay commands in the sense of running them against real files.
+
+What it does:
 
 1. Loads a predefined command chain (JSON array of command records).
-2. Validates the chain via ``scripts.docmeta.validate_command_chain``.
-3. Simulates the chain step-by-step and emits a deterministic trace.
+2. Validates the chain against structural schemas and semantic contracts
+   via ``scripts/docmeta/validate_command_chain.py``.
+3. Produces a step-by-step simulation trace by echoing back the declared
+   intent from each record — nothing is inferred, planned, or executed.
 
-Hard limits (enforced by design)
---------------------------------
-* No file writes. The simulator never opens any target file for writing
-  and never touches ``target_files`` content.
+What it does **not** do:
+
+* No file reads or writes against ``target_files`` content.
 * No planning. The chain is consumed verbatim; nothing is inferred or
   reordered.
 * No retries. Any validation failure aborts the simulation with exit 1.
 * No heuristics. Every rule is explicit and traceable to
   ``contracts/command-semantics.md``.
+
+The term "replay" in the filename refers to the controlled *re-traversal*
+of a declared command sequence through a validation pipeline — not to
+execution or file mutation. This distinction is explicitly enforced: the
+output always contains ``"mutations": []`` and a ``would_mutate: false``
+field on any write_change step.
 
 Exit codes
 ----------
@@ -112,8 +122,10 @@ def run(chain_path: Path) -> int:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Deterministic replay simulator for validated command chains. "
-            "Never mutates files."
+            "Deterministic, non-mutating chain simulation trace generator. "
+            "Validates a command chain and emits a step-by-step trace. "
+            "Never reads or writes target_files content — no execution, "
+            "no planning, no retries."
         )
     )
     parser.add_argument(

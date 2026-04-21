@@ -275,11 +275,26 @@ def _validate_target_files_continuity(
 def _validate_locator_continuity(
     chain: list[dict[str, Any]], chain_label: str
 ) -> list[ChainError]:
-    """Placeholder for future locator↔extracted_facts coupling.
+    """Validate locator fields in write_change records.
 
-    v0.1 only enforces that ``write_change`` actually declares one of
-    locator/target_lines (already guaranteed by schema ``anyOf``) and
-    that the locator is non-empty if present.
+    **v0.1 scope (partial operationalization):**
+    Only the following is checked in v0.1:
+
+    * ``write_change.locator``, when present, must not be empty or
+      whitespace-only. This is belt-and-suspenders over the schema
+      ``minLength: 1`` constraint.
+
+    **Not checked in v0.1 (📋 documented for v0.2):**
+
+    * Coupling between ``write_change.locator`` and
+      ``read_context.extracted_facts``: verifying that the locator
+      actually refers to a location that was read would require either
+      file I/O (excluded by design) or structured extracted_facts
+      (not yet defined in v0.1). Triggering ``locator_continuity_violation``
+      on that basis is **deferred**.
+
+    See ``contracts/command-semantics.md`` §Chain Invariants for the
+    full documented intent.
     """
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):

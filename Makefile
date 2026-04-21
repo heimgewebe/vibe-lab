@@ -54,6 +54,17 @@ validate-command-chain-tests:
 validate-replay-dry-run:
 	@echo "♻️  Replay dry-run (no mutations by design)..."
 	@python3 tools/vibe-cli/replay_minimal.py --dry-run >/dev/null
+	@# Non-mutation guarantee: enforced at three levels:
+	@# 1. By design: replay_minimal.py contains no file-write calls.
+	@# 2. By test: test_replay_minimal.py::test_simulate_is_pure asserts no
+	@#    input mutation; test_write_change_trace_marks_would_mutate_false
+	@#    asserts would_mutate=false in every trace.
+	@# 3. By CI: the "Guard — replay must not mutate the repo" step in
+	@#    .github/workflows/validate.yml runs git diff in a clean checkout
+	@#    and fails if any file changed. Locally this git-diff guard is not
+	@#    applied because a dirty working tree produces false positives during
+	@#    development. The authoritative mutation guard is CI.
+	@echo "✅ Replay trace generator completed (non-mutation enforced by design + tests + CI)."
 
 validate-replay-tests:
 	@echo "🧪 Running replay runner regression tests..."
