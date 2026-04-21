@@ -1,7 +1,7 @@
 ---
 title: "Agent Operability — Fixture-Matrix (v0.1)"
 status: active
-canonicality: reference
+canonicality: derived
 created: "2026-04-21"
 updated: "2026-04-21"
 author: "vibe-lab maintainers"
