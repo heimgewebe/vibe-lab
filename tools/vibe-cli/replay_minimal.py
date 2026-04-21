@@ -158,7 +158,10 @@ def main() -> None:
         else args.chain
     )
     if args.dry_run:
-        print("# replay_minimal.py: dry-run mode (no mutations by design)")
+        print(
+            "# replay_minimal.py: dry-run mode (no mutations by design)",
+            file=sys.stderr,
+        )
     sys.exit(run(chain_path))
 
 

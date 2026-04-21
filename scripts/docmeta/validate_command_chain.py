@@ -127,9 +127,7 @@ def _validators_by_command() -> dict[str, Draft202012Validator]:
 def load_chain(chain_path: Path) -> list[dict[str, Any]]:
     """Load a chain JSON file; exits with code 2 on any setup error.
 
-    Public because ``tools/vibe-cli/replay_minimal.py`` reuses it. The
-    underscore-prefixed alias remains for backward compatibility within
-    this module only.
+    Public because ``tools/vibe-cli/replay_minimal.py`` reuses it.
     """
     if not chain_path.is_file():
         print(f"ERROR: chain file missing: {display_path(chain_path)}")
@@ -162,7 +160,15 @@ def _validate_individual(
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):
         command = record.get("command")
-        if command not in validators:
+        # Guard against unhashable command values (e.g. dict, list): an
+        # unhashable value can never match a key in `validators`, so treat
+        # it as an unknown command and emit contract_invalid rather than
+        # letting the hash-based `in` test raise TypeError.
+        try:
+            command_known = isinstance(command, str) and command in validators
+        except TypeError:
+            command_known = False
+        if not command_known:
             errors.append(
                 ChainError(
                     code="contract_invalid",
@@ -219,7 +225,18 @@ def _validate_version_consistency(
     chain: list[dict[str, Any]], chain_label: str
 ) -> list[ChainError]:
     errors: list[ChainError] = []
-    versions = {r.get("version") for r in chain if "version" in r}
+    versions: set[Any] = set()
+    for r in chain:
+        if "version" in r:
+            v = r.get("version")
+            try:
+                versions.add(v)
+            except TypeError:
+                # Unhashable version value (e.g. dict or list). Schema
+                # validation will already emit contract_invalid for this
+                # record. Represent the value as its string form so we
+                # can still detect cross-record version inconsistency.
+                versions.add(repr(v))
     if len(versions) > 1:
         errors.append(
             ChainError(
@@ -239,7 +256,15 @@ def _validate_target_files_continuity(
     chain: list[dict[str, Any]], chain_label: str
 ) -> list[ChainError]:
     # Only meaningful if chain matches the expected shape.
-    by_cmd = {r.get("command"): r for r in chain if isinstance(r, dict)}
+    # Build command→record map safely: skip records whose command value is
+    # unhashable (they are already flagged as contract_invalid).
+    by_cmd: dict[str, dict[str, Any]] = {}
+    for r in chain:
+        if not isinstance(r, dict):
+            continue
+        cmd = r.get("command")
+        if isinstance(cmd, str):
+            by_cmd[cmd] = r
     read_ctx = by_cmd.get("read_context")
     write_chg = by_cmd.get("write_change")
     if read_ctx is None or write_chg is None:

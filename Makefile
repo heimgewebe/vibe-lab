@@ -74,14 +74,14 @@ validate-replay-mutation-guard:
 	@# This target mirrors the CI step "Guard — replay must not mutate the repo".
 	@# It is only conclusive in a clean working tree (i.e., no uncommitted changes).
 	@# In CI this runs after every checkout; locally, call it explicitly when needed.
-	@if ! git diff --quiet || ! git diff --cached --quiet; then \
+	@if [ -n "$$(git status --porcelain)" ]; then \
 	    echo "⚠️  Working tree is dirty — guard would produce a false positive."; \
 	    echo "   Commit or stash your changes, then re-run this target."; \
 	    exit 1; \
 	fi
 	@python3 tools/vibe-cli/replay_minimal.py --dry-run >/dev/null
-	@if ! git diff --quiet || ! git diff --cached --quiet; then \
-	    echo "❌ Replay produced filesystem changes — non-mutation contract violated."; \
+	@if [ -n "$$(git status --porcelain)" ]; then \
+	    echo "❌ Replay produced filesystem changes (tracked or untracked) — non-mutation contract violated."; \
 	    git status --porcelain; \
 	    exit 1; \
 	fi

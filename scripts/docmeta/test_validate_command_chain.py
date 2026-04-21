@@ -181,6 +181,55 @@ class ChainValidatorTests(unittest.TestCase):
             "that coupling is documented for v0.2 only.",
         )
 
+    def test_unhashable_command_yields_contract_invalid_not_crash(self) -> None:
+        """An unhashable command value must produce contract_invalid, not TypeError.
+
+        Python's `in` test on a dict uses hashing; dict/list values as
+        the command field would previously crash the validator.
+        """
+        for bad_command in ({}, [], {"cmd": "read_context"}):
+            with self.subTest(command=bad_command):
+                chain = [{"command": bad_command, "version": "v0.1"}]
+                # Must not raise TypeError or any other exception.
+                try:
+                    errors = vcc.validate_chain(chain, "synthetic", self.validators)
+                except TypeError as exc:
+                    self.fail(
+                        f"validate_chain raised TypeError for unhashable "
+                        f"command {bad_command!r}: {exc}"
+                    )
+                codes = {e.code for e in errors}
+                self.assertIn(
+                    "contract_invalid",
+                    codes,
+                    f"Expected contract_invalid for unhashable command "
+                    f"{bad_command!r}, got: {codes}",
+                )
+
+    def test_unhashable_version_handled_without_crash(self) -> None:
+        """An unhashable version value must not crash _validate_version_consistency.
+
+        Schema validation already covers this as contract_invalid, but the
+        version-consistency check must not throw TypeError when building the
+        set of seen versions.
+        """
+        for bad_version in ({"x": 1}, [1, 2], []):
+            with self.subTest(version=bad_version):
+                chain = [
+                    {
+                        "command": "read_context",
+                        "version": bad_version,
+                        "target_files": ["docs/index.md"],
+                    }
+                ]
+                try:
+                    vcc.validate_chain(chain, "synthetic", self.validators)
+                except TypeError as exc:
+                    self.fail(
+                        f"validate_chain raised TypeError for unhashable "
+                        f"version {bad_version!r}: {exc}"
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()

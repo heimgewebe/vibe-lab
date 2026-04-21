@@ -61,8 +61,8 @@ jobs:
 
       - name: Guard — replay must not mutate the repo
         run: |
-          if ! git diff --quiet || ! git diff --cached --quiet; then
-            echo "❌ Replay dry-run produced filesystem changes. This violates the Phase-F-light contract."
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Replay dry-run produced filesystem changes (tracked or untracked). This violates the Phase-F-light contract."
             git status --porcelain
             exit 1
           fi

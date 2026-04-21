@@ -98,6 +98,49 @@ class ReplayMinimalTests(unittest.TestCase):
         trace = rm.simulate(chain)
         self.assertFalse(trace[0]["would_mutate"])
 
+    def test_dry_run_stdout_is_valid_json(self) -> None:
+        """--dry-run must not pollute stdout with non-JSON text.
+
+        The dry-run marker must go to stderr so that stdout remains parseable
+        JSON. Previously, a `print(...)` call without `file=sys.stderr` broke
+        JSON consumers.
+        """
+        import io
+
+        chain_path = (
+            rm.REPO_ROOT
+            / "tests"
+            / "fixtures"
+            / "command_chains"
+            / "valid-minimal.json"
+        )
+        buf_out = io.StringIO()
+        buf_err = io.StringIO()
+        saved_stdout, saved_stderr = sys.stdout, sys.stderr
+        saved_argv = sys.argv
+        sys.stdout = buf_out
+        sys.stderr = buf_err
+        sys.argv = ["replay_minimal.py", "--dry-run", str(chain_path)]
+        try:
+            with self.assertRaises(SystemExit) as cm:
+                rm.main()
+        finally:
+            sys.stdout = saved_stdout
+            sys.stderr = saved_stderr
+            sys.argv = saved_argv
+        self.assertEqual(cm.exception.code, 0)
+        # stdout must be parseable JSON
+        stdout_text = buf_out.getvalue()
+        try:
+            payload = json.loads(stdout_text)
+        except json.JSONDecodeError as exc:
+            self.fail(
+                f"--dry-run stdout is not valid JSON: {exc}\nOutput was:\n{stdout_text}"
+            )
+        self.assertIn("mutations", payload)
+        # dry-run marker must appear on stderr, not stdout
+        self.assertIn("dry-run", buf_err.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
