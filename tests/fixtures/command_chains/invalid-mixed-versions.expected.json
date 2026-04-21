@@ -1,0 +1,3 @@
+{
+  "expected_errors": ["command_sequence_invalid", "contract_invalid"]
+}
