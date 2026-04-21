@@ -1,0 +1,22 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["docs/index.md"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["docs/index.md"],
+    "locator": "   ",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint"],
+    "success": true,
+    "errors": []
+  }
+]

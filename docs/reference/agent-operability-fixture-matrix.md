@@ -18,10 +18,11 @@ relations:
 
 # Agent Operability — Fixture-Matrix (v0.1)
 
-Dieses Dokument ist ein kanonisches Referenzartefakt. Es kartiert alle
+Dieses Dokument ist ein Referenzartefakt mit kanonischem Anspruch auf
+Coverage-Kartierung, nicht auf Validator-Wahrheit. Es kartiert alle
 vorhandenen Fixtures in explizite Äquivalenzklassen und macht Coverage und
-Lücken sichtbar. Es enthält **keine neue Validierungslogik**, keine neuen
-Fixtures und keine Schema-Änderungen.
+Lücken sichtbar. Es enthält **keine neue Validierungslogik** und keine
+Schema-Änderungen.
 
 Quellen:
 - `tests/fixtures/agent_commands/**`
@@ -119,6 +120,8 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | `tests/fixtures/command_chains/invalid-target-files-mismatch.json` | `invalid-target-files-mismatch.expected.json` | `target_files_mismatch` | `write_change.target_files` enthält `README.md`, das nicht in `read_context.target_files` steht. |
 | `tests/fixtures/command_chains/invalid-remove-with-exact-after.json` | `invalid-remove-with-exact-after.expected.json` | `semantic_contradiction` | `change_type: remove` mit gesetztem `exact_after` — semantisch widersprüchlich. |
 | `tests/fixtures/command_chains/invalid-mixed-versions.json` | `invalid-mixed-versions.expected.json` | `command_sequence_invalid`, `contract_invalid` | `write_change.version: "v0.2"` in ansonsten v0.1-Kette — gemischte Versionen. |
+| `tests/fixtures/command_chains/invalid-empty-locator.json` | `invalid-empty-locator.expected.json` | `locator_continuity_violation` | `write_change.locator` enthält nur Whitespace — verletzt Locator-Kontinuität (v0.1-Scope). |
+| `tests/fixtures/command_chains/invalid-add-with-exact-before.json` | `invalid-add-with-exact-before.expected.json` | `semantic_contradiction` | `change_type: add` mit gesetztem `exact_before` — ein Add hat keinen Vorher-Zustand an derselben Stelle. |
 
 **Abgedeckte Chain-Prüfkategorien**
 
@@ -127,9 +130,10 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | Korrekte Reihenfolge | ✅ | `valid-minimal.json` |
 | Gebrochene Reihenfolge | ✅ | `invalid-wrong-order.json` |
 | Target-Kontinuität (Datei-Ebene) | ✅ | `invalid-target-files-mismatch.json` |
-| Semantischer Widerspruch (Record-intern) | ✅ | `invalid-remove-with-exact-after.json` |
+| Semantischer Widerspruch (remove+exact_after) | ✅ | `invalid-remove-with-exact-after.json` |
+| Semantischer Widerspruch (add+exact_before) | ✅ | `invalid-add-with-exact-before.json` |
 | Versionskonsistenz | ✅ | `invalid-mixed-versions.json` |
-| Locator-Kontinuität (leerer Locator) | ❌ | Kein dediziertes Chain-Fixture (nur via Cross-Contract `state_drift`) |
+| Locator-Kontinuität (leerer/whitespace Locator) | ✅ | `invalid-empty-locator.json` |
 
 ---
 
@@ -137,7 +141,8 @@ Sidecar, muss die Chain fehlerfrei validieren.
 
 Alle Cross-Contract-Fixtures liegen unter `tests/fixtures/cross_contract/`
 und binden ein `handoff`-Objekt an eine `chain`. Abgedeckt werden die
-Invarianten aus `contracts/command-semantics.md §Cross-Contract`.
+Invarianten aus `contracts/command-semantics.md` — Abschnitt "Cross-Contract
+Invariants (Handoff → Commands)".
 
 **Gültige Fixtures**
 
@@ -288,18 +293,15 @@ noch nicht im Validator.
 **Fixture-Lücke:** Kein Cross-Contract-Fixture testet einen abweichenden
 Locator zwischen Handoff und `write_change`.
 
-### 5.5 Dediziertes Chain-Fixture für leeren Locator: FEHLT
+### 5.5 ~~Dediziertes Chain-Fixture für leeren Locator: FEHLT~~ → GESCHLOSSEN
 
-`locator_continuity_violation` (leerer/whitespace Locator) ist als Chain-
-Error-Code definiert, aber es existiert kein dediziertes `command_chains/`-
-Fixture, das diesen Code isoliert auslöst. Die einzige Abdeckung erfolgt
-indirekt über `cross_contract/invalid/state_drift.json`.
+`locator_continuity_violation` (leerer/whitespace Locator) ist nun durch
+`tests/fixtures/command_chains/invalid-empty-locator.json` abgedeckt.
 
-### 5.6 `add` mit `exact_before`: KEIN CHAIN-FIXTURE
+### 5.6 ~~`add` mit `exact_before`: KEIN CHAIN-FIXTURE~~ → GESCHLOSSEN
 
-Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist in
-`contracts/command-semantics.md` — Abschnitt "Anti-Invariants" unter "Command: write_change" — als ⚙️ Chain-Check
-definiert, aber kein `command_chains/`-Fixture testet diesen Fall.
+Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist nun durch
+`tests/fixtures/command_chains/invalid-add-with-exact-before.json` abgedeckt.
 
 ---
 
@@ -336,8 +338,8 @@ definiert, aber kein `command_chains/`-Fixture testet diesen Fall.
 | Chain | target files mismatch | `command_chains/invalid-target-files-mismatch.json` | `target_files_mismatch` | ✅ |
 | Chain | remove+exact_after contradiction | `command_chains/invalid-remove-with-exact-after.json` | `semantic_contradiction` | ✅ |
 | Chain | mixed versions | `command_chains/invalid-mixed-versions.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
-| Chain | empty locator (isolated) | — | `locator_continuity_violation` | ❌ MISSING |
-| Chain | add+exact_before contradiction | — | `semantic_contradiction` | ❌ MISSING |
+| Chain | empty/whitespace locator | `command_chains/invalid-empty-locator.json` | `locator_continuity_violation` | ✅ |
+| Chain | add+exact_before contradiction | `command_chains/invalid-add-with-exact-before.json` | `semantic_contradiction` | ✅ |
 | Cross-Contract | valid full chain | `cross_contract/valid/minimal_chain.json` | — | ✅ |
 | Cross-Contract | handoff schema invalid | `cross_contract/invalid/contract_invalid.json` | `handoff_contract_invalid` | ✅ |
 | Cross-Contract | target drift (handoff file missing in chain) | `cross_contract/invalid/target_drift.json` | `handoff_target_drift` | ✅ |
