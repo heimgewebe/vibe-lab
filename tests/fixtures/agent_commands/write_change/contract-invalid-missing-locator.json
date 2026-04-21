@@ -1,0 +1,8 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": ["docs/index.md"],
+  "change_type": "modify",
+  "forbidden_changes": ["new sections"],
+  "expected_error": "contract_invalid"
+}

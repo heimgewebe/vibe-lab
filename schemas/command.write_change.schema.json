@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/command.write_change.schema.json",
+  "title": "Command: write_change (v0.1)",
+  "description": "Minimal v0.1 schema for the conceptual command `write_change`. Scope per Phase D of blueprint-agent-operability-phase-1c.md: only practically evidenced fields. Locator OR target_lines is required to enforce change locality; exact_before/exact_after remain optional precision fields.",
+  "type": "object",
+  "properties": {
+    "command": {
+      "type": "string",
+      "const": "write_change"
+    },
+    "version": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "target_files": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "target_lines": {
+      "type": "string",
+      "minLength": 1
+    },
+    "locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "change_type": {
+      "type": "string",
+      "enum": ["add", "modify", "remove", "replace"]
+    },
+    "exact_before": {
+      "type": "string"
+    },
+    "exact_after": {
+      "type": "string"
+    },
+    "forbidden_changes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "required": [
+    "command",
+    "version",
+    "target_files",
+    "change_type",
+    "forbidden_changes"
+  ],
+  "anyOf": [
+    { "required": ["locator"] },
+    { "required": ["target_lines"] }
+  ],
+  "additionalProperties": true
+}

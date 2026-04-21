@@ -20,9 +20,9 @@
 | `instruction-blocks/` | 📚 Bibliothek | 5 | 5 |
 | `prompts/` | 📚 Bibliothek | 2 | 2 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
-| `schemas/` | 🏛️ Governance | 6 | 0 |
-| `scripts/` | 🔧 Tooling | 23 | 0 |
-| `tests/` | 📁 Root | 22 | 8 |
+| `schemas/` | 🏛️ Governance | 9 | 0 |
+| `scripts/` | 🔧 Tooling | 25 | 0 |
+| `tests/` | 📁 Root | 32 | 8 |
 | `tools/` | 🔧 Tooling | 1 | 0 |
 
-**Total:** 440 files in 17 directories
+**Total:** 455 files in 17 directories

@@ -1,0 +1,15 @@
+{
+  "command": "read_context",
+  "version": "v0.1",
+  "target_files": [
+    "schemas/agent.handoff.schema.json",
+    "scripts/docmeta/validate_agent_handoff.py"
+  ],
+  "extracted_facts": [
+    "Handoff schema requires status, target_files, locator, change_type, scope, normalized_task, critic_signature",
+    "PASS status additionally requires handoff.{algo,canon,hash}"
+  ],
+  "uncertainties": [
+    "No replay runner exists yet under tools/vibe-cli/"
+  ]
+}

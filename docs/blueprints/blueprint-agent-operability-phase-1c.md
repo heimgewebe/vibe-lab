@@ -88,8 +88,8 @@ seines eigenen Übergabeobjekts behauptet.
 - [x] Phase A abgeschlossen: `HANDOFF_BLOCK` als Repo-Contract vorhanden
 - [x] Phase B abgeschlossen: Hash/Kanonisierung maschinell validierbar
 - [x] Phase C abgeschlossen: CI erzwingt den Handoff-Validator
-- [ ] Phase D abgeschlossen: Command-Schemas v0.1 liegen vor
-- [ ] Phase E abgeschlossen: Golden Fixtures / Smoke-Set deckt Drift-Fälle ab
+- [x] Phase D abgeschlossen: Command-Schemas v0.1 liegen vor
+- [ ] Phase E abgeschlossen: Golden Fixtures / Smoke-Set deckt Drift-Fälle ab (teilweise begonnen: Minimal-Fixtures pro Command vorhanden, erweiterter Drift-Smoke-Set noch offen)
 - [ ] Phase F abgeschlossen: optionaler Replay-Runner reproduziert einen Task
 
 ## Phase A — HANDOFF_BLOCK als echtes Repo-Contract-Artefakt
@@ -192,37 +192,37 @@ dem rein semantischen Status holen.
 
 ### Phase D Umsetzung
 
-- [ ] `schemas/command.read_context.schema.json` anlegen
-- [ ] `schemas/command.write_change.schema.json` anlegen
-- [ ] `schemas/command.validate_change.schema.json` anlegen
-- [ ] v0.1 bewusst klein halten und nur praktisch belegte Felder modellieren
+- [x] `schemas/command.read_context.schema.json` anlegen
+- [x] `schemas/command.write_change.schema.json` anlegen
+- [x] `schemas/command.validate_change.schema.json` anlegen
+- [x] v0.1 bewusst klein halten und nur praktisch belegte Felder modellieren
 
 ### Minimalumfang
 
 #### `command.read_context`
 
-- [ ] `target_files[]`
-- [ ] optional `extracted_facts`
-- [ ] optional `uncertainties`
+- [x] `target_files[]`
+- [x] optional `extracted_facts`
+- [x] optional `uncertainties`
 
 #### `command.write_change`
 
-- [ ] `target_files[]`
-- [ ] `target_lines` oder `locator`
-- [ ] `change_type`
-- [ ] optional `exact_before`
-- [ ] optional `exact_after`
-- [ ] `forbidden_changes[]`
+- [x] `target_files[]`
+- [x] `target_lines` oder `locator`
+- [x] `change_type`
+- [x] optional `exact_before`
+- [x] optional `exact_after`
+- [x] `forbidden_changes[]`
 
 #### `command.validate_change`
 
-- [ ] `checks[]`
-- [ ] `success`
-- [ ] `errors[]`
+- [x] `checks[]`
+- [x] `success`
+- [x] `errors[]`
 
 ### Phase D Stop-Kriterium
 
-- [ ] Drei Command-Schemas vorhanden und je ein minimales Golden-Beispiel dokumentiert
+- [x] Drei Command-Schemas vorhanden und je ein minimales Golden-Beispiel dokumentiert
 
 ## Phase E — Golden Fixtures / Smoke-Set
 
@@ -232,8 +232,9 @@ Nicht nur Theorie prüfen, sondern Vollzugssituationen.
 
 ### Phase E Umsetzung
 
-- [ ] Fixture-Sammlung mit 6–8 Fällen anlegen
-- [ ] Folgende Fälle mindestens abdecken:
+- [x] Minimal-Fixtures pro Command vorhanden (je Positiv + mindestens 2 Negativfälle) unter `tests/fixtures/agent_commands/`
+- [ ] Fixture-Sammlung auf 6–8 Fälle pro Command ausgebaut
+- [ ] Folgende Fälle für den Handoff-Validator mindestens abdecken:
       PASS, FAIL ohne `target_files`, PARTIAL ohne Locator, `hash_mismatch`,
       `unsupported_canon`, Integrity-Mismatch bei `normalized_task`,
       optional `exact_before`/`exact_after`, promotion-naher Fall
@@ -275,11 +276,30 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 - [x] D1: `schemas/agent.handoff.schema.json`
 - [x] D2: `scripts/docmeta/validate_agent_handoff.py`
 - [x] D3: CI-Erweiterung in `.github/workflows/validate.yml`
-- [ ] D4: `schemas/command.read_context.schema.json`
-- [ ] D5: `schemas/command.write_change.schema.json`
-- [ ] D6: `schemas/command.validate_change.schema.json`
+- [x] D4: `schemas/command.read_context.schema.json`
+- [x] D5: `schemas/command.write_change.schema.json`
+- [x] D6: `schemas/command.validate_change.schema.json`
 - [x] D7: Fixture-/Smoke-Set (`tests/fixtures/agent_handoff/` oder äquivalent)
 - [ ] D8: Optionaler Replay-Runner unter `tools/vibe-cli/` oder äquivalent
+
+### Status D4–D6 (Phase D)
+
+Ergänzend zu den drei Command-Schemas existieren Golden-Fixtures pro Command
+unter `tests/fixtures/agent_commands/<command>/` (Positiv- und mehrere
+`expected_error: contract_invalid`-Fälle, darunter falscher `command`-Wert,
+falsche `version`, fehlende Lokalitätsprüfung, ungültige `success`/`errors`-Kombination).
+Die Prüfung läuft über `scripts/docmeta/validate_agent_commands.py`
+(Stil-Spiegelbild zu `validate_agent_handoff.py`) und ist in `make validate`
+sowie in `.github/workflows/validate.yml` verdrahtet.
+
+Bewusste Designentscheidungen v0.1:
+
+- `checks[]` in `command.validate_change` ist eine offene String-Liste (kein Enum),
+  um frühe Vocab-Verhärtung zu vermeiden; die empfohlenen Werte nach §C3 der Blaupause
+  (`lint`, `test`, `docs-guard`) sind in der Schema-Beschreibung dokumentiert.
+- `additionalProperties: true` in allen drei Schemas: explizit als Leitplanken-Contract
+  gerahmt, nicht als harter Ausführungsvertrag. Verhärtung ist Phase-E/F-Arbeit.
+- Ausführung (Phase F / D8) bleibt ausdrücklich ausgeschlossen.
 
 ## Was ausdrücklich nicht zuerst getan wird
 
