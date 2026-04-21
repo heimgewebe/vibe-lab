@@ -18,11 +18,10 @@ relations:
 
 # Agent Operability — Fixture-Matrix (v0.1)
 
-Dieses Dokument ist ein Referenzartefakt mit kanonischem Anspruch auf
-Coverage-Kartierung, nicht auf Validator-Wahrheit. Es kartiert alle
-vorhandenen Fixtures in explizite Äquivalenzklassen und macht Coverage und
-Lücken sichtbar. Es enthält **keine neue Validierungslogik** und keine
-Schema-Änderungen.
+Dieses Dokument ist ein Referenzartefakt, das Coverage-Kartierung anstrebt —
+nicht Validator-Wahrheit. Die Äquivalenzklassen und Gap-Liste beschreiben den
+Ist-Zustand der Fixtures; sie ersetzen keine maschinelle Prüfung. Es enthält
+**keine neue Validierungslogik** und keine Schema-Änderungen.
 
 Quellen:
 - `tests/fixtures/agent_commands/**`
@@ -120,7 +119,7 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | `tests/fixtures/command_chains/invalid-target-files-mismatch.json` | `invalid-target-files-mismatch.expected.json` | `target_files_mismatch` | `write_change.target_files` enthält `README.md`, das nicht in `read_context.target_files` steht. |
 | `tests/fixtures/command_chains/invalid-remove-with-exact-after.json` | `invalid-remove-with-exact-after.expected.json` | `semantic_contradiction` | `change_type: remove` mit gesetztem `exact_after` — semantisch widersprüchlich. |
 | `tests/fixtures/command_chains/invalid-mixed-versions.json` | `invalid-mixed-versions.expected.json` | `command_sequence_invalid`, `contract_invalid` | `write_change.version: "v0.2"` in ansonsten v0.1-Kette — gemischte Versionen. |
-| `tests/fixtures/command_chains/invalid-empty-locator.json` | `invalid-empty-locator.expected.json` | `locator_continuity_violation` | `write_change.locator` enthält nur Whitespace — verletzt Locator-Kontinuität (v0.1-Scope). |
+| `tests/fixtures/command_chains/invalid-empty-locator.json` | `invalid-empty-locator.expected.json` | `locator_continuity_violation` | `write_change.locator` enthält nur Whitespace (`"   "`) — verletzt Locator-Kontinuität (v0.1-Scope). |
 | `tests/fixtures/command_chains/invalid-add-with-exact-before.json` | `invalid-add-with-exact-before.expected.json` | `semantic_contradiction` | `change_type: add` mit gesetztem `exact_before` — ein Add hat keinen Vorher-Zustand an derselben Stelle. |
 
 **Abgedeckte Chain-Prüfkategorien**
