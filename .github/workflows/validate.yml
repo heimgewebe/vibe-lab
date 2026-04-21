@@ -57,7 +57,7 @@ jobs:
         run: python3 scripts/docmeta/test_validate_command_chain.py
 
       - name: Replay dry-run (no mutations)
-        run: python3 tools/vibe-cli/replay_minimal.py --dry-run > /dev/null
+        run: python3 tools/vibe-cli/replay_minimal.py --dry-run
 
       - name: Guard — replay must not mutate the repo
         run: |

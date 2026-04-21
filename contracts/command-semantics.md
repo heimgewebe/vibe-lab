@@ -87,7 +87,7 @@ String-basiertem `contract_invalid`.
 | `contract_invalid`             | Schema-Validierung eines Einzel-Records fehlgeschlagen.          | ⚙️ Chain-Check (via Schema-Delegation) |
 | `command_sequence_invalid`     | Reihenfolge in der Kette falsch (z. B. `validate_change` vor `write_change`), oder gemischte Versionen. | ⚙️ Chain-Check |
 | `target_files_mismatch`        | `write_change.target_files` nicht Teilmenge von `read_context.target_files`. | ⚙️ Chain-Check |
-| `locator_continuity_violation` | `write_change.locator` ist leer oder enthält nur Whitespace. **Hinweis v0.1:** Eine weitergehende Kopplung an `read_context.extracted_facts` ist in v0.1 **nicht implementiert** (📋 Dokumentiert für v0.2). | ⚙️ Chain-Check (eingeschränkter Scope, siehe Hinweis) |
+| `locator_continuity_violation` | `write_change.locator` ist leer oder enthält nur Whitespace. **Namens-Hinweis v0.1:** Der Code-Name ist für die vollständige v0.2-Semantik (Kopplung an `read_context.extracted_facts`) vorgehalten. In v0.1 deckt er ausschließlich den leeren/whitespace-Locator ab — die inhaltliche Kontinuität zwischen Lesekontext und Schreibanker ist **noch nicht implementiert** (📋 Dokumentiert für v0.2). | ⚙️ Chain-Check (v0.1 eingeschränkter Scope) |
 | `semantic_contradiction`       | Feld-Kombination innerhalb eines Records widerspricht sich (siehe Anti-Invarianten). | ⚙️ Chain-Check |
 
 Exit-Codes wie gewohnt: `0` OK, `1` Validation-Fehler, `2` Setup-Fehler

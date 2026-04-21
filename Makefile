@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
 validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
@@ -60,15 +60,32 @@ validate-replay-dry-run:
 	@#    input mutation; test_write_change_trace_marks_would_mutate_false
 	@#    asserts would_mutate=false in every trace.
 	@# 3. By CI: the "Guard — replay must not mutate the repo" step in
-	@#    .github/workflows/validate.yml runs git diff in a clean checkout
-	@#    and fails if any file changed. Locally this git-diff guard is not
-	@#    applied because a dirty working tree produces false positives during
-	@#    development. The authoritative mutation guard is CI.
+	@#    .github/workflows/validate.yml runs git diff in a clean checkout.
+	@#    For an equivalent local guard, use: make validate-replay-mutation-guard
+	@#    (only conclusive in a clean working tree).
 	@echo "✅ Replay trace generator completed (non-mutation enforced by design + tests + CI)."
 
 validate-replay-tests:
 	@echo "🧪 Running replay runner regression tests..."
 	@python3 tools/vibe-cli/test_replay_minimal.py
+
+validate-replay-mutation-guard:
+	@echo "🔒 Replay mutation guard (requires clean working tree)..."
+	@# This target mirrors the CI step "Guard — replay must not mutate the repo".
+	@# It is only conclusive in a clean working tree (i.e., no uncommitted changes).
+	@# In CI this runs after every checkout; locally, call it explicitly when needed.
+	@if ! git diff --quiet || ! git diff --cached --quiet; then \
+	    echo "⚠️  Working tree is dirty — guard would produce a false positive."; \
+	    echo "   Commit or stash your changes, then re-run this target."; \
+	    exit 1; \
+	fi
+	@python3 tools/vibe-cli/replay_minimal.py --dry-run >/dev/null
+	@if ! git diff --quiet || ! git diff --cached --quiet; then \
+	    echo "❌ Replay produced filesystem changes — non-mutation contract violated."; \
+	    git status --porcelain; \
+	    exit 1; \
+	fi
+	@echo "✅ Replay mutation guard passed (clean tree, no changes after run)."
 
 validate-phase1c-fixtures:
 	@echo "🧭 Validating Phase-1c fixture corpus..."
