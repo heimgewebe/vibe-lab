@@ -22,6 +22,7 @@
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
 | `catalog/workflows/causal-control-study.md` | Kausale Kontrollstudie | adopted | — |
 | `catalog/workflows/spec-first-api-generation.md` | Spec-First API-Generierung | adopted | — |
+| `contracts/command-semantics.md` | Command Semantics (v0.1) | active | canonical |
 | `docs/blueprints/blueprint-agent-operability-phase-1c.md` | Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns | active | exploratory |
 | `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | idea | exploratory |
 | `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |

@@ -50,6 +50,27 @@ jobs:
       - name: Test agent command validator
         run: python3 scripts/docmeta/test_validate_agent_commands.py
 
+      - name: Validate command chain fixtures
+        run: python3 scripts/docmeta/validate_command_chain.py
+
+      - name: Test command chain validator
+        run: python3 scripts/docmeta/test_validate_command_chain.py
+
+      - name: Replay dry-run (no mutations)
+        run: python3 tools/vibe-cli/replay_minimal.py --dry-run > /dev/null
+
+      - name: Guard — replay must not mutate the repo
+        run: |
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "❌ Replay dry-run produced filesystem changes. This violates the Phase-F-light contract."
+            git status --porcelain
+            exit 1
+          fi
+          echo "✅ Replay dry-run produced no filesystem changes."
+
+      - name: Test replay runner
+        run: python3 tools/vibe-cli/test_replay_minimal.py
+
       - name: Validate Phase-1c fixture checker corpus
         run: python3 scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py
 

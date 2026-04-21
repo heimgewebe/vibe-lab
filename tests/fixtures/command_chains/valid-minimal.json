@@ -1,0 +1,26 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["docs/index.md"],
+    "extracted_facts": ["docs/index.md lists running experiments"],
+    "uncertainties": []
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["docs/index.md"],
+    "locator": "## Laufende Versuche",
+    "change_type": "modify",
+    "exact_before": "## Laufende Versuche\n",
+    "exact_after": "## Laufende Versuche\n\n- [ ] new entry\n",
+    "forbidden_changes": ["content restructuring"]
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint", "docs-guard"],
+    "success": true,
+    "errors": []
+  }
+]

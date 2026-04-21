@@ -1,0 +1,9 @@
+{
+  "command": "write_change_v2",
+  "version": "v0.1",
+  "target_files": ["docs/index.md"],
+  "locator": "## Laufende Versuche",
+  "change_type": "modify",
+  "forbidden_changes": [],
+  "expected_error": "contract_invalid"
+}

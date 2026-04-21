@@ -1,0 +1,9 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": ["docs/index.md"],
+  "locator": "## Laufende Versuche",
+  "change_type": "rename",
+  "forbidden_changes": [],
+  "expected_error": "contract_invalid"
+}
