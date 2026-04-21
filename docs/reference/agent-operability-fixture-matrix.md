@@ -242,7 +242,7 @@ Spekulation.
 Kontext zurückbindet. Die Verbindung "dieser validate_change-Record gehört zu
 diesem write_change-Record" existiert nicht als maschinell prüfbarer Seam.
 
-**Quelle:** `contracts/command-semantics.md §Evolution Constraints (validate_change)`
+**Quelle:** `contracts/command-semantics.md` — Abschnitt "Evolution Constraints (v0.1 → v0.2)" unter `validate_change`
 — `errors[]` bleibt in v0.1 ein String-Array ohne Referenz auf konkrete Checks
 oder `write_change`-Steps.
 
@@ -257,7 +257,7 @@ Bezug auf einen spezifischen `write_change`-Schritt.
 Die inhaltliche Kopplung zwischen `write_change.locator` und
 `read_context.extracted_facts` ist in v0.1 nicht maschinell erzwungen.
 
-**Quelle:** `contracts/command-semantics.md §locator_continuity_violation`
+**Quelle:** `contracts/command-semantics.md` — Abschnitt "Error-Klassen (strukturiertes Modell)", Eintrag `locator_continuity_violation`
 — explizit als v0.2-Scope markiert. Der Error-Code `locator_continuity_violation`
 prüft in v0.1 nur leeren/whitespace-Locator, nicht die Kopplung an Facts.
 
@@ -270,7 +270,7 @@ prüft in v0.1 nur leeren/whitespace-Locator, nicht die Kopplung an Facts.
 Struktur (`{check, code, message}`), die eine maschinelle Auswertung
 ermöglicht.
 
-**Quelle:** `contracts/command-semantics.md §Evolution Constraints (validate_change)`
+**Quelle:** `contracts/command-semantics.md` — Abschnitt "Evolution Constraints (v0.1 → v0.2)" unter `validate_change`
 — Breaking Change explizit auf v0.2 verschoben.
 
 **Fixture-Lücke:** Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings
@@ -280,7 +280,8 @@ Fehler.
 ### 5.4 Handoff-Locator-Drift: KEIN FIXTURE
 
 Die Prüfung `handoff.locator ↔ write_change.locator` ist in der
-Invariantenliste von `command-semantics.md §Cross-Contract` explizit als
+Invariantenliste von `contracts/command-semantics.md` — Abschnitt "Evolution
+Constraints (v0.1 → v0.2)" unter "Cross-Contract" — explizit als
 v0.2-Evolution benannt (`handoff_locator_drift`). Der Error-Code existiert
 noch nicht im Validator.
 
@@ -297,7 +298,7 @@ indirekt über `cross_contract/invalid/state_drift.json`.
 ### 5.6 `add` mit `exact_before`: KEIN CHAIN-FIXTURE
 
 Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist in
-`contracts/command-semantics.md §write_change Anti-Invariants` als ⚙️ Chain-Check
+`contracts/command-semantics.md` — Abschnitt "Anti-Invariants" unter "Command: write_change" — als ⚙️ Chain-Check
 definiert, aber kein `command_chains/`-Fixture testet diesen Fall.
 
 ---
