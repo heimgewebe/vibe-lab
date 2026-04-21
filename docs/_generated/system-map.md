@@ -22,7 +22,7 @@
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
 | `schemas/` | 🏛️ Governance | 9 | 0 |
 | `scripts/` | 🔧 Tooling | 27 | 0 |
-| `tests/` | 📁 Root | 55 | 8 |
+| `tests/` | 📁 Root | 64 | 8 |
 | `tools/` | 🔧 Tooling | 3 | 0 |
 
-**Total:** 483 files in 17 directories
+**Total:** 492 files in 17 directories

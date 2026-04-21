@@ -1,0 +1,33 @@
+{
+  "handoff": {
+    "target_files": ["docs/index.md"],
+    "locator": "## Laufende Versuche",
+    "change_type": "modify",
+    "scope": "Add one entry to the running experiments list",
+    "normalized_task": "Append a single dash entry under the Laufende Versuche heading",
+    "critic_signature": "experiment-critic/v1"
+  },
+  "chain": [
+    {
+      "command": "read_context",
+      "version": "v0.1",
+      "target_files": ["docs/index.md"]
+    },
+    {
+      "command": "write_change",
+      "version": "v0.1",
+      "target_files": ["docs/index.md"],
+      "locator": "## Laufende Versuche",
+      "change_type": "modify",
+      "forbidden_changes": []
+    },
+    {
+      "command": "validate_change",
+      "version": "v0.1",
+      "checks": ["lint"],
+      "success": true,
+      "errors": []
+    }
+  ],
+  "expected_errors": ["handoff_contract_invalid"]
+}

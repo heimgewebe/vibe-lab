@@ -1,0 +1,41 @@
+{
+  "handoff": {
+    "status": "PASS",
+    "target_files": ["docs/index.md"],
+    "locator": "## Laufende Versuche",
+    "change_type": "remove",
+    "scope": "Remove a stale entry from the running experiments list",
+    "normalized_task": "Remove the bullet that references the stale experiment",
+    "critic_signature": "experiment-critic/v1",
+    "handoff": {
+      "algo": "sha256",
+      "canon": "v1",
+      "hash": "500ac2661da4bdef323ab992f8c058509c68cb95274b4d0d458b514b1a448ccb"
+    }
+  },
+  "chain": [
+    {
+      "command": "read_context",
+      "version": "v0.1",
+      "target_files": ["docs/index.md"]
+    },
+    {
+      "command": "write_change",
+      "version": "v0.1",
+      "target_files": ["docs/index.md"],
+      "locator": "## Laufende Versuche",
+      "change_type": "remove",
+      "exact_before": "- stale entry\n",
+      "exact_after": "- replacement entry\n",
+      "forbidden_changes": []
+    },
+    {
+      "command": "validate_change",
+      "version": "v0.1",
+      "checks": ["lint"],
+      "success": true,
+      "errors": []
+    }
+  ],
+  "expected_errors": ["semantic_contradiction"]
+}

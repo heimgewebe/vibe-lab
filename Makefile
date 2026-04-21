@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests generate generate-canonical generate-derived generate-ephemeral generate-exports generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -50,6 +50,14 @@ validate-command-chain:
 validate-command-chain-tests:
 	@echo "🧪 Running command chain regression tests..."
 	@python3 scripts/docmeta/test_validate_command_chain.py
+
+validate-cross-contract:
+	@echo "🪢 Validating cross-contract (Handoff ↔ Chain) fixtures..."
+	@python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures tests/fixtures/cross_contract
+
+validate-cross-contract-tests:
+	@echo "🧪 Running cross-contract regression tests..."
+	@python3 tests/contracts/test_cross_contract_chain.py
 
 validate-replay-dry-run:
 	@echo "♻️  Replay dry-run (no mutations by design)..."
@@ -162,8 +170,10 @@ help:
 	@echo "  make validate-agent-handoff-tests — Run HANDOFF_BLOCK unit regression tests"
 	@echo "  make validate-agent-commands   — Validate agent command fixtures against command.*.schema.json"
 	@echo "  make validate-agent-commands-tests — Run agent command unit regression tests"
-	@echo "  make validate-command-chain    — Validate command chain fixtures (cross-contract)"
+	@echo "  make validate-command-chain    — Validate command chain fixtures"
 	@echo "  make validate-command-chain-tests — Run command chain regression tests"
+	@echo "  make validate-cross-contract   — Validate Handoff ↔ Chain cross-contract fixtures"
+	@echo "  make validate-cross-contract-tests — Run cross-contract regression tests"
 	@echo "  make validate-replay-dry-run   — Simulate a validated chain without mutations"
 	@echo "  make validate-replay-tests     — Run replay runner regression tests"
 	@echo "  make validate-phase1c-fixtures — Validate Phase-1c fixture corpus against expected outcomes"

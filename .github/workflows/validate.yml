@@ -56,6 +56,12 @@ jobs:
       - name: Test command chain validator
         run: python3 scripts/docmeta/test_validate_command_chain.py
 
+      - name: Validate cross-contract (Handoff ↔ Chain) fixtures
+        run: python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures tests/fixtures/cross_contract
+
+      - name: Test cross-contract validator
+        run: python3 tests/contracts/test_cross_contract_chain.py
+
       - name: Replay dry-run (no mutations)
         run: python3 tools/vibe-cli/replay_minimal.py --dry-run
 

@@ -235,6 +235,71 @@ read_context → write_change → validate_change
 - 📋 **Dokumentiert** `validate_change.success = false`, aber `errors` enthält keinen Bezug
   zu einem `checks`-Eintrag → in v0.1 toleriert, nicht als Anti-Invariant erzwungen.
 
+## Cross-Contract Invariants (Handoff → Commands)
+
+Der Handoff (`schemas/agent.handoff.schema.json`) und die Command-Chain
+(`schemas/command.*.schema.json`) sind getrennte Verträge mit einer
+gemeinsamen Wahrheitslinie. Dieser Abschnitt bindet beide aneinander —
+minimal, testbar, ohne neue Laufzeitlogik.
+
+Geprüft wird diese Linie durch
+`scripts/docmeta/validate_command_chain.py::validate_cross_contract` und
+durch das Fixture-Korpus unter `tests/fixtures/cross_contract/`.
+
+### Invariants
+
+- ⚙️ **Chain-Check** `handoff.target_files` und `target_files` jedes Chain-Records mit `target_files`-Feld (`read_context`, `write_change`) müssen identisch sein — kein File darf fehlen, kein File darf außerhalb des Handoff-Scopes hinzukommen. Verletzung → `handoff_target_drift`.
+- ⚙️ **Chain-Check** `handoff.change_type` ∈ {`add`, `modify`, `remove`,
+  `replace`} **muss** durch einen `write_change`-Record mit **identischem**
+  `change_type` erfüllt sein. Fehlt der Record oder weicht der
+  `change_type` ab → `handoff_intent_mismatch`.
+- ⚙️ **Chain-Check** Wenn `handoff.exact_before` oder `handoff.exact_after`
+  gesetzt sind, muss der `write_change`-Record das jeweilige Feld
+  wörtlich übernehmen. Silent-Omission oder Silent-Divergenz →
+  `handoff_state_drift`.
+- ⚙️ **Chain-Check** Der Handoff selbst muss gegen
+  `schemas/agent.handoff.schema.json` validieren, bevor Cross-Contract-
+  Checks überhaupt greifen. Verletzung → `handoff_contract_invalid`.
+
+### Anti-Invariants
+
+- ⚙️ **Chain-Check** Chain-Record enthält Dateien, die nicht in
+  `handoff.target_files` stehen, oder Handoff-Dateien fehlen in einem
+  Chain-Record → `handoff_target_drift` (stille Drift in beide Richtungen).
+- ⚙️ **Chain-Check** Handoff verlangt eine Änderung, die Chain enthält
+  aber keinen `write_change` oder ein `write_change` mit anderem
+  `change_type` → `handoff_intent_mismatch`.
+- ⚙️ **Chain-Check** Implizite Zustands-Ableitung: `write_change` lässt
+  ein vom Handoff vorgegebenes `exact_before`/`exact_after` weg oder
+  verändert es → `handoff_state_drift`.
+
+### Error-Klassen (Ergänzung)
+
+| `code`                       | Bedeutung                                                                                                 | Status |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------- | ------ |
+| `handoff_contract_invalid`   | Handoff-Objekt verletzt `agent.handoff.schema.json` oder Schema fehlt.                                    | ⚙️ Chain-Check |
+| `handoff_target_drift`       | `handoff.target_files` und `target_files` eines Chain-Records (mit `target_files`-Feld) stimmen nicht überein — Dateien fehlen oder sind außerhalb des Handoff-Scopes. | ⚙️ Chain-Check |
+| `handoff_intent_mismatch`    | `handoff.change_type` wird durch die Chain nicht erfüllt (kein `write_change` oder abweichender `change_type`). | ⚙️ Chain-Check |
+| `handoff_state_drift`        | `handoff.exact_before`/`exact_after` wird still im `write_change` weggelassen oder verändert.            | ⚙️ Chain-Check |
+
+### Scope-Disziplin (v0.1)
+
+- Cross-Contract-Checks nutzen ausschließlich Felder, die beide Schemata
+  bereits kennen. Keine heuristische Ableitung, keine Interpretation von
+  `scope`, `normalized_task` oder `extracted_facts`.
+- Silent Defaults sind explizit verboten: fehlen Felder im Handoff, wird
+  nichts angenommen — nur was dort steht, wird an die Chain gebunden.
+- Die Checks kürzen bei `handoff_contract_invalid` ab: ohne schema-
+  valides Handoff ist Cross-Contract-Prüfung bedeutungslos.
+
+### Evolution Constraints (v0.1 → v0.2)
+
+- **Breaking:** Weitere Pflicht-Bindungen (z. B. `handoff.locator` ↔
+  `write_change.locator`) sind bewusst **noch nicht** erzwungen, um
+  v0.2-Evolution des `locator`-Typs nicht einzufrieren.
+- **Non-Breaking:** Zusätzliche Codes wie `handoff_locator_drift` dürfen
+  in v0.2 hinzukommen.
+
 ## Versionsstrategie
 
 ### Begriffe
