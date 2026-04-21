@@ -62,7 +62,7 @@ Keine neuen Validatoren, keine neuen Contracts, keine neue Semantik.
 | target_continuity | `tests/fixtures/command_chains/invalid-target-files-mismatch.json`, `tests/fixtures/command_chains/invalid-target-files-mismatch.expected.json` | `scripts/docmeta/validate_command_chain.py` | `target_files_mismatch` | covered |
 | semantic_contradiction | `tests/fixtures/command_chains/invalid-remove-with-exact-after.json`, `tests/fixtures/command_chains/invalid-remove-with-exact-after.expected.json` | `scripts/docmeta/validate_command_chain.py` | `semantic_contradiction` | covered |
 | locator_continuity_violation | keine dedizierte Datei in `tests/fixtures/command_chains/` | `scripts/docmeta/validate_command_chain.py` | `locator_continuity_violation` | missing |
-| extracted_facts↔locator coupling | in `contracts/command-semantics.md` explizit für v0.2 dokumentiert, in v0.1 nicht operationalisiert | `scripts/docmeta/validate_command_chain.py` | `locator_continuity_violation` (v0.1 eingeschränkt) | intentionally_deferred_v0.2 |
+| extracted_facts↔locator coupling | aktuell in v0.1 nicht operationalisiert; in `contracts/command-semantics.md` explizit für v0.2 dokumentiert | `scripts/docmeta/validate_command_chain.py` | none | intentionally_deferred_v0.2 |
 
 ## 4. Cross-Contract Coverage
 
@@ -70,36 +70,35 @@ Keine neuen Validatoren, keine neuen Contracts, keine neue Semantik.
 
 | Klasse | Fixture(s) | Error-Code | Status |
 |---|---|---|---|
-| handoff_pass | `tests/fixtures/agent_handoff/pass-minimal.json` | none | unclear |
+| handoff_pass | `tests/fixtures/agent_handoff/pass-minimal.json` | none | covered |
 | handoff_contract_invalid | `tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json`, `tests/fixtures/agent_handoff/partial-missing-required-fixes.json` | `contract_invalid` | covered |
 | handoff_hash_mismatch | `tests/fixtures/agent_handoff/hash-mismatch.json` | `hash_mismatch` | covered |
-| handoff_to_command_chain seam fixture | keine Fixture mit kombiniertem Handoff+Command-Chain Payload im Scope | unknown | missing |
+| handoff_to_command_chain seam fixture | keine Fixture mit kombiniertem Handoff+Command-Chain Payload im Scope | none | missing |
 
 ### Commands → Validate/Result
 
 | Klasse | Fixture(s) | Error-Code | Status |
 |---|---|---|---|
 | command_chain_with_validate_change | `tests/fixtures/command_chains/valid-minimal.json` und `invalid-*.json` | chain codes (`command_sequence_invalid`, `target_files_mismatch`, `semantic_contradiction`, `contract_invalid`) | covered |
-| phase1c_valid | `tests/fixtures/experiment_structure_phase1c/valid/manifest.yml`, `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md`, `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md`, `tests/fixtures/experiment_structure_phase1c/valid/results/decision.yml`, `tests/fixtures/experiment_structure_phase1c/valid/results/evidence.jsonl`, `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | verdict `VALID`, status_assessment `adopted` | covered |
-| phase1c_inconsistent | `tests/fixtures/experiment_structure_phase1c/inconsistent/manifest.yml`, `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md`, `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`, `tests/fixtures/experiment_structure_phase1c/inconsistent/results/decision.yml`, `tests/fixtures/experiment_structure_phase1c/inconsistent/results/evidence.jsonl`, `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md` | verdict `INCONSISTENT`, status_assessment `inconclusive` | covered |
-| phase1c_insufficient_input | `tests/fixtures/experiment_structure_phase1c/insufficient_input/manifest.yml`, `tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md`, `tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md`, `tests/fixtures/experiment_structure_phase1c/insufficient_input/results/decision.yml`, `tests/fixtures/experiment_structure_phase1c/insufficient_input/results/evidence.jsonl` | verdict `ERROR`, status_assessment `blocked` | covered |
+| phase1c_valid | `tests/fixtures/experiment_structure_phase1c/valid/*` | verdict `VALID`, status_assessment `adopted` | covered |
+| phase1c_inconsistent | `tests/fixtures/experiment_structure_phase1c/inconsistent/*` | verdict `INCONSISTENT`, status_assessment `inconclusive` | covered |
+| phase1c_insufficient_input | `tests/fixtures/experiment_structure_phase1c/insufficient_input/*` | verdict `ERROR`, status_assessment `blocked` | covered |
 | phase1c_expected_cases_spec | `tests/fixtures/experiment_structure_phase1c/expected-outcomes.json` | expected cases spec | covered |
-| direct command→phase1c linkage fixture | keine direkte Fixture, die Command-Records und Result-Artefakte in einem gemeinsamen Prüffall verbindet | unknown | missing |
-
-Zusatz (Scope-Sichtbarkeit): `tests/contracts/**` fehlt, nötig für explizite Contract-Test-Klassen.
+| direct command→phase1c linkage fixture | keine direkte Fixture, die Command-Records und Result-Artefakte in einem gemeinsamen Prüffall verbindet | none | missing |
 
 ## 5. Coverage-Bewertung
+
+Bewertungstaxonomie: `covered`, `missing`, `unclear`, `intentionally_deferred_v0.2`.
 
 | Klasse | Bewertung |
 |---|---|
 | Command-Schema-Klassen (`agent_commands/*`) | covered |
 | Chain-Klassen: `sequence_valid`, `sequence_invalid`, `version_mismatch`, `target_continuity`, `semantic_contradiction` | covered |
 | Chain-Klasse: `locator_continuity_violation` (als dedizierte Fixture-Datei) | missing |
-| Handoff-Klassen (`pass`, `contract_invalid`, `hash_mismatch`) | covered/unclear (siehe Seams) |
+| Handoff-Klassen (`pass`, `contract_invalid`, `hash_mismatch`) | covered |
 | Seam `handoff_to_command_chain` | missing |
 | Seam `command_to_result` (direkte gemeinsame Fixture) | missing |
 | `extracted_facts`↔`locator` inhaltliche Kopplung | intentionally_deferred_v0.2 |
-| `tests/contracts/**`-basierte Klassen | missing |
 
 ## 6. Identifizierte Lücken
 
@@ -118,10 +117,10 @@ Status: missing
 Benötigt für: explizite dateibasierte Regressionsabdeckung des Fehlercodes `locator_continuity_violation`
 Aktuelle Abdeckung: Verhalten über Logik und Unit-Test mit synthetischen In-Memory-Chains, keine dedizierte Datei unter `tests/fixtures/command_chains/`
 
-### Gap: tests/contracts Fixture-Korpus
+### Gap: tests/contracts Fixture Corpus
 Status: missing
 Benötigt für: explizite Vertrags-Testklassen im Pfad `tests/contracts/**` (im Scope genannt)
-Aktuelle Abdeckung: Pfad enthält keine Dateien
+Aktuelle Abdeckung: Path enthält keine Dateien
 
 ## Optional: Priorisierung fehlender Klassen
 
