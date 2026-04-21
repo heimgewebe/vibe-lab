@@ -37,6 +37,7 @@
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
+| `docs/reference/agent-operability-fixture-matrix.md` | Agent Operability — Fixture-Matrix (v0.1) | active | derived |
 | `docs/reference/manifest-schema.md` | Referenz: Manifest-Schema-Semantik | active | operative |
 | `experiments/2026-04-08_spec-first/CONTEXT.md` | Spec-First Vibe-Coding — Experiment-Kontext | adopted | operative |
 | `experiments/2026-04-08_spec-first/INITIAL.md` | Spec-First Vibe-Coding — Initiale Situation | adopted | operative |
