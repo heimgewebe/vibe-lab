@@ -104,6 +104,42 @@ class CrossContractNegativeTests(unittest.TestCase):
         self.assertIn("command_sequence_invalid", observed)
         self.assertEqual(observed, expected)
 
+    def test_state_drift_fails(self) -> None:
+        """Handoff pins exact_before/exact_after; write_change silently omits them."""
+        observed, expected = self._observed("invalid/state_drift.json")
+        self.assertIn("handoff_state_drift", observed)
+        self.assertEqual(observed, expected)
+
+    def test_handoff_contract_invalid_fails(self) -> None:
+        """Handoff itself violates agent.handoff.schema.json (missing 'status')."""
+        observed, expected = self._observed("invalid/contract_invalid.json")
+        self.assertIn("handoff_contract_invalid", observed)
+        self.assertEqual(observed, expected)
+
+    def test_handoff_contract_invalid_short_circuits(self) -> None:
+        """When the handoff is schema-invalid, no cross-contract codes are emitted.
+
+        Rationale: cross-contract checks read fields the schema has not
+        blessed. Short-circuiting prevents false secondary errors from
+        unstructured handoff data.
+        """
+        handoff, chain, _ = _load("invalid/contract_invalid.json")
+        errors = vcc.validate_cross_contract(
+            handoff, chain, "invalid/contract_invalid.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        cross_contract_codes = {
+            "handoff_target_drift",
+            "handoff_intent_mismatch",
+            "handoff_state_drift",
+        }
+        self.assertIn("handoff_contract_invalid", codes)
+        self.assertTrue(
+            codes.isdisjoint(cross_contract_codes),
+            f"cross-contract codes emitted after handoff_contract_invalid: "
+            f"{codes & cross_contract_codes}",
+        )
+
 
 class CrossContractErrorSurfaceTests(unittest.TestCase):
     """Guards against silent drift between the contract doc, the
