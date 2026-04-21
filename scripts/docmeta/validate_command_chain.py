@@ -64,8 +64,14 @@ ERROR_CODES: frozenset[str] = frozenset(
         "target_files_mismatch",
         "locator_continuity_violation",
         "semantic_contradiction",
+        "handoff_contract_invalid",
+        "handoff_target_drift",
+        "handoff_intent_mismatch",
+        "handoff_state_drift",
     }
 )
+
+HANDOFF_SCHEMA_PATH = Path(__file__).resolve().parent.parent.parent / "schemas" / "agent.handoff.schema.json"
 
 
 def display_path(path: Path) -> str:
@@ -437,6 +443,339 @@ def validate_chain(
     return errors
 
 
+# ---------------------------------------------------------------------------
+# Cross-contract validation (Handoff ↔ Chain)
+# ---------------------------------------------------------------------------
+
+
+def _load_handoff_validator() -> Draft202012Validator | None:
+    if not HANDOFF_SCHEMA_PATH.is_file():
+        return None
+    try:
+        return load_validator(HANDOFF_SCHEMA_PATH)
+    except SchemaError:
+        return None
+
+
+def _validate_handoff_contract(
+    handoff: dict[str, Any], label: str
+) -> list[ChainError]:
+    validator = _load_handoff_validator()
+    if validator is None:
+        return [
+            ChainError(
+                code="handoff_contract_invalid",
+                message=(
+                    "agent.handoff schema missing or invalid at "
+                    f"{display_path(HANDOFF_SCHEMA_PATH)}"
+                ),
+                command_index=-1,
+                path=label,
+            )
+        ]
+    try:
+        validator.validate(handoff)
+    except ValidationError as exc:
+        return [
+            ChainError(
+                code="handoff_contract_invalid",
+                message=f"handoff schema validation failed: {exc.message}",
+                command_index=-1,
+                path=label,
+            )
+        ]
+    return []
+
+
+def _handoff_target_files(handoff: dict[str, Any]) -> list[str]:
+    tf = handoff.get("target_files")
+    if not isinstance(tf, list):
+        return []
+    return [f for f in tf if isinstance(f, str)]
+
+
+def _first_record(
+    chain: list[dict[str, Any]], command: str
+) -> tuple[int, dict[str, Any]] | None:
+    for idx, record in enumerate(chain):
+        if isinstance(record, dict) and record.get("command") == command:
+            return idx, record
+    return None
+
+
+def _validate_handoff_target_drift(
+    handoff: dict[str, Any], chain: list[dict[str, Any]], label: str
+) -> list[ChainError]:
+    """Every handoff.target_files entry must appear in every chain command
+    that has a ``target_files`` field (``read_context``, ``write_change``).
+
+    Rationale: the handoff names the files under operation. A chain that
+    operates on a disjoint set silently drifts from the handoff intent.
+    """
+    handoff_files = _handoff_target_files(handoff)
+    if not handoff_files:
+        return []
+    errors: list[ChainError] = []
+    for idx, record in enumerate(chain):
+        if not isinstance(record, dict):
+            continue
+        command = record.get("command")
+        if command not in ("read_context", "write_change"):
+            continue
+        rec_files = record.get("target_files")
+        if not isinstance(rec_files, list):
+            continue
+        rec_set = {f for f in rec_files if isinstance(f, str)}
+        missing = [f for f in handoff_files if f not in rec_set]
+        if missing:
+            errors.append(
+                ChainError(
+                    code="handoff_target_drift",
+                    message=(
+                        f"{command}.target_files does not cover "
+                        f"handoff.target_files; missing={sorted(missing)}"
+                    ),
+                    command_index=idx,
+                    path=label,
+                )
+            )
+    return errors
+
+
+_MUTATING_CHANGE_TYPES: frozenset[str] = frozenset(
+    {"add", "modify", "remove", "replace"}
+)
+
+
+def _validate_handoff_intent(
+    handoff: dict[str, Any], chain: list[dict[str, Any]], label: str
+) -> list[ChainError]:
+    """Handoff intent (``change_type``) must be fulfillable by the chain.
+
+    v0.1 rules (no heuristic interpretation):
+
+    * If ``handoff.change_type`` is one of the mutating types, the chain
+      MUST contain a ``write_change`` record.
+    * If such a ``write_change`` exists, its ``change_type`` MUST equal
+      the handoff's ``change_type`` exactly. No promotion, no aliasing.
+    """
+    change_type = handoff.get("change_type")
+    if not isinstance(change_type, str) or change_type not in _MUTATING_CHANGE_TYPES:
+        return []
+
+    found = _first_record(chain, "write_change")
+    if found is None:
+        return [
+            ChainError(
+                code="handoff_intent_mismatch",
+                message=(
+                    f"handoff.change_type='{change_type}' requires a "
+                    "write_change command; chain has none"
+                ),
+                command_index=-1,
+                path=label,
+            )
+        ]
+    idx, write_rec = found
+    wc_change = write_rec.get("change_type")
+    if wc_change != change_type:
+        return [
+            ChainError(
+                code="handoff_intent_mismatch",
+                message=(
+                    f"handoff.change_type='{change_type}' but "
+                    f"write_change.change_type='{wc_change}'"
+                ),
+                command_index=idx,
+                path=label,
+            )
+        ]
+    return []
+
+
+def _validate_handoff_state_continuity(
+    handoff: dict[str, Any], chain: list[dict[str, Any]], label: str
+) -> list[ChainError]:
+    """No implicit state derivation.
+
+    If the handoff pins ``exact_before`` or ``exact_after``, the
+    ``write_change`` record MUST carry the same string verbatim. Silent
+    omission or silent divergence is a drift.
+
+    If the handoff does not pin these fields, the chain may set them
+    freely — absence in handoff is not an assertion.
+    """
+    found = _first_record(chain, "write_change")
+    if found is None:
+        return []
+    idx, write_rec = found
+    errors: list[ChainError] = []
+    for field in ("exact_before", "exact_after"):
+        if field not in handoff:
+            continue
+        handoff_val = handoff.get(field)
+        write_val = write_rec.get(field)
+        if field not in write_rec:
+            errors.append(
+                ChainError(
+                    code="handoff_state_drift",
+                    message=(
+                        f"handoff.{field} set but write_change.{field} "
+                        "missing (silent omission)"
+                    ),
+                    command_index=idx,
+                    path=label,
+                )
+            )
+            continue
+        if handoff_val != write_val:
+            errors.append(
+                ChainError(
+                    code="handoff_state_drift",
+                    message=(
+                        f"handoff.{field} and write_change.{field} "
+                        "differ (silent divergence)"
+                    ),
+                    command_index=idx,
+                    path=label,
+                )
+            )
+    return errors
+
+
+def validate_cross_contract(
+    handoff: dict[str, Any],
+    chain: list[dict[str, Any]],
+    label: str,
+    validators: dict[str, Draft202012Validator] | None = None,
+) -> list[ChainError]:
+    """Validate a ``{handoff, chain}`` pair end-to-end.
+
+    Order:
+    1. Individual chain-level checks (schema, sequence, target subset,
+       semantic contradictions).
+    2. Handoff schema conformance.
+    3. Cross-contract invariants (target drift, intent, state drift).
+
+    Chain errors and cross-contract errors are reported together; the
+    caller decides how to act. No implicit defaults are injected.
+    """
+    errors: list[ChainError] = []
+    errors.extend(validate_chain(chain, label, validators))
+    errors.extend(_validate_handoff_contract(handoff, label))
+    # Cross-contract checks are only meaningful when the handoff is
+    # structurally valid; otherwise we'd read fields that the schema has
+    # not blessed. Short-circuit after contract failure.
+    if any(e.code == "handoff_contract_invalid" for e in errors):
+        return errors
+    errors.extend(_validate_handoff_target_drift(handoff, chain, label))
+    errors.extend(_validate_handoff_intent(handoff, chain, label))
+    errors.extend(_validate_handoff_state_continuity(handoff, chain, label))
+    return errors
+
+
+def load_cross_contract_fixture(
+    path: Path,
+) -> tuple[dict[str, Any], list[dict[str, Any]], list[str]]:
+    """Load a cross-contract fixture file.
+
+    Format::
+
+        {
+          "handoff": {...},
+          "chain":   [...],
+          "expected_errors": ["code", ...]   // optional
+        }
+
+    ``expected_errors`` is the set of distinct error codes the fixture
+    must produce; omission means "must validate cleanly".
+    """
+    if not path.is_file():
+        print(f"ERROR: cross-contract fixture missing: {display_path(path)}")
+        sys.exit(2)
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        print(f"ERROR: fixture is not valid JSON: {exc}")
+        sys.exit(2)
+    if not isinstance(data, dict):
+        print(f"ERROR: fixture {display_path(path)} must be a JSON object")
+        sys.exit(2)
+    handoff = data.get("handoff")
+    chain = data.get("chain")
+    if not isinstance(handoff, dict):
+        print(f"ERROR: fixture {display_path(path)} is missing object 'handoff'")
+        sys.exit(2)
+    if not isinstance(chain, list):
+        print(f"ERROR: fixture {display_path(path)} is missing array 'chain'")
+        sys.exit(2)
+    expected = data.get("expected_errors", [])
+    if not isinstance(expected, list) or not all(isinstance(c, str) for c in expected):
+        print(
+            f"ERROR: fixture {display_path(path)} has invalid 'expected_errors'"
+        )
+        sys.exit(2)
+    return handoff, chain, expected
+
+
+def _run_cross_contract_fixture_dir(fixtures_root: Path) -> int:
+    if not fixtures_root.is_dir():
+        print(
+            f"ERROR: cross-contract fixtures root missing: "
+            f"{display_path(fixtures_root)}"
+        )
+        return 2
+    fixture_files = sorted(fixtures_root.rglob("*.json"))
+    if not fixture_files:
+        print(
+            f"ERROR: no cross-contract fixtures under "
+            f"{display_path(fixtures_root)}"
+        )
+        return 2
+
+    validators = _validators_by_command()
+    failed = 0
+    print("🔍 Cross-Contract Validation (Handoff ↔ Chain)")
+    for fixture_path in fixture_files:
+        label = display_path(fixture_path)
+        handoff, chain, expected = load_cross_contract_fixture(fixture_path)
+        observed = validate_cross_contract(handoff, chain, label, validators)
+        observed_codes = sorted({e.code for e in observed})
+        expected_codes = sorted(set(expected))
+
+        if expected_codes:
+            if observed_codes == expected_codes:
+                print(f"  ✅ {label} (expected errors: {expected_codes})")
+            else:
+                failed += 1
+                print(
+                    f"  ❌ {label}: "
+                    f"expected={expected_codes} observed={observed_codes}"
+                )
+                for err in observed:
+                    print(
+                        f"      - [{err.code}] "
+                        f"(command_index={err.command_index}) {err.message}"
+                    )
+        else:
+            if observed:
+                failed += 1
+                print(f"  ❌ {label}: unexpected failures")
+                for err in observed:
+                    print(
+                        f"      - [{err.code}] "
+                        f"(command_index={err.command_index}) {err.message}"
+                    )
+            else:
+                print(f"  ✅ {label}")
+
+    if failed:
+        print(f"\n❌ Cross-contract validation failed ({failed} case(s)).")
+        return 1
+    print("\n✅ Cross-contract validation passed.")
+    return 0
+
+
 def _format_human(chain_label: str, errors: Iterable[ChainError]) -> str:
     lines = [f"❌ Chain validation failed: {chain_label}"]
     for err in errors:
@@ -548,12 +887,39 @@ def main() -> None:
         help="Validate a single chain file (overrides --fixtures).",
     )
     parser.add_argument(
+        "--handoff",
+        type=Path,
+        default=None,
+        help=(
+            "Path to a HANDOFF_BLOCK JSON file. When given with --chain, "
+            "runs cross-contract validation (Handoff ↔ Chain)."
+        ),
+    )
+    parser.add_argument(
+        "--cross-contract-fixtures",
+        type=Path,
+        default=None,
+        help=(
+            "Directory containing cross-contract fixtures (each file is "
+            "a JSON object with 'handoff', 'chain', and optional "
+            "'expected_errors'). Overrides --fixtures/--chain."
+        ),
+    )
+    parser.add_argument(
         "--format",
         choices=("human", "json"),
         default="human",
         help="Output format for single-chain mode (--chain).",
     )
     args = parser.parse_args()
+
+    if args.cross_contract_fixtures is not None:
+        root = (
+            (REPO_ROOT / args.cross_contract_fixtures).resolve()
+            if not args.cross_contract_fixtures.is_absolute()
+            else args.cross_contract_fixtures
+        )
+        sys.exit(_run_cross_contract_fixture_dir(root))
 
     if args.chain is not None:
         chain_path = (
@@ -562,6 +928,36 @@ def main() -> None:
             else args.chain
         )
         chain = load_chain(chain_path)
+
+        if args.handoff is not None:
+            handoff_path = (
+                (REPO_ROOT / args.handoff).resolve()
+                if not args.handoff.is_absolute()
+                else args.handoff
+            )
+            if not handoff_path.is_file():
+                print(f"ERROR: handoff file missing: {display_path(handoff_path)}")
+                sys.exit(2)
+            try:
+                handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError as exc:
+                print(f"ERROR: handoff file is not valid JSON: {exc}")
+                sys.exit(2)
+            if not isinstance(handoff, dict):
+                print("ERROR: handoff file must contain a JSON object")
+                sys.exit(2)
+            label = display_path(chain_path)
+            errors = validate_cross_contract(handoff, chain, label)
+            if not errors:
+                if args.format == "human":
+                    print(f"✅ Cross-contract valid: {label}")
+                sys.exit(0)
+            if args.format == "json":
+                print(_format_json(errors))
+            else:
+                print(_format_human(label, errors))
+            sys.exit(1)
+
         errors = validate_chain(chain, display_path(chain_path))
         if not errors:
             if args.format == "human":
