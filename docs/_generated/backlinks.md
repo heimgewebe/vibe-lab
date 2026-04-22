@@ -13,6 +13,10 @@
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
+## `contracts/command-semantics.md`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
 - ← `docs/index.md` (references)
@@ -100,3 +104,15 @@
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
+
+## `tests/fixtures/agent_commands`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
+## `tests/fixtures/command_chains`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
+## `tests/fixtures/cross_contract`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)

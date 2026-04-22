@@ -3,11 +3,14 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (80 found):
+Documents not referenced by any other document via frontmatter relations (83 found):
 
+- `.venv/lib/python3.10/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md`
+- `.venv/lib/python3.10/site-packages/pip/_vendor/idna/LICENSE.md`
 - `.vibe/intent.md`
 - `catalog/anti-patterns/vague-prompt-and-fix.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
+- `docs/reference/agent-operability-fixture-matrix.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
