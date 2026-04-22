@@ -3,7 +3,7 @@ title: "Command Semantics (v0.1)"
 status: active
 canonicality: canonical
 created: "2026-04-21"
-updated: "2026-04-21"
+updated: "2026-04-22"
 author: "vibe-lab maintainers"
 relations:
   - type: references
@@ -58,6 +58,23 @@ aktuellen Durchsetzungsgrad:
 Diese Kennzeichnung macht den Unterschied zwischen Dokumentation,
 Beabsichtigung und Durchsetzung sichtbar — und verhindert stille
 Überbehauptungen.
+
+### Schichtmodell: Chain-Check-Untertypen
+
+Der ⚙️ **Chain-Check**-Status verbirgt eine interne Unterscheidung, die für
+das Verständnis der Error-Codes wichtig ist:
+
+| Untertyp | Bedeutung | Codes |
+| -------- | --------- | ----- |
+| ⚙️ Chain-Check **(intra-record)** | Prüft Kohärenz **innerhalb** eines einzelnen Command-Records — unabhängig von anderen Records in der Chain. | `validate_error_unbindable`, `semantic_contradiction` |
+| ⚙️ Chain-Check **(cross-record)** | Prüft Konsistenz **zwischen** Records einer Chain (Reihenfolge, Datei-Kontinuität, Versionen). | `command_sequence_invalid`, `target_files_mismatch`, `locator_continuity_violation` |
+| ⚙️ Chain-Check **(cross-contract)** | Prüft Bindung Handoff → Chain über Vertragsgrenze hinweg. | `handoff_*`-Codes |
+
+**Hinweis zu `validate_error_unbindable`:** Dieser Code liegt technisch im
+Chain-Validator, ist aber logisch ein **intra-record**-Check: Er vergleicht
+`checks[]` und `errors[]` ausschließlich innerhalb desselben
+`validate_change`-Records — kein Cross-Record-Vergleich, kein Zugriff auf
+`read_context`- oder `write_change`-Felder.
 
 ## Normalisiertes Vokabular
 

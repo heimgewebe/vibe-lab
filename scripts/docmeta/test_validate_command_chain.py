@@ -369,5 +369,68 @@ class ChainValidatorTests(unittest.TestCase):
         self.assertIn("validate_error_unbindable", codes)
 
 
+class ContractNachschaerfungPolicyTests(unittest.TestCase):
+    """Policy-Assertion-Tests für die v0.1 Nachschärfung (validate_error_unbindable).
+
+    Diese Tests sichern, dass die normativ tragenden Formulierungen der
+    v0.1-Nachschärfung in contracts/command-semantics.md erhalten bleiben.
+    Sie prüfen keine Validatorlogik — sie schützen den Contract-Layer
+    gegen stilles Entfernen von Kernaussagen.
+    """
+
+    def setUp(self) -> None:
+        self._contract = (
+            vcc.REPO_ROOT / "contracts" / "command-semantics.md"
+        ).read_text(encoding="utf-8")
+
+    def test_nachschaerfung_label_present(self) -> None:
+        """Das Label 'v0.1 Nachschärfung' muss im Contract sichtbar sein."""
+        self.assertIn(
+            "v0.1 Nachschärfung",
+            self._contract,
+            "contracts/command-semantics.md muss das Label 'v0.1 Nachschärfung' "
+            "für validate_error_unbindable enthalten.",
+        )
+
+    def test_unbound_freetext_marked_invalid(self) -> None:
+        """Der Contract muss festhalten, dass ungebundene Freitext-Einträge ungültig sind."""
+        self.assertIn(
+            "ungültig",
+            self._contract,
+            "contracts/command-semantics.md muss explizit festhalten, dass "
+            "ungebundene Freitext-Einträge ohne <check>:-Präfix als ungültig gelten.",
+        )
+        # Verify the term appears in the validate_error_unbindable context,
+        # not just anywhere else in the document.
+        unbindable_section = self._contract[
+            self._contract.index("validate_error_unbindable") :
+        ]
+        self.assertIn(
+            "ungültig",
+            unbindable_section,
+            "Die Ungültigkeits-Aussage muss im Kontext von "
+            "validate_error_unbindable stehen.",
+        )
+
+    def test_not_v02_preemption(self) -> None:
+        """Der Contract muss explizit klarstellen, dass die Nachschärfung kein v0.2-Vorgriff ist."""
+        # The contract must contain something like "keine Vorwegnahme von v0.2"
+        self.assertIn(
+            "v0.2",
+            self._contract[self._contract.index("v0.1 Nachschärfung") :],
+            "Im Umfeld der 'v0.1 Nachschärfung' muss ein Bezug zu v0.2 erscheinen "
+            "(Abgrenzung / Nicht-Vorwegnahme).",
+        )
+
+    def test_check_prefix_binding_rule_present(self) -> None:
+        """Der Contract muss die <check>:-Präfix-Regel für errors[] normieren."""
+        self.assertIn(
+            "<check>:",
+            self._contract,
+            "contracts/command-semantics.md muss das <check>:-Präfix-Format "
+            "für errors[]-Einträge explizit normieren.",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

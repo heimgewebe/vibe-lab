@@ -3,7 +3,7 @@ title: "Agent Operability — Fixture-Matrix (v0.1)"
 status: active
 canonicality: derived
 created: "2026-04-21"
-updated: "2026-04-21"
+updated: "2026-04-22"
 author: "vibe-lab maintainers"
 relations:
   - type: references
@@ -110,6 +110,7 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | Fixture | Was getestet wird |
 | ------- | ----------------- |
 | `tests/fixtures/command_chains/valid-minimal.json` | Korrekte Reihenfolge `read_context → write_change → validate_change`, alle Felder konsistent, `target_files` übereinstimmend. |
+| `tests/fixtures/command_chains/valid-errors-with-check-prefix.json` | `validate_change` mit `success: false` und korrekt gebundenen `errors[]` — beide Einträge beginnen mit einem gültigen `<check>:`-Präfix aus `checks[]`. |
 
 **Ungültige Fixtures**
 
@@ -121,6 +122,9 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | `tests/fixtures/command_chains/invalid-mixed-versions.json` | `invalid-mixed-versions.expected.json` | `command_sequence_invalid`, `contract_invalid` | `write_change.version: "v0.2"` in ansonsten v0.1-Kette — gemischte Versionen. |
 | `tests/fixtures/command_chains/invalid-empty-locator.json` | `invalid-empty-locator.expected.json` | `locator_continuity_violation` | `write_change.locator` enthält nur Whitespace (`"   "`) — verletzt Locator-Kontinuität (v0.1-Scope). |
 | `tests/fixtures/command_chains/invalid-add-with-exact-before.json` | `invalid-add-with-exact-before.expected.json` | `semantic_contradiction` | `change_type: add` mit gesetztem `exact_before` — ein Add hat keinen Vorher-Zustand an derselben Stelle. |
+| `tests/fixtures/command_chains/invalid-error-no-check-prefix.json` | `invalid-error-no-check-prefix.expected.json` | `validate_error_unbindable` | `errors[]`-Eintrag ohne `<check>:`-Präfix (`"something went wrong"`) — kein Bezug zu `checks[]`. |
+| `tests/fixtures/command_chains/invalid-error-unknown-check-prefix.json` | `invalid-error-unknown-check-prefix.expected.json` | `validate_error_unbindable` | `errors[]`-Eintrag mit Präfix `test:`, aber `checks: ["lint"]` — Präfix ist nicht in `checks[]`. |
+| `tests/fixtures/command_chains/invalid-error-partial-binding.json` | `invalid-error-partial-binding.expected.json` | `validate_error_unbindable` | Partiell gebundene `errors[]`: ein gültiger Eintrag (`lint:`) + ein ungebundener (`"broken link detected"`) — nur der ungebundene Eintrag löst Fehler aus. |
 
 **Abgedeckte Chain-Prüfkategorien**
 
@@ -133,6 +137,10 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | Semantischer Widerspruch (add+exact_before) | ✅ | `invalid-add-with-exact-before.json` |
 | Versionskonsistenz | ✅ | `invalid-mixed-versions.json` |
 | Locator-Kontinuität (leerer/whitespace Locator) | ✅ | `invalid-empty-locator.json` |
+| `validate_error_unbindable` — gültig (korrekte Präfixe) | ✅ | `valid-errors-with-check-prefix.json` |
+| `validate_error_unbindable` — ungültig (kein Präfix) | ✅ | `invalid-error-no-check-prefix.json` |
+| `validate_error_unbindable` — ungültig (unbekanntes Präfix) | ✅ | `invalid-error-unknown-check-prefix.json` |
+| `validate_error_unbindable` — partiell gebunden | ✅ | `invalid-error-partial-binding.json` |
 
 ---
 
@@ -233,6 +241,18 @@ Betrifft: Bindung Handoff → Chain.
 | XC-STATE-DRIFT | `exact_before/exact_after` im Handoff, aber im `write_change` weggelassen. | `cross_contract/invalid/state_drift.json` |
 | XC-INTENT-MISMATCH | `handoff.change_type` durch Chain nicht erfüllt. | `cross_contract/invalid/semantic_mismatch.json` |
 
+### 4.6 Error-Check-Bindung (`validate_error_unbindable`)
+
+Betrifft: Kohärenz zwischen `errors[]` und `checks[]` innerhalb eines `validate_change`-Records.
+Prüfebene: intra-record (kein Cross-Command-Check).
+
+| Klasse | Beschreibung | Vertreter |
+| ------ | ------------ | --------- |
+| ERR-BIND-OK | Alle `errors[]`-Einträge tragen ein gültiges `<check>:`-Präfix aus `checks[]`. | `command_chains/valid-errors-with-check-prefix.json` |
+| ERR-BIND-NO-PREFIX | `errors[]`-Eintrag ohne jedes `<check>:`-Präfix (Freitext). | `command_chains/invalid-error-no-check-prefix.json` |
+| ERR-BIND-UNKNOWN-PREFIX | Präfix vorhanden, aber nicht in `checks[]` (unbekannter Check). | `command_chains/invalid-error-unknown-check-prefix.json` |
+| ERR-BIND-PARTIAL | Ein gebundener + ein ungebundener Eintrag — partiell; ungebundener Eintrag löst Fehler aus. | `command_chains/invalid-error-partial-binding.json` |
+
 ---
 
 ## 5. Known Gaps
@@ -240,7 +260,7 @@ Betrifft: Bindung Handoff → Chain.
 Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine
 Spekulation.
 
-### 5.1 Validate/Result Seam: MISSING
+### 5.1 Validate/Result Seam: TEILWEISE GESCHLOSSEN
 
 `validate_change` enthält kein Feld, das das Ergebnis an einen `write_change`-
 Kontext zurückbindet. Die Verbindung "dieser validate_change-Record gehört zu
@@ -250,11 +270,17 @@ diesem write_change-Record" existiert nicht als maschinell prüfbarer Seam.
 — `errors[]` bleibt in v0.1 ein String-Array ohne Referenz auf konkrete Checks
 oder `write_change`-Steps.
 
-**Auswirkung:** Ein Chain-Validator kann nicht prüfen, ob `errors[]`-Einträge
-in `validate_change` auf Checks in `checks[]` referenzieren.
+**Teilschließung (v0.1 Nachschärfung):** Die `checks[]`-Bindungsregel ist nun
+maschinell erzwungen: jeder `errors[]`-Eintrag muss mit `<check>:` beginnen,
+wobei `<check>` ein Wert aus `checks[]` ist — Verletzung → `validate_error_unbindable`.
+Fixtures für alle vier Äquivalenzklassen (§4.6) sind vorhanden.
 
-**Fixture-Lücke:** Kein Fixture testet einen `validate_change`-Fehler mit
-Bezug auf einen spezifischen `write_change`-Schritt.
+**Noch offen (v0.2-Scope):** Die schritt-übergreifende Traceability
+(`validate_change`-Fehler → konkreter `write_change`-Schritt) ist nicht
+implementiert — dazu müsste `errors[]` zu strukturierten Objekten
+(`{check, code, message}`) werden, was als Breaking Change explizit auf v0.2
+verschoben ist. Alle `errors[]`-Einträge bleiben bis dahin Freitext-Strings
+nach dem `<check>:`-Präfix; kein Fixture definiert strukturierte Fehler.
 
 ### 5.2 `locator` ↔ `extracted_facts`: NOT IMPLEMENTED
 
@@ -339,6 +365,10 @@ Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist nun durch
 | Chain | mixed versions | `command_chains/invalid-mixed-versions.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Chain | empty/whitespace locator | `command_chains/invalid-empty-locator.json` | `locator_continuity_violation` | ✅ |
 | Chain | add+exact_before contradiction | `command_chains/invalid-add-with-exact-before.json` | `semantic_contradiction` | ✅ |
+| Chain | errors[] korrekt gebunden (check-Präfix) | `command_chains/valid-errors-with-check-prefix.json` | — | ✅ |
+| Chain | errors[] kein Präfix | `command_chains/invalid-error-no-check-prefix.json` | `validate_error_unbindable` | ✅ |
+| Chain | errors[] unbekanntes Präfix | `command_chains/invalid-error-unknown-check-prefix.json` | `validate_error_unbindable` | ✅ |
+| Chain | errors[] partiell gebunden | `command_chains/invalid-error-partial-binding.json` | `validate_error_unbindable` | ✅ |
 | Cross-Contract | valid full chain | `cross_contract/valid/minimal_chain.json` | — | ✅ |
 | Cross-Contract | handoff schema invalid | `cross_contract/invalid/contract_invalid.json` | `handoff_contract_invalid` | ✅ |
 | Cross-Contract | target drift (handoff file missing in chain) | `cross_contract/invalid/target_drift.json` | `handoff_target_drift` | ✅ |
