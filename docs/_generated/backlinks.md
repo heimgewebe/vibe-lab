@@ -120,6 +120,10 @@
 
 - ← `docs/index.md` (references)
 
+## `docs/reference/agent-operability-fixture-matrix.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/reference/manifest-schema.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)

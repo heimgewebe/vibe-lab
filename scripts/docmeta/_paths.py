@@ -29,8 +29,6 @@ SKIP_DIR_NAMES: frozenset[str] = frozenset({
     "venv",
     "__pycache__",
     "_archive",
-    ".venv",
-    "venv",
 })
 
 
