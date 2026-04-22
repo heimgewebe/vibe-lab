@@ -29,11 +29,24 @@ Quellen:
 - `tests/fixtures/cross_contract/**`
 - `contracts/command-semantics.md`
 
+Audit-Notation (Minimalstandard):
+- `covered: true|false`
+- `test_ref: <Fixture- oder Testreferenz>`
+- `gap: missing|intentional (v0.2)` nur fuer offene Abdeckungsluecken
+
 ---
 
 ## 1. Command-Level Coverage
 
 ### 1.1 `read_context`
+
+**Audit-Oberflaeche**
+
+| Pruefbereich | Audit |
+| ------------ | ----- |
+| Schema-Validitaet inkl. optionaler Felder | `covered: true; test_ref: tests/fixtures/agent_commands/read_context/valid-minimal.json, tests/fixtures/agent_commands/read_context/valid-edge-complex.json` |
+| Required-/Version-/Diskriminator-Guards | `covered: true; test_ref: tests/fixtures/agent_commands/read_context/contract-invalid-missing-version.json, tests/fixtures/agent_commands/read_context/contract-invalid-wrong-version.json, tests/fixtures/agent_commands/read_context/contract-invalid-wrong-command.json` |
+| Collection-/Constraint-Guards | `covered: true; test_ref: tests/fixtures/agent_commands/read_context/contract-invalid-empty-target-files.json, tests/fixtures/agent_commands/read_context/contract-invalid-empty-fact-string.json` |
 
 **Gültige Fixtures**
 
@@ -55,6 +68,14 @@ Quellen:
 ---
 
 ### 1.2 `write_change`
+
+**Audit-Oberflaeche**
+
+| Pruefbereich | Audit |
+| ------------ | ----- |
+| Schema-Validitaet inkl. Locality-Varianten | `covered: true; test_ref: tests/fixtures/agent_commands/write_change/valid-minimal.json, tests/fixtures/agent_commands/write_change/valid-edge-add-with-target-lines.json, tests/fixtures/agent_commands/write_change/valid-edge-remove.json` |
+| Version-/Diskriminator-/Change-Type-Guards | `covered: true; test_ref: tests/fixtures/agent_commands/write_change/contract-invalid-wrong-version.json, tests/fixtures/agent_commands/write_change/contract-invalid-wrong-command.json, tests/fixtures/agent_commands/write_change/contract-invalid-missing-change-type.json, tests/fixtures/agent_commands/write_change/contract-invalid-invalid-change-type.json` |
+| Required-/AnyOf-/Collection-Guards | `covered: true; test_ref: tests/fixtures/agent_commands/write_change/contract-invalid-empty-target-files.json, tests/fixtures/agent_commands/write_change/contract-invalid-missing-locator.json` |
 
 **Gültige Fixtures**
 
@@ -78,6 +99,14 @@ Quellen:
 ---
 
 ### 1.3 `validate_change`
+
+**Audit-Oberflaeche**
+
+| Pruefbereich | Audit |
+| ------------ | ----- |
+| Schema-Validitaet fuer Erfolgs-/Fehlerpfad | `covered: true; test_ref: tests/fixtures/agent_commands/validate_change/valid-success.json, tests/fixtures/agent_commands/validate_change/valid-failure.json, tests/fixtures/agent_commands/validate_change/valid-edge-multi-checks.json` |
+| Checks-/Errors-Constraint-Guards | `covered: true; test_ref: tests/fixtures/agent_commands/validate_change/contract-invalid-empty-checks.json, tests/fixtures/agent_commands/validate_change/contract-invalid-duplicate-checks.json, tests/fixtures/agent_commands/validate_change/contract-invalid-success-with-errors.json, tests/fixtures/agent_commands/validate_change/contract-invalid-failure-empty-errors.json` |
+| Version-const-Verletzung fuer `validate_change` | `covered: false; test_ref: —; gap: missing` |
 
 **Gültige Fixtures**
 
@@ -129,24 +158,24 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | `tests/fixtures/command_chains/invalid-validate-empty-targets.json` | `invalid-validate-empty-targets.expected.json` | `contract_invalid`, `validate_targets_out_of_scope` | `write_change.target_files: []` — leere Target-Liste (verletzt Schema + Plausibilitätsprüfung). |
 | `tests/fixtures/command_chains/invalid-validate-orphaned.json` | `invalid-validate-orphaned.expected.json` | `contract_invalid`, `validate_targets_out_of_scope` | `write_change` ohne `target_files`-Schlüssel — `validate_change` ohne plausiblen Datei-Scope. |
 
-**Abgedeckte Chain-Prüfkategorien**
+**Audit-Oberflaeche Chain-Level**
 
-| Kategorie | Abgedeckt | Fixture |
-| --------- | --------- | ------- |
-| Korrekte Reihenfolge | ✅ | `valid-minimal.json` |
-| Gebrochene Reihenfolge | ✅ | `invalid-wrong-order.json` |
-| Target-Kontinuität (Datei-Ebene) | ✅ | `invalid-target-files-mismatch.json` |
-| Semantischer Widerspruch (remove+exact_after) | ✅ | `invalid-remove-with-exact-after.json` |
-| Semantischer Widerspruch (add+exact_before) | ✅ | `invalid-add-with-exact-before.json` |
-| Versionskonsistenz | ✅ | `invalid-mixed-versions.json` |
-| Locator-Kontinuität (leerer/whitespace Locator) | ✅ | `invalid-empty-locator.json` |
-| `validate_error_unbindable` — gültig (korrekte Präfixe) | ✅ | `valid-errors-with-check-prefix.json` |
-| `validate_error_unbindable` — ungültig (kein Präfix) | ✅ | `invalid-error-no-check-prefix.json` |
-| `validate_error_unbindable` — ungültig (unbekanntes Präfix) | ✅ | `invalid-error-unknown-check-prefix.json` |
-| `validate_error_unbindable` — partiell gebunden | ✅ | `invalid-error-partial-binding.json` |
-| `validate_without_write` — validate ohne write | ✅ | `invalid-validate-without-write.json` |
-| `validate_targets_out_of_scope` — write mit leerem target_files | ✅ | `invalid-validate-empty-targets.json` |
-| `validate_targets_out_of_scope` — write ohne target_files-Schlüssel | ✅ | `invalid-validate-orphaned.json` |
+| Kategorie | Audit |
+| --------- | ----- |
+| Korrekte Reihenfolge | `covered: true; test_ref: tests/fixtures/command_chains/valid-minimal.json` |
+| Gebrochene Reihenfolge | `covered: true; test_ref: tests/fixtures/command_chains/invalid-wrong-order.json` |
+| Target-Kontinuitaet (Datei-Ebene) | `covered: true; test_ref: tests/fixtures/command_chains/invalid-target-files-mismatch.json` |
+| Semantischer Widerspruch (remove+exact_after) | `covered: true; test_ref: tests/fixtures/command_chains/invalid-remove-with-exact-after.json` |
+| Semantischer Widerspruch (add+exact_before) | `covered: true; test_ref: tests/fixtures/command_chains/invalid-add-with-exact-before.json` |
+| Versionskonsistenz | `covered: true; test_ref: tests/fixtures/command_chains/invalid-mixed-versions.json, scripts/docmeta/test_command_version_policy.py` |
+| Locator-Kontinuitaet (leerer/whitespace Locator) | `covered: true; test_ref: tests/fixtures/command_chains/invalid-empty-locator.json` |
+| `validate_error_unbindable` — gueltig (korrekte Praefixe) | `covered: true; test_ref: tests/fixtures/command_chains/valid-errors-with-check-prefix.json` |
+| `validate_error_unbindable` — ungueltig (kein Praefix) | `covered: true; test_ref: tests/fixtures/command_chains/invalid-error-no-check-prefix.json` |
+| `validate_error_unbindable` — ungueltig (unbekanntes Praefix) | `covered: true; test_ref: tests/fixtures/command_chains/invalid-error-unknown-check-prefix.json` |
+| `validate_error_unbindable` — partiell gebunden | `covered: true; test_ref: tests/fixtures/command_chains/invalid-error-partial-binding.json` |
+| `validate_without_write` — validate ohne write | `covered: true; test_ref: tests/fixtures/command_chains/invalid-validate-without-write.json` |
+| `validate_targets_out_of_scope` — write mit leerem target_files | `covered: true; test_ref: tests/fixtures/command_chains/invalid-validate-empty-targets.json` |
+| `validate_targets_out_of_scope` — write ohne target_files-Schluessel | `covered: true; test_ref: tests/fixtures/command_chains/invalid-validate-orphaned.json` |
 
 ---
 
@@ -175,18 +204,18 @@ Invariants (Handoff → Commands)".
 | `tests/fixtures/cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | Handoff-Intent + Sequenz | Handoff verlangt `modify`, Chain enthält kein `write_change` (nur `read_context → validate_change`) — Intent nicht erfüllt, Reihenfolge gebrochen, validate ohne write. |
 | `tests/fixtures/cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | Versions- + Contract-Verletzung | `write_change.version: "v0.2"` in Cross-Contract-Kontext — gleiche Prüfung wie im reinen Chain-Fall, aber eingebettet in Handoff-Szenario. |
 
-**Abgedeckte Cross-Contract-Prüfkategorien**
+**Audit-Oberflaeche Cross-Contract**
 
-| Kategorie | Error-Code | Abgedeckt | Fixture |
-| --------- | ---------- | --------- | ------- |
-| Handoff-Schema-Validierung | `handoff_contract_invalid` | ✅ | `contract_invalid.json` |
-| Target-Drift (Handoff → Chain, fehlende Datei) | `handoff_target_drift` | ✅ | `target_drift.json` |
-| Target-Drift (Chain → Handoff, extra Datei) | `handoff_target_drift` | ✅ | `target_drift_extra.json` |
-| State-Drift (exact_before/exact_after weggelassen) | `handoff_state_drift` | ✅ | `state_drift.json` |
-| Intent-Mismatch (kein write_change für Handoff-change_type) | `handoff_intent_mismatch` | ✅ | `semantic_mismatch.json` |
-| Semantischer Widerspruch im Cross-Contract-Kontext | `semantic_contradiction` | ✅ | `contradiction.json` |
-| Version-Konflikt im Cross-Contract-Kontext | `command_sequence_invalid` | ✅ | `version_conflict.json` |
-| Handoff-Locator-Drift (locator abweichend) | `handoff_locator_drift` | ❌ | Kein Fixture — für v0.2 vorgemerkt |
+| Kategorie | Audit |
+| --------- | ----- |
+| Handoff-Schema-Validierung | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/contract_invalid.json` |
+| Target-Drift (Handoff → Chain, fehlende Datei) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/target_drift.json` |
+| Target-Drift (Chain → Handoff, extra Datei) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/target_drift_extra.json` |
+| State-Drift (exact_before/exact_after weggelassen) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/state_drift.json` |
+| Intent-Mismatch (kein write_change fuer Handoff-change_type) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/semantic_mismatch.json` |
+| Semantischer Widerspruch im Cross-Contract-Kontext | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/contradiction.json` |
+| Version-Konflikt im Cross-Contract-Kontext | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/version_conflict.json` |
+| Handoff-Locator-Drift (locator abweichend) | `covered: false; test_ref: —; gap: intentional (v0.2)` |
 
 ---
 
@@ -277,71 +306,34 @@ Prüfebene: cross-record. Keine neue Result-Semantik; keine v0.2-Vorwegnahme.
 
 ## 5. Known Gaps
 
-Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine
-Spekulation.
+Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine Spekulation.
+Das Format ist symmetrisch zu den oberen Audit-Oberflächen (§1–3), um Homogenität
+zu garantieren.
 
-### 5.1 Validate/Result Seam: STRUKTURELL MINIMAL GESCHLOSSEN, SEMANTISCH WEITER OFFEN (v0.1)
+**Audit-Oberflaeche Known Gaps**
 
-Die minimale Plausibilitätsprüfung zwischen `validate_change` und
-`write_change` ist nun implementiert. Die zwei neuen Cross-Record-Checks
-`validate_without_write` und `validate_targets_out_of_scope` schließen die
-Naht auf struktureller Ebene — ohne neue Result-Semantik und ohne v0.2-
-Vorwegnahme. Alle vier Äquivalenzklassen (§4.7) sind durch Fixtures abgedeckt.
+| Gap | Abdeckung | Test-Ref | Status |
+| --- | --------- | -------- | ------ |
+| Validate/Result Seam — Schritt-übergreifende Traceability | `covered: true` | `tests/fixtures/command_chains/valid-validate-with-write.json`, `invalid-validate-without-write.json`, `invalid-validate-empty-targets.json`, `invalid-validate-orphaned.json` | `gap: intentional (v0.2)` — Result-Semantik und Fehler-Binding bleiben v0.2-Scope |
+| `locator` ↔ `extracted_facts` — Inhaltliche Kopplung | `covered: false` | — | `gap: intentional (v0.2)` — Maschinelle Enforcement bleibt v0.2-Scope |
+| Strukturiertes `errors[]` — `{check, code, message}` | `covered: false` | — | `gap: intentional (v0.2)` — Breaking Change auf v0.2 verschoben |
+| Handoff-Locator-Drift — `handoff.locator ↔ write_change.locator` | `covered: false` | — | `gap: intentional (v0.2)` — Error-Code `handoff_locator_drift` noch nicht implementiert |
+| Dediziertes Chain-Fixture für leeren Locator | `covered: true` | `tests/fixtures/command_chains/invalid-empty-locator.json` | ✅ GESCHLOSSEN |
+| Chain-Fixture für `add` mit `exact_before` | `covered: true` | `tests/fixtures/command_chains/invalid-add-with-exact-before.json` | ✅ GESCHLOSSEN |
 
-Die Validate→Result-Naht ist damit **nicht insgesamt** geschlossen:
-Schritt-übergreifende Traceability und strukturierte Result-Semantik bleiben
-explizit im v0.2-Scope.
+### Erläuterung der offenen Gaps (v0.2-Scope)
 
-**Noch offen (v0.2-Scope):** Schritt-übergreifende Traceability
-(`validate_change`-Fehler → konkreter `write_change`-Schritt) erfordert
-strukturierte `errors[]`-Objekte — Breaking Change, explizit auf v0.2
-verschoben.
+**5.1: Validate/Result Seam — Schritt-übergreifende Traceability**
+Die minimale Plausibilitätsprüfung zwischen `validate_change` und `write_change` ist implementiert. Die Cross-Record-Checks `validate_without_write` und `validate_targets_out_of_scope` schließen die Naht auf struktureller Ebene. Jedoch: Schritt-übergreifende Traceability (welcher Fehler stammt von welchem Schritt) erfordert strukturierte `errors[]`-Objekte, ein Breaking Change für v0.2.
 
-### 5.2 `locator` ↔ `extracted_facts`: NOT IMPLEMENTED
+**5.2: `locator` ↔ `extracted_facts`**
+Der Error-Code `locator_continuity_violation` prüft in v0.1 nur leeren/whitespace-Locator. Eine inhaltliche Kopplung zwischen Locator und Facts ist nicht maschinell erzwungen.
 
-Die inhaltliche Kopplung zwischen `write_change.locator` und
-`read_context.extracted_facts` ist in v0.1 nicht maschinell erzwungen.
+**5.3: Strukturiertes `errors[]`**
+Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 line too long"`). Strukturierte Fehler (`{check, code, message}`) bleiben v0.2-Scope.
 
-**Quelle:** `contracts/command-semantics.md` — Abschnitt "Error-Klassen (strukturiertes Modell)", Eintrag `locator_continuity_violation`
-— explizit als v0.2-Scope markiert. Der Error-Code `locator_continuity_violation`
-prüft in v0.1 nur leeren/whitespace-Locator, nicht die Kopplung an Facts.
-
-**Fixture-Lücke:** Kein Fixture testet einen nicht-leeren, aber in
-`extracted_facts` nicht referenzierten Locator.
-
-### 5.3 Strukturiertes `errors[]`: NOT IMPLEMENTED
-
-`validate_change.errors[]` ist in v0.1 ein String-Array. Es gibt keine
-Struktur (`{check, code, message}`), die eine maschinelle Auswertung
-ermöglicht.
-
-**Quelle:** `contracts/command-semantics.md` — Abschnitt "Evolution Constraints (v0.1 → v0.2)" unter `validate_change`
-— Breaking Change explizit auf v0.2 verschoben.
-
-**Fixture-Lücke:** Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings
-(z. B. `"lint: E501 line too long"`). Kein Fixture definiert strukturierte
-Fehler.
-
-### 5.4 Handoff-Locator-Drift: KEIN FIXTURE
-
-Die Prüfung `handoff.locator ↔ write_change.locator` ist in der
-Invariantenliste von `contracts/command-semantics.md` — Abschnitt "Evolution
-Constraints (v0.1 → v0.2)" unter "Cross-Contract" — explizit als
-v0.2-Evolution benannt (`handoff_locator_drift`). Der Error-Code existiert
-noch nicht im Validator.
-
-**Fixture-Lücke:** Kein Cross-Contract-Fixture testet einen abweichenden
-Locator zwischen Handoff und `write_change`.
-
-### 5.5 ~~Dediziertes Chain-Fixture für leeren Locator: FEHLT~~ → GESCHLOSSEN
-
-`locator_continuity_violation` (leerer/whitespace Locator) ist nun durch
-`tests/fixtures/command_chains/invalid-empty-locator.json` abgedeckt.
-
-### 5.6 ~~`add` mit `exact_before`: KEIN CHAIN-FIXTURE~~ → GESCHLOSSEN
-
-Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist nun durch
-`tests/fixtures/command_chains/invalid-add-with-exact-before.json` abgedeckt.
+**5.4: Handoff-Locator-Drift**
+Die Cross-Contract-Prüfung `handoff.locator ↔ write_change.locator` ist in `contracts/command-semantics.md` als v0.2-Scope markiert. Der Error-Code `handoff_locator_drift` existiert noch nicht im Validator.
 
 ---
 
