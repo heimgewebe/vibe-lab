@@ -125,6 +125,9 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | `tests/fixtures/command_chains/invalid-error-no-check-prefix.json` | `invalid-error-no-check-prefix.expected.json` | `validate_error_unbindable` | `errors[]`-Eintrag ohne `<check>:`-Präfix (`"something went wrong"`) — kein Bezug zu `checks[]`. |
 | `tests/fixtures/command_chains/invalid-error-unknown-check-prefix.json` | `invalid-error-unknown-check-prefix.expected.json` | `validate_error_unbindable` | `errors[]`-Eintrag mit Präfix `test:`, aber `checks: ["lint"]` — Präfix ist nicht in `checks[]`. |
 | `tests/fixtures/command_chains/invalid-error-partial-binding.json` | `invalid-error-partial-binding.expected.json` | `validate_error_unbindable` | Partiell gebundene `errors[]`: ein gültiger Eintrag (`lint:`) + ein ungebundener (`"broken link detected"`) — nur der ungebundene Eintrag löst Fehler aus. |
+| `tests/fixtures/command_chains/invalid-validate-without-write.json` | `invalid-validate-without-write.expected.json` | `command_sequence_invalid`, `validate_without_write` | `validate_change` ohne vorangehendes `write_change` — `read_context → validate_change`-Sequenz. |
+| `tests/fixtures/command_chains/invalid-validate-empty-targets.json` | `invalid-validate-empty-targets.expected.json` | `contract_invalid`, `validate_targets_out_of_scope` | `write_change.target_files: []` — leere Target-Liste (verletzt Schema + Plausibilitätsprüfung). |
+| `tests/fixtures/command_chains/invalid-validate-orphaned.json` | `invalid-validate-orphaned.expected.json` | `contract_invalid`, `validate_targets_out_of_scope` | `write_change` ohne `target_files`-Schlüssel — `validate_change` ohne plausiblen Datei-Scope. |
 
 **Abgedeckte Chain-Prüfkategorien**
 
@@ -141,6 +144,9 @@ Sidecar, muss die Chain fehlerfrei validieren.
 | `validate_error_unbindable` — ungültig (kein Präfix) | ✅ | `invalid-error-no-check-prefix.json` |
 | `validate_error_unbindable` — ungültig (unbekanntes Präfix) | ✅ | `invalid-error-unknown-check-prefix.json` |
 | `validate_error_unbindable` — partiell gebunden | ✅ | `invalid-error-partial-binding.json` |
+| `validate_without_write` — validate ohne write | ✅ | `invalid-validate-without-write.json` |
+| `validate_targets_out_of_scope` — write mit leerem target_files | ✅ | `invalid-validate-empty-targets.json` |
+| `validate_targets_out_of_scope` — write ohne target_files-Schlüssel | ✅ | `invalid-validate-orphaned.json` |
 
 ---
 
@@ -166,7 +172,7 @@ Invariants (Handoff → Commands)".
 | `tests/fixtures/cross_contract/invalid/target_drift_extra.json` | `handoff_target_drift` | Target-Drift (umgekehrt) | Handoff hat ein File, Chain hat zwei — Chain enthält Dateien außerhalb des Handoff-Scopes. |
 | `tests/fixtures/cross_contract/invalid/state_drift.json` | `handoff_state_drift` | State-Drift | Handoff setzt `exact_before/exact_after`, `write_change` lässt beide weg — stille Divergenz. |
 | `tests/fixtures/cross_contract/invalid/contradiction.json` | `semantic_contradiction` | Semantischer Widerspruch | `change_type: remove` mit `exact_after` im `write_change` — Record-interne Verletzung innerhalb eines Cross-Contract-Tests. |
-| `tests/fixtures/cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch` | Handoff-Intent + Sequenz | Handoff verlangt `modify`, Chain enthält kein `write_change` (nur `read_context → validate_change`) — Intent nicht erfüllt, Reihenfolge gebrochen. |
+| `tests/fixtures/cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | Handoff-Intent + Sequenz | Handoff verlangt `modify`, Chain enthält kein `write_change` (nur `read_context → validate_change`) — Intent nicht erfüllt, Reihenfolge gebrochen, validate ohne write. |
 | `tests/fixtures/cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | Versions- + Contract-Verletzung | `write_change.version: "v0.2"` in Cross-Contract-Kontext — gleiche Prüfung wie im reinen Chain-Fall, aber eingebettet in Handoff-Szenario. |
 
 **Abgedeckte Cross-Contract-Prüfkategorien**
@@ -253,6 +259,18 @@ Prüfebene: intra-record (kein Cross-Command-Check).
 | ERR-BIND-UNKNOWN-PREFIX | Präfix vorhanden, aber nicht in `checks[]` (unbekannter Check). | `command_chains/invalid-error-unknown-check-prefix.json` |
 | ERR-BIND-PARTIAL | Ein gebundener + ein ungebundener Eintrag — partiell; ungebundener Eintrag löst Fehler aus. | `command_chains/invalid-error-partial-binding.json` |
 
+### 4.7 Validate→Result Seam (v0.1 minimal)
+
+Betrifft: Plausibilitätsbindung zwischen `validate_change` und dem vorangehenden `write_change`.
+Prüfebene: cross-record. Keine neue Result-Semantik; keine v0.2-Vorwegnahme.
+
+| Klasse | Beschreibung | Vertreter |
+| ------ | ------------ | --------- |
+| VR-OK | `validate_change` folgt auf `write_change` mit nicht-leerem `target_files`. | `command_chains/valid-validate-with-write.json` |
+| VR-NO-WRITE | `validate_change` ohne vorangehendes `write_change` in der Chain. | `command_chains/invalid-validate-without-write.json` |
+| VR-EMPTY-TARGET | `write_change.target_files` leer (`[]`) — kein Datei-Scope für Validierung. | `command_chains/invalid-validate-empty-targets.json` |
+| VR-ORPHAN | `write_change` ohne `target_files`-Schlüssel — `validate_change` hat keinen plausiblen Scope. | `command_chains/invalid-validate-orphaned.json` |
+
 ---
 
 ## 5. Known Gaps
@@ -260,27 +278,22 @@ Prüfebene: intra-record (kein Cross-Command-Check).
 Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine
 Spekulation.
 
-### 5.1 Validate/Result Seam: TEILWEISE GESCHLOSSEN
+### 5.1 Validate/Result Seam: STRUKTURELL MINIMAL GESCHLOSSEN, SEMANTISCH WEITER OFFEN (v0.1)
 
-`validate_change` enthält kein Feld, das das Ergebnis an einen `write_change`-
-Kontext zurückbindet. Die Verbindung "dieser validate_change-Record gehört zu
-diesem write_change-Record" existiert nicht als maschinell prüfbarer Seam.
+Die minimale Plausibilitätsprüfung zwischen `validate_change` und
+`write_change` ist nun implementiert. Die zwei neuen Cross-Record-Checks
+`validate_without_write` und `validate_targets_out_of_scope` schließen die
+Naht auf struktureller Ebene — ohne neue Result-Semantik und ohne v0.2-
+Vorwegnahme. Alle vier Äquivalenzklassen (§4.7) sind durch Fixtures abgedeckt.
 
-**Quelle:** `contracts/command-semantics.md` — Abschnitt "Evolution Constraints (v0.1 → v0.2)" unter `validate_change`
-— `errors[]` bleibt in v0.1 ein String-Array ohne Referenz auf konkrete Checks
-oder `write_change`-Steps.
+Die Validate→Result-Naht ist damit **nicht insgesamt** geschlossen:
+Schritt-übergreifende Traceability und strukturierte Result-Semantik bleiben
+explizit im v0.2-Scope.
 
-**Teilschließung (v0.1 Nachschärfung):** Die `checks[]`-Bindungsregel ist nun
-maschinell erzwungen: jeder `errors[]`-Eintrag muss mit `<check>:` beginnen,
-wobei `<check>` ein Wert aus `checks[]` ist — Verletzung → `validate_error_unbindable`.
-Fixtures für alle vier Äquivalenzklassen (§4.6) sind vorhanden.
-
-**Noch offen (v0.2-Scope):** Die schritt-übergreifende Traceability
-(`validate_change`-Fehler → konkreter `write_change`-Schritt) ist nicht
-implementiert — dazu müsste `errors[]` zu strukturierten Objekten
-(`{check, code, message}`) werden, was als Breaking Change explizit auf v0.2
-verschoben ist. Alle `errors[]`-Einträge bleiben bis dahin Freitext-Strings
-nach dem `<check>:`-Präfix; kein Fixture definiert strukturierte Fehler.
+**Noch offen (v0.2-Scope):** Schritt-übergreifende Traceability
+(`validate_change`-Fehler → konkreter `write_change`-Schritt) erfordert
+strukturierte `errors[]`-Objekte — Breaking Change, explizit auf v0.2
+verschoben.
 
 ### 5.2 `locator` ↔ `extracted_facts`: NOT IMPLEMENTED
 
@@ -369,12 +382,15 @@ Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist nun durch
 | Chain | errors[] kein Präfix | `command_chains/invalid-error-no-check-prefix.json` | `validate_error_unbindable` | ✅ |
 | Chain | errors[] unbekanntes Präfix | `command_chains/invalid-error-unknown-check-prefix.json` | `validate_error_unbindable` | ✅ |
 | Chain | errors[] partiell gebunden | `command_chains/invalid-error-partial-binding.json` | `validate_error_unbindable` | ✅ |
+| Chain | validate ohne write_change | `command_chains/invalid-validate-without-write.json` | `command_sequence_invalid`, `validate_without_write` | ✅ |
+| Chain | validate mit leerem target_files | `command_chains/invalid-validate-empty-targets.json` | `contract_invalid`, `validate_targets_out_of_scope` | ✅ |
+| Chain | validate orphaned (kein target_files-Schlüssel) | `command_chains/invalid-validate-orphaned.json` | `contract_invalid`, `validate_targets_out_of_scope` | ✅ |
 | Cross-Contract | valid full chain | `cross_contract/valid/minimal_chain.json` | — | ✅ |
 | Cross-Contract | handoff schema invalid | `cross_contract/invalid/contract_invalid.json` | `handoff_contract_invalid` | ✅ |
 | Cross-Contract | target drift (handoff file missing in chain) | `cross_contract/invalid/target_drift.json` | `handoff_target_drift` | ✅ |
 | Cross-Contract | target drift (extra file in chain) | `cross_contract/invalid/target_drift_extra.json` | `handoff_target_drift` | ✅ |
 | Cross-Contract | state drift (exact_before/after omitted) | `cross_contract/invalid/state_drift.json` | `handoff_state_drift` | ✅ |
 | Cross-Contract | semantic contradiction (remove+exact_after) | `cross_contract/invalid/contradiction.json` | `semantic_contradiction` | ✅ |
-| Cross-Contract | intent mismatch (no write_change) | `cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch` | ✅ |
+| Cross-Contract | intent mismatch (no write_change) | `cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | ✅ |
 | Cross-Contract | version conflict | `cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Cross-Contract | locator drift (handoff vs write_change) | — | `handoff_locator_drift` | ❌ MISSING (v0.2) |

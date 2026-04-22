@@ -27,5 +27,5 @@
       "errors": []
     }
   ],
-  "expected_errors": ["command_sequence_invalid", "handoff_intent_mismatch"]
+  "expected_errors": ["command_sequence_invalid", "handoff_intent_mismatch", "validate_without_write"]
 }

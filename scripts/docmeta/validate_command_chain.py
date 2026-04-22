@@ -69,6 +69,8 @@ ERROR_CODES: frozenset[str] = frozenset(
         "handoff_target_drift",
         "handoff_intent_mismatch",
         "handoff_state_drift",
+        "validate_without_write",
+        "validate_targets_out_of_scope",
     }
 )
 
@@ -477,6 +479,89 @@ def _validate_error_check_binding(
     return errors
 
 
+def _validate_validate_result_seam(
+    chain: list[dict[str, Any]], chain_label: str
+) -> list[ChainError]:
+    """Validate→Result seam: plausibility checks between validate_change and write_change.
+
+    **v0.1 minimal invariants (cross-record):**
+
+    1. ``validate_without_write``: a ``validate_change`` record must be preceded
+       by at least one ``write_change`` in the same chain. A ``validate_change``
+       that exists without a prior ``write_change`` is semantically ungrounded.
+
+    2. ``validate_targets_out_of_scope``: when ``validate_change.checks`` is
+       non-empty, the most recent preceding ``write_change`` in the same chain
+       must carry a non-empty ``target_files`` list. Without concrete target
+       files there is no plausible scope for the validation to act on.
+
+    **Note on double-reporting:** when the preceding ``write_change`` is already
+    schema-invalid (``contract_invalid``), this check still fires and produces
+    ``validate_targets_out_of_scope`` in addition. This is intentional: schema
+    invalidity and semantic-plausibility loss are distinct concerns and both are
+    reported independently (v0.1 scope).
+
+    **Scope discipline (v0.1):**
+    * Purely structural plausibility — no semantic analysis of check names.
+    * Only the emptiness / absence of ``write_change.target_files`` is tested;
+      content of checks[] is not inspected further.
+    * No new result-schema semantics; no ``errors[]`` structure.
+
+    See ``contracts/command-semantics.md`` §Command: validate_change and
+    §Chain Anti-Invariants.
+    """
+    errors: list[ChainError] = []
+    for idx, record in enumerate(chain):
+        if not isinstance(record, dict):
+            continue
+        if record.get("command") != "validate_change":
+            continue
+
+        # Find the most recent write_change that precedes this validate_change.
+        preceding_write: dict[str, Any] | None = None
+        for j in range(idx - 1, -1, -1):
+            if (
+                isinstance(chain[j], dict)
+                and chain[j].get("command") == "write_change"
+            ):
+                preceding_write = chain[j]
+                break
+
+        if preceding_write is None:
+            errors.append(
+                ChainError(
+                    code="validate_without_write",
+                    message=(
+                        "validate_change has no preceding write_change in chain; "
+                        "validation cannot be plausibly grounded"
+                    ),
+                    command_index=idx,
+                    path=chain_label,
+                )
+            )
+            continue
+
+        # Only check target_files scope when validate_change.checks is non-empty.
+        checks = record.get("checks")
+        if not isinstance(checks, list) or len(checks) == 0:
+            continue
+
+        target_files = preceding_write.get("target_files")
+        if not isinstance(target_files, list) or len(target_files) == 0:
+            errors.append(
+                ChainError(
+                    code="validate_targets_out_of_scope",
+                    message=(
+                        "validate_change.checks is non-empty but the preceding "
+                        "write_change has no target_files to bind the validation against"
+                    ),
+                    command_index=idx,
+                    path=chain_label,
+                )
+            )
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # Orchestration
 # ---------------------------------------------------------------------------
@@ -502,6 +587,7 @@ def validate_chain(
     errors.extend(_validate_locator_continuity(chain, chain_label))
     errors.extend(_validate_semantic_anti_invariants(chain, chain_label))
     errors.extend(_validate_error_check_binding(chain, chain_label))
+    errors.extend(_validate_validate_result_seam(chain, chain_label))
     return errors
 
 
