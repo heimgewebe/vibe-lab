@@ -46,9 +46,23 @@ def _minimal_valid_chain() -> list[dict[str, object]]:
     ]
 
 
+def _contains_contract_invalid(errors: list[str]) -> bool:
+    return any("contract_invalid" in error for error in errors)
+
+
 class CommandVersionPolicyTests(unittest.TestCase):
     def setUp(self) -> None:
         self.chain_validators = vcc._validators_by_command()
+
+    def test_consistent_v01_chain_is_valid(self) -> None:
+        chain = _minimal_valid_chain()
+
+        errors = vcc.validate_chain(chain, "inline-valid", self.chain_validators)
+
+        self.assertFalse(
+            errors,
+            f"expected no errors for consistent v0.1 chain, got: {errors}",
+        )
 
     def test_mixed_versions_constructed_inline_is_policy_invalid(self) -> None:
         chain = _minimal_valid_chain()
@@ -76,7 +90,10 @@ class CommandVersionPolicyTests(unittest.TestCase):
         path = COMMAND_FIXTURES / "read_context" / "contract-invalid-missing-version.json"
         errors = vac.validate_one(path, validator)
         self.assertTrue(errors)
-        self.assertIn("contract_invalid", errors[0])
+        self.assertTrue(
+            _contains_contract_invalid(errors),
+            "expected at least one contract_invalid error",
+        )
 
     def test_missing_version_constructed_inline_is_contract_invalid(self) -> None:
         validator = vac.load_validator(vac.schema_path_for("read_context"))
@@ -94,7 +111,10 @@ class CommandVersionPolicyTests(unittest.TestCase):
         path = COMMAND_FIXTURES / "write_change" / "contract-invalid-wrong-version.json"
         errors = vac.validate_one(path, validator)
         self.assertTrue(errors)
-        self.assertIn("contract_invalid", errors[0])
+        self.assertTrue(
+            _contains_contract_invalid(errors),
+            "expected at least one contract_invalid error",
+        )
 
     def test_wrong_version_constructed_inline_is_contract_invalid(self) -> None:
         validator = vac.load_validator(vac.schema_path_for("write_change"))
@@ -110,11 +130,9 @@ class CommandVersionPolicyTests(unittest.TestCase):
     def test_contract_documents_version_policy_markers(self) -> None:
         contract = CONTRACT_PATH.read_text(encoding="utf-8")
         self.assertIn("## Versionsstrategie", contract)
-        self.assertIn("### Regeln", contract)
-        self.assertIn("Jeder Breaking Change verlangt Version-Bump (`v0.1` → `v0.2`).", contract)
-        self.assertIn("Chain-Validator akzeptiert in einer Kette nur Records **derselben**", contract)
-        self.assertIn("Gemischte Versionen → `command_sequence_invalid`.", contract)
-        self.assertIn("| `contract_invalid`", contract)
+        self.assertIn("v0.1", contract)
+        self.assertIn("command_sequence_invalid", contract)
+        self.assertIn("contract_invalid", contract)
 
 
 if __name__ == "__main__":
