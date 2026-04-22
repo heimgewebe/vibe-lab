@@ -306,99 +306,34 @@ Prüfebene: cross-record. Keine neue Result-Semantik; keine v0.2-Vorwegnahme.
 
 ## 5. Known Gaps
 
-Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine
-Spekulation.
+Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine Spekulation.
+Das Format ist symmetrisch zu den oberen Audit-Oberflächen (§1–3), um Homogenität
+zu garantieren.
 
-### 5.1 Validate/Result Seam: STRUKTURELL MINIMAL GESCHLOSSEN, SEMANTISCH WEITER OFFEN (v0.1)
+**Audit-Oberflaeche Known Gaps**
 
-Die minimale Plausibilitätsprüfung zwischen `validate_change` und
-`write_change` ist nun implementiert. Die zwei neuen Cross-Record-Checks
-`validate_without_write` und `validate_targets_out_of_scope` schließen die
-Naht auf struktureller Ebene — ohne neue Result-Semantik und ohne v0.2-
-Vorwegnahme. Alle vier Äquivalenzklassen (§4.7) sind durch Fixtures abgedeckt.
+| Gap | Abdeckung | Test-Ref | Status |
+| --- | --------- | -------- | ------ |
+| Validate/Result Seam — Schritt-übergreifende Traceability | `covered: true` | `tests/fixtures/command_chains/valid-validate-with-write.json`, `invalid-validate-without-write.json`, `invalid-validate-empty-targets.json`, `invalid-validate-orphaned.json` | `gap: intentional (v0.2)` — Result-Semantik und Fehler-Binding bleiben v0.2-Scope |
+| `locator` ↔ `extracted_facts` — Inhaltliche Kopplung | `covered: false` | — | `gap: intentional (v0.2)` — Maschinelle Enforcement bleibt v0.2-Scope |
+| Strukturiertes `errors[]` — `{check, code, message}` | `covered: false` | — | `gap: intentional (v0.2)` — Breaking Change auf v0.2 verschoben |
+| Handoff-Locator-Drift — `handoff.locator ↔ write_change.locator` | `covered: false` | — | `gap: intentional (v0.2)` — Error-Code `handoff_locator_drift` noch nicht implementiert |
+| Dediziertes Chain-Fixture für leeren Locator | `covered: true` | `tests/fixtures/command_chains/invalid-empty-locator.json` | ✅ GESCHLOSSEN |
+| Chain-Fixture für `add` mit `exact_before` | `covered: true` | `tests/fixtures/command_chains/invalid-add-with-exact-before.json` | ✅ GESCHLOSSEN |
 
-Die Validate→Result-Naht ist damit **nicht insgesamt** geschlossen:
-Schritt-übergreifende Traceability und strukturierte Result-Semantik bleiben
-explizit im v0.2-Scope.
+### Erläuterung der offenen Gaps (v0.2-Scope)
 
-Audit:
-- `covered: true`
-- `test_ref: tests/fixtures/command_chains/valid-validate-with-write.json, tests/fixtures/command_chains/invalid-validate-without-write.json, tests/fixtures/command_chains/invalid-validate-empty-targets.json, tests/fixtures/command_chains/invalid-validate-orphaned.json`
-- `gap: intentional (v0.2)`
+**5.1: Validate/Result Seam — Schritt-übergreifende Traceability**
+Die minimale Plausibilitätsprüfung zwischen `validate_change` und `write_change` ist implementiert. Die Cross-Record-Checks `validate_without_write` und `validate_targets_out_of_scope` schließen die Naht auf struktureller Ebene. Jedoch: Schritt-übergreifende Traceability (welcher Fehler stammt von welchem Schritt) erfordert strukturierte `errors[]`-Objekte, ein Breaking Change für v0.2.
 
-**Noch offen (v0.2-Scope):** Schritt-übergreifende Traceability
-(`validate_change`-Fehler → konkreter `write_change`-Schritt) erfordert
-strukturierte `errors[]`-Objekte — Breaking Change, explizit auf v0.2
-verschoben.
+**5.2: `locator` ↔ `extracted_facts`**
+Der Error-Code `locator_continuity_violation` prüft in v0.1 nur leeren/whitespace-Locator. Eine inhaltliche Kopplung zwischen Locator und Facts ist nicht maschinell erzwungen.
 
-### 5.2 `locator` ↔ `extracted_facts`: NOT IMPLEMENTED
+**5.3: Strukturiertes `errors[]`**
+Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 line too long"`). Strukturierte Fehler (`{check, code, message}`) bleiben v0.2-Scope.
 
-Die inhaltliche Kopplung zwischen `write_change.locator` und
-`read_context.extracted_facts` ist in v0.1 nicht maschinell erzwungen.
-
-**Quelle:** `contracts/command-semantics.md` — Abschnitt "Error-Klassen (strukturiertes Modell)", Eintrag `locator_continuity_violation`
-— explizit als v0.2-Scope markiert. Der Error-Code `locator_continuity_violation`
-prüft in v0.1 nur leeren/whitespace-Locator, nicht die Kopplung an Facts.
-
-**Fixture-Lücke:** Kein Fixture testet einen nicht-leeren, aber in
-`extracted_facts` nicht referenzierten Locator.
-
-Audit:
-- `covered: false`
-- `test_ref: —`
-- `gap: intentional (v0.2)`
-
-### 5.3 Strukturiertes `errors[]`: NOT IMPLEMENTED
-
-`validate_change.errors[]` ist in v0.1 ein String-Array. Es gibt keine
-Struktur (`{check, code, message}`), die eine maschinelle Auswertung
-ermöglicht.
-
-**Quelle:** `contracts/command-semantics.md` — Abschnitt "Evolution Constraints (v0.1 → v0.2)" unter `validate_change`
-— Breaking Change explizit auf v0.2 verschoben.
-
-**Fixture-Lücke:** Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings
-(z. B. `"lint: E501 line too long"`). Kein Fixture definiert strukturierte
-Fehler.
-
-Audit:
-- `covered: false`
-- `test_ref: —`
-- `gap: intentional (v0.2)`
-
-### 5.4 Handoff-Locator-Drift: KEIN FIXTURE
-
-Die Prüfung `handoff.locator ↔ write_change.locator` ist in der
-Invariantenliste von `contracts/command-semantics.md` — Abschnitt "Evolution
-Constraints (v0.1 → v0.2)" unter "Cross-Contract" — explizit als
-v0.2-Evolution benannt (`handoff_locator_drift`). Der Error-Code existiert
-noch nicht im Validator.
-
-**Fixture-Lücke:** Kein Cross-Contract-Fixture testet einen abweichenden
-Locator zwischen Handoff und `write_change`.
-
-Audit:
-- `covered: false`
-- `test_ref: —`
-- `gap: intentional (v0.2)`
-
-### 5.5 ~~Dediziertes Chain-Fixture für leeren Locator: FEHLT~~ → GESCHLOSSEN
-
-`locator_continuity_violation` (leerer/whitespace Locator) ist nun durch
-`tests/fixtures/command_chains/invalid-empty-locator.json` abgedeckt.
-
-Audit:
-- `covered: true`
-- `test_ref: tests/fixtures/command_chains/invalid-empty-locator.json`
-
-### 5.6 ~~`add` mit `exact_before`: KEIN CHAIN-FIXTURE~~ → GESCHLOSSEN
-
-Die Anti-Invariante "change_type: add mit gesetztem exact_before" ist nun durch
-`tests/fixtures/command_chains/invalid-add-with-exact-before.json` abgedeckt.
-
-Audit:
-- `covered: true`
-- `test_ref: tests/fixtures/command_chains/invalid-add-with-exact-before.json`
+**5.4: Handoff-Locator-Drift**
+Die Cross-Contract-Prüfung `handoff.locator ↔ write_change.locator` ist in `contracts/command-semantics.md` als v0.2-Scope markiert. Der Error-Code `handoff_locator_drift` existiert noch nicht im Validator.
 
 ---
 
