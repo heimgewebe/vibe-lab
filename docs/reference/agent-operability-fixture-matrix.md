@@ -278,13 +278,17 @@ Prüfebene: cross-record. Keine neue Result-Semantik; keine v0.2-Vorwegnahme.
 Diese Sektion dokumentiert ausschließlich belegbare Lücken — keine
 Spekulation.
 
-### 5.1 ~~Validate/Result Seam: TEILWEISE GESCHLOSSEN~~ → NAHT GESCHLOSSEN (v0.1 minimal)
+### 5.1 Validate/Result Seam: STRUKTURELL MINIMAL GESCHLOSSEN, SEMANTISCH WEITER OFFEN (v0.1)
 
 Die minimale Plausibilitätsprüfung zwischen `validate_change` und
 `write_change` ist nun implementiert. Die zwei neuen Cross-Record-Checks
 `validate_without_write` und `validate_targets_out_of_scope` schließen die
 Naht auf struktureller Ebene — ohne neue Result-Semantik und ohne v0.2-
 Vorwegnahme. Alle vier Äquivalenzklassen (§4.7) sind durch Fixtures abgedeckt.
+
+Die Validate→Result-Naht ist damit **nicht insgesamt** geschlossen:
+Schritt-übergreifende Traceability und strukturierte Result-Semantik bleiben
+explizit im v0.2-Scope.
 
 **Noch offen (v0.2-Scope):** Schritt-übergreifende Traceability
 (`validate_change`-Fehler → konkreter `write_change`-Schritt) erfordert

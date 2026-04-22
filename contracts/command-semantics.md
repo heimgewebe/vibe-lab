@@ -67,7 +67,7 @@ das Verständnis der Error-Codes wichtig ist:
 | Untertyp | Bedeutung | Codes |
 | -------- | --------- | ----- |
 | ⚙️ Chain-Check **(intra-record)** | Prüft Kohärenz **innerhalb** eines einzelnen Command-Records — unabhängig von anderen Records in der Chain. | `validate_error_unbindable`, `semantic_contradiction` |
-| ⚙️ Chain-Check **(cross-record)** | Prüft Konsistenz **zwischen** Records einer Chain (Reihenfolge, Datei-Kontinuität, Versionen). | `command_sequence_invalid`, `target_files_mismatch`, `locator_continuity_violation`, `validate_without_write`, `validate_targets_out_of_scope` |
+| ⚙️ Chain-Check **(cross-record)** | Prüft Konsistenz **zwischen** Records einer Chain (Reihenfolge, Datei-Kontinuität, Versionen). | `command_sequence_invalid`, `target_files_mismatch`, `validate_without_write`, `validate_targets_out_of_scope` |
 | ⚙️ Chain-Check **(cross-contract)** | Prüft Bindung Handoff → Chain über Vertragsgrenze hinweg. | `handoff_*`-Codes |
 
 **Hinweis zu `validate_error_unbindable`:** Dieser Code liegt technisch im
@@ -104,7 +104,7 @@ String-basiertem `contract_invalid`.
 | `contract_invalid`             | Schema-Validierung eines Einzel-Records fehlgeschlagen.          | ⚙️ Chain-Check (via Schema-Delegation) |
 | `command_sequence_invalid`     | Reihenfolge in der Kette falsch (z. B. `validate_change` vor `write_change`), oder gemischte Versionen. | ⚙️ Chain-Check |
 | `target_files_mismatch`        | `write_change.target_files` nicht Teilmenge von `read_context.target_files`. | ⚙️ Chain-Check |
-| `locator_continuity_violation` | `write_change.locator` ist leer oder enthält nur Whitespace. **Namens-Hinweis v0.1:** Der Code-Name ist für die vollständige v0.2-Semantik (Kopplung an `read_context.extracted_facts`) vorgehalten. In v0.1 deckt er ausschließlich den leeren/whitespace-Locator ab — die inhaltliche Kontinuität zwischen Lesekontext und Schreibanker ist **noch nicht implementiert** (📋 Dokumentiert für v0.2). | ⚙️ Chain-Check (v0.1 eingeschränkter Scope) |
+| `locator_continuity_violation` | `write_change.locator` ist leer oder enthält nur Whitespace. **Namens-Hinweis v0.1:** Der Code-Name ist für die vollständige v0.2-Semantik (Kopplung an `read_context.extracted_facts`) vorgehalten. In v0.1 deckt er ausschließlich den leeren/whitespace-Locator ab — die inhaltliche Kontinuität zwischen Lesekontext und Schreibanker ist **noch nicht implementiert** (📋 Dokumentiert für v0.2). | ⚙️ Chain-Check (intra-record; v0.1 eingeschränkter Scope) |
 | `semantic_contradiction`       | Feld-Kombination innerhalb eines Records widerspricht sich (siehe Anti-Invarianten). | ⚙️ Chain-Check |
 | `validate_error_unbindable`    | Ein `errors[]`-Eintrag in `validate_change` beginnt nicht mit `<check>:` für einen Wert aus `checks[]`. Betrifft ausschließlich Einträge bei `success: false`. Keine strukturierten Fehlerobjekte; bleibt String-basiert (v0.1). **Scope-Hinweis:** Prüft Intra-Record-Kohärenz (`checks[]` vs. `errors[]` innerhalb desselben Records) — kein Cross-Command-Check. | ⚙️ Chain-Check (intra-record) |
 | `validate_without_write`       | `validate_change` existiert in einer Chain ohne vorangehendes `write_change`. Minimale Plausibilitätsprüfung: Validierung ohne Schreiboperation ist semantisch ungebunden. Keine neue Result-Semantik (v0.1). | ⚙️ Chain-Check (cross-record) |
