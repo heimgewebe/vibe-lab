@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import unittest
+from pathlib import Path
 
 from jsonschema import ValidationError
 
@@ -17,7 +18,7 @@ COMMAND_FIXTURES = vac.REPO_ROOT / "tests" / "fixtures" / "agent_commands"
 CONTRACT_PATH = vcc.REPO_ROOT / "contracts" / "command-semantics.md"
 
 
-def _load_json(path):
+def _load_json(path: Path) -> object:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -131,6 +132,7 @@ class CommandVersionPolicyTests(unittest.TestCase):
         contract = CONTRACT_PATH.read_text(encoding="utf-8")
         self.assertIn("## Versionsstrategie", contract)
         self.assertIn("v0.1", contract)
+        self.assertIn("Gemischte Versionen", contract)
         self.assertIn("command_sequence_invalid", contract)
         self.assertIn("contract_invalid", contract)
 
