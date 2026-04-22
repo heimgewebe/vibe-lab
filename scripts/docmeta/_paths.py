@@ -24,7 +24,9 @@ SKIP_DIR_NAMES: frozenset[str] = frozenset({
     ".git",
     ".github",
     ".cursor",
+    ".venv",
     "node_modules",
+    "venv",
     "__pycache__",
     "_archive",
 })

@@ -25,18 +25,23 @@ class FixtureMatrixKnownGapsAuditTests(unittest.TestCase):
     def _extract_gap_subsections(self, known_gaps_text: str) -> list[tuple[str, str]]:
         """Extract (gap_number, subsection_body) for all ### 5.x subsections."""
         pattern = re.compile(
-            r"\*\*5\.(\d+):\s*([^*]+)\*\*\n(.*?)(?=\*\*5\.\d+:|\Z)",
-            re.DOTALL,
+            r"^###\s+5\.(\d+)\s+.*?\n(.*?)(?=^###\s+5\.\d+\s+|\Z)",
+            re.DOTALL | re.MULTILINE,
         )
         matches = pattern.finditer(known_gaps_text)
-        return [(m.group(1), m.group(3)) for m in matches]
+        return [(m.group(1), m.group(2)) for m in matches]
 
     def test_known_gaps_per_gap_audit_markers(self) -> None:
         """Test that each open gap subsection contains normalized audit markers."""
         matrix = MATRIX_PATH.read_text(encoding="utf-8")
         known_gaps = self._section_body(matrix, "## 5. Known Gaps")
 
-        # Extract all ### 5.x subsections
+        self.assertNotIn(
+            "| Gap | Abdeckung | Test-Ref | Status |",
+            known_gaps,
+            "Known Gaps section must not mix the per-gap audit form with a redundant summary table",
+        )
+
         gap_subsections = self._extract_gap_subsections(known_gaps)
         self.assertGreater(
             len(gap_subsections),
@@ -45,28 +50,21 @@ class FixtureMatrixKnownGapsAuditTests(unittest.TestCase):
         )
 
         for gap_num, gap_body in gap_subsections:
-            # Prüfe, dass jeder Gap-Abschnitt einen **Audit:**-Block mit Markern enthält
             self.assertIn(
                 "**Audit:**",
                 gap_body,
                 f"Gap 5.{gap_num} muss einen **Audit:**-Block enthalten",
             )
-            
-            # Prüfe `covered:` marker
             self.assertRegex(
                 gap_body,
                 r"`covered:\s*(true|false)`",
                 f"Gap 5.{gap_num} muss ein `covered: true|false` Marker haben",
             )
-            
-            # Prüfe `test_ref:` marker
             self.assertIn(
                 "`test_ref:",
                 gap_body,
                 f"Gap 5.{gap_num} muss ein `test_ref:` Marker haben",
             )
-            
-            # Prüfe `gap:` marker mit erlaubten Werten
             self.assertRegex(
                 gap_body,
                 r"`gap:\s*(missing|intentional \(v0\.2\))`",
