@@ -339,24 +339,32 @@ class ChainValidatorTests(unittest.TestCase):
 
     def test_errors_fixture_with_check_prefix_passes(self) -> None:
         chain = _chain("valid-errors-with-check-prefix.json")
-        errors = vcc.validate_chain(chain, "valid-errors-with-check-prefix.json", self.validators)
+        errors = vcc.validate_chain(
+            chain, "valid-errors-with-check-prefix.json", self.validators
+        )
         self.assertEqual(errors, [])
 
     def test_errors_fixture_no_prefix_detected(self) -> None:
         chain = _chain("invalid-error-no-check-prefix.json")
-        errors = vcc.validate_chain(chain, "invalid-error-no-check-prefix.json", self.validators)
+        errors = vcc.validate_chain(
+            chain, "invalid-error-no-check-prefix.json", self.validators
+        )
         codes = {e.code for e in errors}
         self.assertIn("validate_error_unbindable", codes)
 
     def test_errors_fixture_unknown_prefix_detected(self) -> None:
         chain = _chain("invalid-error-unknown-check-prefix.json")
-        errors = vcc.validate_chain(chain, "invalid-error-unknown-check-prefix.json", self.validators)
+        errors = vcc.validate_chain(
+            chain, "invalid-error-unknown-check-prefix.json", self.validators
+        )
         codes = {e.code for e in errors}
         self.assertIn("validate_error_unbindable", codes)
 
     def test_errors_fixture_partial_binding_detected(self) -> None:
         chain = _chain("invalid-error-partial-binding.json")
-        errors = vcc.validate_chain(chain, "invalid-error-partial-binding.json", self.validators)
+        errors = vcc.validate_chain(
+            chain, "invalid-error-partial-binding.json", self.validators
+        )
         codes = {e.code for e in errors}
         self.assertIn("validate_error_unbindable", codes)
 

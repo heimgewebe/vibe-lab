@@ -420,7 +420,7 @@ def _validate_semantic_anti_invariants(
 def _validate_error_check_binding(
     chain: list[dict[str, Any]], chain_label: str
 ) -> list[ChainError]:
-    """Each errors[] entry in validate_change must be bindable to a check[].
+    """Each errors[] entry in validate_change must be bindable to a checks[].
 
     **v0.1 rule:** an error string is considered bound when it starts with
     ``<check>:`` where ``<check>`` is a value from ``checks[]``.  A bare
@@ -453,6 +453,8 @@ def _validate_error_check_binding(
         if not isinstance(checks, list):
             continue
         check_names = {c for c in checks if isinstance(c, str)}
+        if not check_names:
+            continue
         error_entries = record.get("errors") or []
         if not isinstance(error_entries, list):
             continue
