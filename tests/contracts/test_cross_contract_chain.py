@@ -117,6 +117,19 @@ class CrossContractNegativeTests(unittest.TestCase):
         self.assertIn("handoff_state_drift", observed)
         self.assertEqual(observed, expected)
 
+    def test_locator_drift_fails(self) -> None:
+        """Handoff locator and write_change locator must remain consistent.
+
+        This is an intentional red-test for the known v0.2 gap
+        ``handoff_locator_drift``. The validator does not implement this
+        invariant yet, so this test must currently fail.
+        """
+        observed, expected = self._observed(
+            "invalid/handoff_locator_drift/locator_drift.json"
+        )
+        self.assertIn("handoff_locator_drift", observed)
+        self.assertEqual(observed, expected)
+
     def test_handoff_contract_invalid_fails(self) -> None:
         """Handoff itself violates agent.handoff.schema.json (missing 'status')."""
         observed, expected = self._observed("invalid/contract_invalid.json")
