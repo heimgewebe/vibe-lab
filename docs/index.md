@@ -35,6 +35,8 @@ relations:
     target: ../instruction-blocks/no-vague-prompts.md
   - type: references
     target: ../instruction-blocks/edge-case-enumeration.md
+  - type: references
+    target: reference/agent-operability-fixture-matrix.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -165,3 +167,4 @@ Portable Denkbausteine für Prompts und Workflows:
 ## Referenz
 
 - [Manifest-Schema-Semantik](reference/manifest-schema.md)
+- [Agent Operability — Fixture-Matrix (v0.1)](reference/agent-operability-fixture-matrix.md)

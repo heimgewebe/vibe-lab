@@ -62,8 +62,13 @@
 
 - ← `docs/index.md` (references)
 
+## `contracts/command-semantics.md`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
+- ← `contracts/command-semantics.md` (references)
 - ← `docs/index.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability.md`
@@ -112,6 +117,10 @@
 - ← `docs/index.md` (references)
 
 ## `docs/policies/interpretation-budget.md`
+
+- ← `docs/index.md` (references)
+
+## `docs/reference/agent-operability-fixture-matrix.md`
 
 - ← `docs/index.md` (references)
 
@@ -180,6 +189,18 @@
 
 - ← `docs/index.md` (references)
 
+## `schemas/command.read_context.schema.json`
+
+- ← `contracts/command-semantics.md` (references)
+
+## `schemas/command.validate_change.schema.json`
+
+- ← `contracts/command-semantics.md` (references)
+
+## `schemas/command.write_change.schema.json`
+
+- ← `contracts/command-semantics.md` (references)
+
 ## `schemas/decision.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
@@ -192,3 +213,15 @@
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
+
+## `tests/fixtures/agent_commands`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
+## `tests/fixtures/command_chains`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
+## `tests/fixtures/cross_contract`
+
+- ← `docs/reference/agent-operability-fixture-matrix.md` (references)

@@ -46,37 +46,31 @@ class FixtureMatrixAuditSurfaceTests(unittest.TestCase):
                 f"{section_name} section must contain test_ref markers",
             )
 
-        gap_blocks = re.findall(
-            r"\| Gap \| Abdeckung \|.*?\n(.*?)(?=\n### Erläuterung|\Z)",
+        # Known Gaps uses per-gap ### 5.x subsections (not a flat table).
+        gap_subsections = re.findall(
+            r"^###\s+5\.\d+\s+.+$",
             known_gaps,
-            re.DOTALL,
+            re.MULTILINE,
         )
         self.assertGreater(
-            len(gap_blocks),
+            len(gap_subsections),
             0,
-            "Known Gaps section must contain tabular audit surface",
+            "Known Gaps section must contain per-gap ### 5.x subsections",
         )
-
-        gap_table = gap_blocks[0] if gap_blocks else ""
         self.assertIn(
             "`covered:",
-            gap_table,
-            "Known Gaps table must contain `covered:` markers (backtick-wrapped)",
+            known_gaps,
+            "Known Gaps section must contain `covered:` markers (backtick-wrapped)",
         )
         self.assertIn(
             "gap:",
-            gap_table,
-            "Known Gaps table must contain `gap:` markers",
-        )
-        self.assertIn(
-            "GESCHLOSSEN",
-            gap_table,
-            "Known Gaps table must document closed gaps (✅ GESCHLOSSEN)",
+            known_gaps,
+            "Known Gaps section must contain `gap:` markers",
         )
         self.assertIn(
             "intentional (v0.2)",
-            gap_table,
-            "Known Gaps table must explicitly mark intentional gaps as v0.2-scope",
+            known_gaps,
+            "Known Gaps section must explicitly mark intentional gaps as v0.2-scope",
         )
 
 

@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (93 found):
+Documents not referenced by any other document via frontmatter relations (103 found):
 
 - `.vibe/intent.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
@@ -88,6 +88,16 @@ Documents not referenced by any other document via frontmatter relations (93 fou
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
+- `exports/copilot/constraint-before-code.md`
+- `exports/copilot/edge-case-enumeration.md`
+- `exports/copilot/no-vague-prompts.md`
+- `exports/copilot/spec-first.md`
+- `exports/copilot/validate-against-spec.md`
+- `exports/cursor/constraint-before-code.md`
+- `exports/cursor/edge-case-enumeration.md`
+- `exports/cursor/no-vague-prompts.md`
+- `exports/cursor/spec-first.md`
+- `exports/cursor/validate-against-spec.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
