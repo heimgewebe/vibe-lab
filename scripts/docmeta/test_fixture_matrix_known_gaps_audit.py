@@ -60,10 +60,10 @@ class FixtureMatrixKnownGapsAuditTests(unittest.TestCase):
                 r"`covered:\s*(true|false)`",
                 f"Gap 5.{gap_num} muss ein `covered: true|false` Marker haben",
             )
-            self.assertIn(
-                "`test_ref:",
+            self.assertRegex(
                 gap_body,
-                f"Gap 5.{gap_num} muss ein `test_ref:` Marker haben",
+                r"`test_ref:\s*[^`\n]+`",
+                f"Gap 5.{gap_num} muss ein vollstaendiges `test_ref: ...` Marker haben",
             )
             self.assertRegex(
                 gap_body,

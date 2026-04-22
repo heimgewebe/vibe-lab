@@ -5,6 +5,15 @@ canonicality: derived
 created: "2026-04-21"
 updated: "2026-04-22"
 author: "vibe-lab maintainers"
+relations:
+  - type: references
+    target: "../../contracts/command-semantics.md"
+  - type: references
+    target: "../../tests/fixtures/agent_commands"
+  - type: references
+    target: "../../tests/fixtures/command_chains"
+  - type: references
+    target: "../../tests/fixtures/cross_contract"
 ---
 
 # Agent Operability — Fixture-Matrix (v0.1)

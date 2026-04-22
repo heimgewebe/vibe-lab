@@ -3,10 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (105 found):
+Documents not referenced by any other document via frontmatter relations (104 found):
 
 - `.vibe/intent.md`
-- `contracts/command-semantics.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
 - `docs/reference/agent-operability-fixture-matrix.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
