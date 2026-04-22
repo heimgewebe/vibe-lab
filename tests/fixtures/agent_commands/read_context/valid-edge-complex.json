@@ -1,0 +1,19 @@
+{
+  "command": "read_context",
+  "version": "v0.1",
+  "target_files": [
+    "schemas/command.read_context.schema.json",
+    "schemas/command.write_change.schema.json",
+    "schemas/command.validate_change.schema.json",
+    "docs/blueprints/blueprint-agent-operability-phase-1c.md"
+  ],
+  "extracted_facts": [
+    "All three command schemas fix version to const v0.1",
+    "write_change requires anyOf(locator, target_lines)",
+    "validate_change uses if/then to couple success and errors"
+  ],
+  "uncertainties": [
+    "Whether checks[] vocabulary becomes an enum in v0.2",
+    "Whether locator gains structural typing"
+  ]
+}

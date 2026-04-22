@@ -1,0 +1,39 @@
+{
+  "handoff": {
+    "status": "PASS",
+    "target_files": ["docs/foundations/vision.md"],
+    "locator": "## Vision",
+    "change_type": "modify",
+    "scope": "Add a clarifying note to the vision document",
+    "normalized_task": "Append one clarifying sentence under the vision heading",
+    "critic_signature": "experiment-critic/v1",
+    "handoff": {
+      "algo": "sha256",
+      "canon": "v1",
+      "hash": "08b0c075c7f6a50de26f5582863991f6e7598f6b310c1904d7bd028490c68459"
+    }
+  },
+  "chain": [
+    {
+      "command": "read_context",
+      "version": "v0.1",
+      "target_files": ["docs/index.md"]
+    },
+    {
+      "command": "write_change",
+      "version": "v0.1",
+      "target_files": ["docs/index.md"],
+      "locator": "## Laufende Versuche",
+      "change_type": "modify",
+      "forbidden_changes": []
+    },
+    {
+      "command": "validate_change",
+      "version": "v0.1",
+      "checks": ["lint"],
+      "success": true,
+      "errors": []
+    }
+  ],
+  "expected_errors": ["handoff_target_drift"]
+}

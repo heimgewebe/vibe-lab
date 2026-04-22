@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-001-pr58",
+  "generated_at": "2026-04-19T09:56:35Z",
+  "executor": "local:github-copilot",
+  "command": "git diff --name-only main...HEAD",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-pr58/execution.txt",
+  "provenance_level": "self_reported"
+}

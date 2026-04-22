@@ -12,8 +12,17 @@
 | `benchmarks/challenges/kanban-board-v1.md` | Kanban Board UI/State Challenge v1 | active | operative |
 | `benchmarks/challenges/legacy-refactoring-v1.md` | Legacy Refactoring Challenge v1 | active | operative |
 | `benchmarks/challenges/rest-api-v1.md` | REST-API CRUD Challenge v1 | active | operative |
+| `catalog/anti-patterns/token-bloat-as-quality-proxy.md` | Token-Bloat-as-Quality-Proxy | adopted | — |
 | `catalog/anti-patterns/vague-prompt-and-fix.md` | Vague-Prompt-and-Fix | adopted | — |
+| `catalog/combos/spec-first-anti-pattern-awareness.md` | Spec-First + Anti-Pattern-Awareness | adopted | — |
+| `catalog/combos/spec-first-constraint-control.md` | Spec-First + Constraint-Control | adopted | — |
+| `catalog/styles/constraint-first.md` | Constraint-First | adopted | — |
+| `catalog/styles/structured-specification.md` | Structured Specification | adopted | — |
+| `catalog/techniques/prompt-length-control.md` | Prompt-Length Control (Cognitive-Mode-Switching) | adopted | — |
 | `catalog/techniques/spec-first-prompting.md` | Spec-First Prompting | adopted | — |
+| `catalog/workflows/causal-control-study.md` | Kausale Kontrollstudie | adopted | — |
+| `catalog/workflows/spec-first-api-generation.md` | Spec-First API-Generierung | adopted | — |
+| `contracts/command-semantics.md` | Command Semantics (v0.1) | active | canonical |
 | `docs/blueprints/blueprint-agent-operability-phase-1c.md` | Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns | active | exploratory |
 | `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | idea | exploratory |
 | `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |
@@ -24,6 +33,7 @@
 | `docs/foundations/vision.md` | Systemvision | active | foundational |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
+| `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
@@ -109,5 +119,37 @@
 | `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md` | task-validity-check | — | — |
 | `experiments/2026-04-15_agent-task-validity/method.md` | Methodik: Agent Task Validity Experiment | draft | operative |
 | `experiments/2026-04-15_agent-task-validity/results/result.md` | result | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/CONTEXT.md` | Kontext: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/INITIAL.md` | Initiale Situation: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md` | README | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md` | run-template | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` | Failure Modes: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/method.md` | Methode: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` | Cross-Run-Auswertung: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis: Generated Artifact Contract Validation | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
+| `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
+| `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
+| `exports/copilot/no-vague-prompts.md` | no-vague-prompts | — | — |
+| `exports/copilot/spec-first.md` | spec-first | — | — |
+| `exports/copilot/validate-against-spec.md` | validate-against-spec | — | — |
+| `exports/cursor/constraint-before-code.md` | constraint-before-code | — | — |
+| `exports/cursor/edge-case-enumeration.md` | edge-case-enumeration | — | — |
+| `exports/cursor/no-vague-prompts.md` | no-vague-prompts | — | — |
+| `exports/cursor/spec-first.md` | spec-first | — | — |
+| `exports/cursor/validate-against-spec.md` | validate-against-spec | — | — |
+| `instruction-blocks/constraint-before-code.md` | Constraint-Before-Code | adopted | operative |
+| `instruction-blocks/edge-case-enumeration.md` | Edge-Case-Enumeration | adopted | operative |
+| `instruction-blocks/no-vague-prompts.md` | No-Vague-Prompts | adopted | operative |
+| `instruction-blocks/spec-first.md` | Spec-First | adopted | operative |
+| `instruction-blocks/validate-against-spec.md` | Validate-Against-Spec | adopted | operative |
+| `prompts/adopted/prompt-length-control.md` | Prompt-Length-Control Prompt | adopted | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
+| `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md` | CONTEXT | — | — |
+| `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md` | INITIAL | — | — |
+| `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md` | Phase-1c Inconsistent Fixture | draft | operative |
+| `tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md` | CONTEXT | — | — |
+| `tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md` | INITIAL | — | — |
+| `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md` | CONTEXT | — | — |
+| `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md` | INITIAL | — | — |
+| `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | Phase-1c Valid Fixture | draft | operative |

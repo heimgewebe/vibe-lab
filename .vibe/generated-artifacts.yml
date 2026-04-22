@@ -1,0 +1,38 @@
+schema_version: "0.1.0"
+triggered_by: "user-request-2026-04-19-generated-flow-hardening"
+
+generated_artifact_contract:
+  canonical:
+    description: "Teil der Navigations-/Orientierungsoberflaeche mit Review-Wert"
+    commit_policy: "commit-required"
+    ci_policy: "blocking"
+    files:
+      - docs/_generated/doc-index.md
+      - docs/_generated/system-map.md
+
+  derived:
+    description: "Rekonstruierbare Diagnose, nuetzlich aber nicht wahrheitsstiftend"
+    commit_policy: "optional"
+    ci_policy: "non-blocking"
+    files:
+      - docs/_generated/backlinks.md
+      - docs/_generated/orphans.md
+
+  exports:
+    description: "Abgeleitete, toolspezifische Repräsentationen aus instruction-blocks/"
+    commit_policy: "commit-required"
+    ci_policy: "blocking"
+    regenerable: true
+    deterministic: true
+    source: "instruction-blocks/*.md"
+    generator: "scripts/exports/generate_exports.py"
+    files:
+      - exports/copilot/
+      - exports/cursor/
+
+  ephemeral:
+    description: "Laufzeitdiagnose; wird als CI-Artefakt bereitgestellt"
+    commit_policy: "do-not-commit"
+    ci_policy: "artifact-only"
+    files:
+      - docs/_generated/epistemic-state.md

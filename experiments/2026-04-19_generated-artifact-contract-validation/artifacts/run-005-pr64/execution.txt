@@ -1,0 +1,52 @@
+Run-005 Execution Summary
+=========================
+run_id:       run-005-pr64
+pr_ref:       https://github.com/heimgewebe/vibe-lab/pull/64
+branch:       exp/run-005-controlled-friction
+base_ref:     origin/main (23566eb)
+date:         2026-04-19
+
+Scope
+-----
+Canonical source change: docs/foundations/vision.md
+  - wording update in Vibe Contracts section (adds measurement discipline)
+
+Determinism
+-----------
+make generate run 1: no diff
+make generate run 2: no diff
+determinism_check: passed
+
+Controlled friction injection
+----------------------------
+Type: semantic_friction
+Injected deviation: evidence entry missing required key `context`
+Injected line: evidence.jsonl line 41 (iteration 5)
+
+Observed failure
+----------------
+Run: 24635555421
+Job: validate
+Step: Validate schemas
+Failure: missing required key `context` in evidence.jsonl
+
+Timing
+------
+first_failed_timestamp:   2026-04-19T18:01:48Z
+error_localized_at:       2026-04-19T18:02:36Z
+detection_latency_sec:    48
+all_checks_green_at:      2026-04-19T18:06:37Z
+fix_duration_sec:         241
+
+Fix and cost
+------------
+fix_steps_required:       2
+manual_regen_steps:       2
+unnecessary_commit_delta: 2
+diagnosis_clarity_score:  5
+ci_blocking_failures_total: 2
+
+Notes
+-----
+Run-005 was executed as a calibration run with normalized metric definitions and
+explicit friction classification.

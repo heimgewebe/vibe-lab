@@ -1,0 +1,22 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/main.py"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["src/main.py"],
+    "locator": "def main",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint", "test"],
+    "success": false,
+    "errors": ["lint: E501 line too long", "test: test_main failed assertion"]
+  }
+]

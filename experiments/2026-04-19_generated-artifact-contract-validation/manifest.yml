@@ -1,0 +1,47 @@
+# Experiment Manifest (Template)
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "Generated Artifact Contract Validation"                    # Kurzname des Experiments
+  hypothesis: "Die Trennung in canonical/derived/ephemeral und blocking/non-blocking/artifact-only reduziert CI-Reibung, manuellen Eingriff und kognitive Last."              # Zu prüfende Hypothese
+  status: inconclusive                # idea | designed | testing | adopted | rejected | blocked | inconclusive — Ist-Zustand
+  category: workflow         # style | technology | technique | workflow | combo
+  execution_status: executed  # designed | prepared | executed | replicated — Ist-Zustand; Abweichungen von vorliegenden Artefakten sichtbar machen, nicht still übergehen
+                              # (Durchführungsgrad, orthogonal zu status und evidence_level)
+  execution_refs:
+    - "results/evidence.jsonl"
+    - "artifacts/run-001-pr58/run_meta.json"
+    - "artifacts/run-001-pr58/execution.txt"
+    - "artifacts/run-002-pr61/run_meta.json"
+    - "artifacts/run-002-pr61/execution.txt"
+    - "artifacts/run-003-pr62/run_meta.json"
+    - "artifacts/run-003-pr62/execution.txt"
+    - "artifacts/run-004-pr63/run_meta.json"
+    - "artifacts/run-004-pr63/execution.txt"
+    - "artifacts/run-005-pr64/run_meta.json"
+    - "artifacts/run-005-pr64/execution.txt"          # Spurverweise — befüllen sobald execution_status executed/replicated
+    - "artifacts/run-006-pr67/run_meta.json"
+    - "artifacts/run-006-pr67/execution.txt"
+  created: "2026-04-19"
+  updated: "2026-04-19"       # Letzte Aktualisierung inkl. Abschluss als result_assessment (mixed).
+  author: "GPT-5.3-Codex"
+  iteration: 6
+  evidence_level: experimental  # anecdotal | experimental | replicated
+  # replicated_from: ""      # Pfad zum Original-Experiment bei Replikation
+  # related_idea: ""          # Referenz auf Idea-Issue (z.B. #42)
+  # adoption_basis: executed  # executed | replicated | reconstructed
+                              # Pflicht bei status: adopted. 'reconstructed' nur für Altbestand zulässig
+                              # (Adoption ohne erfassten Execution-Proof, nur historisch).
+                              # Siehe docs/blueprints/blueprint-v2.md Übergangsregel.
+
+context:
+  tools: ["GitHub Actions", "make", "Python 3.11", "LLM-Agent"]                   # Verwendete Tools und Modelle
+  language: "Mixed"                # Primäre Programmiersprache
+  environment: "vibe-lab"             # Entwicklungsumgebung
+  triggered_by: "user-request-2026-04-19-meta-experiment-generated-artifact-contract-validation"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

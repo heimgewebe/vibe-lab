@@ -35,19 +35,179 @@ jobs:
       - name: Validate interpretation budget
         run: python3 scripts/docmeta/validate_interpretation_budget.py
 
+      - name: Test interpretation budget validator
+        run: python3 scripts/docmeta/test_validate_interpretation_budget.py
+
       - name: Validate agent handoff
         run: python3 scripts/docmeta/validate_agent_handoff.py
 
       - name: Test agent handoff validator
         run: python3 scripts/docmeta/test_validate_agent_handoff.py
 
-      - name: Regenerate diagnostics
-        run: make generate
+      - name: Validate agent commands
+        run: python3 scripts/docmeta/validate_agent_commands.py
 
-      - name: Check generated files are up to date
+      - name: Test agent command validator
+        run: python3 scripts/docmeta/test_validate_agent_commands.py
+
+      - name: Validate command chain fixtures
+        run: python3 scripts/docmeta/validate_command_chain.py
+
+      - name: Test command chain validator
+        run: python3 scripts/docmeta/test_validate_command_chain.py
+
+      - name: Validate cross-contract (Handoff ↔ Chain) fixtures
+        run: python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures tests/fixtures/cross_contract
+
+      - name: Test cross-contract validator
+        run: python3 tests/contracts/test_cross_contract_chain.py
+
+      - name: Replay dry-run (no mutations)
+        run: python3 tools/vibe-cli/replay_minimal.py --dry-run
+
+      - name: Guard — replay must not mutate the repo
         run: |
-          if git status --porcelain docs/_generated/ | grep -q .; then
-            echo "❌ Generated files are out of date or untracked. Run 'make generate' and commit the changes."
-            git status --porcelain docs/_generated/
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Replay dry-run produced filesystem changes (tracked or untracked). This violates the Phase-F-light contract."
+            git status --porcelain
             exit 1
           fi
+          echo "✅ Replay dry-run produced no filesystem changes."
+
+      - name: Test replay runner
+        run: python3 tools/vibe-cli/test_replay_minimal.py
+
+      - name: Validate Phase-1c fixture checker corpus
+        run: python3 scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py
+
+      - name: Test Phase-1c fixture checker
+        run: python3 scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py
+
+      - name: Validate adoption completeness
+        run: python3 scripts/adoption/validate_adoption_completeness.py
+
+      - name: Test adoption completeness validator
+        run: python3 scripts/adoption/test_validate_adoption_completeness.py
+
+      - name: Test epistemic state generator
+        run: python3 scripts/docmeta/test_generate_epistemic_state.py
+
+      - name: Test export generator
+        run: python3 scripts/exports/test_generate_exports.py
+
+      - name: Regenerate canonical diagnostics
+        run: make generate-canonical
+
+      - name: Check canonical diagnostics contract
+        run: |
+          # NOTE: canonical file list is contract-driven via .vibe/generated-artifacts.yml.
+          # Keep make targets and docs/index.md classification aligned with this contract.
+          mapfile -t canonical_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py canonical)
+          if [[ "${#canonical_paths[@]}" -eq 0 ]]; then
+            echo "ERROR: canonical path list from .vibe/generated-artifacts.yml is empty"
+            exit 1
+          fi
+          if git status --porcelain -- "${canonical_paths[@]}" | grep -q .; then
+            echo "❌ Canonical diagnostics contract violated. Run 'make generate-canonical' and commit the changes."
+            git status --porcelain -- "${canonical_paths[@]}"
+            git diff -- "${canonical_paths[@]}" || true
+            exit 1
+          fi
+
+      - name: Check exports contract
+        run: |
+          mapfile -t export_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py exports)
+          if [[ "${#export_paths[@]}" -eq 0 ]]; then
+            echo "ERROR: exports path list from .vibe/generated-artifacts.yml is empty"
+            exit 1
+          fi
+          if git status --porcelain -- "${export_paths[@]}" | grep -q .; then
+            echo "❌ Exports contract violated. Run 'make generate-exports' and commit the changes."
+            git status --porcelain -- "${export_paths[@]}"
+            git diff -- "${export_paths[@]}" || true
+            exit 1
+          fi
+
+  derived-diagnostics:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python3 -m pip install pyyaml jsonschema rfc3339-validator
+
+      - name: Generate derived diagnostics
+        run: make generate-derived
+
+      - name: Resolve derived diagnostics paths from contract
+        id: derived_paths
+        run: |
+          {
+            echo "paths<<EOF"
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload derived diagnostics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: derived-diagnostics
+          path: ${{ steps.derived_paths.outputs.paths }}
+
+      - name: Show derived diagnostic drift (non-blocking)
+        run: |
+          mapfile -t derived_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py derived)
+          if [[ "${#derived_paths[@]}" -eq 0 ]]; then
+            echo "WARNING: derived path list from .vibe/generated-artifacts.yml is empty"
+            exit 0
+          fi
+
+          if git status --porcelain -- "${derived_paths[@]}" | grep -q .; then
+            echo "WARNING: Derived diagnostics show structural drift (non-blocking, review recommended)."
+            git status --porcelain -- "${derived_paths[@]}"
+            git diff -- "${derived_paths[@]}" || true
+
+            if git status --porcelain -- docs/_generated/orphans.md | grep -q .; then
+              echo "WARNING: Elevated derived drift detected (orphans changed)."
+            fi
+          else
+            echo "✅ Derived diagnostics match committed files."
+          fi
+
+  ephemeral-diagnostics:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python3 -m pip install pyyaml jsonschema rfc3339-validator
+
+      - name: Generate ephemeral diagnostics
+        run: make generate-ephemeral
+
+      - name: Resolve ephemeral diagnostics paths from contract
+        id: ephemeral_paths
+        run: |
+          {
+            echo "paths<<EOF"
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py ephemeral
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload ephemeral diagnostics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ephemeral-diagnostics
+          path: ${{ steps.ephemeral_paths.outputs.paths }}

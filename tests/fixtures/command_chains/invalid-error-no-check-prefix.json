@@ -1,0 +1,22 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/utils.py"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["src/utils.py"],
+    "locator": "def parse",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint", "test"],
+    "success": false,
+    "errors": ["something went wrong"]
+  }
+]

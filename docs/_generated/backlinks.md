@@ -7,18 +7,64 @@
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (references)
 
+## `catalog/anti-patterns/token-bloat-as-quality-proxy.md`
+
+- ← `docs/playbooks/build-reliable-prompt.md` (references)
+
+## `catalog/anti-patterns/vague-prompt-and-fix.md`
+
+- ← `docs/playbooks/build-reliable-prompt.md` (references)
+- ← `instruction-blocks/no-vague-prompts.md` (derived_from)
+
+## `catalog/combos/spec-first-anti-pattern-awareness.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/combos/spec-first-constraint-control.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/styles/constraint-first.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/styles/structured-specification.md`
+
+- ← `docs/index.md` (references)
+
+## `catalog/techniques/prompt-length-control.md`
+
+- ← `catalog/anti-patterns/token-bloat-as-quality-proxy.md` (references)
+- ← `docs/playbooks/build-reliable-prompt.md` (references)
+- ← `instruction-blocks/constraint-before-code.md` (derived_from)
+- ← `instruction-blocks/edge-case-enumeration.md` (references)
+- ← `prompts/adopted/prompt-length-control.md` (derived_from)
+
 ## `catalog/techniques/spec-first-prompting.md`
 
+- ← `catalog/styles/constraint-first.md` (references)
+- ← `catalog/styles/structured-specification.md` (references)
+- ← `catalog/techniques/prompt-length-control.md` (references)
+- ← `catalog/workflows/spec-first-api-generation.md` (references)
+- ← `docs/playbooks/build-reliable-prompt.md` (references)
 - ← `experiments/2026-04-08_spec-first/CONTEXT.md` (informs)
 - ← `experiments/2026-04-08_spec-first/results/result.md` (validates)
+- ← `instruction-blocks/edge-case-enumeration.md` (derived_from)
+- ← `instruction-blocks/spec-first.md` (derived_from)
+- ← `instruction-blocks/validate-against-spec.md` (derived_from)
 - ← `prompts/adopted/spec-first-api.md` (derived_from)
 
-## `contracts/command-semantics.md`
+## `catalog/workflows/causal-control-study.md`
 
-- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+- ← `docs/index.md` (references)
+
+## `catalog/workflows/spec-first-api-generation.md`
+
+- ← `docs/index.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
+- ← `contracts/command-semantics.md` (references)
 - ← `docs/index.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability.md`
@@ -57,9 +103,14 @@
 - ← `docs/blueprints/blueprint-v2.md` (informs)
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
 
+## `docs/playbooks/build-reliable-prompt.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/playbooks/reconciliation.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
+- ← `docs/index.md` (references)
 
 ## `docs/policies/interpretation-budget.md`
 
@@ -72,12 +123,22 @@
 ## `experiments/2026-04-08_spec-first/results/result.md`
 
 - ← `catalog/anti-patterns/vague-prompt-and-fix.md` (references)
+- ← `catalog/styles/structured-specification.md` (validated_by)
 - ← `catalog/techniques/spec-first-prompting.md` (validated_by)
+- ← `catalog/workflows/spec-first-api-generation.md` (validated_by)
 - ← `prompts/adopted/spec-first-api.md` (validated_by)
 
 ## `experiments/2026-04-14_incremental-refinement/results/result.md`
 
 - ← `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` (derived_from)
+
+## `experiments/2026-04-14_prompt-length-control/results/result.md`
+
+- ← `catalog/anti-patterns/token-bloat-as-quality-proxy.md` (validated_by)
+- ← `catalog/styles/constraint-first.md` (validated_by)
+- ← `catalog/techniques/prompt-length-control.md` (validated_by)
+- ← `catalog/workflows/causal-control-study.md` (validated_by)
+- ← `prompts/adopted/prompt-length-control.md` (validated_by)
 
 ## `experiments/2026-04-15_agent-task-validity/CONTEXT.md`
 
@@ -88,9 +149,49 @@
 
 - ← `docs/blueprints/blueprint-agent-operability.md` (references)
 
+## `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md`
+
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` (informs)
+
+## `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md`
+
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
+
+## `instruction-blocks/constraint-before-code.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/edge-case-enumeration.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/no-vague-prompts.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/spec-first.md`
+
+- ← `docs/index.md` (references)
+
+## `instruction-blocks/validate-against-spec.md`
+
+- ← `docs/index.md` (references)
+
+## `schemas/command.read_context.schema.json`
+
+- ← `contracts/command-semantics.md` (references)
+
+## `schemas/command.validate_change.schema.json`
+
+- ← `contracts/command-semantics.md` (references)
+
+## `schemas/command.write_change.schema.json`
+
+- ← `contracts/command-semantics.md` (references)
 
 ## `schemas/decision.schema.json`
 
@@ -104,15 +205,3 @@
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
-
-## `tests/fixtures/agent_commands`
-
-- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
-
-## `tests/fixtures/command_chains`
-
-- ← `docs/reference/agent-operability-fixture-matrix.md` (references)
-
-## `tests/fixtures/cross_contract`
-
-- ← `docs/reference/agent-operability-fixture-matrix.md` (references)

@@ -1,0 +1,20 @@
+schema_version: "0.1.0"
+
+decision_type: result_assessment
+verdict: "inconclusive"
+confidence: "low"
+date: "2026-04-19"
+reviewer: "copilot-agent"
+
+rationale: |
+  Evidence entries E1, E2, and E3 are present, but this fixture intentionally records
+  an inconclusive decision to test conflict detection against result.md.
+
+evidence_summary:
+  observations: 3
+  positive: 3
+  negative: 0
+  neutral: 0
+
+next_steps:
+  - "Expect decision_vs_result conflict from the Phase-1c validator."

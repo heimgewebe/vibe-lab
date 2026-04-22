@@ -3,10 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (81 found):
+Documents not referenced by any other document via frontmatter relations (105 found):
 
 - `.vibe/intent.md`
-- `catalog/anti-patterns/vague-prompt-and-fix.md`
+- `contracts/command-semantics.md`
 - `docs/blueprints/blueprint-v2-roadmap.md`
 - `docs/reference/agent-operability-fixture-matrix.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
@@ -58,7 +58,6 @@ Documents not referenced by any other document via frontmatter relations (81 fou
 - `experiments/2026-04-14_prompt-length-control/INITIAL.md`
 - `experiments/2026-04-14_prompt-length-control/failure_modes.md`
 - `experiments/2026-04-14_prompt-length-control/method.md`
-- `experiments/2026-04-14_prompt-length-control/results/result.md`
 - `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
 - `experiments/2026-04-14_tdd-vibe/INITIAL.md`
 - `experiments/2026-04-14_tdd-vibe/failure_modes.md`
@@ -85,4 +84,29 @@ Documents not referenced by any other document via frontmatter relations (81 fou
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md`
 - `experiments/2026-04-15_agent-task-validity/results/result.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/CONTEXT.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/INITIAL.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
+- `exports/copilot/constraint-before-code.md`
+- `exports/copilot/edge-case-enumeration.md`
+- `exports/copilot/no-vague-prompts.md`
+- `exports/copilot/spec-first.md`
+- `exports/copilot/validate-against-spec.md`
+- `exports/cursor/constraint-before-code.md`
+- `exports/cursor/edge-case-enumeration.md`
+- `exports/cursor/no-vague-prompts.md`
+- `exports/cursor/spec-first.md`
+- `exports/cursor/validate-against-spec.md`
+- `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md`
+- `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md`
+- `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md`
+- `tests/fixtures/experiment_structure_phase1c/valid/results/result.md`

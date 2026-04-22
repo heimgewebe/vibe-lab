@@ -1,0 +1,24 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/main.py"],
+    "extracted_facts": ["src/main.py defines the main entry point"],
+    "uncertainties": []
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": [],
+    "locator": "def main",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint"],
+    "success": true,
+    "errors": []
+  }
+]

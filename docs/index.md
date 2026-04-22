@@ -9,6 +9,32 @@ relations:
     target: blueprints/blueprint-agent-operability-phase-1c.md
   - type: references
     target: policies/interpretation-budget.md
+  - type: references
+    target: playbooks/reconciliation.md
+  - type: references
+    target: playbooks/build-reliable-prompt.md
+  - type: references
+    target: ../catalog/combos/spec-first-constraint-control.md
+  - type: references
+    target: ../catalog/combos/spec-first-anti-pattern-awareness.md
+  - type: references
+    target: ../catalog/workflows/spec-first-api-generation.md
+  - type: references
+    target: ../catalog/workflows/causal-control-study.md
+  - type: references
+    target: ../catalog/styles/constraint-first.md
+  - type: references
+    target: ../catalog/styles/structured-specification.md
+  - type: references
+    target: ../instruction-blocks/spec-first.md
+  - type: references
+    target: ../instruction-blocks/constraint-before-code.md
+  - type: references
+    target: ../instruction-blocks/validate-against-spec.md
+  - type: references
+    target: ../instruction-blocks/no-vague-prompts.md
+  - type: references
+    target: ../instruction-blocks/edge-case-enumeration.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -66,12 +92,24 @@ relations:
 
 > Diese Dateien werden maschinell erzeugt und dürfen nicht manuell editiert werden.
 
-| Datei                                           | Inhalt                          |
-| ----------------------------------------------- | ------------------------------- |
-| [_generated/doc-index.md](_generated/doc-index.md)     | Dokumenten-Index          |
-| [_generated/backlinks.md](_generated/backlinks.md)     | Rückverlinkungen          |
-| [_generated/orphans.md](_generated/orphans.md)         | Verwaiste Dokumente       |
-| [_generated/system-map.md](_generated/system-map.md)   | Systemübersicht           |
+| Datei                                           | Klasse | CI-Verhalten | Inhalt |
+| ----------------------------------------------- | ------ | ------------ | ------ |
+| [_generated/doc-index.md](_generated/doc-index.md)     | canonical | blocking | Dokumenten-Index |
+| [_generated/system-map.md](_generated/system-map.md)   | canonical | blocking | Systemübersicht |
+| [_generated/backlinks.md](_generated/backlinks.md)     | derived | non-blocking | Rückverlinkungen |
+| [_generated/orphans.md](_generated/orphans.md)         | derived | non-blocking | Verwaiste Dokumente |
+| `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral | artifact-only | Abgeleiteter Zustands-Snapshot |
+
+## Exports (Generiert)
+
+> Abgeleitete, toolspezifische Repräsentationen aus `instruction-blocks/`. Exports sind keine eigenständige Wahrheitsquelle — sie leiten sich vollständig aus den Quelldateien ab und werden deterministisch regeneriert. Jeder Export enthält eine quellgebundene Herkunftsmarkierung (`source-hash`), die eine eindeutige Zuordnung zur Quelldatei sicherstellt.
+
+| Zielordner | Quelle | Regeneration |
+| ---------- | ------ | ------------ |
+| [`exports/copilot/`](../exports/copilot/) | `instruction-blocks/*.md` | `make generate-exports` |
+| [`exports/cursor/`](../exports/cursor/) | `instruction-blocks/*.md` | `make generate-exports` |
+
+Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen Inhalt, sondern transformieren validierte Instruction-Blocks in eine konsumierbare Form für externe Tools. Die Quelldateien in `instruction-blocks/` bleiben die einzige Wahrheitsquelle.
 
 ## Schemas und Verträge
 
@@ -99,6 +137,30 @@ relations:
 ## Playbooks
 
 - [Reconciliation](playbooks/reconciliation.md)
+- [Build a Reliable Prompt](playbooks/build-reliable-prompt.md)
+
+## Bibliothek
+
+### Catalog
+
+| Zone | Inhalt |
+| ---- | ------ |
+| [catalog/techniques/](../catalog/techniques/) | Validierte Prompting-Techniken |
+| [catalog/anti-patterns/](../catalog/anti-patterns/) | Dokumentierte Anti-Pattern |
+| [catalog/combos/](../catalog/combos/) | Kuratierte Technique-Kombinationen |
+| [catalog/workflows/](../catalog/workflows/) | Operative Workflows |
+| [catalog/styles/](../catalog/styles/) | Prompting-Stile |
+| [prompts/adopted/](../prompts/adopted/) | Adoptierte Prompt-Templates |
+
+### Instruction Blocks
+
+Portable Denkbausteine für Prompts und Workflows:
+
+- [Spec-First](../instruction-blocks/spec-first.md)
+- [Constraint-Before-Code](../instruction-blocks/constraint-before-code.md)
+- [Validate-Against-Spec](../instruction-blocks/validate-against-spec.md)
+- [No-Vague-Prompts](../instruction-blocks/no-vague-prompts.md)
+- [Edge-Case-Enumeration](../instruction-blocks/edge-case-enumeration.md)
 
 ## Referenz
 

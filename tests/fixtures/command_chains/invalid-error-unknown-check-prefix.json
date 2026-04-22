@@ -1,0 +1,22 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/config.py"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["src/config.py"],
+    "locator": "DEFAULT_TIMEOUT",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint"],
+    "success": false,
+    "errors": ["test: test_config_timeout failed"]
+  }
+]

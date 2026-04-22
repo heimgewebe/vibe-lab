@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/command.read_context.schema.json",
+  "title": "Command: read_context (v0.1)",
+  "description": "Minimal v0.1 schema for the conceptual command `read_context`. Scope per Phase D of blueprint-agent-operability-phase-1c.md: only practically evidenced fields. Further hardening is intentionally deferred.",
+  "type": "object",
+  "properties": {
+    "command": {
+      "type": "string",
+      "const": "read_context"
+    },
+    "version": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "target_files": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "extracted_facts": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "required": ["command", "version", "target_files"],
+  "additionalProperties": true
+}

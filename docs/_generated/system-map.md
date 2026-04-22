@@ -8,21 +8,21 @@
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
 | `./` | 📁 Root | 8 | 3 |
-| `.vibe/` | 🏛️ Governance | 3 | 1 |
+| `.vibe/` | 🏛️ Governance | 4 | 1 |
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
-| `catalog/` | 📚 Bibliothek | 6 | 2 |
-| `contracts/` | 🏛️ Governance | 1 | 0 |
+| `catalog/` | 📚 Bibliothek | 11 | 10 |
+| `contracts/` | 🏛️ Governance | 2 | 1 |
 | `decisions/` | 🏛️ Governance | 4 | 0 |
-| `docs/` | 📖 Dokumentation | 23 | 14 |
-| `docs/_generated/` | ⚙️ Generiert | 6 | 5 |
-| `experiments/` | 🔬 Labor | 282 | 87 |
-| `exports/` | ⚙️ Generiert | 2 | 0 |
-| `instruction-blocks/` | 📚 Bibliothek | 1 | 0 |
-| `prompts/` | 📚 Bibliothek | 1 | 1 |
+| `docs/` | 📖 Dokumentation | 25 | 16 |
+| `docs/_generated/` | ⚙️ Generiert | 5 | 4 |
+| `experiments/` | 🔬 Labor | 306 | 95 |
+| `exports/` | ⚙️ Generiert | 10 | 10 |
+| `instruction-blocks/` | 📚 Bibliothek | 5 | 5 |
+| `prompts/` | 📚 Bibliothek | 2 | 2 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
-| `schemas/` | 🏛️ Governance | 6 | 0 |
-| `scripts/` | 🔧 Tooling | 13 | 0 |
-| `tests/` | 📁 Root | 4 | 0 |
-| `tools/` | 🔧 Tooling | 1 | 0 |
+| `schemas/` | 🏛️ Governance | 9 | 0 |
+| `scripts/` | 🔧 Tooling | 29 | 0 |
+| `tests/` | 📁 Root | 82 | 8 |
+| `tools/` | 🔧 Tooling | 3 | 0 |
 
-**Total:** 369 files in 17 directories
+**Total:** 513 files in 17 directories

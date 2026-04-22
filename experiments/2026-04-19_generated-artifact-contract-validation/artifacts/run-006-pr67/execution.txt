@@ -1,0 +1,57 @@
+Run-006 Execution Summary
+=========================
+run_id:       run-006-pr67
+pr_ref:       https://github.com/heimgewebe/vibe-lab/pull/67
+branch:       exp/run-006-clean-reference
+base_ref:     origin/main
+date:         2026-04-19
+triggered_by: user-task-run-006-natural-clean-reference
+
+Scope
+-----
+Canonical source change:   docs/foundations/vision.md
+  - Minimal wording adjustment in one sentence
+Changed canonical docs:    1
+
+Generator runs
+--------------
+Run 1:  make generate -> no generated file changes
+Run 2:  make generate -> no additional diff (determinism: CONFIRMED)
+Manual regen steps:        1 (`make generate-canonical` after CI canonical-contract failure)
+
+Commit structure
+----------------
+e31cc5f  experiment(run-006): natural clean-reference run
+67df2dd  generate: refresh canonical diagnostics for run-006 artifacts
+
+Artifact counts
+---------------
+Pre-artifact measurement (vor artifacts/run-006-pr67):
+Changed canonical count:   0  (doc-index.md, system-map.md unchanged)
+Changed derived count:     0
+Changed ephemeral count:   0
+
+Local validation
+----------------
+make validate:         pass
+
+CI results (PR #67)
+-------------------
+validate:              fail (initial) -> pass (after canonical fix)
+derived-diagnostics:   pass
+ephemeral-diagnostics: pass
+ci_blocking_failures_total: 1
+unnecessary_commit_delta:   1
+
+Error and fix metrics
+---------------------
+detection_latency_seconds:  97
+fix_duration_seconds:       36
+
+Diagnosis clarity score:   5/5
+Friction class:            structural_friction
+
+Notes
+-----
+Run-006 was started as a natural clean_reference run without controlled friction injection.
+Result: not clean_reference due one structural canonical-contract failure during consolidation.

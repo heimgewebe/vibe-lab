@@ -37,6 +37,7 @@ Erst wenn ein Experiment belastbare Evidenz liefert:
 ### Lokal validieren
 
 ```bash
+python3 -m pip install pyyaml jsonschema rfc3339-validator
 make validate
 ```
 

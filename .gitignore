@@ -26,3 +26,6 @@ build/
 # Node.js runtime artifacts
 node_modules/
 package-lock.json
+
+# Ephemeral generated diagnostics (artifact-only)
+docs/_generated/epistemic-state.md

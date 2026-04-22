@@ -1,0 +1,3 @@
+{
+  "expected_errors": ["contract_invalid", "validate_targets_out_of_scope"]
+}

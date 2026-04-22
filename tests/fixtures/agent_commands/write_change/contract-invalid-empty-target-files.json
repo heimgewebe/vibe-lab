@@ -1,0 +1,9 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": [],
+  "locator": "## heading",
+  "change_type": "modify",
+  "forbidden_changes": [],
+  "expected_error": "contract_invalid"
+}
