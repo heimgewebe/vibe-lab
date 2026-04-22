@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff validate-agent-handoff-tests generate generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff validate-agent-handoff-tests validate-known-gaps-audit generate generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff validate-agent-handoff-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-agent-handoff validate-agent-handoff-tests validate-known-gaps-audit
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -31,6 +31,9 @@ validate-agent-handoff-tests:
 	@echo "🧪 Running agent handoff regression tests..."
 	@python3 scripts/docmeta/test_validate_agent_handoff.py
 
+validate-known-gaps-audit:
+	@echo "🧪 Running known-gaps audit tests..."
+	@python3 scripts/docmeta/test_fixture_matrix_known_gaps_audit.py
 # Diagnose-Generatoren
 generate: generate-doc-index generate-backlinks generate-orphans generate-system-map generate-epistemic-state
 	@echo "✅ Generated diagnostics in docs/_generated/."
