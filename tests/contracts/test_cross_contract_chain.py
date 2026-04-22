@@ -125,8 +125,8 @@ class CrossContractNegativeTests(unittest.TestCase):
         invariant yet, so this test must currently fail.
 
         Fixture design note: all fields mirror the valid minimal baseline,
-        except ``write_change.locator`` which intentionally drifts from
-        ``handoff.locator`` to isolate exactly one violated invariant.
+        except that ``handoff.locator`` and ``write_change.locator`` carry
+        deliberately divergent values to isolate exactly one violated invariant.
         """
         observed, expected = self._observed(
             "invalid/handoff_locator_drift/locator_drift.json"
