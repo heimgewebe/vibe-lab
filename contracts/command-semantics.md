@@ -66,7 +66,7 @@ das Verständnis der Error-Codes wichtig ist:
 
 | Untertyp | Bedeutung | Codes |
 | -------- | --------- | ----- |
-| ⚙️ Chain-Check **(intra-record)** | Prüft Kohärenz **innerhalb** eines einzelnen Command-Records — unabhängig von anderen Records in der Chain. | `validate_error_unbindable`, `semantic_contradiction` |
+| ⚙️ Chain-Check **(intra-record)** | Prüft Kohärenz **innerhalb** eines einzelnen Command-Records — unabhängig von anderen Records in der Chain. | `validate_error_unbindable`, `semantic_contradiction`, `locator_continuity_violation` |
 | ⚙️ Chain-Check **(cross-record)** | Prüft Konsistenz **zwischen** Records einer Chain (Reihenfolge, Datei-Kontinuität, Versionen). | `command_sequence_invalid`, `target_files_mismatch`, `validate_without_write`, `validate_targets_out_of_scope` |
 | ⚙️ Chain-Check **(cross-contract)** | Prüft Bindung Handoff → Chain über Vertragsgrenze hinweg. | `handoff_*`-Codes |
 
