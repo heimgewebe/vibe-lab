@@ -89,6 +89,7 @@ String-basiertem `contract_invalid`.
 | `target_files_mismatch`        | `write_change.target_files` nicht Teilmenge von `read_context.target_files`. | ⚙️ Chain-Check |
 | `locator_continuity_violation` | `write_change.locator` ist leer oder enthält nur Whitespace. **Namens-Hinweis v0.1:** Der Code-Name ist für die vollständige v0.2-Semantik (Kopplung an `read_context.extracted_facts`) vorgehalten. In v0.1 deckt er ausschließlich den leeren/whitespace-Locator ab — die inhaltliche Kontinuität zwischen Lesekontext und Schreibanker ist **noch nicht implementiert** (📋 Dokumentiert für v0.2). | ⚙️ Chain-Check (v0.1 eingeschränkter Scope) |
 | `semantic_contradiction`       | Feld-Kombination innerhalb eines Records widerspricht sich (siehe Anti-Invarianten). | ⚙️ Chain-Check |
+| `validate_error_unbindable`    | Ein `errors[]`-Eintrag in `validate_change` beginnt nicht mit `<check>:` für einen Wert aus `checks[]`. Betrifft ausschließlich Einträge bei `success: false`. Keine strukturierten Fehlerobjekte; bleibt String-basiert (v0.1). **Scope-Hinweis:** Prüft Intra-Record-Kohärenz (`checks[]` vs. `errors[]` innerhalb desselben Records) — kein Cross-Command-Check. | ⚙️ Chain-Check (intra-record) |
 
 Exit-Codes wie gewohnt: `0` OK, `1` Validation-Fehler, `2` Setup-Fehler
 (fehlende Schemas, fehlende Fixtures). Das entspricht der Konvention
@@ -179,9 +180,14 @@ aller bestehenden Validatoren.
 - ✅ **Schema** `checks[]` ist nicht leer.
 - ✅ **Schema** `success: true` → `errors` ist leer (`if/then`).
 - ✅ **Schema** `success: false` → `errors` hat mindestens einen Eintrag (`if/then`).
-- 📋 **Dokumentiert** Jeder `errors[]`-Eintrag ist auf mindestens einen `checks[]`-Eintrag
-  **referenzierbar** (per Präfix `lint: ...`, `test: ...` etc.). In v0.1 nicht
-  maschinell erzwungen.
+- ⚙️ **Chain-Check** Jeder `errors[]`-Eintrag ist auf mindestens einen `checks[]`-Eintrag
+  **referenzierbar**: der Eintrag muss mit `<check>:` beginnen, wobei `<check>` ein
+  Wert aus `checks[]` ist (z. B. `lint: ...`, `test: ...`, `docs-guard: ...`).
+  Verletzung → `validate_error_unbindable`.
+  > **v0.1 Nachschärfung:** Diese Bindung war in früheren Fassungen nur 📋 Dokumentiert
+  > (nicht maschinell erzwungen). Ab dieser Version ist sie operationalisiert. Ungebundene
+  > Freitext-Einträge ohne `<check>:`-Präfix gelten ab sofort als ungültig. Das ist eine
+  > bewusste späte v0.1-Präzisierung — keine Vorwegnahme von v0.2.
 
 ### Anti-Invariants
 
@@ -190,13 +196,17 @@ aller bestehenden Validatoren.
 - ⚙️ **Chain-Check** `validate_change` steht in einer Chain **vor** `write_change`
   (`command_sequence_invalid`).
 - ✅ **Schema** `checks[]` enthält Duplikate (`uniqueItems`).
+- ⚙️ **Chain-Check** Ein `errors[]`-Eintrag beginnt nicht mit `<check>:` für einen
+  Wert aus `checks[]` → `validate_error_unbindable`.
 
 ### Tolerated Ambiguity
 
 - `checks[]` ist absichtlich **kein Enum**. Empfohlene Werte: `lint`,
   `test`, `docs-guard` (siehe Blueprint §C3). Andere sind zulässig.
-- `errors[]`-Strings sind freitext. Keine Normalisierung auf
-  strukturierte Fehler in v0.1.
+- `errors[]`-Strings haben freien Inhalt **nach dem Präfix**. Das
+  Präfix-Format (`<check>:`) ist durch die Chain-Invariante festgelegt;
+  der Text nach dem Doppelpunkt unterliegt keiner Normalisierung.
+  Keine strukturierten Fehlerobjekte in v0.1 — der Inhalt ist Freitext.
 
 ### Evolution Constraints (v0.1 → v0.2)
 
@@ -232,8 +242,9 @@ read_context → write_change → validate_change
   → `target_files_mismatch`.
 - ⚙️ **Chain-Check** Reihenfolge gebrochen (z. B. zwei `write_change` hintereinander,
   `read_context` fehlt) → `command_sequence_invalid`.
-- 📋 **Dokumentiert** `validate_change.success = false`, aber `errors` enthält keinen Bezug
-  zu einem `checks`-Eintrag → in v0.1 toleriert, nicht als Anti-Invariant erzwungen.
+- ⚙️ **Chain-Check** `validate_change.success = false`, aber mindestens ein `errors[]`-Eintrag
+  beginnt nicht mit `<check>:` für einen Wert aus `checks[]`
+  → `validate_error_unbindable`.
 
 ## Cross-Contract Invariants (Handoff → Commands)
 
