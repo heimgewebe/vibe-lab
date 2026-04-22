@@ -230,6 +230,8 @@ Betrifft: Konsistenz zwischen Records innerhalb einer Chain.
 
 Betrifft: Einheitlichkeit der `version`-Felder in einer Kette.
 
+Diese Fälle sind zusätzlich durch `scripts/docmeta/test_command_version_policy.py` als explizite Policy-Schicht regressionsgesichert.
+
 | Klasse | Beschreibung | Vertreter |
 | ------ | ------------ | --------- |
 | VER-OK | Alle Records mit identischer `version`. | `command_chains/valid-minimal.json` |

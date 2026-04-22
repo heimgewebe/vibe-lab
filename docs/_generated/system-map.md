@@ -21,8 +21,8 @@
 | `prompts/` | 📚 Bibliothek | 2 | 2 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
 | `schemas/` | 🏛️ Governance | 9 | 0 |
-| `scripts/` | 🔧 Tooling | 27 | 0 |
+| `scripts/` | 🔧 Tooling | 28 | 0 |
 | `tests/` | 📁 Root | 82 | 8 |
 | `tools/` | 🔧 Tooling | 3 | 0 |
 
-**Total:** 511 files in 17 directories
+**Total:** 512 files in 17 directories
