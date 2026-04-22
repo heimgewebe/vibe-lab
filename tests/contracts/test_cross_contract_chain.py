@@ -123,6 +123,10 @@ class CrossContractNegativeTests(unittest.TestCase):
         This is an intentional red-test for the known v0.2 gap
         ``handoff_locator_drift``. The validator does not implement this
         invariant yet, so this test must currently fail.
+
+        Fixture design note: all fields mirror the valid minimal baseline,
+        except ``write_change.locator`` which intentionally drifts from
+        ``handoff.locator`` to isolate exactly one violated invariant.
         """
         observed, expected = self._observed(
             "invalid/handoff_locator_drift/locator_drift.json"

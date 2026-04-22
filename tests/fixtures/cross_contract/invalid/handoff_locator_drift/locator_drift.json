@@ -5,8 +5,10 @@
     "locator": "## Laufende Versuche",
     "change_type": "modify",
     "scope": "Add one entry to the running experiments list",
-    "normalized_task": "Append a single entry under the Laufende Versuche heading",
+    "normalized_task": "Append a single dash entry under the Laufende Versuche heading",
     "critic_signature": "experiment-critic/v1",
+    "exact_before": "## Laufende Versuche\n",
+    "exact_after": "## Laufende Versuche\n\n- [ ] new entry\n",
     "handoff": {
       "algo": "sha256",
       "canon": "v1",
@@ -17,7 +19,9 @@
     {
       "command": "read_context",
       "version": "v0.1",
-      "target_files": ["docs/index.md"]
+      "target_files": ["docs/index.md"],
+      "extracted_facts": ["docs/index.md contains ## Laufende Versuche heading"],
+      "uncertainties": []
     },
     {
       "command": "write_change",
@@ -25,12 +29,14 @@
       "target_files": ["docs/index.md"],
       "locator": "## Referenz",
       "change_type": "modify",
-      "forbidden_changes": []
+      "exact_before": "## Laufende Versuche\n",
+      "exact_after": "## Laufende Versuche\n\n- [ ] new entry\n",
+      "forbidden_changes": ["content restructuring"]
     },
     {
       "command": "validate_change",
       "version": "v0.1",
-      "checks": ["lint"],
+      "checks": ["lint", "docs-guard"],
       "success": true,
       "errors": []
     }
