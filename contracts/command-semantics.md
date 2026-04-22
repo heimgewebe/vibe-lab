@@ -90,7 +90,7 @@ Chain-Validator, ist aber logisch ein **intra-record**-Check: Er vergleicht
 | `forbidden_changes` | Negative Scope-Definition. Freie Strings; Konvention ohne enum.            |
 | `checks`            | Offene Liste prüfbarer Checks. Empfohlene Werte: `lint`, `test`, `docs-guard`. |
 | `success` / `errors`| Binäres Resultat + detaillierte Fehlerzeilen.                              |
-| "Drift"             | Zustand, in dem ein Command-Record strukturell valide, aber semantisch widersprüchlich ist — isoliert oder im Kettenkontext. Drift-Fälle werden vom Chain-Validator als `semantic_contradiction` (innerhalb eines Records) oder als eine der Cross-Command-Codes (`target_files_mismatch`, `locator_continuity_violation`, `command_sequence_invalid`) gemeldet. |
+| "Drift"             | Zustand, in dem ein Command-Record strukturell valide, aber semantisch widersprüchlich ist — isoliert oder im Kettenkontext. Drift-Fälle werden vom Chain-Validator als `semantic_contradiction` (innerhalb eines Records) oder als eine der Cross-Command-Codes (`target_files_mismatch`, `command_sequence_invalid`) gemeldet. Intra-Record-Drift (z. B. leerer Locator) wird als `locator_continuity_violation` oder andere intra-record-Codes gemeldet. |
 
 ## Error-Klassen (strukturiertes Modell)
 
