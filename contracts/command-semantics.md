@@ -184,6 +184,10 @@ aller bestehenden Validatoren.
   **referenzierbar**: der Eintrag muss mit `<check>:` beginnen, wobei `<check>` ein
   Wert aus `checks[]` ist (z. B. `lint: ...`, `test: ...`, `docs-guard: ...`).
   Verletzung → `validate_error_unbindable`.
+  > **v0.1 Nachschärfung:** Diese Bindung war in früheren Fassungen nur 📋 Dokumentiert
+  > (nicht maschinell erzwungen). Ab dieser Version ist sie operationalisiert. Ungebundene
+  > Freitext-Einträge ohne `<check>:`-Präfix gelten ab sofort als ungültig. Das ist eine
+  > bewusste späte v0.1-Präzisierung — keine Vorwegnahme von v0.2.
 
 ### Anti-Invariants
 
