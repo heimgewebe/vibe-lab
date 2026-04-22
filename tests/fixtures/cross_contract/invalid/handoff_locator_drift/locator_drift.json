@@ -2,13 +2,11 @@
   "handoff": {
     "status": "PASS",
     "target_files": ["docs/index.md"],
-    "locator": "## Laufende Versuche",
+    "locator": "## Referenz",
     "change_type": "modify",
     "scope": "Add one entry to the running experiments list",
     "normalized_task": "Append a single dash entry under the Laufende Versuche heading",
     "critic_signature": "experiment-critic/v1",
-    "exact_before": "## Laufende Versuche\n",
-    "exact_after": "## Laufende Versuche\n\n- [ ] new entry\n",
     "handoff": {
       "algo": "sha256",
       "canon": "v1",
@@ -27,10 +25,8 @@
       "command": "write_change",
       "version": "v0.1",
       "target_files": ["docs/index.md"],
-      "locator": "## Referenz",
+      "locator": "## Laufende Versuche",
       "change_type": "modify",
-      "exact_before": "## Laufende Versuche\n",
-      "exact_after": "## Laufende Versuche\n\n- [ ] new entry\n",
       "forbidden_changes": ["content restructuring"]
     },
     {
