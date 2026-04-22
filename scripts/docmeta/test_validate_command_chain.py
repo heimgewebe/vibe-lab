@@ -369,5 +369,88 @@ class ChainValidatorTests(unittest.TestCase):
         self.assertIn("validate_error_unbindable", codes)
 
 
+class ContractNachschaerfungPolicyTests(unittest.TestCase):
+    """Policy-Assertion-Tests für die v0.1 Nachschärfung (validate_error_unbindable).
+
+    Diese Tests sichern, dass die normativ tragenden Formulierungen der
+    v0.1-Nachschärfung in contracts/command-semantics.md erhalten bleiben.
+    Sie prüfen keine Validatorlogik — sie schützen den Contract-Layer
+    gegen stilles Entfernen von Kernaussagen.
+    """
+
+    def setUp(self) -> None:
+        self._contract = (
+            vcc.REPO_ROOT / "contracts" / "command-semantics.md"
+        ).read_text(encoding="utf-8")
+
+    def test_nachschaerfung_label_present(self) -> None:
+        """Das Label 'v0.1 Nachschärfung' muss im Contract sichtbar sein."""
+        self.assertIn(
+            "v0.1 Nachschärfung",
+            self._contract,
+            "contracts/command-semantics.md muss das Label 'v0.1 Nachschärfung' "
+            "für validate_error_unbindable enthalten.",
+        )
+
+    def test_unbound_freetext_marked_invalid(self) -> None:
+        """Die spezifische Norm muss lokal im Nachschärfungs-Block stehen.
+
+        Prüft nicht bloß das Vokabular, sondern die präzise normative Formel
+        'gelten ab sofort als ungültig' innerhalb eines engen Fensters um den
+        'v0.1 Nachschärfung:'-Anker.  Ein breiter Slice bis EOF würde auch
+        dann grün bleiben, wenn das Wort 'ungültig' nur zufällig woanders
+        auftaucht.
+        """
+        anchor = "v0.1 Nachschärfung:"
+        self.assertIn(
+            anchor,
+            self._contract,
+            "contracts/command-semantics.md muss den 'v0.1 Nachschärfung:'-Block enthalten.",
+        )
+        start = self._contract.index(anchor)
+        # 500 chars covers the complete Nachschärfung-Blockquote (~350 chars) with margin.
+        block = self._contract[start : start + 500]
+        self.assertIn(
+            "gelten ab sofort als ungültig",
+            block,
+            "Die normative Formel 'gelten ab sofort als ungültig' muss im "
+            "'v0.1 Nachschärfung:'-Block stehen (innerhalb der ersten 500 Zeichen "
+            "nach dem Anker).",
+        )
+
+    def test_not_v02_preemption(self) -> None:
+        """Die explizite Nicht-Vorwegnahme-Formel muss lokal im Nachschärfungs-Block stehen.
+
+        Prüft die genaue Abgrenzungsformel 'keine Vorwegnahme von v0.2' im
+        selben engen Fenster wie test_unbound_freetext_marked_invalid.  Ein
+        Treffer auf beliebiges 'v0.2' irgendwo nach dem Anker wäre zu grob —
+        das Dokument enthält viele v0.2-Bezüge.
+        """
+        anchor = "v0.1 Nachschärfung:"
+        self.assertIn(
+            anchor,
+            self._contract,
+            "contracts/command-semantics.md muss den 'v0.1 Nachschärfung:'-Block enthalten.",
+        )
+        start = self._contract.index(anchor)
+        block = self._contract[start : start + 500]
+        self.assertIn(
+            "keine Vorwegnahme von v0.2",
+            block,
+            "Die Abgrenzungsformel 'keine Vorwegnahme von v0.2' muss im "
+            "'v0.1 Nachschärfung:'-Block stehen (innerhalb der ersten 500 Zeichen "
+            "nach dem Anker).",
+        )
+
+    def test_check_prefix_binding_rule_present(self) -> None:
+        """Der Contract muss die <check>:-Präfix-Regel für errors[] normieren."""
+        self.assertIn(
+            "<check>:",
+            self._contract,
+            "contracts/command-semantics.md muss das <check>:-Präfix-Format "
+            "für errors[]-Einträge explizit normieren.",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
