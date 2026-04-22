@@ -48,9 +48,18 @@ class FixtureMatrixAuditSurfaceTests(unittest.TestCase):
 
         self.assertIn("gap:", known_gaps)
         self.assertIn("gap: intentional (v0.2)", known_gaps)
+        self.assertIn("test_ref:", known_gaps)
+
+        has_audit_gap_pair = bool(
+            re.search(
+                r"covered:\s*false.*?gap:",
+                known_gaps,
+                re.DOTALL,
+            )
+        )
         self.assertTrue(
-            "gap: missing" in known_gaps or "covered: false" in known_gaps,
-            "Known Gaps section must preserve an explicit open audit signal",
+            has_audit_gap_pair,
+            "Known Gaps section must contain at least one `covered: false` paired with `gap:` marker",
         )
 
 
