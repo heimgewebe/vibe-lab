@@ -67,8 +67,8 @@ class FixtureMatrixKnownGapsAuditTests(unittest.TestCase):
             )
             self.assertRegex(
                 gap_body,
-                r"`gap:\s*(missing|intentional \(v0\.2\))`",
-                f"Gap 5.{gap_num} muss ein `gap: missing` oder `gap: intentional (v0.2)` Marker haben",
+                r"`gap:\s*(missing|intentional \(v0\.2\)|closed)`",
+                f"Gap 5.{gap_num} muss ein `gap: missing`, `gap: intentional (v0.2)` oder `gap: closed` Marker haben",
             )
 
 

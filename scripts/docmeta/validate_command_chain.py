@@ -71,6 +71,7 @@ ERROR_CODES: frozenset[str] = frozenset(
         "handoff_state_drift",
         "validate_without_write",
         "validate_targets_out_of_scope",
+        "handoff_locator_drift",
     }
 )
 
@@ -318,7 +319,7 @@ def _validate_locator_continuity(
       whitespace-only. This is belt-and-suspenders over the schema
       ``minLength: 1`` constraint.
 
-    **Not checked in v0.1 (📋 documented for v0.2):**
+    **Not checked here (📋 separate invariant):**
 
     * Coupling between ``write_change.locator`` and
       ``read_context.extracted_facts``: verifying that the locator
@@ -326,6 +327,8 @@ def _validate_locator_continuity(
       file I/O (excluded by design) or structured extracted_facts
       (not yet defined in v0.1). Triggering ``locator_continuity_violation``
       on that basis is **deferred**.
+    * ``handoff.locator`` ↔ ``write_change.locator`` consistency is checked
+      separately by ``_validate_handoff_locator_drift``.
 
     See ``contracts/command-semantics.md`` §Chain Invariants for the
     full documented intent.
@@ -813,6 +816,45 @@ def _validate_handoff_state_continuity(
     return errors
 
 
+def _validate_handoff_locator_drift(
+    handoff: dict[str, Any], chain: list[dict[str, Any]], label: str
+) -> list[ChainError]:
+    """Handoff locator and write_change locator must remain consistent.
+
+    If both ``handoff.locator`` and ``write_change.locator`` are present
+    and non-empty, they must be equal. Divergence means the chain
+    targets a different location than the handoff intended.
+
+    Scope (v0.1):
+    * Plain string equality only; no fuzzy matching.
+    * Only fires when both sides carry a non-empty locator string.
+    * No coupling to ``read_context.extracted_facts``.
+    """
+    handoff_locator = handoff.get("locator")
+    if not isinstance(handoff_locator, str) or not handoff_locator.strip():
+        return []
+    found = _first_record(chain, "write_change")
+    if found is None:
+        return []
+    idx, write_rec = found
+    write_locator = write_rec.get("locator")
+    if not isinstance(write_locator, str) or not write_locator.strip():
+        return []
+    if handoff_locator == write_locator:
+        return []
+    return [
+        ChainError(
+            code="handoff_locator_drift",
+            message=(
+                f"handoff.locator={handoff_locator!r} and "
+                f"write_change.locator={write_locator!r} diverge"
+            ),
+            command_index=idx,
+            path=label,
+        )
+    ]
+
+
 def validate_cross_contract(
     handoff: dict[str, Any],
     chain: list[dict[str, Any]],
@@ -841,6 +883,7 @@ def validate_cross_contract(
     errors.extend(_validate_handoff_target_drift(handoff, chain, label))
     errors.extend(_validate_handoff_intent(handoff, chain, label))
     errors.extend(_validate_handoff_state_continuity(handoff, chain, label))
+    errors.extend(_validate_handoff_locator_drift(handoff, chain, label))
     return errors
 
 

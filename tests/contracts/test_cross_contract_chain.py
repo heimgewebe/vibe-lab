@@ -118,11 +118,12 @@ class CrossContractNegativeTests(unittest.TestCase):
         self.assertEqual(observed, expected)
 
     def test_locator_drift_fails(self) -> None:
-        """Handoff locator and write_change locator must remain consistent.
+        """Locator drift between handoff and write_change must be detected.
 
-        This is an intentional red-test for the known v0.2 gap
-        ``handoff_locator_drift``. The validator does not implement this
-        invariant yet, so this test must currently fail.
+        Validates the ``handoff_locator_drift`` cross-contract invariant:
+        when ``handoff.locator`` and ``write_change.locator`` are both set
+        but carry divergent values, the validator must emit
+        ``handoff_locator_drift``.
 
         Fixture design note: all fields mirror the valid minimal baseline,
         except that ``handoff.locator`` and ``write_change.locator`` carry

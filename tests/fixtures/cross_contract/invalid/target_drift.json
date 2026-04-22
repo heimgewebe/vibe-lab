@@ -2,7 +2,7 @@
   "handoff": {
     "status": "PASS",
     "target_files": ["docs/foundations/vision.md"],
-    "locator": "## Vision",
+    "locator": "## Laufende Versuche",
     "change_type": "modify",
     "scope": "Add a clarifying note to the vision document",
     "normalized_task": "Append one clarifying sentence under the vision heading",

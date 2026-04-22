@@ -335,11 +335,11 @@ durch das Fixture-Korpus unter `tests/fixtures/cross_contract/`.
 
 ### Evolution Constraints (v0.1 → v0.2)
 
-- **Breaking:** Weitere Pflicht-Bindungen (z. B. `handoff.locator` ↔
-  `write_change.locator`) sind bewusst **noch nicht** erzwungen, um
-  v0.2-Evolution des `locator`-Typs nicht einzufrieren.
-- **Non-Breaking:** Zusätzliche Codes wie `handoff_locator_drift` dürfen
-  in v0.2 hinzukommen.
+- **Breaking:** Weitere Pflicht-Bindungen über die bereits implementierten
+  Cross-Contract-Invarianten hinaus sind bewusst **noch nicht** erzwungen.
+- **Implemented:** `handoff_locator_drift` — `handoff.locator` ↔
+  `write_change.locator` werden auf Gleichheit geprüft (reiner String-Vergleich,
+  kein Fuzzy-Matching, kein Bezug zu `extracted_facts`).
 
 ## Versionsstrategie
 

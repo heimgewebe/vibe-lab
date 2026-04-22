@@ -339,12 +339,12 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 
 ### 5.4 Handoff-Locator-Drift
 
-Die Cross-Contract-Prüfung `handoff.locator ↔ write_change.locator` ist in `contracts/command-semantics.md` als v0.2-Scope markiert. Der Error-Code `handoff_locator_drift` existiert noch nicht im Validator.
+`handoff.locator` ↔ `write_change.locator` Konsistenz ist implementiert. Der Error-Code `handoff_locator_drift` wird emittiert, wenn beide Felder gesetzt, aber verschieden sind.
 
 **Audit:**
-- `covered: false`
-- `test_ref: —`
-- `gap: intentional (v0.2)`
+- `covered: true`
+- `test_ref: tests/contracts/test_cross_contract_chain.py::CrossContractNegativeTests::test_locator_drift_fails`
+- `gap: closed`
 
 ---
 
@@ -398,4 +398,4 @@ Die Cross-Contract-Prüfung `handoff.locator ↔ write_change.locator` ist in `c
 | Cross-Contract | semantic contradiction (remove+exact_after) | `cross_contract/invalid/contradiction.json` | `semantic_contradiction` | ✅ |
 | Cross-Contract | intent mismatch (no write_change) | `cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | ✅ |
 | Cross-Contract | version conflict | `cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
-| Cross-Contract | locator drift (handoff vs write_change) | — | `handoff_locator_drift` | ❌ MISSING (v0.2) |
+| Cross-Contract | locator drift (handoff vs write_change) | `cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | ✅ |
