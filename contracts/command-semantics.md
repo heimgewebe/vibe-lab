@@ -108,7 +108,7 @@ String-basiertem `contract_invalid`.
 | `semantic_contradiction`       | Feld-Kombination innerhalb eines Records widerspricht sich (siehe Anti-Invarianten). | ⚙️ Chain-Check |
 | `validate_error_unbindable`    | Ein `errors[]`-Eintrag in `validate_change` beginnt nicht mit `<check>:` für einen Wert aus `checks[]`. Betrifft ausschließlich Einträge bei `success: false`. Keine strukturierten Fehlerobjekte; bleibt String-basiert (v0.1). **Scope-Hinweis:** Prüft Intra-Record-Kohärenz (`checks[]` vs. `errors[]` innerhalb desselben Records) — kein Cross-Command-Check. | ⚙️ Chain-Check (intra-record) |
 | `validate_without_write`       | `validate_change` existiert in einer Chain ohne vorangehendes `write_change`. Minimale Plausibilitätsprüfung: Validierung ohne Schreiboperation ist semantisch ungebunden. Keine neue Result-Semantik (v0.1). | ⚙️ Chain-Check (cross-record) |
-| `validate_targets_out_of_scope` | `validate_change.checks` ist nicht leer, aber das vorangehende `write_change` hat kein `target_files` oder ein leeres `target_files`. Strukturelle Heuristik (v0.1): ohne konkreten Datei-Scope ist die Validierung nicht plausibel gebunden. Keine semantische Analyse der Checks. | ⚙️ Chain-Check (cross-record) |
+| `validate_targets_out_of_scope` | `validate_change.checks` ist nicht leer, aber das **zuletzt vorangehende** `write_change` in der Chain hat kein `target_files` oder ein leeres `target_files`. Strukturelle Heuristik (v0.1): ohne konkreten Datei-Scope ist die Validierung nicht plausibel gebunden. Keine semantische Analyse der Checks. **Doppelmeldung mit `contract_invalid` ist beabsichtigt** (Schemabruch und Plausibilitätsverlust sind verschiedene Ebenen). | ⚙️ Chain-Check (cross-record) |
 
 Exit-Codes wie gewohnt: `0` OK, `1` Validation-Fehler, `2` Setup-Fehler
 (fehlende Schemas, fehlende Fixtures). Das entspricht der Konvention
@@ -220,9 +220,10 @@ aller bestehenden Validatoren.
 - ⚙️ **Chain-Check** `validate_change` existiert, aber kein `write_change` geht in
   der Chain voraus → `validate_without_write`. (Plausibilitätsprüfung v0.1;
   keine neue Result-Semantik.)
-- ⚙️ **Chain-Check** `validate_change.checks` ist nicht leer, aber das vorangehende
-  `write_change` hat kein oder ein leeres `target_files` → `validate_targets_out_of_scope`.
-  (Strukturelle Heuristik v0.1; keine semantische Analyse der Check-Namen.)
+- ⚙️ **Chain-Check** `validate_change.checks` ist nicht leer, aber das **zuletzt vorangehende**
+  `write_change` in der Chain hat kein oder ein leeres `target_files` → `validate_targets_out_of_scope`.
+  (Strukturelle Heuristik v0.1; keine semantische Analyse der Check-Namen. Doppelmeldung
+  mit `contract_invalid` ist beabsichtigt.)
 
 ### Tolerated Ambiguity
 
@@ -272,8 +273,8 @@ read_context → write_change → validate_change
   → `validate_error_unbindable`.
 - ⚙️ **Chain-Check** `validate_change` existiert, aber kein `write_change` geht in der
   Chain voraus → `validate_without_write`.
-- ⚙️ **Chain-Check** `validate_change.checks` ist nicht leer und das vorangehende
-  `write_change` hat kein oder ein leeres `target_files` → `validate_targets_out_of_scope`.
+- ⚙️ **Chain-Check** `validate_change.checks` ist nicht leer und das **zuletzt vorangehende**
+  `write_change` in der Chain hat kein oder ein leeres `target_files` → `validate_targets_out_of_scope`.
 
 ## Cross-Contract Invariants (Handoff → Commands)
 

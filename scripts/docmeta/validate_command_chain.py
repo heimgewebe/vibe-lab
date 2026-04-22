@@ -491,9 +491,15 @@ def _validate_validate_result_seam(
        that exists without a prior ``write_change`` is semantically ungrounded.
 
     2. ``validate_targets_out_of_scope``: when ``validate_change.checks`` is
-       non-empty, the immediately preceding ``write_change`` must carry a
-       non-empty ``target_files`` list. Without concrete target files there is
-       no plausible scope for the validation to act on.
+       non-empty, the most recent preceding ``write_change`` in the same chain
+       must carry a non-empty ``target_files`` list. Without concrete target
+       files there is no plausible scope for the validation to act on.
+
+    **Note on double-reporting:** when the preceding ``write_change`` is already
+    schema-invalid (``contract_invalid``), this check still fires and produces
+    ``validate_targets_out_of_scope`` in addition. This is intentional: schema
+    invalidity and semantic-plausibility loss are distinct concerns and both are
+    reported independently (v0.1 scope).
 
     **Scope discipline (v0.1):**
     * Purely structural plausibility — no semantic analysis of check names.
@@ -541,7 +547,7 @@ def _validate_validate_result_seam(
             continue
 
         target_files = preceding_write.get("target_files")
-        if not target_files:  # None or empty list
+        if not isinstance(target_files, list) or len(target_files) == 0:
             errors.append(
                 ChainError(
                     code="validate_targets_out_of_scope",
