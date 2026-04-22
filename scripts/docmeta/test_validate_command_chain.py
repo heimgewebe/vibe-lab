@@ -369,6 +369,169 @@ class ChainValidatorTests(unittest.TestCase):
         self.assertIn("validate_error_unbindable", codes)
 
 
+class ValidateResultSeamTests(unittest.TestCase):
+    """Tests for the Validate→Result seam (v0.1 minimal).
+
+    Covers the two new cross-record chain-checks:
+
+    - ``validate_without_write``: validate_change without a preceding
+      write_change.
+    - ``validate_targets_out_of_scope``: validate_change with non-empty
+      checks[] but the preceding write_change has empty or absent
+      target_files.
+
+    Scope: structural plausibility only; no semantic analysis.
+    No new result-schema semantics; no v0.2 preemption.
+    """
+
+    def setUp(self) -> None:
+        self.validators = vcc._validators_by_command()
+
+    def _make_full_chain(
+        self,
+        write_record: dict,
+        validate_record: dict | None = None,
+    ) -> list[dict]:
+        """Build a 3-record chain with configurable write and validate records."""
+        if validate_record is None:
+            validate_record = {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint"],
+                "success": True,
+                "errors": [],
+            }
+        return [
+            {
+                "command": "read_context",
+                "version": "v0.1",
+                "target_files": ["src/main.py"],
+            },
+            write_record,
+            validate_record,
+        ]
+
+    def test_valid_validate_with_write_passes(self) -> None:
+        """A complete, consistent chain produces no seam errors."""
+        chain = _chain("valid-validate-with-write.json")
+        errors = vcc.validate_chain(
+            chain, "valid-validate-with-write.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertNotIn("validate_without_write", codes)
+        self.assertNotIn("validate_targets_out_of_scope", codes)
+
+    def test_validate_without_write_detected(self) -> None:
+        """validate_change with no preceding write_change triggers validate_without_write."""
+        chain = _chain("invalid-validate-without-write.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-validate-without-write.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("validate_without_write", codes)
+
+    def test_validate_without_write_synthetic(self) -> None:
+        """Synthetic: chain without write_change triggers validate_without_write."""
+        chain = [
+            {
+                "command": "read_context",
+                "version": "v0.1",
+                "target_files": ["src/main.py"],
+            },
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint"],
+                "success": True,
+                "errors": [],
+            },
+        ]
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_without_write", codes)
+
+    def test_validate_empty_targets_detected(self) -> None:
+        """write_change with empty target_files triggers validate_targets_out_of_scope."""
+        chain = _chain("invalid-validate-empty-targets.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-validate-empty-targets.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("validate_targets_out_of_scope", codes)
+
+    def test_validate_orphaned_detected(self) -> None:
+        """write_change without target_files key triggers validate_targets_out_of_scope."""
+        chain = _chain("invalid-validate-orphaned.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-validate-orphaned.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("validate_targets_out_of_scope", codes)
+
+    def test_validate_synthetic_empty_targets(self) -> None:
+        """Synthetic: write_change.target_files=[] triggers validate_targets_out_of_scope."""
+        chain = self._make_full_chain(
+            {
+                "command": "write_change",
+                "version": "v0.1",
+                "target_files": [],
+                "locator": "def main",
+                "change_type": "modify",
+                "forbidden_changes": [],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_targets_out_of_scope", codes)
+
+    def test_validate_synthetic_absent_targets(self) -> None:
+        """Synthetic: write_change without target_files triggers validate_targets_out_of_scope."""
+        chain = self._make_full_chain(
+            {
+                "command": "write_change",
+                "version": "v0.1",
+                "locator": "def main",
+                "change_type": "modify",
+                "forbidden_changes": [],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_targets_out_of_scope", codes)
+
+    def test_validate_no_scope_error_when_checks_empty(self) -> None:
+        """validate_targets_out_of_scope must NOT fire when checks[] is empty.
+
+        An empty checks[] is already caught by schema validation as
+        contract_invalid; the seam check must not add a spurious second
+        code for the same root cause.
+        """
+        chain = self._make_full_chain(
+            {
+                "command": "write_change",
+                "version": "v0.1",
+                "target_files": [],
+                "locator": "def main",
+                "change_type": "modify",
+                "forbidden_changes": [],
+            },
+            validate_record={
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": [],
+                "success": True,
+                "errors": [],
+            },
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertNotIn(
+            "validate_targets_out_of_scope",
+            codes,
+            "validate_targets_out_of_scope must not fire when checks[] is empty",
+        )
+
+
 class ContractNachschaerfungPolicyTests(unittest.TestCase):
     """Policy-Assertion-Tests für die v0.1 Nachschärfung (validate_error_unbindable).
 
