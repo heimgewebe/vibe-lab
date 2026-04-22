@@ -66,49 +66,6 @@ erwartet 422`), dann Fix. Damit wird B2 zum kleinen TDD-Replikationslauf,
 der zusätzlich dokumentieren kann, ob das Modell den Fall beim zweiten
 Versuch selbst fängt.
 
-## B3 — Modell-symmetrische Replikation (operativer Mini-Spec)
-
-**Ziel.** Prüfen, ob der beobachtete Unterschied zwischen TDD-Vibe und
-Vergleichspfad bestehen bleibt, wenn beide Läufe mit identischem Modell unter
-identischen Randbedingungen durchgeführt werden.
-
-**Scope.** Ein eng begrenzter Replikationslauf im Labor-Kontext, ohne Promotion,
-ohne Manifest-/Decision-Änderung und ohne Rückumschreiben bestehender Artefakte.
-
-**Feste Vergleichsbedingungen (konstant halten).**
-
-- gleiches Modell
-- gleiche Aufgabe
-- gleiche Tool-/Testumgebung
-- gleiche Ausgabekriterien und Erfolgsmetriken
-
-**Variieren.**
-
-- ausschließlich Prompt-/Arbeitsmodus (`tdd-vibe` vs. Vergleichspfad)
-
-**Erfolgskriterium (messbar).**
-
-- Vergleich der Ergebnisdifferenz zwischen beiden Modi anhand derselben Metriken
-  (mindestens: Teststatus, Rework-Umfang, Defektklassen)
-- Erfolg bedeutet hier: replizierbare und nachvollziehbare Differenz unter den
-  konstanten Bedingungen, nicht ein vorab festgelegter Sieger
-
-**Interpretationsgrenze (nicht behaupten).**
-
-- keine allgemeine Aussage, dass TDD-Vibe grundsätzlich überlegen ist
-- nur Aussage für die konkret replizierte Konstellation (Aufgabe, Modell,
-  Umgebung, Zeitpunkt)
-
-**Traceability.**
-
-- triggered_by: "Agenten-Pilotauftrag: eng begrenzte Operability auf
-  2026-04-14_tdd-vibe/followups.md"
-- policy: "AGENTS.md + agent-policy.yaml (Lab-Zone, minimal-lokale Änderung,
-  keine Promotion, keine Governance-Änderung)"
-- action: "Add B3 operational follow-up block for model-symmetric replication"
-- outcome: "Replikationspfad ist präzise operationalisiert, ohne bestehende
-  Evidenzartefakte umzuschreiben"
-
 ## Nicht-Ziele dieser Datei
 
 - Keine Terminverpflichtung. Follow-Ups sind offen, nicht eingeplant.
