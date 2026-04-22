@@ -230,6 +230,136 @@ class ChainValidatorTests(unittest.TestCase):
                         f"version {bad_version!r}: {exc}"
                     )
 
+    # ------------------------------------------------------------------
+    # validate_error_unbindable: error-check binding seam (v0.1)
+    # ------------------------------------------------------------------
+
+    def _make_chain(self, validate_record: dict) -> list[dict]:
+        """Helper: wrap validate_record in a minimal valid chain."""
+        return [
+            {
+                "command": "read_context",
+                "version": "v0.1",
+                "target_files": ["src/main.py"],
+            },
+            {
+                "command": "write_change",
+                "version": "v0.1",
+                "target_files": ["src/main.py"],
+                "locator": "def main",
+                "change_type": "modify",
+                "forbidden_changes": [],
+            },
+            validate_record,
+        ]
+
+    def test_error_with_check_prefix_passes(self) -> None:
+        """Errors bound via check prefix do not trigger validate_error_unbindable."""
+        chain = self._make_chain(
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint", "test"],
+                "success": False,
+                "errors": [
+                    "lint: E501 line too long",
+                    "test: test_main failed assertion",
+                ],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertNotIn("validate_error_unbindable", codes)
+
+    def test_error_no_prefix_triggers_unbindable(self) -> None:
+        """An error string with no check prefix triggers validate_error_unbindable."""
+        chain = self._make_chain(
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint", "test"],
+                "success": False,
+                "errors": ["something went wrong"],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_error_unbindable", codes)
+
+    def test_error_unknown_check_prefix_triggers_unbindable(self) -> None:
+        """A prefix not in checks[] triggers validate_error_unbindable."""
+        chain = self._make_chain(
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint"],
+                "success": False,
+                "errors": ["test: test_foo failed"],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_error_unbindable", codes)
+
+    def test_error_partial_binding_triggers_unbindable(self) -> None:
+        """One bound + one unbound error: unbound entry is still reported."""
+        chain = self._make_chain(
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint", "docs-guard"],
+                "success": False,
+                "errors": [
+                    "lint: trailing whitespace on line 42",
+                    "broken link detected",
+                ],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_error_unbindable", codes)
+        unbindable = [e for e in errors if e.code == "validate_error_unbindable"]
+        self.assertEqual(len(unbindable), 1, "exactly one unbound entry expected")
+        self.assertIn("broken link detected", unbindable[0].message)
+
+    def test_success_true_skips_binding_check(self) -> None:
+        """success=True chains (with empty errors[]) are not checked."""
+        chain = self._make_chain(
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint"],
+                "success": True,
+                "errors": [],
+            }
+        )
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertNotIn("validate_error_unbindable", codes)
+
+    def test_errors_fixture_with_check_prefix_passes(self) -> None:
+        chain = _chain("valid-errors-with-check-prefix.json")
+        errors = vcc.validate_chain(chain, "valid-errors-with-check-prefix.json", self.validators)
+        self.assertEqual(errors, [])
+
+    def test_errors_fixture_no_prefix_detected(self) -> None:
+        chain = _chain("invalid-error-no-check-prefix.json")
+        errors = vcc.validate_chain(chain, "invalid-error-no-check-prefix.json", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_error_unbindable", codes)
+
+    def test_errors_fixture_unknown_prefix_detected(self) -> None:
+        chain = _chain("invalid-error-unknown-check-prefix.json")
+        errors = vcc.validate_chain(chain, "invalid-error-unknown-check-prefix.json", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_error_unbindable", codes)
+
+    def test_errors_fixture_partial_binding_detected(self) -> None:
+        chain = _chain("invalid-error-partial-binding.json")
+        errors = vcc.validate_chain(chain, "invalid-error-partial-binding.json", self.validators)
+        codes = {e.code for e in errors}
+        self.assertIn("validate_error_unbindable", codes)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -64,6 +64,7 @@ ERROR_CODES: frozenset[str] = frozenset(
         "target_files_mismatch",
         "locator_continuity_violation",
         "semantic_contradiction",
+        "validate_error_unbindable",
         "handoff_contract_invalid",
         "handoff_target_drift",
         "handoff_intent_mismatch",
@@ -416,6 +417,64 @@ def _validate_semantic_anti_invariants(
     return errors
 
 
+def _validate_error_check_binding(
+    chain: list[dict[str, Any]], chain_label: str
+) -> list[ChainError]:
+    """Each errors[] entry in validate_change must be bindable to a check[].
+
+    **v0.1 rule:** an error string is considered bound when it starts with
+    ``<check>:`` where ``<check>`` is a value from ``checks[]``.  A bare
+    colon immediately following the check name is sufficient; surrounding
+    whitespace in the error string is not normalised (the prefix must be
+    exact).
+
+    Only applies when ``success == False``; ``success == True`` implies
+    ``errors == []`` by schema, so there is nothing to check.
+
+    Violations produce ``validate_error_unbindable`` — one error per
+    unbound entry.
+
+    **Scope discipline (v0.1):**
+    * String errors only.  No structured error objects.
+    * No heuristic inference; only literal prefix matching.
+    * Does not restrict which check names appear in checks[]; those remain
+      an open list (see Tolerated Ambiguity in command-semantics.md).
+
+    See ``contracts/command-semantics.md`` §Command: validate_change
+    (Invariants) and §Chain Anti-Invariants.
+    """
+    errors: list[ChainError] = []
+    for idx, record in enumerate(chain):
+        if record.get("command") != "validate_change":
+            continue
+        if record.get("success") is not False:
+            continue
+        checks = record.get("checks") or []
+        if not isinstance(checks, list):
+            continue
+        check_names = {c for c in checks if isinstance(c, str)}
+        error_entries = record.get("errors") or []
+        if not isinstance(error_entries, list):
+            continue
+        for entry in error_entries:
+            if not isinstance(entry, str):
+                continue
+            bound = any(entry.startswith(check + ":") for check in check_names)
+            if not bound:
+                errors.append(
+                    ChainError(
+                        code="validate_error_unbindable",
+                        message=(
+                            f"errors[] entry not bindable to any check: {entry!r}; "
+                            f"expected prefix from {sorted(check_names)}"
+                        ),
+                        command_index=idx,
+                        path=chain_label,
+                    )
+                )
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # Orchestration
 # ---------------------------------------------------------------------------
@@ -440,6 +499,7 @@ def validate_chain(
     errors.extend(_validate_target_files_continuity(chain, chain_label))
     errors.extend(_validate_locator_continuity(chain, chain_label))
     errors.extend(_validate_semantic_anti_invariants(chain, chain_label))
+    errors.extend(_validate_error_check_binding(chain, chain_label))
     return errors
 
 

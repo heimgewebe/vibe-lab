@@ -1,0 +1,26 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["docs/guide.md"],
+    "extracted_facts": ["docs/guide.md describes the API surface"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["docs/guide.md"],
+    "locator": "## API",
+    "change_type": "modify",
+    "forbidden_changes": ["restructure sections"]
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint", "docs-guard"],
+    "success": false,
+    "errors": [
+      "lint: trailing whitespace on line 42",
+      "broken link detected"
+    ]
+  }
+]
