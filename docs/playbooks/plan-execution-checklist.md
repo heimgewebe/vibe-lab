@@ -59,6 +59,8 @@ Ziel: Restarbeiten als kleine, pruefbare Schritte umsetzen, ohne Meta-Overengine
 
 ### Build
 
+- [ ] Zwangspunkt implementieren: Metrics-Schritt ist standardmaessig gesperrt und wird nur durch eine aktive `system_decision` mit `effects: enables: metrics` freigegeben.
+- [ ] Decision-aware Guard ergaenzen: `make validate` oder ein dediziertes Script faellt mit Fehler, wenn Metrics ohne aktivierende Decision ausgefuehrt wird.
 - [ ] Metrics-Generator implementieren (`scripts/docmeta/generate_metrics.py`).
 - [ ] Metrics-Output erzeugen (`docs/_generated/metrics/trends.md`).
 - [ ] Export-Abdeckung um genau ein reales Ziel erweitern.
@@ -81,4 +83,5 @@ Ziel: Restarbeiten als kleine, pruefbare Schritte umsetzen, ohne Meta-Overengine
 - [ ] `make validate` ist gruen.
 - [ ] `make generate` ist gruen.
 - [ ] Aktivierte Schritte sind durch Decision + `effects` nachvollziehbar.
+- [ ] Decision-Entzug pruefen: Entfernen von `effects: enables: metrics` blockiert den Metrics-Schritt nachweisbar.
 - [ ] Keine stillen Aktivierungen ohne sichtbares Artefakt.
