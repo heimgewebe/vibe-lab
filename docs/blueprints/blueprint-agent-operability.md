@@ -1,9 +1,9 @@
 ---
 title: "Blueprint — Minimaler Agent-Operability-Kern"
-status: "idea"
+status: active
 canonicality: "exploratory"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-04-23"
 author: "unknown-agent"
 relations:
   - type: derived_from
@@ -25,8 +25,11 @@ Nicht mehr. Nicht weniger.
 
 ### Status
 
-Diese Blaupause beschreibt einen Zielzustand.
-Die beschriebenen Strukturen zur Task-Ausführung sind konzeptionell und derzeit nicht vollständig operativ im Repository implementiert, stützen sich aber auf die bereits etablierten Task-Datenstrukturen (z.B. in `tasks.jsonl`).
+Diese Blaupause beschreibt keinen reinen Fernzielzustand mehr. Der Contract-
+und Validierungskern ist inzwischen teilweise operativ im Repository verankert:
+Command-Schemas, Handoff-Validatoren, Command-Chain-Checks und ein nicht-
+mutierender Replay-Dry-Run existieren. Weiter offen bleiben die breitere
+Fixture-Abdeckung sowie ein vollwertiger Replay-/Execution-Pfad.
 
 Blueprint → Task → Commands → Execution → Ergebnis
 
@@ -44,7 +47,7 @@ Nur Durchstich von Denken → Handeln
 WICHTIG:
 Diese Commands sind konzeptionelle Contracts und müssen perspektivisch in `contracts/` als maschinenvalidierbare Schemas formalisiert werden. Maßgeblich ist dabei JSON Schema als kanonisches Format, konsistent zur bestehenden Contract-Struktur und Validierung im Repo.
 
-Die heute im Repo belegte Vorstufe ist stark task-zentriert (z.B. `tasks.jsonl` mit engen Änderungsverträgen). Das hier vorgeschlagene Command-Modell ist ein möglicher zukünftiger Abstraktionsrahmen über diese Praxis, nicht bereits die native kanonische Struktur des Repos.
+Die heute im Repo belegte Vorstufe ist stark task-zentriert (z.B. `tasks.jsonl` mit engen Änderungsverträgen). Das hier vorgeschlagene Command-Modell ist als explorativer Abstraktionsrahmen dokumentiert; seine kleinste operative Teilmenge ist inzwischen über Schemas, Validatoren und Fixtures im Repo nachgezogen, ohne schon die einzige kanonische Task-Struktur zu sein.
 
 Zweck: Strukturierte, überprüfbare Aktion basierend auf der etablierten `task.jsonl` Praxis.
 

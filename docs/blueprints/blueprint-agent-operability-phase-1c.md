@@ -3,7 +3,7 @@ title: "Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns"
 status: active
 canonicality: exploratory
 created: "2026-04-18"
-updated: "2026-04-18"
+updated: "2026-04-23"
 author: "GitHub Copilot"
 relations:
   - type: derived_from
@@ -40,10 +40,11 @@ dass ein Task erst testbar wird, wenn `target_files`, ein Locator und
 `change_type` explizit vorhanden sind; die Validitätsrate sprang dadurch von
 geschätzt `0/6` auf `6/6`.
 
-Parallel ist `interpretation_risk` im aktuellen `epistemic-state` bewusst nur
-`unassessed`, bis Phase 2 umgesetzt ist. Das Repo kennt also bereits das
-Muster: lieber ehrliche Leerstelle als Pseudopräzision. Genau dieselbe Disziplin
-sollte jetzt für Agent-Operability gelten.
+Parallel ist der Kern von Phase 2 inzwischen umgesetzt: Interpretation Budget,
+Validator, Tests und CI sind aktiv; offen bleibt dort nur die optionale
+Stress-Test-Erweiterung. Das Repo kennt also weiterhin das Muster: lieber
+ehrliche Teilfertigkeit als Pseudopräzision. Genau dieselbe Disziplin sollte
+auch für Agent-Operability gelten.
 
 ## Leitentscheidung
 
@@ -90,7 +91,7 @@ seines eigenen Übergabeobjekts behauptet.
 - [x] Phase C abgeschlossen: CI erzwingt den Handoff-Validator
 - [x] Phase D abgeschlossen: Command-Schemas v0.1 liegen vor
 - [ ] Phase E abgeschlossen: Golden Fixtures / Smoke-Set deckt Drift-Fälle ab (teilweise begonnen: Minimal-Fixtures pro Command vorhanden, erweiterter Drift-Smoke-Set noch offen)
-- [ ] Phase F abgeschlossen: optionaler Replay-Runner reproduziert einen Task
+- [x] Phase F-light erreicht: Dry-run-Replay-Pfad validiert Chain + Non-Mutation; voller Replay-Runner bleibt offen
 
 ## Phase A — HANDOFF_BLOCK als echtes Repo-Contract-Artefakt
 
@@ -251,6 +252,13 @@ Nicht nur Theorie prüfen, sondern Vollzugssituationen.
 
 ## Phase F — Optional: Replay-Runner
 
+**Aktueller Status:** `satisfied_by_dry_run`.
+
+Das Repo hat heute keinen mutierenden Replay-Runner, aber einen explizit
+nicht-ausführenden Dry-run-Pfad (`tools/vibe-cli/replay_minimal.py`) inklusive
+Regressionstests und CI-Guard gegen Dateimutationen. Das ist absichtlich eine
+Phase-F-light-Erfüllung, kein vollwertiger Execution Runner.
+
 ### Phase F Zweck
 
 Vom Agenten-Dialog zur reproduzierbaren Ausführung.
@@ -269,7 +277,8 @@ Vom Agenten-Dialog zur reproduzierbaren Ausführung.
 
 ### Phase F Stop-Kriterium
 
-- [ ] Ein einzelner validierter Task kann reproduzierbar abgespielt werden
+- [x] Ein einzelner validierter Task kann als Dry-run reproduzierbar traversiert werden, ohne das Repo zu mutieren
+- [ ] Ein einzelner validierter Task kann reproduzierbar mit echter Ausführung abgespielt werden
 
 ## Deliverables
 
