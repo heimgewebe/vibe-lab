@@ -16,44 +16,64 @@ decision_type: "result_assessment"
 #   adoption_assessment   : adopt | reject | defer
 verdict: "mixed"
 
+# Mapping for requested decision triad (adopted | rejected | partial)
+result_verdict: "partial"
+
 confidence: "medium"             # high | medium | low | none  (Pflicht bei result_/adoption_assessment)
-date: "2026-04-19"             # updated: 2026-04-19 (gap assessment)
-reviewer: "TBD"
+date: "2026-04-23"
+reviewer: "GPT-5.3-Codex"
+triggered_by: "user-request-2026-04-23-complete-result-assessment"
 
 rationale: |
-  Run-001 on PR-58 remains documented with execution-proof artifacts.
+  Die Cross-Run-Aggregation (results/cross-run-assessment.md) zeigt sechs dokumentierte Runs
+  mit stabiler Evidenzbasis aus results/evidence.jsonl und artifacts/run-*/execution.txt.
 
-  Run-002 is documented as an independent PR run on PR-61 (branch exp/run-002-instrumented) with artifacts under artifacts/run-002-pr61/. This run captured one blocking CI failure before any fix and one incremental fix cycle with subsequent green checks.
+  Beleglage:
+  - Run-003 ist ein sauberer Lauf ohne blocking failure (ci_blocking_failures=0).
+  - Run-004 und Run-005 zeigen reproduzierbar semantische Schemafriktion
+    (fehlender required key `context`) mit schneller und klarer Fehlerlokalisierung.
+  - Run-003 bis Run-006 zeigen jeweils strukturelle Konsolidierungsfriktion
+    (stale docs/_generated/system-map.md nach Artifact-Write) mit Zusatz-Commit.
 
-  Run-003 is now documented as an independent PR run on PR-62 (branch exp/run-003-instrumented) with run artifacts under artifacts/run-003-pr62/. The run contains: one source-document change (docs/foundations/repo-plan.md), generator double-run determinism check (confirmed idempotent), PR opened, CI observation. Result: zero blocking CI failures on first push. No fix cycle required. This is the first clean end-to-end run in this experiment.
-
-  Run-004 is documented as an independent PR run on PR-63 (branch exp/run-004-controlled-friction) with artifacts under artifacts/run-004-pr63/. The run includes one controlled friction event: a small schema deviation in results/evidence.jsonl (missing required key `context`). This produced a blocking validate failure and a one-step schema fix. During consolidation, one additional blocking canonical-contract failure occurred (stale docs/_generated/system-map.md after adding run-004 artifacts) and was fixed via regeneration.
-
-  Detection speed and remediation were explicitly measured for Run-004: detection_latency_seconds=47, fix_steps_required=2, diagnosis_clarity_score=4, unnecessary_commit_delta=2.
-
-  Run-005 is documented as an independent PR run on PR-64 (branch exp/run-005-controlled-friction) with artifacts under artifacts/run-005-pr64/. It was executed as a calibration run with fixed scope and one controlled semantic friction injection (missing `context` in one evidence entry). After schema fix, one additional structural blocking failure occurred during consolidation (stale canonical system-map after adding run artifacts), then resolved via regeneration.
-
-  Run-005 measured outcomes: ci_blocking_failures_total=2, fix_steps_required=2, manual_regen_steps=2, diagnosis_clarity_score=5, unnecessary_commit_delta=2, detection_latency_seconds=48, fix_duration_seconds=241.
-
-  Run-006 was executed as an independent natural clean_reference attempt on branch exp/run-006-clean-reference with artifacts under artifacts/run-006-pr67/. Scope remained intentionally minimal (one small canonical wording change in docs/foundations/vision.md), no controlled friction injection, no schema deviation.
-
-  Run-006 did not satisfy clean_reference criteria: initial validate failed once due to structural canonical-contract drift (stale docs/_generated/system-map.md after adding run-006 artifacts). A single canonical regeneration commit resolved the issue; final PR checks are all green.
-
-  Final Run-006 metrics: ci_blocking_failures_total=1, manual_regen_steps=1, diagnosis_clarity_score=5, unnecessary_commit_delta=1, detection_latency_seconds=97, fix_duration_seconds=36, friction_class=structural_friction.
-
-  Für Run-003 bis Run-006 ist der Triggerpfad konsistent: stale system-map tritt nach Artifact-Write im PR-CI auf und erfordert jeweils einen zusätzlichen canonical-Regenerationscommit. Damit ist eine workflowzentrierte Erklärung stark plausibel (Reihenfolge/Konsolidierung), aber ein Architekturanteil bleibt als Restfrage offen, weil canonical/blocking diagnostics auf run-interne Artefaktzugänge reagieren.
-
-  Ergebnisurteil ist daher mixed: semantic friction ist im aktuellen Setup gut detektierbar und schnell behebbar (Run-004/005), structural friction ist als eigenes wiederkehrendes Muster sichtbar (Run-003/004/005/006 Konsolidierung), und clean runs sind möglich aber nicht stabil garantiert. Damit ist die Hypothese teilweise bewertbar (Friktion entmischt und besser lokalisierbar), aber eine robuste Gesamtsenkung der Friktion ist nicht belegt.
+  Damit ist der "clarifies friction"-Teil der Hypothese bestätigt (Friktionstypen sind
+  trennbar und diagnostisch klar), während eine robuste Gesamtreduktion der Friktion
+  nicht belegt ist. Ergebnis deshalb: mixed (requested mapping: partial).
 
 # Pflicht bei adoption_assessment, optional sonst:
 evidence_summary:
-  observations: 77            # Anzahl Evidence-Entries in evidence.jsonl
-  positive: 0                 # Positive Beobachtungen
-  negative: 0                 # Negative Beobachtungen
-  neutral: 77                 # Neutral: setup, run recording, friction, fix cycles
+  observations: 77
+  runs_documented: 6
+  structural_stale_system_map_runs: 4
+  controlled_schema_injection_runs: 2
+  clean_initial_runs: 1
+
+justification:
+  - "Friction wurde klarer klassifiziert (semantic vs structural) und in mehreren Runs reproduzierbar beobachtet."
+  - "Diagnosepfade sind konkret und schnell (Run-004/005/006 mit dokumentierten Zeitmetriken)."
+  - "Netto-Reduktion der Friktion ist nicht robust belegt, da strukturelle Konsolidierungsfriktion wiederkehrt."
+
+conditions:
+  - "Valid, wenn Evidence-Eintraege strikt schemakonform sind und canonical regeneration direkt nach Artifact-Writes erfolgt."
+  - "Nicht valid als Aussage 'Friktion sinkt insgesamt', solange stale-system-map im Konsolidierungspfad wiederkehrt."
+  - "Nicht valid fuer Generalisierung ueber dieses Repository hinaus ohne externe Replikation."
 
 next_steps: |
-  Abschluss dieses Experiments mit result_assessment:mixed beibehalten. Folgearbeit in ein separates, enges Folgeexperiment auslagern: "Ist stale system-map primaer Workflow-Artefakt oder Architekturproblem?".
+  Abschluss dieses Experiments mit result_assessment:mixed beibehalten.
+  Folgearbeit in ein separates, enges Folgeexperiment auslagern:
+  "Ist stale system-map primaer Workflow-Artefakt oder Architekturproblem?".
+
+next_actions:
+  - "Kein weiterer gleichartiger Run in diesem Experiment."
+  - "Folgeexperiment fuer workflow-vs-architecture-Isolation anlegen."
+  - "Messfeld-Harmonisierung als Pflicht fuer kuenftige Cross-Run-Vergleiche festziehen."
+
+hypothesis_status:
+  confirmed:
+    - "clarifies friction"
+  falsified:
+    - "reduces friction (robust overall)"
+  unresolved:
+    - "Anteil workflow vs architecture am stale-system-map Pattern"
 
 # challenge_version: ""      # Bei Benchmark-Bezug: Version der Challenge
 # compared_to: ""            # Optional: Referenz auf verglichenes Experiment
