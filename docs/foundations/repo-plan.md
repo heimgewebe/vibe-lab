@@ -60,7 +60,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 *Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar und testbar zu machen.*
 
 **Umsetzungs-Checkliste Phase B:**
-- [x] **Initiale Katalogeinträge:** Mindestens ein Eintrag pro Hauptkategorie (`styles`, `technologies`, `techniques`, `workflows`, `combos`) ist angelegt.
+- [x] **Initiale Katalogeinträge:** Erste Einträge in den belegten Hauptkategorien (`styles`, `techniques`, `workflows`, `combos`) sind angelegt; `technologies/` bleibt derzeit bewusst unbefüllt.
 - [x] **Erste Anti-Patterns:** Der Ordner `anti-patterns/` enthält mindestens ein aktiv erfasstes, verworfenes Muster.
 - [x] **Erste Benchmark-Challenges:** Standardisierte Vergleichsaufgaben sind unter `benchmarks/challenges/` definiert.
 - [x] **Golden Example:** Ein vollständig durchgeführtes Referenzexperiment (inkl. `CONTEXT.md`/`INITIAL.md`) liegt in `experiments/` vor.
