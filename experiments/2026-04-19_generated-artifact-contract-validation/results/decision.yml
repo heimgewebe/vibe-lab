@@ -17,6 +17,7 @@ decision_type: "result_assessment"
 verdict: "mixed"
 
 # Mapping for requested decision triad (adopted | rejected | partial)
+# Canonical assessment axis remains `verdict`; `result_verdict` is a presentation mapping.
 result_verdict: "partial"
 
 confidence: "medium"             # high | medium | low | none  (Pflicht bei result_/adoption_assessment)
