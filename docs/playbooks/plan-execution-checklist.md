@@ -72,10 +72,10 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 
 ## Phase 2 — Plan-Reconciliation (danach, nur so weit wie nötig)
 
-- [ ] `docs/foundations/repo-plan.md` checkbox-weise auf Ist-Stand ziehen
-- [ ] `docs/blueprints/blueprint-agent-operability.md` `status: active` statt `idea`
-- [ ] `docs/blueprints/blueprint-agent-operability-phase-1c.md` Phase F als `satisfied_by_dry_run` markieren
-- [ ] `docs/blueprints/blueprint-v2-roadmap.md` Phase 2 nach „Erledigt" verschieben
+- [x] `docs/foundations/repo-plan.md` checkbox-weise auf Ist-Stand ziehen
+- [x] `docs/blueprints/blueprint-agent-operability.md` `status: active` statt `idea`
+- [x] `docs/blueprints/blueprint-agent-operability-phase-1c.md` Phase F als `satisfied_by_dry_run` markieren
+- [x] `docs/blueprints/blueprint-v2-roadmap.md` Phase 2 in erledigten Kern + offenen Rest aufteilen
 
 ## Phase 3 — Agent-Operability Phase E (parallel mit Phase 1)
 
