@@ -1,0 +1,87 @@
+schema_version: "1.0.0"
+
+experiment:
+  name: "Phase 1 — Drift Injection"
+  hypothesis: "Existing agent handoff validators have robust tolerance for locator and hash drift; can detect structural deviations with high confidence."
+  status: "designed"
+  category: "technique"
+  evidence_level: "experimental"
+  execution_status: "designed"
+  created: "2026-04-23"
+  updated: "2026-04-23"
+  iteration: 1
+  
+  metadata:
+    series: "agent-failure-surface"
+    phase: 1
+    execution_status: "planned"
+    
+description: |
+  First execution phase of the Agent Failure Surface Mapping series.
+  
+  Phase 1 systematically injects locator drifts into valid agent handoff fixtures
+  and measures whether existing validators catch the deviations.
+  
+  Operationalizes the **Drift Injection** logic per method.md Phase 1:
+  - Baseline: valid handoff fixtures from tests/fixtures/agent_handoff/
+  - Mutations: locator paths, hash values, path normalization, token sequences
+  - Detection: which cases slip through? which are caught?
+  - Evidence: validator coverage gaps or confidence in existing coverage
+
+execution_plan: |
+  1. Establish baseline state of relevant fixtures (agent_handoff)
+     - Verify 4 valid fixtures load correctly
+     - Verify 4 invalid fixtures reject as expected
+     - Document validator behavior for each
+  
+  2. Define 6 minimal drift injection cases (equivalence class × contrast pairs)
+     - Case A1: Locator path drift (rejected) + near-valid variant (accepted)
+     - Case B1: Hash mismatch (rejected) + corrected hash (accepted)
+     - Case C1: Path normalization edge case (currently ?)
+     - Cases D1–F1: Token/encoding edge cases
+  
+  3. For each case: measure accepted/rejected status + concrete validator output
+  
+  4. Document baseline validator behavior in evidence.jsonl
+  
+  5. Stop condition: If no false positives/negatives found → Phase 1 complete
+     If gap found → propose minimal patch with contrastpair rule
+  
+  6. BOUNDARY: No Phase 2/3/4/5 logic; Phase 1 only
+
+constraints: |
+  - Strictly Phase 1 only; no pre-emptive Phase 2/3/4/5 logic
+  - Minimal fixture set (6 cases covering equivalence classes)
+  - Every assertion must have concrete validator output in evidence.jsonl
+  - Contrastpair rule: any patch requires negative case + near-valid contrast case
+  - No validator changes without evidence of false-positive or false-negative
+  - No interpretation beyond "validator accepts/rejects this case"
+
+preconditions: |
+  - Agent Failure Surface Design PR (#93) merged into main
+  - make validate passes on current branch
+  - Baseline fixtures (tests/fixtures/agent_handoff/) present and cataloged
+  - Target validator: agent_handoff validator from contracts/command-semantics.md
+
+postconditions: |
+  - Phase 1 evidence.jsonl complete with all 6 cases
+  - Decision documented: "sufficient coverage" OR "gap found: <specific case>"
+  - If gap found: minimal patch PR created (separate, new branch)
+  - If sufficient: Phase 1 closed; decision point for Phase 2
+
+epistemic_status: "designed"
+certainty_degree: 0.22
+
+uncertainty_notes: |
+  Uncertainty sources:
+  - Validator behavior documented via make validate output, but live execution
+    output not yet captured in Phase 1 experimental context
+  - Six fixture cases are hypothetical pending actual drift exploration
+  - Stop conditions depend on real validator tolerance thresholds (not yet probed)
+  - Phase boundary depends on manual judgment of "significance" of gaps
+  
+  Mitigation:
+  - evidence.jsonl provides audit trail for reproducibility
+  - Contrastpair rule prevents alibi patches
+  - Phase 1 is deliberately short to reduce compounding uncertainty
+
