@@ -3,7 +3,7 @@ title: "Agent Operability — Fixture-Matrix (v0.1)"
 status: active
 canonicality: derived
 created: "2026-04-21"
-updated: "2026-04-22"
+updated: "2026-04-23"
 author: "vibe-lab maintainers"
 relations:
   - type: references
@@ -203,6 +203,7 @@ Invariants (Handoff → Commands)".
 | `tests/fixtures/cross_contract/invalid/contradiction.json` | `semantic_contradiction` | Semantischer Widerspruch | `change_type: remove` mit `exact_after` im `write_change` — Record-interne Verletzung innerhalb eines Cross-Contract-Tests. |
 | `tests/fixtures/cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | Handoff-Intent + Sequenz | Handoff verlangt `modify`, Chain enthält kein `write_change` (nur `read_context → validate_change`) — Intent nicht erfüllt, Reihenfolge gebrochen, validate ohne write. |
 | `tests/fixtures/cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | Versions- + Contract-Verletzung | `write_change.version: "v0.2"` in Cross-Contract-Kontext — gleiche Prüfung wie im reinen Chain-Fall, aber eingebettet in Handoff-Szenario. |
+| `tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | Locator-Drift | `handoff.locator` und `write_change.locator` gesetzt, aber verschieden — stille Drift zwischen Handoff-Erwartung und tatsächlichem Locator. |
 
 **Audit-Oberflaeche Cross-Contract**
 
@@ -215,7 +216,7 @@ Invariants (Handoff → Commands)".
 | Intent-Mismatch (kein write_change fuer Handoff-change_type) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/semantic_mismatch.json` |
 | Semantischer Widerspruch im Cross-Contract-Kontext | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/contradiction.json` |
 | Version-Konflikt im Cross-Contract-Kontext | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/version_conflict.json` |
-| Handoff-Locator-Drift (locator abweichend) | `covered: false; test_ref: —; gap: intentional (v0.2)` |
+| Handoff-Locator-Drift (locator abweichend) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json` |
 
 ---
 
@@ -336,15 +337,6 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 - `covered: false`
 - `test_ref: —`
 - `gap: intentional (v0.2)`
-
-### 5.4 Handoff-Locator-Drift
-
-`handoff.locator` ↔ `write_change.locator` Konsistenz ist implementiert. Der Error-Code `handoff_locator_drift` wird emittiert, wenn beide Felder gesetzt, aber verschieden sind.
-
-**Audit:**
-- `covered: true`
-- `test_ref: tests/contracts/test_cross_contract_chain.py::CrossContractNegativeTests::test_locator_drift_fails`
-- `gap: closed`
 
 ---
 
