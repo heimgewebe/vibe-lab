@@ -78,7 +78,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 **Umsetzungs-Checkliste Phase C:**
 - [x] **Instruction Blocks (IR) & Exports:** `instruction-blocks/` ist etabliert, und ein CI-Schritt generiert `exports/`.
 - [ ] **Export-Konflikt-Gate & Orphan-Check:** Der Build-Prozess schlägt bei Export-Kollisionen hart fehl; ungenutzte Exporte werden erkannt.
-- [ ] **Export-Herkunft:** Generierte Exporte dokumentieren maschinenlesbar ihre Herkunft (Hash, Generator, Timestamp).
+- [ ] **Export-Herkunft:** Generierte Exporte dokumentieren maschinenlesbar ihre deterministische Herkunft (`source`, `generator`, `source_hash`; kein Timestamp).
 - [ ] **Wissensverfall (Staleness):** Katalogeinträge nutzen `last_validated`, `review_cycle`, und `next_review_due`. Der Generator `generate_stale_entries.py` läuft.
 - [x] **Leichtgewichtiges Metrik-Dashboard:** Trends aus `evidence.jsonl` werden decision-gated nach `docs/_generated/metrics/` exportiert.
 - [ ] **Frühe Diagnose-Kopplung:** Generatoren wie `generate_weak_links.py` laufen und koppeln an das Staleness-Signal zur automatischen Ticketgenerierung.
@@ -127,7 +127,7 @@ Die Pipeline stützt sich auf harte, schemavalidierte Artefaktarten vom Intake b
 **Operationalisierung der Workflow-Pipeline:**
 - [x] **Hypothese (Intake):** Das YAML Issue-Formular `idea.yml` ist aktiv.
 - [ ] **Experiment-Durchführung:** Ein Ordner wird basierend auf dem Golden Skeleton (`manifest.yml`, `method.md`, `evidence.jsonl`, `decision.yml`) befüllt.
-- [x] **Decision Artifact:** Meta-Entscheidungen liegen typisiert unter `decisions/`; operativ belegt ist derzeit der kleine `system_decision`-Kern fuer Metrik-Gates.
+- [x] **Decision Artifact:** Meta-Entscheidungen liegen typisiert unter `decisions/`; operativ belegt ist derzeit der kleine `system_decision`-Kern für Metrik-Gates.
 - [ ] **Katalogisierung (Promotion-PR):** Der PR prüft hart auf Existenz eines vollständigen Experiments (inkl. `CONTEXT.md` / `INITIAL.md` und `evidence.jsonl`), valide Schemas und synchronisierte Exports.
 - [ ] **Benchmarks:** Definitionen liegen unter `benchmarks/criteria.md` und `challenges/`. Ergebnisse tragen eine `challenge_version`.
 - [x] **Instruction Block IR + Exports:** Die IR (`instruction-blocks/`) ist die alleinige Quelle; Änderungen erzwingen CI-Synchronisation der Ziel-Artefakte (`exports/`).
@@ -254,7 +254,7 @@ vibe-lab/
     spec-first-vibe.yml
 
   exports/                # Bibliothek: Tool-spezifische Ziele (Generiert)
-    copilot/              # Info: Exporte enthalten Herkunftsmetadaten (generated_from, Hash, Timestamp)
+    copilot/              # Info: Exporte enthalten deterministische Herkunftsmetadaten (source, generator, source_hash)
     cursor/
 
   schemas/                # Bibliothek: Datenmodelle für CI-Checks (Pipeline-Validierung)

@@ -34,8 +34,8 @@ die optionale Zusatzhärtung über einen expliziten epistemischen Stress-Test.
 **Bewusst nicht mehr offen:** `interpretation_budget` als Promotion-Guard. Das
 liegt bereits als Policy + Validator + Test + CI-Verkabelung im Repo.
 
-**Sichtbarkeits-Kriterium:** Erst wenn die bestehende Guard-Flaeche in Reviews
-nicht mehr reicht und ein zusaetzlicher Stress-Test echten Mehrwert liefert.
+**Sichtbarkeits-Kriterium:** Erst wenn die bestehende Guard-Fläche in Reviews
+nicht mehr reicht und ein zusätzlicher Stress-Test echten Mehrwert liefert.
 
 ---
 
@@ -78,7 +78,7 @@ Experimenten vorliegen. Bis dahin bewusst nicht anlegen.
 ## Erledigte Punkte (zum Nachlesen)
 
 - **Phase 2 — Interpretation Protection (Kern):**
-  `docs/policies/interpretation-budget.md` definiert den Pflichtblock fuer
+  `docs/policies/interpretation-budget.md` definiert den Pflichtblock für
   adoptierte Experimente; `validate_interpretation_budget.py` + Tests + CI
   erzwingen den Guard im Repo.
 
