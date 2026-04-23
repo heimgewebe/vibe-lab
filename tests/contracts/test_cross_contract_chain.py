@@ -117,6 +117,24 @@ class CrossContractNegativeTests(unittest.TestCase):
         self.assertIn("handoff_state_drift", observed)
         self.assertEqual(observed, expected)
 
+    def test_locator_drift_fails(self) -> None:
+        """Locator drift between handoff and write_change must be detected.
+
+        Validates the ``handoff_locator_drift`` cross-contract invariant:
+        when ``handoff.locator`` and ``write_change.locator`` are both set
+        but carry divergent values, the validator must emit
+        ``handoff_locator_drift``.
+
+        Fixture design note: all fields mirror the valid minimal baseline,
+        except that ``handoff.locator`` and ``write_change.locator`` carry
+        deliberately divergent values to isolate exactly one violated invariant.
+        """
+        observed, expected = self._observed(
+            "invalid/handoff_locator_drift/locator_drift.json"
+        )
+        self.assertIn("handoff_locator_drift", observed)
+        self.assertEqual(observed, expected)
+
     def test_handoff_contract_invalid_fails(self) -> None:
         """Handoff itself violates agent.handoff.schema.json (missing 'status')."""
         observed, expected = self._observed("invalid/contract_invalid.json")
