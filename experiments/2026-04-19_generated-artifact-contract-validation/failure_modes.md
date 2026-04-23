@@ -5,9 +5,9 @@ canonicality: operative
 triggered_by: user-request-2026-04-23-complete-result-assessment
 relations:
   - type: references
-     target: results/evidence.jsonl
+    target: results/evidence.jsonl
   - type: references
-     target: results/cross-run-assessment.md
+    target: results/cross-run-assessment.md
 ---
 
 # Failure Modes — Generated Artifact Contract Validation
