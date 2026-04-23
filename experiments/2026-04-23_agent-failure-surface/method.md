@@ -261,8 +261,8 @@ Phase 4 ist strikt als **Kandidateninventur** begrenzt:
 
 ### Untersuchungsfragen
 
-1. Welche Zustandsänderungen (Disk, Git-Index, Locator-Drift durch voran­
-   gehende Änderungen) sind im Dry-Run nicht modellierbar?
+1. Welche Zustandsänderungen (Disk, Git-Index, Locator-Drift durch
+   vorangehende Änderungen) sind im Dry-Run nicht modellierbar?
 2. Welche Fehlerklassen setzen eine **Reihenfolge tatsächlicher** Änderungen
    voraus (z.B. Locator in Schritt 3 ist nur gültig, wenn Schritt 2
    angewendet wurde)?

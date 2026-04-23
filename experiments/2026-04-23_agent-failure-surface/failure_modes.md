@@ -36,8 +36,8 @@ author: "Claude Opus 4.7"
   Whitespace-/Unicode-Varianten. Nicht geprüft — Phase 1 muss dies belegen.
 - **Annahme C:** Cross-Contract-Validatoren decken semantische Widersprüche
   konzeptuell ab. Tatsächliche Abdeckung ist phaseweise zu verifizieren.
-- **Annahme D:** Dry-Run-Replay ist repräsentativ genug für Validierungs­
-  semantik. Phase 4 stellt diese Annahme explizit in Frage — ohne Anspruch
+- **Annahme D:** Dry-Run-Replay ist repräsentativ genug für Validierungssemantik.
+  Phase 4 stellt diese Annahme explizit in Frage — ohne Anspruch
   auf quantitative Auflösung.
 
 ## Grenzen der Evidenz

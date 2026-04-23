@@ -26,7 +26,7 @@ letzter grüner `make validate`-Lauf auf `main` @ `852461d`.
 | Cross-Contract            | `tests/fixtures/cross_contract/{valid,invalid}/`    | 9               |
 | Phase-1c Structure        | `tests/fixtures/experiment_structure_phase1c/`      | 3 Klassen       |
 
-Tatsächliche Zählung ist per `ls tests/fixtures/**/*.json | wc -l` zu Beginn
+Tatsächliche Zählung ist per `find tests/fixtures -type f -name '*.json' | wc -l` zu Beginn
 jeder Phase zu reproduzieren und in `evidence.jsonl` festzuhalten.
 
 ### Bereits dokumentierte Gaps (Fixture-Matrix, Stand 2026-04-23)
