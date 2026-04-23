@@ -6,7 +6,7 @@
 Documents not referenced by any other document via frontmatter relations (103 found):
 
 - `.vibe/intent.md`
-- `docs/blueprints/blueprint-v2-roadmap.md`
+- `docs/playbooks/plan-execution-checklist.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`

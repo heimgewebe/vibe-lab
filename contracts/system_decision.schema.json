@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/contracts/system_decision.schema.json",
+  "title": "System Decision",
+  "description": "Minimaler Contract fuer operative Repo-Steuerentscheidungen unter decisions/system/*.yml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "scope",
+    "claim",
+    "status",
+    "basis",
+    "date",
+    "reviewer",
+    "rationale",
+    "effects",
+    "triggered_by",
+    "policy",
+    "action",
+    "outcome"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "system_decision"
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "dormant"]
+    },
+    "basis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enables", "disables"],
+      "properties": {
+        "enables": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true,
+          "default": []
+        },
+        "disables": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true,
+          "default": []
+        }
+      }
+    },
+    "triggered_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
