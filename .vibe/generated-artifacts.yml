@@ -17,6 +17,7 @@ generated_artifact_contract:
     files:
       - docs/_generated/backlinks.md
       - docs/_generated/orphans.md
+      - docs/_generated/metrics/trends.md
 
   exports:
     description: "Abgeleitete, toolspezifische Repräsentationen aus instruction-blocks/"

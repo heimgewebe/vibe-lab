@@ -1,0 +1,16 @@
+type: system_decision
+scope: repo
+date: "2026-04-23"
+claim: metrics_enabled
+status: active
+basis: "Evidence threshold met (>=20 events, >=3 event types)"
+reviewer: "alex"
+rationale: "Pilotiert den kleinsten operativen Zwangspunkt: Metrics nur mit expliziter Freigabe."
+effects:
+  enables:
+    - metrics
+  disables: []
+triggered_by: "user-request-2026-04-23-decision-kern-guard-metrics"
+policy: "No new automation without visible activation and shutdown point"
+action: "enable metrics pilot"
+outcome: "metrics generation allowed"

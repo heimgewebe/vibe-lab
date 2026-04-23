@@ -23,13 +23,13 @@ tags:
   - decision-first
 ---
 
-# Playbook: Plan Execution Checklist
+## Playbook: Plan Execution Checklist
 
 Ziel: Restarbeiten als kleine, prüfbare Schritte umsetzen, ohne Meta-Overengineering.
 
 ## Leitregel (Obergesetz)
 
-```
+```text
 Keine neue Automatisierung, kein neuer Generator, kein neuer Repo-Mechanismus
 ohne sichtbaren Zwangspunkt + sichtbaren Abschaltpunkt.
 ```
@@ -47,13 +47,26 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 
 ## Phase 1 — Decision-Kern + Guard (operativer Kern zuerst)
 
-- [ ] Minimalen `system_decision`-Typ definieren: Ablage `decisions/system/*.yml`; Pflichtfelder `type`, `scope`, `claim`, `status`, `basis`, `date`, `reviewer`, `rationale`, `effects[]`
-- [ ] Erstes reales Artefakt: `decisions/system/2026-04-23-metrics-enabled.yml`, `status: active`, `effects: [enables: metrics]`
-- [ ] Optional: `decisions/system/2026-04-23-catalog-staleness-dormant.yml`, `effects: [disables: catalog_staleness]`
-- [ ] Decision-aware Guard bauen (`scripts/docmeta/check_system_decisions.py`): schlägt fehl, wenn kein aktives `system_decision` mit `effects.enables: metrics` existiert
-- [ ] Guard in `make validate` oder dediziertes `make check-decisions` einbinden
-- [ ] Metrics-Generator implementieren (`scripts/docmeta/generate_metrics.py`), Output: `docs/_generated/metrics/trends.md`
-- [ ] Drift-Bericht: Was wurde bewusst nicht gebaut und warum
+- [x] Minimalen `system_decision`-Typ definieren: Ablage `decisions/system/*.yml`; Pflichtfelder `type`, `scope`, `claim`, `status`, `basis`, `date`, `reviewer`, `rationale`, `effects`
+- [x] `effects` eindeutig festgezogen (Contract):
+
+  ```yaml
+  effects:
+    enables:
+      - metrics
+    disables:
+      - catalog_staleness
+  ```
+
+- [x] Erstes reales Artefakt: `decisions/system/2026-04-23-metrics-enabled.yml`, `status: active`, `effects.enables: [metrics]`
+- [x] Optional umgesetzt: `decisions/system/2026-04-23-catalog-staleness-dormant.yml`, `effects.disables: [catalog_staleness]`
+- [x] Decision-aware Guard gebaut (`scripts/docmeta/check_system_decisions.py`): schlägt fehl, wenn kein aktives `system_decision` mit `effects.enables: metrics` existiert
+- [x] Guard als dediziertes Ziel eingebunden: `make check-decisions` (noch nicht global in `make validate`)
+- [x] Metrics-Generator implementiert (`scripts/docmeta/generate_metrics.py`), Output: `docs/_generated/metrics/trends.md`
+- [x] Drift-Bericht (Pilot, kurz):
+  - `catalog_staleness` bleibt dormant: keine festgezurrte Semantik und keine review-cycle Felder
+  - `reactive_loop` bleibt dormant: kein freigegebener realer Staleness-Fall
+  - keine weiteren Generatoren gebaut: Pilot bewusst auf Decision + Guard + Metrics begrenzt
 
 ## Phase 2 — Plan-Reconciliation (danach, nur so weit wie nötig)
 
@@ -71,12 +84,12 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 - [ ] Jede leere Zone als `dormant` oder `minimal-seed` markieren (kein `queued`)
 - [ ] Bei `minimal-seed`: genau ein reales Artefakt, kein Framework
 - [ ] Reactive Loop: dormant lassen bis echter Staleness-Fall existiert
-- [ ] Catalog-Staleness: dormant bis Semantik per Decision festgelegt
+- [x] Catalog-Staleness: dormant bis Semantik per Decision festgelegt
 
 ## Verifikation
 
-- [ ] `make validate` ist grün
-- [ ] Guard schlägt fehl ohne aktive Decision
-- [ ] Decision-Entzug prüfen: Entfernen von `effects: enables: metrics` blockiert Metrics nachweisbar
-- [ ] Metrics-Ausgabe ist datengetragen, nicht leer
-- [ ] Drift-Bericht vorhanden: was wurde dormant gelassen und warum
+- [x] `make validate` ist grün
+- [x] Guard schlägt fehl ohne aktive Decision
+- [x] Decision-Entzug prüfen: Entfernen von `effects.enables: [metrics]` blockiert Metrics nachweisbar
+- [x] Metrics-Ausgabe ist datengetragen, nicht leer (>=20 Events, >=3 event_type, >=1 abgeleitete Kennzahl, Quellpfade vorhanden)
+- [x] Drift-Bericht vorhanden: was wurde dormant gelassen und warum

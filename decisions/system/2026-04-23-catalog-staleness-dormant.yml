@@ -1,0 +1,16 @@
+type: system_decision
+scope: repo
+date: "2026-04-23"
+claim: catalog_staleness_dormant
+status: dormant
+basis: "No agreed staleness semantics and no validated review-cycle fields yet"
+reviewer: "alex"
+rationale: "Explizites Nicht-Bauen verhindert stille Aktivierung vor Semantikfestlegung."
+effects:
+  enables: []
+  disables:
+    - catalog_staleness
+triggered_by: "user-request-2026-04-23-decision-kern-guard-metrics"
+policy: "Do not build generators without explicit semantics and stop criteria"
+action: "keep catalog staleness dormant"
+outcome: "catalog staleness generator remains blocked"
