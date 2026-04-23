@@ -1,0 +1,29 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "Agent Failure Surface Mapping"
+  hypothesis: "Die Grenze zwischen 'agentisch korrekt' und 'agentisch falsch' ist im aktuellen Contract-/Fixture-Layer nicht überall scharf; gezielt konstruierte Drift-, Widerspruchs-, Chain- und Replay-Fälle decken Toleranzzonen auf, die in Fixtures/Tests/Validatoren überführt werden können."
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-04-23"
+  updated: "2026-04-23"
+  author: "Claude Opus 4.7"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools: ["LLM-Agent", "make validate", "Python 3.11", "JSON Schema Draft 2020-12"]
+  language: "Mixed (Markdown, YAML, JSON, Python)"
+  environment: "vibe-lab"
+  triggered_by: "user-request-2026-04-23-phase-e-experiment-series-hybrid"
+  coupling_note: "Experimentreihe, die direkt in Phase-E-Artefakte überführt wird. Jede Erkenntnis erzeugt Fixture, Test oder Validator-Änderung. Keine reine Beobachtung ohne strukturelle Konsequenz."
+  series_phases: "Phase 1 Drift Injection, Phase 2 Semantic Contradiction, Phase 3 Chain Integrity Stress, Phase 4 Replay Reality Gap, Phase 5 Adversarial Agent Simulation"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

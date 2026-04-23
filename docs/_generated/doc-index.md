@@ -128,6 +128,10 @@
 | `experiments/2026-04-19_generated-artifact-contract-validation/method.md` | Methode: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` | Cross-Run-Auswertung: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis: Generated Artifact Contract Validation | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` | Kontext: Agent Failure Surface Mapping | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/INITIAL.md` | Initiale Situation: Agent Failure Surface Mapping | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/failure_modes.md` | Failure Modes: Agent Failure Surface Mapping | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/method.md` | Methode: Agent Failure Surface Mapping | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

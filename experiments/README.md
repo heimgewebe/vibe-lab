@@ -19,6 +19,13 @@ Dies ist das operative Labor des Vibe-Labs. Hier werden Hypothesen getestet und 
 - [Upfront Structuring Replication](2026-04-14_upfront-structuring-replication/CONTEXT.md)
 - [Prompt-Length Control](2026-04-14_prompt-length-control/CONTEXT.md)
 
+## In Design (noch nicht ausgeführt)
+- [Agent Failure Surface Mapping](2026-04-23_agent-failure-surface/CONTEXT.md) —
+  fünfphasige Reihe zur adversarialen Härtung des Agent-Operability-Layers
+  (Drift Injection, Semantic Contradiction, Chain Integrity Stress,
+  Replay Reality Gap, Adversarial Agent Simulation). `status: designed`,
+  jede Phase operativ gekoppelt an Fixture/Test/Validator-Konsequenz.
+
 ---
 
 ## Iteration und Ausführung
