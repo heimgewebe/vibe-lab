@@ -2,7 +2,7 @@
   "handoff": {
     "status": "PASS",
     "target_files": ["docs/foundations/vision.md"],
-    "locator": "## Laufende Versuche",
+    "locator": "## Vision",
     "change_type": "modify",
     "scope": "Add a clarifying note to the vision document",
     "normalized_task": "Append one clarifying sentence under the vision heading",
@@ -23,7 +23,7 @@
       "command": "write_change",
       "version": "v0.1",
       "target_files": ["docs/index.md"],
-      "locator": "## Laufende Versuche",
+      "locator": "## Vision",
       "change_type": "modify",
       "forbidden_changes": []
     },

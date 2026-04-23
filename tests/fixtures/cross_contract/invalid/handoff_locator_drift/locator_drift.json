@@ -5,7 +5,7 @@
     "locator": "## Referenz",
     "change_type": "modify",
     "scope": "Add one entry to the running experiments list",
-    "normalized_task": "Append a single dash entry under the Laufende Versuche heading",
+    "normalized_task": "Apply one minimal list-entry update under the selected heading",
     "critic_signature": "experiment-critic/v1",
     "handoff": {
       "algo": "sha256",
