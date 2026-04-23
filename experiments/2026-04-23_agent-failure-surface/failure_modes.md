@@ -68,6 +68,11 @@ author: "Claude Opus 4.7"
   die für Agent-Korrektheit irrelevant sind. Stop-Kriterium:
   Phase-PR bleibt ohne verankerte Fixture → Phase wird als `inconclusive`
   geschlossen, nicht verlängert.
+- **Validator-Überdehnung:** Wenn Validatoren als allgemeine
+  Qualitätsrichter missverstanden werden, kippt die Reihe von operativer
+  Konsistenzprüfung zu unscharfer Inhaltsbewertung. Zuständigkeitsgrenze:
+  Validatoren sichern Struktur/Sequenz/Konsistenz, nicht generelle
+  „Analysequalität".
 
 ## Negativ-Evidenz ist explizit gültig
 

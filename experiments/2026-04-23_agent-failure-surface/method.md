@@ -47,6 +47,20 @@ wenn für sie mindestens **ein** konkreter Beleg existiert:
 Spekulatives Patchen ist untersagt. Siehe `AGENTS.md` §„Verhaltensregeln"
 Punkt 2 („Keine Eigeninterpretation") und `agent-policy.yaml`.
 
+## Mindestschärfe der Strukturkonsequenz (Kontrastpaar-Regel)
+
+Die Regel „jede Phase erzeugt eine Strukturkonsequenz" gilt nur dann als
+erfüllt, wenn die Konsequenz über einen Einzelfall hinaus operationalisiert
+wurde:
+
+1. Eine **benannte Äquivalenzklasse** ist explizit dokumentiert
+   (Fixture-Matrix + PR-Beschreibung).
+2. Es existieren mindestens **zwei kontrastierende Fälle**:
+   - ein Fall, der zuvor toleriert wurde und nach der Konsequenz scheitert,
+   - ein naher Nicht-Fall, der weiterhin gültig bleibt.
+
+Ein einzelner Minimal-Fixture ohne Kontrastfall erfüllt diese Regel nicht.
+
 ## Metriken
 
 Für jede Phase werden mindestens erhoben:
@@ -239,6 +253,12 @@ argumentativ Evidenz erhoben werden. Das Ergebnis ist eine
 **Kandidatenliste** für Phase F, keine quantitative Messung. Das ist
 explizit als Einschränkung in `failure_modes.md` zu dokumentieren.
 
+Phase 4 ist strikt als **Kandidateninventur** begrenzt:
+
+- kein direkter Ableitungsweg zu neuer Validator- oder Schema-Änderung,
+- kein normativer Hardening-Output,
+- keine Einstufung als belastbarer Failure-Surface-Nachweis.
+
 ### Untersuchungsfragen
 
 1. Welche Zustandsänderungen (Disk, Git-Index, Locator-Drift durch voran­
@@ -255,11 +275,15 @@ explizit als Einschränkung in `failure_modes.md` zu dokumentieren.
 - Kandidatenliste wird **nicht** als neue Fixture-Klasse eingebaut, solange
   kein echter Runner existiert. Stattdessen: Referenzeintrag in der
   Fixture-Matrix unter „Intentional Gap — Replay".
+- Jeder Kandidat muss auf einen **konkreten Dry-Run-Pfad** oder einen
+   **konkreten fehlenden Mutationseffekt** verweisen.
 
 ### Stop-Bedingung Phase 4
 
 Mindestens drei Kandidaten identifiziert + in Matrix verlinkt, oder
-begründete Negativ-Aussage.
+begründete Negativ-Aussage. Für jeden Kandidaten ist ein konkreter
+Dry-Run-Bezug erforderlich; ohne diesen Bezug gilt der Kandidat als
+methodisch unzureichend.
 
 ---
 
@@ -294,6 +318,21 @@ Mindestens eine Simulation passiert den gesamten Validatoren-Stack, obwohl
 sie epistemisch wertlos ist. → Entweder neuer Constraint (z.B.
 `non-empty-change`-Guard) oder explizite Dokumentation als „außerhalb der
 Validator-Zuständigkeit".
+
+### Zuständigkeitsgrenze (Validatoren)
+
+Validatoren prüfen:
+
+- Struktur,
+- Sequenz,
+- minimale Konsistenz,
+- nachweisbare operative Relevanz.
+
+Validatoren prüfen nicht:
+
+- allgemeine inhaltliche Tiefe,
+- generelle „Qualität" einer Analyse,
+- semantische Weisheit.
 
 ### Stop-Bedingung Phase 5
 
