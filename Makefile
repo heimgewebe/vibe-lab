@@ -142,7 +142,7 @@ generate: generate-canonical generate-derived generate-ephemeral
 generate-canonical: generate-doc-index generate-system-map generate-exports
 	@echo "✅ Generated canonical diagnostics in docs/_generated/."
 
-generate-derived: generate-backlinks generate-orphans
+generate-derived: generate-backlinks generate-orphans generate-metrics
 	@echo "✅ Generated derived diagnostics in docs/_generated/."
 
 generate-ephemeral: generate-epistemic-state

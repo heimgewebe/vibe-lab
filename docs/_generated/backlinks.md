@@ -3,6 +3,10 @@
 
 # Backlinks
 
+## `CONTRIBUTING.md`
+
+- ← `docs/playbooks/plan-execution-checklist.md` (references)
+
 ## `agent-policy.yaml`
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (references)
@@ -70,11 +74,16 @@
 
 - ← `contracts/command-semantics.md` (references)
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/plan-execution-checklist.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability.md`
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (derived_from)
 - ← `docs/index.md` (references)
+
+## `docs/blueprints/blueprint-v2-roadmap.md`
+
+- ← `docs/playbooks/plan-execution-checklist.md` (references)
 
 ## `docs/blueprints/blueprint-v2.md`
 
@@ -97,6 +106,7 @@
 ## `docs/foundations/repo-plan.md`
 
 - ← `docs/masterplan.md` (derived_from)
+- ← `docs/playbooks/plan-execution-checklist.md` (references)
 
 ## `docs/foundations/vision.md`
 
@@ -159,7 +169,19 @@
 
 ## `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md`
 
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` (references)
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` (informs)
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` (references)
+
+## `experiments/2026-04-19_generated-artifact-contract-validation/results/decision.yml`
+
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` (references)
+
+## `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
+
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` (references)
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (references)
+- ← `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` (references)
 
 ## `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md`
 

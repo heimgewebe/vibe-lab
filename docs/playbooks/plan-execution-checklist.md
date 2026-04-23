@@ -63,6 +63,7 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 - [x] Decision-aware Guard gebaut (`scripts/docmeta/check_system_decisions.py`): schlägt fehl, wenn kein aktives `system_decision` mit `effects.enables: metrics` existiert
 - [x] Guard als dediziertes Ziel eingebunden: `make check-decisions` (noch nicht global in `make validate`)
 - [x] Metrics-Generator implementiert (`scripts/docmeta/generate_metrics.py`), Output: `docs/_generated/metrics/trends.md`
+- [x] Metrics-Pilot in den Standard-Generate-Vertrag eingehängt (`generate-derived` ruft `generate-metrics` auf)
 - [x] Drift-Bericht (Pilot, kurz):
   - `catalog_staleness` bleibt dormant: keine festgezurrte Semantik und keine review-cycle Felder
   - `reactive_loop` bleibt dormant: kein freigegebener realer Staleness-Fall
