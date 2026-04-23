@@ -27,62 +27,56 @@ tags:
 
 Ziel: Restarbeiten als kleine, prüfbare Schritte umsetzen, ohne Meta-Overengineering.
 
-## Leitprinzip
+## Leitregel (Obergesetz)
 
-- Decision-First statt Generator-First.
-- Build nur bei erfüllten Stop-Kriterien.
-- Sonst explizit dormant.
-- Ein minimaler Meta-Decision-Typ mit Wirkung (`effects`) statt Decision-Taxonomie.
+```
+Keine neue Automatisierung, kein neuer Generator, kein neuer Repo-Mechanismus
+ohne sichtbaren Zwangspunkt + sichtbaren Abschaltpunkt.
+```
 
-## Stop-Kriterien (harte Gates)
+Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachweis.
 
-- [ ] Metrics-Gate erfüllt: mindestens 20 Evidence-Events und mindestens 3 `event_type`.
-- [ ] Catalog-Staleness-Gate erfüllt: Semantik entschieden und mindestens 5 Catalog-Einträge, davon mindestens 2 reviewbar zeitdifferenziert.
-- [ ] Reactive-Loop-Gate erfüllt: mindestens 1 realer Staleness-Fall im gewählten Sinn.
+**5-Fragen-Test:** Klein? Sichtbar? Reversibel? Wirklich freigeschaltet? Fällt sauber aus ohne Freigabe?
 
-## Phase 1 - Plan-Reconciliation
+## Nicht jetzt (explizit ausgesperrt)
 
-- [ ] `docs/foundations/repo-plan.md` checkbox-weise auf Ist-Stand ziehen.
-- [ ] `docs/blueprints/blueprint-agent-operability.md` von Zielbild auf Ist-Stand synchronisieren.
-- [ ] `docs/blueprints/blueprint-agent-operability-phase-1c.md` Phase E/F eindeutig markieren.
-- [ ] `docs/blueprints/blueprint-v2-roadmap.md` bereits umgesetzte Punkte nach "Erledigt" verschieben.
-- [ ] Reconciliation-Begründung sichtbar dokumentieren (nicht implizit im Diff verstecken).
+- Phase D groß öffnen; mehrere Generatoren parallel bauen
+- `decisions/` zu einer allgemeinen Meta-Verfassung aufblasen
+- Reactive Loops ohne echten Signalbedarf; `catalog/technologies/` künstlich befüllen
+- Catalog-Staleness, Reactive Loop, Weak Links, Knowledge Gaps, Supersession gleichzeitig
 
-## Phase 2 - Minimaler Decision-Schnitt
+## Phase 1 — Decision-Kern + Guard (operativer Kern zuerst)
 
-- [ ] Einen einzigen Meta-Decision-Typ für `decisions/` festlegen: `system_decision`.
-- [ ] Pflichtkern festlegen: `type`, `scope`, `claim`, `status`, `basis`, `date`, `reviewer`, `rationale`, `effects`.
-- [ ] Ersten Referenzfall erstellen: `claim: metrics_enabled`, `effects: enables: metrics`.
-- [ ] Optionalen Dormant-Fall erstellen: `claim: catalog_staleness_dormant`, `effects: disables: catalog_staleness`.
-- [ ] Decision-Löschtest definieren: ohne aktivierende Decision ist der Schritt nicht freigegeben.
+- [ ] Minimalen `system_decision`-Typ definieren: Ablage `decisions/system/*.yml`; Pflichtfelder `type`, `scope`, `claim`, `status`, `basis`, `date`, `reviewer`, `rationale`, `effects[]`
+- [ ] Erstes reales Artefakt: `decisions/system/2026-04-23-metrics-enabled.yml`, `status: active`, `effects: [enables: metrics]`
+- [ ] Optional: `decisions/system/2026-04-23-catalog-staleness-dormant.yml`, `effects: [disables: catalog_staleness]`
+- [ ] Decision-aware Guard bauen (`scripts/docmeta/check_system_decisions.py`): schlägt fehl, wenn kein aktives `system_decision` mit `effects.enables: metrics` existiert
+- [ ] Guard in `make validate` oder dediziertes `make check-decisions` einbinden
+- [ ] Metrics-Generator implementieren (`scripts/docmeta/generate_metrics.py`), Output: `docs/_generated/metrics/trends.md`
+- [ ] Drift-Bericht: Was wurde bewusst nicht gebaut und warum
 
-## Phase 3 - Freigegebene Arbeit
+## Phase 2 — Plan-Reconciliation (danach, nur so weit wie nötig)
 
-### Build
+- [ ] `docs/foundations/repo-plan.md` checkbox-weise auf Ist-Stand ziehen
+- [ ] `docs/blueprints/blueprint-agent-operability.md` `status: active` statt `idea`
+- [ ] `docs/blueprints/blueprint-agent-operability-phase-1c.md` Phase F als `satisfied_by_dry_run` markieren
+- [ ] `docs/blueprints/blueprint-v2-roadmap.md` Phase 2 nach „Erledigt" verschieben
 
-- [ ] Zwangspunkt implementieren: Metrics-Schritt ist standardmaessig gesperrt und wird nur durch eine aktive `system_decision` mit `effects: enables: metrics` freigegeben.
-- [ ] Decision-aware Guard ergänzen: `make validate` oder ein dediziertes Script fällt mit Fehler, wenn Metrics ohne aktivierende Decision ausgeführt wird.
-- [ ] Metrics-Generator implementieren (`scripts/docmeta/generate_metrics.py`).
-- [ ] Metrics-Output erzeugen (`docs/_generated/metrics/trends.md`).
-- [ ] Export-Abdeckung um genau ein reales Ziel erweitern.
-- [ ] Agent-Operability Phase E Fixture-Sets auf 6-8 Fälle je Command ausbauen.
+## Phase 3 — Agent-Operability Phase E (parallel mit Phase 1)
 
-### Dormant
+- [ ] Fixture-Erweiterung auf 6–8 Fälle je Command (`hash_mismatch`, `unsupported_canon`, `integrity_mismatch`, promotion-nah)
 
-- [ ] Catalog-Staleness-Generator bleibt dormant bis Semantik + Gate erfüllt.
-- [ ] Reactive Loop bleibt dormant bis realer Staleness-Fall existiert.
-- [ ] Weak-Links/Knowledge-Gaps/Supersession bleiben dormant.
+## Phase 4 — Stub-Zonen hart entscheiden
 
-## Phase 4 - Stub-Zonen hart entscheiden
-
-- [ ] Jede leere Zone als `dormant` oder `minimal-seed` markieren.
-- [ ] Kein `queued` verwenden.
-- [ ] Bei `minimal-seed` genau ein reales Artefakt liefern, kein Framework.
+- [ ] Jede leere Zone als `dormant` oder `minimal-seed` markieren (kein `queued`)
+- [ ] Bei `minimal-seed`: genau ein reales Artefakt, kein Framework
+- [ ] Reactive Loop: dormant lassen bis echter Staleness-Fall existiert
+- [ ] Catalog-Staleness: dormant bis Semantik per Decision festgelegt
 
 ## Verifikation
 
-- [ ] `make validate` ist grün.
-- [ ] `make generate` ist grün.
-- [ ] Aktivierte Schritte sind durch Decision + `effects` nachvollziehbar.
-- [ ] Decision-Entzug prüfen: Entfernen von `effects: enables: metrics` blockiert den Metrics-Schritt nachweisbar.
-- [ ] Keine stillen Aktivierungen ohne sichtbares Artefakt.
+- [ ] `make validate` ist grün
+- [ ] Guard schlägt fehl ohne aktive Decision
+- [ ] Decision-Entzug prüfen: Entfernen von `effects: enables: metrics` blockiert Metrics nachweisbar
+- [ ] Metrics-Ausgabe ist datengetragen, nicht leer
+- [ ] Drift-Bericht vorhanden: was wurde dormant gelassen und warum
