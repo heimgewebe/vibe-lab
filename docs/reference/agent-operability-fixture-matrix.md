@@ -216,7 +216,7 @@ Invariants (Handoff → Commands)".
 | Intent-Mismatch (kein write_change fuer Handoff-change_type) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/semantic_mismatch.json` |
 | Semantischer Widerspruch im Cross-Contract-Kontext | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/contradiction.json` |
 | Version-Konflikt im Cross-Contract-Kontext | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/version_conflict.json` |
-| Handoff-Locator-Drift (locator abweichend) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json; gap: closed` |
+| Handoff-Locator-Drift (locator abweichend) | `covered: true; test_ref: tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json` |
 
 ---
 
