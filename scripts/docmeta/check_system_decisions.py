@@ -3,6 +3,12 @@
 
 Validates decisions under decisions/system/ against the minimal schema and
 enforces feature gates via effects.enables / effects.disables.
+
+Gate semantics (for active decisions only):
+- disables has precedence over enables
+- if feature is disabled: gate is blocked
+- elif feature is enabled: gate is open
+- else: gate is blocked
 """
 
 import argparse
@@ -37,15 +43,27 @@ def _load_validator(schema_path: Path) -> Draft202012Validator:
     return Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
 
 
-def _has_enabled_feature(decisions: list[dict], feature: str) -> bool:
+def _collect_effect_claims(decisions: list[dict], feature: str) -> tuple[list[str], list[str]]:
+    enabled_by: list[str] = []
+    disabled_by: list[str] = []
+
     for decision in decisions:
         if decision.get("status") != "active":
             continue
+
+        claim = str(decision.get("claim", "<unknown-claim>"))
         effects = decision.get("effects", {})
-        enables = effects.get("enables", []) if isinstance(effects, dict) else []
-        if feature in enables:
-            return True
-    return False
+        if not isinstance(effects, dict):
+            continue
+
+        enables = effects.get("enables", [])
+        disables = effects.get("disables", [])
+        if isinstance(enables, list) and feature in enables:
+            enabled_by.append(claim)
+        if isinstance(disables, list) and feature in disables:
+            disabled_by.append(claim)
+
+    return enabled_by, disabled_by
 
 
 def _display_path(path: Path) -> str:
@@ -107,14 +125,31 @@ def main() -> int:
         print("❌ Decision guard failed due to contract violations.")
         return 1
 
-    if not _has_enabled_feature(decisions, args.feature):
+    enabled_by, disabled_by = _collect_effect_claims(decisions, args.feature)
+
+    if disabled_by:
+        print(
+            f"❌ Feature gate blocked: '{args.feature}' is disabled by active "
+            f"system_decision(s): {', '.join(sorted(disabled_by))}."
+        )
+        if enabled_by:
+            print(
+                "   Note: enable decision(s) exist but are overridden by disables precedence: "
+                f"{', '.join(sorted(enabled_by))}."
+            )
+        return 1
+
+    if not enabled_by:
         print(
             f"❌ Feature gate blocked: '{args.feature}' is not enabled by any active "
             "system_decision (effects.enables)."
         )
         return 1
 
-    print(f"✅ Feature gate open: '{args.feature}' enabled by active system_decision.")
+    print(
+        f"✅ Feature gate open: '{args.feature}' enabled by active system_decision(s): "
+        f"{', '.join(sorted(enabled_by))}."
+    )
     return 0
 
 

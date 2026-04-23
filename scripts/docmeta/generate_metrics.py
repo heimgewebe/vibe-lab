@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """generate_metrics.py - Generate a small metrics trend report from evidence.jsonl.
 
-This generator is intentionally minimal and is gated by system decisions.
+This generator is intentionally minimal and is gated externally via Makefile
+(make generate-metrics -> make check-decisions).
 """
 
 from __future__ import annotations
@@ -10,8 +11,10 @@ import json
 import statistics
 import sys
 from collections import Counter, defaultdict
-from datetime import date
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from _paths import write_if_changed  # noqa: E402
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -74,6 +77,7 @@ def _build_report(entries: list[dict], source_paths: list[str]) -> str:
             by_metric_numeric[metric].append(num)
 
     distinct_event_types = sorted(by_event_type.keys())
+    latest_timestamp = max(str(entry.get("timestamp", "")) for entry in entries) if entries else "n/a"
 
     lines: list[str] = [
         "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->",
@@ -81,7 +85,7 @@ def _build_report(entries: list[dict], source_paths: list[str]) -> str:
         "",
         "# Metrics Trends (Pilot)",
         "",
-        f"Generated: {date.today().isoformat()}",
+        f"Latest Evidence Timestamp: {latest_timestamp}",
         "",
         "## Gate Snapshot",
         "",
@@ -147,9 +151,12 @@ def main() -> int:
         return 1
 
     report = _build_report(entries, source_paths)
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(report, encoding="utf-8")
-    print(f"✅ Generated {OUTPUT_PATH.relative_to(REPO_ROOT)}")
+    changed = write_if_changed(OUTPUT_PATH, report)
+    rel_out = OUTPUT_PATH.relative_to(REPO_ROOT)
+    if changed:
+        print(f"✅ Generated {rel_out}")
+    else:
+        print(f"✔️ (unchanged) Generated {rel_out}")
     return 0
 
 

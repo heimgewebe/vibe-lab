@@ -23,7 +23,8 @@ tags:
   - decision-first
 ---
 
-## Playbook: Plan Execution Checklist
+<!-- markdownlint-disable-next-line MD025 -->
+# Playbook: Plan Execution Checklist
 
 Ziel: Restarbeiten als kleine, prüfbare Schritte umsetzen, ohne Meta-Overengineering.
 
@@ -60,7 +61,7 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 
 - [x] Erstes reales Artefakt: `decisions/system/2026-04-23-metrics-enabled.yml`, `status: active`, `effects.enables: [metrics]`
 - [x] Optional umgesetzt: `decisions/system/2026-04-23-catalog-staleness-dormant.yml`, `effects.disables: [catalog_staleness]`
-- [x] Decision-aware Guard gebaut (`scripts/docmeta/check_system_decisions.py`): schlägt fehl, wenn kein aktives `system_decision` mit `effects.enables: metrics` existiert
+- [x] Decision-aware Guard gebaut (`scripts/docmeta/check_system_decisions.py`): `effects.disables` übersteuert `effects.enables`; ohne wirksames Enable bleibt das Gate zu
 - [x] Guard als dediziertes Ziel eingebunden: `make check-decisions` (noch nicht global in `make validate`)
 - [x] Metrics-Generator implementiert (`scripts/docmeta/generate_metrics.py`), Output: `docs/_generated/metrics/trends.md`
 - [x] Metrics-Pilot in den Standard-Generate-Vertrag eingehängt (`generate-derived` ruft `generate-metrics` auf)
@@ -92,5 +93,5 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 - [x] `make validate` ist grün
 - [x] Guard schlägt fehl ohne aktive Decision
 - [x] Decision-Entzug prüfen: Entfernen von `effects.enables: [metrics]` blockiert Metrics nachweisbar
-- [x] Metrics-Ausgabe ist datengetragen, nicht leer (>=20 Events, >=3 event_type, >=1 abgeleitete Kennzahl, Quellpfade vorhanden)
+- [x] Metrics-Ausgabe ist datengetragen, nicht leer (>=20 Events, >=3 event_type, Aggregationen vorhanden, Quellpfade vorhanden)
 - [x] Drift-Bericht vorhanden: was wurde dormant gelassen und warum

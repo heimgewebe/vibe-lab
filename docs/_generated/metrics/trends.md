@@ -3,7 +3,7 @@
 
 # Metrics Trends (Pilot)
 
-Generated: 2026-04-23
+Latest Evidence Timestamp: 2026-04-19T19:08:58Z
 
 ## Gate Snapshot
 
