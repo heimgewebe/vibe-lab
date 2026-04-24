@@ -157,6 +157,13 @@ jobs:
             docs/_generated/backlinks.md
             docs/_generated/orphans.md
 
+      - name: Upload gated diagnostics artifact (best effort)
+        uses: actions/upload-artifact@v4
+        with:
+          name: gated-diagnostics
+          path: docs/_generated/metrics/trends.md
+          if-no-files-found: ignore
+
       - name: Show derived diagnostic drift (non-blocking)
         run: |
           mapfile -t derived_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py derived)

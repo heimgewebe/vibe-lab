@@ -4,6 +4,7 @@
 Nutzung:
   python3 scripts/docmeta/resolve_generated_artifact_paths.py canonical
   python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
+  python3 scripts/docmeta/resolve_generated_artifact_paths.py gated
   python3 scripts/docmeta/resolve_generated_artifact_paths.py ephemeral
   python3 scripts/docmeta/resolve_generated_artifact_paths.py exports
 
@@ -46,7 +47,7 @@ def load_paths(group: str) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("group", choices=["canonical", "derived", "ephemeral", "exports"])
+    parser.add_argument("group", choices=["canonical", "derived", "gated", "ephemeral", "exports"])
     args = parser.parse_args()
 
     try:

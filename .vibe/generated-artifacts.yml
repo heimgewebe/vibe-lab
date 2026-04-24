@@ -17,12 +17,18 @@ generated_artifact_contract:
       - docs/_generated/system-map.md
       - docs/_generated/backlinks.md
       - docs/_generated/orphans.md
-      - docs/_generated/metrics/trends.md
     semantic_roles:
       docs/_generated/system-map.md:
         role: "diagnostic-core"
         decision_impact: "decision-shaping"
         note: "Derived, aber als Orientierungsartefakt epistemisch hervorgehoben."
+
+  gated:
+    description: "Gate-geschuetzte Diagnose; nur verfuegbar, wenn Feature-Entscheidung aktiv ist"
+    commit_policy: "optional"
+    ci_policy: "best-effort"
+    files:
+      - docs/_generated/metrics/trends.md
 
   exports:
     description: "Abgeleitete, toolspezifische Repräsentationen aus instruction-blocks/"
