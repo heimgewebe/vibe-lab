@@ -10,7 +10,7 @@ reviewer: "GPT-5.3-Codex"
 triggered_by: "user-request-2026-04-24-phase-1-execution-pr"
 
 rationale: |
-  Phase 1 wurde real ausgefuehrt und strikt dokumentiert.
+  Phase 1 wurde real ausgeführt und strikt dokumentiert.
   Der verpflichtende Baseline-Lauf (make validate) war erfolgreich, danach wurden
   genau sechs Stage-Fixtures (A1, A2, B1, B2, C1, D1) erzeugt und im strict-Modus
   gegen das Staging-Verzeichnis validiert.
@@ -19,9 +19,9 @@ rationale: |
   - A1, A2, B1, B2, C1: rejected (hash_mismatch)
   - D1: rejected (contract_invalid)
 
-  Damit ist die Ausfuehrung vollstaendig und belegbar; die Faelle zeigen erwartete
+  Damit ist die Ausführung vollständig und belegbar; die Fälle zeigen erwartete
   Reject-Signale, aber die spezifische Locator-Fehlerklassifikation blieb indirekt
-  (ueber Hash-Mismatch), weshalb das Ergebnis als mixed eingeordnet wird.
+  (über Hash-Mismatch), weshalb das Ergebnis als mixed eingeordnet wird.
 
 evidence_summary:
   observations: 7
@@ -30,5 +30,5 @@ evidence_summary:
   strict_validator_exit_code: 1
 
 next_steps:
-  - "Keine neuen Faelle in Phase 1 hinzufuegen."
-  - "Wenn gewuenscht, in separatem PR nur Klassifikationsschaerfung analysieren (ohne Validator-Patch)."
+  - "Keine neuen Fälle in Phase 1 hinzufügen."
+  - "Wenn gewünscht, in separatem PR nur Klassifikationsschärfung analysieren (ohne Validator-Patch)."
