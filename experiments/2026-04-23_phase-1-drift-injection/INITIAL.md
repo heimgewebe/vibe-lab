@@ -6,8 +6,8 @@ created: "2026-04-23"
 updated: "2026-04-24"
 author: "GPT-5.3-Codex"
 relations:
-	- type: references
-		target: ../../schemas/agent.handoff.schema.json
+  - type: references
+    target: ../../schemas/agent.handoff.schema.json
 ---
 
 # Phase 1 Initial State (Design Baseline)
@@ -20,7 +20,7 @@ Es ist kein Ausführungsprotokoll.
 ## Baseline-Quellen
 
 - Fixture-Bereich: `tests/fixtures/agent_handoff/`
-- Validator-Kontext: `contracts/command-semantics.md`
+- Validator-Kontext: `schemas/agent.handoff.schema.json`
 - Reproduzierbarer Gesamtcheck: `make validate`
 
 ## Zu erhebender Baseline-Check (im Execution-PR)
