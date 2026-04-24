@@ -164,11 +164,20 @@ jobs:
           path: ${{ steps.derived_core_paths.outputs.paths }}
           if-no-files-found: warn
 
+      - name: Resolve gated paths
+        id: gated_paths
+        run: |
+          {
+            echo "paths<<EOF"
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py gated
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Upload gated diagnostics artifact (best effort)
         uses: actions/upload-artifact@v4
         with:
           name: gated-diagnostics
-          path: docs/_generated/metrics/trends.md
+          path: ${{ steps.gated_paths.outputs.paths }}
           if-no-files-found: ignore
 
       - name: Generate derived drift report (non-blocking)
