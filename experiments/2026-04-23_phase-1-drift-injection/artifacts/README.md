@@ -51,3 +51,27 @@ Bei echter Ausführung entstehen pro Run:
 - `artifacts/<run-id>/execution.txt`
 
 `run_meta.json` wird gegen `schemas/run_meta.schema.json` validiert.
+
+## Bereits Systemisch Erzwungen
+
+Sobald das Experiment später auf `execution_status: executed` oder
+`execution_status: replicated` wechselt, erzwingt das bestehende Repo bereits:
+
+- Existenz von `artifacts/<run-id>/run_meta.json`
+- Schema-Validität von `run_meta.json`
+- Existenz von `test_output_file` (z. B. `execution.txt`)
+- CI-Ausführung über `scripts/docmeta/validate_execution_proof.py`
+
+Diese Kopplung ist bereits in `make validate` und in `.github/workflows/validate.yml`
+verdrahtet.
+
+## Noch Nicht Systemisch Erzwungen
+
+Noch nicht hart gekoppelt ist die inhaltliche Konsistenz zwischen:
+
+- `artifacts/<run-id>/execution.txt`
+- `results/evidence.jsonl`
+- `results/decision.yml`
+
+Für Phase 1 bleibt diese Kopplung daher aktuell prozedural: dokumentiert und
+reviewbar, aber nicht als eigener Cross-Artifact-Guard implementiert.

@@ -112,3 +112,12 @@ Narrative summary of findings.
 - **Stop condition:** all 6 executed AND evidence complete
 - **Patch gate:** contrastpair rule mandatory where a meaningful paired case exists
 - **CI requirement:** make validate must pass throughout
+
+## Enforcement-Stand
+
+- `execution_status ∈ {executed, replicated}` ist bereits an Run-Artefakte
+  gekoppelt via `scripts/docmeta/validate_execution_proof.py`.
+- `artifacts/<run-id>/run_meta.json` und sein `test_output_file` werden damit
+  bereits durch Repo-Validator und CI erzwungen.
+- Nicht automatisch erzwungen ist derzeit die semantische Konsistenz zwischen
+  Run-Artefakten, `results/evidence.jsonl` und `results/decision.yml`.
