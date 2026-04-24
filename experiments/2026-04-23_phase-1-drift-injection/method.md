@@ -84,6 +84,10 @@ Hinweis: `make validate` validiert standardmäßig das Repo-Fixture-Set unter
 4. Für jeden der 6 Fälle Ergebnis klassifizieren und in `results/evidence.jsonl`
    mit repo-konformen Schlüsseln dokumentieren.
 
+5. Für den ersten realen Lauf `artifacts/run-template.md` als Protokollgerüst
+  verwenden und die Diagnose-First Baseline-Ausgaben in
+  `artifacts/<run-id>/execution.txt` sichern.
+
 ## Stop-Regel
 
 - success: alle 6 Fälle liefern klassifiziertes Validator-Verhalten und es gibt

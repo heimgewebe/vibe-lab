@@ -94,12 +94,14 @@ Narrative summary of findings.
 ## Next Steps (After Design PR Merges)
 
 1. **Create Phase 1 fixtures** (actual JSON files matching test cases)
-2. **Run validator** explicitly against the staged fixture directory
-3. **Record evidence** in evidence.jsonl
-4. **Evaluate results** against expectations
-5. **Document decision** in decision.yml
-6. **If patch needed:** Create separate patch PR with contrastpair rule
-7. **If successful:** Close Phase 1; proceed to Phase 2 planning
+2. **Capture diagnose-first baseline** in `artifacts/<run-id>/execution.txt`
+  using `make validate` and fixture inventory output
+3. **Run validator** explicitly against the staged fixture directory
+4. **Record evidence** in evidence.jsonl
+5. **Evaluate results** against expectations
+6. **Document decision** in decision.yml
+7. **If patch needed:** Create separate patch PR with contrastpair rule
+8. **If successful:** Close Phase 1; proceed to Phase 2 planning
 
 ---
 
