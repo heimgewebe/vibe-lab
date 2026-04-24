@@ -12,113 +12,38 @@ relations:
     target: ../../../schemas/agent.handoff.schema.json
 ---
 
-# Phase 1 Execution Log
+# Phase 1 Results
 
-> Status: **DESIGNED** (not yet executed)
-> 
-> This file will be populated during Phase 1 execution with:
-> - Test case results
-> - Validator output
-> - Evidence entries
-> - Decision journal
+> Status: **EXECUTED**
+> Run: run-2026-04-24-phase1-001
+> Evidence: results/evidence.jsonl
+> Decision: results/decision.yml
+> Result: results/result.md
 
 ---
 
-## Structure
+## Artifacts
 
-### evidence.jsonl (to be populated)
-
-Each line: one test case result
-
-```json
-{
-  "event_type": "observation",
-  "timestamp": "2026-04-23T00:00:00Z",
-  "iteration": 1,
-  "metric": "phase1_case_result",
-  "value": "A1:rejected",
-  "context": "fixture=phase-1-drift-A1.json; expected=reject; observed=reject",
-  "notes": "optional"
-}
-```
-
-Required keys per repo validation:
-
-- `event_type`
-- `timestamp`
-- `iteration`
-- `metric`
-- `value`
-- `context`
-
-### decision.yml (to be populated)
-
-Summary of Phase 1 outcome:
-
-```yaml
-schema_version: "0.1.0"
-decision_type: "result_assessment"
-verdict: "inconclusive"
-confidence: "low"
-date: "YYYY-MM-DD"
-reviewer: ""
-rationale: |
-  Bezieht sich auf konkrete Einträge in results/evidence.jsonl.
-evidence_summary:
-  observations: 0
-  positive: 0
-  negative: 0
-  neutral: 0
-next_steps: |
-  Folgeaktionen für Execution- oder Patch-PR.
-```
-
-### result.md (to be populated)
-
-Narrative summary of findings.
+- [run_meta.json](../artifacts/run-2026-04-24-phase1-001/run_meta.json) — Run metadata
+- [execution.txt](../artifacts/run-2026-04-24-phase1-001/execution.txt) — Execution transcript
+- [evidence.jsonl](evidence.jsonl) — Per-case evidence entries
+- [decision.yml](decision.yml) — Phase 1 verdict
+- [result.md](result.md) — Narrative summary
 
 ---
 
-## Execution Readiness
+## Execution Summary
 
-- [x] Design phase complete
-- [x] Specification in method.md
-- [x] Test cases defined in fixtures/README.md
-- [ ] Fixtures created (pending execution)
-- [ ] Validator runs executed (pending execution)
-- [ ] Evidence collected (pending execution)
-- [ ] Decision made (pending execution)
+- Executor: local:developer
+- Run completed: 2026-04-24
+- Strict validator exit code: 1 (expected — all 6 fixtures contain intentional drift)
+- Final `make validate` exit code: 0 (hygiene guard passed)
 
 ---
 
-## Next Steps (After Design PR Merges)
-
-1. **Capture diagnose-first baseline** in `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`
-   using `make validate` and fixture inventory output
-2. **Create Phase 1 fixtures** (actual JSON files matching test cases)
-3. **Run validator** explicitly against the staged fixture directory
-4. **Record evidence** in evidence.jsonl
-5. **Evaluate results** against expectations
-6. **Document decision** in decision.yml
-7. **If patch needed:** Create separate patch PR with contrastpair rule
-8. **If successful:** Close Phase 1; proceed to Phase 2 planning
-
----
-
-## Constraints
+## Constraints (Reference)
 
 - **Scope:** agent_handoff validator only
 - **Test count:** exactly 6 cases (no additions mid-Phase)
-- **Stop condition:** all 6 executed AND evidence complete
-- **Patch gate:** contrastpair rule mandatory where a meaningful paired case exists
-- **CI requirement:** make validate must pass throughout
-
-## Enforcement-Stand
-
-- `execution_status ∈ {executed, replicated}` ist bereits an Run-Artefakte
-  gekoppelt via `scripts/docmeta/validate_execution_proof.py`.
-- `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/run_meta.json`
-  und sein `test_output_file` werden damit
-  bereits durch Repo-Validator und CI erzwungen.
-- Nicht automatisch erzwungen ist derzeit die semantische Konsistenz zwischen
-  Run-Artefakten, `results/evidence.jsonl` und `results/decision.yml`.
+- **Stop condition:** all 6 executed AND evidence complete ✅
+- **CI requirement:** make validate must pass throughout ✅

@@ -6,10 +6,15 @@ schema_version: "0.1.0"
 experiment:
   name: "Phase 1 — Drift Injection"
   hypothesis: "Phase 1 prüft, ob bestehende agent_handoff-Validatoren Locator- und Hash-Drift konsistent erkennen, und misst Grenzfälle ohne Vorwegnahme späterer Phasen."
-  status: designed
+  status: testing
   category: technique
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - artifacts/run-2026-04-24-phase1-001/run_meta.json
+    - artifacts/run-2026-04-24-phase1-001/execution.txt
+    - results/evidence.jsonl
+    - results/decision.yml
+    - results/result.md
   created: "2026-04-23"
   updated: "2026-04-24"
   author: "GPT-5.3-Codex"

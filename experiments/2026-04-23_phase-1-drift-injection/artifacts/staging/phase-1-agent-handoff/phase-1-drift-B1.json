@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "target_files": [
+    "schemas/agent.handoff.schema.json"
+  ],
+  "locator": "schemas/agent.handoff.schema.json",
+  "change_type": "add",
+  "scope": "Define agent handoff schema contract",
+  "normalized_task": "Create schema for critic-operator handoff validation",
+  "critic_signature": "experiment-critic/v1",
+  "handoff": {
+    "algo": "sha256",
+    "canon": "v1",
+    "hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+}
