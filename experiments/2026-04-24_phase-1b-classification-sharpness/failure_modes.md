@@ -19,15 +19,15 @@ relations:
 - Wenn die Analyse Rejection correctness und classification sharpness vermischt.
 - Wenn Layer-Grenzen zwischen agent_handoff und cross_contract nicht explizit
   dokumentiert werden.
-- Wenn aus Designannahmen versehentlich Ausfuehrungsclaims gemacht werden.
+- Wenn aus Designannahmen versehentlich Ausführungsclaims gemacht werden.
 
 ## Bekannte Fehlannahmen (Design-Stand)
 
 - "Rejected" bedeutet nicht automatisch "scharf klassifiziert".
 - hash_mismatch im agent_handoff-Layer kann semantischen Drift verdecken,
   statt ihn explizit zu benennen.
-- Ein einzelner Fixture-Hinweis reicht nicht fuer belastbare Generalisierung
-  ohne spaetere Ausfuehrungsdaten.
+- Ein einzelner Fixture-Hinweis reicht nicht für belastbare Generalisierung
+  ohne spätere Ausführungsdaten.
 
 ## Grenzen der Evidenz
 
@@ -37,5 +37,5 @@ relations:
 
 ## Risiko bei Fehlanwendung
 
-Wird die Layer-Grenze nicht sauber kommuniziert, kann ein gruener Rejection-Check
-faelschlich als vollstaendig scharfe Fehlerklassifikation interpretiert werden.
+Wird die Layer-Grenze nicht sauber kommuniziert, kann ein grüner Rejection-Check
+fälschlich als vollständig scharfe Fehlerklassifikation interpretiert werden.

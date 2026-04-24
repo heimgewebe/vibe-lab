@@ -140,6 +140,10 @@
 | `experiments/2026-04-23_phase-1-drift-injection/method.md` | Methode: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/results/README.md` | Results: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/results/result.md` | Phase 1 Ergebnis: Drift Injection (Executed) | draft | operative |
+| `experiments/2026-04-24_phase-1b-classification-sharpness/INITIAL.md` | Initiale Situation: Phase 1b Classification Sharpness | draft | operative |
+| `experiments/2026-04-24_phase-1b-classification-sharpness/failure_modes.md` | Failure Modes: Phase 1b Classification Sharpness | draft | operative |
+| `experiments/2026-04-24_phase-1b-classification-sharpness/method.md` | Methode: Phase 1b Classification Sharpness | draft | operative |
+| `experiments/2026-04-24_phase-1b-classification-sharpness/results/README.md` | Results Placeholder: Phase 1b Classification Sharpness | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

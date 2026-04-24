@@ -18,24 +18,24 @@ relations:
 
 ## Ausgangslage aus Phase 1 Drift Injection
 
-Der Drift-Injection-Run wurde bereits ausgefuehrt und zeigt folgendes Muster:
+Der Drift-Injection-Run wurde bereits ausgeführt und zeigt folgendes Muster:
 
-- A1, A2, C1: rejected via hash_mismatch
+- A1, A2, B1, B2, C1: rejected via hash_mismatch
 - D1: rejected via contract_invalid
 
 Diese Ablehnungen sind als Rejection-Verhalten akzeptabel.
 
 ## Diagnosebedarf
 
-Die Klassifikationsschaerfe bleibt jedoch gemischt, weil Locator-/Target-Drift
+Die Klassifikationsschärfe bleibt jedoch gemischt, weil Locator-/Target-Drift
 im agent_handoff-Layer nicht als dedizierte Locator-/Target-Fehlerklasse
-sichtbar wird, sondern in der Praxis ueber hash_mismatch signalisiert werden kann.
+sichtbar wird, sondern in der Praxis über hash_mismatch signalisiert werden kann.
 
-## Layer-Referenz fuer den Vergleich
+## Layer-Referenz für den Vergleich
 
-Der semantische Drift-Layer wird ueber bestehende Cross-Contract-Fixtures
+Der semantische Drift-Layer wird über bestehende Cross-Contract-Fixtures
 adressiert, insbesondere:
 
 - tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json
 
-Dieses Experiment ist ein Design-Artefakt und enthaelt keine Run-Behauptungen.
+Dieses Experiment ist ein Design-Artefakt und enthält keine Run-Behauptungen.

@@ -14,7 +14,7 @@ relations:
 
 # results/README.md
 
-Dieser Ordner ist ein Platzhalter fuer spaetere Ausfuehrungsartefakte.
+Dieser Ordner ist ein Platzhalter für spätere Ausführungsartefakte.
 
 ## Aktueller Zustand
 
@@ -23,7 +23,7 @@ Dieser Ordner ist ein Platzhalter fuer spaetere Ausfuehrungsartefakte.
 - Keine Run-Artefakte erzeugt
 - Keine execution claims
 
-## Geplante Artefakte fuer einen spaeteren Run
+## Geplante Artefakte für einen späteren Run
 
 - results/evidence.jsonl
 - results/result.md
@@ -33,7 +33,7 @@ Dieser Ordner ist ein Platzhalter fuer spaetere Ausfuehrungsartefakte.
 
 ## Semantikhinweis
 
-Ein zukuenftiger Run soll explizit trennen zwischen:
+Ein zukünftiger Run soll explizit trennen zwischen:
 
-- Rejection correctness (Ablehnung invalider Faelle)
+- Rejection correctness (Ablehnung invalider Fälle)
 - Classification sharpness (passende Fehlerklasse pro Drift-Typ)

@@ -5,7 +5,7 @@ schema_version: "0.1.0"
 
 experiment:
   name: "Phase 1b - Validator Classification Sharpness"
-  hypothesis: "Die Ablehnungs-Korrektheit des agent_handoff-Validators ist fuer Phase-1-Driftfaelle gegeben, aber die Fehlerklassifikation bleibt fuer Locator-/Target-Drift unscharf; ein Layer-Vergleich mit cross_contract macht die Zustandsgrenze explizit."
+  hypothesis: "Die Ablehnungs-Korrektheit des agent_handoff-Validators ist für Phase-1-Driftfälle gegeben, aber die Fehlerklassifikation bleibt für Locator-/Target-Drift unscharf; ein Layer-Vergleich mit cross_contract macht die Zustandsgrenze explizit."
   status: designed
   category: workflow
   execution_status: designed
@@ -21,7 +21,7 @@ context:
   language: "Mixed (Markdown, YAML, JSON)"
   environment: "vibe-lab"
   triggered_by: "user-request-2026-04-24-phase-1b-classification-sharpness"
-  scope_note: "Design-only Diagnoseexperiment; keine Validator-/Schema-/CI-Aenderungen, keine Phase-2-Arbeit, keine Ausfuehrungsclaims."
+  scope_note: "Design-only Diagnoseexperiment; keine Validator-/Schema-/CI-Änderungen, keine Phase-2-Arbeit, keine Ausführungsclaims."
 
 evidence:
   format: jsonl
