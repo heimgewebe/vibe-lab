@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests check-decisions generate generate-canonical generate-derived generate-ephemeral generate-exports generate-metrics generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests check-decisions generate generate-canonical generate-derived generate-derived-core generate-derived-gated generate-ephemeral generate-exports generate-metrics generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
 validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
@@ -142,8 +142,14 @@ generate: generate-canonical generate-derived generate-ephemeral
 generate-canonical: generate-doc-index generate-exports
 	@echo "✅ Generated canonical diagnostics in docs/_generated/."
 
-generate-derived: generate-system-map generate-backlinks generate-orphans generate-metrics
+generate-derived: generate-derived-core generate-derived-gated
 	@echo "✅ Generated derived diagnostics in docs/_generated/."
+
+generate-derived-core: generate-system-map generate-backlinks generate-orphans
+	@echo "✅ Generated core derived diagnostics in docs/_generated/."
+
+generate-derived-gated: generate-metrics
+	@echo "✅ Generated gated derived diagnostics in docs/_generated/."
 
 generate-ephemeral: generate-epistemic-state
 	@echo "✅ Generated ephemeral diagnostics in docs/_generated/."
@@ -204,7 +210,9 @@ help:
 	@echo "  make check-decisions         — Validate system decisions and gate required features"
 	@echo "  make generate           — Generate canonical, derived, and ephemeral diagnostics"
 	@echo "  make generate-canonical — Generate contract-relevant diagnostics (blocking in CI)"
-	@echo "  make generate-derived   — Generate reconstructable diagnostics (non-blocking in CI)"
+	@echo "  make generate-derived   — Generate reconstructable diagnostics (core + gated)"
+	@echo "  make generate-derived-core  — Generate non-gated derived diagnostics (system-map, backlinks, orphans)"
+	@echo "  make generate-derived-gated — Generate gate-protected derived diagnostics (metrics)"
 	@echo "  make generate-ephemeral — Generate runtime-only diagnostics (artifact-first)"
 	@echo "  make generate-stable    — Alias for make generate-canonical"
 	@echo "  make generate-volatile  — Alias for make generate-derived + make generate-ephemeral"

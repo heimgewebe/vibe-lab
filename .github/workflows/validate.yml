@@ -142,23 +142,20 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install pyyaml jsonschema rfc3339-validator
 
-      - name: Generate derived diagnostics
-        run: make generate-derived
+      - name: Generate derived core diagnostics
+        run: make generate-derived-core
 
-      - name: Resolve derived diagnostics paths from contract
-        id: derived_paths
-        run: |
-          {
-            echo "paths<<EOF"
-            python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+      - name: Generate derived gated diagnostics (best effort)
+        run: make generate-derived-gated || true
 
       - name: Upload derived diagnostics artifact
         uses: actions/upload-artifact@v4
         with:
           name: derived-diagnostics
-          path: ${{ steps.derived_paths.outputs.paths }}
+          path: |
+            docs/_generated/system-map.md
+            docs/_generated/backlinks.md
+            docs/_generated/orphans.md
 
       - name: Show derived diagnostic drift (non-blocking)
         run: |
