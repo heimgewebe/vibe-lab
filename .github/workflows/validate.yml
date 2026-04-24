@@ -148,14 +148,21 @@ jobs:
       - name: Generate derived gated diagnostics (best effort)
         run: make generate-derived-gated || true
 
+      - name: Resolve derived core paths
+        id: derived_core_paths
+        run: |
+          {
+            echo "paths<<EOF"
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Upload derived diagnostics artifact
         uses: actions/upload-artifact@v4
         with:
           name: derived-diagnostics
-          path: |
-            docs/_generated/system-map.md
-            docs/_generated/backlinks.md
-            docs/_generated/orphans.md
+          path: ${{ steps.derived_core_paths.outputs.paths }}
+          if-no-files-found: warn
 
       - name: Upload gated diagnostics artifact (best effort)
         uses: actions/upload-artifact@v4
