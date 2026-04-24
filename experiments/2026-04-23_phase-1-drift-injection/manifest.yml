@@ -1,0 +1,29 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "Phase 1 — Drift Injection"
+  hypothesis: "Phase 1 prüft, ob bestehende agent_handoff-Validatoren Locator- und Hash-Drift konsistent erkennen, und misst Grenzfälle ohne Vorwegnahme späterer Phasen."
+  status: designed
+  category: technique
+  execution_status: designed
+  execution_refs: []
+  created: "2026-04-23"
+  updated: "2026-04-23"
+  author: "GPT-5.3-Codex"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools: ["make validate", "Python 3.11", "JSON Schema Draft 2020-12"]
+  language: "Mixed (Markdown, YAML, JSON)"
+  environment: "vibe-lab"
+  triggered_by: "user-request-2026-04-23-phase-1-only"
+  scope_note: "Nur Phase 1 (Drift Injection), nur agent_handoff; keine Vorgriffe auf Phase 2-5."
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
+
