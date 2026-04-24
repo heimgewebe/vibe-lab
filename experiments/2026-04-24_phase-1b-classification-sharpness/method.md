@@ -19,7 +19,7 @@ relations:
 ## Hypothese
 
 Rejection correctness und classification sharpness sind unterschiedliche
-Qualitaetsachsen.
+Qualitätsachsen.
 
 - Rejection correctness: Ein invalider Fall wird abgelehnt.
 - Classification sharpness: Die Ablehnung wird in der semantisch passenden
@@ -33,9 +33,47 @@ Dieses Experiment vergleicht bewusst nur Validator-Layer und ihre Grenzen:
 2. cross_contract semantic drift detection
 3. dokumentierte Boundary zwischen beiden
 
-## Geplanter Future-Execution-Run (noch nicht ausgefuehrt)
+Die Layer sind komplementär, nicht ersetzend: cross_contract kompensiert keine
+fehlende Benennung im agent_handoff-Layer, sondern bildet eine eigene
+epistemische Ebene ab.
 
-Die kuenftige Ausfuehrung soll in dieser Reihenfolge erfolgen:
+## Klassifikations-Mapping (Design-Level)
+
+Diese Zuordnung definiert den Sollzustand ohne Ausführung und ohne
+Implementierungsänderung.
+
+| Drift-Typ | Erwartete agent_handoff Klasse | Erwartete cross_contract Klasse |
+| --- | --- | --- |
+| locator_drift | locator_error (derzeit nicht explizit vorhanden) | locator_drift_detected |
+| target_drift | target_error (derzeit nicht explizit vorhanden) | target_drift_detected |
+| structural mismatch | contract_invalid | contract_invalid |
+| content mutation | hash_mismatch | optional semantic mismatch |
+
+## Diagnoseziel (ohne Ausführung)
+
+Classification sharpness ist gegeben, wenn:
+
+- Drift-Typ zu Fehlerklasse je Layer deterministisch abbildbar ist.
+- keine Information ausschließlich implizit über Hash-Signale transportiert wird.
+- die Ebenen ihre eigene Drift explizit benennen, statt Verantwortung zu verschieben.
+
+Eine Klassifikation gilt als zu grob, wenn für denselben Drift-Typ mehrere
+inhaltlich verschiedene Fehlerursachen nur als hash_mismatch erscheinen und die
+ursächliche Driftinformation erst außerhalb des Layers rekonstruiert werden muss.
+
+## Alternative Diagnoseachse
+
+Neben Klassifikation wird Informationsverlust zwischen Layern als zweite,
+rein definitorische Achse dokumentiert:
+
+- agent_handoff hash_mismatch kann Information komprimieren.
+- cross_contract kann semantische Drift rekonstruieren.
+- diagnostisch scharf ist das System erst, wenn diese Kompression je Drift-Typ
+  bewusst begrenzt und transparent ist.
+
+## Geplanter Future-Execution-Run (noch nicht ausgeführt)
+
+Die künftige Ausführung soll in dieser Reihenfolge erfolgen:
 
 1. make validate
 2. python3 -m unittest tests/contracts/test_cross_contract_chain.py
@@ -44,13 +82,13 @@ Die kuenftige Ausfuehrung soll in dieser Reihenfolge erfolgen:
 ## Erwartete Auswertungsfrage
 
 Wenn agent_handoff korrekt ablehnt, aber Locator-/Target-Drift nicht als eigene
-Fehlerklasse sichtbar macht, bleibt die Klassifikationsschaerfe fuer diesen
+Fehlerklasse sichtbar macht, bleibt die Klassifikationsschärfe für diesen
 Layer gemischt, auch bei insgesamt korrektem Rejection-Verhalten.
 
 ## Scope-Grenzen
 
-- Keine Aenderung an Validatoren
-- Keine Aenderung an Schemas
+- Keine Änderung an Validatoren
+- Keine Änderung an Schemas
 - Keine neuen CI-Guards
 - Kein Start von Phase 2
 - Kein Execution-Claim in diesem Design-PR
