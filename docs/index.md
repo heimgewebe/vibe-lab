@@ -97,9 +97,10 @@ relations:
 | Datei                                           | Klasse | CI-Verhalten | Inhalt |
 | ----------------------------------------------- | ------ | ------------ | ------ |
 | [_generated/doc-index.md](_generated/doc-index.md)     | canonical | blocking | Dokumenten-Index |
-| [_generated/system-map.md](_generated/system-map.md)   | canonical | blocking | Systemübersicht |
+| [_generated/system-map.md](_generated/system-map.md)   | derived | non-blocking | Systemübersicht (diagnostic-core, decision-shaping) |
 | [_generated/backlinks.md](_generated/backlinks.md)     | derived | non-blocking | Rückverlinkungen |
 | [_generated/orphans.md](_generated/orphans.md)         | derived | non-blocking | Verwaiste Dokumente |
+| [_generated/metrics/trends.md](_generated/metrics/trends.md) | gated | best-effort | Metrik-Trends (feature-gated Diagnose) |
 | `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral | artifact-only | Abgeleiteter Zustands-Snapshot |
 
 ## Exports (Generiert)

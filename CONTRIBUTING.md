@@ -101,6 +101,8 @@ make validate
 
 Dieser Befehl führt den minimalen Guard-Stack aus (Schema- und Relations-Validierung). Er prüft `experiments/`, `catalog/` und `prompts/` — **nicht** `raw-vibes/`.
 
+Generierte Diagnosen werden durch `.vibe/generated-artifacts.yml` klassifiziert. Kanonische generierte Dateien und Exporte bleiben commit-pflichtig; abgeleitete Diagnosen sind optional und nicht blockierend. Die CI regeneriert abgeleitete Diagnosen zur besseren Beobachtbarkeit.
+
 ## Steuerungsdokumente
 
 Die kanonischen Steuerungsdokumente des Repositories sind:

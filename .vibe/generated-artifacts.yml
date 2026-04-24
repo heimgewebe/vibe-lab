@@ -1,5 +1,5 @@
 schema_version: "0.1.0"
-triggered_by: "user-request-2026-04-19-generated-flow-hardening"
+triggered_by: "agent-instruction-2026-04-23-system-map-decoupling"
 
 generated_artifact_contract:
   canonical:
@@ -8,15 +8,26 @@ generated_artifact_contract:
     ci_policy: "blocking"
     files:
       - docs/_generated/doc-index.md
-      - docs/_generated/system-map.md
 
   derived:
     description: "Rekonstruierbare Diagnose, nuetzlich aber nicht wahrheitsstiftend"
     commit_policy: "optional"
     ci_policy: "non-blocking"
     files:
+      - docs/_generated/system-map.md
       - docs/_generated/backlinks.md
       - docs/_generated/orphans.md
+    semantic_roles:
+      docs/_generated/system-map.md:
+        role: "diagnostic-core"
+        decision_impact: "decision-shaping"
+        note: "Derived, aber als Orientierungsartefakt epistemisch hervorgehoben."
+
+  gated:
+    description: "Gate-geschuetzte Diagnose; nur verfuegbar, wenn Feature-Entscheidung aktiv ist"
+    commit_policy: "optional"
+    ci_policy: "best-effort"
+    files:
       - docs/_generated/metrics/trends.md
 
   exports:
