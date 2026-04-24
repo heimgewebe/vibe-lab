@@ -50,7 +50,7 @@ Baseline-Check im Execution-PR.
 
 ## Geplanter Testaufbau für Phase 1
 
-- 6 Drift-Injection-Fälle (A1, A2, B1, B2, C1, D1)
+- Die kanonische Fallliste liegt in `method.md` und `fixtures/README.md`.
 - Mutationen mit Einzelfeld-Änderung
 - Kontrastpaar-Regel pro Äquivalenzklasse
 
