@@ -1,0 +1,28 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "Phase 1b - Validator Classification Sharpness"
+  hypothesis: "Die Ablehnungs-Korrektheit des agent_handoff-Validators ist für Phase-1-Driftfälle gegeben, aber die Fehlerklassifikation bleibt für Locator-/Target-Drift unscharf; ein Layer-Vergleich mit cross_contract macht die Zustandsgrenze explizit."
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-04-24"
+  updated: "2026-04-24"
+  author: "GPT-5.3-Codex"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools: ["make validate", "python3 -m unittest tests/contracts/test_cross_contract_chain.py", "python3 scripts/docmeta/validate_agent_handoff.py --fixtures tests/fixtures/agent_handoff"]
+  language: "Mixed (Markdown, YAML, JSON)"
+  environment: "vibe-lab"
+  triggered_by: "user-request-2026-04-24-phase-1b-classification-sharpness"
+  scope_note: "Design-only Diagnoseexperiment; keine Validator-/Schema-/CI-Änderungen, keine Phase-2-Arbeit, keine Ausführungsclaims."
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
