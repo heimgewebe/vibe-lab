@@ -1,27 +1,27 @@
-# Phase 1 Fixtures — Drift Injection Test Cases
+# Phase 1 Fixtures Specification
 
-> These are **template/specification** files showing what Phase 1 will test.
-> Actual execution fixtures will be generated during Phase 1 run.
-> 
-> Format: Each file documents one test case (negative case or contrast pair).
+> Dieses Dokument ist eine **Spezifikation**.
+> Es ist nicht die operative Wahrheit der Ausführung.
+> Konkrete JSON-Fixtures entstehen erst im Execution-PR und werden dort
+> über `results/evidence.jsonl` belegt.
 
 ---
 
-## Structure
+## Struktur
 
-Each test case fixture contains:
+Jede Fallspezifikation enthält:
 - `case_id`: Case identifier (A1, A2, B1, etc.)
 - `category`: Equivalence class (locator, hash, normalization, etc.)
 - `base_fixture`: Which valid fixture is being mutated
 - `mutation`: Description of the change
 - `expected_validator_behavior`: What should happen
-- `artifact`: The actual mutated handoff JSON (inline or reference)
+- `artifact`: nur als Platzhalter beschrieben, nicht als ausgeführter Befund
 
 ---
 
-## Case A: Locator Path Drift
+## Äquivalenzklasse A: Locator Path Drift
 
-### A1 (Negative): Invalid path segment
+### A1 (negativ): Invalid path segment
 
 **Purpose:** Verify validator rejects structural path changes.
 
@@ -39,7 +39,7 @@ contrast_pair: A2
 notes: "Core case: validator must catch structural path changes"
 ```
 
-### A2 (Contrast): Path with fragment
+### A2 (Kontrast): Path with fragment
 
 **Purpose:** Probe edge case: does validator accept path + fragment?
 
@@ -59,9 +59,9 @@ notes: "Edge case: tests validator boundary on acceptable locator variants"
 
 ---
 
-## Case B: Hash Value Drift
+## Äquivalenzklasse B: Hash Value Drift
 
-### B1 (Negative): Hash completely changed
+### B1 (negativ): Hash completely changed
 
 **Purpose:** Verify validator rejects hash mismatches.
 
@@ -79,7 +79,7 @@ contrast_pair: B2
 notes: "Core case: validator must catch hash tampering"
 ```
 
-### B2 (Contrast): Hash with single character altered
+### B2 (Kontrast): Hash with single character altered
 
 **Purpose:** Probe edge case: does validator require exact match or fuzzy tolerance?
 
@@ -99,9 +99,9 @@ notes: "Edge case: tests validator tolerance for small hash variations"
 
 ---
 
-## Case C: Path Normalization
+## Äquivalenzklasse C: Path Normalization
 
-### C1 (Negative): Backslash separator (Windows style)
+### C1 (negativ): Backslash separator (Windows style)
 
 **Purpose:** Probe cross-platform path normalization.
 
@@ -119,7 +119,7 @@ contrast_pair: C2
 notes: "Edge case: tests cross-platform path handling; may be OS-dependent"
 ```
 
-### C2 (Contrast): Double forward slash
+### C2 (Kontrast): Double forward slash
 
 **Purpose:** Probe path normalization for redundant separators.
 
@@ -139,9 +139,9 @@ notes: "Edge case: tests handling of redundant path separators"
 
 ---
 
-## Case D: Unicode/Encoding Edge Case
+## Äquivalenzklasse D: Unicode/Encoding Edge Case
 
-### D1 (Negative): Soft hyphen in locator
+### D1 (negativ): Soft hyphen in locator
 
 **Purpose:** Probe Unicode handling in path fields.
 
@@ -161,9 +161,9 @@ notes: "Edge case: tests Unicode handling; may be invisible source of bugs"
 
 ---
 
-## Case E: State Field Mutation
+## Äquivalenzklasse E: State Field Mutation
 
-### E1 (Negative): Target file in state changed
+### E1 (negativ): Target file in state changed
 
 **Purpose:** Verify validator catches state drift.
 
@@ -183,9 +183,9 @@ notes: "Core case: validator must catch state changes"
 
 ---
 
-## Case F: Version Mismatch
+## Äquivalenzklasse F: Version Mismatch
 
-### F1 (Negative): Contract version changed
+### F1 (negativ): Contract version changed
 
 **Purpose:** Verify validator enforces version compatibility.
 
@@ -205,20 +205,16 @@ notes: "Core case: validator must enforce version contracts"
 
 ---
 
-## Execution Plan
+## Übergabe In Den Execution-PR
 
-1. **Baseline:** Run existing agent_handoff validator on these 6 cases
-2. **Evidence:** Record validator output (accept/reject + error messages)
-3. **Decision:**
-   - If all pass as expected: **Phase 1 complete**
-   - If gap found: **Propose patch with contrastpair rule**
-   - If ambiguous: **Document and escalate**
+1. Die 6 Spezifikationen als echte JSON-Fixtures materialisieren.
+2. Validator-Ausgaben je Fall erfassen.
+3. Ergebnisse ausschließlich im Execution-PR entscheiden (success / patch_needed / inconclusive).
 
 ---
 
-## Notes
+## Hinweise
 
-- These fixtures are **not yet created** (design phase)
-- Actual JSON content will be generated during Phase 1 execution
-- Each test case includes both the specification and the expected validator behavior
-- Contrastpair structure ensures both negative cases and edge-case probes
+- Dieses Dokument ist absichtlich nicht normativ für Ergebnisbehauptungen.
+- Ergebnisclaims entstehen erst durch Laufspuren im Execution-PR.
+- Die Kontrastpaar-Struktur dient als Testhärte, nicht als Ausführungsbeweis.
