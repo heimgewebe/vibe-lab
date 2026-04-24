@@ -24,7 +24,7 @@ experiment:
   falsifiability:
     counter_hypothesis: "Nicht Spec-First selbst erklärt die beobachtete Verbesserung, sondern Promptlänge, Token-Volumen (Chain-of-Thought-Proxy), Strukturierungsgrad oder ein anderer Kontrollfaktor — unabhängig vom Modus-Wechsel in Declarative/Executable."
     falsification_criterion: "Die Spec-First-Erklärung wird geschwächt, wenn ein gleich langer oder gleich strukturierter Nicht-Spec-Prompt vergleichbare Ergebnisse bei Vollständigkeit, Konsistenz und Nacharbeit liefert."
-    counterevidence_checked: true  # Ramble-First-Arm (hohes Token-Volumen, keine Spec-Struktur) lieferte test_pass_rate=0.8 wie Code-First — widerlegt Token-Bloat-Hypothese direkt (siehe evidence.jsonl).
+    counterevidence_checked: true  # Ramble-First-Arm (hohes Token-Volumen, keine Spec-Struktur) lieferte test_pass_rate=0.8 wie Code-First — widerlegt Token-Bloat-Hypothese direkt (evidence.jsonl: metric=test_pass_rate_ramble_first, timestamp=2026-04-14T11:43:00Z).
 
 context:
   tools: ["LLM-Agents", "Vibe-Coding"]
