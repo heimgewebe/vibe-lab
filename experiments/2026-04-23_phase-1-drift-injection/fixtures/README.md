@@ -7,6 +7,11 @@
 
 ---
 
+## Schema-Kontext
+
+- Zielschema: `schemas/agent.handoff.schema.json`
+- Baseline: `tests/fixtures/agent_handoff/pass-minimal.json`
+
 ## Struktur
 
 Jede Fallspezifikation enthält:
@@ -19,188 +24,102 @@ Jede Fallspezifikation enthält:
 
 ---
 
-## Äquivalenzklasse A: Locator Path Drift
+## Kanonische Fallliste (genau 6)
 
-### A1 (negativ): Invalid path segment
-
-**Purpose:** Verify validator rejects structural path changes.
+## A1: Locator Drift (invalid path)
 
 ```yaml
 case_id: A1
 category: locator_drift
 base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
-  field: handoff_target.locator
-  change: "contracts/command-semantics.md" → "contracts/command-INVALID.md"
-  rationale: "Change path segment; should trigger rejection"
+  field: locator
+  change: "schemas/agent.handoff.schema.json" -> "schemas/agent.INVALID.schema.json"
+  rationale: "Ungueltiger Locator-Pfad"
 expected_validator_behavior: REJECTED
 expected_error_type: "locator_mismatch or similar"
 contrast_pair: A2
-notes: "Core case: validator must catch structural path changes"
+notes: "Kontrast mit A2 vorhanden"
 ```
 
-### A2 (Kontrast): Path with fragment
-
-**Purpose:** Probe edge case: does validator accept path + fragment?
+## A2: Locator Drift (fragment probe)
 
 ```yaml
 case_id: A2
 category: locator_drift
 base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
-  field: handoff_target.locator
-  change: "contracts/command-semantics.md" → "contracts/command-semantics.md#L10"
-  rationale: "Add fragment; unknown if validator accepts"
+  field: locator
+  change: "schemas/agent.handoff.schema.json" -> "schemas/agent.handoff.schema.json#L1"
+  rationale: "Probe fuer Fragment-Behandlung"
 expected_validator_behavior: "? (probe — result will determine)"
 expected_error_type: null
 contrast_pair: A1
-notes: "Edge case: tests validator boundary on acceptable locator variants"
+notes: "Kontrast zu A1"
 ```
 
----
-
-## Äquivalenzklasse B: Hash Value Drift
-
-### B1 (negativ): Hash completely changed
-
-**Purpose:** Verify validator rejects hash mismatches.
+## B1: Hash Drift (vollstaendig geaendert)
 
 ```yaml
 case_id: B1
 category: hash_drift
 base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
-  field: hash
-  change: "<original_sha1>" → "ffffffffffffffffffffffffffffffffffffffff"
-  rationale: "Completely invalid hash; should always reject"
+  field: handoff.hash
+  change: "28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2" -> "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  rationale: "64-hex bleibt formal gueltig, soll aber Hash-Mismatch ausloesen"
 expected_validator_behavior: REJECTED
 expected_error_type: "hash_mismatch or validation_error"
 contrast_pair: B2
-notes: "Core case: validator must catch hash tampering"
+notes: "Kontrast mit B2 vorhanden"
 ```
 
-### B2 (Kontrast): Hash with single character altered
-
-**Purpose:** Probe edge case: does validator require exact match or fuzzy tolerance?
+## B2: Hash Drift (1 nibble geaendert)
 
 ```yaml
 case_id: B2
 category: hash_drift
 base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
-  field: hash
-  change: "<original_sha1>" → "<modified_by_1_char>"
-  rationale: "Minimal hash change; edge case for tolerance"
-expected_validator_behavior: "? (probe — will show tolerance level)"
-expected_error_type: null
+  field: handoff.hash
+  change: "28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2" -> "18b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2"
+  rationale: "Minimale Aenderung bei weiter formal gueltigem 64-hex"
+expected_validator_behavior: REJECTED
+expected_error_type: "hash_mismatch"
 contrast_pair: B1
-notes: "Edge case: tests validator tolerance for small hash variations"
+notes: "Kontrast zu B1"
 ```
 
----
-
-## Äquivalenzklasse C: Path Normalization
-
-### C1 (negativ): Backslash separator (Windows style)
-
-**Purpose:** Probe cross-platform path normalization.
+## C1: target_files Drift (ungueltiger Zielpfad)
 
 ```yaml
 case_id: C1
-category: path_normalization
+category: target_files_drift
 base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
-  field: handoff_target.locator
-  change: "contracts/command-semantics.md" → "contracts\\command-semantics.md"
-  rationale: "Windows-style backslash; tests normalization logic"
-expected_validator_behavior: "? (probe — depends on normalization)"
-expected_error_type: null
-contrast_pair: C2
-notes: "Edge case: tests cross-platform path handling; may be OS-dependent"
+  field: target_files[0]
+  change: "schemas/agent.handoff.schema.json" -> "schemas/agent.handoff.schema.json.backup"
+  rationale: "Soll gegen erwarteten Contract-Pfad fehlschlagen"
+expected_validator_behavior: REJECTED
+expected_error_type: "hash_mismatch or contract_invalid"
+contrast_pair: null
+notes: "Einzelfall ohne belastbaren positiven Gegenfall in Phase 1"
 ```
 
-### C2 (Kontrast): Double forward slash
-
-**Purpose:** Probe path normalization for redundant separators.
-
-```yaml
-case_id: C2
-category: path_normalization
-base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
-mutation:
-  field: handoff_target.locator
-  change: "contracts/command-semantics.md" → "contracts//command-semantics.md"
-  rationale: "Redundant separator; edge case for normalization"
-expected_validator_behavior: "? (probe — depends on normalization)"
-expected_error_type: null
-contrast_pair: C1
-notes: "Edge case: tests handling of redundant path separators"
-```
-
----
-
-## Äquivalenzklasse D: Unicode/Encoding Edge Case
-
-### D1 (negativ): Soft hyphen in locator
-
-**Purpose:** Probe Unicode handling in path fields.
+## D1: change_type Drift (ungueltiger Enum-Wert)
 
 ```yaml
 case_id: D1
-category: unicode_edge_case
+category: change_type_drift
 base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
-  field: handoff_target.locator
-  change: "contracts/command-semantics.md" → "contracts/command-semantics\u00AD.md"
-  rationale: "Soft hyphen (U+00AD) inserted; tests Unicode normalization"
-expected_validator_behavior: REJECTED or normalized_accepted
-expected_error_type: "null (if accepted) or schema_error (if rejected)"
-contrast_pair: null
-notes: "Edge case: tests Unicode handling; may be invisible source of bugs"
-```
-
----
-
-## Äquivalenzklasse E: State Field Mutation
-
-### E1 (negativ): Target file in state changed
-
-**Purpose:** Verify validator catches state drift.
-
-```yaml
-case_id: E1
-category: state_drift
-base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
-mutation:
-  field: state.target_files[0]
-  change: "<original_file>" → "<original_file>.backup"
-  rationale: "State target changed; should trigger rejection"
+  field: change_type
+  change: "add" -> "rename"
+  rationale: "Nicht im Enum {add, modify, remove, replace}"
 expected_validator_behavior: REJECTED
-expected_error_type: "state_mismatch or validation_error"
+expected_error_type: "contract_invalid"
 contrast_pair: null
-notes: "Core case: validator must catch state changes"
-```
-
----
-
-## Äquivalenzklasse F: Version Mismatch
-
-### F1 (negativ): Contract version changed
-
-**Purpose:** Verify validator enforces version compatibility.
-
-```yaml
-case_id: F1
-category: version_mismatch
-base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
-mutation:
-  field: version
-  change: "1.0" → "1.1"
-  rationale: "Contract version changed; tests compatibility check"
-expected_validator_behavior: REJECTED
-expected_error_type: "version_mismatch or contract_invalid"
-contrast_pair: null
-notes: "Core case: validator must enforce version contracts"
+notes: "Einzelfall ohne belastbaren positiven Gegenfall in Phase 1"
 ```
 
 ---
@@ -208,7 +127,9 @@ notes: "Core case: validator must enforce version contracts"
 ## Übergabe In Den Execution-PR
 
 1. Die 6 Spezifikationen als echte JSON-Fixtures materialisieren.
-2. Validator-Ausgaben je Fall erfassen.
+2. Fixtures in ein Staging-Verzeichnis legen und explizit mit
+  `python3 scripts/docmeta/validate_agent_handoff.py --fixtures <staging_dir> --mode strict`
+  prüfen.
 3. Ergebnisse ausschließlich im Execution-PR entscheiden (success / patch_needed / inconclusive).
 
 ---
@@ -217,4 +138,4 @@ notes: "Core case: validator must enforce version contracts"
 
 - Dieses Dokument ist absichtlich nicht normativ für Ergebnisbehauptungen.
 - Ergebnisclaims entstehen erst durch Laufspuren im Execution-PR.
-- Die Kontrastpaar-Struktur dient als Testhärte, nicht als Ausführungsbeweis.
+- Kontrastpaare werden nur dort verwendet, wo ein sinnvoller Gegenfall existiert.

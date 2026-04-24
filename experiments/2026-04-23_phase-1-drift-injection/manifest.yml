@@ -1,3 +1,6 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
 schema_version: "0.1.0"
 
 experiment:

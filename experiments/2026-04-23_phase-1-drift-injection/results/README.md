@@ -18,32 +18,45 @@ Each line: one test case result
 
 ```json
 {
-  "timestamp": "2026-04-23T...",
-  "case_id": "A1",
-  "fixture_name": "phase-1-drift-A1.json",
-  "expected": "REJECTED",
-  "actual": "REJECTED",
-  "validator_output": "...",
-  "error_messages": "...",
-  "status": "✅ PASS",
-  "notes": "..."
+  "event_type": "observation",
+  "timestamp": "2026-04-23T00:00:00Z",
+  "iteration": 1,
+  "metric": "phase1_case_result",
+  "value": "A1:rejected",
+  "context": "fixture=phase-1-drift-A1.json; expected=reject; observed=reject",
+  "notes": "optional"
 }
 ```
+
+Required keys per repo validation:
+
+- `event_type`
+- `timestamp`
+- `iteration`
+- `metric`
+- `value`
+- `context`
 
 ### decision.yml (to be populated)
 
 Summary of Phase 1 outcome:
 
 ```yaml
-phase: 1
-status: null  # will be: success, patch_needed, or inconclusive
-timestamp: null
-fixtures_tested: 0  # will be: 6
-false_positives: 0  # will be: count
-false_negatives: 0  # will be: count
-gap_candidates: []  # will be: [ { case_id, description } ]
-patch_proposed: false  # will be: true or false
-notes: ""
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "inconclusive"
+confidence: "low"
+date: "YYYY-MM-DD"
+reviewer: ""
+rationale: |
+  Bezieht sich auf konkrete Eintraege in results/evidence.jsonl.
+evidence_summary:
+  observations: 0
+  positive: 0
+  negative: 0
+  neutral: 0
+next_steps: |
+  Folgeaktionen fuer Execution- oder Patch-PR.
 ```
 
 ### result.md (to be populated)
@@ -67,7 +80,7 @@ Narrative summary of findings.
 ## Next Steps (After Design PR Merges)
 
 1. **Create Phase 1 fixtures** (actual JSON files matching test cases)
-2. **Run validator** on each fixture
+2. **Run validator** explicitly against the staged fixture directory
 3. **Record evidence** in evidence.jsonl
 4. **Evaluate results** against expectations
 5. **Document decision** in decision.yml
@@ -81,5 +94,5 @@ Narrative summary of findings.
 - **Scope:** agent_handoff validator only
 - **Test count:** exactly 6 cases (no additions mid-Phase)
 - **Stop condition:** all 6 executed AND evidence complete
-- **Patch gate:** contrastpair rule mandatory if gap found
+- **Patch gate:** contrastpair rule mandatory where a meaningful paired case exists
 - **CI requirement:** make validate must pass throughout
