@@ -52,7 +52,7 @@ Baseline-Check im Execution-PR.
 
 - Die kanonische Fallliste liegt in `method.md` und `fixtures/README.md`.
 - Mutationen mit Einzelfeld-Änderung
-- Kontrastpaar-Regel pro Äquivalenzklasse
+- Kontrastpaar-Regel dort, wo ein sinnvoller positiver Gegenfall existiert
 
 ## Vorbedingungen für Ausführung
 
