@@ -16,7 +16,8 @@ relations:
 
 # artifacts/
 
-Dieses Verzeichnis bleibt leer, bis der Execution-PR reale Laufspuren erzeugt.
+Dieses Verzeichnis enthält bis zum Execution-PR nur Dokumentation und Templates;
+reale Laufspuren entstehen erst bei echter Ausführung.
 
 ## Diagnose-First Reihenfolge
 
@@ -27,17 +28,21 @@ make validate
 find tests/fixtures/agent_handoff -type f -name '*.json' | sort
 ```
 
-Diese Baseline-Ausgaben gehören in `artifacts/<run-id>/execution.txt`, bevor
+Diese Baseline-Ausgaben gehören in
+`experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`,
+bevor
 mutierte Stage-Fixtures angelegt werden.
 
 ## Danach Erst
 
-1. Stage-Fixtures in `artifacts/staging/phase-1-agent-handoff/` materialisieren.
+1. Stage-Fixtures in
+  `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/`
+  materialisieren.
 2. Stage-Verzeichnis explizit prüfen:
 
 ```bash
 python3 scripts/docmeta/validate_agent_handoff.py \
-  --fixtures artifacts/staging/phase-1-agent-handoff \
+  --fixtures experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff \
   --mode strict
 ```
 
@@ -57,7 +62,7 @@ Bei echter Ausführung entstehen pro Run:
 Sobald das Experiment später auf `execution_status: executed` oder
 `execution_status: replicated` wechselt, erzwingt das bestehende Repo bereits:
 
-- Existenz von `artifacts/<run-id>/run_meta.json`
+- Existenz von `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/run_meta.json`
 - Schema-Validität von `run_meta.json`
 - Existenz von `test_output_file` (z. B. `execution.txt`)
 - CI-Ausführung über `scripts/docmeta/validate_execution_proof.py`
@@ -69,7 +74,7 @@ verdrahtet.
 
 Noch nicht hart gekoppelt ist die inhaltliche Konsistenz zwischen:
 
-- `artifacts/<run-id>/execution.txt`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`
 - `results/evidence.jsonl`
 - `results/decision.yml`
 

@@ -30,8 +30,12 @@ make validate
 find tests/fixtures/agent_handoff -type f -name '*.json' | sort
 ```
 
-3. Beide Outputs in `artifacts/<run-id>/execution.txt` festhalten.
-4. Erst danach Stage-Fixtures unter `artifacts/staging/phase-1-agent-handoff/` anlegen.
+3. Beide Outputs in
+  `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`
+  festhalten.
+4. Erst danach Stage-Fixtures unter
+  `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/`
+  anlegen.
 5. Validator gegen das Stage-Verzeichnis laufen lassen.
 6. Pro Fall (`A1`, `A2`, `B1`, `B2`, `C1`, `D1`) einen Evidence-Eintrag schreiben.
 

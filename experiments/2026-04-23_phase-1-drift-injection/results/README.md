@@ -93,9 +93,9 @@ Narrative summary of findings.
 
 ## Next Steps (After Design PR Merges)
 
-1. **Create Phase 1 fixtures** (actual JSON files matching test cases)
-2. **Capture diagnose-first baseline** in `artifacts/<run-id>/execution.txt`
-  using `make validate` and fixture inventory output
+1. **Capture diagnose-first baseline** in `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`
+   using `make validate` and fixture inventory output
+2. **Create Phase 1 fixtures** (actual JSON files matching test cases)
 3. **Run validator** explicitly against the staged fixture directory
 4. **Record evidence** in evidence.jsonl
 5. **Evaluate results** against expectations
