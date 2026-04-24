@@ -9,6 +9,8 @@ schema_version: "0.1.0"
 decision_type: adoption_assessment
 verdict: adopt                  # adoption_assessment: adopt | reject | defer
 confidence: medium              # high | medium | low | none
+counterevidence_checked: true   # Ramble-First-Arm prüfte und widerlegte die Token-Bloat-Hypothese aktiv.
+counter_hypothesis_outcome: found_and_refuted  # Gegenhypothese (Token-Volumen als CoT-Proxy) geprüft und empirisch widerlegt.
 date: "2026-04-14"
 reviewer: "Jules"
 
