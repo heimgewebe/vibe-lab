@@ -164,25 +164,45 @@ jobs:
           path: docs/_generated/metrics/trends.md
           if-no-files-found: ignore
 
-      - name: Show derived diagnostic drift (non-blocking)
+      - name: Generate derived drift report (non-blocking)
+        id: derived_drift
         run: |
+          report="generated-drift-report.txt"
+          : > "$report"
+
           mapfile -t derived_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py derived)
           if [[ "${#derived_paths[@]}" -eq 0 ]]; then
-            echo "WARNING: derived path list from .vibe/generated-artifacts.yml is empty"
+            echo "No derived-core paths resolved from contract." >> "$report"
+            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           if git status --porcelain -- "${derived_paths[@]}" | grep -q .; then
-            echo "WARNING: Derived diagnostics show structural drift (non-blocking, review recommended)."
-            git status --porcelain -- "${derived_paths[@]}"
-            git diff -- "${derived_paths[@]}" || true
-
-            if git status --porcelain -- docs/_generated/orphans.md | grep -q .; then
-              echo "WARNING: Elevated derived drift detected (orphans changed)."
-            fi
+            {
+              echo "Derived diagnostics drift detected."
+              echo
+              echo "[git status --porcelain]"
+              git status --porcelain -- "${derived_paths[@]}"
+              echo
+              echo "[git diff]"
+              git diff -- "${derived_paths[@]}" || true
+            } >> "$report"
+            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
           else
-            echo "✅ Derived diagnostics match committed files."
+            echo "No derived diagnostics drift detected." >> "$report"
+            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Soft escalation for derived drift (warning only)
+        if: steps.derived_drift.outputs.drift_detected == 'true'
+        run: |
+          echo "::warning title=Generated diagnostics drift::Derived diagnostics changed; review generated-drift-report.txt."
+
+      - name: Upload generated drift report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-drift-report
+          path: generated-drift-report.txt
 
   ephemeral-diagnostics:
     runs-on: ubuntu-latest
