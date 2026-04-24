@@ -2,7 +2,7 @@
 title: "Repository-Plan"
 status: active
 canonicality: foundational
-updated: "2026-04-19"
+updated: "2026-04-23"
 ---
 # Repository-Plan für vibe-lab
 
@@ -10,6 +10,8 @@ updated: "2026-04-19"
 Das Repository ist ein exekutierbarer Erkenntnisraum. Es erfasst Vibe‑Coding‑Hypothesen, macht sie experimentierbar, zwingt zu Entscheidungen, konserviert Lerngewinne und liefert daraus praktische, wiederverwendbare Artefakte (Rules, Instructions, Prompt‑Bausteine, Workflows).
 
 Die Vision „Sammlung → Erprobung → Validierung → Kreation“ wird als Pipeline mit asymmetrischer Rückkopplung umgesetzt. Nichts bleibt „nur Idee“, aber nichts wird unvalidiert zur „Best Practice“ erklärt.
+
+**Teilstand 2026-04-23:** Der minimale `system_decision`-Kern ist umgesetzt, ein decision-gated Metrics-Pilot ist im Standard-Generate-Pfad verankert, und der Guard-/Validator-Stack ist repo-operativ. Offen bleiben bewusst die breitere Phase-C/D-Ausweitung, der Fixture-Ausbau in Phase E und die harte Markierung aller leeren Stub-Zonen.
 
 ### Epistemische Zustände und Repo-Mechanik
 Das System trennt strikt zwischen Wissensreife (epistemischen Zuständen) und dem operativen Status.
@@ -34,60 +36,60 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 *Zwingend erforderlich, um den Erkenntniskreislauf zu starten. (Klarstellung: Um den MVP nicht zu überladen, dürfen einzelne Bestandteile als Stub oder in einer reduzierten Erstversion starten.)*
 
 **Umsetzungs-Checkliste Phase A:**
-- [ ] **Typed Intake:** YAML Issue Forms für `idea`, `experiment-proposal` und `promotion-request` sind angelegt und auf den Contribution Contract gemappt.
-- [ ] **Experiment-Engine:** Der Ordner `experiments/_template/` existiert inkl. `manifest.yml`, `method.md`, `evidence.jsonl` und `decision.yml`.
-- [ ] **Evidenz-Taxonomie:** `evidence.jsonl` nutzt ein maschinenlesbares Vokabular (`event_type`) und wird via JSON-Schema validiert.
-- [ ] **Minimaler Katalog:** Der Ordner `catalog/` existiert als Stub für erste Practices.
-- [ ] **Schema-Starter-Set:** Ein Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos liegt in `schemas/` bzw. `contracts/` bereit.
-- [ ] **Schema-Validierung & Versionierung:** CI-Checks (`.github/workflows/validate.yml`) prüfen hart gegen Schema-Definitionen (inkl. `schema_version`).
-- [ ] **Promotion-Gate:** Zwingende PR-Templates (`promotion.md`) regeln den Aufstieg in den Katalog.
-- [ ] **Scaffolding-CLI & Frontdoor:** Ein minimales `Makefile` (`make validate`, `make vibe`) und/oder `tools/vibe-cli` (z.B. `new experiment`) existieren, um Boilerplate zu senken.
-- [ ] **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` erklären Repo-Ziel, Beitragstypen und den Ablauf auf einen Blick (< 10 Minuten Lesezeit).
-- [ ] **Intelligence Layer (Basis):** `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` existieren in erster Version. Die Basis-Navigationsdokumente `docs/index.md` und `docs/masterplan.md` sind angelegt. Die Basis-Diagnosegeneratoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) sowie die Validatoren (`validate_schema.py`, `validate_relations.py`) liegen ausführbar bereit. Der Generated-Artifact-Contract (`.vibe/generated-artifacts.yml`) klassifiziert alle generierten Ausgaben in `canonical`, `derived` und `ephemeral` und legt CI-Verhalten (blocking vs. non-blocking vs. artifact-only) für jede Klasse fest.
+- [x] **Typed Intake:** YAML Issue Forms für `idea`, `experiment-proposal` und `promotion-request` sind angelegt und auf den Contribution Contract gemappt.
+- [x] **Experiment-Engine:** Der Ordner `experiments/_template/` existiert inkl. `manifest.yml`, `method.md`, `evidence.jsonl` und `decision.yml`.
+- [x] **Evidenz-Taxonomie:** `evidence.jsonl` nutzt ein maschinenlesbares Vokabular (`event_type`) und wird via JSON-Schema validiert.
+- [x] **Minimaler Katalog:** Der Ordner `catalog/` existiert als Stub für erste Practices.
+- [x] **Schema-Starter-Set:** Ein Set real nutzbarer Schemas für Katalogeinträge, Experimente und Combos liegt in `schemas/` bzw. `contracts/` bereit.
+- [x] **Schema-Validierung & Versionierung:** CI-Checks (`.github/workflows/validate.yml`) prüfen hart gegen Schema-Definitionen (inkl. `schema_version`).
+- [x] **Promotion-Gate:** Zwingende PR-Templates (`promotion.md`) regeln den Aufstieg in den Katalog.
+- [x] **Scaffolding-CLI & Frontdoor:** Ein minimales `Makefile` und `tools/vibe-cli` existieren, um Boilerplate zu senken.
+- [x] **Operatives Einstiegssystem:** `README.md` und `CONTRIBUTING.md` erklären Repo-Ziel, Beitragstypen und den Ablauf auf einen Blick.
+- [x] **Intelligence Layer (Basis):** `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` existieren. Die Basis-Navigationsdokumente `docs/index.md` und `docs/masterplan.md` sind angelegt. Die Basis-Diagnosegeneratoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) sowie die Validatoren (`validate_schema.py`, `validate_relations.py`) liegen ausführbar bereit. Der Generated-Artifact-Contract (`.vibe/generated-artifacts.yml`) klassifiziert alle generierten Ausgaben in `canonical`, `derived` und `ephemeral` und legt CI-Verhalten (blocking vs. non-blocking vs. artifact-only) für jede Klasse fest.
 
 **Akzeptanzkriterien für Phase A (MVP abgeschlossen, wenn):**
-- [ ] Ein Issue lässt sich über ein typisiertes YAML-Formular erstellen.
-- [ ] Ein PR für ein Experiment triggert erfolgreich einen Schema-CI-Check.
-- [ ] Die `AGENTS.md` und `repo.meta.yaml` sind im Root angelegt.
-- [ ] `README.md` und `CONTRIBUTING.md` verweisen auf den Contribution Contract.
-- [ ] Der Befehl `make validate` (oder ein Workflow) existiert und führt den minimalen Guard-Stack (Schema- und Relations-Validierung) ohne Fehler aus.
-- [ ] `docs/index.md` und `docs/masterplan.md` existieren als Navigationsbasis.
-- [ ] Die vier Basis-Diagnosegeneratoren (Index, Backlinks, Orphans, System-Map) sind funktional vorhanden.
+- [x] Ein Issue lässt sich über ein typisiertes YAML-Formular erstellen.
+- [x] Ein PR für ein Experiment triggert erfolgreich einen Schema-CI-Check.
+- [x] Die `AGENTS.md` und `repo.meta.yaml` sind im Root angelegt.
+- [x] `README.md` und `CONTRIBUTING.md` verweisen auf den Contribution Contract.
+- [x] Der Befehl `make validate` (oder ein Workflow) existiert und führt den minimalen Guard-Stack ohne Fehler aus.
+- [x] `docs/index.md` und `docs/masterplan.md` existieren als Navigationsbasis.
+- [x] Die vier Basis-Diagnosegeneratoren (Index, Backlinks, Orphans, System-Map) sind funktional vorhanden.
 
 ### B. Starter Corpus (Initialbefüllung)
 *Direkt im Anschluss an den MVP erfolgt eine gezielte Erstbefüllung, um das System operativ nutzbar und testbar zu machen.*
 
 **Umsetzungs-Checkliste Phase B:**
-- [ ] **Initiale Katalogeinträge:** Mindestens ein Eintrag pro Hauptkategorie (`styles`, `technologies`, `techniques`, `workflows`, `combos`) ist angelegt.
-- [ ] **Erste Anti-Patterns:** Der Ordner `anti-patterns/` enthält mindestens ein aktiv erfasstes, verworfenes Muster.
-- [ ] **Erste Benchmark-Challenges:** Standardisierte Vergleichsaufgaben sind unter `benchmarks/challenges/` definiert.
-- [ ] **Golden Example:** Ein vollständig durchgeführtes Referenzexperiment (inkl. zwingendem `CONTEXT.md`/`INITIAL.md`) liegt in `experiments/` vor.
-- [ ] **Adopted Prompts:** Ein erster menschenlesbarer Prompt liegt in `prompts/adopted/`.
+- [x] **Initiale Katalogeinträge:** Erste Einträge in den belegten Hauptkategorien (`styles`, `techniques`, `workflows`, `combos`) sind angelegt; `technologies/` bleibt derzeit bewusst unbefüllt.
+- [x] **Erste Anti-Patterns:** Der Ordner `anti-patterns/` enthält mindestens ein aktiv erfasstes, verworfenes Muster.
+- [x] **Erste Benchmark-Challenges:** Standardisierte Vergleichsaufgaben sind unter `benchmarks/challenges/` definiert.
+- [x] **Golden Example:** Ein vollständig durchgeführtes Referenzexperiment (inkl. `CONTEXT.md`/`INITIAL.md`) liegt in `experiments/` vor.
+- [x] **Adopted Prompts:** Menschenlesbare Prompts liegen in `prompts/adopted/`.
 
 **Akzeptanzkriterien für Phase B (Starter Corpus abgeschlossen, wenn):**
-- [ ] Mindestens ein Golden Example-Experiment existiert und validiert fehlerfrei.
-- [ ] Der Katalog enthält mindestens eine Adopted Practice und ein Anti-Pattern.
-- [ ] Mindestens eine Benchmark-Challenge ist versioniert angelegt.
-- [ ] Das System ist nicht mehr leer, und die Pipeline kann an konkreten Beispieldaten nachvollzogen werden.
+- [x] Mindestens ein Golden Example-Experiment existiert und validiert fehlerfrei.
+- [x] Der Katalog enthält mindestens eine Adopted Practice und ein Anti-Pattern.
+- [x] Mindestens eine Benchmark-Challenge ist versioniert angelegt.
+- [x] Das System ist nicht mehr leer, und die Pipeline kann an konkreten Beispieldaten nachvollzogen werden.
 
 ### C. Frühe Verstärker
 *Sinnvoll nach Stabilisierung des MVPs, erhöht die Systemqualität maßgeblich.*
 
 **Umsetzungs-Checkliste Phase C:**
-- [ ] **Instruction Blocks (IR) & Exports:** `instruction-blocks/` ist etabliert, und ein CI-Schritt generiert `exports/`.
+- [x] **Instruction Blocks (IR) & Exports:** `instruction-blocks/` ist etabliert, und ein CI-Schritt generiert `exports/`.
 - [ ] **Export-Konflikt-Gate & Orphan-Check:** Der Build-Prozess schlägt bei Export-Kollisionen hart fehl; ungenutzte Exporte werden erkannt.
-- [ ] **Export-Herkunft:** Generierte Exporte dokumentieren maschinenlesbar ihre Herkunft (Hash, Generator, Timestamp).
+- [ ] **Export-Herkunft:** Generierte Exporte dokumentieren maschinenlesbar ihre deterministische Herkunft (`source`, `generator`, `source_hash`; kein Timestamp).
 - [ ] **Wissensverfall (Staleness):** Katalogeinträge nutzen `last_validated`, `review_cycle`, und `next_review_due`. Der Generator `generate_stale_entries.py` läuft.
-- [ ] **Leichtgewichtiges Metrik-Dashboard:** Trends aus `evidence.jsonl` werden regelmäßig nach `docs/_generated/metrics/` exportiert.
+- [x] **Leichtgewichtiges Metrik-Dashboard:** Trends aus `evidence.jsonl` werden decision-gated nach `docs/_generated/metrics/` exportiert.
 - [ ] **Frühe Diagnose-Kopplung:** Generatoren wie `generate_weak_links.py` laufen und koppeln an das Staleness-Signal zur automatischen Ticketgenerierung.
-- [ ] **Typisierte Decision Artifacts:** `decisions/` ist strukturiert nach `process/`, `export/`, `policy/`.
+- [x] **Typisierte Decision Artifacts:** `decisions/` ist strukturiert nach `process/`, `export/`, `policy/`, `benchmark/` und `system/`; ein minimaler `system_decision`-Kern ist operativ belegt.
 - [ ] **Benchmark-Challenge Versionierung:** Ergebnisse in `decision.yml` referenzieren zwingend ein `challenge_version` Feld.
 - [ ] **Erweiterte Governance:** GitHub Rulesets für das Zonenmodell (Labor vs. Bibliothek) sind konfiguriert.
 
 **Akzeptanzkriterien für Phase C (Verstärker abgeschlossen, wenn):**
-- [ ] Änderungen in der IR (`instruction-blocks/`) lösen automatisiert Exporte aus.
+- [x] Änderungen in der IR (`instruction-blocks/`) lösen automatisiert Exporte aus.
 - [ ] Veraltete Katalogeinträge werden durch `stale-entries.md` oder Issues sichtbar gemacht.
-- [ ] Ein Metrik-Trend aus `evidence.jsonl` ist in `docs/_generated/metrics/` ablesbar.
+- [x] Ein Metrik-Trend aus `evidence.jsonl` ist in `docs/_generated/metrics/` ablesbar.
 - [ ] Export-Konflikte führen verlässlich zu einem abbrechenden Build.
 
 ### D. Spätphase / Optionale Schicht
@@ -111,25 +113,25 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 Zusätzlich zur operativen Pipeline erhält das Repository eine leichte, maschinenlesbare Diagnostik- und Steuerungsebene.
 
 **Operationalisierung der Intelligence Layer:**
-- [ ] **Maschinenlesbare Repo-Verfassung:** `repo.meta.yaml` ist angelegt und definiert `canonical_sources`, `safe_read_paths` und `truth_model`.
-- [ ] **Agentenführung:** `AGENTS.md` und `agent-policy.yaml` regeln den Umgang mit generierten Dateien und erzwingen Abbruch bei Konflikten.
-    - [ ] *Lesereihenfolge für Agenten explizit gemacht:* `repo.meta.yaml` → `AGENTS.md` → `agent-policy.yaml` → `README.md` → `docs/index.md` → Kanonische Pfade → `docs/_generated/*`.
-- [ ] **Dokumente als epistemische Objekte:** Ein `docmeta.schema.json` existiert in `contracts/`. Markdown-Dateien besitzen Pflicht-Frontmatter (`status`, `canonicality`, `relations`).
-- [ ] **Diagnostische Generatoren:** `docs/_generated/` ist etabliert. *Regel: Diese Dateien sind reine Diagnose und werden niemals manuell editiert.*
-- [ ] **Epistemische Dokumentpfade:** Der `docs/`-Ordner ist semantisch strukturiert (`concepts/`, `experiments/`, `syntheses/` etc.).
-- [ ] **Minimaler Guard-/Generator-Stack:** Ein Lean-Startset liegt unter `scripts/docmeta/` (`validate_schema.py`, `validate_relations.py`, `generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`).
+- [x] **Maschinenlesbare Repo-Verfassung:** `repo.meta.yaml` ist angelegt und definiert `canonical_sources`, `safe_read_paths` und `truth_model`.
+- [x] **Agentenführung:** `AGENTS.md` und `agent-policy.yaml` regeln den Umgang mit generierten Dateien und erzwingen Abbruch bei Konflikten.
+  - [x] *Lesereihenfolge für Agenten explizit gemacht:* `repo.meta.yaml` → `AGENTS.md` → `agent-policy.yaml` → `README.md` → `docs/index.md` → Kanonische Pfade → `docs/_generated/*`.
+- [x] **Dokumente als epistemische Objekte:** Ein `docmeta.schema.json` existiert in `contracts/`. Markdown-Dateien besitzen Pflicht-Frontmatter (`status`, `canonicality`, `relations`).
+- [x] **Diagnostische Generatoren:** `docs/_generated/` ist etabliert. *Regel: Diese Dateien sind reine Diagnose und werden niemals manuell editiert.*
+- [x] **Epistemische Dokumentpfade:** Der `docs/`-Ordner ist semantisch strukturiert (`concepts/`, `experiments/`, `syntheses/` etc.).
+- [x] **Minimaler Guard-/Generator-Stack:** Ein Lean-Startset liegt unter `scripts/docmeta/` (`validate_schema.py`, `validate_relations.py`, `generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`).
 
 ## Kanonische Artefakte und Workflow
 Die Pipeline stützt sich auf harte, schemavalidierte Artefaktarten vom Intake bis zum Export.
 
 **Operationalisierung der Workflow-Pipeline:**
-- [ ] **Hypothese (Intake):** Das YAML Issue-Formular `idea.yml` ist aktiv.
+- [x] **Hypothese (Intake):** Das YAML Issue-Formular `idea.yml` ist aktiv.
 - [ ] **Experiment-Durchführung:** Ein Ordner wird basierend auf dem Golden Skeleton (`manifest.yml`, `method.md`, `evidence.jsonl`, `decision.yml`) befüllt.
-- [ ] **Decision Artifact:** Meta-Entscheidungen (Metriken, Gate-Regeln) liegen typisiert unter `decisions/` (z.B. `process/`, `policy/`).
+- [x] **Decision Artifact:** Meta-Entscheidungen liegen typisiert unter `decisions/`; operativ belegt ist derzeit der kleine `system_decision`-Kern für Metrik-Gates.
 - [ ] **Katalogisierung (Promotion-PR):** Der PR prüft hart auf Existenz eines vollständigen Experiments (inkl. `CONTEXT.md` / `INITIAL.md` und `evidence.jsonl`), valide Schemas und synchronisierte Exports.
 - [ ] **Benchmarks:** Definitionen liegen unter `benchmarks/criteria.md` und `challenges/`. Ergebnisse tragen eine `challenge_version`.
-- [ ] **Instruction Block IR + Exports:** Die IR (`instruction-blocks/`) ist die alleinige Quelle; Änderungen erzwingen CI-Synchronisation der Ziel-Artefakte (`exports/`).
-- [ ] **Regel für generierte Artefakte:** Generierte Artefakte (`exports/`, `.cursor/rules/`, `docs/_generated/`) werden **niemals manuell editiert**. *(Klarstellung: `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` sind handgepflegte Steuerungsdokumente).*
+- [x] **Instruction Block IR + Exports:** Die IR (`instruction-blocks/`) ist die alleinige Quelle; Änderungen erzwingen CI-Synchronisation der Ziel-Artefakte (`exports/`).
+- [x] **Regel für generierte Artefakte:** Generierte Artefakte (`exports/`, `.cursor/rules/`, `docs/_generated/`) werden **niemals manuell editiert**. *(Klarstellung: `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` sind handgepflegte Steuerungsdokumente).*
 
 ## Governance, Zonenmodell und Contribution Contract
 Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen unterteilt (Labor = freies Explorieren, Bibliothek = harte Validierung).
@@ -147,26 +149,26 @@ Sicherheit und Qualitätsschranken sind architektonisch in zwei strikte Zonen un
 ## Einführungsreihenfolge (Der Baupfad)
 *Dieser Pfad definiert, in welcher Reihenfolge die Repository-Struktur physisch aufgebaut werden soll, um den MVP erfolgreich bereitzustellen.*
 
-- [ ] **Schritt 1: Operatives Fundament legen (MVP-Start)**
-    - [ ] `README.md`, `CONTRIBUTING.md` und `.env.example` im Root anlegen.
-    - [ ] `.github/CODEOWNERS` und `.github/ISSUE_TEMPLATE/` (idea, experiment-proposal, promotion-request) konfigurieren.
-- [ ] **Schritt 2: Die Steuerungsdokumente (Intelligence Layer Basis)**
-    - [ ] `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` verfassen.
-    - [ ] `.vibe/` (intent, constraints, quality-gates) als Basis-Vertrag einrichten.
-- [ ] **Schritt 3: Das Datenmodell (Schemas)**
-    - [ ] `schemas/` für operative Validierung (Experiment, Catalog, Combo) anlegen.
-    - [ ] `contracts/docmeta.schema.json` für die Dokumentsemantik anlegen.
-- [ ] **Schritt 4: Die Labor-Umgebung**
-    - [ ] `experiments/_template/` inklusive Golden Skeleton (`CONTEXT.md`, `INITIAL.md`, `manifest.yml`, `method.md`, `evidence.jsonl`, `decision.yml`) aufbauen.
-- [ ] **Schritt 5: Die Bibliothek & Erkenntniswege (Stubs)**
-    - [ ] `catalog/` (inkl. Unterordner `styles`, `workflows`, `anti-patterns`, `combos`), `prompts/adopted/` und `benchmarks/` anlegen.
-    - [ ] `docs/` mit `index.md`, `masterplan.md` und den Basis-Strukturordnern (`_generated/` etc.) anlegen.
-- [ ] **Schritt 6: Guard-Frontdoor & CI**
-    - [ ] `Makefile` oder `.github/workflows/docs-guard.yml` einrichten.
-    - [ ] `scripts/docmeta/` mit den Validatoren (`validate_schema.py`, `validate_relations.py`) und den Basis-Generatoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) bereitstellen.
-- [ ] **Schritt 7: Erstbefüllung (Phase B)**
-    - [ ] Golden Example in `experiments/` ausführen.
-    - [ ] Erste Einträge in Katalog und Anti-Patterns überführen.
+- [x] **Schritt 1: Operatives Fundament legen (MVP-Start)**
+  - [x] `README.md`, `CONTRIBUTING.md` und `.env.example` im Root anlegen.
+  - [x] `.github/CODEOWNERS` und `.github/ISSUE_TEMPLATE/` (idea, experiment-proposal, promotion-request) konfigurieren.
+- [x] **Schritt 2: Die Steuerungsdokumente (Intelligence Layer Basis)**
+  - [x] `repo.meta.yaml`, `AGENTS.md` und `agent-policy.yaml` verfassen.
+  - [x] `.vibe/` (intent, constraints, quality-gates) als Basis-Vertrag einrichten.
+- [x] **Schritt 3: Das Datenmodell (Schemas)**
+  - [x] `schemas/` für operative Validierung (Experiment, Catalog, Combo) anlegen.
+  - [x] `contracts/docmeta.schema.json` für die Dokumentsemantik anlegen.
+- [x] **Schritt 4: Die Labor-Umgebung**
+  - [x] `experiments/_template/` inklusive Golden Skeleton (`CONTEXT.md`, `INITIAL.md`, `manifest.yml`, `method.md`, `evidence.jsonl`, `decision.yml`) aufbauen.
+- [x] **Schritt 5: Die Bibliothek & Erkenntniswege (Stubs)**
+  - [x] `catalog/` (inkl. Unterordner `styles`, `workflows`, `anti-patterns`, `combos`), `prompts/adopted/` und `benchmarks/` anlegen.
+  - [x] `docs/` mit `index.md`, `masterplan.md` und den Basis-Strukturordnern (`_generated/` etc.) anlegen.
+- [x] **Schritt 6: Guard-Frontdoor & CI**
+  - [x] `Makefile` und `.github/workflows/validate.yml` einrichten.
+  - [x] `scripts/docmeta/` mit den Validatoren (`validate_schema.py`, `validate_relations.py`) und den Basis-Generatoren (`generate_doc_index.py`, `generate_backlinks.py`, `generate_orphans.py`, `generate_system_map.py`) bereitstellen.
+- [x] **Schritt 7: Erstbefüllung (Phase B)**
+  - [x] Golden Example in `experiments/` ausführen.
+  - [x] Erste Einträge in Katalog und Anti-Patterns überführen.
 
 *Alles Weitere (Phase C/D: IR-Generatoren, Metrik-Dashboards, Knowledge-Gaps, Reaktiver Loop) wird erst hinzugefügt, wenn Schritt 1-7 stabil operieren.*
 
@@ -252,7 +254,7 @@ vibe-lab/
     spec-first-vibe.yml
 
   exports/                # Bibliothek: Tool-spezifische Ziele (Generiert)
-    copilot/              # Info: Exporte enthalten Herkunftsmetadaten (generated_from, Hash, Timestamp)
+    copilot/              # Info: Exporte enthalten deterministische Herkunftsmetadaten (source, generator, source_hash)
     cursor/
 
   schemas/                # Bibliothek: Datenmodelle für CI-Checks (Pipeline-Validierung)

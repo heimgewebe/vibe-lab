@@ -3,7 +3,7 @@ title: "Blueprint v2 — Roadmap / offene Punkte"
 status: active
 canonicality: navigation
 created: "2026-04-15"
-updated: "2026-04-16"
+updated: "2026-04-23"
 triggered_by: "v2 roadmap: Derived Visibility — Sichtbarkeits-Kriterium erfüllt (10 Experimente ≥ 5)"
 relations:
   - type: derived_from
@@ -23,20 +23,19 @@ geplanten Hebel und ein Sichtbarkeits-Kriterium, ab wann Umsetzung sinnvoll ist.
 
 ---
 
-## Phase 2 — Interpretation Protection
+## Phase 2 — Interpretation Protection (Restoffen)
 
-**Fehlklasse:** Ergebnisse werden über die Evidenzbasis hinaus gelesen
-(überdehnte Claims, implizite Kausalbehauptungen).
+**Fehlklasse:** Der Kernschutz gegen Overclaiming ist umgesetzt; offen bleibt
+die optionale Zusatzhärtung über einen expliziten epistemischen Stress-Test.
 
 **Hebel:**
-- `interpretation_budget` (Blöcke `allowed_claims` / `disallowed_claims`) im
-  `result.md`.
 - Optionaler „Epistemic Stress Test"-Abschnitt im Template.
 
-**Pflicht nur bei:** Promotion oder Regelbildung. Exploration bleibt frei.
+**Bewusst nicht mehr offen:** `interpretation_budget` als Promotion-Guard. Das
+liegt bereits als Policy + Validator + Test + CI-Verkabelung im Repo.
 
-**Sichtbarkeits-Kriterium:** Nach der ersten post-v2-Adoption, spätestens wenn
-ein Reviewer ein adoptiertes Ergebnis überdehnt zitiert.
+**Sichtbarkeits-Kriterium:** Erst wenn die bestehende Guard-Fläche in Reviews
+nicht mehr reicht und ein zusätzlicher Stress-Test echten Mehrwert liefert.
 
 ---
 
@@ -78,6 +77,11 @@ Experimenten vorliegen. Bis dahin bewusst nicht anlegen.
 
 ## Erledigte Punkte (zum Nachlesen)
 
+- **Phase 2 — Interpretation Protection (Kern):**
+  `docs/policies/interpretation-budget.md` definiert den Pflichtblock für
+  adoptierte Experimente; `validate_interpretation_budget.py` + Tests + CI
+  erzwingen den Guard im Repo.
+
 - **Phase 1 — Execution-Proof:** `schemas/run_meta.schema.json` +
   `scripts/docmeta/validate_execution_proof.py`, im CI verdrahtet.
 - **Phase 1 — Adoption-Basis sichtbar:** Feld `adoption_basis` im Schema,
@@ -107,6 +111,6 @@ Experimenten vorliegen. Bis dahin bewusst nicht anlegen.
   `docs/_generated/epistemic-state.md` mit abgeleiteten Feldern pro
   Experiment: `design_quality` (aus `method.md` / `failure_modes.md`),
   `execution_state` (Spiegel), `evidence_strength` (Spiegel),
-  `interpretation_risk` (unassessed bis Phase 2). Sichtbarkeits-Kriterium
-  erfüllt: 10 Experimente ≥ 5. Im Makefile als `generate-epistemic-state`
-  verdrahtet.
+  `interpretation_risk` (aus 6-Signal-Heuristik, nicht mehr `unassessed`).
+  Sichtbarkeits-Kriterium erfüllt: 10 Experimente ≥ 5. Im Makefile als
+  `generate-epistemic-state` verdrahtet.
