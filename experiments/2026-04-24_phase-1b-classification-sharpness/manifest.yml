@@ -6,10 +6,15 @@ schema_version: "0.1.0"
 experiment:
   name: "Phase 1b - Validator Classification Sharpness"
   hypothesis: "Die Ablehnungs-Korrektheit des agent_handoff-Validators ist für Phase-1-Driftfälle gegeben, aber die Fehlerklassifikation bleibt für Locator-/Target-Drift unscharf; ein Layer-Vergleich mit cross_contract macht die Zustandsgrenze explizit."
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-2026-04-24-phase1b-001/run_meta.json"
+    - "artifacts/run-2026-04-24-phase1b-001/execution.txt"
+    - "results/evidence.jsonl"
+    - "results/result.md"
+    - "results/decision.yml"
   created: "2026-04-24"
   updated: "2026-04-24"
   author: "GPT-5.3-Codex"
