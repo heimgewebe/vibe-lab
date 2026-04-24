@@ -49,7 +49,7 @@ tests/fixtures/agent_handoff/hash-mismatch.json
 tests/fixtures/agent_handoff/partial-missing-required-fixes.json
 tests/fixtures/agent_handoff/pass-minimal.json
 
-## Step 4: staged fixtures created
+## Step 3: staged fixtures created
 phase-1-drift-A1.json
 phase-1-drift-A2.json
 phase-1-drift-B1.json
@@ -57,7 +57,7 @@ phase-1-drift-B2.json
 phase-1-drift-C1.json
 phase-1-drift-D1.json
 
-## Step 5: strict validator against staged fixtures
+## Step 4: strict validator against staged fixtures
 command: python3 scripts/docmeta/validate_agent_handoff.py --fixtures experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff --mode strict
 exit_code: 1
 output:
@@ -72,17 +72,17 @@ output:
   - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-D1.json: contract_invalid: schema validation failed — 'rename' is not one of ['add', 'modify', 'remove', 'replace']
 [2026-04-24T12:21:52+02:00] CMD: echo
 
-[2026-04-24T12:21:52+02:00] CMD: echo '## Step 9: final make validate'
-## Step 9: final make validate
+[2026-04-24T12:21:52+02:00] CMD: echo '## Step 5: final make validate'
+## Step 5: final make validate
 [2026-04-24T12:21:52+02:00] CMD: echo 'command: make validate'
 command: make validate
-[2026-04-24T12:21:52+02:00] CMD: echo "exit_code: $(cat /tmp/p1-run1-step9-exit.txt)"
+[2026-04-24T12:21:52+02:00] CMD: echo "exit_code: $(cat /tmp/p1-run1-step5-exit.txt)"
 exit_code: 0
 [2026-04-24T12:21:52+02:00] CMD: echo 'role: hygiene/regression guard (post-experiment)'
 role: hygiene/regression guard (post-experiment)
 [2026-04-24T12:21:52+02:00] CMD: echo 'output_tail:'
 output_tail:
-[2026-04-24T12:21:52+02:00] CMD: tail -20 /tmp/p1-run1-step9-validate.log
+[2026-04-24T12:21:52+02:00] CMD: tail -20 /tmp/p1-run1-step5-validate.log
 ✅ Adoption-Completeness: 2 adopted Experiment(e) mit vollständiger Katalog-Extraktion.
 🧪 Running adoption completeness regression tests...
 ......
