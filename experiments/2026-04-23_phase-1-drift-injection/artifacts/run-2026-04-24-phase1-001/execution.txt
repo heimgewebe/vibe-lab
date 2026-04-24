@@ -78,6 +78,8 @@ output:
 command: make validate
 [2026-04-24T12:21:52+02:00] CMD: echo "exit_code: $(cat /tmp/p1-run1-step9-exit.txt)"
 exit_code: 0
+[2026-04-24T12:21:52+02:00] CMD: echo 'role: hygiene/regression guard (post-experiment)'
+role: hygiene/regression guard (post-experiment)
 [2026-04-24T12:21:52+02:00] CMD: echo 'output_tail:'
 output_tail:
 [2026-04-24T12:21:52+02:00] CMD: tail -20 /tmp/p1-run1-step9-validate.log

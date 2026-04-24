@@ -35,7 +35,7 @@ Die Run-Spur ist vollständig und reproduzierbar dokumentiert.
 Die Fälle zeigen konsistente Reject-Signale, jedoch wurde Locator-Drift in A1/A2
 nicht als separates Locator-Fehlersignal ausgewiesen, sondern über Hash-Mismatch.
 
-Der strict Validator beendet den Driftlauf erwartbar mit Exit-Code 1, weil alle sechs Stage-Fixtures absichtlich invalidierende Mutationen enthalten. Der abschließende Repo-Guard `make validate` lief grün.
+Der strict Validator ist der entscheidende Experimentlauf und liefert erwartbar exit_code = 1, weil alle sechs Stage-Fixtures absichtlich invalidierende Mutationen enthalten. Der abschließende Repo-Guard make validate ist die Hygiene-/Regression-Nachkontrolle und lief mit exit_code = 0 grün.
 
 ## Verdict
 
