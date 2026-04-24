@@ -52,8 +52,8 @@ python3 scripts/docmeta/validate_agent_handoff.py \
 
 Bei echter Ausführung entstehen pro Run:
 
-- `artifacts/<run-id>/run_meta.json`
-- `artifacts/<run-id>/execution.txt`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/run_meta.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`
 
 `run_meta.json` wird gegen `schemas/run_meta.schema.json` validiert.
 

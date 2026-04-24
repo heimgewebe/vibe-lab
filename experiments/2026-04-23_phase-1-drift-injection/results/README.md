@@ -117,7 +117,8 @@ Narrative summary of findings.
 
 - `execution_status ∈ {executed, replicated}` ist bereits an Run-Artefakte
   gekoppelt via `scripts/docmeta/validate_execution_proof.py`.
-- `artifacts/<run-id>/run_meta.json` und sein `test_output_file` werden damit
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/run_meta.json`
+  und sein `test_output_file` werden damit
   bereits durch Repo-Validator und CI erzwungen.
 - Nicht automatisch erzwungen ist derzeit die semantische Konsistenz zwischen
   Run-Artefakten, `results/evidence.jsonl` und `results/decision.yml`.
