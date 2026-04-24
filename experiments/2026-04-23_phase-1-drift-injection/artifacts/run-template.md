@@ -12,9 +12,9 @@ relations:
     target: ../results/README.md
 ---
 
-# Diagnosis-First Run Template
+# Diagnose-First Run-Template
 
-Use this template for the first real Phase-1 execution PR run.
+Dieses Template dient für den ersten realen Phase-1-Execution-PR-Run.
 
 ## Reihenfolge
 

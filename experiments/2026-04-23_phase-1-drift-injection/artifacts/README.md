@@ -52,7 +52,7 @@ Bei echter Ausführung entstehen pro Run:
 
 `run_meta.json` wird gegen `schemas/run_meta.schema.json` validiert.
 
-## Bereits Systemisch Erzwungen
+## Bereits systemisch erzwungen
 
 Sobald das Experiment später auf `execution_status: executed` oder
 `execution_status: replicated` wechselt, erzwingt das bestehende Repo bereits:
@@ -65,7 +65,7 @@ Sobald das Experiment später auf `execution_status: executed` oder
 Diese Kopplung ist bereits in `make validate` und in `.github/workflows/validate.yml`
 verdrahtet.
 
-## Noch Nicht Systemisch Erzwungen
+## Noch nicht systemisch erzwungen
 
 Noch nicht hart gekoppelt ist die inhaltliche Konsistenz zwischen:
 
