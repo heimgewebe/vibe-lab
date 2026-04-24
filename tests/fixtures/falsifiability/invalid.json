@@ -1,0 +1,7 @@
+{
+  "description": "Invalid falsifiability block: counter_hypothesis and falsification_criterion are empty strings (below minLength 10); counterevidence_checked is missing entirely. Exercises structural missing-field detection in evaluate_falsifiability().",
+  "falsifiability": {
+    "counter_hypothesis": "",
+    "falsification_criterion": ""
+  }
+}

@@ -26,6 +26,9 @@ jobs:
       - name: Validate schemas
         run: python3 scripts/docmeta/validate_schema.py
 
+      - name: Test counterevidence P2-rule (validate_schema)
+        run: python3 scripts/docmeta/test_validate_schema_counterevidence.py
+
       - name: Validate execution proof
         run: python3 scripts/docmeta/validate_execution_proof.py
 
@@ -94,6 +97,12 @@ jobs:
 
       - name: Test export generator
         run: python3 scripts/exports/test_generate_exports.py
+
+      - name: Test promotion-readiness validator
+        run: python3 scripts/docmeta/test_promotion_readiness.py
+
+      - name: Validate promotion-readiness (dry-run, Phase 1)
+        run: python3 scripts/docmeta/validate_promotion_readiness.py
 
       - name: Regenerate canonical diagnostics
         run: make generate-canonical

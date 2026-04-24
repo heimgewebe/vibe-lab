@@ -1,0 +1,211 @@
+{
+  "experiments": [
+    {
+      "adoption_basis": "reconstructed",
+      "execution_status": "reconstructed",
+      "falsifiability_triggered": false,
+      "historical_escape": true,
+      "missing": [],
+      "notes": [
+        "adoption_basis_reconstructed",
+        "falsifiability_voluntary",
+        "historical_escape",
+        "not_counted_against_promotion_readiness"
+      ],
+      "path": "experiments/2026-04-08_spec-first",
+      "promotion_ready": false,
+      "status": "adopted",
+      "warnings": [
+        "counterevidence_not_checked"
+      ]
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "designed",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [],
+      "notes": [],
+      "path": "experiments/2026-04-11_yolo-vs-spec-first",
+      "promotion_ready": true,
+      "status": "designed",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-12_spec-first-legacy",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_incremental-debuggability",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_incremental-refinement",
+      "promotion_ready": false,
+      "status": "inconclusive",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_premortem-prompting",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "executed",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_prompt-length-control",
+      "promotion_ready": false,
+      "status": "adopted",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_tdd-vibe",
+      "promotion_ready": false,
+      "status": "inconclusive",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_upfront-structuring",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-14_upfront-structuring-replication",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-15_agent-task-validity",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-19_generated-artifact-contract-validation",
+      "promotion_ready": false,
+      "status": "inconclusive",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "designed",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [],
+      "notes": [],
+      "path": "experiments/2026-04-23_agent-failure-surface",
+      "promotion_ready": true,
+      "status": "designed",
+      "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability"
+      ],
+      "notes": [],
+      "path": "experiments/2026-04-23_phase-1-drift-injection",
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
+    }
+  ],
+  "mode": "dry_run",
+  "schema_version": "0.1.0",
+  "summary": {
+    "experiments_checked": 14,
+    "historical_escape": 1,
+    "not_ready": 11,
+    "ready": 2,
+    "warnings": 1
+  },
+  "trigger": "need_for_reproducibility"
+}

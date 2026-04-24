@@ -69,12 +69,14 @@
 ## `contracts/command-semantics.md`
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
 - ← `contracts/command-semantics.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability.md`
 
@@ -133,6 +135,7 @@
 ## `docs/reference/agent-operability-fixture-matrix.md`
 
 - ← `docs/index.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
 
 ## `docs/reference/manifest-schema.md`
 
@@ -162,6 +165,7 @@
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (derived_from)
 - ← `docs/blueprints/blueprint-agent-operability.md` (derived_from)
+- ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (informed_by)
 
 ## `experiments/2026-04-15_agent-task-validity/method.md`
 
@@ -187,6 +191,35 @@
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
 
+## `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/execution.txt`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/run_meta.json`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/method.md`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/results/README.md`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/results/decision.yml`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
@@ -211,6 +244,14 @@
 
 - ← `docs/index.md` (references)
 
+## `schemas/agent.handoff.schema.json`
+
+- ← `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/method.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/results/README.md` (references)
+
 ## `schemas/command.read_context.schema.json`
 
 - ← `contracts/command-semantics.md` (references)
@@ -226,6 +267,7 @@
 ## `schemas/decision.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/results/README.md` (references)
 
 ## `schemas/experiment.manifest.schema.json`
 
@@ -235,6 +277,7 @@
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
+- ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` (references)
 
 ## `tests/fixtures/agent_commands`
 

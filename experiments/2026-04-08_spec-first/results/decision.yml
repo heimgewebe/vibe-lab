@@ -7,14 +7,23 @@ schema_version: "0.1.0"
 # dokumentiert. Ein adoption_assessment ist hier schema-blockiert, weil
 # execution_status=reconstructed (gem. execution-bound-epistemics.md §10.2 nur
 # bei executed/replicated zulässig).
+#
+# Phase-1 Falsifizierbarkeits-Retrofit (Trigger: need_for_reproducibility):
+# verdict wurde von "confirms" auf "mixed" korrigiert, weil zur Zeit des
+# Original-Laufs keine explizite Gegenprüfung (z. B. gegen Promptlänge als
+# Confounder) dokumentiert wurde. Die positiven Beobachtungen bleiben bestehen,
+# werden aber nicht mehr als eindeutige Bestätigung gelesen. Die Kopplungsregel
+# "verdict=confirms ⇒ counterevidence_checked=true" greift entsprechend nicht.
 decision_type: result_assessment
-verdict: confirms
-confidence: high
+verdict: mixed
+confidence: medium
+counterevidence_checked: false
+counter_hypothesis_outcome: not_checked
 date: "2026-04-08"
 reviewer: "heimgewebe"
 
 rationale: |
-  Spec-First-Prompting zeigte in allen drei Tasks klare Vorteile:
+  Spec-First-Prompting zeigte in allen drei Tasks positive Signale:
   - Vollständigkeit der Fehlercodes: 5/5 vs. 3/5 (Task 1), 4/4 vs. 2/4 (Task 2)
   - Konsistenz der Response-Strukturen: einheitlich vs. inkonsistent (Task 3)
   - Nacharbeit: 4 Zeilen vs. 23 Zeilen (Task 1)
@@ -23,6 +32,14 @@ rationale: |
   Der zusätzliche Schritt (Spec generieren + reviewen) kostet ca. 5-10 Minuten pro Task,
   spart aber deutlich mehr an Nacharbeit und erhöht das Vertrauen in den Output erheblich.
 
+  Epistemische Einschränkung (Phase-1 Falsifizierbarkeits-Retrofit):
+  Es wurde zum Zeitpunkt der Ergebniserfassung nicht kontrolliert gegen die
+  Gegenhypothese geprüft, dass der Effekt durch Promptlänge oder allgemeine
+  Strukturierung (nicht durch Spec-First selbst) erklärbar ist. Ein dedizierter
+  Kontrolllauf steht aus; siehe experiments/2026-04-14_prompt-length-control
+  als verwandten Kontext. Daher verdict=mixed statt confirms und
+  counterevidence_checked=false.
+
 evidence_summary:
   observations: 13
   positive: 8
@@ -30,6 +47,7 @@ evidence_summary:
   neutral: 5
 
 next_steps: |
-  - Promotion-PR erstellen für Katalogeintrag unter catalog/techniques/
-  - Adopted Prompt unter prompts/adopted/ anlegen
-  - Mögliches Follow-up: Test mit anderen Modellen (Claude, Gemini)
+  - Kontrolllauf gegen Promptlänge/Strukturierungsaufwand planen, sobald Ressourcen verfügbar sind.
+  - Bis dahin: kein Upgrade auf verdict=confirms ohne dokumentierte Gegenprüfung.
+  - Adopted Prompt unter prompts/adopted/ bleibt bestehen (historische Entscheidung, adoption_basis=reconstructed).
+  - Mögliches Follow-up: Test mit anderen Modellen (Claude, Gemini).

@@ -82,6 +82,28 @@
         "related_idea": {
           "type": "string",
           "description": "Referenz auf Idea-Issue (z.B. #42)"
+        },
+        "falsifiability": {
+          "type": "object",
+          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Optional im JSON-Schema: wenn der Block vorhanden ist, müssen alle drei Felder gesetzt sein (strukturelle Pflicht). Die konditionale Pflicht für execution_status∈{executed,replicated} und für status=adopted mit adoption_basis∈{executed,replicated} wird in Phase 1 ausschließlich durch scripts/docmeta/validate_promotion_readiness.py als Dry-Run diagnostiziert — nicht durch dieses JSON-Schema hart erzwungen. Kein allOf-Gate hier. adoption_basis='reconstructed' bleibt als historischer Altbestand ausgenommen (historical_escape). Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
+          "properties": {
+            "counter_hypothesis": {
+              "type": "string",
+              "minLength": 10,
+              "description": "Alternativerklärung, die die beobachteten Effekte ebenfalls erklären könnte (z. B. Störvariable, Confounder, Placebo-Struktur)."
+            },
+            "falsification_criterion": {
+              "type": "string",
+              "minLength": 10,
+              "description": "Operationale Bedingung, unter der die Hypothese als widerlegt oder geschwächt gelten würde."
+            },
+            "counterevidence_checked": {
+              "type": "boolean",
+              "description": "Wurde aktiv nach Gegenevidenz gesucht (nicht bloß behauptet)? Im Manifest ist dieses Feld Teil des optionalen falsifiability-Blocks. Die Decision-Kreuzregel in scripts/docmeta/validate_schema.py beanstandet nur die explizite Kombination decision_type=result_assessment + verdict=confirms + counterevidence_checked=false in decision.yml; ein fehlender Decision-Wert ist kein eigener Verstoß."
+            }
+          },
+          "required": ["counter_hypothesis", "falsification_criterion", "counterevidence_checked"],
+          "additionalProperties": false
         }
       },
       "required": ["name", "hypothesis", "status", "category", "evidence_level"],

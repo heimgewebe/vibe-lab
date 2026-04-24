@@ -57,6 +57,15 @@
     "compared_to": {
       "type": "string",
       "description": "Optionaler Verweis auf ein verglichenes Experiment"
+    },
+    "counter_hypothesis_outcome": {
+      "type": "string",
+      "enum": ["not_checked", "not_found", "found_and_refuted", "found_and_confirming"],
+      "description": "Ausgang der Gegenhypothesen-Prüfung (nur für decision_type=result_assessment relevant). not_checked = nicht geprüft; not_found = gesucht, keine gefunden; found_and_refuted = Gegenhypothese geprüft und widerlegt; found_and_confirming = Gegenhypothese gestützt — in diesem Fall ist verdict=confirms inkonsistent und wird in scripts/docmeta/validate_schema.py beanstandet."
+    },
+    "counterevidence_checked": {
+      "type": "boolean",
+      "description": "Wurde aktiv nach Gegenevidenz gesucht (nicht bloß behauptet)? Bei decision_type=result_assessment und verdict=confirms ist ein explizites false inkonsistent; die Prüfung erfolgt in scripts/docmeta/validate_schema.py. Das Feld selbst bleibt schema-seitig optional."
     }
   },
   "required": ["schema_version", "decision_type", "verdict", "date", "reviewer", "rationale"],
