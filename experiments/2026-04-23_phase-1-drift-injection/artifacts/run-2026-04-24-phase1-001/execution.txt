@@ -1,0 +1,105 @@
+[2026-04-24T12:15:23+02:00] CMD: echo "# Phase 1 Execution Log"
+# Phase 1 Execution Log
+[2026-04-24T12:15:23+02:00] CMD: echo "run_id: $RUN_ID"
+run_id: run-2026-04-24-phase1-001
+[2026-04-24T12:15:23+02:00] CMD: echo "timestamp_start: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+timestamp_start: 2026-04-24T10:15:23Z
+[2026-04-24T12:15:23+02:00] CMD: echo
+
+[2026-04-24T12:15:23+02:00] CMD: echo "## Step 1: make validate"
+## Step 1: make validate
+[2026-04-24T12:15:23+02:00] CMD: echo "command: make validate"
+command: make validate
+[2026-04-24T12:15:23+02:00] CMD: echo "exit_code: 0"
+exit_code: 0
+[2026-04-24T12:15:23+02:00] CMD: echo "output_tail:"
+output_tail:
+[2026-04-24T12:15:23+02:00] CMD: tail -20 /tmp/p1-run1-step1-validate.log
+✅ Adoption-Completeness: 2 adopted Experiment(e) mit vollständiger Katalog-Extraktion.
+🧪 Running adoption completeness regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.013s
+
+OK
+🧪 Running epistemic state regression tests...
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.015s
+
+OK
+🧪 Running export generator regression tests...
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.084s
+
+OK
+✅ Validation passed.
+[2026-04-24T12:15:23+02:00] CMD: echo
+
+[2026-04-24T12:15:23+02:00] CMD: echo "## Step 2: fixture inventory"
+## Step 2: fixture inventory
+[2026-04-24T12:15:23+02:00] CMD: echo "command: find tests/fixtures/agent_handoff -type f -name '*.json' | sort"
+command: find tests/fixtures/agent_handoff -type f -name '*.json' | sort
+[2026-04-24T12:15:23+02:00] CMD: echo "fixture_count: $(wc -l < /tmp/p1-run1-step2-fixtures.txt)"
+fixture_count: 4
+[2026-04-24T12:15:23+02:00] CMD: cat /tmp/p1-run1-step2-fixtures.txt
+tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json
+tests/fixtures/agent_handoff/hash-mismatch.json
+tests/fixtures/agent_handoff/partial-missing-required-fixes.json
+tests/fixtures/agent_handoff/pass-minimal.json
+
+## Step 4: staged fixtures created
+phase-1-drift-A1.json
+phase-1-drift-A2.json
+phase-1-drift-B1.json
+phase-1-drift-B2.json
+phase-1-drift-C1.json
+phase-1-drift-D1.json
+
+## Step 5: strict validator against staged fixtures
+command: python3 scripts/docmeta/validate_agent_handoff.py --fixtures experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff --mode strict
+exit_code: 1
+output:
+🔍 Agent Handoff Validation
+
+❌ Agent handoff validation failed:
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json: hash_mismatch expected=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=4fd0d970a13c2324448f0e4749d55d40a5e66d299e3b3562efb31422855a0c4a
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A2.json: hash_mismatch expected=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=8445a425dbdd0933c06207f5373593ea3972cea61e0b5df4aab57ceeddc43251
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-B1.json: hash_mismatch expected=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff actual=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-B2.json: hash_mismatch expected=18b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-C1.json: hash_mismatch expected=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=bb267ad9927642a449faedc21a3067c0fc5175345ffebdeb11d3783036059ed3
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-D1.json: contract_invalid: schema validation failed — 'rename' is not one of ['add', 'modify', 'remove', 'replace']
+[2026-04-24T12:21:52+02:00] CMD: echo
+
+[2026-04-24T12:21:52+02:00] CMD: echo '## Step 9: final make validate'
+## Step 9: final make validate
+[2026-04-24T12:21:52+02:00] CMD: echo 'command: make validate'
+command: make validate
+[2026-04-24T12:21:52+02:00] CMD: echo "exit_code: $(cat /tmp/p1-run1-step9-exit.txt)"
+exit_code: 0
+[2026-04-24T12:21:52+02:00] CMD: echo 'role: hygiene/regression guard (post-experiment)'
+role: hygiene/regression guard (post-experiment)
+[2026-04-24T12:21:52+02:00] CMD: echo 'output_tail:'
+output_tail:
+[2026-04-24T12:21:52+02:00] CMD: tail -20 /tmp/p1-run1-step9-validate.log
+✅ Adoption-Completeness: 2 adopted Experiment(e) mit vollständiger Katalog-Extraktion.
+🧪 Running adoption completeness regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.013s
+
+OK
+🧪 Running epistemic state regression tests...
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.016s
+
+OK
+🧪 Running export generator regression tests...
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.084s
+
+OK
+✅ Validation passed.

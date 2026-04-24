@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-2026-04-24-phase1-001",
+  "generated_at": "2026-04-24T10:16:00Z",
+  "executor": "local:alex@heim-pc",
+  "command": "python3 scripts/docmeta/validate_agent_handoff.py --fixtures experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff --mode strict",
+  "exit_code": 1,
+  "test_output_file": "artifacts/run-2026-04-24-phase1-001/execution.txt",
+  "provenance_level": "self_reported"
+}
