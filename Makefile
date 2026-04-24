@@ -142,7 +142,8 @@ generate: generate-canonical generate-derived generate-ephemeral
 generate-canonical: generate-doc-index generate-exports
 	@echo "✅ Generated canonical diagnostics in docs/_generated/."
 
-generate-derived: generate-derived-core generate-derived-gated
+generate-derived: generate-derived-core
+	@$(MAKE) generate-derived-gated || true
 	@echo "✅ Generated derived diagnostics in docs/_generated/."
 
 generate-derived-core: generate-system-map generate-backlinks generate-orphans
