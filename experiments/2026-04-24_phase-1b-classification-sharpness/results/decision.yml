@@ -6,7 +6,7 @@ decision_type: "result_assessment"
 verdict: "confirms"
 confidence: "high"
 date: "2026-04-24"
-reviewer: "local:alex@heim-pc"
+reviewer: "local:developer"
 triggered_by: "user-request-2026-04-24-phase-1b-execution-pr"
 
 rationale: |

@@ -2,7 +2,7 @@
 run_id: run-2026-04-24-phase1b-001
 timestamp_start: 2026-04-24T12:44:00Z
 branch: experiments/phase-1b-classification-sharpness-execution
-executor: local:alex@heim-pc
+executor: local:developer
 purpose: Diagnose-First Execution of Phase 1b (Classification Sharpness)
 
 ## Step 1: make validate (Baseline)

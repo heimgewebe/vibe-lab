@@ -1,3 +1,21 @@
+---
+title: "Ergebnisse: Phase 1b — Validator Classification Sharpness"
+status: draft
+canonicality: operative
+created: "2026-04-24"
+updated: "2026-04-24"
+author: "GPT-5.3-Codex"
+relations:
+  - type: references
+    target: evidence.jsonl
+  - type: references
+    target: decision.yml
+  - type: references
+    target: ../artifacts/run-2026-04-24-phase1b-001/execution.txt
+  - type: references
+    target: ../artifacts/run-2026-04-24-phase1b-001/run_meta.json
+---
+
 # Ergebnisse: Phase 1b — Validator Classification Sharpness
 
 ## Hypothese (Reprise)
@@ -14,7 +32,7 @@
 
 - **Run-ID:** `run-2026-04-24-phase1b-001`
 - **Branch:** `experiments/phase-1b-classification-sharpness-execution`
-- **Executor:** `local:alex@heim-pc`
+- **Executor:** `local:developer`
 - **Artefakte:** `artifacts/run-2026-04-24-phase1b-001/`
 
 ---
