@@ -168,6 +168,22 @@ class EvaluateFalsifiabilityTests(unittest.TestCase):
         missing, _ = vpr.evaluate_falsifiability(state)
         self.assertIn("falsifiability.counter_hypothesis_too_short", missing)
 
+    def test_non_string_fields_are_flagged(self) -> None:
+        state = vpr.classify_experiment(
+            make_manifest(
+                status="testing",
+                execution_status="executed",
+                falsifiability={
+                    "counter_hypothesis": 123,
+                    "falsification_criterion": {"bad": True},
+                    "counterevidence_checked": True,
+                },
+            )
+        )
+        missing, _ = vpr.evaluate_falsifiability(state)
+        self.assertIn("falsifiability.counter_hypothesis_not_string", missing)
+        self.assertIn("falsifiability.falsification_criterion_not_string", missing)
+
 
 class FixtureShapeTests(unittest.TestCase):
     """Structural checks against the committed fixtures."""

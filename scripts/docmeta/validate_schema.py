@@ -342,7 +342,7 @@ def validate_decision_files():
             continue
 
         # Anti-Scheinfalsifikation (P2) — delegiert an pure Funktion check_counterevidence_rule().
-        p2_error = check_counterevidence_rule(data, rel)
+        p2_error = check_counterevidence_rule(data, rel.as_posix())
         if p2_error is not None:
             errors.append(p2_error)
             continue

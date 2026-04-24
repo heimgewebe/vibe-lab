@@ -99,7 +99,7 @@
             },
             "counterevidence_checked": {
               "type": "boolean",
-              "description": "Wurde aktiv nach Gegenevidenz gesucht (nicht bloß behauptet)? Kopplung: result_assessment mit verdict=confirms verlangt counterevidence_checked=true (siehe scripts/docmeta/validate_schema.py)."
+              "description": "Wurde aktiv nach Gegenevidenz gesucht (nicht bloß behauptet)? Im Manifest ist dieses Feld Teil des optionalen falsifiability-Blocks. Die Decision-Kreuzregel in scripts/docmeta/validate_schema.py beanstandet nur die explizite Kombination decision_type=result_assessment + verdict=confirms + counterevidence_checked=false in decision.yml; ein fehlender Decision-Wert ist kein eigener Verstoß."
             }
           },
           "required": ["counter_hypothesis", "falsification_criterion", "counterevidence_checked"],

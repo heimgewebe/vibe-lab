@@ -143,14 +143,20 @@ def evaluate_falsifiability(state: dict[str, Any]) -> tuple[list[str], list[str]
         if field not in fal:
             missing.append(f"falsifiability.{field}")
 
-    # String-Felder: strukturelle Mindestlänge
+    # String-Felder: strukturelle Mindestlänge; Nicht-String-Werte explizit erkennen
     for field in ("counter_hypothesis", "falsification_criterion"):
         val = fal.get(field)
-        if isinstance(val, str) and len(val.strip()) < FALSIFIABILITY_MIN_LEN:
+        if field not in fal:
+            continue
+        if not isinstance(val, str):
+            missing.append(f"falsifiability.{field}_not_string")
+            continue
+        if len(val.strip()) < FALSIFIABILITY_MIN_LEN:
             missing.append(f"falsifiability.{field}_too_short")
 
-    # Soft-Hinweis: counterevidence_checked=false bei ausgeführten Experimenten
-    # ist nicht strukturell fehlerhaft, aber epistemisch signalpflichtig.
+    # Soft-Hinweis: counterevidence_checked=false ist nicht strukturell
+    # fehlerhaft, aber epistemisch signalpflichtig. Der Hinweis wird immer
+    # dann erzeugt, wenn der falsifiability-Block evaluiert wird.
     cev = fal.get("counterevidence_checked")
     if cev is False:
         warnings.append("counterevidence_not_checked")

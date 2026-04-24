@@ -5,10 +5,10 @@
 
 # Minimaler Guard-Stack
 validate: validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
-	@# Promotion-Readiness als Dry-Run (Phase 1): bewusst non-blocking.
-	@# Das Skript soll exit=0 liefern; '|| true' verhindert, dass CLI-Drift den
-	@# Gesamt-Validate-Lauf blockiert. Harte Durchsetzung ist Phase 2/3.
-	@$(MAKE) validate-promotion-readiness || true
+	@# Promotion-Readiness als Dry-Run (Phase 1): inhaltliche not_ready-Befunde
+	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
+	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
+	@$(MAKE) validate-promotion-readiness
 	@echo "✅ Validation passed."
 
 validate-schemas:
