@@ -9,8 +9,6 @@ schema_version: "0.1.0"
 decision_type: adoption_assessment
 verdict: adopt                  # adoption_assessment: adopt | reject | defer
 confidence: medium              # high | medium | low | none
-counterevidence_checked: true   # evidence.jsonl: metric=test_pass_rate_ramble_first (timestamp 2026-04-14T11:43:00Z, value=0.8) — Ramble-First trotz hohem Token-Volumen wie Code-First.
-counter_hypothesis_outcome: found_and_refuted  # Gegenhypothese (Token-Volumen als CoT-Proxy) geprüft und widerlegt; evidence.jsonl: metric=edge_cases_missed_ramble_first (2026-04-14T11:43:30Z, value=1) + decision (2026-04-14T11:44:00Z).
 date: "2026-04-14"
 reviewer: "Jules"
 
@@ -19,6 +17,10 @@ rationale: |
   Ramble-First-Arm (hohes Token-Volumen ohne inhaltliche Strukturierung) fiel
   exakt in denselben Naiv-Regex-Fehler wie Code-First zurück (test_pass_rate
   0.8), während Spec-First mit gleichem Token-Volumen 1.0 erreichte.
+
+  Die Token-Volumen-Gegenhypothese wurde durch den Ramble-First-Arm geprüft
+  und nicht gestützt; weitergehende Strukturierungs-Confounder (Aufgabenklärung,
+  Strukturierungsgrad allgemein) bleiben als Restunsicherheit sichtbar.
 
   Damit ist die wichtigste alternative Erklärung für den Upfront-Structuring-
   Effekt empirisch widerlegt: Der Zugewinn beruht nicht auf Token-Volumen als
