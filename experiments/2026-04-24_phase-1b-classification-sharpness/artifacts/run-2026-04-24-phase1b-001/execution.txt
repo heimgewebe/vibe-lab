@@ -1,0 +1,114 @@
+# Phase 1b Execution Log
+run_id: run-2026-04-24-phase1b-001
+timestamp_start: 2026-04-24T12:44:00Z
+branch: experiments/phase-1b-classification-sharpness-execution
+executor: local:developer
+purpose: Diagnose-First Execution of Phase 1b (Classification Sharpness)
+
+## Step 1: make validate (Baseline)
+command: make validate
+exit_code: 0
+output_tail:
+✅ Adoption-Completeness: 2 adopted Experiment(e) mit vollständiger Katalog-Extraktion.
+🧪 Running adoption completeness regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.013s
+
+OK
+🧪 Running epistemic state regression tests...
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.014s
+
+OK
+🧪 Running export generator regression tests...
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 0.080s
+
+OK
+✅ Validation passed.
+
+## Step 2: cross_contract layer — classification sharpness
+command: python3 -m unittest tests/contracts/test_cross_contract_chain.py
+exit_code: 0
+output:
+test_all_invalid_fixtures_declare_expected_errors (tests.contracts.test_cross_contract_chain.CrossContractErrorSurfaceTests) ... ok
+test_handoff_error_codes_are_in_contract (tests.contracts.test_cross_contract_chain.CrossContractErrorSurfaceTests) ... ok
+test_malformed_chain_element_is_setup_error (tests.contracts.test_cross_contract_chain.CrossContractLoaderTests)
+A chain element that is not a JSON object must produce exit code 2. ... ok
+test_contradiction_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Chain is formally valid but semantically contradictory ... ok
+test_handoff_contract_invalid_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Handoff itself violates agent.handoff.schema.json (missing 'status'). ... ok
+test_handoff_contract_invalid_short_circuits (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+When the handoff is schema-invalid, no cross-contract codes are emitted. ... ok
+test_locator_drift_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Locator drift between handoff and write_change must be detected. ... ok
+test_semantic_mismatch_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Handoff requires a change; chain contains only read/validate. ... ok
+test_state_drift_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Handoff pins exact_before/exact_after; write_change silently omits them. ... ok
+test_target_drift_extra_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Chain write_change includes a file not listed in handoff.target_files. ... ok
+test_target_drift_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Handoff targets file A, chain operates on file B (missing coverage). ... ok
+test_version_conflict_fails (tests.contracts.test_cross_contract_chain.CrossContractNegativeTests)
+Mixed command versions in the chain. ... ok
+test_minimal_chain_is_accepted (tests.contracts.test_cross_contract_chain.CrossContractPositiveTests) ... ok
+test_no_implicit_defaults_are_injected (tests.contracts.test_cross_contract_chain.CrossContractPositiveTests)
+Validation must not mutate handoff or chain (no silent ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.223s
+
+OK
+ERROR: fixture /tmp/tmptle89cm9.json: chain[0] must be a JSON object, got int
+note: The ERROR line above is the expected output from test_malformed_chain_element_is_setup_error (intended behavior).
+
+Classification findings (cross_contract):
+- test_locator_drift_fails PASS → cross_contract detects locator drift as class "handoff_locator_drift"
+- test_target_drift_fails PASS → cross_contract detects target drift as distinct class
+- test_target_drift_extra_fails PASS → cross_contract detects extra-target drift as distinct class
+- test_state_drift_fails PASS → cross_contract detects state drift as distinct class
+
+## Step 3: agent_handoff layer — standard fixtures
+command: python3 scripts/docmeta/validate_agent_handoff.py --fixtures tests/fixtures/agent_handoff
+exit_code: 0
+output:
+🔍 Agent Handoff Validation
+  ✅ tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json (expected contract_invalid)
+  ✅ tests/fixtures/agent_handoff/hash-mismatch.json (expected hash_mismatch)
+  ✅ tests/fixtures/agent_handoff/partial-missing-required-fixes.json (expected contract_invalid)
+  ✅ tests/fixtures/agent_handoff/pass-minimal.json
+
+✅ Agent handoff validation passed.
+
+## Step 4: agent_handoff layer — strict mode against Phase 1 staging fixtures
+command: python3 scripts/docmeta/validate_agent_handoff.py --fixtures experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff --mode strict
+exit_code: 1
+role: Experiment-Kernsignal für Klassifikationsschärfe-Diagnose
+output:
+🔍 Agent Handoff Validation
+
+❌ Agent handoff validation failed:
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json: hash_mismatch expected=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=4fd0d970a13c2324448f0e4749d55d40a5e66d299e3b3562efb31422855a0c4a
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A2.json: hash_mismatch expected=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=8445a425dbdd0933c06207f5373593ea3972cea61e0b5df4aab57ceeddc43251
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-B1.json: hash_mismatch expected=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff actual=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-B2.json: hash_mismatch expected=18b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-C1.json: hash_mismatch expected=28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2 actual=bb267ad9927642a449faedc21a3067c0fc5175345ffebdeb11d3783036059ed3
+  - experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-D1.json: contract_invalid: schema validation failed — 'rename' is not one of ['add', 'modify', 'remove', 'replace']
+
+Classification findings (agent_handoff strict):
+- A1 (locator path drift):    hash_mismatch  ← kein spezifischer Locator-Drift-Label
+- A2 (locator fragment probe): hash_mismatch  ← kein spezifischer Locator-Drift-Label
+- B1 (hash fully changed):     hash_mismatch
+- B2 (hash one-nibble drift):  hash_mismatch
+- C1 (target_files drift):     hash_mismatch
+- D1 (change_type rename):     contract_invalid  ← sharp, strukturell erkannt
+
+Sharpness-Befund: A1/A2/B1/B2/C1 werden einheitlich als hash_mismatch klassifiziert.
+Nur D1 erhält einen semantisch spezifischeren Label (contract_invalid).
+
+timestamp_end: 2026-04-24T12:45:00Z

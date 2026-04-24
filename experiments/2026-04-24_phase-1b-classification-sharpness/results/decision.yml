@@ -1,0 +1,40 @@
+# Decision (Phase 1b Execution)
+# Validiert gegen: schemas/decision.schema.json
+
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "confirms"
+confidence: "high"
+date: "2026-04-24"
+reviewer: "local:developer"
+triggered_by: "user-request-2026-04-24-phase-1b-execution-pr"
+
+rationale: |
+  Phase 1b wurde real ausgeführt und strikt dokumentiert.
+  Vier diagnostische Schritte wurden vollständig protokolliert:
+  1. make validate (Baseline) — exit 0, alle Regressionstests grün
+  2. cross_contract unittest (14/14) — Locator-Drift, Target-Drift als eigene Klassen detektierbar
+  3. agent_handoff standard (4/4) — Standard-Fixtures korrekt
+  4. agent_handoff strict auf Phase-1-Staging (exit 1) — Kernbefund
+
+  Ablehnungs-Korrektheit: vollständig bestätigt (6/6).
+  Klassifikationsschärfe: für Locator-/Target-Drift unscharf (hash_mismatch als Kompression).
+  D1 (strukturell) erhält als einziger Fall einen semantisch spezifischeren Label.
+
+  Layer-Vergleich: cross_contract kann Locator-/Target-Drift als separate Klassen typisieren.
+  Beide Layer sind komplementär. Der Befund ist ein Strukturmerkmal des Designs, kein Fehler.
+
+  Hypothese vollständig bestätigt.
+
+evidence_summary:
+  observations: 13
+  hypothesis_verdict: confirmed
+  rejection_correctness: "6/6 (100%)"
+  classification_sharpness_agent_handoff: "unsharp for locator/target drift (hash_mismatch)"
+  classification_sharpness_cross_contract: "sharp (distinct classes per drift type)"
+  strict_validator_exit_code: 1
+
+next_steps:
+  - "Kein Handlungsbedarf für Phase 1b."
+  - "Schärfere Klassifikation im agent_handoff-Validator ist optionale Phase-1c-Arbeit."
+  - "Phase 2 kann unabhängig starten (kein Blocker)."
