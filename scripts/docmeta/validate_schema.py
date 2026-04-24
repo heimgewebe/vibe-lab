@@ -295,6 +295,36 @@ def validate_decision_files():
             errors.append(f"  ❌ {rel}: {e.message}")
             continue
 
+        # Anti-Scheinfalsifikation (P2): counterevidence_checked=false + verdict=confirms
+        # ist inkonsistent. Nur bei decision_type=result_assessment anwenden.
+        # Kein genereller Zwang counterevidence_checked=true einzuführen; nur der
+        # inkonsistente Fall wird hart blockiert. Ziel: Bestätigung verteuern,
+        # nicht Bürokratie erzwingen.
+        decision_type_for_p2 = data.get("decision_type")
+        if decision_type_for_p2 == "result_assessment":
+            verdict = data.get("verdict")
+            cev_checked = data.get("counterevidence_checked")
+            if cev_checked is False and verdict == "confirms":
+                errors.append(
+                    f"  ❌ {rel}: counterevidence_checked=false ist inkonsistent "
+                    f"mit verdict=confirms. Entweder counterevidence_checked auf true setzen "
+                    f"(mit belegter Gegenprüfung) oder verdict auf mixed/inconclusive/refutes "
+                    f"ändern. Leitregel: Bestätigung verlangt Gegenprüfung."
+                )
+                continue
+            # Konsistenz counter_hypothesis_outcome ↔ verdict:
+            # 'found_and_confirming' (Gegenhypothese stützt sich selbst)
+            # widerspricht verdict=confirms der Ursprungshypothese.
+            outcome = data.get("counter_hypothesis_outcome")
+            if outcome == "found_and_confirming" and verdict == "confirms":
+                errors.append(
+                    f"  ❌ {rel}: counter_hypothesis_outcome=found_and_confirming "
+                    f"widerspricht verdict=confirms (Gegenhypothese wird gestützt → "
+                    f"Ursprungshypothese nicht mehr bestätigt). verdict auf "
+                    f"mixed/refutes/inconclusive ändern."
+                )
+                continue
+
         # Cross-file Regel: adoption_assessment → execution_status ∈ {executed, replicated}
         decision_type = data.get("decision_type")
         if decision_type == "adoption_assessment":

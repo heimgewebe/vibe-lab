@@ -3,13 +3,13 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-19T19:08:58Z
+Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 
 ## Gate Snapshot
 
-- Total events: **242**
+- Total events: **249**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **12**
+- Source evidence files: **13**
 
 ## Event Type Counts
 
@@ -17,8 +17,8 @@ Latest Evidence Timestamp: 2026-04-19T19:08:58Z
 | --- | ---: |
 | decision | 12 |
 | measurement | 122 |
-| observation | 90 |
-| run | 18 |
+| observation | 96 |
+| run | 19 |
 
 ## Metric Aggregates
 
@@ -38,6 +38,12 @@ Latest Evidence Timestamp: 2026-04-19T19:08:58Z
 | canonical_contract_fix_committed | 1 | 0 | - | - | - |
 | canonical_doc_change_committed | 4 | 0 | - | - | - |
 | canonical_generator_nondeterminism | 2 | 0 | - | - | - |
+| case_A1_outcome | 1 | 0 | - | - | - |
+| case_A2_outcome | 1 | 0 | - | - | - |
+| case_B1_outcome | 1 | 0 | - | - | - |
+| case_B2_outcome | 1 | 0 | - | - | - |
+| case_C1_outcome | 1 | 0 | - | - | - |
+| case_D1_outcome | 1 | 0 | - | - | - |
 | changed_canonical_count | 5 | 5 | 0 | 2 | 0 |
 | changed_derived_count | 4 | 4 | 0 | 1 | 0.5 |
 | changed_ephemeral_count | 4 | 4 | 0 | 1 | 0 |
@@ -104,6 +110,7 @@ Latest Evidence Timestamp: 2026-04-19T19:08:58Z
 | measurement_object_alignment | 1 | 1 | 1 | 1 | 1 |
 | patch_size | 1 | 1 | 7 | 7 | 7 |
 | phase0-setup | 1 | 0 | - | - | - |
+| phase1_execution_run | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
 | pr_opened_run_003 | 1 | 0 | - | - | - |
@@ -199,3 +206,4 @@ Latest Evidence Timestamp: 2026-04-19T19:08:58Z
 - `experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl`
 - `experiments/2026-04-15_agent-task-validity/results/evidence.jsonl`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
+- `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`

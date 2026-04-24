@@ -95,6 +95,13 @@ jobs:
       - name: Test export generator
         run: python3 scripts/exports/test_generate_exports.py
 
+      - name: Test promotion-readiness validator
+        run: python3 scripts/docmeta/test_promotion_readiness.py
+
+      - name: Validate promotion-readiness (dry-run, Phase 1 — non-blocking)
+        continue-on-error: true
+        run: python3 scripts/docmeta/validate_promotion_readiness.py
+
       - name: Regenerate canonical diagnostics
         run: make generate-canonical
 

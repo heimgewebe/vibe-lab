@@ -1,0 +1,8 @@
+{
+  "description": "Valid falsifiability block as it would appear inside experiment.falsifiability. Used to cross-check schema shape constraints (three required fields, minimum lengths) independently of manifest-level conditionals. Consumed by scripts/docmeta/test_promotion_readiness.py.",
+  "falsifiability": {
+    "counter_hypothesis": "Die beobachtete Verbesserung entstand nicht durch Spec-First selbst, sondern durch Prompt-Länge oder implizite Aufgabenstrukturierung.",
+    "falsification_criterion": "Ein gleich langer, gleich strukturierter Nicht-Spec-Prompt liefert vergleichbare Ergebnisse bei Konsistenz, Vollständigkeit und Nacharbeit.",
+    "counterevidence_checked": false
+  }
+}

@@ -17,11 +17,16 @@ generated_artifact_contract:
       - docs/_generated/system-map.md
       - docs/_generated/backlinks.md
       - docs/_generated/orphans.md
+      - docs/_generated/promotion-readiness.json
     semantic_roles:
       docs/_generated/system-map.md:
         role: "diagnostic-core"
         decision_impact: "decision-shaping"
         note: "Derived, aber als Orientierungsartefakt epistemisch hervorgehoben."
+      docs/_generated/promotion-readiness.json:
+        role: "diagnostic-dry-run"
+        decision_impact: "observational"
+        note: "Phase-1 Dry-Run des Falsifizierbarkeits-/Promotion-Readiness-Gates. Diagnose, keine Wahrheit; Hard-Fail ist Phase 2/3 vorbehalten."
 
   gated:
     description: "Gate-geschuetzte Diagnose; nur verfuegbar, wenn Feature-Entscheidung aktiv ist"

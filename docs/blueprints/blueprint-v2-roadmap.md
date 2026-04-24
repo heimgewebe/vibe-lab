@@ -3,7 +3,7 @@ title: "Blueprint v2 — Roadmap / offene Punkte"
 status: active
 canonicality: navigation
 created: "2026-04-15"
-updated: "2026-04-23"
+updated: "2026-04-24"
 triggered_by: "v2 roadmap: Derived Visibility — Sichtbarkeits-Kriterium erfüllt (10 Experimente ≥ 5)"
 relations:
   - type: derived_from
@@ -54,6 +54,46 @@ zweite echte Vergleichsexperiment geschrieben wird. Bis dahin freies
 `comparison_notes`.
 
 **Sichtbarkeits-Kriterium:** Zweites Vergleichsexperiment mit Adoptions-Anspruch.
+
+---
+
+## Phase 1 (aktiv, Dry-Run) — Falsifizierbarkeits-/Promotion-Readiness-Gate
+
+**Fehlklasse:** Ausgeführte und adoptierte Experimente können bestehen bleiben,
+ohne dass eine Gegenhypothese oder ein Falsifikationskriterium explizit benannt
+ist. „Confirms"-Verdikte ohne dokumentierte Gegenprüfung werden mit voller
+Konfidenz geführt. Leitthese: **Bestätigung verteuern, nicht Wahrheit
+quantifizieren.**
+
+**Hebel (in diesem PR umgesetzt):**
+
+- Optionaler `falsifiability`-Block im Manifest-Schema (drei Pflichtfelder,
+  wenn Block vorhanden).
+- Gekoppelte Decision-Felder `counterevidence_checked` und
+  `counter_hypothesis_outcome` mit harter Kreuzregel gegen inkonsistente
+  „confirms"-Verdikte.
+- Dry-Run-Validator `scripts/docmeta/validate_promotion_readiness.py` →
+  `docs/_generated/promotion-readiness.json` (deterministisch, kein Timestamp,
+  `write_if_changed`).
+
+**Ausnahmen (bewusst):**
+
+- `adoption_basis=reconstructed` bleibt als historischer Escape ausgenommen.
+- Designed/prepared Experimente triggern die Pflicht nicht.
+- Kein `truth_confidence`-Float. Kein Auto-Move `experiments/* → catalog/*`.
+- `docs/concepts/execution-bound-epistemics.md` bleibt **dormant**; dieser PR
+  aktiviert es nicht, er referenziert es nur.
+
+**Bewusst noch offen:**
+
+- **Phase 2 — Freeze-List:** Hard-Fail nur für *neue* Experimente. Voraussetzung
+  ist ein deterministischer Stichtags-Mechanismus (z. B. eingefrorene
+  Grandfather-Liste als committetes Artefakt). Design offen.
+- **Phase 3 — globaler Hard-Fail:** Setzt voraus, dass der Bestand nachgezogen ist.
+
+**Sichtbarkeits-Kriterium für Phase 2:** Dry-Run-Report ist stabil, mindestens
+ein Experiment ist freiwillig mit `falsifiability`-Block promoviert, und das
+Team hat den Staffelungsmechanismus entschieden.
 
 ---
 

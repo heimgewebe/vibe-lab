@@ -1,10 +1,14 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests check-decisions generate generate-canonical generate-derived generate-derived-core generate-derived-gated generate-ephemeral generate-exports generate-metrics generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests check-decisions generate generate-canonical generate-derived generate-derived-core generate-derived-gated generate-ephemeral generate-exports generate-metrics generate-promotion-readiness generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests
+validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
+	@# Promotion-Readiness als Dry-Run (Phase 1): non-blocking, Report aber
+	@# sichtbar. Das Skript selbst hält exit=0, ein Crash bricht CI; das '|| true'
+	@# schützt zusätzlich gegen Drift bei zukünftigen Änderungen an der CLI.
+	@$(MAKE) validate-promotion-readiness || true
 	@echo "✅ Validation passed."
 
 validate-schemas:
@@ -131,6 +135,14 @@ validate-exports-tests:
 	@echo "🧪 Running export generator regression tests..."
 	@python3 scripts/exports/test_generate_exports.py
 
+validate-promotion-readiness:
+	@echo "🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)..."
+	@python3 scripts/docmeta/validate_promotion_readiness.py
+
+validate-promotion-readiness-tests:
+	@echo "🧪 Running promotion-readiness regression tests..."
+	@python3 scripts/docmeta/test_promotion_readiness.py
+
 check-decisions:
 	@echo "🔐 Validating system decision guard..."
 	@python3 scripts/docmeta/check_system_decisions.py
@@ -146,7 +158,7 @@ generate-derived: generate-derived-core
 	@$(MAKE) generate-derived-gated || true
 	@echo "✅ Generated derived diagnostics in docs/_generated/."
 
-generate-derived-core: generate-system-map generate-backlinks generate-orphans
+generate-derived-core: generate-system-map generate-backlinks generate-orphans generate-promotion-readiness
 	@echo "✅ Generated core derived diagnostics in docs/_generated/."
 
 generate-derived-gated: generate-metrics
@@ -170,6 +182,11 @@ generate-backlinks:
 
 generate-orphans:
 	@python3 scripts/docmeta/generate_orphans.py
+
+generate-promotion-readiness:
+	@# Writes docs/_generated/promotion-readiness.json via write_if_changed.
+	@# Dry-run: exit=0 unless the script itself crashes.
+	@python3 scripts/docmeta/validate_promotion_readiness.py
 
 generate-system-map:
 	@python3 scripts/docmeta/generate_system_map.py
@@ -208,6 +225,8 @@ help:
 	@echo "  make validate-adoption-completeness-tests — Run adoption completeness regression tests (path-match)"
 	@echo "  make validate-epistemic-state-tests — Run interpretation risk regression tests"
 	@echo "  make validate-exports-tests — Run export generator regression tests"
+	@echo "  make validate-promotion-readiness — Dry-run Phase-1 promotion-readiness gate (non-blocking)"
+	@echo "  make validate-promotion-readiness-tests — Run promotion-readiness regression tests"
 	@echo "  make check-decisions         — Validate system decisions and gate required features"
 	@echo "  make generate           — Generate canonical, derived, and ephemeral diagnostics"
 	@echo "  make generate-canonical — Generate contract-relevant diagnostics (blocking in CI)"

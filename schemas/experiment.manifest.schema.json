@@ -82,6 +82,28 @@
         "related_idea": {
           "type": "string",
           "description": "Referenz auf Idea-Issue (z.B. #42)"
+        },
+        "falsifiability": {
+          "type": "object",
+          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Optional im Schema; die Pflicht wird im allOf-Block konditional erzwungen: ausgeführte/replizierte Experimente sowie Adoption auf executed/replicated-Basis müssen den Block tragen. adoption_basis='reconstructed' ist explizit ausgenommen (historischer Altbestand, siehe docs/blueprints/blueprint-v2.md Übergangsregel). Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
+          "properties": {
+            "counter_hypothesis": {
+              "type": "string",
+              "minLength": 10,
+              "description": "Alternativerklärung, die die beobachteten Effekte ebenfalls erklären könnte (z. B. Störvariable, Confounder, Placebo-Struktur)."
+            },
+            "falsification_criterion": {
+              "type": "string",
+              "minLength": 10,
+              "description": "Operationale Bedingung, unter der die Hypothese als widerlegt oder geschwächt gelten würde."
+            },
+            "counterevidence_checked": {
+              "type": "boolean",
+              "description": "Wurde aktiv nach Gegenevidenz gesucht (nicht bloß behauptet)? Kopplung: result_assessment mit verdict=confirms verlangt counterevidence_checked=true (siehe scripts/docmeta/validate_schema.py)."
+            }
+          },
+          "required": ["counter_hypothesis", "falsification_criterion", "counterevidence_checked"],
+          "additionalProperties": false
         }
       },
       "required": ["name", "hypothesis", "status", "category", "evidence_level"],

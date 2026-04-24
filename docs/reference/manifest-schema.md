@@ -9,7 +9,7 @@ relations:
     target: ../concepts/experiment-ontology.md
 schema_version: "0.1.0"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-04-24"
 author: "heimgewebe"
 tags:
   - reference
@@ -100,6 +100,63 @@ adoption_basis:
 
 Pflicht bei `status: adopted`. Schema erzwingt Konsistenz mit `execution_status`.
 `reconstructed` nur für Altbestand mit expliziter Legacy-Begründung.
+
+### falsifiability (Phase-1 Dry-Run Gate)
+
+```yaml
+falsifiability:
+  type: object
+  properties:
+    counter_hypothesis: { type: string, minLength: 10 }
+    falsification_criterion: { type: string, minLength: 10 }
+    counterevidence_checked: { type: boolean }
+  required: [counter_hypothesis, falsification_criterion, counterevidence_checked]
+  additionalProperties: false
+```
+
+Im Schema **optional** und strukturell definiert: wenn der Block vorhanden ist,
+müssen alle drei Felder gesetzt sein. Die **konditionale Pflicht** ist bewusst
+*nicht* im JSON-Schema kodiert, sondern in der Dry-Run-Diagnose
+`scripts/docmeta/validate_promotion_readiness.py`:
+
+| Experimentzustand                                              | Falsifiability-Pflicht |
+| -------------------------------------------------------------- | ---------------------- |
+| `execution_status ∈ {executed, replicated}`                    | getriggert             |
+| `status=adopted` **und** `adoption_basis ∈ {executed, replicated}` | getriggert         |
+| `status=adopted` **und** `adoption_basis=reconstructed`        | **nicht** getriggert (historical escape) |
+| `execution_status ∈ {designed, prepared}`                      | nicht getriggert       |
+
+**Leitregel:** *Bestätigung verteuern, nicht Wahrheit quantifizieren.* Der Block
+zwingt dazu, eine Gegenhypothese und ein Falsifikationskriterium explizit
+auszuformulieren — nicht dazu, eine Zahl für „Wahrheit“ zu erfinden.
+
+**Phasen-Rollout** (siehe `docs/blueprints/blueprint-v2-roadmap.md`):
+
+- **Phase 1 (dieser PR):** Dry-Run. Report unter
+  `docs/_generated/promotion-readiness.json`, `make validate` bleibt grün,
+  CI-Step `continue-on-error: true`.
+- **Phase 2 (separat):** Hard-Fail für *neue* Experimente via freeze-list
+  (Stichtags-Mechanismus, noch zu designen).
+- **Phase 3 (optional):** globaler Hard-Fail.
+
+**Explizit nicht aktiviert:** `docs/concepts/execution-bound-epistemics.md` bleibt
+dormant; dieser PR referenziert es nur. Kein `truth_confidence`-Score. Kein
+Auto-Move `experiments/* → catalog/*`.
+
+### Gekoppelte Decision-Felder (result_assessment)
+
+Zwei neue Felder in `decision.yml` (für `decision_type=result_assessment`):
+
+| Feld                           | Typ       | Kopplungsregel                                                                 |
+| ------------------------------ | --------- | ------------------------------------------------------------------------------ |
+| `counterevidence_checked`      | boolean   | Wenn `false` **und** `verdict=confirms` → harter Schema-Validator-Fehler.      |
+| `counter_hypothesis_outcome`   | enum      | Wenn `found_and_confirming` **und** `verdict=confirms` → harter Fehler.        |
+
+Die Regeln werden in `scripts/docmeta/validate_schema.py` in
+`validate_decision_files()` geprüft. Sie greifen nur, wenn die Felder explizit
+gesetzt sind — kein allgemeiner Zwang zu `counterevidence_checked=true`.
+Entscheidungen, die die Felder weglassen, bleiben gültig; der neue Promotion-
+Readiness-Report markiert sie lediglich als „nicht abgedeckt“.
 
 ---
 
