@@ -93,13 +93,15 @@ Narrative summary of findings.
 
 ## Next Steps (After Design PR Merges)
 
-1. **Create Phase 1 fixtures** (actual JSON files matching test cases)
-2. **Run validator** explicitly against the staged fixture directory
-3. **Record evidence** in evidence.jsonl
-4. **Evaluate results** against expectations
-5. **Document decision** in decision.yml
-6. **If patch needed:** Create separate patch PR with contrastpair rule
-7. **If successful:** Close Phase 1; proceed to Phase 2 planning
+1. **Capture diagnose-first baseline** in `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/execution.txt`
+   using `make validate` and fixture inventory output
+2. **Create Phase 1 fixtures** (actual JSON files matching test cases)
+3. **Run validator** explicitly against the staged fixture directory
+4. **Record evidence** in evidence.jsonl
+5. **Evaluate results** against expectations
+6. **Document decision** in decision.yml
+7. **If patch needed:** Create separate patch PR with contrastpair rule
+8. **If successful:** Close Phase 1; proceed to Phase 2 planning
 
 ---
 
@@ -110,3 +112,13 @@ Narrative summary of findings.
 - **Stop condition:** all 6 executed AND evidence complete
 - **Patch gate:** contrastpair rule mandatory where a meaningful paired case exists
 - **CI requirement:** make validate must pass throughout
+
+## Enforcement-Stand
+
+- `execution_status ∈ {executed, replicated}` ist bereits an Run-Artefakte
+  gekoppelt via `scripts/docmeta/validate_execution_proof.py`.
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/<run-id>/run_meta.json`
+  und sein `test_output_file` werden damit
+  bereits durch Repo-Validator und CI erzwungen.
+- Nicht automatisch erzwungen ist derzeit die semantische Konsistenz zwischen
+  Run-Artefakten, `results/evidence.jsonl` und `results/decision.yml`.
