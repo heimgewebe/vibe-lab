@@ -26,7 +26,7 @@ context:
   language: "Mixed (Markdown, YAML, JSON)"
   environment: "vibe-lab"
   triggered_by: "user-request-2026-04-24-phase-1b-classification-sharpness"
-  scope_note: "Design-only Diagnoseexperiment; keine Validator-/Schema-/CI-Änderungen, keine Phase-2-Arbeit, keine Ausführungsclaims."
+  scope_note: "Execution-PR für Diagnoseexperiment; dokumentiert Layer-Vergleich ohne Validator-/Schema-/CI-Änderungen, keine Phase-2-Arbeit."
 
 evidence:
   format: jsonl
