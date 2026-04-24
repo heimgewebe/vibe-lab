@@ -1,19 +1,23 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests check-decisions generate generate-canonical generate-derived generate-derived-core generate-derived-gated generate-ephemeral generate-exports generate-metrics generate-promotion-readiness generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests check-decisions generate generate-canonical generate-derived generate-derived-core generate-derived-gated generate-ephemeral generate-exports generate-metrics generate-promotion-readiness generate-stable generate-volatile diagnose generate-epistemic-state help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
-	@# Promotion-Readiness als Dry-Run (Phase 1): non-blocking, Report aber
-	@# sichtbar. Das Skript selbst hält exit=0, ein Crash bricht CI; das '|| true'
-	@# schützt zusätzlich gegen Drift bei zukünftigen Änderungen an der CLI.
+validate: validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
+	@# Promotion-Readiness als Dry-Run (Phase 1): bewusst non-blocking.
+	@# Das Skript soll exit=0 liefern; '|| true' verhindert, dass CLI-Drift den
+	@# Gesamt-Validate-Lauf blockiert. Harte Durchsetzung ist Phase 2/3.
 	@$(MAKE) validate-promotion-readiness || true
 	@echo "✅ Validation passed."
 
 validate-schemas:
 	@echo "🔍 Validating schemas..."
 	@python3 scripts/docmeta/validate_schema.py
+
+validate-schemas-counterevidence-tests:
+	@echo "🧪 Running counterevidence P2-rule regression tests..."
+	@python3 scripts/docmeta/test_validate_schema_counterevidence.py
 
 validate-execution-proof:
 	@echo "🔍 Validating execution proof..."
@@ -204,7 +208,8 @@ help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
 	@echo "  make validate                  — Run schema, execution-proof, relations, interpretation-budget, handoff, and regression-test guards"
-	@echo "  make validate-schemas          — Validate artifacts against JSON schemas"
+	@echo "  make validate-schemas                  — Validate artifacts against JSON schemas"
+	@echo "  make validate-schemas-counterevidence-tests — Run P2 counterevidence rule regression tests"
 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
 	@echo "  make validate-relations        — Validate frontmatter relations"
 	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"

@@ -85,7 +85,7 @@
         },
         "falsifiability": {
           "type": "object",
-          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Optional im Schema; die Pflicht wird im allOf-Block konditional erzwungen: ausgeführte/replizierte Experimente sowie Adoption auf executed/replicated-Basis müssen den Block tragen. adoption_basis='reconstructed' ist explizit ausgenommen (historischer Altbestand, siehe docs/blueprints/blueprint-v2.md Übergangsregel). Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
+          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Optional im JSON-Schema: wenn der Block vorhanden ist, müssen alle drei Felder gesetzt sein (strukturelle Pflicht). Die konditionale Pflicht für execution_status∈{executed,replicated} und für status=adopted mit adoption_basis∈{executed,replicated} wird in Phase 1 ausschließlich durch scripts/docmeta/validate_promotion_readiness.py als Dry-Run diagnostiziert — nicht durch dieses JSON-Schema hart erzwungen. Kein allOf-Gate hier. adoption_basis='reconstructed' bleibt als historischer Altbestand ausgenommen (historical_escape). Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
           "properties": {
             "counter_hypothesis": {
               "type": "string",

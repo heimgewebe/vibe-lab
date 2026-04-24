@@ -66,6 +66,52 @@ DOCMETA_SCHEMA_PATH = REPO_ROOT / "contracts" / "docmeta.schema.json"
 errors = []
 
 
+# ---------------------------------------------------------------------------
+# P2-Regel: Anti-Scheinfalsifikation (pure Funktion für direkte Testbarkeit)
+# ---------------------------------------------------------------------------
+
+def check_counterevidence_rule(data: dict, rel: str) -> str | None:
+    """Prüft die P2-Kreuzregel für decision_type=result_assessment.
+
+    Gibt einen Fehlerstring zurück, wenn eine Inkonsistenz vorliegt,
+    sonst None. Die Funktion ist bewusst pur (kein globaler State),
+    damit sie direkt unit-getestet werden kann.
+
+    Regeln:
+    * counterevidence_checked=False UND verdict='confirms' → Fehler
+      (Nichtprüfung darf nicht als bestätigende Gewissheit erscheinen).
+    * counter_hypothesis_outcome='found_and_confirming' UND verdict='confirms' → Fehler
+      (Gegenhypothese gestützt widerspricht Bestätigung der Ursprungshypothese).
+
+    Nur bei decision_type=result_assessment; alle anderen Typen → None.
+    Felder, die nicht gesetzt sind, werden nicht erzwungen (kein Bool-Ritual).
+    """
+    if data.get("decision_type") != "result_assessment":
+        return None
+
+    verdict = data.get("verdict")
+    cev_checked = data.get("counterevidence_checked")
+    outcome = data.get("counter_hypothesis_outcome")
+
+    if cev_checked is False and verdict == "confirms":
+        return (
+            f"  ❌ {rel}: counterevidence_checked=false ist inkonsistent "
+            f"mit verdict=confirms. Entweder counterevidence_checked auf true setzen "
+            f"(mit belegter Gegenprüfung) oder verdict auf mixed/inconclusive/refutes "
+            f"ändern. Leitregel: Bestätigung verlangt Gegenprüfung."
+        )
+
+    if outcome == "found_and_confirming" and verdict == "confirms":
+        return (
+            f"  ❌ {rel}: counter_hypothesis_outcome=found_and_confirming "
+            f"widerspricht verdict=confirms (Gegenhypothese wird gestützt → "
+            f"Ursprungshypothese nicht mehr bestätigt). verdict auf "
+            f"mixed/refutes/inconclusive ändern."
+        )
+
+    return None
+
+
 def load_schema(schema_path: Path) -> dict:
     with open(schema_path) as f:
         return json.load(f)
@@ -295,35 +341,11 @@ def validate_decision_files():
             errors.append(f"  ❌ {rel}: {e.message}")
             continue
 
-        # Anti-Scheinfalsifikation (P2): counterevidence_checked=false + verdict=confirms
-        # ist inkonsistent. Nur bei decision_type=result_assessment anwenden.
-        # Kein genereller Zwang counterevidence_checked=true einzuführen; nur der
-        # inkonsistente Fall wird hart blockiert. Ziel: Bestätigung verteuern,
-        # nicht Bürokratie erzwingen.
-        decision_type_for_p2 = data.get("decision_type")
-        if decision_type_for_p2 == "result_assessment":
-            verdict = data.get("verdict")
-            cev_checked = data.get("counterevidence_checked")
-            if cev_checked is False and verdict == "confirms":
-                errors.append(
-                    f"  ❌ {rel}: counterevidence_checked=false ist inkonsistent "
-                    f"mit verdict=confirms. Entweder counterevidence_checked auf true setzen "
-                    f"(mit belegter Gegenprüfung) oder verdict auf mixed/inconclusive/refutes "
-                    f"ändern. Leitregel: Bestätigung verlangt Gegenprüfung."
-                )
-                continue
-            # Konsistenz counter_hypothesis_outcome ↔ verdict:
-            # 'found_and_confirming' (Gegenhypothese stützt sich selbst)
-            # widerspricht verdict=confirms der Ursprungshypothese.
-            outcome = data.get("counter_hypothesis_outcome")
-            if outcome == "found_and_confirming" and verdict == "confirms":
-                errors.append(
-                    f"  ❌ {rel}: counter_hypothesis_outcome=found_and_confirming "
-                    f"widerspricht verdict=confirms (Gegenhypothese wird gestützt → "
-                    f"Ursprungshypothese nicht mehr bestätigt). verdict auf "
-                    f"mixed/refutes/inconclusive ändern."
-                )
-                continue
+        # Anti-Scheinfalsifikation (P2) — delegiert an pure Funktion check_counterevidence_rule().
+        p2_error = check_counterevidence_rule(data, rel)
+        if p2_error is not None:
+            errors.append(p2_error)
+            continue
 
         # Cross-file Regel: adoption_assessment → execution_status ∈ {executed, replicated}
         decision_type = data.get("decision_type")
