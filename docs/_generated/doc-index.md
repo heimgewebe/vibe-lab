@@ -134,9 +134,9 @@
 | `experiments/2026-04-23_agent-failure-surface/method.md` | Methode: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md` | INITIAL | — | — |
 | `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md` | failure_modes | — | — |
-| `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md` | README | — | — |
-| `experiments/2026-04-23_phase-1-drift-injection/method.md` | method | — | — |
-| `experiments/2026-04-23_phase-1-drift-injection/results/README.md` | README | — | — |
+| `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md` | Fixtures: Phase 1 Drift Injection | draft | operative |
+| `experiments/2026-04-23_phase-1-drift-injection/method.md` | Methode: Phase 1 Drift Injection | draft | operative |
+| `experiments/2026-04-23_phase-1-drift-injection/results/README.md` | Results: Phase 1 Drift Injection | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

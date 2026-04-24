@@ -1,3 +1,15 @@
+---
+title: "Fixtures: Phase 1 Drift Injection"
+status: draft
+canonicality: operative
+created: "2026-04-23"
+updated: "2026-04-24"
+author: "GPT-5.3-Codex"
+relations:
+  - type: references
+    target: ../../../schemas/agent.handoff.schema.json
+---
+
 # Phase 1 Fixtures Specification
 
 > Dieses Dokument ist eine **Spezifikation**.
@@ -35,7 +47,7 @@ base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
   field: locator
   change: "schemas/agent.handoff.schema.json" -> "schemas/agent.INVALID.schema.json"
-  rationale: "Ungueltiger Locator-Pfad"
+  rationale: "Ungültiger Locator-Pfad"
 expected_validator_behavior: REJECTED
 expected_error_type: "locator_mismatch or similar"
 contrast_pair: A2
@@ -51,14 +63,14 @@ base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
   field: locator
   change: "schemas/agent.handoff.schema.json" -> "schemas/agent.handoff.schema.json#L1"
-  rationale: "Probe fuer Fragment-Behandlung"
+  rationale: "Probe für Fragment-Behandlung"
 expected_validator_behavior: "? (probe — result will determine)"
 expected_error_type: null
 contrast_pair: A1
 notes: "Kontrast zu A1"
 ```
 
-## B1: Hash Drift (vollstaendig geaendert)
+## B1: Hash Drift (vollständig geändert)
 
 ```yaml
 case_id: B1
@@ -67,14 +79,14 @@ base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
   field: handoff.hash
   change: "28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2" -> "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-  rationale: "64-hex bleibt formal gueltig, soll aber Hash-Mismatch ausloesen"
+  rationale: "64-hex bleibt formal gültig, soll aber Hash-Mismatch auslösen"
 expected_validator_behavior: REJECTED
 expected_error_type: "hash_mismatch or validation_error"
 contrast_pair: B2
 notes: "Kontrast mit B2 vorhanden"
 ```
 
-## B2: Hash Drift (1 nibble geaendert)
+## B2: Hash Drift (1 nibble geändert)
 
 ```yaml
 case_id: B2
@@ -83,14 +95,14 @@ base_fixture: tests/fixtures/agent_handoff/pass-minimal.json
 mutation:
   field: handoff.hash
   change: "28b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2" -> "18b6bdd9a176ee782cfd69cc8a7fb7da17c5fd154cda67faadf3402d79cf33e2"
-  rationale: "Minimale Aenderung bei weiter formal gueltigem 64-hex"
+  rationale: "Minimale Änderung bei weiter formal gültigem 64-hex"
 expected_validator_behavior: REJECTED
 expected_error_type: "hash_mismatch"
 contrast_pair: B1
 notes: "Kontrast zu B1"
 ```
 
-## C1: target_files Drift (ungueltiger Zielpfad)
+## C1: target_files Drift (ungültiger Zielpfad)
 
 ```yaml
 case_id: C1
@@ -106,7 +118,7 @@ contrast_pair: null
 notes: "Einzelfall ohne belastbaren positiven Gegenfall in Phase 1"
 ```
 
-## D1: change_type Drift (ungueltiger Enum-Wert)
+## D1: change_type Drift (ungültiger Enum-Wert)
 
 ```yaml
 case_id: D1

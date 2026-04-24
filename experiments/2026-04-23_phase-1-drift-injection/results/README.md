@@ -1,3 +1,17 @@
+---
+title: "Results: Phase 1 Drift Injection"
+status: draft
+canonicality: operative
+created: "2026-04-23"
+updated: "2026-04-24"
+author: "GPT-5.3-Codex"
+relations:
+  - type: references
+    target: ../../../schemas/decision.schema.json
+  - type: references
+    target: ../../../schemas/agent.handoff.schema.json
+---
+
 # Phase 1 Execution Log
 
 > Status: **DESIGNED** (not yet executed)
@@ -49,14 +63,14 @@ confidence: "low"
 date: "YYYY-MM-DD"
 reviewer: ""
 rationale: |
-  Bezieht sich auf konkrete Eintraege in results/evidence.jsonl.
+  Bezieht sich auf konkrete Einträge in results/evidence.jsonl.
 evidence_summary:
   observations: 0
   positive: 0
   negative: 0
   neutral: 0
 next_steps: |
-  Folgeaktionen fuer Execution- oder Patch-PR.
+  Folgeaktionen für Execution- oder Patch-PR.
 ```
 
 ### result.md (to be populated)
