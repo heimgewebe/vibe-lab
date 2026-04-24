@@ -76,15 +76,6 @@ Narrative summary of findings.
 
 ---
 
-## Timeline Estimate
-
-- Fixture creation: 30–60 min
-- Validator runs: 10–20 min (6 fixtures × ~2 min each)
-- Evidence analysis: 20–40 min
-- Total Phase 1 execution: ~1.5–2 hours (not including decision review)
-
----
-
 ## Constraints
 
 - **Scope:** agent_handoff validator only

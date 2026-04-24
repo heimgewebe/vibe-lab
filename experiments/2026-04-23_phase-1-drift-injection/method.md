@@ -220,11 +220,12 @@ This prevents **alibi fixtures** (single trivial test cases).
    - Name: `phase-1-drift-A1.json`, `phase-1-drift-A2.json`, etc.
 
 3. **Validator Invocation**
-   For each fixture:
-   ```bash
-   python tests/validators/agent_handoff.py < phase-1-drift-X.json
-   ```
-   Record:
+  For each fixture:
+  ```bash
+  make validate
+  ```
+  If a narrower `agent_handoff`-only invocation is needed, derive the concrete command from the current repo toolchain in the Execution-PR (do not assume ad-hoc script paths).
+  Record:
    - Exit code (0 = accepted, 1 = rejected, etc.)
    - Stdout/stderr
    - Error messages (if any)
@@ -244,7 +245,7 @@ This prevents **alibi fixtures** (single trivial test cases).
    ```
 
 5. **Stop Condition**
-   - If all 6 cases behave as expected: Phase 1 complete ✓
+  - If all 6 cases produce classified validator behavior and no false-positive is found: Phase 1 complete ✓
    - If 1+ case diverges from expectation:
      - Document in decision.yml
      - If false-positive (should reject but accepted):
