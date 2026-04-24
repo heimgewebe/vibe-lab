@@ -42,6 +42,9 @@ epistemische Ebene ab.
 Diese Zuordnung definiert den Sollzustand ohne Ausführung und ohne
 Implementierungsänderung.
 
+Hinweis: Die erwarteten Cross-Contract-Klassen sind Soll-/Diagnosebegriffe auf
+Design-Level, keine Behauptung über aktuelle Validator-Labels.
+
 | Drift-Typ | Erwartete agent_handoff Klasse | Erwartete cross_contract Klasse |
 | --- | --- | --- |
 | locator_drift | locator_error (derzeit nicht explizit vorhanden) | locator_drift_detected |
