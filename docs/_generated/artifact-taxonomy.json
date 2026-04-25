@@ -9520,7 +9520,177 @@
       "tests/fixtures/**": 84,
       "tools/**": 2
     },
-    "high_risk_count": 142
+    "high_risk_count": 142,
+    "residual_clusters": [
+      {
+        "high_risk_count": 0,
+        "matched_pattern": "experiments/*/artifacts/**",
+        "top_basenames": {
+          "README.md": 3,
+          "app.ts": 3,
+          "edit_trace.md": 4,
+          "errors.ts": 4,
+          "index.ts": 8,
+          "premortem.md": 5,
+          "refactored_processor.py": 15,
+          "test_injection.py": 5,
+          "test_processor.py": 8,
+          "types.ts": 4
+        },
+        "top_parent_dirs": {
+          "experiments/2026-04-14_incremental-debuggability/artifacts/inputs": 5,
+          "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
+          "experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental": 7,
+          "experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental": 7,
+          "experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental": 7,
+          "experiments/2026-04-14_prompt-length-control/artifacts": 9,
+          "experiments/2026-04-14_tdd-vibe/artifacts": 6,
+          "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
+          "experiments/2026-04-15_agent-task-validity/artifacts": 7,
+          "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
+        },
+        "total": 139
+      },
+      {
+        "high_risk_count": 84,
+        "matched_pattern": "tests/fixtures/**",
+        "top_basenames": {
+          "CONTEXT.md": 3,
+          "INITIAL.md": 3,
+          "contract-invalid-empty-target-files.json": 2,
+          "contract-invalid-wrong-command.json": 3,
+          "contract-invalid-wrong-version.json": 2,
+          "decision.yml": 3,
+          "evidence.jsonl": 3,
+          "manifest.yml": 3,
+          "result.md": 2,
+          "valid-minimal.json": 3
+        },
+        "top_parent_dirs": {
+          "tests/fixtures/agent_commands/read_context": 7,
+          "tests/fixtures/agent_commands/validate_change": 8,
+          "tests/fixtures/agent_commands/write_change": 9,
+          "tests/fixtures/agent_handoff": 4,
+          "tests/fixtures/command_chains": 27,
+          "tests/fixtures/cross_contract/invalid": 7,
+          "tests/fixtures/experiment_structure_phase1c/inconsistent": 3,
+          "tests/fixtures/experiment_structure_phase1c/inconsistent/results": 3,
+          "tests/fixtures/experiment_structure_phase1c/insufficient_input": 3,
+          "tests/fixtures/experiment_structure_phase1c/valid": 3
+        },
+        "total": 84
+      },
+      {
+        "high_risk_count": 41,
+        "matched_pattern": "scripts/**",
+        "top_basenames": {
+          "__init__.py": 2,
+          "_paths.py": 1,
+          "check_system_decisions.py": 1,
+          "generate_artifact_taxonomy.py": 1,
+          "generate_backlinks.py": 1,
+          "generate_doc_index.py": 1,
+          "generate_epistemic_state.py": 1,
+          "generate_exports.py": 1,
+          "generate_metrics.py": 1,
+          "generate_orphans.py": 1
+        },
+        "top_parent_dirs": {
+          "scripts/adoption": 3,
+          "scripts/docmeta": 35,
+          "scripts/exports": 3
+        },
+        "total": 41
+      },
+      {
+        "high_risk_count": 0,
+        "matched_pattern": "experiments/**",
+        "top_basenames": {
+          ".gitignore": 2,
+          "AGENT_INSTRUCTION.md": 1,
+          "README.md": 3,
+          "app.ts": 1,
+          "followups.md": 1,
+          "jest-patched.log": 1,
+          "jest-unfixed.log": 1,
+          "legacy_processor.py": 1,
+          "package-lock.json": 1,
+          "package.json": 1
+        },
+        "top_parent_dirs": {
+          "experiments/2026-04-12_spec-first-legacy/src": 3,
+          "experiments/2026-04-14_tdd-vibe": 2,
+          "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
+          "experiments/2026-04-15_agent-task-validity": 4,
+          "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
+          "experiments/2026-04-23_phase-1-drift-injection/results": 1
+        },
+        "total": 21
+      },
+      {
+        "high_risk_count": 10,
+        "matched_pattern": "exports/**",
+        "top_basenames": {
+          "constraint-before-code.md": 2,
+          "edge-case-enumeration.md": 2,
+          "no-vague-prompts.md": 2,
+          "spec-first.md": 2,
+          "validate-against-spec.md": 2
+        },
+        "top_parent_dirs": {
+          "exports/copilot": 5,
+          "exports/cursor": 5
+        },
+        "total": 10
+      },
+      {
+        "high_risk_count": 3,
+        "matched_pattern": "docs/_generated/**",
+        "top_basenames": {
+          "backlinks.md": 1,
+          "orphans.md": 1,
+          "system-map.md": 1
+        },
+        "top_parent_dirs": {
+          "docs/_generated": 3
+        },
+        "total": 3
+      },
+      {
+        "high_risk_count": 2,
+        "matched_pattern": "tools/**",
+        "top_basenames": {
+          "replay_minimal.py": 1,
+          "test_replay_minimal.py": 1
+        },
+        "top_parent_dirs": {
+          "tools/vibe-cli": 2
+        },
+        "total": 2
+      },
+      {
+        "high_risk_count": 1,
+        "matched_pattern": "docs/_generated/metrics/**",
+        "top_basenames": {
+          "trends.md": 1
+        },
+        "top_parent_dirs": {
+          "docs/_generated/metrics": 1
+        },
+        "total": 1
+      },
+      {
+        "high_risk_count": 1,
+        "matched_pattern": "tests/**",
+        "top_basenames": {
+          "test_cross_contract_chain.py": 1
+        },
+        "top_parent_dirs": {
+          "tests/contracts": 1
+        },
+        "total": 1
+      }
+    ]
   },
   "generated_artifacts_cross_check": [
     {

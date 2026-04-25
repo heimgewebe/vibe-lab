@@ -217,6 +217,53 @@ def _bucket_count_by_func(items: list[dict], func: Callable[[dict], str]) -> dic
     return dict(sorted(out.items()))
 
 
+def _top_n(counter: dict[str, int], n: int = 10) -> dict[str, int]:
+    """Return the top-n entries by count, sorted by count desc then key asc."""
+    sorted_items = sorted(counter.items(), key=lambda kv: (-kv[1], kv[0]))
+    return {k: v for k, v in sorted_items[:n]}
+
+
+def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
+    """Build per-pattern residual cluster diagnostics.
+
+    Groups fallback-classified items (status==classified, catchall_match==True)
+    by their selected fallback pattern and produces a diagnostic entry for each
+    group with basename/parent-dir frequency data to guide future rule creation.
+    Items are sorted by total descending.
+    """
+    groups: dict[str, list[dict]] = {}
+    for item in fallback_classified:
+        pattern = _select_fallback_pattern(item.get("matched_patterns") or [])
+        if pattern not in groups:
+            groups[pattern] = []
+        groups[pattern].append(item)
+
+    clusters = []
+    for pattern, items in groups.items():
+        basename_counter: dict[str, int] = {}
+        parent_counter: dict[str, int] = {}
+        high_risk = 0
+        for item in items:
+            if _is_high_risk_fallback(item):
+                high_risk += 1
+            path = item["path"]
+            basename = Path(path).name
+            parent = str(Path(path).parent)
+            basename_counter[basename] = basename_counter.get(basename, 0) + 1
+            parent_counter[parent] = parent_counter.get(parent, 0) + 1
+        clusters.append(
+            {
+                "matched_pattern": pattern,
+                "total": len(items),
+                "high_risk_count": high_risk,
+                "top_basenames": _top_n(basename_counter),
+                "top_parent_dirs": _top_n(parent_counter),
+            }
+        )
+    clusters.sort(key=lambda c: (-c["total"], c["matched_pattern"]))
+    return clusters
+
+
 def _enforcement_count(items: list[dict]) -> dict[str, int]:
     out: dict[str, int] = {}
     for item in items:
@@ -370,6 +417,7 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
                 lambda c: _select_fallback_pattern(c.get("matched_patterns") or []),
             ),
             "high_risk_count": sum(1 for c in fallback_classified if _is_high_risk_fallback(c)),
+            "residual_clusters": _build_residual_clusters(fallback_classified),
         },
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
         "ambiguous_artifacts": [c["path"] for c in sorted(ambiguous, key=lambda x: x["path"])],
@@ -509,6 +557,50 @@ def render_markdown(report: dict) -> str:
                 f"{risk_label} | `{matched}` |"
             )
         lines.append("")
+
+    lines.append("## Residual fallback clusters")
+    lines.append("")
+    lines.append(
+        "Diagnostic breakdown of catch-all fallback buckets. "
+        "Shows which file names and parent directories dominate each broad pattern, "
+        "to guide targeted rule additions in a future PR."
+    )
+    lines.append("")
+    residual_clusters = report["fallback_summary"].get("residual_clusters", [])
+    if not residual_clusters:
+        lines.append("_none_")
+        lines.append("")
+    else:
+        lines.append("| matched_pattern | total | high_risk |")
+        lines.append("| --- | ---: | ---: |")
+        for cluster in residual_clusters:
+            lines.append(
+                f"| `{cluster['matched_pattern']}` | {cluster['total']} | {cluster['high_risk_count']} |"
+            )
+        lines.append("")
+        for cluster in residual_clusters:
+            lines.append(f"### `{cluster['matched_pattern']}`")
+            lines.append("")
+            lines.append(f"total: {cluster['total']} · high_risk: {cluster['high_risk_count']}")
+            lines.append("")
+            top_basenames = cluster.get("top_basenames", {})
+            if top_basenames:
+                lines.append("**Top basenames:**")
+                lines.append("")
+                lines.append("| basename | count |")
+                lines.append("| --- | ---: |")
+                for name, cnt in top_basenames.items():
+                    lines.append(f"| `{name}` | {cnt} |")
+                lines.append("")
+            top_parent_dirs = cluster.get("top_parent_dirs", {})
+            if top_parent_dirs:
+                lines.append("**Top parent dirs:**")
+                lines.append("")
+                lines.append("| parent dir | count |")
+                lines.append("| --- | ---: |")
+                for parent, cnt in top_parent_dirs.items():
+                    lines.append(f"| `{parent}` | {cnt} |")
+                lines.append("")
 
     lines.append("## Generated artifacts cross-check")
     lines.append("")
