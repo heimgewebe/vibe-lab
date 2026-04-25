@@ -62,11 +62,23 @@ def load_taxonomy() -> dict:
 
 
 def load_generated_contract_paths() -> set[str]:
+    """Load artifact paths from the generated-artifact contract for cross-check.
+
+    Failures to load the contract are deliberately non-fatal here: the
+    generated-artifact contract has its own blocking validator
+    (validate_generated_artifacts_contract.py) which will surface real
+    contract-level errors. The taxonomy report stays diagnostic/non-blocking,
+    so we degrade gracefully and emit a stderr warning rather than aborting.
+    """
     if not GENERATED_CONTRACT.exists():
         return set()
     try:
         data = yaml.safe_load(GENERATED_CONTRACT.read_text(encoding="utf-8")) or {}
-    except yaml.YAMLError:
+    except yaml.YAMLError as exc:
+        print(
+            f"WARNING: could not parse {GENERATED_CONTRACT} for cross-check: {exc}",
+            file=sys.stderr,
+        )
         return set()
     out: set[str] = set()
     for art in data.get("artifacts") or []:
