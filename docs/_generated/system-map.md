@@ -8,21 +8,21 @@
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
 | `./` | 📁 Root | 8 | 3 |
-| `.vibe/` | 🏛️ Governance | 4 | 1 |
+| `.vibe/` | 🏛️ Governance | 6 | 1 |
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
 | `catalog/` | 📚 Bibliothek | 11 | 10 |
 | `contracts/` | 🏛️ Governance | 3 | 1 |
 | `decisions/` | 🏛️ Governance | 6 | 0 |
 | `docs/` | 📖 Dokumentation | 26 | 17 |
-| `docs/_generated/` | ⚙️ Generiert | 6 | 5 |
-| `experiments/` | 🔬 Labor | 330 | 107 |
+| `docs/_generated/` | ⚙️ Generiert | 9 | 6 |
+| `experiments/` | 🔬 Labor | 331 | 108 |
 | `exports/` | ⚙️ Generiert | 10 | 10 |
 | `instruction-blocks/` | 📚 Bibliothek | 5 | 5 |
 | `prompts/` | 📚 Bibliothek | 2 | 2 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
 | `schemas/` | 🏛️ Governance | 9 | 0 |
-| `scripts/` | 🔧 Tooling | 32 | 0 |
-| `tests/` | 📁 Root | 83 | 8 |
+| `scripts/` | 🔧 Tooling | 41 | 0 |
+| `tests/` | 📁 Root | 85 | 8 |
 | `tools/` | 🔧 Tooling | 3 | 0 |
 
-**Total:** 546 files in 17 directories
+**Total:** 563 files in 17 directories

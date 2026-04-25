@@ -10,7 +10,7 @@ tägliche Diffs erzeugen und steht im Widerspruch zu deterministic: true im Cont
 
 Quelle:  instruction-blocks/*.md
 Ziele:   exports/copilot/*.md, exports/cursor/*.md
-Vertrag: .vibe/generated-artifacts.yml → exports
+Vertrag: .vibe/generated-artifacts.yml → artifacts[class=generated_projection]
 """
 
 from __future__ import annotations

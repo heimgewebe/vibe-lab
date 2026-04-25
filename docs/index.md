@@ -92,16 +92,18 @@ relations:
 
 ## Diagnose (Generiert)
 
-> Diese Dateien werden maschinell erzeugt und dürfen nicht manuell editiert werden.
+> Diese Dateien werden maschinell erzeugt und dürfen nicht manuell editiert werden. Die Klassifikation folgt dem objektbasierten Generated-Artifact-Contract v2 in [`.vibe/generated-artifacts.yml`](../.vibe/generated-artifacts.yml). Die Spalte „Klasse“ entspricht dem v2-Feld `class`; die alten Buckets `canonical`/`derived`/`gated`/`exports`/`ephemeral` werden nicht mehr verwendet.
 
 | Datei                                           | Klasse | CI-Verhalten | Inhalt |
 | ----------------------------------------------- | ------ | ------------ | ------ |
-| [_generated/doc-index.md](_generated/doc-index.md)     | canonical | blocking | Dokumenten-Index |
-| [_generated/system-map.md](_generated/system-map.md)   | derived | non-blocking | Systemübersicht (diagnostic-core, decision-shaping) |
-| [_generated/backlinks.md](_generated/backlinks.md)     | derived | non-blocking | Rückverlinkungen |
-| [_generated/orphans.md](_generated/orphans.md)         | derived | non-blocking | Verwaiste Dokumente |
-| [_generated/metrics/trends.md](_generated/metrics/trends.md) | gated | best-effort | Metrik-Trends (feature-gated Diagnose) |
-| `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral | artifact-only | Abgeleiteter Zustands-Snapshot |
+| [_generated/doc-index.md](_generated/doc-index.md)     | generated_index | blocking | Dokumenten-Index |
+| [_generated/system-map.md](_generated/system-map.md)   | diagnostic_report | non_blocking | Systemübersicht (diagnostic-core, decision-shaping) |
+| [_generated/backlinks.md](_generated/backlinks.md)     | diagnostic_report | non_blocking | Rückverlinkungen |
+| [_generated/orphans.md](_generated/orphans.md)         | diagnostic_report | non_blocking | Verwaiste Dokumente |
+| [_generated/promotion-readiness.json](_generated/promotion-readiness.json) | diagnostic_dry_run | non_blocking | Promotion-Readiness Dry-Run (Phase 1) |
+| [_generated/metrics/trends.md](_generated/metrics/trends.md) | metric_report | best_effort | Metrik-Trends (feature-gated Diagnose) |
+| [_generated/artifact-taxonomy.md](_generated/artifact-taxonomy.md) | diagnostic_report | non_blocking | Globale Artefakt-Taxonomie (Diagnose, nicht kanonisch) |
+| `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral_trace | artifact_only | Abgeleiteter Zustands-Snapshot |
 
 ## Exports (Generiert)
 
