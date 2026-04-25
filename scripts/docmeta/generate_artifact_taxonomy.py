@@ -428,7 +428,10 @@ def render_markdown(report: dict) -> str:
     _list("High-risk artifacts", report["high_risk_artifacts"])
 
     # --- Risk-weighted fallback review section ---------------------------------
-    fallback_items = [c for c in report["classifications"] if c.get("catchall_match")]
+    fallback_items = [
+        c for c in report["classifications"]
+        if c.get("status") == "classified" and c.get("catchall_match")
+    ]
     fallback_sorted = sorted(fallback_items, key=fallback_review_sort_key)[:20]
 
     lines.append("## Fallback classified artifacts requiring review")

@@ -107,6 +107,9 @@ jobs:
       - name: Run artifact taxonomy generator regression tests
         run: python3 scripts/docmeta/test_generate_artifact_taxonomy.py
 
+      - name: Generate artifact taxonomy report
+        run: python3 scripts/docmeta/generate_artifact_taxonomy.py
+
       - name: Fallback share advisory warning (non-blocking)
         run: |
           python3 - <<'PY'
