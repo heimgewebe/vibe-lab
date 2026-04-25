@@ -96,6 +96,30 @@ class TaxonomyValidatorTest(unittest.TestCase):
         errors = validate(data)
         self.assertTrue(any("'lifecycle'" in e for e in errors), errors)
 
+    def test_mapping_in_layers_rejected(self) -> None:
+        data = copy.deepcopy(VALID_TAXONOMY)
+        data["layers"] = ["governance", {"not": "a string"}]
+        errors = validate(data)
+        self.assertTrue(
+            any("must be a non-empty string" in e for e in errors), errors
+        )
+
+    def test_mapping_in_authorities_rejected(self) -> None:
+        data = copy.deepcopy(VALID_TAXONOMY)
+        data["authorities"] = [{"not": "a string"}, "sovereign_source"]
+        errors = validate(data)
+        self.assertTrue(
+            any("must be a non-empty string" in e for e in errors), errors
+        )
+
+    def test_mapping_in_layers_does_not_crash(self) -> None:
+        """set(layers) with unhashable dicts would crash; validate() must not."""
+        data = copy.deepcopy(VALID_TAXONOMY)
+        data["layers"] = [{"unhashable": "dict"}]
+        errors = validate(data)
+        self.assertIsInstance(errors, list)
+        self.assertTrue(len(errors) > 0)
+
 
 if __name__ == "__main__":
     unittest.main()

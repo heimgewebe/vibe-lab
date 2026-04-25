@@ -168,6 +168,40 @@ class ContractValidatorTest(unittest.TestCase):
         errors = validate(data)
         self.assertTrue(any("unknown enforcement value" in e for e in errors), errors)
 
+    def test_non_string_required_field_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["authority"] = 42
+        errors = validate(data)
+        self.assertTrue(
+            any("must be a non-empty string" in e for e in errors), errors
+        )
+
+    def test_empty_string_required_field_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["origin"] = "   "
+        errors = validate(data)
+        self.assertTrue(
+            any("must be a non-empty string" in e for e in errors), errors
+        )
+
+    def test_non_string_enforcement_tag_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["enforcement"] = ["no_manual_edit", 99]
+        errors = validate(data)
+        self.assertTrue(
+            any("enforcement values must be non-empty strings" in e for e in errors),
+            errors,
+        )
+
+    def test_empty_enforcement_tag_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["enforcement"] = ["no_manual_edit", ""]
+        errors = validate(data)
+        self.assertTrue(
+            any("enforcement values must be non-empty strings" in e for e in errors),
+            errors,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

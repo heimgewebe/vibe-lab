@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -35,7 +36,7 @@ OUTPUT_JSON = REPO_ROOT / "docs" / "_generated" / "artifact-taxonomy.json"
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "docmeta"))
 from _paths import write_if_changed  # noqa: E402
 
-SKIP_DIRS = frozenset({".git", ".github", ".cursor", ".venv", "venv", "node_modules", "__pycache__", "_archive"})
+SKIP_DIRS = frozenset({".git", ".cursor", ".venv", "venv", "node_modules", "__pycache__", "_archive"})
 
 CLASSIFIED = "classified"
 UNKNOWN = "unknown"
@@ -89,15 +90,32 @@ def load_generated_contract_artifacts() -> list[dict]:
 
 
 def iter_repo_files(repo_root: Path) -> list[str]:
+    """Return sorted list of repo-relative paths for all tracked files.
+
+    Uses ``git ls-files`` to enumerate only committed/staged files, which
+    guarantees determinism and prevents local scratch files or untracked
+    dumps from leaking into the generated taxonomy report.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "ls-files"],
+            cwd=repo_root,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise SystemExit(f"ERROR: git ls-files failed: {exc.stderr.strip()}") from exc
+
     files: list[str] = []
-    for path in repo_root.rglob("*"):
-        if not path.is_file():
+    for line in result.stdout.splitlines():
+        path = line.strip()
+        if not path:
             continue
-        rel = path.relative_to(repo_root)
-        parts = rel.parts
+        parts = Path(path).parts
         if any(p in SKIP_DIRS for p in parts):
             continue
-        files.append(str(rel).replace("\\", "/"))
+        files.append(path)
     return sorted(files)
 
 

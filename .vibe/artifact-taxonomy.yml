@@ -508,3 +508,58 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+
+  # ---- .github / CI governance -----------------------------------------------
+  # CI workflows, PR templates, issue templates, CODEOWNERS, and agent
+  # definitions live under .github and are part of repo-wide governance.
+  # They are classified explicitly so the taxonomy report covers them rather
+  # than silently omitting them.
+  - pattern: .github/workflows/*.yml
+    layer: governance
+    kind: ci_workflow
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking, review_required]
+    origin: handcrafted
+  - pattern: .github/CODEOWNERS
+    layer: governance
+    kind: code_ownership
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .github/pull_request_template.md
+    layer: governance
+    kind: contribution_template
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .github/PULL_REQUEST_TEMPLATE/*.md
+    layer: governance
+    kind: contribution_template
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .github/ISSUE_TEMPLATE/*.yml
+    layer: governance
+    kind: issue_template
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .github/agents/*.md
+    layer: agent
+    kind: agent_definition
+    authority: normative_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .github/**
+    layer: governance
+    kind: ci_governance
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted

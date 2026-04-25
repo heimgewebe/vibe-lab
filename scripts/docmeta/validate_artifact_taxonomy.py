@@ -50,20 +50,24 @@ def validate(data: dict) -> list[str]:
         errors.append("'layers' must be a non-empty list")
         valid_layers: set[str] = set()
     else:
-        valid_layers = set(layers)
+        valid_layers = set()
         for i, lyr in enumerate(layers):
-            if not isinstance(lyr, str):
-                errors.append(f"layers[{i}]: must be a string (got {lyr!r})")
+            if not isinstance(lyr, str) or not lyr.strip():
+                errors.append(f"layers[{i}]: must be a non-empty string (got {lyr!r})")
+            else:
+                valid_layers.add(lyr)
 
     authorities = data.get("authorities")
     if not isinstance(authorities, list) or not authorities:
         errors.append("'authorities' must be a non-empty list")
         valid_authorities: set[str] = set()
     else:
-        valid_authorities = set(authorities)
+        valid_authorities = set()
         for i, auth in enumerate(authorities):
-            if not isinstance(auth, str):
-                errors.append(f"authorities[{i}]: must be a string (got {auth!r})")
+            if not isinstance(auth, str) or not auth.strip():
+                errors.append(f"authorities[{i}]: must be a non-empty string (got {auth!r})")
+            else:
+                valid_authorities.add(auth)
 
     rules = data.get("rules")
     if not isinstance(rules, list) or not rules:

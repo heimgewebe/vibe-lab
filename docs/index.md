@@ -103,7 +103,7 @@ relations:
 | [_generated/promotion-readiness.json](_generated/promotion-readiness.json) | diagnostic_dry_run | non_blocking | Promotion-Readiness Dry-Run (Phase 1) |
 | [_generated/metrics/trends.md](_generated/metrics/trends.md) | metric_report | best_effort | Metrik-Trends (feature-gated Diagnose) |
 | [_generated/artifact-taxonomy.md](_generated/artifact-taxonomy.md) | diagnostic_report | non_blocking | Globale Artefakt-Taxonomie (Diagnose, nicht kanonisch) |
-| `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral_trace | non_blocking | Abgeleiteter Zustands-Snapshot |
+| `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral_trace | artifact_only | Abgeleiteter Zustands-Snapshot |
 
 ## Exports (Generiert)
 

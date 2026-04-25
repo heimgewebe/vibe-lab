@@ -46,6 +46,37 @@ class TaxonomyClassificationTest(unittest.TestCase):
         self.assertEqual(c["status"], "unknown")
         self.assertEqual(c["authority"], "unknown")
 
+    def test_github_workflow_classified(self) -> None:
+        c = self._classify(".github/workflows/validate.yml")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["kind"], "ci_workflow")
+        self.assertEqual(c["authority"], "procedure_contract")
+
+    def test_github_agent_classified(self) -> None:
+        c = self._classify(".github/agents/experiment-critic.agent.md")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "agent")
+        self.assertEqual(c["kind"], "agent_definition")
+
+    def test_github_pr_template_classified(self) -> None:
+        c = self._classify(".github/pull_request_template.md")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["kind"], "contribution_template")
+
+    def test_github_issue_template_classified(self) -> None:
+        c = self._classify(".github/ISSUE_TEMPLATE/experiment-proposal.yml")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["kind"], "issue_template")
+
+    def test_github_codeowners_classified(self) -> None:
+        c = self._classify(".github/CODEOWNERS")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["kind"], "code_ownership")
+
 
 if __name__ == "__main__":
     unittest.main()

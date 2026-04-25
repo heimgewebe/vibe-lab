@@ -43,6 +43,9 @@ REQUIRED_ARTIFACT_FIELDS = (
     "ci_policy",
 )
 
+# Scalar required fields that must be non-empty strings (enforcement is a list, handled separately)
+REQUIRED_STRING_FIELDS = frozenset(REQUIRED_ARTIFACT_FIELDS) - {"enforcement"}
+
 PROJECTION_REQUIRED_FIELDS = ("generator", "derives_from", "target_surface")
 
 # Allowed value sets — keep in sync with resolve_generated_artifact_paths.py.
@@ -115,6 +118,12 @@ def validate(data: dict) -> list[str]:
         for field in REQUIRED_ARTIFACT_FIELDS:
             if field not in art:
                 errors.append(f"{prefix}: missing required field '{field}'")
+            elif field in REQUIRED_STRING_FIELDS:
+                val = art[field]
+                if not isinstance(val, str) or not val.strip():
+                    errors.append(
+                        f"{prefix}: field '{field}' must be a non-empty string (got {val!r})"
+                    )
 
         path = art.get("path")
         if isinstance(path, str) and path:
@@ -181,7 +190,11 @@ def validate(data: dict) -> list[str]:
             )
         if isinstance(enforcement, list):
             for tag in enforcement:
-                if isinstance(tag, str) and tag not in VALID_ENFORCEMENTS:
+                if not isinstance(tag, str) or not tag.strip():
+                    errors.append(
+                        f"{prefix}: enforcement values must be non-empty strings (got {tag!r})"
+                    )
+                elif tag not in VALID_ENFORCEMENTS:
                     errors.append(
                         f"{prefix}: unknown enforcement value {tag!r} "
                         f"(known: {sorted(VALID_ENFORCEMENTS)})"
