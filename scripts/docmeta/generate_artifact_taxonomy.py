@@ -199,15 +199,30 @@ def _enforcement_count(items: list[dict]) -> dict[str, int]:
     return dict(sorted(out.items()))
 
 
+_FALLBACK_REVIEW_LAYER_PRIORITY = [
+    "governance", "contract", "generated", "test", "export", "agent",
+    "experiment", "docs", "catalog", "runtime", "capture", "archive",
+]
+_FALLBACK_REVIEW_AUTHORITY_PRIORITY = [
+    "sovereign_source", "normative_contract", "schema_truth", "decision_record",
+    "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
+    "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
+    "unknown",
+]
+
+
 def _is_high_risk_fallback(item: dict) -> bool:
     """Heuristic: a fallback-classified artifact is high-risk when its layer or
     authority indicates governance-critical or immutable content.
 
-    High-risk layers: governance, contract, generated, test
+    High-risk layers: governance, contract, generated, test, agent
     High-risk authorities: sovereign_source, normative_contract, schema_truth,
         decision_record, evidence_log, generated_projection
+
+    Agent definitions are included because they control operational behaviour,
+    not just documentation.
     """
-    high_risk_layers = {"governance", "contract", "generated", "test"}
+    high_risk_layers = {"governance", "contract", "generated", "test", "agent"}
     high_risk_auths = {
         "sovereign_source",
         "normative_contract",
@@ -219,15 +234,37 @@ def _is_high_risk_fallback(item: dict) -> bool:
     return item.get("layer") in high_risk_layers or item.get("authority") in high_risk_auths
 
 
+def fallback_review_sort_key(item: dict) -> tuple:
+    """Sort key for the risk-weighted fallback review table.
+
+    Order: high-risk first, then layer priority, then authority priority, then path.
+    """
+    layer = item.get("layer") or ""
+    authority = item.get("authority") or ""
+    layer_idx = (
+        _FALLBACK_REVIEW_LAYER_PRIORITY.index(layer)
+        if layer in _FALLBACK_REVIEW_LAYER_PRIORITY
+        else len(_FALLBACK_REVIEW_LAYER_PRIORITY)
+    )
+    auth_idx = (
+        _FALLBACK_REVIEW_AUTHORITY_PRIORITY.index(authority)
+        if authority in _FALLBACK_REVIEW_AUTHORITY_PRIORITY
+        else len(_FALLBACK_REVIEW_AUTHORITY_PRIORITY)
+    )
+    # high-risk sorts first: False < True, so negate the boolean
+    return (not _is_high_risk_fallback(item), layer_idx, auth_idx, item.get("path", ""))
+
+
 def build_report(classifications: list[dict], generated_artifacts: list[dict]) -> dict:
     classified = [c for c in classifications if c["status"] != UNKNOWN]
     unknown = [c for c in classifications if c["status"] == UNKNOWN]
     ambiguous = [c for c in classifications if c["status"] == AMBIGUOUS]
     conflict = [c for c in classifications if c["status"] == CONFLICT]
-    # fallback_classified: files matched by a broad catch-all (/**) rule.
-    # These are classified but their classification is low-confidence;
-    # reviewing them periodically helps tighten specific rules over time.
-    fallback_classified = [c for c in classifications if c.get("catchall_match")]
+    # fallback_classified: classified files matched by a broad catch-all (/**) rule.
+    # Filtered from `classified` (status == "classified") so that unknown/ambiguous/conflict
+    # items with catchall_match=True (theoretically impossible today but guarded against)
+    # never inflate the fallback_share metric.
+    fallback_classified = [c for c in classified if c.get("catchall_match")]
 
     # --- fallback share metrics -----------------------------------------------
     classified_total = len(classified)
@@ -391,28 +428,8 @@ def render_markdown(report: dict) -> str:
     _list("High-risk artifacts", report["high_risk_artifacts"])
 
     # --- Risk-weighted fallback review section ---------------------------------
-    _LAYER_PRIORITY = [
-        "governance", "contract", "generated", "test", "export", "agent",
-        "experiment", "docs", "catalog", "runtime", "capture", "archive",
-    ]
-    _AUTHORITY_PRIORITY = [
-        "sovereign_source", "normative_contract", "schema_truth", "decision_record",
-        "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
-        "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
-        "unknown",
-    ]
-
-    def _fallback_sort_key(item: dict) -> tuple:
-        is_high_risk = _is_high_risk_fallback(item)
-        layer = item.get("layer") or ""
-        authority = item.get("authority") or ""
-        layer_idx = _LAYER_PRIORITY.index(layer) if layer in _LAYER_PRIORITY else len(_LAYER_PRIORITY)
-        auth_idx = _AUTHORITY_PRIORITY.index(authority) if authority in _AUTHORITY_PRIORITY else len(_AUTHORITY_PRIORITY)
-        # high-risk sorts first (False < True so negate)
-        return (not is_high_risk, layer_idx, auth_idx, item.get("path", ""))
-
     fallback_items = [c for c in report["classifications"] if c.get("catchall_match")]
-    fallback_sorted = sorted(fallback_items, key=_fallback_sort_key)[:20]
+    fallback_sorted = sorted(fallback_items, key=fallback_review_sort_key)[:20]
 
     lines.append("## Fallback classified artifacts requiring review")
     lines.append("")

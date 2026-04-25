@@ -9,6 +9,7 @@ from generate_artifact_taxonomy import (
     _is_high_risk_fallback,
     build_report,
     classify_file,
+    fallback_review_sort_key,
     load_taxonomy,
     render_markdown,
 )
@@ -206,6 +207,9 @@ class IsHighRiskFallbackTest(unittest.TestCase):
     def test_test_layer_is_high_risk(self) -> None:
         self.assertTrue(_is_high_risk_fallback(self._item("test", "navigation_surface")))
 
+    def test_agent_layer_is_high_risk(self) -> None:
+        self.assertTrue(_is_high_risk_fallback(self._item("agent", "navigation_surface")))
+
     def test_sovereign_source_authority_is_high_risk(self) -> None:
         self.assertTrue(_is_high_risk_fallback(self._item("docs", "sovereign_source")))
 
@@ -223,18 +227,11 @@ class IsHighRiskFallbackTest(unittest.TestCase):
 
 
 class FallbackReviewSectionSortTest(unittest.TestCase):
-    """Tests for the risk-weighted sorting of fallback review items."""
+    """Tests for the risk-weighted sorting of fallback review items.
 
-    _LAYER_PRIORITY = [
-        "governance", "contract", "generated", "test", "export", "agent",
-        "experiment", "docs", "catalog", "runtime", "capture", "archive",
-    ]
-    _AUTHORITY_PRIORITY = [
-        "sovereign_source", "normative_contract", "schema_truth", "decision_record",
-        "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
-        "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
-        "unknown",
-    ]
+    These tests call the production `fallback_review_sort_key` directly, so
+    any change to production sorting will immediately break these tests.
+    """
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -260,13 +257,6 @@ class FallbackReviewSectionSortTest(unittest.TestCase):
             "catchall_match": catchall,
         }
 
-    def _sort_key(self, item: dict) -> tuple:
-        layer = item.get("layer") or ""
-        authority = item.get("authority") or ""
-        layer_idx = self._LAYER_PRIORITY.index(layer) if layer in self._LAYER_PRIORITY else len(self._LAYER_PRIORITY)
-        auth_idx = self._AUTHORITY_PRIORITY.index(authority) if authority in self._AUTHORITY_PRIORITY else len(self._AUTHORITY_PRIORITY)
-        return (not _is_high_risk_fallback(item), layer_idx, auth_idx, item.get("path", ""))
-
     def test_high_risk_before_low_risk(self) -> None:
         items = [
             self._make_item("docs/low.md", True, "docs", "navigation_surface"),
@@ -274,7 +264,7 @@ class FallbackReviewSectionSortTest(unittest.TestCase):
         ]
         report = build_report(items, [])
         fallback_items = [c for c in report["classifications"] if c.get("catchall_match")]
-        sorted_items = sorted(fallback_items, key=self._sort_key)
+        sorted_items = sorted(fallback_items, key=fallback_review_sort_key)
         self.assertTrue(_is_high_risk_fallback(sorted_items[0]))
         self.assertFalse(_is_high_risk_fallback(sorted_items[-1]))
 
@@ -286,7 +276,7 @@ class FallbackReviewSectionSortTest(unittest.TestCase):
         ]
         report = build_report(items, [])
         fallback_items = [c for c in report["classifications"] if c.get("catchall_match")]
-        sorted_items = sorted(fallback_items, key=self._sort_key)
+        sorted_items = sorted(fallback_items, key=fallback_review_sort_key)
         paths = [i["path"] for i in sorted_items]
         # docs (layer index 7) < capture (index 10) → docs items first
         self.assertLess(paths.index("docs/a.md"), paths.index("capture/b.md"))
