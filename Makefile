@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
 
 # Minimaler Guard-Stack
 validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
@@ -181,8 +181,14 @@ generate-blocking: generate-doc-index generate-projections
 	@echo "✅ Generated blocking artifacts (doc-index, projections)."
 
 # Non-blocking diagnostic artifacts: ci_policy=non_blocking
-generate-generated-diagnostics: generate-system-map generate-backlinks generate-orphans generate-promotion-readiness generate-epistemic-state generate-artifact-taxonomy
+generate-generated-diagnostics: generate-system-map generate-backlinks generate-orphans generate-promotion-readiness generate-artifact-taxonomy
 	@echo "✅ Generated non-blocking diagnostics in docs/_generated/."
+
+# artifact_only runtime artifacts: ci_policy=artifact_only, commit_policy=do_not_commit
+# These are NOT committed and NOT part of the normal generate flow.
+# Run explicitly for local inspection or in the ephemeral-diagnostics CI job.
+generate-artifact-only: generate-epistemic-state
+	@echo "✅ Generated artifact-only runtime diagnostics (not committed)."
 
 # Gated/best-effort artifacts: activation=gated or ci_policy=best_effort
 generate-generated-gated: generate-metrics
@@ -259,11 +265,12 @@ help:
 	@echo "  make check-decisions         — Validate system decisions and gate required features"
 	@echo "  make generate           — Generate all artifacts in the v2 contract (blocking + diagnostics + gated)"
 	@echo "  make generate-blocking  — Generate blocking artifacts (doc-index, projections)"
-	@echo "  make generate-generated-diagnostics — Generate non-blocking diagnostic artifacts"
+	@echo "  make generate-generated-diagnostics — Generate non-blocking diagnostic artifacts (ci_policy=non_blocking)"
+	@echo "  make generate-artifact-only         — Generate artifact-only runtime diagnostics (not committed; ci_policy=artifact_only)"
 	@echo "  make generate-generated-gated       — Generate gated/best-effort diagnostic artifacts"
 	@echo "  make generate-projections           — Generate tool projections (exports/)"
 	@echo "  make diagnose           — Alias for non-blocking diagnostics"
-	@echo "  make generate-epistemic-state — Generate epistemic state overview"
+	@echo "  make generate-epistemic-state — Generate epistemic state overview (artifact-only, not committed)"
 	@echo "  make generate-exports   — Generate exports from instruction-blocks"
 	@echo "  make generate-metrics   — Generate decision-gated metrics trend report"
 	@echo "  make generate-artifact-taxonomy — Generate artifact taxonomy report (diagnostic)"

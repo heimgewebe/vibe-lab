@@ -118,6 +118,11 @@ def match_rules(rel_path: str, rules: list[dict]) -> list[dict]:
     return matched
 
 
+def _is_catchall_pattern(pattern: str) -> bool:
+    """Return True if a pattern is a broad catch-all (ends with /** or /**)."""
+    return pattern.endswith("/**") or pattern == "**"
+
+
 def classify_file(rel_path: str, rules: list[dict]) -> dict:
     """Classify a file using the first matching rule (ordered, first-match-wins).
 
@@ -125,6 +130,9 @@ def classify_file(rel_path: str, rules: list[dict]) -> dict:
     specific patterns before general wildcards is the author's responsibility.
     No conflict is possible in a first-match-wins system — a later rule that
     also matches is simply shadowed by the earlier, more specific one.
+
+    The returned dict includes `catchall_match: bool` so callers can distinguish
+    files classified by a broad catch-all from files with a specific rule.
     """
     for rule in rules:
         pattern = rule.get("pattern")
@@ -141,6 +149,7 @@ def classify_file(rel_path: str, rules: list[dict]) -> dict:
                 "enforcement": list(rule.get("enforcement") or []),
                 "origin": rule.get("origin"),
                 "matched_patterns": [pattern],
+                "catchall_match": _is_catchall_pattern(pattern),
             }
     return {
         "path": rel_path,
@@ -152,6 +161,7 @@ def classify_file(rel_path: str, rules: list[dict]) -> dict:
         "enforcement": [],
         "origin": None,
         "matched_patterns": [],
+        "catchall_match": False,
     }
 
 
@@ -176,6 +186,10 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
     unknown = [c for c in classifications if c["status"] == UNKNOWN]
     ambiguous = [c for c in classifications if c["status"] == AMBIGUOUS]
     conflict = [c for c in classifications if c["status"] == CONFLICT]
+    # fallback_classified: files matched by a broad catch-all (/**) rule.
+    # These are classified but their classification is low-confidence;
+    # reviewing them periodically helps tighten specific rules over time.
+    fallback_classified = [c for c in classifications if c.get("catchall_match")]
 
     high_risk_authorities = {
         "sovereign_source",
@@ -228,6 +242,7 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
         "summary": {
             "total": len(classifications),
             "classified": len(classified),
+            "fallback_classified": len(fallback_classified),
             "unknown": len(unknown),
             "ambiguous": len(ambiguous),
             "conflict": len(conflict),
@@ -239,6 +254,7 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
         "ambiguous_artifacts": [c["path"] for c in sorted(ambiguous, key=lambda x: x["path"])],
         "conflict_artifacts": [c["path"] for c in sorted(conflict, key=lambda x: x["path"])],
+        "fallback_classified_artifacts": [c["path"] for c in sorted(fallback_classified, key=lambda x: x["path"])],
         "high_risk_artifacts": [c["path"] for c in high_risk],
         "generated_artifacts_cross_check": cross,
         "transition_risk_hints": transition_risks,
@@ -268,6 +284,7 @@ def render_markdown(report: dict) -> str:
     lines.append("")
     lines.append(f"- total: {s['total']}")
     lines.append(f"- classified: {s['classified']}")
+    lines.append(f"  - of which fallback_classified (catch-all rule): {s['fallback_classified']}")
     lines.append(f"- unknown: {s['unknown']}")
     lines.append(f"- ambiguous: {s['ambiguous']}")
     lines.append(f"- conflict: {s['conflict']}")
@@ -304,6 +321,7 @@ def render_markdown(report: dict) -> str:
     _list("Unknown artifacts", report["unknown_artifacts"])
     _list("Ambiguous artifacts", report["ambiguous_artifacts"])
     _list("Conflict artifacts", report["conflict_artifacts"])
+    _list("Fallback classified artifacts (catch-all rule, low confidence)", report["fallback_classified_artifacts"])
     _list("High-risk artifacts", report["high_risk_artifacts"])
 
     lines.append("## Generated artifacts cross-check")

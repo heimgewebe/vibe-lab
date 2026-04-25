@@ -11,8 +11,9 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 564
-- classified: 564
+- total: 563
+- classified: 563
+  - of which fallback_classified (catch-all rule): 352
 - unknown: 0
 - ambiguous: 0
 - conflict: 0
@@ -21,43 +22,44 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 | layer | count |
 | --- | ---: |
+| archive | 23 |
 | capture | 5 |
-| catalog | 13 |
+| catalog | 12 |
 | contract | 18 |
-| docs | 28 |
-| experiment | 330 |
+| docs | 19 |
+| experiment | 323 |
 | export | 15 |
-| generated | 10 |
-| governance | 57 |
+| generated | 8 |
+| governance | 52 |
 | test | 88 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 17 |
-| diagnostic_signal | 8 |
+| decision_record | 13 |
+| diagnostic_signal | 7 |
 | evidence_log | 14 |
 | generated_projection | 10 |
-| historical_record | 217 |
-| implementation_behavior | 46 |
-| navigation_surface | 16 |
+| historical_record | 210 |
+| implementation_behavior | 45 |
+| navigation_surface | 7 |
 | normative_contract | 27 |
 | procedure_contract | 40 |
 | raw_capture | 20 |
-| result_interpretation | 46 |
-| runtime_observation | 1 |
+| result_interpretation | 45 |
 | schema_truth | 11 |
 | sovereign_source | 3 |
 | test_expectation | 88 |
+| unknown | 23 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 236 |
-| handcrafted | 291 |
-| regenerated | 20 |
+| append_only | 229 |
+| handcrafted | 299 |
+| regenerated | 18 |
 | revision_with_reason | 15 |
 | superseded_not_rewritten | 2 |
 
@@ -66,16 +68,15 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 | enforcement | count |
 | --- | ---: |
 | advisory | 1 |
-| artifact_only | 1 |
-| best_effort | 2 |
+| best_effort | 1 |
 | ci_blocking | 199 |
 | diagnostic | 1 |
-| no_manual_edit | 20 |
-| no_rewrite | 236 |
+| no_manual_edit | 18 |
+| no_rewrite | 229 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 3 |
 | owner_required | 3 |
-| review_required | 129 |
+| review_required | 114 |
 
 ## Unknown artifacts
 
@@ -89,6 +90,361 @@ _none_
 
 _none_
 
+## Fallback classified artifacts (catch-all rule, low confidence)
+
+- `docs/_generated/backlinks.md`
+- `docs/_generated/metrics/trends.md`
+- `docs/_generated/orphans.md`
+- `docs/_generated/system-map.md`
+- `experiments/2026-04-12_spec-first-legacy/artifacts/run-2026-04-12-001/run_meta.json`
+- `experiments/2026-04-12_spec-first-legacy/artifacts/test_output.txt`
+- `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py`
+- `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py`
+- `experiments/2026-04-12_spec-first-legacy/src/test_processor.py`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input1.csv`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input2.csv`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input3.csv`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input4.csv`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input5.csv`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/run-reconstructed/run_meta.json`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/cli.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/errors.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/filters.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/index.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/package.json`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/parser.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/transformer.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/tsconfig.json`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/types.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/index.ts`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/package.json`
+- `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/tsconfig.json`
+- `experiments/2026-04-14_incremental-refinement/artifacts/run-reconstructed/run_meta.json`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/controller.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/errors.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/index.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/routes.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/store.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/types.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/validation.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task1-single-shot/index.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/cli.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/errors.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/filters.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/index.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/parser.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/transformer.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental/types.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task2-single-shot/index.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/app.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/auth.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/errors.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/index.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/logger.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/rate-limiter.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/types.ts`
+- `experiments/2026-04-14_incremental-refinement/artifacts/task3-single-shot/index.ts`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/run_meta.json`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-005-control-variantb/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-005-control-variantb/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-005-control-variantb/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem_quality.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-007-control-holdout/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-007-control-holdout/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-007-control-holdout/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/edit_trace.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem_quality.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/test_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/failure_injection.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/test_injection.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/failure_injection.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_injection.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/failure_extraction.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/test_injection.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/premortem_from_failures.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/test_injection.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/replication_notes.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/test_injection.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/exotic_injection.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/test_exotic.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/premortem.md`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/refactored_processor.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/test_exotic.py`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/test_output.txt`
+- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/time_to_first_pass_seconds.txt`
+- `experiments/2026-04-14_prompt-length-control/artifacts/code_first_parser.py`
+- `experiments/2026-04-14_prompt-length-control/artifacts/code_first_run.txt`
+- `experiments/2026-04-14_prompt-length-control/artifacts/ramble_first_parser.py`
+- `experiments/2026-04-14_prompt-length-control/artifacts/ramble_first_run.txt`
+- `experiments/2026-04-14_prompt-length-control/artifacts/run-reconstructed/run_meta.json`
+- `experiments/2026-04-14_prompt-length-control/artifacts/spec_first_parser.py`
+- `experiments/2026-04-14_prompt-length-control/artifacts/spec_first_run.txt`
+- `experiments/2026-04-14_prompt-length-control/artifacts/test_code_first_parser.py`
+- `experiments/2026-04-14_prompt-length-control/artifacts/test_ramble_first_parser.py`
+- `experiments/2026-04-14_prompt-length-control/artifacts/test_spec_first_parser.py`
+- `experiments/2026-04-14_tdd-vibe/.gitignore`
+- `experiments/2026-04-14_tdd-vibe/artifacts/baseline_roman.py`
+- `experiments/2026-04-14_tdd-vibe/artifacts/baseline_run.txt`
+- `experiments/2026-04-14_tdd-vibe/artifacts/impl-first/app.ts`
+- `experiments/2026-04-14_tdd-vibe/artifacts/impl-first/users.ts`
+- `experiments/2026-04-14_tdd-vibe/artifacts/run-tdd-vibe/run_meta.json`
+- `experiments/2026-04-14_tdd-vibe/artifacts/tdd-vibe/app.ts`
+- `experiments/2026-04-14_tdd-vibe/artifacts/tdd-vibe/users.test.ts`
+- `experiments/2026-04-14_tdd-vibe/artifacts/tdd-vibe/users.ts`
+- `experiments/2026-04-14_tdd-vibe/artifacts/tdd_roman.py`
+- `experiments/2026-04-14_tdd-vibe/artifacts/tdd_run.txt`
+- `experiments/2026-04-14_tdd-vibe/artifacts/test_baseline_roman.py`
+- `experiments/2026-04-14_tdd-vibe/artifacts/test_tdd_roman.py`
+- `experiments/2026-04-14_tdd-vibe/followups.md`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/.gitignore`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/app.ts`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-patched.log`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-unfixed.log`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package-lock.json`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package.json`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/tsconfig.json`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.test.ts`
+- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.ts`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/code_first_run.txt`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/code_first_validator.py`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/run-reconstructed/run_meta.json`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/spec_first_run.txt`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/spec_first_validator.py`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_code_first_validator.py`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_first_run.txt`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_first_validator.py`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_spec_first_validator.py`
+- `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_test_first_validator.py`
+- `experiments/2026-04-14_upfront-structuring/artifacts/run-reconstructed/run_meta.json`
+- `experiments/2026-04-14_upfront-structuring/artifacts/spec_first_roman.py`
+- `experiments/2026-04-14_upfront-structuring/artifacts/spec_first_run.txt`
+- `experiments/2026-04-14_upfront-structuring/artifacts/test_spec_first_roman.py`
+- `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/iteration4-reconciliation.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/metrics.json`
+- `experiments/2026-04-15_agent-task-validity/artifacts/review-notes-iteration4.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/review-notes.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/execution.txt`
+- `experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/run_meta.json`
+- `experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/execution.txt`
+- `experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/run_meta.json`
+- `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md`
+- `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-proof.txt`
+- `experiments/2026-04-15_agent-task-validity/tasks.iteration3.jsonl`
+- `experiments/2026-04-15_agent-task-validity/tasks.iteration4.jsonl`
+- `experiments/2026-04-15_agent-task-validity/tasks.jsonl`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/execution.txt`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/run_meta.json`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/execution.txt`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/run_meta.json`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-003-pr62/execution.txt`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-003-pr62/run_meta.json`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-004-pr63/execution.txt`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-004-pr63/run_meta.json`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-005-pr64/execution.txt`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-005-pr64/run_meta.json`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-006-pr67/execution.txt`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-006-pr67/run_meta.json`
+- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/execution.txt`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/run_meta.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A2.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-B1.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-B2.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-C1.json`
+- `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-D1.json`
+- `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md`
+- `experiments/2026-04-23_phase-1-drift-injection/results/README.md`
+- `experiments/_template/artifacts/README.md`
+- `exports/copilot/constraint-before-code.md`
+- `exports/copilot/edge-case-enumeration.md`
+- `exports/copilot/no-vague-prompts.md`
+- `exports/copilot/spec-first.md`
+- `exports/copilot/validate-against-spec.md`
+- `exports/cursor/constraint-before-code.md`
+- `exports/cursor/edge-case-enumeration.md`
+- `exports/cursor/no-vague-prompts.md`
+- `exports/cursor/spec-first.md`
+- `exports/cursor/validate-against-spec.md`
+- `scripts/adoption/__init__.py`
+- `scripts/adoption/test_validate_adoption_completeness.py`
+- `scripts/adoption/validate_adoption_completeness.py`
+- `scripts/docmeta/_paths.py`
+- `scripts/docmeta/check_system_decisions.py`
+- `scripts/docmeta/generate_artifact_taxonomy.py`
+- `scripts/docmeta/generate_backlinks.py`
+- `scripts/docmeta/generate_doc_index.py`
+- `scripts/docmeta/generate_epistemic_state.py`
+- `scripts/docmeta/generate_metrics.py`
+- `scripts/docmeta/generate_orphans.py`
+- `scripts/docmeta/generate_system_map.py`
+- `scripts/docmeta/resolve_generated_artifact_paths.py`
+- `scripts/docmeta/test_command_version_policy.py`
+- `scripts/docmeta/test_fixture_matrix_audit_surface.py`
+- `scripts/docmeta/test_fixture_matrix_known_gaps_audit.py`
+- `scripts/docmeta/test_generate_artifact_taxonomy.py`
+- `scripts/docmeta/test_generate_epistemic_state.py`
+- `scripts/docmeta/test_promotion_readiness.py`
+- `scripts/docmeta/test_validate_agent_commands.py`
+- `scripts/docmeta/test_validate_agent_handoff.py`
+- `scripts/docmeta/test_validate_artifact_taxonomy.py`
+- `scripts/docmeta/test_validate_command_chain.py`
+- `scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py`
+- `scripts/docmeta/test_validate_generated_artifacts_contract.py`
+- `scripts/docmeta/test_validate_interpretation_budget.py`
+- `scripts/docmeta/test_validate_schema_counterevidence.py`
+- `scripts/docmeta/validate_agent_commands.py`
+- `scripts/docmeta/validate_agent_handoff.py`
+- `scripts/docmeta/validate_artifact_taxonomy.py`
+- `scripts/docmeta/validate_command_chain.py`
+- `scripts/docmeta/validate_execution_proof.py`
+- `scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py`
+- `scripts/docmeta/validate_generated_artifacts_contract.py`
+- `scripts/docmeta/validate_interpretation_budget.py`
+- `scripts/docmeta/validate_promotion_readiness.py`
+- `scripts/docmeta/validate_relations.py`
+- `scripts/docmeta/validate_schema.py`
+- `scripts/exports/__init__.py`
+- `scripts/exports/generate_exports.py`
+- `scripts/exports/test_generate_exports.py`
+- `tests/contracts/test_cross_contract_chain.py`
+- `tests/fixtures/agent_commands/read_context/contract-invalid-empty-fact-string.json`
+- `tests/fixtures/agent_commands/read_context/contract-invalid-empty-target-files.json`
+- `tests/fixtures/agent_commands/read_context/contract-invalid-missing-version.json`
+- `tests/fixtures/agent_commands/read_context/contract-invalid-wrong-command.json`
+- `tests/fixtures/agent_commands/read_context/contract-invalid-wrong-version.json`
+- `tests/fixtures/agent_commands/read_context/valid-edge-complex.json`
+- `tests/fixtures/agent_commands/read_context/valid-minimal.json`
+- `tests/fixtures/agent_commands/validate_change/contract-invalid-duplicate-checks.json`
+- `tests/fixtures/agent_commands/validate_change/contract-invalid-empty-checks.json`
+- `tests/fixtures/agent_commands/validate_change/contract-invalid-failure-empty-errors.json`
+- `tests/fixtures/agent_commands/validate_change/contract-invalid-success-with-errors.json`
+- `tests/fixtures/agent_commands/validate_change/contract-invalid-wrong-command.json`
+- `tests/fixtures/agent_commands/validate_change/valid-edge-multi-checks.json`
+- `tests/fixtures/agent_commands/validate_change/valid-failure.json`
+- `tests/fixtures/agent_commands/validate_change/valid-success.json`
+- `tests/fixtures/agent_commands/write_change/contract-invalid-empty-target-files.json`
+- `tests/fixtures/agent_commands/write_change/contract-invalid-invalid-change-type.json`
+- `tests/fixtures/agent_commands/write_change/contract-invalid-missing-change-type.json`
+- `tests/fixtures/agent_commands/write_change/contract-invalid-missing-locator.json`
+- `tests/fixtures/agent_commands/write_change/contract-invalid-wrong-command.json`
+- `tests/fixtures/agent_commands/write_change/contract-invalid-wrong-version.json`
+- `tests/fixtures/agent_commands/write_change/valid-edge-add-with-target-lines.json`
+- `tests/fixtures/agent_commands/write_change/valid-edge-remove.json`
+- `tests/fixtures/agent_commands/write_change/valid-minimal.json`
+- `tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json`
+- `tests/fixtures/agent_handoff/hash-mismatch.json`
+- `tests/fixtures/agent_handoff/partial-missing-required-fixes.json`
+- `tests/fixtures/agent_handoff/pass-minimal.json`
+- `tests/fixtures/command_chains/invalid-add-with-exact-before.expected.json`
+- `tests/fixtures/command_chains/invalid-add-with-exact-before.json`
+- `tests/fixtures/command_chains/invalid-empty-locator.expected.json`
+- `tests/fixtures/command_chains/invalid-empty-locator.json`
+- `tests/fixtures/command_chains/invalid-error-no-check-prefix.expected.json`
+- `tests/fixtures/command_chains/invalid-error-no-check-prefix.json`
+- `tests/fixtures/command_chains/invalid-error-partial-binding.expected.json`
+- `tests/fixtures/command_chains/invalid-error-partial-binding.json`
+- `tests/fixtures/command_chains/invalid-error-unknown-check-prefix.expected.json`
+- `tests/fixtures/command_chains/invalid-error-unknown-check-prefix.json`
+- `tests/fixtures/command_chains/invalid-mixed-versions.expected.json`
+- `tests/fixtures/command_chains/invalid-mixed-versions.json`
+- `tests/fixtures/command_chains/invalid-remove-with-exact-after.expected.json`
+- `tests/fixtures/command_chains/invalid-remove-with-exact-after.json`
+- `tests/fixtures/command_chains/invalid-target-files-mismatch.expected.json`
+- `tests/fixtures/command_chains/invalid-target-files-mismatch.json`
+- `tests/fixtures/command_chains/invalid-validate-empty-targets.expected.json`
+- `tests/fixtures/command_chains/invalid-validate-empty-targets.json`
+- `tests/fixtures/command_chains/invalid-validate-orphaned.expected.json`
+- `tests/fixtures/command_chains/invalid-validate-orphaned.json`
+- `tests/fixtures/command_chains/invalid-validate-without-write.expected.json`
+- `tests/fixtures/command_chains/invalid-validate-without-write.json`
+- `tests/fixtures/command_chains/invalid-wrong-order.expected.json`
+- `tests/fixtures/command_chains/invalid-wrong-order.json`
+- `tests/fixtures/command_chains/valid-errors-with-check-prefix.json`
+- `tests/fixtures/command_chains/valid-minimal.json`
+- `tests/fixtures/command_chains/valid-validate-with-write.json`
+- `tests/fixtures/cross_contract/invalid/contract_invalid.json`
+- `tests/fixtures/cross_contract/invalid/contradiction.json`
+- `tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json`
+- `tests/fixtures/cross_contract/invalid/semantic_mismatch.json`
+- `tests/fixtures/cross_contract/invalid/state_drift.json`
+- `tests/fixtures/cross_contract/invalid/target_drift.json`
+- `tests/fixtures/cross_contract/invalid/target_drift_extra.json`
+- `tests/fixtures/cross_contract/invalid/version_conflict.json`
+- `tests/fixtures/cross_contract/valid/minimal_chain.json`
+- `tests/fixtures/experiment_structure_phase1c/expected-outcomes.json`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/manifest.yml`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/results/decision.yml`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/results/evidence.jsonl`
+- `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/manifest.yml`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/results/decision.yml`
+- `tests/fixtures/experiment_structure_phase1c/insufficient_input/results/evidence.jsonl`
+- `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md`
+- `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md`
+- `tests/fixtures/experiment_structure_phase1c/valid/manifest.yml`
+- `tests/fixtures/experiment_structure_phase1c/valid/results/decision.yml`
+- `tests/fixtures/experiment_structure_phase1c/valid/results/evidence.jsonl`
+- `tests/fixtures/experiment_structure_phase1c/valid/results/result.md`
+- `tests/fixtures/falsifiability/invalid.json`
+- `tests/fixtures/falsifiability/valid.json`
+- `tools/vibe-cli/replay_minimal.py`
+- `tools/vibe-cli/test_replay_minimal.py`
+
 ## High-risk artifacts
 
 - `.vibe/artifact-taxonomy.yml`
@@ -100,10 +456,6 @@ _none_
 - `agent-policy.yaml`
 - `contracts/docmeta.schema.json`
 - `contracts/system_decision.schema.json`
-- `decisions/benchmark/.gitkeep`
-- `decisions/export/.gitkeep`
-- `decisions/policy/.gitkeep`
-- `decisions/process/.gitkeep`
 - `decisions/system/2026-04-23-catalog-staleness-dormant.yml`
 - `decisions/system/2026-04-23-metrics-enabled.yml`
 - `docs/foundations/repo-plan.md`
@@ -172,7 +524,7 @@ _none_
 | `docs/_generated/artifact-taxonomy.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
 | `docs/_generated/backlinks.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
 | `docs/_generated/doc-index.md` | ✅ | navigation_surface | navigation_surface |  |
-| `docs/_generated/epistemic-state.md` | ✅ | runtime_observation | runtime_observation |  |
+| `docs/_generated/epistemic-state.md` | ❌ | runtime_observation | - |  |
 | `docs/_generated/metrics/trends.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
 | `docs/_generated/orphans.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
 | `docs/_generated/promotion-readiness.json` | ✅ | diagnostic_signal | diagnostic_signal |  |

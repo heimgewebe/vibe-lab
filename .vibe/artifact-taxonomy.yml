@@ -174,6 +174,18 @@ rules:
     enforcement: [review_required]
     origin: handcrafted
 
+  # ---- .gitkeep markers (must precede all broad catch-alls) ------------------
+  # .gitkeep files are directory-presence markers with no semantic content.
+  # This rule is placed early so broad wildcards (docs/**, decisions/**,
+  # catalog/**, experiments/**, etc.) cannot classify them as real artifacts.
+  - pattern: "**/.gitkeep"
+    layer: archive
+    kind: directory_marker
+    authority: unknown
+    lifecycle: handcrafted
+    enforcement: []
+    origin: handcrafted
+
   # ---- experiments -----------------------------------------------------------
   - pattern: experiments/*/INITIAL.md
     layer: experiment
@@ -495,13 +507,4 @@ rules:
     authority: implementation_behavior
     lifecycle: handcrafted
     enforcement: [review_required]
-    origin: handcrafted
-
-  # ---- .gitkeep markers ------------------------------------------------------
-  - pattern: "**/.gitkeep"
-    layer: archive
-    kind: directory_marker
-    authority: unknown
-    lifecycle: handcrafted
-    enforcement: []
     origin: handcrafted
