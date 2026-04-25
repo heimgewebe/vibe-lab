@@ -19,6 +19,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from typing import Callable
 
 try:
     import yaml
@@ -207,7 +208,7 @@ def _bucket_count(items: list[dict], key: str) -> dict[str, int]:
     return dict(sorted(out.items()))
 
 
-def _bucket_count_by_func(items: list[dict], func) -> dict[str, int]:
+def _bucket_count_by_func(items: list[dict], func: Callable[[dict], str]) -> dict[str, int]:
     """Like _bucket_count but derives the bucket key via an arbitrary function."""
     out: dict[str, int] = {}
     for item in items:

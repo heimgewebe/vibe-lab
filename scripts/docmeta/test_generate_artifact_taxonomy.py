@@ -252,7 +252,6 @@ class SelectFallbackPatternTest(unittest.TestCase):
 
 
 class IsHighRiskFallbackTest(unittest.TestCase):
-
     def _item(self, layer: str | None, authority: str | None) -> dict:
         return {"layer": layer, "authority": authority}
 
