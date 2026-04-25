@@ -1,55 +1,167 @@
-schema_version: "0.1.0"
-triggered_by: "agent-instruction-2026-04-23-system-map-decoupling"
+schema_version: "2.0.0"
+contract: generated_artifacts
+triggered_by: "agent-instruction-2026-04-25-generated-artifact-contract-v2"
 
-generated_artifact_contract:
-  canonical:
-    description: "Teil der Navigations-/Orientierungsoberflaeche mit Review-Wert"
-    commit_policy: "commit-required"
-    ci_policy: "blocking"
-    files:
-      - docs/_generated/doc-index.md
+# Object-based generated-artifact contract.
+# Replaces the legacy bucket grouping (canonical/derived/gated/exports/ephemeral)
+# with explicit per-artifact objects. See:
+#   experiments/2026-04-19_generated-artifact-contract-validation/artifacts/
+#     contract-v2-reconciliation.md
+# for the historical reconciliation note.
 
-  derived:
-    description: "Rekonstruierbare Diagnose, nuetzlich aber nicht wahrheitsstiftend"
-    commit_policy: "optional"
-    ci_policy: "non-blocking"
-    files:
-      - docs/_generated/system-map.md
-      - docs/_generated/backlinks.md
-      - docs/_generated/orphans.md
-      - docs/_generated/promotion-readiness.json
-    semantic_roles:
-      docs/_generated/system-map.md:
-        role: "diagnostic-core"
-        decision_impact: "decision-shaping"
-        note: "Derived, aber als Orientierungsartefakt epistemisch hervorgehoben."
-      docs/_generated/promotion-readiness.json:
-        role: "diagnostic-dry-run"
-        decision_impact: "observational"
-        note: "Phase-1 Dry-Run des Falsifizierbarkeits-/Promotion-Readiness-Gates. Diagnose, keine Wahrheit; Hard-Fail ist Phase 2/3 vorbehalten."
+defaults:
+  origin: generated
+  lifecycle: regenerated
+  activation: always
+  enforcement:
+    - no_manual_edit
 
-  gated:
-    description: "Gate-geschuetzte Diagnose; nur verfuegbar, wenn Feature-Entscheidung aktiv ist"
-    commit_policy: "optional"
-    ci_policy: "best-effort"
-    files:
-      - docs/_generated/metrics/trends.md
+classes:
+  generated_index:
+    description: "Generated index or navigation surface."
+    authority: navigation_surface
+  diagnostic_report:
+    description: "Generated diagnostic report; review-relevant, not truth-bearing."
+    authority: diagnostic_signal
+  diagnostic_dry_run:
+    description: "Dry-run output for a guard or gate without hard enforcement."
+    authority: diagnostic_signal
+  metric_report:
+    description: "Generated metric or trend surface."
+    authority: diagnostic_signal
+  generated_projection:
+    description: "Tool-specific projection generated from canonical source material."
+    authority: generated_projection
+  ephemeral_trace:
+    description: "Short-lived runtime or diagnostic output."
+    authority: runtime_observation
 
-  exports:
-    description: "Abgeleitete, toolspezifische Repräsentationen aus instruction-blocks/"
-    commit_policy: "commit-required"
-    ci_policy: "blocking"
-    regenerable: true
+artifacts:
+  - path: docs/_generated/doc-index.md
+    class: generated_index
+    generator: scripts/docmeta/generate_doc_index.py
+    authority: navigation_surface
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [ci_blocking, no_manual_edit]
+    activation: always
+    commit_policy: commit_required
+    ci_policy: blocking
+
+  - path: docs/_generated/system-map.md
+    class: diagnostic_report
+    generator: scripts/docmeta/generate_system_map.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: docs/_generated/backlinks.md
+    class: diagnostic_report
+    generator: scripts/docmeta/generate_backlinks.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: docs/_generated/orphans.md
+    class: diagnostic_report
+    generator: scripts/docmeta/generate_orphans.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: docs/_generated/promotion-readiness.json
+    class: diagnostic_dry_run
+    generator: scripts/docmeta/validate_promotion_readiness.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: docs/_generated/metrics/trends.md
+    class: metric_report
+    generator: scripts/docmeta/generate_metrics.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [best_effort, no_manual_edit]
+    activation: gated
+    commit_policy: optional
+    ci_policy: best_effort
+
+  - path: docs/_generated/epistemic-state.md
+    class: ephemeral_trace
+    generator: scripts/docmeta/generate_epistemic_state.py
+    authority: runtime_observation
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: docs/_generated/artifact-taxonomy.md
+    class: diagnostic_report
+    generator: scripts/docmeta/generate_artifact_taxonomy.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: docs/_generated/artifact-taxonomy.json
+    class: diagnostic_report
+    generator: scripts/docmeta/generate_artifact_taxonomy.py
+    authority: diagnostic_signal
+    origin: generated
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    activation: always
+    commit_policy: optional
+    ci_policy: non_blocking
+
+  - path: exports/copilot/
+    class: generated_projection
+    generator: scripts/exports/generate_exports.py
+    derives_from: instruction-blocks/*.md
+    target_surface: copilot
+    authority: generated_projection
+    origin: projected
+    lifecycle: regenerated
+    enforcement: [ci_blocking, no_manual_edit]
+    activation: always
     deterministic: true
-    source: "instruction-blocks/*.md"
-    generator: "scripts/exports/generate_exports.py"
-    files:
-      - exports/copilot/
-      - exports/cursor/
+    regenerable: true
+    commit_policy: commit_required
+    ci_policy: blocking
 
-  ephemeral:
-    description: "Laufzeitdiagnose; wird als CI-Artefakt bereitgestellt"
-    commit_policy: "do-not-commit"
-    ci_policy: "artifact-only"
-    files:
-      - docs/_generated/epistemic-state.md
+  - path: exports/cursor/
+    class: generated_projection
+    generator: scripts/exports/generate_exports.py
+    derives_from: instruction-blocks/*.md
+    target_surface: cursor
+    authority: generated_projection
+    origin: projected
+    lifecycle: regenerated
+    enforcement: [ci_blocking, no_manual_edit]
+    activation: always
+    deterministic: true
+    regenerable: true
+    commit_policy: commit_required
+    ci_policy: blocking

@@ -1,0 +1,52 @@
+schema_version: "1.0.0"
+contract: artifact_transitions
+contract_status: advisory
+
+# Advisory transition contract.
+# Describes valid (and forbidden) flows between artifact layers/kinds defined
+# in `.vibe/artifact-taxonomy.yml`. There is no blocking validator for this
+# contract in this PR; only YAML syntax / structural well-formedness can be
+# checked by load-time tools.
+
+transitions:
+  - name: capture_to_experiment
+    from:
+      layer: capture
+    to:
+      layer: experiment
+    gate: experiment_proposal
+
+  - name: experiment_result_to_catalog
+    from:
+      layer: experiment
+      kind: result_interpretation
+    to:
+      layer: catalog
+    gate: promotion_request
+
+  - name: catalog_to_export_source
+    from:
+      layer: catalog
+    to:
+      layer: export
+      kind: export_source
+    gate: adoption_decision
+
+  - name: export_source_to_projection
+    from:
+      layer: export
+      kind: export_source
+    to:
+      layer: export
+      kind: tool_projection
+    gate: deterministic_generator
+
+forbidden:
+  - name: interpretation_must_not_rewrite_evidence
+    from_authority: result_interpretation
+    to_authority: evidence_log
+
+  - name: diagnostic_must_not_become_decision_without_review
+    from_authority: diagnostic_signal
+    to_authority: decision_record
+    unless_enforcement: review_required

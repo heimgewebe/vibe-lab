@@ -23,6 +23,15 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install pyyaml jsonschema rfc3339-validator
 
+      - name: Validate generated-artifact contract (v2)
+        run: python3 scripts/docmeta/validate_generated_artifacts_contract.py
+
+      - name: Test generated-artifact contract validator
+        run: python3 scripts/docmeta/test_validate_generated_artifacts_contract.py
+
+      - name: Test artifact taxonomy generator
+        run: python3 scripts/docmeta/test_generate_artifact_taxonomy.py
+
       - name: Validate schemas
         run: python3 scripts/docmeta/validate_schema.py
 
@@ -104,36 +113,23 @@ jobs:
       - name: Validate promotion-readiness (dry-run, Phase 1)
         run: python3 scripts/docmeta/validate_promotion_readiness.py
 
-      - name: Regenerate canonical diagnostics
-        run: make generate-canonical
+      - name: Regenerate blocking artifacts
+        run: make generate-blocking
 
-      - name: Check canonical diagnostics contract
+      - name: Check blocking generated-artifact contract
         run: |
-          # NOTE: canonical file list is contract-driven via .vibe/generated-artifacts.yml.
-          # Keep make targets and docs/index.md classification aligned with this contract.
-          mapfile -t canonical_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py canonical)
-          if [[ "${#canonical_paths[@]}" -eq 0 ]]; then
-            echo "ERROR: canonical path list from .vibe/generated-artifacts.yml is empty"
+          # Blocking artifacts are contract-driven via .vibe/generated-artifacts.yml (v2).
+          # Filter: --ci-policy blocking. Includes generated_index (doc-index) and
+          # generated_projection (exports/copilot, exports/cursor).
+          mapfile -t blocking_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy blocking)
+          if [[ "${#blocking_paths[@]}" -eq 0 ]]; then
+            echo "ERROR: blocking artifact list from .vibe/generated-artifacts.yml is empty"
             exit 1
           fi
-          if git status --porcelain -- "${canonical_paths[@]}" | grep -q .; then
-            echo "❌ Canonical diagnostics contract violated. Run 'make generate-canonical' and commit the changes."
-            git status --porcelain -- "${canonical_paths[@]}"
-            git diff -- "${canonical_paths[@]}" || true
-            exit 1
-          fi
-
-      - name: Check exports contract
-        run: |
-          mapfile -t export_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py exports)
-          if [[ "${#export_paths[@]}" -eq 0 ]]; then
-            echo "ERROR: exports path list from .vibe/generated-artifacts.yml is empty"
-            exit 1
-          fi
-          if git status --porcelain -- "${export_paths[@]}" | grep -q .; then
-            echo "❌ Exports contract violated. Run 'make generate-exports' and commit the changes."
-            git status --porcelain -- "${export_paths[@]}"
-            git diff -- "${export_paths[@]}" || true
+          if git status --porcelain -- "${blocking_paths[@]}" | grep -q .; then
+            echo "❌ Blocking generated-artifact contract violated. Run 'make generate-blocking' and commit the changes."
+            git status --porcelain -- "${blocking_paths[@]}"
+            git diff -- "${blocking_paths[@]}" || true
             exit 1
           fi
 
@@ -151,34 +147,34 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install pyyaml jsonschema rfc3339-validator
 
-      - name: Generate derived core diagnostics
-        run: make generate-derived-core
+      - name: Generate non-blocking diagnostic artifacts
+        run: make generate-generated-diagnostics
 
-      - name: Generate derived gated diagnostics (best effort)
-        run: make generate-derived-gated || true
+      - name: Generate gated diagnostic artifacts (best effort)
+        run: make generate-generated-gated || true
 
-      - name: Resolve derived core paths
+      - name: Resolve non-blocking diagnostic paths
         id: derived_core_paths
         run: |
           {
             echo "paths<<EOF"
-            python3 scripts/docmeta/resolve_generated_artifact_paths.py derived
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy non_blocking
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Upload derived diagnostics artifact
+      - name: Upload non-blocking diagnostics artifact
         uses: actions/upload-artifact@v4
         with:
-          name: derived-diagnostics
+          name: generated-diagnostics
           path: ${{ steps.derived_core_paths.outputs.paths }}
           if-no-files-found: warn
 
-      - name: Resolve gated paths
+      - name: Resolve gated/best-effort paths
         id: gated_paths
         run: |
           {
             echo "paths<<EOF"
-            python3 scripts/docmeta/resolve_generated_artifact_paths.py gated
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy best_effort
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
@@ -189,22 +185,22 @@ jobs:
           path: ${{ steps.gated_paths.outputs.paths }}
           if-no-files-found: ignore
 
-      - name: Generate derived drift report (non-blocking)
+      - name: Generate non-blocking diagnostics drift report
         id: derived_drift
         run: |
           report="generated-drift-report.txt"
           : > "$report"
 
-          mapfile -t derived_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py derived)
+          mapfile -t derived_paths < <(python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy non_blocking)
           if [[ "${#derived_paths[@]}" -eq 0 ]]; then
-            echo "No derived-core paths resolved from contract." >> "$report"
+            echo "No non-blocking diagnostic paths resolved from contract." >> "$report"
             echo "drift_detected=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           if git status --porcelain -- "${derived_paths[@]}" | grep -q .; then
             {
-              echo "Derived diagnostics drift detected."
+              echo "Non-blocking diagnostics drift detected."
               echo
               echo "[git status --porcelain]"
               git status --porcelain -- "${derived_paths[@]}"
@@ -214,14 +210,14 @@ jobs:
             } >> "$report"
             echo "drift_detected=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No derived diagnostics drift detected." >> "$report"
+            echo "No non-blocking diagnostics drift detected." >> "$report"
             echo "drift_detected=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Soft escalation for derived drift (warning only)
+      - name: Soft escalation for diagnostics drift (warning only)
         if: steps.derived_drift.outputs.drift_detected == 'true'
         run: |
-          echo "::warning title=Generated diagnostics drift::Derived diagnostics changed; review generated-drift-report.txt."
+          echo "::warning title=Generated diagnostics drift::Non-blocking diagnostics changed; review generated-drift-report.txt."
 
       - name: Upload generated drift report artifact
         uses: actions/upload-artifact@v4
@@ -243,15 +239,15 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install pyyaml jsonschema rfc3339-validator
 
-      - name: Generate ephemeral diagnostics
-        run: make generate-ephemeral
+      - name: Generate epistemic state
+        run: make generate-epistemic-state
 
-      - name: Resolve ephemeral diagnostics paths from contract
+      - name: Resolve ephemeral_trace artifact paths from contract
         id: ephemeral_paths
         run: |
           {
             echo "paths<<EOF"
-            python3 scripts/docmeta/resolve_generated_artifact_paths.py ephemeral
+            python3 scripts/docmeta/resolve_generated_artifact_paths.py --class ephemeral_trace
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 

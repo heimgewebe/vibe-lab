@@ -123,6 +123,7 @@
 | `experiments/2026-04-19_generated-artifact-contract-validation/CONTEXT.md` | Kontext: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/INITIAL.md` | Initiale Situation: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md` | README | — | — |
+| `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md` | contract-v2-reconciliation | derived | derived |
 | `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md` | run-template | — | — |
 | `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` | Failure Modes: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-19_generated-artifact-contract-validation/method.md` | Methode: Generated Artifact Contract Validation | draft | operative |

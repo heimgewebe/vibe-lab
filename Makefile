@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests check-decisions generate generate-canonical generate-derived generate-derived-core generate-derived-gated generate-ephemeral generate-exports generate-metrics generate-promotion-readiness generate-stable generate-volatile diagnose generate-epistemic-state help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
 
 # Minimaler Guard-Stack
-validate: validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
+validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
 	@# Promotion-Readiness als Dry-Run (Phase 1): inhaltliche not_ready-Befunde
 	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
 	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
@@ -147,35 +147,45 @@ validate-promotion-readiness-tests:
 	@echo "🧪 Running promotion-readiness regression tests..."
 	@python3 scripts/docmeta/test_promotion_readiness.py
 
+validate-generated-artifacts-contract:
+	@echo "📜 Validating generated-artifact contract (v2)..."
+	@python3 scripts/docmeta/validate_generated_artifacts_contract.py
+
+validate-generated-artifacts-contract-tests:
+	@echo "🧪 Running generated-artifact contract regression tests..."
+	@python3 scripts/docmeta/test_validate_generated_artifacts_contract.py
+
+validate-artifact-taxonomy-tests:
+	@echo "🧪 Running artifact taxonomy generator regression tests..."
+	@python3 scripts/docmeta/test_generate_artifact_taxonomy.py
+
 check-decisions:
 	@echo "🔐 Validating system decision guard..."
 	@python3 scripts/docmeta/check_system_decisions.py
 
-# Diagnose-Generatoren
-generate: generate-canonical generate-derived generate-ephemeral
+# Diagnose-Generatoren (v2 contract: filter-driven)
+generate: generate-blocking generate-generated-diagnostics
+	@$(MAKE) generate-generated-gated || true
 	@echo "✅ Generated diagnostics in docs/_generated/."
 
-generate-canonical: generate-doc-index generate-exports
-	@echo "✅ Generated canonical diagnostics in docs/_generated/."
+# Blocking artifacts: ci_policy=blocking (generated index + projections)
+generate-blocking: generate-doc-index generate-projections
+	@echo "✅ Generated blocking artifacts (doc-index, projections)."
 
-generate-derived: generate-derived-core
-	@$(MAKE) generate-derived-gated || true
-	@echo "✅ Generated derived diagnostics in docs/_generated/."
+# Non-blocking diagnostic artifacts: ci_policy=non_blocking
+generate-generated-diagnostics: generate-system-map generate-backlinks generate-orphans generate-promotion-readiness generate-epistemic-state generate-artifact-taxonomy
+	@echo "✅ Generated non-blocking diagnostics in docs/_generated/."
 
-generate-derived-core: generate-system-map generate-backlinks generate-orphans generate-promotion-readiness
-	@echo "✅ Generated core derived diagnostics in docs/_generated/."
+# Gated/best-effort artifacts: activation=gated or ci_policy=best_effort
+generate-generated-gated: generate-metrics
+	@echo "✅ Generated gated diagnostics in docs/_generated/."
 
-generate-derived-gated: generate-metrics
-	@echo "✅ Generated gated derived diagnostics in docs/_generated/."
+# Tool projections: class=generated_projection
+generate-projections: generate-exports
+	@echo "✅ Generated tool projections in exports/."
 
-generate-ephemeral: generate-epistemic-state
-	@echo "✅ Generated ephemeral diagnostics in docs/_generated/."
-
-# Backward-compatible aliases
-generate-stable: generate-canonical
-generate-volatile: generate-derived generate-ephemeral
-
-diagnose: generate-derived generate-ephemeral
+diagnose: generate-generated-diagnostics
+	@$(MAKE) generate-generated-gated || true
 	@echo "✅ Generated non-blocking diagnostics for local inspection."
 
 generate-doc-index:
@@ -204,10 +214,16 @@ generate-exports:
 generate-metrics: check-decisions
 	@python3 scripts/docmeta/generate_metrics.py
 
+generate-artifact-taxonomy:
+	@python3 scripts/docmeta/generate_artifact_taxonomy.py
+
 help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
-	@echo "  make validate                  — Run schema, execution-proof, relations, interpretation-budget, handoff, and regression-test guards"
+	@echo "  make validate                  — Run schema, execution-proof, relations, interpretation-budget, handoff, generated-artifact contract, and regression-test guards"
+	@echo "  make validate-generated-artifacts-contract — Validate .vibe/generated-artifacts.yml against v2 contract"
+	@echo "  make validate-generated-artifacts-contract-tests — Run generated-artifact contract regression tests"
+	@echo "  make validate-artifact-taxonomy-tests — Run artifact taxonomy generator regression tests"
 	@echo "  make validate-schemas                  — Validate artifacts against JSON schemas"
 	@echo "  make validate-schemas-counterevidence-tests — Run P2 counterevidence rule regression tests"
 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
@@ -233,16 +249,14 @@ help:
 	@echo "  make validate-promotion-readiness — Dry-run Phase-1 promotion-readiness gate (non-blocking)"
 	@echo "  make validate-promotion-readiness-tests — Run promotion-readiness regression tests"
 	@echo "  make check-decisions         — Validate system decisions and gate required features"
-	@echo "  make generate           — Generate canonical, derived, and ephemeral diagnostics"
-	@echo "  make generate-canonical — Generate contract-relevant diagnostics (blocking in CI)"
-	@echo "  make generate-derived   — Generate reconstructable diagnostics (core + gated)"
-	@echo "  make generate-derived-core  — Generate non-gated derived diagnostics (system-map, backlinks, orphans)"
-	@echo "  make generate-derived-gated — Generate gate-protected derived diagnostics (metrics)"
-	@echo "  make generate-ephemeral — Generate runtime-only diagnostics (artifact-first)"
-	@echo "  make generate-stable    — Alias for make generate-canonical"
-	@echo "  make generate-volatile  — Alias for make generate-derived + make generate-ephemeral"
+	@echo "  make generate           — Generate all artifacts in the v2 contract (blocking + diagnostics + gated)"
+	@echo "  make generate-blocking  — Generate blocking artifacts (doc-index, projections)"
+	@echo "  make generate-generated-diagnostics — Generate non-blocking diagnostic artifacts"
+	@echo "  make generate-generated-gated       — Generate gated/best-effort diagnostic artifacts"
+	@echo "  make generate-projections           — Generate tool projections (exports/)"
 	@echo "  make diagnose           — Alias for non-blocking diagnostics"
 	@echo "  make generate-epistemic-state — Generate epistemic state overview"
 	@echo "  make generate-exports   — Generate exports from instruction-blocks"
 	@echo "  make generate-metrics   — Generate decision-gated metrics trend report"
+	@echo "  make generate-artifact-taxonomy — Generate artifact taxonomy report (diagnostic)"
 	@echo "  make help               — Show this help"

@@ -101,7 +101,7 @@ make validate
 
 Dieser Befehl führt den minimalen Guard-Stack aus (Schema- und Relations-Validierung). Er prüft `experiments/`, `catalog/` und `prompts/` — **nicht** `raw-vibes/`.
 
-Generierte Diagnosen werden durch `.vibe/generated-artifacts.yml` klassifiziert. Kanonische generierte Dateien und Exporte bleiben commit-pflichtig; abgeleitete Diagnosen sind optional und nicht blockierend. Die CI regeneriert abgeleitete Diagnosen zur besseren Beobachtbarkeit.
+Generierte Diagnosen werden durch `.vibe/generated-artifacts.yml` (Generated-Artifact-Contract v2) als objektbasierte Artefakte mit `class`, `ci_policy` und `commit_policy` klassifiziert. `ci_policy: blocking` Artefakte (z. B. `generated_index`, `generated_projection`) bleiben commit-pflichtig; `ci_policy: non_blocking` Diagnosen sind optional. Die CI regeneriert non-blocking Diagnosen zur besseren Beobachtbarkeit. Pfade können über `python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy <policy>` oder `--class <class>` aufgelöst werden; legacy Gruppennamen (`canonical`/`derived`/`gated`/`exports`/`ephemeral`) sind nicht mehr unterstützt.
 
 ## Steuerungsdokumente
 

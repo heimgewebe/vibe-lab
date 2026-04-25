@@ -1,0 +1,296 @@
+schema_version: "1.0.0"
+contract: artifact_taxonomy
+contract_status: diagnostic
+
+# Global artifact taxonomy.
+# Classifies ALL repository artifacts semantically — not limited to generated files.
+# This contract is diagnostic/non-blocking in this PR. The generated taxonomy
+# report (docs/_generated/artifact-taxonomy.{md,json}) surfaces classification,
+# unknown files, ambiguous matches, and conflicts.
+#
+# Dimensions (every rule should populate these where applicable):
+#   - layer:        repo zone the artifact belongs to
+#   - kind:         semantic role within that zone
+#   - authority:    epistemic weight (sovereign_source > … > unknown)
+#   - lifecycle:    how the artifact evolves (handcrafted, regenerated, …)
+#   - enforcement:  list of enforcement signals
+#   - origin:       where the artifact comes from (handcrafted, generated, …)
+
+layers:
+  - governance
+  - contract
+  - experiment
+  - catalog
+  - docs
+  - generated
+  - export
+  - agent
+  - test
+  - runtime
+  - capture
+  - archive
+
+authorities:
+  - sovereign_source
+  - normative_contract
+  - schema_truth
+  - procedure_contract
+  - evidence_log
+  - decision_record
+  - result_interpretation
+  - diagnostic_signal
+  - navigation_surface
+  - generated_projection
+  - implementation_behavior
+  - test_expectation
+  - runtime_observation
+  - raw_capture
+  - historical_record
+  - unknown
+
+# Rules are evaluated in order. The first matching rule classifies the artifact.
+# Patterns are interpreted as fnmatch globs against the repo-relative path.
+rules:
+  # ---- governance / sovereign sources ---------------------------------------
+  - pattern: repo.meta.yaml
+    layer: governance
+    kind: sovereign_source
+    authority: sovereign_source
+    lifecycle: handcrafted
+    enforcement: [canonical, no_silent_edit]
+    origin: handcrafted
+  - pattern: AGENTS.md
+    layer: governance
+    kind: agent_reading_rules
+    authority: sovereign_source
+    lifecycle: handcrafted
+    enforcement: [canonical, no_silent_edit]
+    origin: handcrafted
+  - pattern: agent-policy.yaml
+    layer: governance
+    kind: agent_policy
+    authority: sovereign_source
+    lifecycle: handcrafted
+    enforcement: [canonical, no_silent_edit]
+    origin: handcrafted
+
+  # ---- contracts / schemas ---------------------------------------------------
+  - pattern: .vibe/generated-artifacts.yml
+    layer: contract
+    kind: generated_artifact_contract
+    authority: normative_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: .vibe/artifact-taxonomy.yml
+    layer: contract
+    kind: artifact_taxonomy_contract
+    authority: normative_contract
+    lifecycle: handcrafted
+    enforcement: [diagnostic]
+    origin: handcrafted
+  - pattern: .vibe/artifact-transitions.yml
+    layer: contract
+    kind: artifact_transition_contract
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [advisory]
+    origin: handcrafted
+  - pattern: .vibe/constraints.yml
+    layer: contract
+    kind: vibe_contract
+    authority: normative_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: .vibe/quality-gates.yml
+    layer: contract
+    kind: vibe_contract
+    authority: normative_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: .vibe/intent.md
+    layer: contract
+    kind: vibe_intent
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: schemas/*.json
+    layer: contract
+    kind: json_schema
+    authority: schema_truth
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: contracts/*.schema.json
+    layer: contract
+    kind: json_schema
+    authority: schema_truth
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: contracts/*.md
+    layer: contract
+    kind: contract_doc
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+
+  # ---- experiments -----------------------------------------------------------
+  - pattern: experiments/*/INITIAL.md
+    layer: experiment
+    kind: experiment_proposal
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: experiments/*/CONTEXT.md
+    layer: experiment
+    kind: experiment_context
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: experiments/*/method.md
+    layer: experiment
+    kind: experiment_method
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: experiments/*/failure_modes.md
+    layer: experiment
+    kind: experiment_failure_modes
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: experiments/*/manifest.yml
+    layer: experiment
+    kind: experiment_manifest
+    authority: schema_truth
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: experiments/*/results/evidence.jsonl
+    layer: experiment
+    kind: evidence_log
+    authority: evidence_log
+    lifecycle: append_only
+    enforcement: [no_rewrite, ci_blocking]
+    origin: handcrafted
+  - pattern: experiments/*/results/decision.yml
+    layer: experiment
+    kind: decision_record
+    authority: decision_record
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: experiments/*/results/result.md
+    layer: experiment
+    kind: result_interpretation
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: experiments/*/artifacts/**
+    layer: experiment
+    kind: experiment_artifact
+    authority: historical_record
+    lifecycle: append_only
+    enforcement: [no_rewrite]
+    origin: handcrafted
+
+  # ---- generated diagnostics -------------------------------------------------
+  - pattern: docs/_generated/**
+    layer: generated
+    kind: generated_artifact
+    authority: diagnostic_signal
+    lifecycle: regenerated
+    enforcement: [no_manual_edit]
+    origin: generated
+
+  # ---- exports / projections -------------------------------------------------
+  - pattern: exports/**
+    layer: export
+    kind: tool_projection
+    authority: generated_projection
+    lifecycle: regenerated
+    enforcement: [no_manual_edit, ci_blocking]
+    origin: projected
+
+  # ---- documentation ---------------------------------------------------------
+  - pattern: docs/index.md
+    layer: docs
+    kind: navigation_index
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: docs/policies/*.md
+    layer: docs
+    kind: policy_doc
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: docs/blueprints/*.md
+    layer: docs
+    kind: blueprint_doc
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: docs/concepts/*.md
+    layer: docs
+    kind: concept_doc
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: docs/reference/*.md
+    layer: docs
+    kind: reference_doc
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+
+  # ---- agent / instruction surfaces -----------------------------------------
+  - pattern: instruction-blocks/*.md
+    layer: agent
+    kind: instruction_block
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+
+  # ---- capture (raw vibes) ---------------------------------------------------
+  - pattern: raw-vibes/*.md
+    layer: capture
+    kind: raw_capture
+    authority: raw_capture
+    lifecycle: append_only
+    enforcement: [no_rewrite]
+    origin: handcrafted
+
+  # ---- catalog ---------------------------------------------------------------
+  - pattern: catalog/**/*.md
+    layer: catalog
+    kind: catalog_entry
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+
+  # ---- tests / fixtures ------------------------------------------------------
+  - pattern: tests/fixtures/**
+    layer: test
+    kind: test_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
