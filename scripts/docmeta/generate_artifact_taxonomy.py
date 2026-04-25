@@ -102,6 +102,12 @@ def iter_repo_files(repo_root: Path) -> list[str]:
 
 
 def match_rules(rel_path: str, rules: list[dict]) -> list[dict]:
+    """Return all rules whose pattern matches rel_path (for diagnostic use).
+
+    Note: `classify_file` uses first-match-wins logic internally and does not
+    call this function. It is retained for external callers or future diagnostic
+    use (e.g. detecting inadvertent duplicate patterns in the taxonomy).
+    """
     matched = []
     for rule in rules:
         pattern = rule.get("pattern")

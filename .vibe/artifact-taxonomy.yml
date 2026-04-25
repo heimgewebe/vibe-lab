@@ -403,9 +403,10 @@ rules:
     origin: handcrafted
 
   # ---- instruction-blocks / export source ------------------------------------
-  # instruction-blocks/*.md are the canonical export source for tool projections;
-  # they satisfy the catalog_to_export_source and export_source_to_projection
-  # transitions in .vibe/artifact-transitions.yml.
+  # instruction-blocks/*.md are the canonical source for tool projections.
+  # They feed directly into the export_source_to_projection transition in
+  # .vibe/artifact-transitions.yml (layer: export, kind: export_source →
+  # layer: export, kind: tool_projection via deterministic_generator gate).
   - pattern: instruction-blocks/*.md
     layer: export
     kind: export_source
