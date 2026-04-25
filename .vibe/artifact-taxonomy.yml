@@ -257,6 +257,55 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  # ---- experiment runtime / evidence artifacts (specific, before catch-all) --
+  - pattern: experiments/*/artifacts/**/run_meta.json
+    layer: experiment
+    kind: run_metadata
+    authority: runtime_observation
+    lifecycle: revision_with_reason
+    enforcement: [review_required]
+    origin: captured
+
+  - pattern: experiments/*/artifacts/**/execution.txt
+    layer: experiment
+    kind: execution_trace
+    authority: runtime_observation
+    lifecycle: append_only
+    enforcement: [no_rewrite, review_required]
+    origin: captured
+
+  - pattern: experiments/*/artifacts/**/test_output.txt
+    layer: experiment
+    kind: test_output
+    authority: runtime_observation
+    lifecycle: append_only
+    enforcement: [no_rewrite, review_required]
+    origin: captured
+
+  - pattern: experiments/*/artifacts/**/time_to_first_pass_seconds.txt
+    layer: experiment
+    kind: timing_measurement
+    authority: runtime_observation
+    lifecycle: append_only
+    enforcement: [no_rewrite, review_required]
+    origin: captured
+
+  - pattern: experiments/*/artifacts/metrics.json
+    layer: experiment
+    kind: experiment_metric
+    authority: runtime_observation
+    lifecycle: revision_with_reason
+    enforcement: [review_required]
+    origin: captured
+
+  - pattern: experiments/*/artifacts/**/metrics.json
+    layer: experiment
+    kind: experiment_metric
+    authority: runtime_observation
+    lifecycle: revision_with_reason
+    enforcement: [review_required]
+    origin: captured
+
   - pattern: experiments/*/artifacts/**
     layer: experiment
     kind: experiment_artifact

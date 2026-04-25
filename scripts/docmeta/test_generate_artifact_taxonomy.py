@@ -91,6 +91,42 @@ class TaxonomyClassificationTest(unittest.TestCase):
         self.assertEqual(c["layer"], "experiment")
         self.assertEqual(c["authority"], "procedure_contract")
 
+    def test_experiment_run_meta_is_specific_runtime_observation(self) -> None:
+        c = self._classify("experiments/my-exp/artifacts/run-001/run_meta.json")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "experiment")
+        self.assertEqual(c["kind"], "run_metadata")
+        self.assertEqual(c["authority"], "runtime_observation")
+        self.assertFalse(c["catchall_match"])
+
+    def test_experiment_execution_txt_is_specific_runtime_observation(self) -> None:
+        c = self._classify("experiments/my-exp/artifacts/run-001/execution.txt")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["kind"], "execution_trace")
+        self.assertEqual(c["authority"], "runtime_observation")
+        self.assertFalse(c["catchall_match"])
+
+    def test_experiment_test_output_is_specific_runtime_observation(self) -> None:
+        c = self._classify("experiments/my-exp/artifacts/run-001/test_output.txt")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["kind"], "test_output")
+        self.assertEqual(c["authority"], "runtime_observation")
+        self.assertFalse(c["catchall_match"])
+
+    def test_experiment_timing_measurement_is_specific_runtime_observation(self) -> None:
+        c = self._classify("experiments/my-exp/artifacts/run-001/time_to_first_pass_seconds.txt")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["kind"], "timing_measurement")
+        self.assertEqual(c["authority"], "runtime_observation")
+        self.assertFalse(c["catchall_match"])
+
+    def test_experiment_metrics_json_is_specific_runtime_observation(self) -> None:
+        c = self._classify("experiments/my-exp/artifacts/metrics.json")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["kind"], "experiment_metric")
+        self.assertEqual(c["authority"], "runtime_observation")
+        self.assertFalse(c["catchall_match"])
+
 
 class FallbackShareTest(unittest.TestCase):
     """Tests for fallback_share calculation and report structure."""
