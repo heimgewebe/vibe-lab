@@ -107,6 +107,28 @@ jobs:
       - name: Run artifact taxonomy generator regression tests
         run: python3 scripts/docmeta/test_generate_artifact_taxonomy.py
 
+      - name: Generate artifact taxonomy report
+        run: python3 scripts/docmeta/generate_artifact_taxonomy.py
+
+      - name: Fallback share advisory warning (non-blocking)
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("docs/_generated/artifact-taxonomy.json").read_text())
+          summary = data.get("summary", {})
+          share = float(summary.get("fallback_share", 0.0))
+          threshold = float(summary.get("fallback_threshold", 0.5))
+
+          if share > threshold:
+              print(
+                  f"::warning title=Artifact taxonomy fallback share high::"
+                  f"fallback_share={share:.1%} exceeds advisory threshold {threshold:.0%}; "
+                  f"refine broad catch-all rules or justify baseline."
+              )
+          PY
+
       - name: Test epistemic state generator
         run: python3 scripts/docmeta/test_generate_epistemic_state.py
 

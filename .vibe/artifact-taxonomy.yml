@@ -218,7 +218,7 @@ rules:
   - pattern: experiments/*/manifest.yml
     layer: experiment
     kind: experiment_manifest
-    authority: normative_contract
+    authority: procedure_contract
     lifecycle: revision_with_reason
     enforcement: [ci_blocking]
     origin: handcrafted

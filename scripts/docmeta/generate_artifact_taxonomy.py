@@ -199,15 +199,79 @@ def _enforcement_count(items: list[dict]) -> dict[str, int]:
     return dict(sorted(out.items()))
 
 
+_FALLBACK_REVIEW_LAYER_PRIORITY = [
+    "governance", "contract", "generated", "test", "export", "agent",
+    "experiment", "docs", "catalog", "runtime", "capture", "archive",
+]
+_FALLBACK_REVIEW_AUTHORITY_PRIORITY = [
+    "sovereign_source", "normative_contract", "schema_truth", "decision_record",
+    "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
+    "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
+    "unknown",
+]
+
+
+def _is_high_risk_fallback(item: dict) -> bool:
+    """Heuristic: a fallback-classified artifact is high-risk when its layer or
+    authority indicates governance-critical or immutable content.
+
+    High-risk layers: governance, contract, generated, test, agent
+    High-risk authorities: sovereign_source, normative_contract, schema_truth,
+        decision_record, evidence_log, generated_projection
+
+    Agent definitions are included because they control operational behaviour,
+    not just documentation.
+    """
+    high_risk_layers = {"governance", "contract", "generated", "test", "agent"}
+    high_risk_auths = {
+        "sovereign_source",
+        "normative_contract",
+        "schema_truth",
+        "decision_record",
+        "evidence_log",
+        "generated_projection",
+    }
+    return item.get("layer") in high_risk_layers or item.get("authority") in high_risk_auths
+
+
+def fallback_review_sort_key(item: dict) -> tuple:
+    """Sort key for the risk-weighted fallback review table.
+
+    Order: high-risk first, then layer priority, then authority priority, then path.
+    """
+    layer = item.get("layer") or ""
+    authority = item.get("authority") or ""
+    layer_idx = (
+        _FALLBACK_REVIEW_LAYER_PRIORITY.index(layer)
+        if layer in _FALLBACK_REVIEW_LAYER_PRIORITY
+        else len(_FALLBACK_REVIEW_LAYER_PRIORITY)
+    )
+    auth_idx = (
+        _FALLBACK_REVIEW_AUTHORITY_PRIORITY.index(authority)
+        if authority in _FALLBACK_REVIEW_AUTHORITY_PRIORITY
+        else len(_FALLBACK_REVIEW_AUTHORITY_PRIORITY)
+    )
+    # high-risk sorts first: False < True, so negate the boolean
+    return (not _is_high_risk_fallback(item), layer_idx, auth_idx, item.get("path", ""))
+
+
 def build_report(classifications: list[dict], generated_artifacts: list[dict]) -> dict:
-    classified = [c for c in classifications if c["status"] != UNKNOWN]
+    classified = [c for c in classifications if c["status"] == CLASSIFIED]
     unknown = [c for c in classifications if c["status"] == UNKNOWN]
     ambiguous = [c for c in classifications if c["status"] == AMBIGUOUS]
     conflict = [c for c in classifications if c["status"] == CONFLICT]
-    # fallback_classified: files matched by a broad catch-all (/**) rule.
-    # These are classified but their classification is low-confidence;
-    # reviewing them periodically helps tighten specific rules over time.
-    fallback_classified = [c for c in classifications if c.get("catchall_match")]
+    # fallback_classified: classified files matched by a broad catch-all (/**) rule.
+    # Filtered from `classified` (status == "classified") so that unknown/ambiguous/conflict
+    # items with catchall_match=True (theoretically impossible today but guarded against)
+    # never inflate the fallback_share metric.
+    fallback_classified = [c for c in classified if c.get("catchall_match")]
+
+    # --- fallback share metrics -----------------------------------------------
+    classified_total = len(classified)
+    fallback_count = len(fallback_classified)
+    fallback_share = fallback_count / classified_total if classified_total else 0.0
+    fallback_threshold = 0.5
+    fallback_threshold_status = "warning" if fallback_share > fallback_threshold else "ok"
 
     high_risk_authorities = {
         "sovereign_source",
@@ -260,7 +324,10 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
         "summary": {
             "total": len(classifications),
             "classified": len(classified),
-            "fallback_classified": len(fallback_classified),
+            "fallback_classified": fallback_count,
+            "fallback_share": fallback_share,
+            "fallback_threshold": fallback_threshold,
+            "fallback_threshold_status": fallback_threshold_status,
             "unknown": len(unknown),
             "ambiguous": len(ambiguous),
             "conflict": len(conflict),
@@ -268,6 +335,11 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
             "by_authority": _bucket_count(classifications, "authority"),
             "by_lifecycle": _bucket_count(classifications, "lifecycle"),
             "by_enforcement": _enforcement_count(classifications),
+        },
+        "fallback_summary": {
+            "by_layer": _bucket_count(fallback_classified, "layer"),
+            "by_authority": _bucket_count(fallback_classified, "authority"),
+            "high_risk_count": sum(1 for c in fallback_classified if _is_high_risk_fallback(c)),
         },
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
         "ambiguous_artifacts": [c["path"] for c in sorted(ambiguous, key=lambda x: x["path"])],
@@ -303,6 +375,22 @@ def render_markdown(report: dict) -> str:
     lines.append(f"- total: {s['total']}")
     lines.append(f"- classified: {s['classified']}")
     lines.append(f"  - of which fallback_classified (catch-all rule): {s['fallback_classified']}")
+    classified_total = s["classified"]
+    fallback_count = s["fallback_classified"]
+    share_pct = s["fallback_share"] * 100
+    threshold_pct = s["fallback_threshold"] * 100
+    if classified_total == 0:
+        share_display = f"{share_pct:.1f}% (0 classified)"
+    else:
+        share_display = f"{share_pct:.1f}% ({fallback_count} / {classified_total})"
+    threshold_display = f"{threshold_pct:.1f}% — {s['fallback_threshold_status']}"
+    lines.append(f"  - fallback_share: {share_display}")
+    lines.append(f"  - fallback_threshold: {threshold_display}")
+    lines.append("")
+    lines.append(
+        "Fallback classifications come from broad catch-all rules. "
+        "They are valid diagnostic classifications, but lower confidence than specific path rules."
+    )
     lines.append(f"- unknown: {s['unknown']}")
     lines.append(f"- ambiguous: {s['ambiguous']}")
     lines.append(f"- conflict: {s['conflict']}")
@@ -341,6 +429,36 @@ def render_markdown(report: dict) -> str:
     _list("Conflict artifacts", report["conflict_artifacts"])
     _list("Fallback classified artifacts (catch-all rule, low confidence)", report["fallback_classified_artifacts"])
     _list("High-risk artifacts", report["high_risk_artifacts"])
+
+    # --- Risk-weighted fallback review section ---------------------------------
+    fallback_items = [
+        c for c in report["classifications"]
+        if c.get("status") == "classified" and c.get("catchall_match")
+    ]
+    fallback_sorted = sorted(fallback_items, key=fallback_review_sort_key)[:20]
+
+    lines.append("## Fallback classified artifacts requiring review")
+    lines.append("")
+    lines.append(
+        "Fallback classifications come from broad catch-all rules (low confidence). "
+        "High-risk items are shown first. Max 20 rows; sorted by risk, layer, authority, then path."
+    )
+    lines.append("")
+    if not fallback_sorted:
+        lines.append("_none_")
+        lines.append("")
+    else:
+        lines.append("| Path | Layer | Kind | Authority | Risk | Matched pattern |")
+        lines.append("| ---- | ----- | ---- | --------- | ---- | --------------- |")
+        for item in fallback_sorted:
+            risk_label = "high" if _is_high_risk_fallback(item) else "low"
+            matched = ", ".join(item.get("matched_patterns") or [])
+            lines.append(
+                f"| `{item['path']}` | {item.get('layer') or '-'} | "
+                f"{item.get('kind') or '-'} | {item.get('authority') or '-'} | "
+                f"{risk_label} | `{matched}` |"
+            )
+        lines.append("")
 
     lines.append("## Generated artifacts cross-check")
     lines.append("")

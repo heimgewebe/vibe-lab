@@ -11,9 +11,13 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 563
-- classified: 563
+- total: 573
+- classified: 573
   - of which fallback_classified (catch-all rule): 352
+  - fallback_share: 61.4% (352 / 573)
+  - fallback_threshold: 50.0% — warning
+
+Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
 - unknown: 0
 - ambiguous: 0
 - conflict: 0
@@ -22,6 +26,7 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 | layer | count |
 | --- | ---: |
+| agent | 3 |
 | archive | 23 |
 | capture | 5 |
 | catalog | 12 |
@@ -30,7 +35,7 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 | experiment | 323 |
 | export | 15 |
 | generated | 8 |
-| governance | 52 |
+| governance | 59 |
 | test | 88 |
 
 ### By authority
@@ -44,8 +49,8 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 | historical_record | 210 |
 | implementation_behavior | 45 |
 | navigation_surface | 7 |
-| normative_contract | 27 |
-| procedure_contract | 40 |
+| normative_contract | 15 |
+| procedure_contract | 62 |
 | raw_capture | 20 |
 | result_interpretation | 45 |
 | schema_truth | 11 |
@@ -58,7 +63,7 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 | lifecycle | count |
 | --- | ---: |
 | append_only | 229 |
-| handcrafted | 299 |
+| handcrafted | 309 |
 | regenerated | 18 |
 | revision_with_reason | 15 |
 | superseded_not_rewritten | 2 |
@@ -69,14 +74,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 199 |
+| ci_blocking | 200 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
 | no_rewrite | 229 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 3 |
 | owner_required | 3 |
-| review_required | 114 |
+| review_required | 124 |
 
 ## Unknown artifacts
 
@@ -447,6 +452,9 @@ _none_
 
 ## High-risk artifacts
 
+- `.github/agents/experiment-critic-structure-phase1c.agent.md`
+- `.github/agents/experiment-critic.agent.md`
+- `.github/agents/experiment-operator.agent.md`
 - `.vibe/artifact-taxonomy.yml`
 - `.vibe/constraints.yml`
 - `.vibe/generated-artifacts.yml`
@@ -460,44 +468,29 @@ _none_
 - `decisions/system/2026-04-23-metrics-enabled.yml`
 - `docs/foundations/repo-plan.md`
 - `docs/foundations/vision.md`
-- `experiments/2026-04-08_spec-first/manifest.yml`
 - `experiments/2026-04-08_spec-first/results/decision.yml`
 - `experiments/2026-04-08_spec-first/results/evidence.jsonl`
-- `experiments/2026-04-11_yolo-vs-spec-first/manifest.yml`
 - `experiments/2026-04-11_yolo-vs-spec-first/results/decision.yml`
 - `experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl`
-- `experiments/2026-04-12_spec-first-legacy/manifest.yml`
 - `experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl`
-- `experiments/2026-04-14_incremental-debuggability/manifest.yml`
 - `experiments/2026-04-14_incremental-debuggability/results/decision.yml`
 - `experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl`
-- `experiments/2026-04-14_incremental-refinement/manifest.yml`
 - `experiments/2026-04-14_incremental-refinement/results/decision.yml`
 - `experiments/2026-04-14_incremental-refinement/results/evidence.jsonl`
-- `experiments/2026-04-14_premortem-prompting/manifest.yml`
 - `experiments/2026-04-14_premortem-prompting/results/decision.yml`
 - `experiments/2026-04-14_premortem-prompting/results/evidence.jsonl`
-- `experiments/2026-04-14_prompt-length-control/manifest.yml`
 - `experiments/2026-04-14_prompt-length-control/results/decision.yml`
 - `experiments/2026-04-14_prompt-length-control/results/evidence.jsonl`
-- `experiments/2026-04-14_tdd-vibe/manifest.yml`
 - `experiments/2026-04-14_tdd-vibe/results/decision.yml`
 - `experiments/2026-04-14_tdd-vibe/results/evidence.jsonl`
-- `experiments/2026-04-14_upfront-structuring-replication/manifest.yml`
 - `experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl`
-- `experiments/2026-04-14_upfront-structuring/manifest.yml`
 - `experiments/2026-04-14_upfront-structuring/results/evidence.jsonl`
-- `experiments/2026-04-15_agent-task-validity/manifest.yml`
 - `experiments/2026-04-15_agent-task-validity/results/decision.yml`
 - `experiments/2026-04-15_agent-task-validity/results/evidence.jsonl`
-- `experiments/2026-04-19_generated-artifact-contract-validation/manifest.yml`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/decision.yml`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
-- `experiments/2026-04-23_agent-failure-surface/manifest.yml`
-- `experiments/2026-04-23_phase-1-drift-injection/manifest.yml`
 - `experiments/2026-04-23_phase-1-drift-injection/results/decision.yml`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
-- `experiments/_template/manifest.yml`
 - `experiments/_template/results/decision.yml`
 - `experiments/_template/results/evidence.jsonl`
 - `instruction-blocks/constraint-before-code.md`
@@ -515,6 +508,33 @@ _none_
 - `schemas/decision.schema.json`
 - `schemas/experiment.manifest.schema.json`
 - `schemas/run_meta.schema.json`
+
+## Fallback classified artifacts requiring review
+
+Fallback classifications come from broad catch-all rules (low confidence). High-risk items are shown first. Max 20 rows; sorted by risk, layer, authority, then path.
+
+| Path | Layer | Kind | Authority | Risk | Matched pattern |
+| ---- | ----- | ---- | --------- | ---- | --------------- |
+| `scripts/adoption/__init__.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/adoption/test_validate_adoption_completeness.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/adoption/validate_adoption_completeness.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/_paths.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/check_system_decisions.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_artifact_taxonomy.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_backlinks.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_doc_index.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_epistemic_state.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_metrics.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_orphans.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/generate_system_map.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/resolve_generated_artifact_paths.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_command_version_policy.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_fixture_matrix_audit_surface.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_fixture_matrix_known_gaps_audit.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_generate_artifact_taxonomy.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_generate_epistemic_state.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_promotion_readiness.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
+| `scripts/docmeta/test_validate_agent_commands.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
 
 ## Generated artifacts cross-check
 
