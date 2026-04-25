@@ -230,7 +230,10 @@ def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
     catchall_match==True (i.e., the caller is responsible for pre-filtering).
     Groups those items by their selected fallback pattern and produces a
     diagnostic entry for each group with basename/parent-dir frequency data
-    to guide future rule creation. Items are sorted by total descending.
+    to guide future rule creation. Clusters are sorted by:
+      1. high_risk_count descending
+      2. total descending
+      3. matched_pattern ascending
     """
     groups: dict[str, list[dict]] = {}
     for item in fallback_classified:
@@ -261,7 +264,7 @@ def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
                 "top_parent_dirs": _top_n(parent_counter),
             }
         )
-    clusters.sort(key=lambda c: (-c["total"], c["matched_pattern"]))
+    clusters.sort(key=lambda c: (-c["high_risk_count"], -c["total"], c["matched_pattern"]))
     return clusters
 
 
@@ -536,6 +539,33 @@ def render_markdown(report: dict) -> str:
             lines.append(f"| `{pat}` | {cnt} | {share:.1%} |")
         lines.append("")
 
+    lines.append("## Residual fallback clusters")
+    lines.append("")
+    lines.append(
+        "Diagnostic breakdown of catch-all fallback buckets (top 5, sorted by high_risk_count desc). "
+        "Shows dominant file names and parent directories to guide targeted rule additions in a future PR."
+    )
+    lines.append("")
+    residual_clusters = report["fallback_summary"].get("residual_clusters", [])
+    if not residual_clusters:
+        lines.append("_none_")
+        lines.append("")
+    else:
+        lines.append("| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |")
+        lines.append("| --- | ---: | ---: | --- | --- |")
+        for cluster in residual_clusters[:5]:
+            basenames_str = ", ".join(
+                f"{k}={v}" for k, v in cluster.get("top_basenames", {}).items()
+            )
+            parents_str = ", ".join(
+                f"{k}={v}" for k, v in cluster.get("top_parent_dirs", {}).items()
+            )
+            lines.append(
+                f"| `{cluster['matched_pattern']}` | {cluster['total']} | "
+                f"{cluster['high_risk_count']} | {basenames_str or '-'} | {parents_str or '-'} |"
+            )
+        lines.append("")
+
     lines.append("## Fallback classified artifacts requiring review")
     lines.append("")
     lines.append(
@@ -558,50 +588,6 @@ def render_markdown(report: dict) -> str:
                 f"{risk_label} | `{matched}` |"
             )
         lines.append("")
-
-    lines.append("## Residual fallback clusters")
-    lines.append("")
-    lines.append(
-        "Diagnostic breakdown of catch-all fallback buckets. "
-        "Shows which file names and parent directories dominate each broad pattern, "
-        "to guide targeted rule additions in a future PR."
-    )
-    lines.append("")
-    residual_clusters = report["fallback_summary"].get("residual_clusters", [])
-    if not residual_clusters:
-        lines.append("_none_")
-        lines.append("")
-    else:
-        lines.append("| matched_pattern | total | high_risk |")
-        lines.append("| --- | ---: | ---: |")
-        for cluster in residual_clusters:
-            lines.append(
-                f"| `{cluster['matched_pattern']}` | {cluster['total']} | {cluster['high_risk_count']} |"
-            )
-        lines.append("")
-        for cluster in residual_clusters:
-            lines.append(f"### `{cluster['matched_pattern']}`")
-            lines.append("")
-            lines.append(f"total: {cluster['total']} · high_risk: {cluster['high_risk_count']}")
-            lines.append("")
-            top_basenames = cluster.get("top_basenames", {})
-            if top_basenames:
-                lines.append("**Top basenames:**")
-                lines.append("")
-                lines.append("| basename | count |")
-                lines.append("| --- | ---: |")
-                for name, cnt in top_basenames.items():
-                    lines.append(f"| `{name}` | {cnt} |")
-                lines.append("")
-            top_parent_dirs = cluster.get("top_parent_dirs", {})
-            if top_parent_dirs:
-                lines.append("**Top parent dirs:**")
-                lines.append("")
-                lines.append("| parent dir | count |")
-                lines.append("| --- | ---: |")
-                for parent, cnt in top_parent_dirs.items():
-                    lines.append(f"| `{parent}` | {cnt} |")
-                lines.append("")
 
     lines.append("## Generated artifacts cross-check")
     lines.append("")

@@ -368,14 +368,38 @@ class ResidualClustersTest(unittest.TestCase):
         self.assertEqual(totals["scripts/**"], 2)
         self.assertEqual(totals["tests/**"], 1)
 
-    def test_residual_clusters_sorted_by_total_desc(self) -> None:
+    def test_residual_clusters_sorted_by_high_risk_then_total_then_pattern(self) -> None:
+        """High-risk clusters must sort before low-risk clusters regardless of total."""
         items = (
-            [self._make_item(f"tests/{i}.py", pattern="tests/**") for i in range(5)]
-            + [self._make_item(f"scripts/{i}.py", pattern="scripts/**") for i in range(2)]
+            [self._make_item(f"experiments/{i}.md", pattern="experiments/**", layer="docs", authority="navigation_surface") for i in range(10)]
+            + [self._make_item(f"scripts/{i}.py", pattern="scripts/**", layer="test", authority="navigation_surface") for i in range(2)]
         )
         clusters = _build_residual_clusters(items)
-        totals = [c["total"] for c in clusters]
-        self.assertEqual(totals, sorted(totals, reverse=True))
+        # scripts/** has high_risk (test layer) but only 2 items
+        # experiments/** has 10 items but high_risk_count 0
+        self.assertEqual(clusters[0]["matched_pattern"], "scripts/**")
+        self.assertEqual(clusters[1]["matched_pattern"], "experiments/**")
+
+    def test_residual_clusters_tie_break_higher_total_first(self) -> None:
+        """When high_risk_count is equal, higher total comes first."""
+        items = (
+            [self._make_item(f"docs/{i}.md", pattern="docs/**") for i in range(5)]
+            + [self._make_item(f"capture/{i}.md", pattern="capture/**") for i in range(2)]
+        )
+        clusters = _build_residual_clusters(items)
+        # both have high_risk_count 0; docs/** has more items
+        self.assertEqual(clusters[0]["matched_pattern"], "docs/**")
+        self.assertEqual(clusters[1]["matched_pattern"], "capture/**")
+
+    def test_residual_clusters_tie_break_pattern_asc(self) -> None:
+        """When high_risk_count and total are equal, matched_pattern sorts ascending."""
+        items = (
+            [self._make_item(f"zz/{i}.md", pattern="zz/**") for i in range(3)]
+            + [self._make_item(f"aa/{i}.md", pattern="aa/**") for i in range(3)]
+        )
+        clusters = _build_residual_clusters(items)
+        self.assertEqual(clusters[0]["matched_pattern"], "aa/**")
+        self.assertEqual(clusters[1]["matched_pattern"], "zz/**")
 
     def test_residual_clusters_high_risk_count(self) -> None:
         items = [
@@ -453,51 +477,72 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        items = [
-            {
-                "path": "scripts/foo.py",
+        def _make(path: str, pattern: str, layer: str = "docs", authority: str = "navigation_surface") -> dict:
+            return {
+                "path": path,
                 "status": "classified",
-                "layer": "docs",
+                "layer": layer,
                 "kind": "doc",
-                "authority": "navigation_surface",
+                "authority": authority,
                 "lifecycle": "handcrafted",
                 "enforcement": [],
                 "origin": "handcrafted",
-                "matched_patterns": ["scripts/**"],
+                "matched_patterns": [pattern],
                 "catchall_match": True,
-            },
-            {
-                "path": "scripts/bar.py",
-                "status": "classified",
-                "layer": "docs",
-                "kind": "doc",
-                "authority": "navigation_surface",
-                "lifecycle": "handcrafted",
-                "enforcement": [],
-                "origin": "handcrafted",
-                "matched_patterns": ["scripts/**"],
-                "catchall_match": True,
-            },
-        ]
+            }
+        # 6 clusters so we can verify only 5 are rendered
+        items = (
+            [_make(f"scripts/{i}.py", "scripts/**", "test", "navigation_surface") for i in range(5)]
+            + [_make(f"tests/{i}.py", "tests/**", "test", "navigation_surface") for i in range(4)]
+            + [_make(f"docs/{i}.md", "docs/**") for i in range(3)]
+            + [_make(f"capture/{i}.md", "capture/**") for i in range(2)]
+            + [_make(f"exports/{i}.md", "exports/**") for i in range(2)]
+            + [_make("tools/one.sh", "tools/**")]
+        )
         report = build_report(items, [])
+        cls.report = report
         cls.md = render_markdown(report)
 
     def test_markdown_contains_residual_clusters_section(self) -> None:
         self.assertIn("## Residual fallback clusters", self.md)
 
-    def test_markdown_residual_clusters_has_overview_table(self) -> None:
-        self.assertIn("| matched_pattern | total | high_risk |", self.md)
+    def test_markdown_residual_clusters_correct_table_header(self) -> None:
+        self.assertIn(
+            "| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |",
+            self.md,
+        )
 
-    def test_markdown_residual_clusters_has_pattern_header(self) -> None:
-        self.assertIn("### `scripts/**`", self.md)
+    def test_markdown_residual_clusters_no_subsection_headers(self) -> None:
+        """Detailed per-cluster ### headers must not appear."""
+        self.assertNotIn("### `", self.md)
 
-    def test_markdown_residual_clusters_has_top_basenames_table(self) -> None:
-        self.assertIn("**Top basenames:**", self.md)
-        self.assertIn("| basename | count |", self.md)
+    def test_markdown_residual_clusters_renders_only_top_5(self) -> None:
+        """With 6 distinct clusters, only 5 rows should appear in the table."""
+        # Count data rows after the header line
+        lines = self.md.splitlines()
+        in_section = False
+        data_rows = 0
+        for line in lines:
+            if line.startswith("## Residual fallback clusters"):
+                in_section = True
+                continue
+            if in_section and line.startswith("## "):
+                break
+            if in_section and line.startswith("| `"):
+                data_rows += 1
+        self.assertEqual(data_rows, 5)
 
-    def test_markdown_residual_clusters_has_top_parent_dirs_table(self) -> None:
-        self.assertIn("**Top parent dirs:**", self.md)
-        self.assertIn("| parent dir | count |", self.md)
+    def test_markdown_residual_section_before_review_section(self) -> None:
+        """Residual section must appear before the 'requiring review' section."""
+        idx_residual = self.md.find("## Residual fallback clusters")
+        idx_review = self.md.find("## Fallback classified artifacts requiring review")
+        self.assertLess(idx_residual, idx_review)
+
+    def test_markdown_residual_section_after_by_matched_pattern_section(self) -> None:
+        """Residual section must appear after the 'by matched pattern' section."""
+        idx_pattern = self.md.find("## Fallback classified: by matched pattern")
+        idx_residual = self.md.find("## Residual fallback clusters")
+        self.assertLess(idx_pattern, idx_residual)
 
 
 class SelectFallbackPatternTest(unittest.TestCase):

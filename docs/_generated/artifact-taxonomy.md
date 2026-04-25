@@ -476,6 +476,18 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 | `docs/_generated/metrics/**` | 1 | 0.3% |
 | `tests/**` | 1 | 0.3% |
 
+## Residual fallback clusters
+
+Diagnostic breakdown of catch-all fallback buckets (top 5, sorted by high_risk_count desc). Shows dominant file names and parent directories to guide targeted rule additions in a future PR.
+
+| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
+| --- | ---: | ---: | --- | --- |
+| `tests/fixtures/**` | 84 | 84 | CONTEXT.md=3, INITIAL.md=3, contract-invalid-wrong-command.json=3, decision.yml=3, evidence.jsonl=3, manifest.yml=3, valid-minimal.json=3, contract-invalid-empty-target-files.json=2, contract-invalid-wrong-version.json=2, result.md=2 | tests/fixtures/command_chains=27, tests/fixtures/agent_commands/write_change=9, tests/fixtures/agent_commands/validate_change=8, tests/fixtures/agent_commands/read_context=7, tests/fixtures/cross_contract/invalid=7, tests/fixtures/agent_handoff=4, tests/fixtures/experiment_structure_phase1c/inconsistent=3, tests/fixtures/experiment_structure_phase1c/inconsistent/results=3, tests/fixtures/experiment_structure_phase1c/insufficient_input=3, tests/fixtures/experiment_structure_phase1c/valid=3 |
+| `scripts/**` | 41 | 41 | __init__.py=2, _paths.py=1, check_system_decisions.py=1, generate_artifact_taxonomy.py=1, generate_backlinks.py=1, generate_doc_index.py=1, generate_epistemic_state.py=1, generate_exports.py=1, generate_metrics.py=1, generate_orphans.py=1 | scripts/docmeta=35, scripts/adoption=3, scripts/exports=3 |
+| `exports/**` | 10 | 10 | constraint-before-code.md=2, edge-case-enumeration.md=2, no-vague-prompts.md=2, spec-first.md=2, validate-against-spec.md=2 | exports/copilot=5, exports/cursor=5 |
+| `docs/_generated/**` | 3 | 3 | backlinks.md=1, orphans.md=1, system-map.md=1 | docs/_generated=3 |
+| `tools/**` | 2 | 2 | replay_minimal.py=1, test_replay_minimal.py=1 | tools/vibe-cli=2 |
+
 ## Fallback classified artifacts requiring review
 
 Fallback classifications come from broad catch-all rules (low confidence). High-risk items are shown first. Max 20 rows; sorted by risk, layer, authority, then path.
@@ -502,235 +514,6 @@ Fallback classifications come from broad catch-all rules (low confidence). High-
 | `scripts/docmeta/test_generate_epistemic_state.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
 | `scripts/docmeta/test_promotion_readiness.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
 | `scripts/docmeta/test_validate_agent_commands.py` | governance | implementation_script | implementation_behavior | high | `scripts/**` |
-
-## Residual fallback clusters
-
-Diagnostic breakdown of catch-all fallback buckets. Shows which file names and parent directories dominate each broad pattern, to guide targeted rule additions in a future PR.
-
-| matched_pattern | total | high_risk |
-| --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 139 | 0 |
-| `tests/fixtures/**` | 84 | 84 |
-| `scripts/**` | 41 | 41 |
-| `experiments/**` | 21 | 0 |
-| `exports/**` | 10 | 10 |
-| `docs/_generated/**` | 3 | 3 |
-| `tools/**` | 2 | 2 |
-| `docs/_generated/metrics/**` | 1 | 1 |
-| `tests/**` | 1 | 1 |
-
-### `experiments/*/artifacts/**`
-
-total: 139 · high_risk: 0
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `refactored_processor.py` | 15 |
-| `index.ts` | 8 |
-| `test_processor.py` | 8 |
-| `premortem.md` | 5 |
-| `test_injection.py` | 5 |
-| `edit_trace.md` | 4 |
-| `errors.ts` | 4 |
-| `types.ts` | 4 |
-| `README.md` | 3 |
-| `app.ts` | 3 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental` | 9 |
-| `experiments/2026-04-14_prompt-length-control/artifacts` | 9 |
-| `experiments/2026-04-14_upfront-structuring-replication/artifacts` | 9 |
-| `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental` | 7 |
-| `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental` | 7 |
-| `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental` | 7 |
-| `experiments/2026-04-15_agent-task-validity/artifacts` | 7 |
-| `experiments/2026-04-14_tdd-vibe/artifacts` | 6 |
-| `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff` | 6 |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/inputs` | 5 |
-
-### `tests/fixtures/**`
-
-total: 84 · high_risk: 84
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `CONTEXT.md` | 3 |
-| `INITIAL.md` | 3 |
-| `contract-invalid-wrong-command.json` | 3 |
-| `decision.yml` | 3 |
-| `evidence.jsonl` | 3 |
-| `manifest.yml` | 3 |
-| `valid-minimal.json` | 3 |
-| `contract-invalid-empty-target-files.json` | 2 |
-| `contract-invalid-wrong-version.json` | 2 |
-| `result.md` | 2 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `tests/fixtures/command_chains` | 27 |
-| `tests/fixtures/agent_commands/write_change` | 9 |
-| `tests/fixtures/agent_commands/validate_change` | 8 |
-| `tests/fixtures/agent_commands/read_context` | 7 |
-| `tests/fixtures/cross_contract/invalid` | 7 |
-| `tests/fixtures/agent_handoff` | 4 |
-| `tests/fixtures/experiment_structure_phase1c/inconsistent` | 3 |
-| `tests/fixtures/experiment_structure_phase1c/inconsistent/results` | 3 |
-| `tests/fixtures/experiment_structure_phase1c/insufficient_input` | 3 |
-| `tests/fixtures/experiment_structure_phase1c/valid` | 3 |
-
-### `scripts/**`
-
-total: 41 · high_risk: 41
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `__init__.py` | 2 |
-| `_paths.py` | 1 |
-| `check_system_decisions.py` | 1 |
-| `generate_artifact_taxonomy.py` | 1 |
-| `generate_backlinks.py` | 1 |
-| `generate_doc_index.py` | 1 |
-| `generate_epistemic_state.py` | 1 |
-| `generate_exports.py` | 1 |
-| `generate_metrics.py` | 1 |
-| `generate_orphans.py` | 1 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `scripts/docmeta` | 35 |
-| `scripts/adoption` | 3 |
-| `scripts/exports` | 3 |
-
-### `experiments/**`
-
-total: 21 · high_risk: 0
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `README.md` | 3 |
-| `.gitignore` | 2 |
-| `AGENT_INSTRUCTION.md` | 1 |
-| `app.ts` | 1 |
-| `followups.md` | 1 |
-| `jest-patched.log` | 1 |
-| `jest-unfixed.log` | 1 |
-| `legacy_processor.py` | 1 |
-| `package-lock.json` | 1 |
-| `package.json` | 1 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe` | 10 |
-| `experiments/2026-04-15_agent-task-validity` | 4 |
-| `experiments/2026-04-12_spec-first-legacy/src` | 3 |
-| `experiments/2026-04-14_tdd-vibe` | 2 |
-| `experiments/2026-04-23_phase-1-drift-injection/fixtures` | 1 |
-| `experiments/2026-04-23_phase-1-drift-injection/results` | 1 |
-
-### `exports/**`
-
-total: 10 · high_risk: 10
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `constraint-before-code.md` | 2 |
-| `edge-case-enumeration.md` | 2 |
-| `no-vague-prompts.md` | 2 |
-| `spec-first.md` | 2 |
-| `validate-against-spec.md` | 2 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `exports/copilot` | 5 |
-| `exports/cursor` | 5 |
-
-### `docs/_generated/**`
-
-total: 3 · high_risk: 3
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `backlinks.md` | 1 |
-| `orphans.md` | 1 |
-| `system-map.md` | 1 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `docs/_generated` | 3 |
-
-### `tools/**`
-
-total: 2 · high_risk: 2
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `replay_minimal.py` | 1 |
-| `test_replay_minimal.py` | 1 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `tools/vibe-cli` | 2 |
-
-### `docs/_generated/metrics/**`
-
-total: 1 · high_risk: 1
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `trends.md` | 1 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `docs/_generated/metrics` | 1 |
-
-### `tests/**`
-
-total: 1 · high_risk: 1
-
-**Top basenames:**
-
-| basename | count |
-| --- | ---: |
-| `test_cross_contract_chain.py` | 1 |
-
-**Top parent dirs:**
-
-| parent dir | count |
-| --- | ---: |
-| `tests/contracts` | 1 |
 
 ## Generated artifacts cross-check
 
