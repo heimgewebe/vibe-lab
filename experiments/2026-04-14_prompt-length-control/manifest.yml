@@ -17,6 +17,15 @@ experiment:
   iteration: 1
   evidence_level: experimental
   adoption_basis: executed
+  # Falsifizierbarkeits-Retrofit (Phase-1 Dry-Run, Trigger: need_for_reproducibility).
+  # Das Experiment prüft die zentrale Gegenhypothese zu experiments/2026-04-08_spec-first:
+  # Könnte primär Token-Volumen (Chain-of-Thought-Proxy) statt Spec-First den Vorteil erklären?
+  # Der Ramble-First-Arm prüft diese Token-Bloat-Gegenhypothese direkt.
+  # Weitergehende Strukturierungs-/Aufgabenklärungs-Confounder bleiben als Restunsicherheit markiert.
+  falsifiability:
+    counter_hypothesis: "Die beobachtete Verbesserung entsteht nicht durch Spec-First selbst, sondern primär durch Promptlänge bzw. Token-Volumen als Chain-of-Thought-Proxy. Eine weitergehende Strukturierungs-/Aufgabenklärungs-Gegenhypothese bleibt nur teilweise adressiert."
+    falsification_criterion: "Die Spec-First-Erklärung wird geschwächt, wenn ein gleich langer Nicht-Spec-Prompt oder ein gleich strukturierter Nicht-Spec-Prompt vergleichbare Ergebnisse bei Vollständigkeit, Konsistenz und Nacharbeit liefert."
+    counterevidence_checked: true  # true bezieht sich auf die Token-Volumen-/Promptlängen-Gegenhypothese: Ramble-First-Arm (evidence.jsonl: metric=test_pass_rate_ramble_first, 2026-04-14T11:43:00Z, value=0.8) widerlegte Token-Bloat direkt. Strukturierungsgrad/Aufgabenklärung als Confounder bleibt Restunsicherheit.
 
 context:
   tools: ["LLM-Agents", "Vibe-Coding"]

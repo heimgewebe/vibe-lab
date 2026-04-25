@@ -18,6 +18,10 @@ rationale: |
   exakt in denselben Naiv-Regex-Fehler wie Code-First zurück (test_pass_rate
   0.8), während Spec-First mit gleichem Token-Volumen 1.0 erreichte.
 
+  Die Token-Volumen-Gegenhypothese wurde durch den Ramble-First-Arm geprüft
+  und nicht gestützt; weitergehende Strukturierungs-Confounder (Aufgabenklärung,
+  Strukturierungsgrad allgemein) bleiben als Restunsicherheit sichtbar.
+
   Damit ist die wichtigste alternative Erklärung für den Upfront-Structuring-
   Effekt empirisch widerlegt: Der Zugewinn beruht nicht auf Token-Volumen als
   Chain-of-Thought-Proxy, sondern auf dem Modus-Wechsel in Declarative/
