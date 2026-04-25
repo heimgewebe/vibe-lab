@@ -232,15 +232,21 @@ def _md_cell(value: object) -> str:
 def _md_code_span(value: object) -> str:
     """Render a value as a Markdown code span safe for use inside a table cell.
 
-    * Newlines are collapsed to spaces.
+    * Newlines (including ``\\r\\n``) are collapsed to spaces.
     * Pipe characters are escaped so the cell boundary is never broken.
     * The backtick fence is extended to one beyond the longest run of backticks
       already present in the text, matching the CommonMark spec.
+    * Values that start or end with a backtick are padded inside the fence so
+      the fence cannot merge with the content (also per CommonMark §6.1).
     """
-    text = str(value).replace("\n", " ")
+    text = re.sub(r"[\r\n]+", " ", str(value))
     text = text.replace("|", "\\|")
     runs = re.findall(r"`+", text)
     fence = "`" * (max((len(run) for run in runs), default=0) + 1)
+
+    if text.startswith("`") or text.endswith("`"):
+        return f"{fence} {text} {fence}"
+
     return f"{fence}{text}{fence}"
 
 

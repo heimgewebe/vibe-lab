@@ -351,6 +351,21 @@ class MdCodeSpanTest(unittest.TestCase):
     def test_uses_longer_fence_for_double_backtick_run(self) -> None:
         self.assertEqual(_md_code_span("a``b"), "```a``b```")
 
+    def test_wraps_single_backtick_content_with_inner_spaces(self) -> None:
+        self.assertEqual(_md_code_span("`"), "`` ` ``")
+
+    def test_wraps_leading_backtick_content_with_inner_spaces(self) -> None:
+        self.assertEqual(_md_code_span("`x"), "`` `x ``")
+
+    def test_wraps_trailing_backtick_content_with_inner_spaces(self) -> None:
+        self.assertEqual(_md_code_span("x`"), "`` x` ``")
+
+    def test_wraps_double_backtick_content_with_longer_fence_and_inner_spaces(self) -> None:
+        self.assertEqual(_md_code_span("``"), "``` `` ```")
+
+    def test_normalizes_carriage_return_newline(self) -> None:
+        self.assertEqual(_md_code_span("a\r\nb"), "`a b`")
+
 
 class FormatTopItemsTest(unittest.TestCase):
     """Tests for _format_top_items helper."""
