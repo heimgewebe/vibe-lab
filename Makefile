@@ -263,7 +263,7 @@ help:
 	@echo "  make validate-promotion-readiness — Dry-run Phase-1 promotion-readiness gate (non-blocking)"
 	@echo "  make validate-promotion-readiness-tests — Run promotion-readiness regression tests"
 	@echo "  make check-decisions         — Validate system decisions and gate required features"
-	@echo "  make generate           — Generate all artifacts in the v2 contract (blocking + diagnostics + gated)"
+	@echo "  make generate           — Generate all committable v2 artifacts (blocking + diagnostics + gated; excludes ci_policy=artifact_only)"
 	@echo "  make generate-blocking  — Generate blocking artifacts (doc-index, projections)"
 	@echo "  make generate-generated-diagnostics — Generate non-blocking diagnostic artifacts (ci_policy=non_blocking)"
 	@echo "  make generate-artifact-only         — Generate artifact-only runtime diagnostics (not committed; ci_policy=artifact_only)"

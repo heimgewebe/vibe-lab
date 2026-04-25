@@ -139,7 +139,7 @@ jobs:
             exit 1
           fi
 
-  derived-diagnostics:
+  non-blocking-diagnostics:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -160,7 +160,7 @@ jobs:
         run: make generate-generated-gated || true
 
       - name: Resolve non-blocking diagnostic paths
-        id: derived_core_paths
+        id: non_blocking_paths
         run: |
           {
             echo "paths<<EOF"
@@ -172,7 +172,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: generated-diagnostics
-          path: ${{ steps.derived_core_paths.outputs.paths }}
+          path: ${{ steps.non_blocking_paths.outputs.paths }}
           if-no-files-found: warn
 
       - name: Resolve gated/best-effort paths
@@ -192,7 +192,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Generate non-blocking diagnostics drift report
-        id: derived_drift
+        id: non_blocking_drift
         run: |
           report="generated-drift-report.txt"
           : > "$report"
@@ -221,7 +221,7 @@ jobs:
           fi
 
       - name: Soft escalation for diagnostics drift (warning only)
-        if: steps.derived_drift.outputs.drift_detected == 'true'
+        if: steps.non_blocking_drift.outputs.drift_detected == 'true'
         run: |
           echo "::warning title=Generated diagnostics drift::Non-blocking diagnostics changed; review generated-drift-report.txt."
 
