@@ -513,17 +513,17 @@ _none_
 
 Counts fallback-classified artifacts per catch-all pattern. Shows which broad rules drive the fallback share.
 
-| matched_pattern | count |
-| --- | ---: |
-| `docs/_generated/**` | 3 |
-| `docs/_generated/metrics/**` | 1 |
-| `experiments/**` | 21 |
-| `experiments/*/artifacts/**` | 189 |
-| `exports/**` | 10 |
-| `scripts/**` | 41 |
-| `tests/**` | 1 |
-| `tests/fixtures/**` | 84 |
-| `tools/**` | 2 |
+| matched_pattern | count | share_of_fallback |
+| --- | ---: | ---: |
+| `experiments/*/artifacts/**` | 189 | 53.7% |
+| `tests/fixtures/**` | 84 | 23.9% |
+| `scripts/**` | 41 | 11.6% |
+| `experiments/**` | 21 | 6.0% |
+| `exports/**` | 10 | 2.8% |
+| `docs/_generated/**` | 3 | 0.9% |
+| `tools/**` | 2 | 0.6% |
+| `docs/_generated/metrics/**` | 1 | 0.3% |
+| `tests/**` | 1 | 0.3% |
 
 ## Fallback classified artifacts requiring review
 

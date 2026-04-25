@@ -228,8 +228,20 @@ class FallbackShareTest(unittest.TestCase):
         item["matched_patterns"] = []
         report = self._build([item])
         fs = report["fallback_summary"]
-        self.assertIn("<none>", fs["by_matched_pattern"])
-        self.assertEqual(fs["by_matched_pattern"]["<none>"], 1)
+        self.assertIn("<missing>", fs["by_matched_pattern"])
+        self.assertEqual(fs["by_matched_pattern"]["<missing>"], 1)
+
+    def test_fallback_summary_by_matched_pattern_ignores_non_classified(self) -> None:
+        items = [
+            self._make_classified("scripts/a.py", catchall=True),
+            {**self._make_classified("scripts/b.py", catchall=True), "status": "ambiguous"},
+            {**self._make_classified("scripts/c.py", catchall=True), "status": "conflict"},
+        ]
+        for item in items:
+            item["matched_patterns"] = ["scripts/**"]
+        report = self._build(items)
+        by_pattern = report["fallback_summary"]["by_matched_pattern"]
+        self.assertEqual(by_pattern["scripts/**"], 1)
 
 
 class SelectFallbackPatternTest(unittest.TestCase):
@@ -247,8 +259,8 @@ class SelectFallbackPatternTest(unittest.TestCase):
     def test_falls_back_to_first_when_no_double_glob(self) -> None:
         self.assertEqual(_select_fallback_pattern(["*.md", "docs/*"]), "*.md")
 
-    def test_returns_none_sentinel_for_empty_list(self) -> None:
-        self.assertEqual(_select_fallback_pattern([]), "<none>")
+    def test_returns_missing_sentinel_for_empty_list(self) -> None:
+        self.assertEqual(_select_fallback_pattern([]), "<missing>")
 
 
 class IsHighRiskFallbackTest(unittest.TestCase):
@@ -392,7 +404,7 @@ class MarkdownOutputTest(unittest.TestCase):
         self.assertIn("Fallback classified: by matched pattern", self.md)
 
     def test_markdown_by_matched_pattern_has_table(self) -> None:
-        self.assertIn("| matched_pattern | count |", self.md)
+        self.assertIn("| matched_pattern | count | share_of_fallback |", self.md)
 
     def test_markdown_review_section_has_table(self) -> None:
         self.assertIn("| Path | Layer | Kind | Authority | Risk | Matched pattern |", self.md)

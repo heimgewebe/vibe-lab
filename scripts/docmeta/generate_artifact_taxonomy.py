@@ -190,14 +190,14 @@ def _select_fallback_pattern(matched_patterns: list[str]) -> str:
     Priority:
     1. First pattern that contains '**'
     2. First pattern in the list
-    3. '<none>' when the list is empty
+    3. '<missing>' when the list is empty
     """
     for p in matched_patterns:
         if "**" in p:
             return p
     if matched_patterns:
         return matched_patterns[0]
-    return "<none>"
+    return "<missing>"
 
 
 def _bucket_count(items: list[dict], key: str) -> dict[str, int]:
@@ -475,14 +475,16 @@ def render_markdown(report: dict) -> str:
     )
     lines.append("")
     by_pattern = report["fallback_summary"].get("by_matched_pattern", {})
+    fallback_total = report["summary"]["fallback_classified"]
     if not by_pattern:
         lines.append("_none_")
         lines.append("")
     else:
-        lines.append("| matched_pattern | count |")
-        lines.append("| --- | ---: |")
-        for pat, cnt in sorted(by_pattern.items()):
-            lines.append(f"| `{pat}` | {cnt} |")
+        lines.append("| matched_pattern | count | share_of_fallback |")
+        lines.append("| --- | ---: | ---: |")
+        for pat, cnt in sorted(by_pattern.items(), key=lambda kv: (-kv[1], kv[0])):
+            share = cnt / fallback_total if fallback_total else 0.0
+            lines.append(f"| `{pat}` | {cnt} | {share:.1%} |")
         lines.append("")
 
     lines.append("## Fallback classified artifacts requiring review")
