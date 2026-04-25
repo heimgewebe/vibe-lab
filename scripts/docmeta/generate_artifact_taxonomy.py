@@ -218,7 +218,7 @@ def _bucket_count_by_func(items: list[dict], func: Callable[[dict], str]) -> dic
 
 
 def _top_n(counter: dict[str, int], n: int = 10) -> dict[str, int]:
-    """Return the top-n entries by count, sorted by count desc then key asc."""
+    """Return the top-n entries by count (descending). Ties are broken by key in ascending order."""
     sorted_items = sorted(counter.items(), key=lambda kv: (-kv[1], kv[0]))
     return {k: v for k, v in sorted_items[:n]}
 
@@ -226,10 +226,11 @@ def _top_n(counter: dict[str, int], n: int = 10) -> dict[str, int]:
 def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
     """Build per-pattern residual cluster diagnostics.
 
-    Groups fallback-classified items (status==classified, catchall_match==True)
-    by their selected fallback pattern and produces a diagnostic entry for each
-    group with basename/parent-dir frequency data to guide future rule creation.
-    Items are sorted by total descending.
+    Expects items that are already filtered to status==classified AND
+    catchall_match==True (i.e., the caller is responsible for pre-filtering).
+    Groups those items by their selected fallback pattern and produces a
+    diagnostic entry for each group with basename/parent-dir frequency data
+    to guide future rule creation. Items are sorted by total descending.
     """
     groups: dict[str, list[dict]] = {}
     for item in fallback_classified:

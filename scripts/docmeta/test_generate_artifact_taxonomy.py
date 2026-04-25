@@ -290,7 +290,7 @@ class FallbackShareTest(unittest.TestCase):
         self.assertEqual(by_pattern["scripts/**"], 1)
 
 
-class TopNTest(unittest.TestCase):
+class TopNFunctionTest(unittest.TestCase):
     """Tests for the _top_n helper."""
 
     def test_returns_top_n_by_count(self) -> None:
@@ -433,6 +433,19 @@ class ResidualClustersTest(unittest.TestCase):
 
     def test_residual_clusters_empty_when_no_fallback(self) -> None:
         self.assertEqual(_build_residual_clusters([]), [])
+
+    def test_residual_clusters_excludes_unknown_and_non_classified_via_build_report(self) -> None:
+        """build_report must not pass unknown/ambiguous/conflict items to residual_clusters."""
+        items = [
+            self._make_item("scripts/a.py", pattern="scripts/**"),
+            {**self._make_item("scripts/b.py", pattern="scripts/**"), "status": "unknown"},
+            {**self._make_item("scripts/c.py", pattern="scripts/**"), "status": "ambiguous"},
+            {**self._make_item("scripts/d.py", pattern="scripts/**"), "status": "conflict"},
+        ]
+        report = build_report(items, [])
+        clusters = report["fallback_summary"]["residual_clusters"]
+        self.assertEqual(len(clusters), 1)
+        self.assertEqual(clusters[0]["total"], 1)
 
 
 class ResidualClustersMarkdownTest(unittest.TestCase):
