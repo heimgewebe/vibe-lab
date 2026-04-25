@@ -7,6 +7,7 @@ import unittest
 
 from generate_artifact_taxonomy import (
     _is_high_risk_fallback,
+    _select_fallback_pattern,
     build_report,
     classify_file,
     fallback_review_sort_key,
@@ -162,6 +163,7 @@ class FallbackShareTest(unittest.TestCase):
         fs = report["fallback_summary"]
         self.assertIn("by_layer", fs)
         self.assertIn("by_authority", fs)
+        self.assertIn("by_matched_pattern", fs)
         self.assertIn("high_risk_count", fs)
 
     def test_fallback_summary_by_layer_and_authority(self) -> None:
@@ -206,7 +208,51 @@ class FallbackShareTest(unittest.TestCase):
         self.assertEqual(s["conflict"], 1)
 
 
+    def test_fallback_summary_by_matched_pattern(self) -> None:
+        items = [
+            self._make_classified("docs/a.md", catchall=True),   # matched_patterns=["docs/**"]
+            self._make_classified("docs/b.md", catchall=True),   # matched_patterns=["docs/**"]
+            self._make_classified("gov/c.md", catchall=True, layer="governance", authority="procedure_contract"),
+            self._make_classified("exact/d.md", catchall=False),
+        ]
+        # Override matched_patterns for the gov item to use a distinct pattern
+        items[2]["matched_patterns"] = ["gov/**"]
+        report = self._build(items)
+        fs = report["fallback_summary"]
+        self.assertEqual(fs["by_matched_pattern"]["docs/**"], 2)
+        self.assertEqual(fs["by_matched_pattern"]["gov/**"], 1)
+        self.assertNotIn("exact/d.md", fs["by_matched_pattern"])
+
+    def test_fallback_summary_by_matched_pattern_empty_patterns(self) -> None:
+        item = self._make_classified("docs/a.md", catchall=True)
+        item["matched_patterns"] = []
+        report = self._build([item])
+        fs = report["fallback_summary"]
+        self.assertIn("<none>", fs["by_matched_pattern"])
+        self.assertEqual(fs["by_matched_pattern"]["<none>"], 1)
+
+
+class SelectFallbackPatternTest(unittest.TestCase):
+    """Tests for _select_fallback_pattern helper."""
+
+    def test_selects_first_double_glob_pattern(self) -> None:
+        self.assertEqual(_select_fallback_pattern(["scripts/**", "other"]), "scripts/**")
+
+    def test_selects_bare_double_glob(self) -> None:
+        self.assertEqual(_select_fallback_pattern(["**"]), "**")
+
+    def test_prefers_double_glob_over_non_glob(self) -> None:
+        self.assertEqual(_select_fallback_pattern(["exact/path", "experiments/**"]), "experiments/**")
+
+    def test_falls_back_to_first_when_no_double_glob(self) -> None:
+        self.assertEqual(_select_fallback_pattern(["*.md", "docs/*"]), "*.md")
+
+    def test_returns_none_sentinel_for_empty_list(self) -> None:
+        self.assertEqual(_select_fallback_pattern([]), "<none>")
+
+
 class IsHighRiskFallbackTest(unittest.TestCase):
+
     def _item(self, layer: str | None, authority: str | None) -> dict:
         return {"layer": layer, "authority": authority}
 
@@ -342,6 +388,12 @@ class MarkdownOutputTest(unittest.TestCase):
 
     def test_markdown_contains_review_section(self) -> None:
         self.assertIn("Fallback classified artifacts requiring review", self.md)
+
+    def test_markdown_contains_by_matched_pattern_section(self) -> None:
+        self.assertIn("Fallback classified: by matched pattern", self.md)
+
+    def test_markdown_by_matched_pattern_has_table(self) -> None:
+        self.assertIn("| matched_pattern | count |", self.md)
 
     def test_markdown_review_section_has_table(self) -> None:
         self.assertIn("| Path | Layer | Kind | Authority | Risk | Matched pattern |", self.md)

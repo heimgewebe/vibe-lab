@@ -9527,6 +9527,17 @@
       "governance": 43,
       "test": 85
     },
+    "by_matched_pattern": {
+      "docs/_generated/**": 3,
+      "docs/_generated/metrics/**": 1,
+      "experiments/**": 21,
+      "experiments/*/artifacts/**": 189,
+      "exports/**": 10,
+      "scripts/**": 41,
+      "tests/**": 1,
+      "tests/fixtures/**": 84,
+      "tools/**": 2
+    },
     "high_risk_count": 142
   },
   "generated_artifacts_cross_check": [

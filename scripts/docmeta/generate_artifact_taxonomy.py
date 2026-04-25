@@ -183,11 +183,36 @@ def classify_file(rel_path: str, rules: list[dict]) -> dict:
     }
 
 
+def _select_fallback_pattern(matched_patterns: list[str]) -> str:
+    """Select the most relevant catch-all pattern from matched_patterns.
+
+    Priority:
+    1. First pattern that contains '**'
+    2. First pattern in the list
+    3. '<none>' when the list is empty
+    """
+    for p in matched_patterns:
+        if "**" in p:
+            return p
+    if matched_patterns:
+        return matched_patterns[0]
+    return "<none>"
+
+
 def _bucket_count(items: list[dict], key: str) -> dict[str, int]:
     out: dict[str, int] = {}
     for item in items:
         val = item.get(key) or "<none>"
         out[str(val)] = out.get(str(val), 0) + 1
+    return dict(sorted(out.items()))
+
+
+def _bucket_count_by_func(items: list[dict], func) -> dict[str, int]:
+    """Like _bucket_count but derives the bucket key via an arbitrary function."""
+    out: dict[str, int] = {}
+    for item in items:
+        val = func(item)
+        out[val] = out.get(val, 0) + 1
     return dict(sorted(out.items()))
 
 
@@ -339,6 +364,10 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
         "fallback_summary": {
             "by_layer": _bucket_count(fallback_classified, "layer"),
             "by_authority": _bucket_count(fallback_classified, "authority"),
+            "by_matched_pattern": _bucket_count_by_func(
+                fallback_classified,
+                lambda c: _select_fallback_pattern(c.get("matched_patterns") or []),
+            ),
             "high_risk_count": sum(1 for c in fallback_classified if _is_high_risk_fallback(c)),
         },
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
@@ -436,6 +465,24 @@ def render_markdown(report: dict) -> str:
         if c.get("status") == "classified" and c.get("catchall_match")
     ]
     fallback_sorted = sorted(fallback_items, key=fallback_review_sort_key)[:20]
+
+    lines.append("## Fallback classified: by matched pattern")
+    lines.append("")
+    lines.append(
+        "Counts fallback-classified artifacts per catch-all pattern. "
+        "Shows which broad rules drive the fallback share."
+    )
+    lines.append("")
+    by_pattern = report["fallback_summary"].get("by_matched_pattern", {})
+    if not by_pattern:
+        lines.append("_none_")
+        lines.append("")
+    else:
+        lines.append("| matched_pattern | count |")
+        lines.append("| --- | ---: |")
+        for pat, cnt in sorted(by_pattern.items()):
+            lines.append(f"| `{pat}` | {cnt} |")
+        lines.append("")
 
     lines.append("## Fallback classified artifacts requiring review")
     lines.append("")

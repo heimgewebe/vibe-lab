@@ -509,6 +509,22 @@ _none_
 - `schemas/experiment.manifest.schema.json`
 - `schemas/run_meta.schema.json`
 
+## Fallback classified: by matched pattern
+
+Counts fallback-classified artifacts per catch-all pattern. Shows which broad rules drive the fallback share.
+
+| matched_pattern | count |
+| --- | ---: |
+| `docs/_generated/**` | 3 |
+| `docs/_generated/metrics/**` | 1 |
+| `experiments/**` | 21 |
+| `experiments/*/artifacts/**` | 189 |
+| `exports/**` | 10 |
+| `scripts/**` | 41 |
+| `tests/**` | 1 |
+| `tests/fixtures/**` | 84 |
+| `tools/**` | 2 |
+
 ## Fallback classified artifacts requiring review
 
 Fallback classifications come from broad catch-all rules (low confidence). High-risk items are shown first. Max 20 rows; sorted by risk, layer, authority, then path.
