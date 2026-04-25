@@ -113,6 +113,14 @@ class TaxonomyClassificationTest(unittest.TestCase):
         self.assertEqual(c["authority"], "runtime_observation")
         self.assertFalse(c["catchall_match"])
 
+    def test_experiment_test_output_direct_artifacts_path_is_specific_runtime_observation(self) -> None:
+        c = self._classify("experiments/my-exp/artifacts/test_output.txt")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "experiment")
+        self.assertEqual(c["kind"], "test_output")
+        self.assertEqual(c["authority"], "runtime_observation")
+        self.assertFalse(c["catchall_match"])
+
     def test_experiment_timing_measurement_is_specific_runtime_observation(self) -> None:
         c = self._classify("experiments/my-exp/artifacts/run-001/time_to_first_pass_seconds.txt")
         self.assertEqual(c["status"], "classified")

@@ -13,8 +13,8 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 - total: 573
 - classified: 573
-  - of which fallback_classified (catch-all rule): 303
-  - fallback_share: 52.9% (303 / 573)
+  - of which fallback_classified (catch-all rule): 302
+  - fallback_share: 52.7% (302 / 573)
   - fallback_threshold: 50.0% — warning
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -46,14 +46,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | diagnostic_signal | 7 |
 | evidence_log | 14 |
 | generated_projection | 10 |
-| historical_record | 161 |
+| historical_record | 160 |
 | implementation_behavior | 45 |
 | navigation_surface | 7 |
 | normative_contract | 15 |
 | procedure_contract | 62 |
 | raw_capture | 20 |
 | result_interpretation | 45 |
-| runtime_observation | 49 |
+| runtime_observation | 50 |
 | schema_truth | 11 |
 | sovereign_source | 3 |
 | test_expectation | 88 |
@@ -82,7 +82,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 3 |
 | owner_required | 3 |
-| review_required | 173 |
+| review_required | 174 |
 
 ## Unknown artifacts
 
@@ -102,7 +102,6 @@ _none_
 - `docs/_generated/metrics/trends.md`
 - `docs/_generated/orphans.md`
 - `docs/_generated/system-map.md`
-- `experiments/2026-04-12_spec-first-legacy/artifacts/test_output.txt`
 - `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/test_processor.py`
@@ -467,10 +466,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 140 | 46.2% |
-| `tests/fixtures/**` | 84 | 27.7% |
-| `scripts/**` | 41 | 13.5% |
-| `experiments/**` | 21 | 6.9% |
+| `experiments/*/artifacts/**` | 139 | 46.0% |
+| `tests/fixtures/**` | 84 | 27.8% |
+| `scripts/**` | 41 | 13.6% |
+| `experiments/**` | 21 | 7.0% |
 | `exports/**` | 10 | 3.3% |
 | `docs/_generated/**` | 3 | 1.0% |
 | `tools/**` | 2 | 0.7% |

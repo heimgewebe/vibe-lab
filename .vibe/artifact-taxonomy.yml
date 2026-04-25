@@ -274,6 +274,14 @@ rules:
     enforcement: [no_rewrite, review_required]
     origin: captured
 
+  - pattern: experiments/*/artifacts/test_output.txt
+    layer: experiment
+    kind: test_output
+    authority: runtime_observation
+    lifecycle: append_only
+    enforcement: [no_rewrite, review_required]
+    origin: captured
+
   - pattern: experiments/*/artifacts/**/test_output.txt
     layer: experiment
     kind: test_output

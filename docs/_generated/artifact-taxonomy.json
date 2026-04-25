@@ -1582,18 +1582,19 @@
       "status": "classified"
     },
     {
-      "authority": "historical_record",
-      "catchall_match": true,
+      "authority": "runtime_observation",
+      "catchall_match": false,
       "enforcement": [
-        "no_rewrite"
+        "no_rewrite",
+        "review_required"
       ],
-      "kind": "experiment_artifact",
+      "kind": "test_output",
       "layer": "experiment",
       "lifecycle": "append_only",
       "matched_patterns": [
-        "experiments/*/artifacts/**"
+        "experiments/*/artifacts/test_output.txt"
       ],
-      "origin": "handcrafted",
+      "origin": "captured",
       "path": "experiments/2026-04-12_spec-first-legacy/artifacts/test_output.txt",
       "status": "classified"
     },
@@ -9194,7 +9195,6 @@
     "docs/_generated/metrics/trends.md",
     "docs/_generated/orphans.md",
     "docs/_generated/system-map.md",
-    "experiments/2026-04-12_spec-first-legacy/artifacts/test_output.txt",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
@@ -9498,12 +9498,12 @@
     "by_authority": {
       "diagnostic_signal": 4,
       "generated_projection": 10,
-      "historical_record": 161,
+      "historical_record": 160,
       "implementation_behavior": 43,
       "test_expectation": 85
     },
     "by_layer": {
-      "experiment": 161,
+      "experiment": 160,
       "export": 10,
       "generated": 4,
       "governance": 43,
@@ -9513,7 +9513,7 @@
       "docs/_generated/**": 3,
       "docs/_generated/metrics/**": 1,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 140,
+      "experiments/*/artifacts/**": 139,
       "exports/**": 10,
       "scripts/**": 41,
       "tests/**": 1,
@@ -9677,14 +9677,14 @@
       "diagnostic_signal": 7,
       "evidence_log": 14,
       "generated_projection": 10,
-      "historical_record": 161,
+      "historical_record": 160,
       "implementation_behavior": 45,
       "navigation_surface": 7,
       "normative_contract": 15,
       "procedure_contract": 62,
       "raw_capture": 20,
       "result_interpretation": 45,
-      "runtime_observation": 49,
+      "runtime_observation": 50,
       "schema_truth": 11,
       "sovereign_source": 3,
       "test_expectation": 88,
@@ -9700,7 +9700,7 @@
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 3,
       "owner_required": 3,
-      "review_required": 173
+      "review_required": 174
     },
     "by_layer": {
       "agent": 3,
@@ -9724,8 +9724,8 @@
     },
     "classified": 573,
     "conflict": 0,
-    "fallback_classified": 303,
-    "fallback_share": 0.5287958115183246,
+    "fallback_classified": 302,
+    "fallback_share": 0.5270506108202443,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
     "total": 573,
