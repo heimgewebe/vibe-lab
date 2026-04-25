@@ -595,7 +595,7 @@ def render_markdown(report: dict) -> str:
         lines.append("| --- | ---: | ---: | --- | --- |")
         for cluster in residual_clusters[:5]:
             lines.append(
-                f"| `{_md_cell(cluster['matched_pattern'])}` | {cluster['total']} | "
+                f"| {_md_code_span(cluster['matched_pattern'])} | {cluster['total']} | "
                 f"{cluster['high_risk_count']} | "
                 f"{_format_top_items(cluster.get('top_basenames', {}))} | "
                 f"{_format_top_items(cluster.get('top_parent_dirs', {}))} |"

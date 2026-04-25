@@ -617,6 +617,9 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
         idx_residual = self.md.find("## Residual fallback clusters")
         self.assertLess(idx_pattern, idx_residual)
 
+    def test_markdown_residual_clusters_renders_pattern_as_code_span(self) -> None:
+        self.assertIn("| `scripts/**` |", self.md)
+
 
 class SelectFallbackPatternTest(unittest.TestCase):
     """Tests for _select_fallback_pattern helper."""
