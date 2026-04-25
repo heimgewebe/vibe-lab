@@ -223,6 +223,21 @@ def _top_n(counter: dict[str, int], n: int = 10) -> dict[str, int]:
     return {k: v for k, v in sorted_items[:n]}
 
 
+def _md_cell(value: object) -> str:
+    """Escape a value for safe embedding inside a Markdown table cell."""
+    return str(value).replace("|", "\\|")
+
+
+def _format_top_items(items: dict[str, int], limit: int = 5) -> str:
+    """Render a top-items dict as a compact inline list for a Markdown table cell.
+
+    Limits the output to *limit* entries and escapes values for Markdown safety.
+    Returns ``"-"`` when *items* is empty.
+    """
+    rendered = [f"{_md_cell(k)}={v}" for k, v in list(items.items())[:limit]]
+    return ", ".join(rendered) if rendered else "-"
+
+
 def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
     """Build per-pattern residual cluster diagnostics.
 
@@ -542,7 +557,8 @@ def render_markdown(report: dict) -> str:
     lines.append("## Residual fallback clusters")
     lines.append("")
     lines.append(
-        "Diagnostic breakdown of catch-all fallback buckets (top 5, sorted by high_risk_count desc). "
+        "Diagnostic breakdown of catch-all fallback buckets "
+        "(top 5, sorted by high_risk_count desc, then total desc, then matched_pattern asc). "
         "Shows dominant file names and parent directories to guide targeted rule additions in a future PR."
     )
     lines.append("")
@@ -554,15 +570,11 @@ def render_markdown(report: dict) -> str:
         lines.append("| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |")
         lines.append("| --- | ---: | ---: | --- | --- |")
         for cluster in residual_clusters[:5]:
-            basenames_str = ", ".join(
-                f"{k}={v}" for k, v in cluster.get("top_basenames", {}).items()
-            )
-            parents_str = ", ".join(
-                f"{k}={v}" for k, v in cluster.get("top_parent_dirs", {}).items()
-            )
             lines.append(
-                f"| `{cluster['matched_pattern']}` | {cluster['total']} | "
-                f"{cluster['high_risk_count']} | {basenames_str or '-'} | {parents_str or '-'} |"
+                f"| `{_md_cell(cluster['matched_pattern'])}` | {cluster['total']} | "
+                f"{cluster['high_risk_count']} | "
+                f"{_format_top_items(cluster.get('top_basenames', {}))} | "
+                f"{_format_top_items(cluster.get('top_parent_dirs', {}))} |"
             )
         lines.append("")
 

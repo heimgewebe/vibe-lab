@@ -7,7 +7,9 @@ import unittest
 
 from generate_artifact_taxonomy import (
     _build_residual_clusters,
+    _format_top_items,
     _is_high_risk_fallback,
+    _md_cell,
     _select_fallback_pattern,
     _top_n,
     build_report,
@@ -312,6 +314,42 @@ class TopNFunctionTest(unittest.TestCase):
 
     def test_empty_counter_returns_empty(self) -> None:
         self.assertEqual(_top_n({}, n=5), {})
+
+
+class MdCellTest(unittest.TestCase):
+    """Tests for _md_cell helper."""
+
+    def test_escapes_pipe(self) -> None:
+        self.assertEqual(_md_cell("a|b"), "a\\|b")
+
+    def test_leaves_normal_strings_unchanged(self) -> None:
+        self.assertEqual(_md_cell("scripts/foo.py"), "scripts/foo.py")
+
+    def test_converts_non_string(self) -> None:
+        self.assertEqual(_md_cell(42), "42")
+
+    def test_multiple_pipes(self) -> None:
+        self.assertEqual(_md_cell("a|b|c"), "a\\|b\\|c")
+
+
+class FormatTopItemsTest(unittest.TestCase):
+    """Tests for _format_top_items helper."""
+
+    def test_returns_dash_for_empty(self) -> None:
+        self.assertEqual(_format_top_items({}), "-")
+
+    def test_formats_key_value_pairs(self) -> None:
+        result = _format_top_items({"foo.py": 3, "bar.py": 1}, limit=5)
+        self.assertEqual(result, "foo.py=3, bar.py=1")
+
+    def test_limits_to_given_number(self) -> None:
+        items = {f"f{i}.py": i for i in range(10, 0, -1)}
+        result = _format_top_items(items, limit=3)
+        self.assertEqual(len(result.split(", ")), 3)
+
+    def test_escapes_pipe_in_key(self) -> None:
+        result = _format_top_items({"a|b": 1}, limit=5)
+        self.assertIn("a\\|b=1", result)
 
 
 class ResidualClustersTest(unittest.TestCase):
