@@ -256,7 +256,7 @@ def fallback_review_sort_key(item: dict) -> tuple:
 
 
 def build_report(classifications: list[dict], generated_artifacts: list[dict]) -> dict:
-    classified = [c for c in classifications if c["status"] != UNKNOWN]
+    classified = [c for c in classifications if c["status"] == CLASSIFIED]
     unknown = [c for c in classifications if c["status"] == UNKNOWN]
     ambiguous = [c for c in classifications if c["status"] == AMBIGUOUS]
     conflict = [c for c in classifications if c["status"] == CONFLICT]
@@ -379,7 +379,10 @@ def render_markdown(report: dict) -> str:
     fallback_count = s["fallback_classified"]
     share_pct = s["fallback_share"] * 100
     threshold_pct = s["fallback_threshold"] * 100
-    share_display = f"{share_pct:.1f}% ({fallback_count} / {classified_total})"
+    if classified_total == 0:
+        share_display = f"{share_pct:.1f}% (0 classified)"
+    else:
+        share_display = f"{share_pct:.1f}% ({fallback_count} / {classified_total})"
     threshold_display = f"{threshold_pct:.1f}% — {s['fallback_threshold_status']}"
     lines.append(f"  - fallback_share: {share_display}")
     lines.append(f"  - fallback_threshold: {threshold_display}")

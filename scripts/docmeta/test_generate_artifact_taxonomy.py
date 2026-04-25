@@ -110,7 +110,7 @@ class FallbackShareTest(unittest.TestCase):
             "lifecycle": "handcrafted",
             "enforcement": [],
             "origin": "handcrafted",
-            "matched_patterns": ["docs/**"] if catchall else [f"docs/{path}"],
+            "matched_patterns": ["docs/**"] if catchall else [path],
             "catchall_match": catchall,
         }
 
@@ -189,6 +189,21 @@ class FallbackShareTest(unittest.TestCase):
         ]
         report = self._build(items)
         self.assertEqual(report["fallback_summary"]["high_risk_count"], 2)
+
+    def test_fallback_share_ignores_ambiguous_and_conflict(self) -> None:
+        """ambiguous/conflict items with catchall_match must not inflate classified or fallback_share."""
+        items = [
+            self._make_classified("docs/a.md", catchall=True),
+            {**self._make_classified("docs/b.md", catchall=True), "status": "ambiguous"},
+            {**self._make_classified("docs/c.md", catchall=True), "status": "conflict"},
+        ]
+        report = self._build(items)
+        s = report["summary"]
+        self.assertEqual(s["classified"], 1)
+        self.assertEqual(s["fallback_classified"], 1)
+        self.assertEqual(s["fallback_share"], 1.0)
+        self.assertEqual(s["ambiguous"], 1)
+        self.assertEqual(s["conflict"], 1)
 
 
 class IsHighRiskFallbackTest(unittest.TestCase):
