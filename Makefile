@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
 
 # Minimaler Guard-Stack
-validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
+validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
 	@# Promotion-Readiness als Dry-Run (Phase 1): inhaltliche not_ready-Befunde
 	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
 	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
@@ -155,9 +155,17 @@ validate-generated-artifacts-contract-tests:
 	@echo "🧪 Running generated-artifact contract regression tests..."
 	@python3 scripts/docmeta/test_validate_generated_artifacts_contract.py
 
+validate-artifact-taxonomy:
+	@echo "📋 Validating artifact taxonomy contract..."
+	@python3 scripts/docmeta/validate_artifact_taxonomy.py
+
 validate-artifact-taxonomy-tests:
 	@echo "🧪 Running artifact taxonomy generator regression tests..."
 	@python3 scripts/docmeta/test_generate_artifact_taxonomy.py
+
+validate-artifact-taxonomy-contract-tests:
+	@echo "🧪 Running artifact taxonomy contract validator regression tests..."
+	@python3 scripts/docmeta/test_validate_artifact_taxonomy.py
 
 check-decisions:
 	@echo "🔐 Validating system decision guard..."

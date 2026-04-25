@@ -131,6 +131,43 @@ class ContractValidatorTest(unittest.TestCase):
         errors = validate(data)
         self.assertTrue(any("schema_version" in e for e in errors), errors)
 
+    def test_artifact_only_ephemeral_valid(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["classes"]["ephemeral_trace"] = {
+            "description": "Short-lived runtime trace.",
+            "authority": "runtime_observation",
+        }
+        data["artifacts"].append({
+            "path": "docs/_generated/ephemeral-state.md",
+            "class": "ephemeral_trace",
+            "authority": "runtime_observation",
+            "origin": "generated",
+            "lifecycle": "regenerated",
+            "enforcement": ["artifact_only", "no_manual_edit"],
+            "activation": "always",
+            "commit_policy": "do_not_commit",
+            "ci_policy": "artifact_only",
+        })
+        self.assertEqual(validate(data), [])
+
+    def test_unknown_authority_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["authority"] = "not_a_real_authority"
+        errors = validate(data)
+        self.assertTrue(any("unknown authority" in e for e in errors), errors)
+
+    def test_unknown_ci_policy_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["ci_policy"] = "made_up_policy"
+        errors = validate(data)
+        self.assertTrue(any("unknown ci_policy" in e for e in errors), errors)
+
+    def test_unknown_enforcement_value_rejected(self) -> None:
+        data = copy.deepcopy(VALID_CONTRACT)
+        data["artifacts"][0]["enforcement"] = ["no_manual_edit", "zombie_tag"]
+        errors = validate(data)
+        self.assertTrue(any("unknown enforcement value" in e for e in errors), errors)
+
 
 if __name__ == "__main__":
     unittest.main()

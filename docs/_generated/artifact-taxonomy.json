@@ -2,26 +2,34 @@
   "ambiguous_artifacts": [],
   "classifications": [
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "config_template",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".env.example"
+      ],
+      "origin": "handcrafted",
       "path": ".env.example",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "config",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".gitignore"
+      ],
+      "origin": "handcrafted",
       "path": ".gitignore",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "normative_contract",
@@ -116,7 +124,7 @@
     {
       "authority": "sovereign_source",
       "enforcement": [
-        "canonical",
+        "owner_required",
         "no_silent_edit"
       ],
       "kind": "agent_reading_rules",
@@ -130,42 +138,54 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "normative_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "contribution_contract",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "CONTRIBUTING.md"
+      ],
+      "origin": "handcrafted",
       "path": "CONTRIBUTING.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "routine_frontdoor",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "Makefile"
+      ],
+      "origin": "handcrafted",
       "path": "Makefile",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "entrypoint",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "README.md"
+      ],
+      "origin": "handcrafted",
       "path": "README.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "sovereign_source",
       "enforcement": [
-        "canonical",
+        "owner_required",
         "no_silent_edit"
       ],
       "kind": "agent_policy",
@@ -179,37 +199,49 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "test_expectation",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "benchmark_challenge",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "benchmarks/challenges/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "benchmarks/challenges/kanban-board-v1.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "test_expectation",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "benchmark_challenge",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "benchmarks/challenges/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "benchmarks/challenges/legacy-refactoring-v1.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "test_expectation",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "benchmark_challenge",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "benchmarks/challenges/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "benchmarks/challenges/rest-api-v1.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "result_interpretation",
@@ -332,15 +364,19 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "result_interpretation",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "catalog_artifact",
+      "layer": "catalog",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "catalog/**"
+      ],
+      "origin": "handcrafted",
       "path": "catalog/technologies/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "result_interpretation",
@@ -418,81 +454,106 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "decision_record",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
       "path": "decisions/benchmark/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "decision_record",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
       "path": "decisions/export/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "decision_record",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
       "path": "decisions/policy/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "decision_record",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
       "path": "decisions/process/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "decision_record",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "system_decision",
+      "layer": "governance",
+      "lifecycle": "superseded_not_rewritten",
+      "matched_patterns": [
+        "decisions/system/*.yml"
+      ],
+      "origin": "handcrafted",
       "path": "decisions/system/2026-04-23-catalog-staleness-dormant.yml",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "decision_record",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "system_decision",
+      "layer": "governance",
+      "lifecycle": "superseded_not_rewritten",
+      "matched_patterns": [
+        "decisions/system/*.yml"
+      ],
+      "origin": "handcrafted",
       "path": "decisions/system/2026-04-23-metrics-enabled.yml",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "diagnostic_signal",
       "enforcement": [
+        "non_blocking_diagnostic",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "artifact_taxonomy_report",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/artifact-taxonomy.json"
       ],
       "origin": "generated",
       "path": "docs/_generated/artifact-taxonomy.json",
@@ -501,13 +562,14 @@
     {
       "authority": "diagnostic_signal",
       "enforcement": [
+        "non_blocking_diagnostic",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "artifact_taxonomy_report",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/artifact-taxonomy.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/artifact-taxonomy.md",
@@ -529,30 +591,32 @@
       "status": "classified"
     },
     {
-      "authority": "diagnostic_signal",
+      "authority": "navigation_surface",
       "enforcement": [
+        "ci_blocking",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "generated_index",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/doc-index.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/doc-index.md",
       "status": "classified"
     },
     {
-      "authority": "diagnostic_signal",
+      "authority": "runtime_observation",
       "enforcement": [
+        "artifact_only",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "ephemeral_trace",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/epistemic-state.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/epistemic-state.md",
@@ -561,13 +625,14 @@
     {
       "authority": "diagnostic_signal",
       "enforcement": [
+        "best_effort",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "metric_report",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/metrics/**"
       ],
       "origin": "generated",
       "path": "docs/_generated/metrics/.gitkeep",
@@ -576,13 +641,14 @@
     {
       "authority": "diagnostic_signal",
       "enforcement": [
+        "best_effort",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "metric_report",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/metrics/**"
       ],
       "origin": "generated",
       "path": "docs/_generated/metrics/trends.md",
@@ -606,13 +672,14 @@
     {
       "authority": "diagnostic_signal",
       "enforcement": [
+        "non_blocking_diagnostic",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "diagnostic_dry_run",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/promotion-readiness.json"
       ],
       "origin": "generated",
       "path": "docs/_generated/promotion-readiness.json",
@@ -634,15 +701,19 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/blueprints/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "result_interpretation",
@@ -705,15 +776,19 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/concepts/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "result_interpretation",
@@ -746,48 +821,64 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/evaluations/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/experiments/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "normative_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "foundation_doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/foundations/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "docs/foundations/repo-plan.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "normative_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "foundation_doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/foundations/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "docs/foundations/vision.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "navigation_surface",
@@ -805,70 +896,94 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "strategic_plan",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/masterplan.md"
+      ],
+      "origin": "handcrafted",
       "path": "docs/masterplan.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/onboarding/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/playbooks/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "docs/playbooks/build-reliable-prompt.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "docs/playbooks/plan-execution-checklist.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "docs/playbooks/reconciliation.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "procedure_contract",
@@ -901,15 +1016,19 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/reference/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "navigation_surface",
@@ -942,29 +1061,37 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/rules/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
       "path": "docs/syntheses/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -979,11 +1106,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -1009,13 +1136,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -1085,7 +1212,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -1100,11 +1227,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -1130,13 +1257,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -1206,7 +1333,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -1221,11 +1348,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -1281,13 +1408,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -1342,40 +1469,52 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -1390,11 +1529,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -1690,13 +1829,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -1766,7 +1905,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -1781,11 +1920,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -2186,13 +2325,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -2262,7 +2401,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -2277,11 +2416,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -3372,13 +3511,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -3448,7 +3587,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -3463,11 +3602,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -3658,13 +3797,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -3734,18 +3873,22 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/.gitignore",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -3760,11 +3903,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -3985,24 +4128,28 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/followups.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -4072,117 +4219,157 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/.gitignore",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/app.ts",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-patched.log",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-unfixed.log",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package-lock.json",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package.json",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/tsconfig.json",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.test.ts",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.ts",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -4197,11 +4384,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -4392,13 +4579,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -4453,7 +4640,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -4468,11 +4655,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -4573,13 +4760,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -4634,18 +4821,22 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -4660,11 +4851,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -4855,13 +5046,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -4931,40 +5122,52 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-15_agent-task-validity/tasks.iteration3.jsonl",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-15_agent-task-validity/tasks.iteration4.jsonl",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-15_agent-task-validity/tasks.jsonl",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -4979,11 +5182,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -5249,13 +5452,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -5279,15 +5482,19 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "result_interpretation",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "cross_run_assessment",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/cross-run-assessment.md"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "decision_record",
@@ -5336,7 +5543,7 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -5351,11 +5558,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -5381,13 +5588,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -5411,11 +5618,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -5591,24 +5798,28 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -5632,15 +5843,19 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "historical_record",
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-04-23_phase-1-drift-injection/results/README.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "decision_record",
@@ -5689,18 +5904,22 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "navigation_surface",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "navigation_index",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/README.md"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/README.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "procedure_contract",
       "enforcement": [
         "review_required"
       ],
@@ -5715,11 +5934,11 @@
       "status": "classified"
     },
     {
-      "authority": "result_interpretation",
+      "authority": "raw_capture",
       "enforcement": [
         "review_required"
       ],
-      "kind": "experiment_proposal",
+      "kind": "initial_prompt",
       "layer": "experiment",
       "lifecycle": "handcrafted",
       "matched_patterns": [
@@ -5775,13 +5994,13 @@
       "status": "classified"
     },
     {
-      "authority": "schema_truth",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
       "kind": "experiment_manifest",
       "layer": "experiment",
-      "lifecycle": "handcrafted",
+      "lifecycle": "revision_with_reason",
       "matched_patterns": [
         "experiments/*/manifest.yml"
       ],
@@ -6011,12 +6230,12 @@
       "status": "classified"
     },
     {
-      "authority": "procedure_contract",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "instruction_block",
-      "layer": "agent",
+      "kind": "export_source",
+      "layer": "export",
       "lifecycle": "handcrafted",
       "matched_patterns": [
         "instruction-blocks/*.md"
@@ -6026,12 +6245,12 @@
       "status": "classified"
     },
     {
-      "authority": "procedure_contract",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "instruction_block",
-      "layer": "agent",
+      "kind": "export_source",
+      "layer": "export",
       "lifecycle": "handcrafted",
       "matched_patterns": [
         "instruction-blocks/*.md"
@@ -6041,12 +6260,12 @@
       "status": "classified"
     },
     {
-      "authority": "procedure_contract",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "instruction_block",
-      "layer": "agent",
+      "kind": "export_source",
+      "layer": "export",
       "lifecycle": "handcrafted",
       "matched_patterns": [
         "instruction-blocks/*.md"
@@ -6056,12 +6275,12 @@
       "status": "classified"
     },
     {
-      "authority": "procedure_contract",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "instruction_block",
-      "layer": "agent",
+      "kind": "export_source",
+      "layer": "export",
       "lifecycle": "handcrafted",
       "matched_patterns": [
         "instruction-blocks/*.md"
@@ -6071,12 +6290,12 @@
       "status": "classified"
     },
     {
-      "authority": "procedure_contract",
+      "authority": "normative_contract",
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "instruction_block",
-      "layer": "agent",
+      "kind": "export_source",
+      "layer": "export",
       "lifecycle": "handcrafted",
       "matched_patterns": [
         "instruction-blocks/*.md"
@@ -6086,26 +6305,34 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "adopted_prompt",
+      "layer": "catalog",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "prompts/**/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "prompts/adopted/prompt-length-control.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "procedure_contract",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "adopted_prompt",
+      "layer": "catalog",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "prompts/**/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "prompts/adopted/spec-first-api.md",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "raw_capture",
@@ -6185,7 +6412,7 @@
     {
       "authority": "sovereign_source",
       "enforcement": [
-        "canonical",
+        "owner_required",
         "no_silent_edit"
       ],
       "kind": "sovereign_source",
@@ -6334,444 +6561,634 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/adoption/__init__.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/adoption/test_validate_adoption_completeness.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/adoption/validate_adoption_completeness.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/_paths.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/check_system_decisions.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_artifact_taxonomy.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_backlinks.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_doc_index.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_epistemic_state.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_metrics.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_orphans.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/generate_system_map.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/resolve_generated_artifact_paths.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_command_version_policy.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_fixture_matrix_audit_surface.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_fixture_matrix_known_gaps_audit.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_generate_artifact_taxonomy.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_generate_epistemic_state.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_promotion_readiness.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_agent_commands.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_agent_handoff.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_artifact_taxonomy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_command_chain.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_generated_artifacts_contract.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_interpretation_budget.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_schema_counterevidence.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_agent_commands.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_agent_handoff.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_artifact_taxonomy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_command_chain.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_execution_proof.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_generated_artifacts_contract.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_interpretation_budget.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_promotion_readiness.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_relations.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_schema.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/exports/__init__.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/exports/generate_exports.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/exports/test_generate_exports.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "test_expectation",
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/**"
+      ],
+      "origin": "handcrafted",
       "path": "tests/contracts/test_cross_contract_chain.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "test_expectation",
@@ -8034,102 +8451,136 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "implementation_tool",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/**"
+      ],
+      "origin": "handcrafted",
       "path": "tools/vibe-cli/.gitkeep",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "implementation_tool",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/**"
+      ],
+      "origin": "handcrafted",
       "path": "tools/vibe-cli/replay_minimal.py",
-      "status": "unknown"
+      "status": "classified"
     },
     {
-      "authority": "unknown",
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "authority": "implementation_behavior",
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "implementation_tool",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/**"
+      ],
+      "origin": "handcrafted",
       "path": "tools/vibe-cli/test_replay_minimal.py",
-      "status": "unknown"
+      "status": "classified"
     }
   ],
   "conflict_artifacts": [],
   "generated_artifacts_cross_check": [
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/artifact-taxonomy.json",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/artifact-taxonomy.md",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/backlinks.md",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "navigation_surface",
       "generated_artifact_path": "docs/_generated/doc-index.md",
       "matched_in_taxonomy": true,
-      "taxonomy_authority": "diagnostic_signal",
+      "taxonomy_authority": "navigation_surface",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "runtime_observation",
       "generated_artifact_path": "docs/_generated/epistemic-state.md",
       "matched_in_taxonomy": true,
-      "taxonomy_authority": "diagnostic_signal",
+      "taxonomy_authority": "runtime_observation",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/metrics/trends.md",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/orphans.md",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/promotion-readiness.json",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "diagnostic_signal",
       "generated_artifact_path": "docs/_generated/system-map.md",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "diagnostic_signal",
       "taxonomy_layer": "generated"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "generated_projection",
       "generated_artifact_path": "exports/copilot/",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "generated_projection",
       "taxonomy_layer": "export"
     },
     {
+      "authority_mismatch": false,
+      "contract_authority": "generated_projection",
       "generated_artifact_path": "exports/cursor/",
       "matched_in_taxonomy": true,
       "taxonomy_authority": "generated_projection",
@@ -8142,9 +8593,18 @@
     ".vibe/generated-artifacts.yml",
     ".vibe/quality-gates.yml",
     "AGENTS.md",
+    "CONTRIBUTING.md",
     "agent-policy.yaml",
     "contracts/docmeta.schema.json",
     "contracts/system_decision.schema.json",
+    "decisions/benchmark/.gitkeep",
+    "decisions/export/.gitkeep",
+    "decisions/policy/.gitkeep",
+    "decisions/process/.gitkeep",
+    "decisions/system/2026-04-23-catalog-staleness-dormant.yml",
+    "decisions/system/2026-04-23-metrics-enabled.yml",
+    "docs/foundations/repo-plan.md",
+    "docs/foundations/vision.md",
     "experiments/2026-04-08_spec-first/manifest.yml",
     "experiments/2026-04-08_spec-first/results/decision.yml",
     "experiments/2026-04-08_spec-first/results/evidence.jsonl",
@@ -8185,6 +8645,11 @@
     "experiments/_template/manifest.yml",
     "experiments/_template/results/decision.yml",
     "experiments/_template/results/evidence.jsonl",
+    "instruction-blocks/constraint-before-code.md",
+    "instruction-blocks/edge-case-enumeration.md",
+    "instruction-blocks/no-vague-prompts.md",
+    "instruction-blocks/spec-first.md",
+    "instruction-blocks/validate-against-spec.md",
     "repo.meta.yaml",
     "schemas/agent.handoff.schema.json",
     "schemas/catalog.entry.schema.json",
@@ -8199,154 +8664,58 @@
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 11,
-      "diagnostic_signal": 10,
+      "decision_record": 17,
+      "diagnostic_signal": 8,
       "evidence_log": 14,
       "generated_projection": 10,
-      "historical_record": 196,
-      "navigation_surface": 4,
-      "normative_contract": 4,
-      "procedure_contract": 24,
-      "raw_capture": 5,
-      "result_interpretation": 73,
-      "schema_truth": 26,
+      "historical_record": 217,
+      "implementation_behavior": 46,
+      "navigation_surface": 16,
+      "normative_contract": 27,
+      "procedure_contract": 40,
+      "raw_capture": 20,
+      "result_interpretation": 46,
+      "runtime_observation": 1,
+      "schema_truth": 11,
       "sovereign_source": 3,
-      "test_expectation": 84,
-      "unknown": 98
+      "test_expectation": 88
     },
     "by_enforcement": {
       "advisory": 1,
-      "canonical": 3,
-      "ci_blocking": 153,
+      "artifact_only": 1,
+      "best_effort": 2,
+      "ci_blocking": 199,
       "diagnostic": 1,
       "no_manual_edit": 20,
-      "no_rewrite": 215,
+      "no_rewrite": 236,
       "no_silent_edit": 3,
-      "review_required": 95
+      "non_blocking_diagnostic": 3,
+      "owner_required": 3,
+      "review_required": 129
     },
     "by_layer": {
-      "<none>": 98,
-      "agent": 5,
       "capture": 5,
-      "catalog": 10,
+      "catalog": 13,
       "contract": 18,
-      "docs": 11,
-      "experiment": 308,
-      "export": 10,
+      "docs": 28,
+      "experiment": 330,
+      "export": 15,
       "generated": 10,
-      "governance": 3,
-      "test": 84
+      "governance": 57,
+      "test": 88
     },
     "by_lifecycle": {
-      "<none>": 98,
-      "append_only": 215,
-      "handcrafted": 229,
-      "regenerated": 20
+      "append_only": 236,
+      "handcrafted": 291,
+      "regenerated": 20,
+      "revision_with_reason": 15,
+      "superseded_not_rewritten": 2
     },
-    "classified": 464,
+    "classified": 564,
     "conflict": 0,
-    "total": 562,
-    "unknown": 98
+    "total": 564,
+    "unknown": 0
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": [
-    ".env.example",
-    ".gitignore",
-    "CONTRIBUTING.md",
-    "Makefile",
-    "README.md",
-    "benchmarks/challenges/kanban-board-v1.md",
-    "benchmarks/challenges/legacy-refactoring-v1.md",
-    "benchmarks/challenges/rest-api-v1.md",
-    "catalog/technologies/.gitkeep",
-    "decisions/benchmark/.gitkeep",
-    "decisions/export/.gitkeep",
-    "decisions/policy/.gitkeep",
-    "decisions/process/.gitkeep",
-    "decisions/system/2026-04-23-catalog-staleness-dormant.yml",
-    "decisions/system/2026-04-23-metrics-enabled.yml",
-    "docs/blueprints/.gitkeep",
-    "docs/concepts/.gitkeep",
-    "docs/evaluations/.gitkeep",
-    "docs/experiments/.gitkeep",
-    "docs/foundations/repo-plan.md",
-    "docs/foundations/vision.md",
-    "docs/masterplan.md",
-    "docs/onboarding/.gitkeep",
-    "docs/playbooks/.gitkeep",
-    "docs/playbooks/build-reliable-prompt.md",
-    "docs/playbooks/plan-execution-checklist.md",
-    "docs/playbooks/reconciliation.md",
-    "docs/reference/.gitkeep",
-    "docs/rules/.gitkeep",
-    "docs/syntheses/.gitkeep",
-    "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
-    "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
-    "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
-    "experiments/2026-04-14_tdd-vibe/.gitignore",
-    "experiments/2026-04-14_tdd-vibe/followups.md",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/.gitignore",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/app.ts",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-patched.log",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-unfixed.log",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package-lock.json",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package.json",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/tsconfig.json",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.test.ts",
-    "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.ts",
-    "experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md",
-    "experiments/2026-04-15_agent-task-validity/tasks.iteration3.jsonl",
-    "experiments/2026-04-15_agent-task-validity/tasks.iteration4.jsonl",
-    "experiments/2026-04-15_agent-task-validity/tasks.jsonl",
-    "experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md",
-    "experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md",
-    "experiments/2026-04-23_phase-1-drift-injection/results/README.md",
-    "experiments/README.md",
-    "prompts/adopted/prompt-length-control.md",
-    "prompts/adopted/spec-first-api.md",
-    "scripts/adoption/__init__.py",
-    "scripts/adoption/test_validate_adoption_completeness.py",
-    "scripts/adoption/validate_adoption_completeness.py",
-    "scripts/docmeta/_paths.py",
-    "scripts/docmeta/check_system_decisions.py",
-    "scripts/docmeta/generate_artifact_taxonomy.py",
-    "scripts/docmeta/generate_backlinks.py",
-    "scripts/docmeta/generate_doc_index.py",
-    "scripts/docmeta/generate_epistemic_state.py",
-    "scripts/docmeta/generate_metrics.py",
-    "scripts/docmeta/generate_orphans.py",
-    "scripts/docmeta/generate_system_map.py",
-    "scripts/docmeta/resolve_generated_artifact_paths.py",
-    "scripts/docmeta/test_command_version_policy.py",
-    "scripts/docmeta/test_fixture_matrix_audit_surface.py",
-    "scripts/docmeta/test_fixture_matrix_known_gaps_audit.py",
-    "scripts/docmeta/test_generate_artifact_taxonomy.py",
-    "scripts/docmeta/test_generate_epistemic_state.py",
-    "scripts/docmeta/test_promotion_readiness.py",
-    "scripts/docmeta/test_validate_agent_commands.py",
-    "scripts/docmeta/test_validate_agent_handoff.py",
-    "scripts/docmeta/test_validate_command_chain.py",
-    "scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py",
-    "scripts/docmeta/test_validate_generated_artifacts_contract.py",
-    "scripts/docmeta/test_validate_interpretation_budget.py",
-    "scripts/docmeta/test_validate_schema_counterevidence.py",
-    "scripts/docmeta/validate_agent_commands.py",
-    "scripts/docmeta/validate_agent_handoff.py",
-    "scripts/docmeta/validate_command_chain.py",
-    "scripts/docmeta/validate_execution_proof.py",
-    "scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py",
-    "scripts/docmeta/validate_generated_artifacts_contract.py",
-    "scripts/docmeta/validate_interpretation_budget.py",
-    "scripts/docmeta/validate_promotion_readiness.py",
-    "scripts/docmeta/validate_relations.py",
-    "scripts/docmeta/validate_schema.py",
-    "scripts/exports/__init__.py",
-    "scripts/exports/generate_exports.py",
-    "scripts/exports/test_generate_exports.py",
-    "tests/contracts/test_cross_contract_chain.py",
-    "tools/vibe-cli/.gitkeep",
-    "tools/vibe-cli/replay_minimal.py",
-    "tools/vibe-cli/test_replay_minimal.py"
-  ]
+  "unknown_artifacts": []
 }

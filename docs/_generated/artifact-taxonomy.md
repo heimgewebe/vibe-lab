@@ -11,9 +11,9 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 562
-- classified: 464
-- unknown: 98
+- total: 564
+- classified: 564
+- unknown: 0
 - ambiguous: 0
 - conflict: 0
 
@@ -21,159 +21,65 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 | layer | count |
 | --- | ---: |
-| <none> | 98 |
-| agent | 5 |
 | capture | 5 |
-| catalog | 10 |
+| catalog | 13 |
 | contract | 18 |
-| docs | 11 |
-| experiment | 308 |
-| export | 10 |
+| docs | 28 |
+| experiment | 330 |
+| export | 15 |
 | generated | 10 |
-| governance | 3 |
-| test | 84 |
+| governance | 57 |
+| test | 88 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 11 |
-| diagnostic_signal | 10 |
+| decision_record | 17 |
+| diagnostic_signal | 8 |
 | evidence_log | 14 |
 | generated_projection | 10 |
-| historical_record | 196 |
-| navigation_surface | 4 |
-| normative_contract | 4 |
-| procedure_contract | 24 |
-| raw_capture | 5 |
-| result_interpretation | 73 |
-| schema_truth | 26 |
+| historical_record | 217 |
+| implementation_behavior | 46 |
+| navigation_surface | 16 |
+| normative_contract | 27 |
+| procedure_contract | 40 |
+| raw_capture | 20 |
+| result_interpretation | 46 |
+| runtime_observation | 1 |
+| schema_truth | 11 |
 | sovereign_source | 3 |
-| test_expectation | 84 |
-| unknown | 98 |
+| test_expectation | 88 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| <none> | 98 |
-| append_only | 215 |
-| handcrafted | 229 |
+| append_only | 236 |
+| handcrafted | 291 |
 | regenerated | 20 |
+| revision_with_reason | 15 |
+| superseded_not_rewritten | 2 |
 
 ### By enforcement
 
 | enforcement | count |
 | --- | ---: |
 | advisory | 1 |
-| canonical | 3 |
-| ci_blocking | 153 |
+| artifact_only | 1 |
+| best_effort | 2 |
+| ci_blocking | 199 |
 | diagnostic | 1 |
 | no_manual_edit | 20 |
-| no_rewrite | 215 |
+| no_rewrite | 236 |
 | no_silent_edit | 3 |
-| review_required | 95 |
+| non_blocking_diagnostic | 3 |
+| owner_required | 3 |
+| review_required | 129 |
 
 ## Unknown artifacts
 
-- `.env.example`
-- `.gitignore`
-- `CONTRIBUTING.md`
-- `Makefile`
-- `README.md`
-- `benchmarks/challenges/kanban-board-v1.md`
-- `benchmarks/challenges/legacy-refactoring-v1.md`
-- `benchmarks/challenges/rest-api-v1.md`
-- `catalog/technologies/.gitkeep`
-- `decisions/benchmark/.gitkeep`
-- `decisions/export/.gitkeep`
-- `decisions/policy/.gitkeep`
-- `decisions/process/.gitkeep`
-- `decisions/system/2026-04-23-catalog-staleness-dormant.yml`
-- `decisions/system/2026-04-23-metrics-enabled.yml`
-- `docs/blueprints/.gitkeep`
-- `docs/concepts/.gitkeep`
-- `docs/evaluations/.gitkeep`
-- `docs/experiments/.gitkeep`
-- `docs/foundations/repo-plan.md`
-- `docs/foundations/vision.md`
-- `docs/masterplan.md`
-- `docs/onboarding/.gitkeep`
-- `docs/playbooks/.gitkeep`
-- `docs/playbooks/build-reliable-prompt.md`
-- `docs/playbooks/plan-execution-checklist.md`
-- `docs/playbooks/reconciliation.md`
-- `docs/reference/.gitkeep`
-- `docs/rules/.gitkeep`
-- `docs/syntheses/.gitkeep`
-- `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py`
-- `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py`
-- `experiments/2026-04-12_spec-first-legacy/src/test_processor.py`
-- `experiments/2026-04-14_tdd-vibe/.gitignore`
-- `experiments/2026-04-14_tdd-vibe/followups.md`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/.gitignore`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/app.ts`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-patched.log`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/jest-unfixed.log`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package-lock.json`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/package.json`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/tsconfig.json`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.test.ts`
-- `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.ts`
-- `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md`
-- `experiments/2026-04-15_agent-task-validity/tasks.iteration3.jsonl`
-- `experiments/2026-04-15_agent-task-validity/tasks.iteration4.jsonl`
-- `experiments/2026-04-15_agent-task-validity/tasks.jsonl`
-- `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md`
-- `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md`
-- `experiments/2026-04-23_phase-1-drift-injection/results/README.md`
-- `experiments/README.md`
-- `prompts/adopted/prompt-length-control.md`
-- `prompts/adopted/spec-first-api.md`
-- `scripts/adoption/__init__.py`
-- `scripts/adoption/test_validate_adoption_completeness.py`
-- `scripts/adoption/validate_adoption_completeness.py`
-- `scripts/docmeta/_paths.py`
-- `scripts/docmeta/check_system_decisions.py`
-- `scripts/docmeta/generate_artifact_taxonomy.py`
-- `scripts/docmeta/generate_backlinks.py`
-- `scripts/docmeta/generate_doc_index.py`
-- `scripts/docmeta/generate_epistemic_state.py`
-- `scripts/docmeta/generate_metrics.py`
-- `scripts/docmeta/generate_orphans.py`
-- `scripts/docmeta/generate_system_map.py`
-- `scripts/docmeta/resolve_generated_artifact_paths.py`
-- `scripts/docmeta/test_command_version_policy.py`
-- `scripts/docmeta/test_fixture_matrix_audit_surface.py`
-- `scripts/docmeta/test_fixture_matrix_known_gaps_audit.py`
-- `scripts/docmeta/test_generate_artifact_taxonomy.py`
-- `scripts/docmeta/test_generate_epistemic_state.py`
-- `scripts/docmeta/test_promotion_readiness.py`
-- `scripts/docmeta/test_validate_agent_commands.py`
-- `scripts/docmeta/test_validate_agent_handoff.py`
-- `scripts/docmeta/test_validate_command_chain.py`
-- `scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py`
-- `scripts/docmeta/test_validate_generated_artifacts_contract.py`
-- `scripts/docmeta/test_validate_interpretation_budget.py`
-- `scripts/docmeta/test_validate_schema_counterevidence.py`
-- `scripts/docmeta/validate_agent_commands.py`
-- `scripts/docmeta/validate_agent_handoff.py`
-- `scripts/docmeta/validate_command_chain.py`
-- `scripts/docmeta/validate_execution_proof.py`
-- `scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py`
-- `scripts/docmeta/validate_generated_artifacts_contract.py`
-- `scripts/docmeta/validate_interpretation_budget.py`
-- `scripts/docmeta/validate_promotion_readiness.py`
-- `scripts/docmeta/validate_relations.py`
-- `scripts/docmeta/validate_schema.py`
-- `scripts/exports/__init__.py`
-- `scripts/exports/generate_exports.py`
-- `scripts/exports/test_generate_exports.py`
-- `tests/contracts/test_cross_contract_chain.py`
-- `tools/vibe-cli/.gitkeep`
-- `tools/vibe-cli/replay_minimal.py`
-- `tools/vibe-cli/test_replay_minimal.py`
+_none_
 
 ## Ambiguous artifacts
 
@@ -190,9 +96,18 @@ _none_
 - `.vibe/generated-artifacts.yml`
 - `.vibe/quality-gates.yml`
 - `AGENTS.md`
+- `CONTRIBUTING.md`
 - `agent-policy.yaml`
 - `contracts/docmeta.schema.json`
 - `contracts/system_decision.schema.json`
+- `decisions/benchmark/.gitkeep`
+- `decisions/export/.gitkeep`
+- `decisions/policy/.gitkeep`
+- `decisions/process/.gitkeep`
+- `decisions/system/2026-04-23-catalog-staleness-dormant.yml`
+- `decisions/system/2026-04-23-metrics-enabled.yml`
+- `docs/foundations/repo-plan.md`
+- `docs/foundations/vision.md`
 - `experiments/2026-04-08_spec-first/manifest.yml`
 - `experiments/2026-04-08_spec-first/results/decision.yml`
 - `experiments/2026-04-08_spec-first/results/evidence.jsonl`
@@ -233,6 +148,11 @@ _none_
 - `experiments/_template/manifest.yml`
 - `experiments/_template/results/decision.yml`
 - `experiments/_template/results/evidence.jsonl`
+- `instruction-blocks/constraint-before-code.md`
+- `instruction-blocks/edge-case-enumeration.md`
+- `instruction-blocks/no-vague-prompts.md`
+- `instruction-blocks/spec-first.md`
+- `instruction-blocks/validate-against-spec.md`
 - `repo.meta.yaml`
 - `schemas/agent.handoff.schema.json`
 - `schemas/catalog.entry.schema.json`
@@ -246,19 +166,19 @@ _none_
 
 ## Generated artifacts cross-check
 
-| generated artifact | in taxonomy | layer | authority |
-| --- | :---: | --- | --- |
-| `docs/_generated/artifact-taxonomy.json` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/artifact-taxonomy.md` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/backlinks.md` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/doc-index.md` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/epistemic-state.md` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/metrics/trends.md` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/orphans.md` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/promotion-readiness.json` | ✅ | generated | diagnostic_signal |
-| `docs/_generated/system-map.md` | ✅ | generated | diagnostic_signal |
-| `exports/copilot/` | ✅ | export | generated_projection |
-| `exports/cursor/` | ✅ | export | generated_projection |
+| generated artifact | in taxonomy | contract authority | taxonomy authority | mismatch |
+| --- | :---: | --- | --- | :---: |
+| `docs/_generated/artifact-taxonomy.json` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `docs/_generated/artifact-taxonomy.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `docs/_generated/backlinks.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `docs/_generated/doc-index.md` | ✅ | navigation_surface | navigation_surface |  |
+| `docs/_generated/epistemic-state.md` | ✅ | runtime_observation | runtime_observation |  |
+| `docs/_generated/metrics/trends.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `docs/_generated/orphans.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `docs/_generated/promotion-readiness.json` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `docs/_generated/system-map.md` | ✅ | diagnostic_signal | diagnostic_signal |  |
+| `exports/copilot/` | ✅ | generated_projection | generated_projection |  |
+| `exports/cursor/` | ✅ | generated_projection | generated_projection |  |
 
 ## Transition risk hints
 

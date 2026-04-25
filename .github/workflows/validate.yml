@@ -101,6 +101,21 @@ jobs:
       - name: Test adoption completeness validator
         run: python3 scripts/adoption/test_validate_adoption_completeness.py
 
+      - name: Validate generated-artifact contract (v2)
+        run: python3 scripts/docmeta/validate_generated_artifacts_contract.py
+
+      - name: Run generated-artifact contract regression tests
+        run: python3 scripts/docmeta/test_validate_generated_artifacts_contract.py
+
+      - name: Validate artifact taxonomy contract
+        run: python3 scripts/docmeta/validate_artifact_taxonomy.py
+
+      - name: Run artifact taxonomy contract regression tests
+        run: python3 scripts/docmeta/test_validate_artifact_taxonomy.py
+
+      - name: Run artifact taxonomy generator regression tests
+        run: python3 scripts/docmeta/test_generate_artifact_taxonomy.py
+
       - name: Test epistemic state generator
         run: python3 scripts/docmeta/test_generate_epistemic_state.py
 

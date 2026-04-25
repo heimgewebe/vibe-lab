@@ -12,6 +12,7 @@ Usage:
   python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy blocking
   python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy non_blocking
   python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy best_effort
+  python3 scripts/docmeta/resolve_generated_artifact_paths.py --ci-policy artifact_only
   python3 scripts/docmeta/resolve_generated_artifact_paths.py --commit-policy commit_required
   python3 scripts/docmeta/resolve_generated_artifact_paths.py --activation gated
   python3 scripts/docmeta/resolve_generated_artifact_paths.py --enforcement no_manual_edit
@@ -47,7 +48,7 @@ KNOWN_CLASSES = {
     "generated_projection",
     "ephemeral_trace",
 }
-KNOWN_CI_POLICIES = {"blocking", "non_blocking", "best_effort"}
+KNOWN_CI_POLICIES = {"blocking", "non_blocking", "best_effort", "artifact_only"}
 KNOWN_COMMIT_POLICIES = {"commit_required", "optional", "do_not_commit"}
 KNOWN_ACTIVATIONS = {"always", "gated", "on_demand"}
 KNOWN_ENFORCEMENTS = {
@@ -55,7 +56,9 @@ KNOWN_ENFORCEMENTS = {
     "non_blocking_diagnostic",
     "best_effort",
     "no_manual_edit",
+    "artifact_only",
     "review_required",
+    "owner_required",
 }
 
 

@@ -45,6 +45,27 @@ REQUIRED_ARTIFACT_FIELDS = (
 
 PROJECTION_REQUIRED_FIELDS = ("generator", "derives_from", "target_surface")
 
+# Allowed value sets — keep in sync with resolve_generated_artifact_paths.py.
+VALID_AUTHORITIES = {
+    "sovereign_source", "normative_contract", "schema_truth", "procedure_contract",
+    "evidence_log", "decision_record", "result_interpretation", "diagnostic_signal",
+    "navigation_surface", "generated_projection", "implementation_behavior",
+    "test_expectation", "runtime_observation", "raw_capture", "historical_record",
+    "unknown",
+}
+VALID_ORIGINS = {"generated", "projected", "handcrafted"}
+VALID_LIFECYCLES = {
+    "regenerated", "handcrafted", "append_only",
+    "revision_with_reason", "superseded_not_rewritten",
+}
+VALID_ACTIVATIONS = {"always", "gated", "on_demand"}
+VALID_CI_POLICIES = {"blocking", "non_blocking", "best_effort", "artifact_only"}
+VALID_COMMIT_POLICIES = {"commit_required", "optional", "do_not_commit"}
+VALID_ENFORCEMENTS = {
+    "ci_blocking", "non_blocking_diagnostic", "best_effort",
+    "no_manual_edit", "artifact_only", "review_required", "owner_required",
+}
+
 
 def validate(data: dict) -> list[str]:
     errors: list[str] = []
@@ -124,6 +145,47 @@ def validate(data: dict) -> list[str]:
 
         ci_policy = art.get("ci_policy")
         commit_policy = art.get("commit_policy")
+
+        authority = art.get("authority")
+        if isinstance(authority, str) and authority not in VALID_AUTHORITIES:
+            errors.append(
+                f"{prefix}: unknown authority {authority!r} "
+                f"(known: {sorted(VALID_AUTHORITIES)})"
+            )
+        origin = art.get("origin")
+        if isinstance(origin, str) and origin not in VALID_ORIGINS:
+            errors.append(
+                f"{prefix}: unknown origin {origin!r} (known: {sorted(VALID_ORIGINS)})"
+            )
+        lifecycle = art.get("lifecycle")
+        if isinstance(lifecycle, str) and lifecycle not in VALID_LIFECYCLES:
+            errors.append(
+                f"{prefix}: unknown lifecycle {lifecycle!r} "
+                f"(known: {sorted(VALID_LIFECYCLES)})"
+            )
+        activation = art.get("activation")
+        if isinstance(activation, str) and activation not in VALID_ACTIVATIONS:
+            errors.append(
+                f"{prefix}: unknown activation {activation!r} "
+                f"(known: {sorted(VALID_ACTIVATIONS)})"
+            )
+        if isinstance(ci_policy, str) and ci_policy not in VALID_CI_POLICIES:
+            errors.append(
+                f"{prefix}: unknown ci_policy {ci_policy!r} "
+                f"(known: {sorted(VALID_CI_POLICIES)})"
+            )
+        if isinstance(commit_policy, str) and commit_policy not in VALID_COMMIT_POLICIES:
+            errors.append(
+                f"{prefix}: unknown commit_policy {commit_policy!r} "
+                f"(known: {sorted(VALID_COMMIT_POLICIES)})"
+            )
+        if isinstance(enforcement, list):
+            for tag in enforcement:
+                if isinstance(tag, str) and tag not in VALID_ENFORCEMENTS:
+                    errors.append(
+                        f"{prefix}: unknown enforcement value {tag!r} "
+                        f"(known: {sorted(VALID_ENFORCEMENTS)})"
+                    )
         if ci_policy == "blocking" and commit_policy != "commit_required":
             errors.append(
                 f"{prefix}: ci_policy='blocking' requires commit_policy='commit_required' "

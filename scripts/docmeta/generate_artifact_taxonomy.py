@@ -61,17 +61,18 @@ def load_taxonomy() -> dict:
     return data
 
 
-def load_generated_contract_paths() -> set[str]:
-    """Load artifact paths from the generated-artifact contract for cross-check.
+def load_generated_contract_artifacts() -> list[dict]:
+    """Load artifact objects from the generated-artifact contract for cross-check.
 
-    Failures to load the contract are deliberately non-fatal here: the
-    generated-artifact contract has its own blocking validator
+    Returns a list of dicts (each has at minimum 'path'; optionally 'authority',
+    'class', 'ci_policy'). Failures to load the contract are deliberately
+    non-fatal here: the generated-artifact contract has its own blocking validator
     (validate_generated_artifacts_contract.py) which will surface real
     contract-level errors. The taxonomy report stays diagnostic/non-blocking,
     so we degrade gracefully and emit a stderr warning rather than aborting.
     """
     if not GENERATED_CONTRACT.exists():
-        return set()
+        return []
     try:
         data = yaml.safe_load(GENERATED_CONTRACT.read_text(encoding="utf-8")) or {}
     except yaml.YAMLError as exc:
@@ -79,13 +80,11 @@ def load_generated_contract_paths() -> set[str]:
             f"WARNING: could not parse {GENERATED_CONTRACT} for cross-check: {exc}",
             file=sys.stderr,
         )
-        return set()
-    out: set[str] = set()
+        return []
+    out: list[dict] = []
     for art in data.get("artifacts") or []:
-        if isinstance(art, dict):
-            p = art.get("path")
-            if isinstance(p, str):
-                out.add(p)
+        if isinstance(art, dict) and isinstance(art.get("path"), str):
+            out.append(art)
     return out
 
 
@@ -114,45 +113,39 @@ def match_rules(rel_path: str, rules: list[dict]) -> list[dict]:
 
 
 def classify_file(rel_path: str, rules: list[dict]) -> dict:
-    matches = match_rules(rel_path, rules)
-    if not matches:
-        return {
-            "path": rel_path,
-            "status": UNKNOWN,
-            "layer": None,
-            "kind": None,
-            "authority": "unknown",
-            "lifecycle": None,
-            "enforcement": [],
-            "origin": None,
-            "matched_patterns": [],
-        }
+    """Classify a file using the first matching rule (ordered, first-match-wins).
 
-    primary = matches[0]
-    distinct = {
-        (m.get("layer"), m.get("kind"), m.get("authority"))
-        for m in matches
-    }
-
-    status = CLASSIFIED
-    if len(matches) > 1:
-        # Ambiguous = multiple rules with identical classification semantics.
-        # Conflict = multiple rules with diverging classification.
-        if len(distinct) == 1:
-            status = AMBIGUOUS
-        else:
-            status = CONFLICT
-
+    Rules in .vibe/artifact-taxonomy.yml are evaluated in order. Placing more
+    specific patterns before general wildcards is the author's responsibility.
+    No conflict is possible in a first-match-wins system — a later rule that
+    also matches is simply shadowed by the earlier, more specific one.
+    """
+    for rule in rules:
+        pattern = rule.get("pattern")
+        if not isinstance(pattern, str):
+            continue
+        if fnmatch.fnmatchcase(rel_path, pattern):
+            return {
+                "path": rel_path,
+                "status": CLASSIFIED,
+                "layer": rule.get("layer"),
+                "kind": rule.get("kind"),
+                "authority": rule.get("authority", "unknown"),
+                "lifecycle": rule.get("lifecycle"),
+                "enforcement": list(rule.get("enforcement") or []),
+                "origin": rule.get("origin"),
+                "matched_patterns": [pattern],
+            }
     return {
         "path": rel_path,
-        "status": status,
-        "layer": primary.get("layer"),
-        "kind": primary.get("kind"),
-        "authority": primary.get("authority", "unknown"),
-        "lifecycle": primary.get("lifecycle"),
-        "enforcement": list(primary.get("enforcement") or []),
-        "origin": primary.get("origin"),
-        "matched_patterns": [m.get("pattern") for m in matches],
+        "status": UNKNOWN,
+        "layer": None,
+        "kind": None,
+        "authority": "unknown",
+        "lifecycle": None,
+        "enforcement": [],
+        "origin": None,
+        "matched_patterns": [],
     }
 
 
@@ -172,7 +165,7 @@ def _enforcement_count(items: list[dict]) -> dict[str, int]:
     return dict(sorted(out.items()))
 
 
-def build_report(classifications: list[dict], generated_paths: set[str]) -> dict:
+def build_report(classifications: list[dict], generated_artifacts: list[dict]) -> dict:
     classified = [c for c in classifications if c["status"] != UNKNOWN]
     unknown = [c for c in classifications if c["status"] == UNKNOWN]
     ambiguous = [c for c in classifications if c["status"] == AMBIGUOUS]
@@ -191,17 +184,27 @@ def build_report(classifications: list[dict], generated_paths: set[str]) -> dict
     )
 
     cross = []
-    for path in sorted(generated_paths):
+    for art in sorted(generated_artifacts, key=lambda a: a.get("path", "")):
+        path = art["path"]
+        contract_authority = art.get("authority")
         match = next(
             (c for c in classifications if c["path"] == path or c["path"].startswith(path)),
             None,
         )
+        taxonomy_authority = (match or {}).get("authority")
+        authority_mismatch = (
+            match is not None
+            and contract_authority is not None
+            and taxonomy_authority != contract_authority
+        )
         cross.append(
             {
                 "generated_artifact_path": path,
+                "contract_authority": contract_authority,
                 "matched_in_taxonomy": match is not None,
                 "taxonomy_layer": (match or {}).get("layer"),
-                "taxonomy_authority": (match or {}).get("authority"),
+                "taxonomy_authority": taxonomy_authority,
+                "authority_mismatch": authority_mismatch,
             }
         )
 
@@ -304,14 +307,16 @@ def render_markdown(report: dict) -> str:
         lines.append("_none_")
         lines.append("")
     else:
-        lines.append("| generated artifact | in taxonomy | layer | authority |")
-        lines.append("| --- | :---: | --- | --- |")
+        lines.append("| generated artifact | in taxonomy | contract authority | taxonomy authority | mismatch |")
+        lines.append("| --- | :---: | --- | --- | :---: |")
         for row in cross:
+            mismatch_flag = "⚠️" if row.get("authority_mismatch") else ""
             lines.append(
                 f"| `{row['generated_artifact_path']}` | "
                 f"{'✅' if row['matched_in_taxonomy'] else '❌'} | "
-                f"{row['taxonomy_layer'] or '-'} | "
-                f"{row['taxonomy_authority'] or '-'} |"
+                f"{row.get('contract_authority') or '-'} | "
+                f"{row['taxonomy_authority'] or '-'} | "
+                f"{mismatch_flag} |"
             )
         lines.append("")
 
@@ -331,11 +336,11 @@ def render_markdown(report: dict) -> str:
 def main() -> int:
     taxonomy = load_taxonomy()
     rules = taxonomy["rules"]
-    generated_paths = load_generated_contract_paths()
+    generated_artifacts = load_generated_contract_artifacts()
 
     files = iter_repo_files(REPO_ROOT)
     classifications = [classify_file(f, rules) for f in files]
-    report = build_report(classifications, generated_paths)
+    report = build_report(classifications, generated_artifacts)
 
     md = render_markdown(report)
     js = json.dumps(report, indent=2, sort_keys=True) + "\n"
