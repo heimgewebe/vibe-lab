@@ -482,11 +482,11 @@ Diagnostic breakdown of catch-all fallback buckets (top 5, sorted by high_risk_c
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `tests/fixtures/**` | 84 | 84 | CONTEXT.md=3, INITIAL.md=3, contract-invalid-wrong-command.json=3, decision.yml=3, evidence.jsonl=3 | tests/fixtures/command_chains=27, tests/fixtures/agent_commands/write_change=9, tests/fixtures/agent_commands/validate_change=8, tests/fixtures/agent_commands/read_context=7, tests/fixtures/cross_contract/invalid=7 |
-| `scripts/**` | 41 | 41 | __init__.py=2, _paths.py=1, check_system_decisions.py=1, generate_artifact_taxonomy.py=1, generate_backlinks.py=1 | scripts/docmeta=35, scripts/adoption=3, scripts/exports=3 |
-| `exports/**` | 10 | 10 | constraint-before-code.md=2, edge-case-enumeration.md=2, no-vague-prompts.md=2, spec-first.md=2, validate-against-spec.md=2 | exports/copilot=5, exports/cursor=5 |
-| `docs/_generated/**` | 3 | 3 | backlinks.md=1, orphans.md=1, system-map.md=1 | docs/_generated=3 |
-| `tools/**` | 2 | 2 | replay_minimal.py=1, test_replay_minimal.py=1 | tools/vibe-cli=2 |
+| `tests/fixtures/**` | 84 | 84 | `CONTEXT.md`=3, `INITIAL.md`=3, `contract-invalid-wrong-command.json`=3, `decision.yml`=3, `evidence.jsonl`=3 | `tests/fixtures/command_chains`=27, `tests/fixtures/agent_commands/write_change`=9, `tests/fixtures/agent_commands/validate_change`=8, `tests/fixtures/agent_commands/read_context`=7, `tests/fixtures/cross_contract/invalid`=7 |
+| `scripts/**` | 41 | 41 | `__init__.py`=2, `_paths.py`=1, `check_system_decisions.py`=1, `generate_artifact_taxonomy.py`=1, `generate_backlinks.py`=1 | `scripts/docmeta`=35, `scripts/adoption`=3, `scripts/exports`=3 |
+| `exports/**` | 10 | 10 | `constraint-before-code.md`=2, `edge-case-enumeration.md`=2, `no-vague-prompts.md`=2, `spec-first.md`=2, `validate-against-spec.md`=2 | `exports/copilot`=5, `exports/cursor`=5 |
+| `docs/_generated/**` | 3 | 3 | `backlinks.md`=1, `orphans.md`=1, `system-map.md`=1 | `docs/_generated`=3 |
+| `tools/**` | 2 | 2 | `replay_minimal.py`=1, `test_replay_minimal.py`=1 | `tools/vibe-cli`=2 |
 
 ## Fallback classified artifacts requiring review
 

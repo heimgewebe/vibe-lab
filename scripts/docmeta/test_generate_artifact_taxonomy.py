@@ -10,6 +10,7 @@ from generate_artifact_taxonomy import (
     _format_top_items,
     _is_high_risk_fallback,
     _md_cell,
+    _md_code_span,
     _select_fallback_pattern,
     _top_n,
     build_report,
@@ -332,15 +333,34 @@ class MdCellTest(unittest.TestCase):
         self.assertEqual(_md_cell("a|b|c"), "a\\|b\\|c")
 
 
+class MdCodeSpanTest(unittest.TestCase):
+    """Tests for _md_code_span helper."""
+
+    def test_wraps_plain_value_in_code_span(self) -> None:
+        self.assertEqual(_md_code_span("__init__.py"), "`__init__.py`")
+
+    def test_escapes_pipe_inside_table_cell(self) -> None:
+        self.assertEqual(_md_code_span("a|b"), "`a\\|b`")
+
+    def test_normalizes_newline(self) -> None:
+        self.assertEqual(_md_code_span("a\nb"), "`a b`")
+
+    def test_uses_longer_fence_when_value_contains_backtick(self) -> None:
+        self.assertEqual(_md_code_span("a`b"), "``a`b``")
+
+    def test_uses_longer_fence_for_double_backtick_run(self) -> None:
+        self.assertEqual(_md_code_span("a``b"), "```a``b```")
+
+
 class FormatTopItemsTest(unittest.TestCase):
     """Tests for _format_top_items helper."""
 
     def test_returns_dash_for_empty(self) -> None:
         self.assertEqual(_format_top_items({}), "-")
 
-    def test_formats_key_value_pairs(self) -> None:
+    def test_formats_key_value_pairs_as_code_spans(self) -> None:
         result = _format_top_items({"foo.py": 3, "bar.py": 1}, limit=5)
-        self.assertEqual(result, "foo.py=3, bar.py=1")
+        self.assertEqual(result, "`foo.py`=3, `bar.py`=1")
 
     def test_limits_to_given_number(self) -> None:
         items = {f"f{i}.py": i for i in range(10, 0, -1)}
@@ -349,7 +369,7 @@ class FormatTopItemsTest(unittest.TestCase):
 
     def test_escapes_pipe_in_key(self) -> None:
         result = _format_top_items({"a|b": 1}, limit=5)
-        self.assertIn("a\\|b=1", result)
+        self.assertIn("`a\\|b`=1", result)
 
 
 class ResidualClustersTest(unittest.TestCase):

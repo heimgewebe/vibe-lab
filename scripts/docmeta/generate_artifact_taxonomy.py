@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -228,13 +229,30 @@ def _md_cell(value: object) -> str:
     return str(value).replace("|", "\\|")
 
 
+def _md_code_span(value: object) -> str:
+    """Render a value as a Markdown code span safe for use inside a table cell.
+
+    * Newlines are collapsed to spaces.
+    * Pipe characters are escaped so the cell boundary is never broken.
+    * The backtick fence is extended to one beyond the longest run of backticks
+      already present in the text, matching the CommonMark spec.
+    """
+    text = str(value).replace("\n", " ")
+    text = text.replace("|", "\\|")
+    runs = re.findall(r"`+", text)
+    fence = "`" * (max((len(run) for run in runs), default=0) + 1)
+    return f"{fence}{text}{fence}"
+
+
 def _format_top_items(items: dict[str, int], limit: int = 5) -> str:
     """Render a top-items dict as a compact inline list for a Markdown table cell.
 
-    Limits the output to *limit* entries and escapes values for Markdown safety.
+    Limits the output to *limit* entries. Keys are rendered as code spans for
+    consistency with the rest of the report and to avoid Markdown mis-rendering
+    of names containing ``_``, ``*``, or backticks.
     Returns ``"-"`` when *items* is empty.
     """
-    rendered = [f"{_md_cell(k)}={v}" for k, v in list(items.items())[:limit]]
+    rendered = [f"{_md_code_span(k)}={v}" for k, v in list(items.items())[:limit]]
     return ", ".join(rendered) if rendered else "-"
 
 
