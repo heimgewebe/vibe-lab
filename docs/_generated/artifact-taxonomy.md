@@ -13,8 +13,8 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 - total: 573
 - classified: 573
-  - of which fallback_classified (catch-all rule): 352
-  - fallback_share: 61.4% (352 / 573)
+  - of which fallback_classified (catch-all rule): 302
+  - fallback_share: 52.7% (302 / 573)
   - fallback_threshold: 50.0% — warning
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -46,13 +46,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | diagnostic_signal | 7 |
 | evidence_log | 14 |
 | generated_projection | 10 |
-| historical_record | 210 |
+| historical_record | 160 |
 | implementation_behavior | 45 |
 | navigation_surface | 7 |
 | normative_contract | 15 |
 | procedure_contract | 62 |
 | raw_capture | 20 |
 | result_interpretation | 45 |
+| runtime_observation | 50 |
 | schema_truth | 11 |
 | sovereign_source | 3 |
 | test_expectation | 88 |
@@ -62,10 +63,10 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 229 |
+| append_only | 211 |
 | handcrafted | 309 |
 | regenerated | 18 |
-| revision_with_reason | 15 |
+| revision_with_reason | 33 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -77,11 +78,11 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | ci_blocking | 200 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 229 |
+| no_rewrite | 211 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 3 |
 | owner_required | 3 |
-| review_required | 124 |
+| review_required | 174 |
 
 ## Unknown artifacts
 
@@ -101,8 +102,6 @@ _none_
 - `docs/_generated/metrics/trends.md`
 - `docs/_generated/orphans.md`
 - `docs/_generated/system-map.md`
-- `experiments/2026-04-12_spec-first-legacy/artifacts/run-2026-04-12-001/run_meta.json`
-- `experiments/2026-04-12_spec-first-legacy/artifacts/test_output.txt`
 - `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/test_processor.py`
@@ -111,7 +110,6 @@ _none_
 - `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input3.csv`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input4.csv`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input5.csv`
-- `experiments/2026-04-14_incremental-debuggability/artifacts/run-reconstructed/run_meta.json`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/cli.ts`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/errors.ts`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/filters.ts`
@@ -124,7 +122,6 @@ _none_
 - `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/index.ts`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/package.json`
 - `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/tsconfig.json`
-- `experiments/2026-04-14_incremental-refinement/artifacts/run-reconstructed/run_meta.json`
 - `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/controller.ts`
 - `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/errors.ts`
 - `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental/index.ts`
@@ -150,80 +147,56 @@ _none_
 - `experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental/types.ts`
 - `experiments/2026-04-14_incremental-refinement/artifacts/task3-single-shot/index.ts`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/run_meta.json`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-001-control-legacy/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-003-control-expanded/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-005-control-variantb/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-005-control-variantb/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-005-control-variantb/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/premortem_quality.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-006-treatment-variantb/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-007-control-holdout/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-007-control-holdout/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-007-control-holdout/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/premortem_quality.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/refactored_processor.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/test_output.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-008-treatment-holdout/test_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/failure_injection.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/test_injection.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-009-failure-injection-treatment/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/failure_injection.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_injection.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-010-failure-injection-control/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/failure_extraction.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/test_injection.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-011-control-first/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/premortem_from_failures.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/test_injection.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-012-premortem-from-failures/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/replication_notes.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/test_injection.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/exotic_injection.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/test_exotic.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/refactored_processor.py`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/test_exotic.py`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/test_output.txt`
-- `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/time_to_first_pass_seconds.txt`
 - `experiments/2026-04-14_prompt-length-control/artifacts/code_first_parser.py`
 - `experiments/2026-04-14_prompt-length-control/artifacts/code_first_run.txt`
 - `experiments/2026-04-14_prompt-length-control/artifacts/ramble_first_parser.py`
 - `experiments/2026-04-14_prompt-length-control/artifacts/ramble_first_run.txt`
-- `experiments/2026-04-14_prompt-length-control/artifacts/run-reconstructed/run_meta.json`
 - `experiments/2026-04-14_prompt-length-control/artifacts/spec_first_parser.py`
 - `experiments/2026-04-14_prompt-length-control/artifacts/spec_first_run.txt`
 - `experiments/2026-04-14_prompt-length-control/artifacts/test_code_first_parser.py`
@@ -234,7 +207,6 @@ _none_
 - `experiments/2026-04-14_tdd-vibe/artifacts/baseline_run.txt`
 - `experiments/2026-04-14_tdd-vibe/artifacts/impl-first/app.ts`
 - `experiments/2026-04-14_tdd-vibe/artifacts/impl-first/users.ts`
-- `experiments/2026-04-14_tdd-vibe/artifacts/run-tdd-vibe/run_meta.json`
 - `experiments/2026-04-14_tdd-vibe/artifacts/tdd-vibe/app.ts`
 - `experiments/2026-04-14_tdd-vibe/artifacts/tdd-vibe/users.test.ts`
 - `experiments/2026-04-14_tdd-vibe/artifacts/tdd-vibe/users.ts`
@@ -255,7 +227,6 @@ _none_
 - `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/users.ts`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/code_first_run.txt`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/code_first_validator.py`
-- `experiments/2026-04-14_upfront-structuring-replication/artifacts/run-reconstructed/run_meta.json`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/spec_first_run.txt`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/spec_first_validator.py`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_code_first_validator.py`
@@ -263,21 +234,15 @@ _none_
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_first_validator.py`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_spec_first_validator.py`
 - `experiments/2026-04-14_upfront-structuring-replication/artifacts/test_test_first_validator.py`
-- `experiments/2026-04-14_upfront-structuring/artifacts/run-reconstructed/run_meta.json`
 - `experiments/2026-04-14_upfront-structuring/artifacts/spec_first_roman.py`
 - `experiments/2026-04-14_upfront-structuring/artifacts/spec_first_run.txt`
 - `experiments/2026-04-14_upfront-structuring/artifacts/test_spec_first_roman.py`
 - `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/iteration4-reconciliation.md`
-- `experiments/2026-04-15_agent-task-validity/artifacts/metrics.json`
 - `experiments/2026-04-15_agent-task-validity/artifacts/review-notes-iteration4.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/review-notes.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md`
-- `experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/execution.txt`
-- `experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/run_meta.json`
-- `experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/execution.txt`
-- `experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/run_meta.json`
 - `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-proof.txt`
 - `experiments/2026-04-15_agent-task-validity/tasks.iteration3.jsonl`
@@ -285,22 +250,8 @@ _none_
 - `experiments/2026-04-15_agent-task-validity/tasks.jsonl`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/execution.txt`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/run_meta.json`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/execution.txt`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/run_meta.json`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-003-pr62/execution.txt`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-003-pr62/run_meta.json`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-004-pr63/execution.txt`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-004-pr63/run_meta.json`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-005-pr64/execution.txt`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-005-pr64/run_meta.json`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-006-pr67/execution.txt`
-- `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-006-pr67/run_meta.json`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`
-- `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/execution.txt`
-- `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/run_meta.json`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A2.json`
@@ -515,13 +466,13 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 189 | 53.7% |
-| `tests/fixtures/**` | 84 | 23.9% |
-| `scripts/**` | 41 | 11.6% |
-| `experiments/**` | 21 | 6.0% |
-| `exports/**` | 10 | 2.8% |
-| `docs/_generated/**` | 3 | 0.9% |
-| `tools/**` | 2 | 0.6% |
+| `experiments/*/artifacts/**` | 139 | 46.0% |
+| `tests/fixtures/**` | 84 | 27.8% |
+| `scripts/**` | 41 | 13.6% |
+| `experiments/**` | 21 | 7.0% |
+| `exports/**` | 10 | 3.3% |
+| `docs/_generated/**` | 3 | 1.0% |
+| `tools/**` | 2 | 0.7% |
 | `docs/_generated/metrics/**` | 1 | 0.3% |
 | `tests/**` | 1 | 0.3% |
 
