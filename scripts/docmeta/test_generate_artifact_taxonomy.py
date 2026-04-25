@@ -10,6 +10,7 @@ from generate_artifact_taxonomy import (
     build_report,
     classify_file,
     load_taxonomy,
+    render_markdown,
 )
 
 
@@ -224,6 +225,17 @@ class IsHighRiskFallbackTest(unittest.TestCase):
 class FallbackReviewSectionSortTest(unittest.TestCase):
     """Tests for the risk-weighted sorting of fallback review items."""
 
+    _LAYER_PRIORITY = [
+        "governance", "contract", "generated", "test", "export", "agent",
+        "experiment", "docs", "catalog", "runtime", "capture", "archive",
+    ]
+    _AUTHORITY_PRIORITY = [
+        "sovereign_source", "normative_contract", "schema_truth", "decision_record",
+        "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
+        "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
+        "unknown",
+    ]
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.rules = load_taxonomy()["rules"]
@@ -248,35 +260,21 @@ class FallbackReviewSectionSortTest(unittest.TestCase):
             "catchall_match": catchall,
         }
 
+    def _sort_key(self, item: dict) -> tuple:
+        layer = item.get("layer") or ""
+        authority = item.get("authority") or ""
+        layer_idx = self._LAYER_PRIORITY.index(layer) if layer in self._LAYER_PRIORITY else len(self._LAYER_PRIORITY)
+        auth_idx = self._AUTHORITY_PRIORITY.index(authority) if authority in self._AUTHORITY_PRIORITY else len(self._AUTHORITY_PRIORITY)
+        return (not _is_high_risk_fallback(item), layer_idx, auth_idx, item.get("path", ""))
+
     def test_high_risk_before_low_risk(self) -> None:
         items = [
             self._make_item("docs/low.md", True, "docs", "navigation_surface"),
             self._make_item("gov/high.md", True, "governance", "procedure_contract"),
         ]
         report = build_report(items, [])
-        # render_markdown uses report["classifications"] filtered by catchall_match
         fallback_items = [c for c in report["classifications"] if c.get("catchall_match")]
-        from generate_artifact_taxonomy import _is_high_risk_fallback
-
-        _LAYER_PRIORITY = [
-            "governance", "contract", "generated", "test", "export", "agent",
-            "experiment", "docs", "catalog", "runtime", "capture", "archive",
-        ]
-        _AUTHORITY_PRIORITY = [
-            "sovereign_source", "normative_contract", "schema_truth", "decision_record",
-            "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
-            "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
-            "unknown",
-        ]
-
-        def sort_key(item: dict) -> tuple:
-            layer = item.get("layer") or ""
-            authority = item.get("authority") or ""
-            layer_idx = _LAYER_PRIORITY.index(layer) if layer in _LAYER_PRIORITY else len(_LAYER_PRIORITY)
-            auth_idx = _AUTHORITY_PRIORITY.index(authority) if authority in _AUTHORITY_PRIORITY else len(_AUTHORITY_PRIORITY)
-            return (not _is_high_risk_fallback(item), layer_idx, auth_idx, item.get("path", ""))
-
-        sorted_items = sorted(fallback_items, key=sort_key)
+        sorted_items = sorted(fallback_items, key=self._sort_key)
         self.assertTrue(_is_high_risk_fallback(sorted_items[0]))
         self.assertFalse(_is_high_risk_fallback(sorted_items[-1]))
 
@@ -288,27 +286,7 @@ class FallbackReviewSectionSortTest(unittest.TestCase):
         ]
         report = build_report(items, [])
         fallback_items = [c for c in report["classifications"] if c.get("catchall_match")]
-        from generate_artifact_taxonomy import _is_high_risk_fallback
-
-        _LAYER_PRIORITY = [
-            "governance", "contract", "generated", "test", "export", "agent",
-            "experiment", "docs", "catalog", "runtime", "capture", "archive",
-        ]
-        _AUTHORITY_PRIORITY = [
-            "sovereign_source", "normative_contract", "schema_truth", "decision_record",
-            "evidence_log", "generated_projection", "procedure_contract", "diagnostic_signal",
-            "navigation_surface", "runtime_observation", "raw_capture", "historical_record",
-            "unknown",
-        ]
-
-        def sort_key(item: dict) -> tuple:
-            layer = item.get("layer") or ""
-            authority = item.get("authority") or ""
-            layer_idx = _LAYER_PRIORITY.index(layer) if layer in _LAYER_PRIORITY else len(_LAYER_PRIORITY)
-            auth_idx = _AUTHORITY_PRIORITY.index(authority) if authority in _AUTHORITY_PRIORITY else len(_AUTHORITY_PRIORITY)
-            return (not _is_high_risk_fallback(item), layer_idx, auth_idx, item.get("path", ""))
-
-        sorted_items = sorted(fallback_items, key=sort_key)
+        sorted_items = sorted(fallback_items, key=self._sort_key)
         paths = [i["path"] for i in sorted_items]
         # docs (layer index 7) < capture (index 10) → docs items first
         self.assertLess(paths.index("docs/a.md"), paths.index("capture/b.md"))
@@ -322,8 +300,6 @@ class MarkdownOutputTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        from generate_artifact_taxonomy import render_markdown
-
         items = [
             {
                 "path": "docs/a.md",
