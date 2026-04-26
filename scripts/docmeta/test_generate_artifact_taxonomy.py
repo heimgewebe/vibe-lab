@@ -804,9 +804,12 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
         self.assertLess(volume_section.find("volume-first-a/**"), volume_section.find("volume-first-b/**"))
         self.assertLess(volume_section.find("volume-first-b/**"), volume_section.find("volume-first-c/**"))
 
-        # Cross-check: risk patterns must not appear in volume section and vice versa.
-        self.assertNotIn("risk-first-a/**", volume_section)
-        self.assertNotIn("volume-first-a/**", risk_section)
+        # Cross-check: every risk pattern must be absent from the volume subsection,
+        # and every volume pattern must be absent from the risk subsection.
+        for pattern in ("risk-first-a/**", "risk-first-b/**", "risk-first-c/**"):
+            self.assertNotIn(pattern, volume_section, f"{pattern!r} must not appear in volume subsection")
+        for pattern in ("volume-first-a/**", "volume-first-b/**", "volume-first-c/**"):
+            self.assertNotIn(pattern, risk_section, f"{pattern!r} must not appear in risk subsection")
 
 
 class SelectFallbackPatternTest(unittest.TestCase):
