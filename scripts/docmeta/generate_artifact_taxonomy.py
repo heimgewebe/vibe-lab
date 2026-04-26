@@ -607,6 +607,12 @@ def render_markdown(report: dict) -> str:
         "Top 5 per view; shows dominant file names and parent directories."
     )
     lines.append("")
+    lines.append(
+        "JSON note: `fallback_summary.residual_clusters` is retained as a backwards-compatible "
+        "risk-first alias for `fallback_summary.residual_cluster_views.risk_first`. "
+        "New consumers should use `fallback_summary.residual_cluster_views`."
+    )
+    lines.append("")
     residual_cluster_views = report["fallback_summary"].get("residual_cluster_views", {})
     risk_first = residual_cluster_views.get("risk_first", [])
     volume_first = residual_cluster_views.get("volume_first", [])

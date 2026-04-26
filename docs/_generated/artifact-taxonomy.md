@@ -480,6 +480,8 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 Diagnostic breakdown of catch-all fallback buckets. Two views: **risk-first** (review priority) and **volume-first** (rule-building priority, i.e. where adding a new taxonomy rule reduces the most fallbacks). Top 5 per view; shows dominant file names and parent directories.
 
+JSON note: `fallback_summary.residual_clusters` is retained as a backwards-compatible risk-first alias for `fallback_summary.residual_cluster_views.risk_first`. New consumers should use `fallback_summary.residual_cluster_views`.
+
 ### Risk-first clusters
 
 Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
