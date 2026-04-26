@@ -571,6 +571,26 @@ class ResidualClustersTest(unittest.TestCase):
         self.assertEqual(views["risk_first"], [])
         self.assertEqual(views["volume_first"], [])
 
+    def test_residual_clusters_is_risk_first_legacy_alias(self) -> None:
+        """fallback_summary.residual_clusters must equal residual_cluster_views.risk_first."""
+        items = [
+            self._make_item("scripts/a.py", pattern="scripts/**", layer="test"),
+            self._make_item("experiments/a.md", pattern="experiments/**"),
+            self._make_item("experiments/b.md", pattern="experiments/**"),
+        ]
+        report = build_report(items, [])
+        fs = report["fallback_summary"]
+        self.assertEqual(
+            fs["residual_clusters"],
+            fs["residual_cluster_views"]["risk_first"],
+        )
+
+    def test_residual_cluster_views_exposes_expected_axes(self) -> None:
+        """residual_cluster_views must expose exactly the risk_first and volume_first keys."""
+        report = build_report([self._make_item("scripts/a.py")], [])
+        views = report["fallback_summary"]["residual_cluster_views"]
+        self.assertEqual(set(views.keys()), {"risk_first", "volume_first"})
+
 
 class ResidualClustersMarkdownTest(unittest.TestCase):
     """Tests for the Residual fallback clusters section in Markdown output."""
@@ -810,6 +830,12 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
             self.assertNotIn(pattern, volume_section, f"{pattern!r} must not appear in volume subsection")
         for pattern in ("volume-first-a/**", "volume-first-b/**", "volume-first-c/**"):
             self.assertNotIn(pattern, risk_section, f"{pattern!r} must not appear in risk subsection")
+
+    def test_markdown_documents_residual_clusters_legacy_alias(self) -> None:
+        """The Residual section must document residual_clusters as a risk-first alias."""
+        self.assertIn("residual_clusters", self.md)
+        self.assertIn("risk-first alias", self.md)
+        self.assertIn("residual_cluster_views", self.md)
 
 
 class SelectFallbackPatternTest(unittest.TestCase):
