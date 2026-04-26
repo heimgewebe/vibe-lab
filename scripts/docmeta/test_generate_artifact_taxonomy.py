@@ -572,6 +572,7 @@ class ResidualClustersTest(unittest.TestCase):
         self.assertEqual(views["volume_first"], [])
 
 
+class ResidualClustersMarkdownTest(unittest.TestCase):
     """Tests for the Residual fallback clusters section in Markdown output."""
 
     @classmethod

@@ -302,11 +302,11 @@ def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
     return clusters
 
 
-def _build_residual_cluster_views(fallback_classified: list[dict]) -> dict:
-    """Build explicit risk-first and volume-first views of residual clusters.
+def _build_residual_cluster_views(clusters: list[dict]) -> dict:
+    """Build explicit risk-first and volume-first views from pre-built residual clusters.
 
-    Both views contain the same cluster objects produced by
-    _build_residual_clusters; they differ only in sort order.
+    Accepts the list already produced by _build_residual_clusters (which is
+    already risk-first sorted) and derives the volume-first ordering from it.
 
     risk_first:   high_risk_count desc → total desc → matched_pattern asc
     volume_first: total desc → high_risk_count desc → matched_pattern asc
@@ -314,7 +314,6 @@ def _build_residual_cluster_views(fallback_classified: list[dict]) -> dict:
     This allows downstream tooling to consume both priority axes from JSON
     without having to re-sort or parse the Markdown report.
     """
-    clusters = _build_residual_clusters(fallback_classified)
     volume_first = sorted(
         clusters,
         key=lambda c: (-c["total"], -c["high_risk_count"], c["matched_pattern"]),
@@ -454,6 +453,8 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
                 }
             )
 
+    residual_clusters = _build_residual_clusters(fallback_classified)
+
     return {
         "summary": {
             "total": len(classifications),
@@ -478,8 +479,8 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
                 lambda c: _select_fallback_pattern(c.get("matched_patterns") or []),
             ),
             "high_risk_count": sum(1 for c in fallback_classified if _is_high_risk_fallback(c)),
-            "residual_clusters": _build_residual_clusters(fallback_classified),
-            "residual_cluster_views": _build_residual_cluster_views(fallback_classified),
+            "residual_clusters": residual_clusters,
+            "residual_cluster_views": _build_residual_cluster_views(residual_clusters),
         },
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
         "ambiguous_artifacts": [c["path"] for c in sorted(ambiguous, key=lambda x: x["path"])],
@@ -606,8 +607,10 @@ def render_markdown(report: dict) -> str:
         "Top 5 per view; shows dominant file names and parent directories."
     )
     lines.append("")
-    residual_clusters = report["fallback_summary"].get("residual_clusters", [])
-    if not residual_clusters:
+    residual_cluster_views = report["fallback_summary"].get("residual_cluster_views", {})
+    risk_first = residual_cluster_views.get("risk_first", [])
+    volume_first = residual_cluster_views.get("volume_first", [])
+    if not risk_first and not volume_first:
         lines.append("_none_")
         lines.append("")
     else:
@@ -630,14 +633,10 @@ def render_markdown(report: dict) -> str:
         lines.append("")
         lines.append(_cluster_header)
         lines.append(_cluster_sep)
-        for cluster in residual_clusters[:5]:
+        for cluster in risk_first[:5]:
             lines.append(_cluster_row(cluster))
         lines.append("")
 
-        volume_sorted = sorted(
-            residual_clusters,
-            key=lambda c: (-c["total"], -c["high_risk_count"], c["matched_pattern"]),
-        )
         lines.append("### Volume-first clusters")
         lines.append("")
         lines.append(
@@ -646,7 +645,7 @@ def render_markdown(report: dict) -> str:
         lines.append("")
         lines.append(_cluster_header)
         lines.append(_cluster_sep)
-        for cluster in volume_sorted[:5]:
+        for cluster in volume_first[:5]:
             lines.append(_cluster_row(cluster))
         lines.append("")
 
