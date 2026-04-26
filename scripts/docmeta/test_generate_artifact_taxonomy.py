@@ -6,6 +6,7 @@ from __future__ import annotations
 import unittest
 
 from generate_artifact_taxonomy import (
+    _build_residual_cluster_views,
     _build_residual_clusters,
     _format_top_items,
     _is_high_risk_fallback,
@@ -527,8 +528,50 @@ class ResidualClustersTest(unittest.TestCase):
         self.assertEqual(len(clusters), 1)
         self.assertEqual(clusters[0]["total"], 1)
 
+    def test_residual_cluster_views_present_in_fallback_summary(self) -> None:
+        items = [self._make_item("scripts/foo.py")]
+        report = build_report(items, [])
+        fs = report["fallback_summary"]
+        self.assertIn("residual_cluster_views", fs)
+        views = fs["residual_cluster_views"]
+        self.assertIn("risk_first", views)
+        self.assertIn("volume_first", views)
 
-class ResidualClustersMarkdownTest(unittest.TestCase):
+    def test_residual_cluster_views_risk_first_matches_residual_clusters(self) -> None:
+        """risk_first view must equal the existing residual_clusters list (risk-first sorted)."""
+        items = [
+            self._make_item("scripts/a.py", pattern="scripts/**", layer="test"),
+            self._make_item("tests/b.py", pattern="tests/**", layer="docs"),
+        ]
+        report = build_report(items, [])
+        fs = report["fallback_summary"]
+        self.assertEqual(fs["residual_cluster_views"]["risk_first"], fs["residual_clusters"])
+
+    def test_residual_cluster_views_volume_first_orders_by_total(self) -> None:
+        """volume_first must rank larger clusters before smaller ones regardless of risk."""
+        items = [
+            # scripts/**: 1 item, high-risk (test layer)
+            self._make_item("scripts/a.py", pattern="scripts/**", layer="test", authority="sovereign_source"),
+            # experiments/**: 3 items, low-risk
+            self._make_item("experiments/a.md", pattern="experiments/**"),
+            self._make_item("experiments/b.md", pattern="experiments/**"),
+            self._make_item("experiments/c.md", pattern="experiments/**"),
+        ]
+        report = build_report(items, [])
+        views = report["fallback_summary"]["residual_cluster_views"]
+        risk_patterns = [c["matched_pattern"] for c in views["risk_first"]]
+        volume_patterns = [c["matched_pattern"] for c in views["volume_first"]]
+        # risk-first: scripts/** has high_risk_count=1, experiments/** has 0 → scripts first
+        self.assertEqual(risk_patterns[0], "scripts/**")
+        # volume-first: experiments/** has total=3, scripts/** has total=1 → experiments first
+        self.assertEqual(volume_patterns[0], "experiments/**")
+
+    def test_residual_cluster_views_empty_when_no_fallback(self) -> None:
+        views = _build_residual_cluster_views([])
+        self.assertEqual(views["risk_first"], [])
+        self.assertEqual(views["volume_first"], [])
+
+
     """Tests for the Residual fallback clusters section in Markdown output."""
 
     @classmethod

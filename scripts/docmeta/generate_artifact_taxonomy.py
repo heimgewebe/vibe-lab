@@ -302,6 +302,29 @@ def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
     return clusters
 
 
+def _build_residual_cluster_views(fallback_classified: list[dict]) -> dict:
+    """Build explicit risk-first and volume-first views of residual clusters.
+
+    Both views contain the same cluster objects produced by
+    _build_residual_clusters; they differ only in sort order.
+
+    risk_first:   high_risk_count desc → total desc → matched_pattern asc
+    volume_first: total desc → high_risk_count desc → matched_pattern asc
+
+    This allows downstream tooling to consume both priority axes from JSON
+    without having to re-sort or parse the Markdown report.
+    """
+    clusters = _build_residual_clusters(fallback_classified)
+    volume_first = sorted(
+        clusters,
+        key=lambda c: (-c["total"], -c["high_risk_count"], c["matched_pattern"]),
+    )
+    return {
+        "risk_first": clusters,
+        "volume_first": volume_first,
+    }
+
+
 def _enforcement_count(items: list[dict]) -> dict[str, int]:
     out: dict[str, int] = {}
     for item in items:
@@ -456,6 +479,7 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
             ),
             "high_risk_count": sum(1 for c in fallback_classified if _is_high_risk_fallback(c)),
             "residual_clusters": _build_residual_clusters(fallback_classified),
+            "residual_cluster_views": _build_residual_cluster_views(fallback_classified),
         },
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
         "ambiguous_artifacts": [c["path"] for c in sorted(ambiguous, key=lambda x: x["path"])],
