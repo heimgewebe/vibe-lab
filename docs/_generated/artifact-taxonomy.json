@@ -766,15 +766,16 @@
     },
     {
       "authority": "diagnostic_signal",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
+        "non_blocking_diagnostic",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "generated_backlinks",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/backlinks.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/backlinks.md",
@@ -813,7 +814,7 @@
     },
     {
       "authority": "diagnostic_signal",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "best_effort",
         "no_manual_edit"
@@ -822,7 +823,7 @@
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/metrics/**"
+        "docs/_generated/metrics/*.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/metrics/trends.md",
@@ -830,15 +831,16 @@
     },
     {
       "authority": "diagnostic_signal",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
+        "non_blocking_diagnostic",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "generated_orphan_report",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/orphans.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/orphans.md",
@@ -863,15 +865,16 @@
     },
     {
       "authority": "diagnostic_signal",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
+        "non_blocking_diagnostic",
         "no_manual_edit"
       ],
-      "kind": "generated_artifact",
+      "kind": "generated_system_map",
       "layer": "generated",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "docs/_generated/**"
+        "docs/_generated/system-map.md"
       ],
       "origin": "generated",
       "path": "docs/_generated/system-map.md",
@@ -6605,7 +6608,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6614,7 +6617,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/copilot/*.md"
       ],
       "origin": "projected",
       "path": "exports/copilot/constraint-before-code.md",
@@ -6622,7 +6625,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6631,7 +6634,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/copilot/*.md"
       ],
       "origin": "projected",
       "path": "exports/copilot/edge-case-enumeration.md",
@@ -6639,7 +6642,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6648,7 +6651,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/copilot/*.md"
       ],
       "origin": "projected",
       "path": "exports/copilot/no-vague-prompts.md",
@@ -6656,7 +6659,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6665,7 +6668,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/copilot/*.md"
       ],
       "origin": "projected",
       "path": "exports/copilot/spec-first.md",
@@ -6673,7 +6676,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6682,7 +6685,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/copilot/*.md"
       ],
       "origin": "projected",
       "path": "exports/copilot/validate-against-spec.md",
@@ -6690,7 +6693,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6699,7 +6702,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/cursor/*.md"
       ],
       "origin": "projected",
       "path": "exports/cursor/constraint-before-code.md",
@@ -6707,7 +6710,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6716,7 +6719,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/cursor/*.md"
       ],
       "origin": "projected",
       "path": "exports/cursor/edge-case-enumeration.md",
@@ -6724,7 +6727,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6733,7 +6736,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/cursor/*.md"
       ],
       "origin": "projected",
       "path": "exports/cursor/no-vague-prompts.md",
@@ -6741,7 +6744,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6750,7 +6753,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/cursor/*.md"
       ],
       "origin": "projected",
       "path": "exports/cursor/spec-first.md",
@@ -6758,7 +6761,7 @@
     },
     {
       "authority": "generated_projection",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "no_manual_edit",
         "ci_blocking"
@@ -6767,7 +6770,7 @@
       "layer": "export",
       "lifecycle": "regenerated",
       "matched_patterns": [
-        "exports/**"
+        "exports/cursor/*.md"
       ],
       "origin": "projected",
       "path": "exports/cursor/validate-against-spec.md",
@@ -7128,7 +7131,7 @@
     },
     {
       "authority": "implementation_behavior",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
@@ -7136,655 +7139,15 @@
       "layer": "governance",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "scripts/**"
+        "scripts/adoption/*.py"
       ],
       "origin": "handcrafted",
       "path": "scripts/adoption/__init__.py",
       "status": "classified"
     },
     {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/adoption/test_validate_adoption_completeness.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/adoption/validate_adoption_completeness.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/_paths.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/check_system_decisions.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_artifact_taxonomy.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_backlinks.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_doc_index.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_epistemic_state.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_metrics.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_orphans.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/generate_system_map.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/resolve_generated_artifact_paths.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_command_version_policy.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_fixture_matrix_audit_surface.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_fixture_matrix_known_gaps_audit.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_generate_artifact_taxonomy.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_generate_epistemic_state.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_promotion_readiness.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_agent_commands.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_agent_handoff.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_artifact_taxonomy.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_command_chain.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_generated_artifacts_contract.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_interpretation_budget.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/test_validate_schema_counterevidence.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_agent_commands.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_agent_handoff.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_artifact_taxonomy.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_command_chain.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_execution_proof.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_generated_artifacts_contract.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_interpretation_budget.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_promotion_readiness.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_relations.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/docmeta/validate_schema.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/exports/__init__.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/exports/generate_exports.py",
-      "status": "classified"
-    },
-    {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
-      "enforcement": [
-        "ci_blocking"
-      ],
-      "kind": "implementation_script",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        "scripts/**"
-      ],
-      "origin": "handcrafted",
-      "path": "scripts/exports/test_generate_exports.py",
-      "status": "classified"
-    },
-    {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
@@ -7792,7 +7155,647 @@
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/**"
+        "scripts/adoption/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/adoption/test_validate_adoption_completeness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/adoption/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/adoption/validate_adoption_completeness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/_paths.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/check_system_decisions.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_artifact_taxonomy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_backlinks.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_doc_index.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_epistemic_state.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_metrics.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_orphans.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/generate_system_map.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/resolve_generated_artifact_paths.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_command_version_policy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_fixture_matrix_audit_surface.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_fixture_matrix_known_gaps_audit.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_generate_artifact_taxonomy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_generate_epistemic_state.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_promotion_readiness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_agent_commands.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_agent_handoff.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_artifact_taxonomy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_command_chain.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_generated_artifacts_contract.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_interpretation_budget.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_schema_counterevidence.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_agent_commands.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_agent_handoff.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_artifact_taxonomy.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_command_chain.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_execution_proof.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_generated_artifacts_contract.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_interpretation_budget.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_promotion_readiness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_relations.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_schema.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/exports/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/exports/__init__.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/exports/generate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/exports/generate_exports.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/exports/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/exports/test_generate_exports.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/contracts/*.py"
       ],
       "origin": "handcrafted",
       "path": "tests/contracts/test_cross_contract_chain.py",
@@ -7800,15 +7803,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/contract-invalid-empty-fact-string.json",
@@ -7816,15 +7819,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/contract-invalid-empty-target-files.json",
@@ -7832,15 +7835,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/contract-invalid-missing-version.json",
@@ -7848,15 +7851,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/contract-invalid-wrong-command.json",
@@ -7864,15 +7867,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/contract-invalid-wrong-version.json",
@@ -7880,15 +7883,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/valid-edge-complex.json",
@@ -7896,15 +7899,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/read_context/valid-minimal.json",
@@ -7912,15 +7915,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/contract-invalid-duplicate-checks.json",
@@ -7928,15 +7931,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/contract-invalid-empty-checks.json",
@@ -7944,15 +7947,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/contract-invalid-failure-empty-errors.json",
@@ -7960,15 +7963,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/contract-invalid-success-with-errors.json",
@@ -7976,15 +7979,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/contract-invalid-wrong-command.json",
@@ -7992,15 +7995,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/valid-edge-multi-checks.json",
@@ -8008,15 +8011,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/valid-failure.json",
@@ -8024,15 +8027,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/valid-success.json",
@@ -8040,15 +8043,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/contract-invalid-empty-target-files.json",
@@ -8056,15 +8059,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/contract-invalid-invalid-change-type.json",
@@ -8072,15 +8075,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/contract-invalid-missing-change-type.json",
@@ -8088,15 +8091,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/contract-invalid-missing-locator.json",
@@ -8104,15 +8107,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/contract-invalid-wrong-command.json",
@@ -8120,15 +8123,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/contract-invalid-wrong-version.json",
@@ -8136,15 +8139,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/valid-edge-add-with-target-lines.json",
@@ -8152,15 +8155,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/valid-edge-remove.json",
@@ -8168,15 +8171,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_command_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/write_change/valid-minimal.json",
@@ -8184,15 +8187,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_handoff_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_handoff/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json",
@@ -8200,15 +8203,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_handoff_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_handoff/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_handoff/hash-mismatch.json",
@@ -8216,15 +8219,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_handoff_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_handoff/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_handoff/partial-missing-required-fixes.json",
@@ -8232,15 +8235,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "agent_handoff_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/agent_handoff/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_handoff/pass-minimal.json",
@@ -8248,15 +8251,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-add-with-exact-before.expected.json",
@@ -8264,15 +8267,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-add-with-exact-before.json",
@@ -8280,15 +8283,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-empty-locator.expected.json",
@@ -8296,15 +8299,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-empty-locator.json",
@@ -8312,15 +8315,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-error-no-check-prefix.expected.json",
@@ -8328,15 +8331,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-error-no-check-prefix.json",
@@ -8344,15 +8347,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-error-partial-binding.expected.json",
@@ -8360,15 +8363,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-error-partial-binding.json",
@@ -8376,15 +8379,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-error-unknown-check-prefix.expected.json",
@@ -8392,15 +8395,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-error-unknown-check-prefix.json",
@@ -8408,15 +8411,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-mixed-versions.expected.json",
@@ -8424,15 +8427,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-mixed-versions.json",
@@ -8440,15 +8443,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-remove-with-exact-after.expected.json",
@@ -8456,15 +8459,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-remove-with-exact-after.json",
@@ -8472,15 +8475,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-target-files-mismatch.expected.json",
@@ -8488,15 +8491,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-target-files-mismatch.json",
@@ -8504,15 +8507,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-validate-empty-targets.expected.json",
@@ -8520,15 +8523,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-validate-empty-targets.json",
@@ -8536,15 +8539,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-validate-orphaned.expected.json",
@@ -8552,15 +8555,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-validate-orphaned.json",
@@ -8568,15 +8571,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-validate-without-write.expected.json",
@@ -8584,15 +8587,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-validate-without-write.json",
@@ -8600,15 +8603,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-wrong-order.expected.json",
@@ -8616,15 +8619,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-wrong-order.json",
@@ -8632,15 +8635,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/valid-errors-with-check-prefix.json",
@@ -8648,15 +8651,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/valid-minimal.json",
@@ -8664,15 +8667,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "command_chain_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/valid-validate-with-write.json",
@@ -8680,15 +8683,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/contract_invalid.json",
@@ -8696,15 +8699,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/contradiction.json",
@@ -8712,15 +8715,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json",
@@ -8728,15 +8731,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/semantic_mismatch.json",
@@ -8744,15 +8747,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/state_drift.json",
@@ -8760,15 +8763,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/target_drift.json",
@@ -8776,15 +8779,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/target_drift_extra.json",
@@ -8792,15 +8795,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/invalid/version_conflict.json",
@@ -8808,15 +8811,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "cross_contract_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/cross_contract/**/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/cross_contract/valid/minimal_chain.json",
@@ -8824,15 +8827,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/expected-outcomes.json",
@@ -8840,15 +8843,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md",
@@ -8856,15 +8859,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md",
@@ -8872,15 +8875,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/inconsistent/manifest.yml",
@@ -8888,15 +8891,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/inconsistent/results/decision.yml",
@@ -8904,15 +8907,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/inconsistent/results/evidence.jsonl",
@@ -8920,15 +8923,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md",
@@ -8936,15 +8939,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md",
@@ -8952,15 +8955,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md",
@@ -8968,15 +8971,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/insufficient_input/manifest.yml",
@@ -8984,15 +8987,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/insufficient_input/results/decision.yml",
@@ -9000,15 +9003,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/insufficient_input/results/evidence.jsonl",
@@ -9016,15 +9019,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md",
@@ -9032,15 +9035,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md",
@@ -9048,15 +9051,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/valid/manifest.yml",
@@ -9064,15 +9067,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/valid/results/decision.yml",
@@ -9080,15 +9083,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/valid/results/evidence.jsonl",
@@ -9096,15 +9099,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "experiment_structure_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/experiment_structure_phase1c/*.*"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/experiment_structure_phase1c/valid/results/result.md",
@@ -9112,15 +9115,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "falsifiability_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/falsifiability/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/falsifiability/invalid.json",
@@ -9128,15 +9131,15 @@
     },
     {
       "authority": "test_expectation",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "ci_blocking"
       ],
-      "kind": "test_fixture",
+      "kind": "falsifiability_fixture",
       "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tests/fixtures/**"
+        "tests/fixtures/falsifiability/*.json"
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/falsifiability/valid.json",
@@ -9158,7 +9161,7 @@
     },
     {
       "authority": "implementation_behavior",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "review_required"
       ],
@@ -9166,23 +9169,23 @@
       "layer": "governance",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tools/**"
+        "tools/vibe-cli/*.py"
       ],
       "origin": "handcrafted",
       "path": "tools/vibe-cli/replay_minimal.py",
       "status": "classified"
     },
     {
-      "authority": "implementation_behavior",
-      "catchall_match": true,
+      "authority": "test_expectation",
+      "catchall_match": false,
       "enforcement": [
-        "review_required"
+        "ci_blocking"
       ],
-      "kind": "implementation_tool",
-      "layer": "governance",
+      "kind": "test_script",
+      "layer": "test",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "tools/**"
+        "tools/vibe-cli/test_*.py"
       ],
       "origin": "handcrafted",
       "path": "tools/vibe-cli/test_replay_minimal.py",
@@ -9191,10 +9194,6 @@
   ],
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
-    "docs/_generated/backlinks.md",
-    "docs/_generated/metrics/trends.md",
-    "docs/_generated/orphans.md",
-    "docs/_generated/system-map.md",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
@@ -9354,289 +9353,22 @@
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-D1.json",
     "experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md",
     "experiments/2026-04-23_phase-1-drift-injection/results/README.md",
-    "experiments/_template/artifacts/README.md",
-    "exports/copilot/constraint-before-code.md",
-    "exports/copilot/edge-case-enumeration.md",
-    "exports/copilot/no-vague-prompts.md",
-    "exports/copilot/spec-first.md",
-    "exports/copilot/validate-against-spec.md",
-    "exports/cursor/constraint-before-code.md",
-    "exports/cursor/edge-case-enumeration.md",
-    "exports/cursor/no-vague-prompts.md",
-    "exports/cursor/spec-first.md",
-    "exports/cursor/validate-against-spec.md",
-    "scripts/adoption/__init__.py",
-    "scripts/adoption/test_validate_adoption_completeness.py",
-    "scripts/adoption/validate_adoption_completeness.py",
-    "scripts/docmeta/_paths.py",
-    "scripts/docmeta/check_system_decisions.py",
-    "scripts/docmeta/generate_artifact_taxonomy.py",
-    "scripts/docmeta/generate_backlinks.py",
-    "scripts/docmeta/generate_doc_index.py",
-    "scripts/docmeta/generate_epistemic_state.py",
-    "scripts/docmeta/generate_metrics.py",
-    "scripts/docmeta/generate_orphans.py",
-    "scripts/docmeta/generate_system_map.py",
-    "scripts/docmeta/resolve_generated_artifact_paths.py",
-    "scripts/docmeta/test_command_version_policy.py",
-    "scripts/docmeta/test_fixture_matrix_audit_surface.py",
-    "scripts/docmeta/test_fixture_matrix_known_gaps_audit.py",
-    "scripts/docmeta/test_generate_artifact_taxonomy.py",
-    "scripts/docmeta/test_generate_epistemic_state.py",
-    "scripts/docmeta/test_promotion_readiness.py",
-    "scripts/docmeta/test_validate_agent_commands.py",
-    "scripts/docmeta/test_validate_agent_handoff.py",
-    "scripts/docmeta/test_validate_artifact_taxonomy.py",
-    "scripts/docmeta/test_validate_command_chain.py",
-    "scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py",
-    "scripts/docmeta/test_validate_generated_artifacts_contract.py",
-    "scripts/docmeta/test_validate_interpretation_budget.py",
-    "scripts/docmeta/test_validate_schema_counterevidence.py",
-    "scripts/docmeta/validate_agent_commands.py",
-    "scripts/docmeta/validate_agent_handoff.py",
-    "scripts/docmeta/validate_artifact_taxonomy.py",
-    "scripts/docmeta/validate_command_chain.py",
-    "scripts/docmeta/validate_execution_proof.py",
-    "scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py",
-    "scripts/docmeta/validate_generated_artifacts_contract.py",
-    "scripts/docmeta/validate_interpretation_budget.py",
-    "scripts/docmeta/validate_promotion_readiness.py",
-    "scripts/docmeta/validate_relations.py",
-    "scripts/docmeta/validate_schema.py",
-    "scripts/exports/__init__.py",
-    "scripts/exports/generate_exports.py",
-    "scripts/exports/test_generate_exports.py",
-    "tests/contracts/test_cross_contract_chain.py",
-    "tests/fixtures/agent_commands/read_context/contract-invalid-empty-fact-string.json",
-    "tests/fixtures/agent_commands/read_context/contract-invalid-empty-target-files.json",
-    "tests/fixtures/agent_commands/read_context/contract-invalid-missing-version.json",
-    "tests/fixtures/agent_commands/read_context/contract-invalid-wrong-command.json",
-    "tests/fixtures/agent_commands/read_context/contract-invalid-wrong-version.json",
-    "tests/fixtures/agent_commands/read_context/valid-edge-complex.json",
-    "tests/fixtures/agent_commands/read_context/valid-minimal.json",
-    "tests/fixtures/agent_commands/validate_change/contract-invalid-duplicate-checks.json",
-    "tests/fixtures/agent_commands/validate_change/contract-invalid-empty-checks.json",
-    "tests/fixtures/agent_commands/validate_change/contract-invalid-failure-empty-errors.json",
-    "tests/fixtures/agent_commands/validate_change/contract-invalid-success-with-errors.json",
-    "tests/fixtures/agent_commands/validate_change/contract-invalid-wrong-command.json",
-    "tests/fixtures/agent_commands/validate_change/valid-edge-multi-checks.json",
-    "tests/fixtures/agent_commands/validate_change/valid-failure.json",
-    "tests/fixtures/agent_commands/validate_change/valid-success.json",
-    "tests/fixtures/agent_commands/write_change/contract-invalid-empty-target-files.json",
-    "tests/fixtures/agent_commands/write_change/contract-invalid-invalid-change-type.json",
-    "tests/fixtures/agent_commands/write_change/contract-invalid-missing-change-type.json",
-    "tests/fixtures/agent_commands/write_change/contract-invalid-missing-locator.json",
-    "tests/fixtures/agent_commands/write_change/contract-invalid-wrong-command.json",
-    "tests/fixtures/agent_commands/write_change/contract-invalid-wrong-version.json",
-    "tests/fixtures/agent_commands/write_change/valid-edge-add-with-target-lines.json",
-    "tests/fixtures/agent_commands/write_change/valid-edge-remove.json",
-    "tests/fixtures/agent_commands/write_change/valid-minimal.json",
-    "tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json",
-    "tests/fixtures/agent_handoff/hash-mismatch.json",
-    "tests/fixtures/agent_handoff/partial-missing-required-fixes.json",
-    "tests/fixtures/agent_handoff/pass-minimal.json",
-    "tests/fixtures/command_chains/invalid-add-with-exact-before.expected.json",
-    "tests/fixtures/command_chains/invalid-add-with-exact-before.json",
-    "tests/fixtures/command_chains/invalid-empty-locator.expected.json",
-    "tests/fixtures/command_chains/invalid-empty-locator.json",
-    "tests/fixtures/command_chains/invalid-error-no-check-prefix.expected.json",
-    "tests/fixtures/command_chains/invalid-error-no-check-prefix.json",
-    "tests/fixtures/command_chains/invalid-error-partial-binding.expected.json",
-    "tests/fixtures/command_chains/invalid-error-partial-binding.json",
-    "tests/fixtures/command_chains/invalid-error-unknown-check-prefix.expected.json",
-    "tests/fixtures/command_chains/invalid-error-unknown-check-prefix.json",
-    "tests/fixtures/command_chains/invalid-mixed-versions.expected.json",
-    "tests/fixtures/command_chains/invalid-mixed-versions.json",
-    "tests/fixtures/command_chains/invalid-remove-with-exact-after.expected.json",
-    "tests/fixtures/command_chains/invalid-remove-with-exact-after.json",
-    "tests/fixtures/command_chains/invalid-target-files-mismatch.expected.json",
-    "tests/fixtures/command_chains/invalid-target-files-mismatch.json",
-    "tests/fixtures/command_chains/invalid-validate-empty-targets.expected.json",
-    "tests/fixtures/command_chains/invalid-validate-empty-targets.json",
-    "tests/fixtures/command_chains/invalid-validate-orphaned.expected.json",
-    "tests/fixtures/command_chains/invalid-validate-orphaned.json",
-    "tests/fixtures/command_chains/invalid-validate-without-write.expected.json",
-    "tests/fixtures/command_chains/invalid-validate-without-write.json",
-    "tests/fixtures/command_chains/invalid-wrong-order.expected.json",
-    "tests/fixtures/command_chains/invalid-wrong-order.json",
-    "tests/fixtures/command_chains/valid-errors-with-check-prefix.json",
-    "tests/fixtures/command_chains/valid-minimal.json",
-    "tests/fixtures/command_chains/valid-validate-with-write.json",
-    "tests/fixtures/cross_contract/invalid/contract_invalid.json",
-    "tests/fixtures/cross_contract/invalid/contradiction.json",
-    "tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json",
-    "tests/fixtures/cross_contract/invalid/semantic_mismatch.json",
-    "tests/fixtures/cross_contract/invalid/state_drift.json",
-    "tests/fixtures/cross_contract/invalid/target_drift.json",
-    "tests/fixtures/cross_contract/invalid/target_drift_extra.json",
-    "tests/fixtures/cross_contract/invalid/version_conflict.json",
-    "tests/fixtures/cross_contract/valid/minimal_chain.json",
-    "tests/fixtures/experiment_structure_phase1c/expected-outcomes.json",
-    "tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md",
-    "tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md",
-    "tests/fixtures/experiment_structure_phase1c/inconsistent/manifest.yml",
-    "tests/fixtures/experiment_structure_phase1c/inconsistent/results/decision.yml",
-    "tests/fixtures/experiment_structure_phase1c/inconsistent/results/evidence.jsonl",
-    "tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md",
-    "tests/fixtures/experiment_structure_phase1c/insufficient_input/CONTEXT.md",
-    "tests/fixtures/experiment_structure_phase1c/insufficient_input/INITIAL.md",
-    "tests/fixtures/experiment_structure_phase1c/insufficient_input/manifest.yml",
-    "tests/fixtures/experiment_structure_phase1c/insufficient_input/results/decision.yml",
-    "tests/fixtures/experiment_structure_phase1c/insufficient_input/results/evidence.jsonl",
-    "tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md",
-    "tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md",
-    "tests/fixtures/experiment_structure_phase1c/valid/manifest.yml",
-    "tests/fixtures/experiment_structure_phase1c/valid/results/decision.yml",
-    "tests/fixtures/experiment_structure_phase1c/valid/results/evidence.jsonl",
-    "tests/fixtures/experiment_structure_phase1c/valid/results/result.md",
-    "tests/fixtures/falsifiability/invalid.json",
-    "tests/fixtures/falsifiability/valid.json",
-    "tools/vibe-cli/replay_minimal.py",
-    "tools/vibe-cli/test_replay_minimal.py"
+    "experiments/_template/artifacts/README.md"
   ],
   "fallback_summary": {
     "by_authority": {
-      "diagnostic_signal": 4,
-      "generated_projection": 10,
-      "historical_record": 160,
-      "implementation_behavior": 43,
-      "test_expectation": 85
+      "historical_record": 160
     },
     "by_layer": {
-      "experiment": 160,
-      "export": 10,
-      "generated": 4,
-      "governance": 43,
-      "test": 85
+      "experiment": 160
     },
     "by_matched_pattern": {
-      "docs/_generated/**": 3,
-      "docs/_generated/metrics/**": 1,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 139,
-      "exports/**": 10,
-      "scripts/**": 41,
-      "tests/**": 1,
-      "tests/fixtures/**": 84,
-      "tools/**": 2
+      "experiments/*/artifacts/**": 139
     },
-    "high_risk_count": 142,
+    "high_risk_count": 0,
     "residual_cluster_views": {
       "risk_first": [
-        {
-          "high_risk_count": 84,
-          "matched_pattern": "tests/fixtures/**",
-          "top_basenames": {
-            "CONTEXT.md": 3,
-            "INITIAL.md": 3,
-            "contract-invalid-empty-target-files.json": 2,
-            "contract-invalid-wrong-command.json": 3,
-            "contract-invalid-wrong-version.json": 2,
-            "decision.yml": 3,
-            "evidence.jsonl": 3,
-            "manifest.yml": 3,
-            "result.md": 2,
-            "valid-minimal.json": 3
-          },
-          "top_parent_dirs": {
-            "tests/fixtures/agent_commands/read_context": 7,
-            "tests/fixtures/agent_commands/validate_change": 8,
-            "tests/fixtures/agent_commands/write_change": 9,
-            "tests/fixtures/agent_handoff": 4,
-            "tests/fixtures/command_chains": 27,
-            "tests/fixtures/cross_contract/invalid": 7,
-            "tests/fixtures/experiment_structure_phase1c/inconsistent": 3,
-            "tests/fixtures/experiment_structure_phase1c/inconsistent/results": 3,
-            "tests/fixtures/experiment_structure_phase1c/insufficient_input": 3,
-            "tests/fixtures/experiment_structure_phase1c/valid": 3
-          },
-          "total": 84
-        },
-        {
-          "high_risk_count": 41,
-          "matched_pattern": "scripts/**",
-          "top_basenames": {
-            "__init__.py": 2,
-            "_paths.py": 1,
-            "check_system_decisions.py": 1,
-            "generate_artifact_taxonomy.py": 1,
-            "generate_backlinks.py": 1,
-            "generate_doc_index.py": 1,
-            "generate_epistemic_state.py": 1,
-            "generate_exports.py": 1,
-            "generate_metrics.py": 1,
-            "generate_orphans.py": 1
-          },
-          "top_parent_dirs": {
-            "scripts/adoption": 3,
-            "scripts/docmeta": 35,
-            "scripts/exports": 3
-          },
-          "total": 41
-        },
-        {
-          "high_risk_count": 10,
-          "matched_pattern": "exports/**",
-          "top_basenames": {
-            "constraint-before-code.md": 2,
-            "edge-case-enumeration.md": 2,
-            "no-vague-prompts.md": 2,
-            "spec-first.md": 2,
-            "validate-against-spec.md": 2
-          },
-          "top_parent_dirs": {
-            "exports/copilot": 5,
-            "exports/cursor": 5
-          },
-          "total": 10
-        },
-        {
-          "high_risk_count": 3,
-          "matched_pattern": "docs/_generated/**",
-          "top_basenames": {
-            "backlinks.md": 1,
-            "orphans.md": 1,
-            "system-map.md": 1
-          },
-          "top_parent_dirs": {
-            "docs/_generated": 3
-          },
-          "total": 3
-        },
-        {
-          "high_risk_count": 2,
-          "matched_pattern": "tools/**",
-          "top_basenames": {
-            "replay_minimal.py": 1,
-            "test_replay_minimal.py": 1
-          },
-          "top_parent_dirs": {
-            "tools/vibe-cli": 2
-          },
-          "total": 2
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "docs/_generated/metrics/**",
-          "top_basenames": {
-            "trends.md": 1
-          },
-          "top_parent_dirs": {
-            "docs/_generated/metrics": 1
-          },
-          "total": 1
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "tests/**",
-          "top_basenames": {
-            "test_cross_contract_chain.py": 1
-          },
-          "top_parent_dirs": {
-            "tests/contracts": 1
-          },
-          "total": 1
-        },
         {
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
@@ -9723,57 +9455,6 @@
           "total": 139
         },
         {
-          "high_risk_count": 84,
-          "matched_pattern": "tests/fixtures/**",
-          "top_basenames": {
-            "CONTEXT.md": 3,
-            "INITIAL.md": 3,
-            "contract-invalid-empty-target-files.json": 2,
-            "contract-invalid-wrong-command.json": 3,
-            "contract-invalid-wrong-version.json": 2,
-            "decision.yml": 3,
-            "evidence.jsonl": 3,
-            "manifest.yml": 3,
-            "result.md": 2,
-            "valid-minimal.json": 3
-          },
-          "top_parent_dirs": {
-            "tests/fixtures/agent_commands/read_context": 7,
-            "tests/fixtures/agent_commands/validate_change": 8,
-            "tests/fixtures/agent_commands/write_change": 9,
-            "tests/fixtures/agent_handoff": 4,
-            "tests/fixtures/command_chains": 27,
-            "tests/fixtures/cross_contract/invalid": 7,
-            "tests/fixtures/experiment_structure_phase1c/inconsistent": 3,
-            "tests/fixtures/experiment_structure_phase1c/inconsistent/results": 3,
-            "tests/fixtures/experiment_structure_phase1c/insufficient_input": 3,
-            "tests/fixtures/experiment_structure_phase1c/valid": 3
-          },
-          "total": 84
-        },
-        {
-          "high_risk_count": 41,
-          "matched_pattern": "scripts/**",
-          "top_basenames": {
-            "__init__.py": 2,
-            "_paths.py": 1,
-            "check_system_decisions.py": 1,
-            "generate_artifact_taxonomy.py": 1,
-            "generate_backlinks.py": 1,
-            "generate_doc_index.py": 1,
-            "generate_epistemic_state.py": 1,
-            "generate_exports.py": 1,
-            "generate_metrics.py": 1,
-            "generate_orphans.py": 1
-          },
-          "top_parent_dirs": {
-            "scripts/adoption": 3,
-            "scripts/docmeta": 35,
-            "scripts/exports": 3
-          },
-          "total": 41
-        },
-        {
           "high_risk_count": 0,
           "matched_pattern": "experiments/**",
           "top_basenames": {
@@ -9797,187 +9478,10 @@
             "experiments/2026-04-23_phase-1-drift-injection/results": 1
           },
           "total": 21
-        },
-        {
-          "high_risk_count": 10,
-          "matched_pattern": "exports/**",
-          "top_basenames": {
-            "constraint-before-code.md": 2,
-            "edge-case-enumeration.md": 2,
-            "no-vague-prompts.md": 2,
-            "spec-first.md": 2,
-            "validate-against-spec.md": 2
-          },
-          "top_parent_dirs": {
-            "exports/copilot": 5,
-            "exports/cursor": 5
-          },
-          "total": 10
-        },
-        {
-          "high_risk_count": 3,
-          "matched_pattern": "docs/_generated/**",
-          "top_basenames": {
-            "backlinks.md": 1,
-            "orphans.md": 1,
-            "system-map.md": 1
-          },
-          "top_parent_dirs": {
-            "docs/_generated": 3
-          },
-          "total": 3
-        },
-        {
-          "high_risk_count": 2,
-          "matched_pattern": "tools/**",
-          "top_basenames": {
-            "replay_minimal.py": 1,
-            "test_replay_minimal.py": 1
-          },
-          "top_parent_dirs": {
-            "tools/vibe-cli": 2
-          },
-          "total": 2
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "docs/_generated/metrics/**",
-          "top_basenames": {
-            "trends.md": 1
-          },
-          "top_parent_dirs": {
-            "docs/_generated/metrics": 1
-          },
-          "total": 1
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "tests/**",
-          "top_basenames": {
-            "test_cross_contract_chain.py": 1
-          },
-          "top_parent_dirs": {
-            "tests/contracts": 1
-          },
-          "total": 1
         }
       ]
     },
     "residual_clusters": [
-      {
-        "high_risk_count": 84,
-        "matched_pattern": "tests/fixtures/**",
-        "top_basenames": {
-          "CONTEXT.md": 3,
-          "INITIAL.md": 3,
-          "contract-invalid-empty-target-files.json": 2,
-          "contract-invalid-wrong-command.json": 3,
-          "contract-invalid-wrong-version.json": 2,
-          "decision.yml": 3,
-          "evidence.jsonl": 3,
-          "manifest.yml": 3,
-          "result.md": 2,
-          "valid-minimal.json": 3
-        },
-        "top_parent_dirs": {
-          "tests/fixtures/agent_commands/read_context": 7,
-          "tests/fixtures/agent_commands/validate_change": 8,
-          "tests/fixtures/agent_commands/write_change": 9,
-          "tests/fixtures/agent_handoff": 4,
-          "tests/fixtures/command_chains": 27,
-          "tests/fixtures/cross_contract/invalid": 7,
-          "tests/fixtures/experiment_structure_phase1c/inconsistent": 3,
-          "tests/fixtures/experiment_structure_phase1c/inconsistent/results": 3,
-          "tests/fixtures/experiment_structure_phase1c/insufficient_input": 3,
-          "tests/fixtures/experiment_structure_phase1c/valid": 3
-        },
-        "total": 84
-      },
-      {
-        "high_risk_count": 41,
-        "matched_pattern": "scripts/**",
-        "top_basenames": {
-          "__init__.py": 2,
-          "_paths.py": 1,
-          "check_system_decisions.py": 1,
-          "generate_artifact_taxonomy.py": 1,
-          "generate_backlinks.py": 1,
-          "generate_doc_index.py": 1,
-          "generate_epistemic_state.py": 1,
-          "generate_exports.py": 1,
-          "generate_metrics.py": 1,
-          "generate_orphans.py": 1
-        },
-        "top_parent_dirs": {
-          "scripts/adoption": 3,
-          "scripts/docmeta": 35,
-          "scripts/exports": 3
-        },
-        "total": 41
-      },
-      {
-        "high_risk_count": 10,
-        "matched_pattern": "exports/**",
-        "top_basenames": {
-          "constraint-before-code.md": 2,
-          "edge-case-enumeration.md": 2,
-          "no-vague-prompts.md": 2,
-          "spec-first.md": 2,
-          "validate-against-spec.md": 2
-        },
-        "top_parent_dirs": {
-          "exports/copilot": 5,
-          "exports/cursor": 5
-        },
-        "total": 10
-      },
-      {
-        "high_risk_count": 3,
-        "matched_pattern": "docs/_generated/**",
-        "top_basenames": {
-          "backlinks.md": 1,
-          "orphans.md": 1,
-          "system-map.md": 1
-        },
-        "top_parent_dirs": {
-          "docs/_generated": 3
-        },
-        "total": 3
-      },
-      {
-        "high_risk_count": 2,
-        "matched_pattern": "tools/**",
-        "top_basenames": {
-          "replay_minimal.py": 1,
-          "test_replay_minimal.py": 1
-        },
-        "top_parent_dirs": {
-          "tools/vibe-cli": 2
-        },
-        "total": 2
-      },
-      {
-        "high_risk_count": 1,
-        "matched_pattern": "docs/_generated/metrics/**",
-        "top_basenames": {
-          "trends.md": 1
-        },
-        "top_parent_dirs": {
-          "docs/_generated/metrics": 1
-        },
-        "total": 1
-      },
-      {
-        "high_risk_count": 1,
-        "matched_pattern": "tests/**",
-        "top_basenames": {
-          "test_cross_contract_chain.py": 1
-        },
-        "top_parent_dirs": {
-          "tests/contracts": 1
-        },
-        "total": 1
-      },
       {
         "high_risk_count": 0,
         "matched_pattern": "experiments/*/artifacts/**",
@@ -10190,29 +9694,29 @@
       "evidence_log": 14,
       "generated_projection": 10,
       "historical_record": 160,
-      "implementation_behavior": 45,
+      "implementation_behavior": 9,
       "navigation_surface": 7,
       "normative_contract": 15,
-      "procedure_contract": 62,
+      "procedure_contract": 81,
       "raw_capture": 20,
       "result_interpretation": 45,
       "runtime_observation": 50,
       "schema_truth": 11,
       "sovereign_source": 3,
-      "test_expectation": 88,
+      "test_expectation": 105,
       "unknown": 23
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 200,
+      "ci_blocking": 201,
       "diagnostic": 1,
       "no_manual_edit": 18,
       "no_rewrite": 211,
       "no_silent_edit": 3,
-      "non_blocking_diagnostic": 3,
+      "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 174
+      "review_required": 173
     },
     "by_layer": {
       "agent": 3,
@@ -10224,8 +9728,8 @@
       "experiment": 323,
       "export": 15,
       "generated": 8,
-      "governance": 59,
-      "test": 88
+      "governance": 42,
+      "test": 105
     },
     "by_lifecycle": {
       "append_only": 211,
@@ -10236,10 +9740,10 @@
     },
     "classified": 573,
     "conflict": 0,
-    "fallback_classified": 302,
-    "fallback_share": 0.5270506108202443,
+    "fallback_classified": 160,
+    "fallback_share": 0.2792321116928447,
     "fallback_threshold": 0.5,
-    "fallback_threshold_status": "warning",
+    "fallback_threshold_status": "ok",
     "total": 573,
     "unknown": 0
   },
