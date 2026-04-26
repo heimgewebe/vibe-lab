@@ -719,6 +719,95 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
         idx_residual = self.md.find("## Residual fallback clusters")
         self.assertLess(idx_pattern, idx_residual)
 
+    def test_render_markdown_reads_residual_cluster_views_not_residual_clusters(self) -> None:
+        """render_markdown() must use residual_cluster_views as sole source of truth.
+
+        Injects a sentinel pattern ("legacy-only/**") into residual_clusters that is
+        absent from residual_cluster_views. Verifies the sentinel does NOT appear in
+        the rendered Markdown, and that only the patterns from residual_cluster_views
+        (risk_first / volume_first) do appear — in the correct subsection order.
+        """
+
+        def _cluster(pattern: str, total: int = 1, high: int = 0) -> dict:
+            return {
+                "matched_pattern": pattern,
+                "total": total,
+                "high_risk_count": high,
+                "top_basenames": {"sentinel.md": 1},
+                "top_parent_dirs": {"sentinel": 1},
+            }
+
+        def _make_item(path: str, pattern: str) -> dict:
+            return {
+                "path": path,
+                "status": "classified",
+                "layer": "docs",
+                "kind": "doc",
+                "authority": "navigation_surface",
+                "lifecycle": "handcrafted",
+                "enforcement": [],
+                "origin": "handcrafted",
+                "matched_patterns": [pattern],
+                "catchall_match": True,
+            }
+
+        def _subsection(md: str, start_header: str, end_header: str) -> str:
+            start = md.find(start_header)
+            end = md.find(end_header, start + 1)
+            if start == -1:
+                return ""
+            return md[start:end] if end != -1 else md[start:]
+
+        report = build_report([_make_item("docs/x.md", "docs/**")], [])
+        # Override fallback_summary to inject controlled views and a deceptive legacy field.
+        report["fallback_summary"]["residual_clusters"] = [
+            _cluster("legacy-only/**", total=999, high=999),
+        ]
+        report["fallback_summary"]["residual_cluster_views"] = {
+            "risk_first": [
+                _cluster("risk-first-a/**", total=1, high=3),
+                _cluster("risk-first-b/**", total=2, high=2),
+                _cluster("risk-first-c/**", total=3, high=1),
+            ],
+            "volume_first": [
+                _cluster("volume-first-a/**", total=30, high=0),
+                _cluster("volume-first-b/**", total=20, high=0),
+                _cluster("volume-first-c/**", total=10, high=0),
+            ],
+        }
+
+        md = render_markdown(report)
+
+        # Section and subsection headers must be present.
+        self.assertIn("## Residual fallback clusters", md)
+        self.assertIn("### Risk-first clusters", md)
+        self.assertIn("### Volume-first clusters", md)
+
+        # Legacy sentinel must NOT appear — Markdown must not read residual_clusters.
+        self.assertNotIn("legacy-only/**", md)
+
+        # Extract subsection texts for order-sensitive assertions.
+        risk_section = _subsection(md, "### Risk-first clusters", "### Volume-first clusters")
+        volume_section = _subsection(md, "### Volume-first clusters", "## Fallback classified artifacts requiring review")
+
+        # Risk-first section must contain all three risk patterns, in order.
+        self.assertIn("risk-first-a/**", risk_section)
+        self.assertIn("risk-first-b/**", risk_section)
+        self.assertIn("risk-first-c/**", risk_section)
+        self.assertLess(risk_section.find("risk-first-a/**"), risk_section.find("risk-first-b/**"))
+        self.assertLess(risk_section.find("risk-first-b/**"), risk_section.find("risk-first-c/**"))
+
+        # Volume-first section must contain all three volume patterns, in order.
+        self.assertIn("volume-first-a/**", volume_section)
+        self.assertIn("volume-first-b/**", volume_section)
+        self.assertIn("volume-first-c/**", volume_section)
+        self.assertLess(volume_section.find("volume-first-a/**"), volume_section.find("volume-first-b/**"))
+        self.assertLess(volume_section.find("volume-first-b/**"), volume_section.find("volume-first-c/**"))
+
+        # Cross-check: risk patterns must not appear in volume section and vice versa.
+        self.assertNotIn("risk-first-a/**", volume_section)
+        self.assertNotIn("volume-first-a/**", risk_section)
+
 
 class SelectFallbackPatternTest(unittest.TestCase):
     """Tests for _select_fallback_pattern helper."""
