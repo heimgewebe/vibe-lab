@@ -546,10 +546,12 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
                 "matched_patterns": [pattern],
                 "catchall_match": True,
             }
-        # 6 clusters so we can verify only 5 are rendered
+        # 7 clusters: 2 high-risk small ones and 1 large low-risk one so the two
+        # sort views (risk-first vs. volume-first) produce meaningfully different orderings.
         items = (
             [_make(f"scripts/{i}.py", "scripts/**", "test", "navigation_surface") for i in range(5)]
             + [_make(f"tests/{i}.py", "tests/**", "test", "navigation_surface") for i in range(4)]
+            + [_make(f"experiments/{i}.md", "experiments/**") for i in range(10)]
             + [_make(f"docs/{i}.md", "docs/**") for i in range(3)]
             + [_make(f"capture/{i}.md", "capture/**") for i in range(2)]
             + [_make(f"exports/{i}.md", "exports/**") for i in range(2)]
@@ -569,24 +571,73 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
         )
 
     def test_markdown_residual_clusters_no_subsection_headers(self) -> None:
-        """Detailed per-cluster ### headers must not appear."""
+        """Per-cluster backtick-prefixed ### headers must not appear (section headers are plain text)."""
         self.assertNotIn("### `", self.md)
 
-    def test_markdown_residual_clusters_renders_only_top_5(self) -> None:
-        """With 6 distinct clusters, only 5 rows should appear in the table."""
-        # Count data rows after the header line
+    def test_markdown_residual_clusters_has_risk_first_subsection(self) -> None:
+        self.assertIn("### Risk-first clusters", self.md)
+
+    def test_markdown_residual_clusters_has_volume_first_subsection(self) -> None:
+        self.assertIn("### Volume-first clusters", self.md)
+
+    def _count_rows_in_subsection(self, subsection_header: str) -> int:
         lines = self.md.splitlines()
-        in_section = False
-        data_rows = 0
+        in_sub = False
+        count = 0
         for line in lines:
-            if line.startswith("## Residual fallback clusters"):
-                in_section = True
+            if line.startswith(subsection_header):
+                in_sub = True
                 continue
-            if in_section and line.startswith("## "):
+            if in_sub and (line.startswith("## ") or line.startswith("### ")):
                 break
-            if in_section and line.startswith("| `"):
-                data_rows += 1
-        self.assertEqual(data_rows, 5)
+            if in_sub and line.startswith("| `"):
+                count += 1
+        return count
+
+    def _pattern_positions_in_subsection(self, subsection_header: str) -> dict[str, int]:
+        lines = self.md.splitlines()
+        in_sub = False
+        positions: dict[str, int] = {}
+        row_index = 0
+        for line in lines:
+            if line.startswith(subsection_header):
+                in_sub = True
+                continue
+            if in_sub and (line.startswith("## ") or line.startswith("### ")):
+                break
+            if in_sub and line.startswith("| `"):
+                # Extract the pattern from the first backtick-quoted segment
+                parts = line.split("`")
+                if len(parts) >= 2:
+                    positions[parts[1]] = row_index
+                row_index += 1
+        return positions
+
+    def test_markdown_both_tables_render_at_most_5_rows(self) -> None:
+        """Each subsection table must show at most 5 data rows."""
+        for header in ("### Risk-first clusters", "### Volume-first clusters"):
+            count = self._count_rows_in_subsection(header)
+            self.assertLessEqual(count, 5, f"{header} rendered more than 5 rows")
+
+    def test_markdown_risk_first_orders_high_risk_before_large_lowrisk(self) -> None:
+        """scripts/** (high_risk=5) must rank above experiments/** (high_risk=0) in risk-first view."""
+        pos = self._pattern_positions_in_subsection("### Risk-first clusters")
+        self.assertIn("scripts/**", pos)
+        self.assertIn("experiments/**", pos)
+        self.assertLess(pos["scripts/**"], pos["experiments/**"])
+
+    def test_markdown_volume_first_orders_large_lowrisk_before_small_highrisk(self) -> None:
+        """experiments/** (total=10) must rank above scripts/** (total=5) in volume-first view."""
+        pos = self._pattern_positions_in_subsection("### Volume-first clusters")
+        self.assertIn("experiments/**", pos)
+        self.assertIn("scripts/**", pos)
+        self.assertLess(pos["experiments/**"], pos["scripts/**"])
+
+    def test_markdown_risk_first_renders_pattern_as_code_span(self) -> None:
+        self.assertIn("| `scripts/**` |", self.md)
+
+    def test_markdown_volume_first_renders_pattern_as_code_span(self) -> None:
+        self.assertIn("| `experiments/**` |", self.md)
 
     def test_markdown_residual_section_before_review_section(self) -> None:
         """Residual section must appear before the 'requiring review' section."""
@@ -599,9 +650,6 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
         idx_pattern = self.md.find("## Fallback classified: by matched pattern")
         idx_residual = self.md.find("## Residual fallback clusters")
         self.assertLess(idx_pattern, idx_residual)
-
-    def test_markdown_residual_clusters_renders_pattern_as_code_span(self) -> None:
-        self.assertIn("| `scripts/**` |", self.md)
 
 
 class SelectFallbackPatternTest(unittest.TestCase):

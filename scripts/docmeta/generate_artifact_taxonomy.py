@@ -576,9 +576,10 @@ def render_markdown(report: dict) -> str:
     lines.append("## Residual fallback clusters")
     lines.append("")
     lines.append(
-        "Diagnostic breakdown of catch-all fallback buckets "
-        "(top 5, sorted by high_risk_count desc, then total desc, then matched_pattern asc). "
-        "Shows dominant file names and parent directories to guide targeted rule additions in a future PR."
+        "Diagnostic breakdown of catch-all fallback buckets. "
+        "Two views: **risk-first** (review priority) and **volume-first** (rule-building priority, "
+        "i.e. where adding a new taxonomy rule reduces the most fallbacks). "
+        "Top 5 per view; shows dominant file names and parent directories."
     )
     lines.append("")
     residual_clusters = report["fallback_summary"].get("residual_clusters", [])
@@ -586,15 +587,43 @@ def render_markdown(report: dict) -> str:
         lines.append("_none_")
         lines.append("")
     else:
-        lines.append("| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |")
-        lines.append("| --- | ---: | ---: | --- | --- |")
-        for cluster in residual_clusters[:5]:
-            lines.append(
-                f"| {_md_code_span(cluster['matched_pattern'])} | {cluster['total']} | "
-                f"{cluster['high_risk_count']} | "
-                f"{_format_top_items(cluster.get('top_basenames', {}))} | "
-                f"{_format_top_items(cluster.get('top_parent_dirs', {}))} |"
+        _cluster_header = "| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |"
+        _cluster_sep = "| --- | ---: | ---: | --- | --- |"
+
+        def _cluster_row(c: dict) -> str:
+            return (
+                f"| {_md_code_span(c['matched_pattern'])} | {c['total']} | "
+                f"{c['high_risk_count']} | "
+                f"{_format_top_items(c.get('top_basenames', {}))} | "
+                f"{_format_top_items(c.get('top_parent_dirs', {}))} |"
             )
+
+        lines.append("### Risk-first clusters")
+        lines.append("")
+        lines.append(
+            "Sorted by high_risk_count desc, then total desc, then matched_pattern asc."
+        )
+        lines.append("")
+        lines.append(_cluster_header)
+        lines.append(_cluster_sep)
+        for cluster in residual_clusters[:5]:
+            lines.append(_cluster_row(cluster))
+        lines.append("")
+
+        volume_sorted = sorted(
+            residual_clusters,
+            key=lambda c: (-c["total"], -c["high_risk_count"], c["matched_pattern"]),
+        )
+        lines.append("### Volume-first clusters")
+        lines.append("")
+        lines.append(
+            "Sorted by total desc, then high_risk_count desc, then matched_pattern asc."
+        )
+        lines.append("")
+        lines.append(_cluster_header)
+        lines.append(_cluster_sep)
+        for cluster in volume_sorted[:5]:
+            lines.append(_cluster_row(cluster))
         lines.append("")
 
     lines.append("## Fallback classified artifacts requiring review")

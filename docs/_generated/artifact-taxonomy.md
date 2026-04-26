@@ -478,7 +478,11 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 ## Residual fallback clusters
 
-Diagnostic breakdown of catch-all fallback buckets (top 5, sorted by high_risk_count desc, then total desc, then matched_pattern asc). Shows dominant file names and parent directories to guide targeted rule additions in a future PR.
+Diagnostic breakdown of catch-all fallback buckets. Two views: **risk-first** (review priority) and **volume-first** (rule-building priority, i.e. where adding a new taxonomy rule reduces the most fallbacks). Top 5 per view; shows dominant file names and parent directories.
+
+### Risk-first clusters
+
+Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
@@ -487,6 +491,18 @@ Diagnostic breakdown of catch-all fallback buckets (top 5, sorted by high_risk_c
 | `exports/**` | 10 | 10 | `constraint-before-code.md`=2, `edge-case-enumeration.md`=2, `no-vague-prompts.md`=2, `spec-first.md`=2, `validate-against-spec.md`=2 | `exports/copilot`=5, `exports/cursor`=5 |
 | `docs/_generated/**` | 3 | 3 | `backlinks.md`=1, `orphans.md`=1, `system-map.md`=1 | `docs/_generated`=3 |
 | `tools/**` | 2 | 2 | `replay_minimal.py`=1, `test_replay_minimal.py`=1 | `tools/vibe-cli`=2 |
+
+### Volume-first clusters
+
+Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
+
+| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
+| --- | ---: | ---: | --- | --- |
+| `experiments/*/artifacts/**` | 139 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `tests/fixtures/**` | 84 | 84 | `CONTEXT.md`=3, `INITIAL.md`=3, `contract-invalid-wrong-command.json`=3, `decision.yml`=3, `evidence.jsonl`=3 | `tests/fixtures/command_chains`=27, `tests/fixtures/agent_commands/write_change`=9, `tests/fixtures/agent_commands/validate_change`=8, `tests/fixtures/agent_commands/read_context`=7, `tests/fixtures/cross_contract/invalid`=7 |
+| `scripts/**` | 41 | 41 | `__init__.py`=2, `_paths.py`=1, `check_system_decisions.py`=1, `generate_artifact_taxonomy.py`=1, `generate_backlinks.py`=1 | `scripts/docmeta`=35, `scripts/adoption`=3, `scripts/exports`=3 |
+| `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
+| `exports/**` | 10 | 10 | `constraint-before-code.md`=2, `edge-case-enumeration.md`=2, `no-vague-prompts.md`=2, `spec-first.md`=2, `validate-against-spec.md`=2 | `exports/copilot`=5, `exports/cursor`=5 |
 
 ## Fallback classified artifacts requiring review
 
