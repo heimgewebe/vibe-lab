@@ -648,9 +648,10 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
     def test_markdown_top_basenames_render_as_code_spans(self) -> None:
         """top_basenames entries must appear as code-spans in the rendered Markdown tables.
 
-        The fixture includes scripts/docmeta/__init__.py (×2 paths under scripts/**)
-        so __init__.py is the most frequent basename in that cluster and must appear
-        as a code-span (`` `__init__.py`=2 ``) somewhere in the Markdown.
+        The fixture includes two __init__.py files under scripts/**:
+        scripts/docmeta/__init__.py and scripts/exports/__init__.py.
+        __init__.py is therefore the most frequent basename in that cluster and must
+        appear as a code-span (`` `__init__.py`=2 ``) somewhere in the Markdown.
         """
         self.assertIn("`__init__.py`=2", self.md)
 
@@ -662,7 +663,7 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
         """
         self.assertIn("`scripts/docmeta`=2", self.md)
 
-
+    def test_markdown_residual_section_before_review_section(self) -> None:
         """Residual section must appear before the 'requiring review' section."""
         idx_residual = self.md.find("## Residual fallback clusters")
         idx_review = self.md.find("## Fallback classified artifacts requiring review")
