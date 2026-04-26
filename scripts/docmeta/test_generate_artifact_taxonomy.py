@@ -9,7 +9,6 @@ from generate_artifact_taxonomy import (
     _build_residual_clusters,
     _format_top_items,
     _is_high_risk_fallback,
-    _md_cell,
     _md_code_span,
     _select_fallback_pattern,
     _top_n,
@@ -315,22 +314,6 @@ class TopNFunctionTest(unittest.TestCase):
 
     def test_empty_counter_returns_empty(self) -> None:
         self.assertEqual(_top_n({}, n=5), {})
-
-
-class MdCellTest(unittest.TestCase):
-    """Tests for _md_cell helper."""
-
-    def test_escapes_pipe(self) -> None:
-        self.assertEqual(_md_cell("a|b"), "a\\|b")
-
-    def test_leaves_normal_strings_unchanged(self) -> None:
-        self.assertEqual(_md_cell("scripts/foo.py"), "scripts/foo.py")
-
-    def test_converts_non_string(self) -> None:
-        self.assertEqual(_md_cell(42), "42")
-
-    def test_multiple_pipes(self) -> None:
-        self.assertEqual(_md_cell("a|b|c"), "a\\|b\\|c")
 
 
 class MdCodeSpanTest(unittest.TestCase):

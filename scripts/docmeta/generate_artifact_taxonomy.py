@@ -224,11 +224,6 @@ def _top_n(counter: dict[str, int], n: int = 10) -> dict[str, int]:
     return {k: v for k, v in sorted_items[:n]}
 
 
-def _md_cell(value: object) -> str:
-    """Escape a value for safe embedding inside a Markdown table cell."""
-    return str(value).replace("|", "\\|")
-
-
 def _md_code_span(value: object) -> str:
     """Render a value as a Markdown code span safe for use inside a table cell.
 
