@@ -587,6 +587,12 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  # Python fnmatch semantics: "/" is not special for "*", so this pattern
+  # intentionally covers both direct and nested phase1c fixture files, e.g.:
+  #   tests/fixtures/experiment_structure_phase1c/expected-outcomes.json
+  #   tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md
+  #   tests/fixtures/experiment_structure_phase1c/valid/results/evidence.jsonl
+  # Do not "fix" this to **/*.* — the current form is correct.
   - pattern: "tests/fixtures/experiment_structure_phase1c/*.*"
     layer: test
     kind: experiment_structure_fixture
