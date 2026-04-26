@@ -366,12 +366,41 @@ rules:
     lifecycle: regenerated
     enforcement: [non_blocking_diagnostic, no_manual_edit]
     origin: generated
+  # ---- specific docs/_generated outputs (precise rules before catch-alls) ---
+  - pattern: docs/_generated/metrics/*.md
+    layer: generated
+    kind: metric_report
+    authority: diagnostic_signal
+    lifecycle: regenerated
+    enforcement: [best_effort, no_manual_edit]
+    origin: generated
   - pattern: docs/_generated/metrics/**
     layer: generated
     kind: metric_report
     authority: diagnostic_signal
     lifecycle: regenerated
     enforcement: [best_effort, no_manual_edit]
+    origin: generated
+  - pattern: docs/_generated/backlinks.md
+    layer: generated
+    kind: generated_backlinks
+    authority: diagnostic_signal
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    origin: generated
+  - pattern: docs/_generated/orphans.md
+    layer: generated
+    kind: generated_orphan_report
+    authority: diagnostic_signal
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
+    origin: generated
+  - pattern: docs/_generated/system-map.md
+    layer: generated
+    kind: generated_system_map
+    authority: diagnostic_signal
+    lifecycle: regenerated
+    enforcement: [non_blocking_diagnostic, no_manual_edit]
     origin: generated
   - pattern: docs/_generated/**
     layer: generated
@@ -382,6 +411,21 @@ rules:
     origin: generated
 
   # ---- exports / projections -------------------------------------------------
+  # Specific tool targets before the broad exports/** catch-all.
+  - pattern: exports/copilot/*.md
+    layer: export
+    kind: tool_projection
+    authority: generated_projection
+    lifecycle: regenerated
+    enforcement: [no_manual_edit, ci_blocking]
+    origin: projected
+  - pattern: exports/cursor/*.md
+    layer: export
+    kind: tool_projection
+    authority: generated_projection
+    lifecycle: regenerated
+    enforcement: [no_manual_edit, ci_blocking]
+    origin: projected
   - pattern: exports/**
     layer: export
     kind: tool_projection
@@ -519,9 +563,62 @@ rules:
     origin: handcrafted
 
   # ---- tests / fixtures ------------------------------------------------------
+  # Specific fixture sub-directories before the broad tests/fixtures/** catch-all.
+  # Each sub-directory has a distinct semantic role; naming them explicitly
+  # removes them from the high-risk fallback bucket.
+  - pattern: tests/fixtures/agent_commands/**/*.json
+    layer: test
+    kind: agent_command_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: tests/fixtures/command_chains/*.json
+    layer: test
+    kind: command_chain_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: tests/fixtures/cross_contract/**/*.json
+    layer: test
+    kind: cross_contract_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: "tests/fixtures/experiment_structure_phase1c/*.*"
+    layer: test
+    kind: experiment_structure_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: tests/fixtures/agent_handoff/*.json
+    layer: test
+    kind: agent_handoff_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: tests/fixtures/falsifiability/*.json
+    layer: test
+    kind: falsifiability_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: tests/fixtures/**
     layer: test
     kind: test_fixture
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  # Specific tests/ sub-directories before the broad tests/** catch-all.
+  - pattern: tests/contracts/*.py
+    layer: test
+    kind: test_script
     authority: test_expectation
     lifecycle: handcrafted
     enforcement: [ci_blocking]
@@ -551,12 +648,95 @@ rules:
     origin: handcrafted
 
   # ---- scripts / tools -------------------------------------------------------
+  # Specific scripts/docmeta rules (test > validate/generate > generic .py).
+  # Placed before scripts/** so these well-understood scripts are not caught
+  # by the broad governance catch-all.
+  - pattern: scripts/docmeta/test_*.py
+    layer: test
+    kind: test_script
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/docmeta/validate_*.py
+    layer: governance
+    kind: implementation_script
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/docmeta/generate_*.py
+    layer: governance
+    kind: implementation_script
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/docmeta/*.py
+    layer: governance
+    kind: implementation_script
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  # scripts/adoption — same three-tier structure.
+  - pattern: scripts/adoption/test_*.py
+    layer: test
+    kind: test_script
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/adoption/*.py
+    layer: governance
+    kind: implementation_script
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  # scripts/exports — generator and test scripts.
+  - pattern: scripts/exports/test_*.py
+    layer: test
+    kind: test_script
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/exports/generate_*.py
+    layer: governance
+    kind: implementation_script
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/exports/*.py
+    layer: governance
+    kind: implementation_script
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: scripts/**
     layer: governance
     kind: implementation_script
     authority: implementation_behavior
     lifecycle: handcrafted
     enforcement: [ci_blocking]
+    origin: handcrafted
+  # tools/vibe-cli — test scripts before the broad tools/** catch-all.
+  - pattern: tools/vibe-cli/test_*.py
+    layer: test
+    kind: test_script
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: tools/vibe-cli/*.py
+    layer: governance
+    kind: implementation_tool
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
     origin: handcrafted
   - pattern: tools/**
     layer: governance

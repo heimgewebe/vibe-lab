@@ -43,7 +43,8 @@ class TaxonomyClassificationTest(unittest.TestCase):
         self.assertEqual(c["kind"], "decision_record")
 
     def test_generated_doc_classified(self) -> None:
-        c = self._classify("docs/_generated/system-map.md")
+        # Use a path that has no specific rule; expects the docs/_generated/** catch-all.
+        c = self._classify("docs/_generated/some-future-report.md")
         self.assertEqual(c["layer"], "generated")
         self.assertEqual(c["authority"], "diagnostic_signal")
         self.assertEqual(c["kind"], "generated_artifact")
@@ -993,6 +994,303 @@ class MarkdownOutputTest(unittest.TestCase):
 
     def test_markdown_review_section_has_table(self) -> None:
         self.assertIn("| Path | Layer | Kind | Authority | Risk | Matched pattern |", self.md)
+
+
+class SpecificRuleCoverageTest(unittest.TestCase):
+    """Regression tests proving high-risk paths are matched by specific rules,
+    not by broad catch-all rules.
+
+    Assertions per case:
+    - status == "classified"
+    - catchall_match == False  (specific rule, not a /** catch-all)
+    - matched_patterns contains the expected specific pattern
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.rules = load_taxonomy()["rules"]
+
+    def _classify(self, path: str) -> dict:
+        return classify_file(path, self.rules)
+
+    def _assert_specific(self, path: str, expected_pattern: str) -> dict:
+        c = self._classify(path)
+        self.assertEqual(c["status"], "classified", f"{path!r} must be classified")
+        self.assertFalse(c["catchall_match"], f"{path!r} must not be catch-all matched")
+        self.assertIn(
+            expected_pattern,
+            c["matched_patterns"],
+            f"{path!r} matched_patterns must include {expected_pattern!r}",
+        )
+        return c
+
+    # ---- scripts/docmeta -----------------------------------------------------
+
+    def test_scripts_docmeta_test_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/docmeta/test_validate_artifact_taxonomy.py",
+            "scripts/docmeta/test_*.py",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_scripts_docmeta_validate_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/docmeta/validate_artifact_taxonomy.py",
+            "scripts/docmeta/validate_*.py",
+        )
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["authority"], "procedure_contract")
+
+    def test_scripts_docmeta_generate_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/docmeta/generate_artifact_taxonomy.py",
+            "scripts/docmeta/generate_*.py",
+        )
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["authority"], "procedure_contract")
+
+    def test_scripts_docmeta_helper_script_is_specific(self) -> None:
+        c = self._assert_specific("scripts/docmeta/_paths.py", "scripts/docmeta/*.py")
+        self.assertEqual(c["layer"], "governance")
+
+    # ---- scripts/adoption ----------------------------------------------------
+
+    def test_scripts_adoption_test_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/adoption/test_validate_adoption_completeness.py",
+            "scripts/adoption/test_*.py",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_scripts_adoption_other_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/adoption/validate_adoption_completeness.py",
+            "scripts/adoption/*.py",
+        )
+        self.assertEqual(c["layer"], "governance")
+
+    # ---- scripts/exports -----------------------------------------------------
+
+    def test_scripts_exports_test_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/exports/test_generate_exports.py",
+            "scripts/exports/test_*.py",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_scripts_exports_generate_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "scripts/exports/generate_exports.py",
+            "scripts/exports/generate_*.py",
+        )
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["authority"], "procedure_contract")
+
+    # ---- tests/fixtures sub-directories -------------------------------------
+
+    def test_fixture_agent_commands_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/agent_commands/read_context/valid-minimal.json",
+            "tests/fixtures/agent_commands/**/*.json",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["kind"], "agent_command_fixture")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_fixture_agent_commands_nested_subdir_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/agent_commands/write_change/contract-invalid-wrong-version.json",
+            "tests/fixtures/agent_commands/**/*.json",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_command_chains_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/command_chains/valid-minimal.json",
+            "tests/fixtures/command_chains/*.json",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["kind"], "command_chain_fixture")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_fixture_command_chains_expected_file_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/command_chains/invalid-wrong-order.expected.json",
+            "tests/fixtures/command_chains/*.json",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_cross_contract_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/cross_contract/invalid/contradiction.json",
+            "tests/fixtures/cross_contract/**/*.json",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["kind"], "cross_contract_fixture")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_fixture_cross_contract_deep_nested_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json",
+            "tests/fixtures/cross_contract/**/*.json",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_cross_contract_valid_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/cross_contract/valid/minimal_chain.json",
+            "tests/fixtures/cross_contract/**/*.json",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_experiment_structure_phase1c_json_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/experiment_structure_phase1c/expected-outcomes.json",
+            "tests/fixtures/experiment_structure_phase1c/*.*",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["kind"], "experiment_structure_fixture")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_fixture_experiment_structure_phase1c_md_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md",
+            "tests/fixtures/experiment_structure_phase1c/*.*",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_experiment_structure_phase1c_yml_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/experiment_structure_phase1c/inconsistent/manifest.yml",
+            "tests/fixtures/experiment_structure_phase1c/*.*",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_experiment_structure_phase1c_jsonl_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/experiment_structure_phase1c/valid/results/evidence.jsonl",
+            "tests/fixtures/experiment_structure_phase1c/*.*",
+        )
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_agent_handoff_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/agent_handoff/pass-minimal.json",
+            "tests/fixtures/agent_handoff/*.json",
+        )
+        self.assertEqual(c["kind"], "agent_handoff_fixture")
+        self.assertFalse(c["catchall_match"])
+
+    def test_fixture_falsifiability_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/fixtures/falsifiability/valid.json",
+            "tests/fixtures/falsifiability/*.json",
+        )
+        self.assertEqual(c["kind"], "falsifiability_fixture")
+        self.assertFalse(c["catchall_match"])
+
+    # ---- tests/contracts -----------------------------------------------------
+
+    def test_tests_contracts_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tests/contracts/test_cross_contract_chain.py",
+            "tests/contracts/*.py",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    # ---- exports/copilot and exports/cursor ---------------------------------
+
+    def test_exports_copilot_md_is_specific(self) -> None:
+        c = self._assert_specific(
+            "exports/copilot/spec-first.md",
+            "exports/copilot/*.md",
+        )
+        self.assertEqual(c["layer"], "export")
+        self.assertEqual(c["kind"], "tool_projection")
+        self.assertEqual(c["authority"], "generated_projection")
+
+    def test_exports_cursor_md_is_specific(self) -> None:
+        c = self._assert_specific(
+            "exports/cursor/constraint-before-code.md",
+            "exports/cursor/*.md",
+        )
+        self.assertEqual(c["layer"], "export")
+        self.assertEqual(c["kind"], "tool_projection")
+        self.assertEqual(c["authority"], "generated_projection")
+
+    # ---- docs/_generated specific files -------------------------------------
+
+    def test_docs_generated_backlinks_is_specific(self) -> None:
+        c = self._assert_specific(
+            "docs/_generated/backlinks.md",
+            "docs/_generated/backlinks.md",
+        )
+        self.assertEqual(c["layer"], "generated")
+        self.assertEqual(c["kind"], "generated_backlinks")
+
+    def test_docs_generated_orphans_is_specific(self) -> None:
+        c = self._assert_specific(
+            "docs/_generated/orphans.md",
+            "docs/_generated/orphans.md",
+        )
+        self.assertEqual(c["kind"], "generated_orphan_report")
+
+    def test_docs_generated_system_map_is_specific(self) -> None:
+        c = self._assert_specific(
+            "docs/_generated/system-map.md",
+            "docs/_generated/system-map.md",
+        )
+        self.assertEqual(c["kind"], "generated_system_map")
+
+    def test_docs_generated_metrics_trends_is_specific(self) -> None:
+        c = self._assert_specific(
+            "docs/_generated/metrics/trends.md",
+            "docs/_generated/metrics/*.md",
+        )
+        self.assertEqual(c["layer"], "generated")
+        self.assertEqual(c["kind"], "metric_report")
+
+    # ---- tools/vibe-cli -----------------------------------------------------
+
+    def test_tools_vibe_cli_test_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tools/vibe-cli/test_replay_minimal.py",
+            "tools/vibe-cli/test_*.py",
+        )
+        self.assertEqual(c["layer"], "test")
+        self.assertEqual(c["authority"], "test_expectation")
+
+    def test_tools_vibe_cli_script_is_specific(self) -> None:
+        c = self._assert_specific(
+            "tools/vibe-cli/replay_minimal.py",
+            "tools/vibe-cli/*.py",
+        )
+        self.assertEqual(c["layer"], "governance")
+        self.assertEqual(c["kind"], "implementation_tool")
+
+    # ---- broad catch-alls still work for unspecified paths ------------------
+
+    def test_unspecified_scripts_path_still_classified(self) -> None:
+        c = self._classify("scripts/some_future_script.py")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "governance")
+        self.assertTrue(c["catchall_match"])
+
+    def test_unspecified_tests_fixtures_path_still_classified(self) -> None:
+        c = self._classify("tests/fixtures/some_future_fixture.json")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "test")
+        self.assertTrue(c["catchall_match"])
+
+    def test_unspecified_exports_path_still_classified(self) -> None:
+        c = self._classify("exports/some_future_tool/file.md")
+        self.assertEqual(c["status"], "classified")
+        self.assertEqual(c["layer"], "export")
+        self.assertTrue(c["catchall_match"])
 
 
 if __name__ == "__main__":
