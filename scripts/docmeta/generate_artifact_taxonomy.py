@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -217,6 +218,112 @@ def _bucket_count_by_func(items: list[dict], func: Callable[[dict], str]) -> dic
     return dict(sorted(out.items()))
 
 
+def _top_n(counter: dict[str, int], n: int = 10) -> dict[str, int]:
+    """Return the top-n entries by count (descending). Ties are broken by key in ascending order."""
+    sorted_items = sorted(counter.items(), key=lambda kv: (-kv[1], kv[0]))
+    return {k: v for k, v in sorted_items[:n]}
+
+
+def _md_code_span(value: object) -> str:
+    """Render a value as a Markdown code span safe for use inside a table cell.
+
+    * Newlines (including ``\\r\\n``) are collapsed to spaces.
+    * Pipe characters are escaped so the cell boundary is never broken.
+    * The backtick fence is extended to one beyond the longest run of backticks
+      already present in the text, matching the CommonMark spec.
+    * Values that start or end with a backtick are padded inside the fence so
+      the fence cannot merge with the content (also per CommonMark §6.1).
+    """
+    text = re.sub(r"[\r\n]+", " ", str(value))
+    text = text.replace("|", "\\|")
+    runs = re.findall(r"`+", text)
+    fence = "`" * (max((len(run) for run in runs), default=0) + 1)
+
+    if text.startswith("`") or text.endswith("`"):
+        return f"{fence} {text} {fence}"
+
+    return f"{fence}{text}{fence}"
+
+
+def _format_top_items(items: dict[str, int], limit: int = 5) -> str:
+    """Render a top-items dict as a compact inline list for a Markdown table cell.
+
+    Limits the output to *limit* entries. Keys are rendered as code spans for
+    consistency with the rest of the report and to avoid Markdown mis-rendering
+    of names containing ``_``, ``*``, or backticks.
+    Returns ``"-"`` when *items* is empty.
+    """
+    rendered = [f"{_md_code_span(k)}={v}" for k, v in list(items.items())[:limit]]
+    return ", ".join(rendered) if rendered else "-"
+
+
+def _build_residual_clusters(fallback_classified: list[dict]) -> list[dict]:
+    """Build per-pattern residual cluster diagnostics.
+
+    Expects items that are already filtered to status==classified AND
+    catchall_match==True (i.e., the caller is responsible for pre-filtering).
+    Groups those items by their selected fallback pattern and produces a
+    diagnostic entry for each group with basename/parent-dir frequency data
+    to guide future rule creation. Clusters are sorted by:
+      1. high_risk_count descending
+      2. total descending
+      3. matched_pattern ascending
+    """
+    groups: dict[str, list[dict]] = {}
+    for item in fallback_classified:
+        pattern = _select_fallback_pattern(item.get("matched_patterns") or [])
+        if pattern not in groups:
+            groups[pattern] = []
+        groups[pattern].append(item)
+
+    clusters = []
+    for pattern, items in groups.items():
+        basename_counter: dict[str, int] = {}
+        parent_counter: dict[str, int] = {}
+        high_risk = 0
+        for item in items:
+            if _is_high_risk_fallback(item):
+                high_risk += 1
+            path = item["path"]
+            basename = Path(path).name
+            parent = str(Path(path).parent)
+            basename_counter[basename] = basename_counter.get(basename, 0) + 1
+            parent_counter[parent] = parent_counter.get(parent, 0) + 1
+        clusters.append(
+            {
+                "matched_pattern": pattern,
+                "total": len(items),
+                "high_risk_count": high_risk,
+                "top_basenames": _top_n(basename_counter),
+                "top_parent_dirs": _top_n(parent_counter),
+            }
+        )
+    clusters.sort(key=lambda c: (-c["high_risk_count"], -c["total"], c["matched_pattern"]))
+    return clusters
+
+
+def _build_residual_cluster_views(clusters: list[dict]) -> dict:
+    """Build explicit risk-first and volume-first views from pre-built residual clusters.
+
+    Accepts the list already produced by _build_residual_clusters (which is
+    already risk-first sorted) and derives the volume-first ordering from it.
+
+    risk_first:   high_risk_count desc → total desc → matched_pattern asc
+    volume_first: total desc → high_risk_count desc → matched_pattern asc
+
+    This allows downstream tooling to consume both priority axes from JSON
+    without having to re-sort or parse the Markdown report.
+    """
+    volume_first = sorted(
+        clusters,
+        key=lambda c: (-c["total"], -c["high_risk_count"], c["matched_pattern"]),
+    )
+    return {
+        "risk_first": clusters,
+        "volume_first": volume_first,
+    }
+
+
 def _enforcement_count(items: list[dict]) -> dict[str, int]:
     out: dict[str, int] = {}
     for item in items:
@@ -346,6 +453,8 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
                 }
             )
 
+    residual_clusters = _build_residual_clusters(fallback_classified)
+
     return {
         "summary": {
             "total": len(classifications),
@@ -370,6 +479,8 @@ def build_report(classifications: list[dict], generated_artifacts: list[dict]) -
                 lambda c: _select_fallback_pattern(c.get("matched_patterns") or []),
             ),
             "high_risk_count": sum(1 for c in fallback_classified if _is_high_risk_fallback(c)),
+            "residual_clusters": residual_clusters,
+            "residual_cluster_views": _build_residual_cluster_views(residual_clusters),
         },
         "unknown_artifacts": [c["path"] for c in sorted(unknown, key=lambda x: x["path"])],
         "ambiguous_artifacts": [c["path"] for c in sorted(ambiguous, key=lambda x: x["path"])],
@@ -485,6 +596,57 @@ def render_markdown(report: dict) -> str:
         for pat, cnt in sorted(by_pattern.items(), key=lambda kv: (-kv[1], kv[0])):
             share = cnt / fallback_total if fallback_total else 0.0
             lines.append(f"| `{pat}` | {cnt} | {share:.1%} |")
+        lines.append("")
+
+    lines.append("## Residual fallback clusters")
+    lines.append("")
+    lines.append(
+        "Diagnostic breakdown of catch-all fallback buckets. "
+        "Two views: **risk-first** (review priority) and **volume-first** (rule-building priority, "
+        "i.e. where adding a new taxonomy rule reduces the most fallbacks). "
+        "Top 5 per view; shows dominant file names and parent directories."
+    )
+    lines.append("")
+    residual_cluster_views = report["fallback_summary"].get("residual_cluster_views", {})
+    risk_first = residual_cluster_views.get("risk_first", [])
+    volume_first = residual_cluster_views.get("volume_first", [])
+    if not risk_first and not volume_first:
+        lines.append("_none_")
+        lines.append("")
+    else:
+        _cluster_header = "| matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |"
+        _cluster_sep = "| --- | ---: | ---: | --- | --- |"
+
+        def _cluster_row(c: dict) -> str:
+            return (
+                f"| {_md_code_span(c['matched_pattern'])} | {c['total']} | "
+                f"{c['high_risk_count']} | "
+                f"{_format_top_items(c.get('top_basenames', {}))} | "
+                f"{_format_top_items(c.get('top_parent_dirs', {}))} |"
+            )
+
+        lines.append("### Risk-first clusters")
+        lines.append("")
+        lines.append(
+            "Sorted by high_risk_count desc, then total desc, then matched_pattern asc."
+        )
+        lines.append("")
+        lines.append(_cluster_header)
+        lines.append(_cluster_sep)
+        for cluster in risk_first[:5]:
+            lines.append(_cluster_row(cluster))
+        lines.append("")
+
+        lines.append("### Volume-first clusters")
+        lines.append("")
+        lines.append(
+            "Sorted by total desc, then high_risk_count desc, then matched_pattern asc."
+        )
+        lines.append("")
+        lines.append(_cluster_header)
+        lines.append(_cluster_sep)
+        for cluster in volume_first[:5]:
+            lines.append(_cluster_row(cluster))
         lines.append("")
 
     lines.append("## Fallback classified artifacts requiring review")
