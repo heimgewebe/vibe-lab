@@ -538,7 +538,12 @@ class ResidualClustersTest(unittest.TestCase):
         self.assertIn("volume_first", views)
 
     def test_residual_cluster_views_risk_first_matches_residual_clusters(self) -> None:
-        """risk_first view must equal the existing residual_clusters list (risk-first sorted)."""
+        """residual_cluster_views.risk_first must equal residual_clusters (legacy alias contract).
+
+        fallback_summary.residual_clusters is retained as a backwards-compatible alias for
+        fallback_summary.residual_cluster_views.risk_first. This test is the authoritative
+        regression guard for that alias invariant.
+        """
         items = [
             self._make_item("scripts/a.py", pattern="scripts/**", layer="test"),
             self._make_item("tests/b.py", pattern="tests/**", layer="docs"),
@@ -570,20 +575,6 @@ class ResidualClustersTest(unittest.TestCase):
         views = _build_residual_cluster_views([])
         self.assertEqual(views["risk_first"], [])
         self.assertEqual(views["volume_first"], [])
-
-    def test_residual_clusters_is_risk_first_legacy_alias(self) -> None:
-        """fallback_summary.residual_clusters must equal residual_cluster_views.risk_first."""
-        items = [
-            self._make_item("scripts/a.py", pattern="scripts/**", layer="test"),
-            self._make_item("experiments/a.md", pattern="experiments/**"),
-            self._make_item("experiments/b.md", pattern="experiments/**"),
-        ]
-        report = build_report(items, [])
-        fs = report["fallback_summary"]
-        self.assertEqual(
-            fs["residual_clusters"],
-            fs["residual_cluster_views"]["risk_first"],
-        )
 
     def test_residual_cluster_views_exposes_expected_axes(self) -> None:
         """residual_cluster_views must expose exactly the risk_first and volume_first keys."""
