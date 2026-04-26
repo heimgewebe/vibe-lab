@@ -548,8 +548,14 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
             }
         # 7 clusters: 2 high-risk small ones and 1 large low-risk one so the two
         # sort views (risk-first vs. volume-first) produce meaningfully different orderings.
+        # scripts/docmeta/ items give us a stable parent-dir (scripts/docmeta=2) and
+        # two __init__.py files (one in scripts/docmeta, one in scripts/exports) give a
+        # stable basename (__init__.py=2) that can be asserted as code-spans in the Markdown.
         items = (
-            [_make(f"scripts/{i}.py", "scripts/**", "test", "navigation_surface") for i in range(5)]
+            [_make(f"scripts/{i}.py", "scripts/**", "test", "navigation_surface") for i in range(2)]
+            + [_make("scripts/docmeta/__init__.py", "scripts/**", "test", "navigation_surface")]
+            + [_make("scripts/docmeta/helper.py", "scripts/**", "test", "navigation_surface")]
+            + [_make("scripts/exports/__init__.py", "scripts/**", "test", "navigation_surface")]
             + [_make(f"tests/{i}.py", "tests/**", "test", "navigation_surface") for i in range(4)]
             + [_make(f"experiments/{i}.md", "experiments/**") for i in range(10)]
             + [_make(f"docs/{i}.md", "docs/**") for i in range(3)]
@@ -639,7 +645,24 @@ class ResidualClustersMarkdownTest(unittest.TestCase):
     def test_markdown_volume_first_renders_pattern_as_code_span(self) -> None:
         self.assertIn("| `experiments/**` |", self.md)
 
-    def test_markdown_residual_section_before_review_section(self) -> None:
+    def test_markdown_top_basenames_render_as_code_spans(self) -> None:
+        """top_basenames entries must appear as code-spans in the rendered Markdown tables.
+
+        The fixture includes scripts/docmeta/__init__.py (×2 paths under scripts/**)
+        so __init__.py is the most frequent basename in that cluster and must appear
+        as a code-span (`` `__init__.py`=2 ``) somewhere in the Markdown.
+        """
+        self.assertIn("`__init__.py`=2", self.md)
+
+    def test_markdown_top_parent_dirs_render_as_code_spans(self) -> None:
+        """top_parent_dirs entries must appear as code-spans in the rendered Markdown tables.
+
+        The fixture places two files under scripts/docmeta, making it the top parent dir
+        for the scripts/** cluster and guaranteeing `` `scripts/docmeta`=2 `` in the output.
+        """
+        self.assertIn("`scripts/docmeta`=2", self.md)
+
+
         """Residual section must appear before the 'requiring review' section."""
         idx_residual = self.md.find("## Residual fallback clusters")
         idx_review = self.md.find("## Fallback classified artifacts requiring review")
