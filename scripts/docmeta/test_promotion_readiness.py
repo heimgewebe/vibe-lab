@@ -1139,5 +1139,297 @@ class EvidenceRefsInvalidWarningTests(unittest.TestCase):
         self.assertIn("falsifiability.evidence_refs_invalid", warnings)
 
 
+class RatchetModeTests(unittest.TestCase):
+    """Tests for the --ratchet mode (Phase 2 gate).
+
+    Five core scenarios:
+      1. Historischer eingefrorener not_ready-Fall → Ratchet akzeptiert, bleibt reportable.
+      2. Neuer not_ready-Fall ohne Freeze-Eintrag → Ratchet schlägt fehl.
+      3. Ready-Fall ohne Freeze-Eintrag → Ratchet akzeptiert.
+      4. Überflüssiger Freeze-Eintrag (stale/obsolete) → Ratchet schlägt fehl.
+      5. Ungültige Freeze-Einträge (fehlender reason/path/ungültiger allowed_missing-Wert) → fehlschlagen.
+
+    Additional coverage:
+      6. Freeze zu breit (erlaubt mehr als tatsächlich fehlt) → Ratchet schlägt fehl.
+      7. Freeze unzureichend (deckt nicht alle fehlenden Signale ab) → Ratchet schlägt fehl.
+    """
+
+    def _make_not_ready_entry(
+        self,
+        path: str,
+        missing: list[str] | None = None,
+    ) -> dict:
+        return {
+            "path": path,
+            "status": "testing",
+            "execution_status": "executed",
+            "adoption_basis": "",
+            "falsifiability_triggered": True,
+            "historical_escape": False,
+            "promotion_ready": False,
+            "missing": missing if missing is not None else ["falsifiability"],
+            "warnings": [],
+            "notes": [],
+        }
+
+    def _make_ready_entry(self, path: str) -> dict:
+        return {
+            "path": path,
+            "status": "testing",
+            "execution_status": "executed",
+            "adoption_basis": "",
+            "falsifiability_triggered": True,
+            "historical_escape": False,
+            "promotion_ready": True,
+            "missing": [],
+            "warnings": [],
+            "notes": [],
+        }
+
+    def _make_historical_escape_entry(self, path: str) -> dict:
+        return {
+            "path": path,
+            "status": "adopted",
+            "execution_status": "reconstructed",
+            "adoption_basis": "reconstructed",
+            "falsifiability_triggered": False,
+            "historical_escape": True,
+            "promotion_ready": False,
+            "missing": [],
+            "warnings": [],
+            "notes": ["historical_escape", "not_counted_against_promotion_readiness"],
+        }
+
+    def _make_freeze_config(self, experiments: list[dict]) -> dict:
+        return {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "frozen_at": "2026-04-27",
+                "experiments": experiments,
+            }
+        }
+
+    # --- Test 1: Historischer eingefrorener not_ready-Fall ---
+    def test_frozen_not_ready_accepted_by_ratchet(self) -> None:
+        """A not_ready experiment in the freeze is accepted; it stays reportable."""
+        entry = self._make_not_ready_entry("experiments/exp-historical")
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-historical",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Historical baseline before Phase-2 ratchet.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertEqual(errors, [], msg=f"Expected no errors, got: {errors}")
+        # Entry remains not_ready (visible in report, still reported).
+        self.assertFalse(entry["promotion_ready"])
+
+    # --- Test 2: Neuer not_ready-Fall ohne Freeze-Eintrag ---
+    def test_unfrozen_not_ready_fails_ratchet(self) -> None:
+        """A not_ready experiment NOT in the freeze causes a ratchet blocking error."""
+        entry = self._make_not_ready_entry("experiments/exp-new-violation")
+        freeze = self._make_freeze_config([])  # empty freeze
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("unregistered_violation" in e for e in errors),
+            msg=f"Expected unregistered_violation error, got: {errors}",
+        )
+
+    # --- Test 3: Ready-Fall ohne Freeze-Eintrag ---
+    def test_ready_experiment_accepted_without_freeze_entry(self) -> None:
+        """A ready experiment does not need a freeze entry; ratchet passes."""
+        entry = self._make_ready_entry("experiments/exp-ready")
+        freeze = self._make_freeze_config([])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertEqual(
+            errors, [],
+            msg=f"Expected no errors for ready experiment, got: {errors}",
+        )
+
+    # --- Test 4: Überflüssiger Freeze-Eintrag (obsolete: Experiment ist jetzt ready) ---
+    def test_stale_freeze_entry_for_ready_experiment_fails(self) -> None:
+        """A freeze entry for an experiment that is now promotion_ready is stale → error."""
+        entry = self._make_ready_entry("experiments/exp-now-ready")
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-now-ready",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Was not_ready before Phase-2; now fixed.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("obsolete_freeze_entry" in e for e in errors),
+            msg=f"Expected obsolete_freeze_entry error, got: {errors}",
+        )
+
+    def test_stale_freeze_entry_nonexistent_experiment_fails(self) -> None:
+        """A freeze entry for an experiment that no longer exists is stale → error."""
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-deleted",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Experiment was deleted.",
+        }])
+        errors, _ = vpr.ratchet_check([], freeze)
+        self.assertTrue(
+            any("stale_freeze_entry" in e for e in errors),
+            msg=f"Expected stale_freeze_entry error, got: {errors}",
+        )
+
+    def test_stale_freeze_entry_for_historical_escape_fails(self) -> None:
+        """A freeze entry for a historical_escape experiment is unnecessary → error."""
+        entry = self._make_historical_escape_entry("experiments/exp-historical-escape")
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-historical-escape",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Historical escape wrongly added to freeze.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("obsolete_freeze_entry" in e for e in errors),
+            msg=f"Expected obsolete_freeze_entry for historical_escape, got: {errors}",
+        )
+
+    # --- Test 5: Ungültige Freeze-Einträge ---
+    def test_invalid_freeze_missing_reason_fails(self) -> None:
+        """A freeze entry without a reason fails validate_freeze_config."""
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Top-level reason.",
+                "frozen_at": "2026-04-27",
+                "experiments": [{
+                    "path": "experiments/exp-no-reason",
+                    "allowed_missing": ["falsifiability"],
+                    # missing: reason
+                }],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("reason" in e for e in errors),
+            msg=f"Expected reason validation error, got: {errors}",
+        )
+
+    def test_invalid_freeze_missing_path_fails(self) -> None:
+        """A freeze entry without a path fails validate_freeze_config."""
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Top-level reason.",
+                "frozen_at": "2026-04-27",
+                "experiments": [{
+                    # missing: path
+                    "allowed_missing": ["falsifiability"],
+                    "reason": "Has no path.",
+                }],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("path" in e for e in errors),
+            msg=f"Expected path validation error, got: {errors}",
+        )
+
+    def test_invalid_freeze_unknown_allowed_missing_value_fails(self) -> None:
+        """A freeze entry with an unknown allowed_missing value fails validate_freeze_config."""
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Top-level reason.",
+                "frozen_at": "2026-04-27",
+                "experiments": [{
+                    "path": "experiments/exp-bad-missing",
+                    "allowed_missing": ["not_a_valid_signal"],
+                    "reason": "Invalid allowed_missing value.",
+                }],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("unknown value" in e for e in errors),
+            msg=f"Expected unknown value error, got: {errors}",
+        )
+
+    def test_invalid_freeze_missing_version_fails(self) -> None:
+        """A freeze file without version==1 fails validate_freeze_config."""
+        config = {
+            "promotion_readiness_freeze": {
+                # missing: version
+                "reason": "Top-level reason.",
+                "frozen_at": "2026-04-27",
+                "experiments": [],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("version" in e for e in errors),
+            msg=f"Expected version validation error, got: {errors}",
+        )
+
+    # --- Test 6: Freeze zu breit (erlaubt mehr als tatsächlich fehlt) ---
+    def test_freeze_too_broad_fails_ratchet(self) -> None:
+        """A freeze entry allowing more than actual missing signals fails the ratchet."""
+        entry = self._make_not_ready_entry(
+            "experiments/exp-partial",
+            missing=["falsifiability"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-partial",
+            "allowed_missing": ["falsifiability", "falsifiability.assessment_not_checked"],
+            "reason": "Over-permissive freeze.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("freeze_too_broad" in e for e in errors),
+            msg=f"Expected freeze_too_broad error, got: {errors}",
+        )
+
+    # --- Test 7: Freeze unzureichend (deckt nicht alle fehlenden Signale ab) ---
+    def test_freeze_insufficient_fails_ratchet(self) -> None:
+        """A freeze entry that does not cover all actual missing signals fails the ratchet."""
+        entry = self._make_not_ready_entry(
+            "experiments/exp-new-signal",
+            missing=["falsifiability", "falsifiability.assessment_not_checked"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-new-signal",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Freeze predates new structured signal.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("freeze_insufficient" in e for e in errors),
+            msg=f"Expected freeze_insufficient error, got: {errors}",
+        )
+
+    # --- load_freeze_config: not present → None ---
+    def test_load_freeze_config_returns_none_if_absent(self) -> None:
+        absent = Path("/tmp/does_not_exist_promotion_readiness_freeze.yml")
+        result = vpr.load_freeze_config(absent)
+        self.assertIsNone(result)
+
+    # --- Actual freeze file on disk passes validate_freeze_config ---
+    def test_actual_freeze_file_is_valid(self) -> None:
+        """The committed .vibe/promotion-readiness-freeze.yml is structurally valid."""
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data, msg=".vibe/promotion-readiness-freeze.yml not found")
+        errors = vpr.validate_freeze_config(freeze_data)  # type: ignore[arg-type]
+        self.assertEqual(
+            errors, [],
+            msg=f"Committed freeze file has validation errors: {errors}",
+        )
+
+    # --- Actual freeze file passes ratchet_check against real experiments ---
+    def test_actual_freeze_passes_ratchet_against_real_experiments(self) -> None:
+        """The real freeze baseline + real experiments produces no ratchet errors."""
+        entries = vpr.collect_experiments(vpr.REPO_ROOT / "experiments")
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data)
+        errors, _ = vpr.ratchet_check(entries, freeze_data)  # type: ignore[arg-type]
+        self.assertEqual(
+            errors, [],
+            msg=f"Ratchet errors against real experiments: {errors}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

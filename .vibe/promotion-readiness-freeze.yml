@@ -1,0 +1,80 @@
+promotion_readiness_freeze:
+  version: 1
+  reason: >-
+    Historical Phase-1 dry-run baseline. All experiments listed here were
+    executed before the Phase-2 ratchet existed. New experiments or regressions
+    beyond this list are not allowed. Entries must not be broadened; remove an
+    entry only when the experiment has achieved promotion_ready=true.
+  frozen_at: "2026-04-27"
+  experiments:
+    - path: experiments/2026-04-12_spec-first-legacy
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-14_incremental-debuggability
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-14_incremental-refinement
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-14_premortem-prompting
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-14_tdd-vibe
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-14_upfront-structuring
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-14_upfront-structuring-replication
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-15_agent-task-validity
+      allowed_missing:
+        - falsifiability.assessment_not_checked
+        - falsifiability.assessment_pending_blocking
+      reason: >-
+        Structured falsifiability block present, but counter-hypothesis
+        assessments are not yet completed (pending checks outstanding).
+        Frozen at two concrete signals, not a broad blanket exception.
+
+    - path: experiments/2026-04-19_generated-artifact-contract-validation
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-23_phase-1-drift-injection
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Executed in Phase 1 before falsifiability was mandatory. Pending
+        structured retrofit; frozen to avoid retroactive hard-fail.

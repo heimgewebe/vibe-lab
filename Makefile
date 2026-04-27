@@ -1,7 +1,7 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-promotion-readiness-ratchet validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
 
 # Minimaler Guard-Stack
 validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-export-parity validate-exports-tests validate-export-parity-tests validate-promotion-readiness-tests
@@ -155,6 +155,14 @@ validate-promotion-readiness-tests:
 	@echo "🧪 Running promotion-readiness regression tests..."
 	@python3 scripts/docmeta/test_promotion_readiness.py
 
+validate-promotion-readiness-ratchet:
+	@echo "🔒 Running promotion-readiness ratchet (Phase 2, blocking for new violations)..."
+	@# Reads .vibe/promotion-readiness-freeze.yml for the historical baseline.
+	@# Passes only if all not_ready experiments are in the freeze and no freeze entry is stale.
+	@# New experiments without falsifiability will fail here; add a freeze entry only with
+	@# an explicit reason (not as a blanket bypass).
+	@python3 scripts/docmeta/validate_promotion_readiness.py --ratchet
+
 validate-generated-artifacts-contract:
 	@echo "📜 Validating generated-artifact contract (v2)..."
 	@python3 scripts/docmeta/validate_generated_artifacts_contract.py
@@ -272,6 +280,7 @@ help:
 	@echo "  make validate-export-parity-tests — Run export parity validator regression tests"
 	@echo "  make validate-promotion-readiness — Dry-run Phase-1 promotion-readiness gate (non-blocking)"
 	@echo "  make validate-promotion-readiness-tests — Run promotion-readiness regression tests"
+	@echo "  make validate-promotion-readiness-ratchet — Phase-2 ratchet: blocks new violations (requires .vibe/promotion-readiness-freeze.yml)"
 	@echo "  make check-decisions         — Validate system decisions and gate required features"
 	@echo "  make generate           — Generate all committable v2 artifacts (blocking + diagnostics + gated; excludes ci_policy=artifact_only)"
 	@echo "  make generate-blocking  — Generate blocking artifacts (doc-index, projections)"
