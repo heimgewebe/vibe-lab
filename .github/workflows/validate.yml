@@ -147,6 +147,9 @@ jobs:
       - name: Validate promotion-readiness (dry-run, Phase 1)
         run: python3 scripts/docmeta/validate_promotion_readiness.py
 
+      - name: Validate promotion-readiness ratchet (Phase 2)
+        run: python3 scripts/docmeta/validate_promotion_readiness.py --ratchet
+
       - name: Regenerate blocking artifacts
         run: make generate-blocking
 

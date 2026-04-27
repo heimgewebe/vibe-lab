@@ -1430,6 +1430,103 @@ class RatchetModeTests(unittest.TestCase):
             msg=f"Ratchet errors against real experiments: {errors}",
         )
 
+    # --- Duplikat-Pfad in Freeze-Datei → validate_freeze_config schlägt fehl ---
+    def test_duplicate_path_in_freeze_fails_validation(self) -> None:
+        """A freeze config with the same path twice fails validate_freeze_config."""
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "frozen_at": "2026-04-27",
+                "experiments": [
+                    {
+                        "path": "experiments/exp-a",
+                        "allowed_missing": ["falsifiability"],
+                        "reason": "First occurrence.",
+                    },
+                    {
+                        "path": "experiments/exp-b",
+                        "allowed_missing": ["falsifiability"],
+                        "reason": "Different path, no problem.",
+                    },
+                    {
+                        "path": "experiments/exp-a",
+                        "allowed_missing": ["falsifiability"],
+                        "reason": "Duplicate — must be rejected.",
+                    },
+                ],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("duplicate_path" in e for e in errors),
+            msg=f"Expected duplicate_path error, got: {errors}",
+        )
+
+    def test_no_duplicate_paths_in_actual_freeze_file(self) -> None:
+        """The committed freeze file contains no duplicate paths."""
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data)
+        errors = vpr.validate_freeze_config(freeze_data)  # type: ignore[arg-type]
+        duplicate_errors = [e for e in errors if "duplicate_path" in e]
+        self.assertEqual(
+            duplicate_errors, [],
+            msg=f"Committed freeze file has duplicate paths: {duplicate_errors}",
+        )
+
+
+class ValidAllowedMissingCoverageTests(unittest.TestCase):
+    """Guards VALID_ALLOWED_MISSING against drift from evaluate_falsifiability.
+
+    These tests verify that every missing signal actually produced by the
+    validator against the real experiment corpus is a member of
+    VALID_ALLOWED_MISSING. If evaluate_falsifiability introduces a new
+    missing signal in the future, at least one of these tests will break,
+    making the drift visible before it silently invalidates the ratchet.
+    """
+
+    def test_all_real_missing_signals_are_in_valid_allowed_missing(self) -> None:
+        """Every missing[] signal in the real experiment corpus is in VALID_ALLOWED_MISSING."""
+        entries = vpr.collect_experiments(vpr.REPO_ROOT / "experiments")
+        observed: set[str] = set()
+        for entry in entries:
+            observed.update(entry.get("missing", []))
+
+        unknown = observed - vpr.VALID_ALLOWED_MISSING
+        self.assertEqual(
+            unknown,
+            set(),
+            msg=(
+                f"Missing signals not in VALID_ALLOWED_MISSING: {sorted(unknown)}. "
+                "Update VALID_ALLOWED_MISSING in validate_promotion_readiness.py."
+            ),
+        )
+
+    def test_valid_allowed_missing_is_nonempty(self) -> None:
+        """VALID_ALLOWED_MISSING must never be accidentally emptied."""
+        self.assertGreater(len(vpr.VALID_ALLOWED_MISSING), 0)
+
+    def test_falsifiability_top_level_signal_is_covered(self) -> None:
+        """The most common missing signal 'falsifiability' is in VALID_ALLOWED_MISSING."""
+        self.assertIn("falsifiability", vpr.VALID_ALLOWED_MISSING)
+
+    def test_structured_signals_are_covered(self) -> None:
+        """Structured-format v1 blocking signals are all in VALID_ALLOWED_MISSING."""
+        structured_signals = {
+            "falsifiability.assessment_not_checked",
+            "falsifiability.assessment_pending_blocking",
+            "falsifiability.assessment_counterhypothesis_supported",
+            "falsifiability.assessment_blocked",
+            "falsifiability.version_invalid_or_missing",
+            "falsifiability.counter_hypotheses_empty",
+        }
+        missing_from_constant = structured_signals - vpr.VALID_ALLOWED_MISSING
+        self.assertEqual(
+            missing_from_constant,
+            set(),
+            msg=f"Structured signals not in VALID_ALLOWED_MISSING: {missing_from_constant}",
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

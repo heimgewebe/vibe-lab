@@ -624,6 +624,22 @@ def validate_freeze_config(freeze_data: dict[str, Any]) -> list[str]:
                         f"(valid: see VALID_ALLOWED_MISSING in validate_promotion_readiness.py)"
                     )
 
+    # Duplicate path check: a path appearing more than once is a governance error.
+    seen_paths: dict[str, int] = {}
+    for i, entry in enumerate(experiments):
+        if not isinstance(entry, dict):
+            continue
+        path = entry.get("path")
+        if not isinstance(path, str) or not path.strip():
+            continue
+        if path in seen_paths:
+            errors.append(
+                f"freeze.duplicate_path: {path!r} appears more than once "
+                f"(first at index {seen_paths[path]}, again at index {i})"
+            )
+        else:
+            seen_paths[path] = i
+
     return errors
 
 

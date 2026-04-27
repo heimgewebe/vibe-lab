@@ -9,6 +9,10 @@ validate: validate-generated-artifacts-contract validate-generated-artifacts-con
 	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
 	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
 	@$(MAKE) validate-promotion-readiness
+	@# Ratchet (Phase 2): blockiert neue nicht eingefrorene Verstöße.
+	@# Historische not_ready-Fälle aus .vibe/promotion-readiness-freeze.yml bleiben sichtbar,
+	@# blockieren aber nicht. Stale/over-permissive Freeze-Einträge blockieren.
+	@$(MAKE) validate-promotion-readiness-ratchet
 	@echo "✅ Validation passed."
 
 validate-schemas:
