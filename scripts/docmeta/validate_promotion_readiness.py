@@ -13,6 +13,46 @@ Zweck:
 Leitthese:
   Nicht Wahrheit quantifizieren, sondern Bestätigung verteuern.
 
+Falsifizierbarkeits-Formate (Phase 1):
+  Legacy-Format (rückwärtskompatibel):
+    experiment.falsifiability:
+      counter_hypothesis: "<string>"
+      falsification_criterion: "<string>"
+      counterevidence_checked: <bool>
+
+  Structured-Format v1 (bevorzugt für neue Manifeste):
+    experiment.falsifiability:
+      version: 1
+      falsification_criterion: "<string>"
+      counter_hypotheses:
+        - id: "<slug>"
+          statement: "<string>"
+          assessment:
+            status: documented | pending | partially_checked | checked | blocked | not_applicable
+            outcome: not_checked | inconclusive | supports_primary | supports_counterhypothesis | mixed | not_applicable
+            evidence_refs: [{path, section}]
+            pending_checks: [<string>]
+            limitations: [<string>]
+            confidence: low | medium | high
+
+  Erkennung: Wenn falsifiability.counter_hypotheses vorhanden → structured v1.
+  Sonst → legacy. Legacy bleibt dauerhaft akzeptiert, aber deprecated für neue Manifeste.
+
+Structured-Format Semantik-Gate:
+  Blocking (→ missing[], → promotion_ready=false):
+    - assessment.status ∈ {documented, pending}: Gegenhypothese noch nicht geprüft.
+    - assessment.status ∈ {partially_checked, checked} + outcome ∈ {inconclusive, mixed}
+      + pending_checks non-empty: Ausstehende Checks blockieren.
+    - assessment.status == checked + outcome == supports_primary + pending_checks non-empty:
+      Blocking pending checks trotz positiver Richtung.
+    - assessment.outcome == supports_counterhypothesis: Gegenhypothese gestützt.
+    - assessment.status == blocked: Prüfung blockiert.
+
+  Non-blocking (→ warnings[]):
+    - status ∈ {partially_checked, checked} + outcome ∈ {inconclusive, mixed}
+      + pending_checks leer: inconclusive, aber alle Checks abgeschlossen.
+    - status ∈ {partially_checked, checked} + keine evidence_refs.
+
 Nicht-Ziele (Phase 1):
   * Kein Hard-Fail. Exit-Code ist immer 0, außer das Script crasht selbst.
   * Kein Auto-Move experiments/* → catalog/*.
@@ -60,10 +100,9 @@ REPORT_MODE = "dry_run"
 REPORT_TRIGGER = "need_for_reproducibility"
 
 # Zustände, in denen Falsifizierbarkeit als Begründungspflicht getriggert wird.
-# Orthogonal zum "designed/prepared"-Vorfeld und zum "reconstructed"-Altbestand.
 EXECUTED_STATUSES: frozenset[str] = frozenset({"executed", "replicated"})
 
-# Pflichtfelder innerhalb experiment.falsifiability, wenn der Block vorhanden ist.
+# Legacy-Format Pflichtfelder (wenn kein counter_hypotheses-Key vorhanden).
 FALSIFIABILITY_FIELDS: tuple[str, ...] = (
     "counter_hypothesis",
     "falsification_criterion",
@@ -72,6 +111,20 @@ FALSIFIABILITY_FIELDS: tuple[str, ...] = (
 
 # Mindestlänge wie im Schema.
 FALSIFIABILITY_MIN_LEN = 10
+
+# Structured-Format v1: erlaubte Werte für assessment-Felder.
+STRUCTURED_STATUSES: frozenset[str] = frozenset({
+    "documented", "pending", "partially_checked", "checked", "blocked", "not_applicable",
+})
+STRUCTURED_OUTCOMES: frozenset[str] = frozenset({
+    "not_checked", "inconclusive", "supports_primary",
+    "supports_counterhypothesis", "mixed", "not_applicable",
+})
+
+# Statuses, bei denen die Gegenhypothese noch nicht geprüft wurde (blocking).
+_NOT_CHECKED_STATUSES: frozenset[str] = frozenset({"documented", "pending"})
+# Outcomes, die Unentschlossenheit ausdrücken.
+_INCONCLUSIVE_OUTCOMES: frozenset[str] = frozenset({"inconclusive", "mixed"})
 
 
 def load_manifest(path: Path) -> dict[str, Any] | None:
@@ -124,8 +177,116 @@ def is_historical_escape(state: dict[str, Any]) -> bool:
     return state["status"] == "adopted" and state["adoption_basis"] == "reconstructed"
 
 
+def _is_structured(fal: dict) -> bool:
+    """True wenn der Block das structured v1-Format verwendet (counter_hypotheses-Key)."""
+    return "counter_hypotheses" in fal
+
+
+def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]:
+    """Bewertet ein structured-Format-v1-Falsifiability-Objekt.
+
+    Gibt (missing, warnings) zurück. ``missing`` enthält blocking Signale,
+    die promotion_ready verhindern. ``warnings`` sind nicht-blockierende Hinweise.
+
+    Blocking-Regeln:
+      - assessment.status ∈ {documented, pending} → assessment_not_checked
+      - status ∈ {partially_checked, checked} + outcome ∈ {inconclusive, mixed}
+        + pending_checks non-empty → assessment_pending_blocking
+      - status == checked + outcome == supports_primary + pending_checks non-empty
+        → assessment_pending_blocking
+      - outcome == supports_counterhypothesis → assessment_counterhypothesis_supported
+      - status == blocked → assessment_blocked
+
+    Non-blocking:
+      - outcome ∈ {inconclusive, mixed} + pending_checks leer → warning inconclusive
+      - status ∈ {partially_checked, checked} + keine evidence_refs → warning
+    """
+    missing: list[str] = []
+    warnings: list[str] = []
+
+    fc = fal.get("falsification_criterion")
+    if not isinstance(fc, str) or len(fc.strip()) < FALSIFIABILITY_MIN_LEN:
+        missing.append("falsifiability.falsification_criterion_missing_or_short")
+
+    chs = fal.get("counter_hypotheses")
+    if not isinstance(chs, list) or len(chs) == 0:
+        missing.append("falsifiability.counter_hypotheses_empty")
+        return missing, warnings
+
+    any_not_checked = False
+    any_pending_blocking = False
+    any_counterhypothesis_supported = False
+    any_blocked = False
+    any_inconclusive_no_pending = False
+    any_evidence_refs_missing = False
+
+    for ch in chs:
+        if not isinstance(ch, dict):
+            any_not_checked = True
+            continue
+
+        assessment = ch.get("assessment")
+        if not isinstance(assessment, dict):
+            any_not_checked = True
+            continue
+
+        status = assessment.get("status", "")
+        outcome = assessment.get("outcome", "")
+        pending = assessment.get("pending_checks") or []
+        evidence_refs = assessment.get("evidence_refs") or []
+
+        if status in _NOT_CHECKED_STATUSES:
+            any_not_checked = True
+            continue
+
+        if status == "blocked":
+            any_blocked = True
+            continue
+
+        # outcome check (independent of status)
+        if outcome == "supports_counterhypothesis":
+            any_counterhypothesis_supported = True
+
+        # inconclusive/mixed outcomes for partially_checked or checked
+        if status in ("partially_checked", "checked") and outcome in _INCONCLUSIVE_OUTCOMES:
+            if pending:
+                any_pending_blocking = True
+            else:
+                any_inconclusive_no_pending = True
+
+        # checked + supports_primary but pending checks remain → blocking
+        if status == "checked" and outcome == "supports_primary" and pending:
+            any_pending_blocking = True
+
+        # evidence_refs recommended for partially_checked/checked
+        if status in ("partially_checked", "checked") and not evidence_refs:
+            any_evidence_refs_missing = True
+
+    if any_not_checked:
+        missing.append("falsifiability.assessment_not_checked")
+    if any_pending_blocking:
+        missing.append("falsifiability.assessment_pending_blocking")
+    if any_counterhypothesis_supported:
+        missing.append("falsifiability.assessment_counterhypothesis_supported")
+    if any_blocked:
+        missing.append("falsifiability.assessment_blocked")
+    if any_inconclusive_no_pending:
+        warnings.append("falsifiability_assessment_inconclusive")
+    if any_evidence_refs_missing:
+        warnings.append("falsifiability.evidence_refs_missing")
+
+    return missing, warnings
+
+
 def evaluate_falsifiability(state: dict[str, Any]) -> tuple[list[str], list[str]]:
     """Bewertet das falsifiability-Objekt.
+
+    Routed zu structured (v1) oder legacy Evaluierung je nach Block-Form:
+      - Structured: ``counter_hypotheses`` Key vorhanden → evaluate_falsifiability_structured()
+      - Legacy: ``counter_hypothesis`` + ``falsification_criterion`` + ``counterevidence_checked``
+
+    Legacy bleibt dauerhaft akzeptiert (rückwärtskompatibel). Für neue Manifeste
+    ist das structured v1-Format bevorzugt.
 
     Gibt (missing, warnings) zurück. ``missing`` listet strukturelle
     Defizite, die die Promotion-Reife blockieren würden. ``warnings`` sind
@@ -139,6 +300,10 @@ def evaluate_falsifiability(state: dict[str, Any]) -> tuple[list[str], list[str]
         missing.append("falsifiability")
         return missing, warnings
 
+    if _is_structured(fal):
+        return evaluate_falsifiability_structured(fal)
+
+    # Legacy-Format: counter_hypothesis + falsification_criterion + counterevidence_checked
     for field in FALSIFIABILITY_FIELDS:
         if field not in fal:
             missing.append(f"falsifiability.{field}")
@@ -155,8 +320,7 @@ def evaluate_falsifiability(state: dict[str, Any]) -> tuple[list[str], list[str]
             missing.append(f"falsifiability.{field}_too_short")
 
     # Soft-Hinweis: counterevidence_checked=false ist nicht strukturell
-    # fehlerhaft, aber epistemisch signalpflichtig. Der Hinweis wird immer
-    # dann erzeugt, wenn der falsifiability-Block evaluiert wird.
+    # fehlerhaft, aber epistemisch signalpflichtig.
     cev = fal.get("counterevidence_checked")
     if cev is False:
         warnings.append("counterevidence_not_checked")
@@ -307,7 +471,7 @@ def main() -> int:
     ]
     if not_ready_entries:
         print()
-        print("  Experiments without falsifiability block (dry-run, non-blocking):")
+        print("  Not-ready experiments (dry-run, non-blocking):")
         for e in not_ready_entries:
             missing = ", ".join(e["missing"]) or "(none)"
             print(f"    - {e['path']}: missing={missing}")

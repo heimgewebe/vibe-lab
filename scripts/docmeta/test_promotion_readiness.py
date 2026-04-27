@@ -372,5 +372,358 @@ class CrossRuleDocumentationTests(unittest.TestCase):
         self.assertIn("counterevidence_not_checked", warnings)
 
 
+def make_structured_falsifiability(
+    *,
+    falsification_criterion: str = "Wenn Kontrollarm gleiche Ergebnisse zeigt wie Behandlungsarm, ist der Effekt nicht kausal.",
+    counter_hypotheses: list | None = None,
+) -> dict:
+    """Helper: builds a minimal valid structured v1 falsifiability block."""
+    if counter_hypotheses is None:
+        counter_hypotheses = [
+            {
+                "id": "ceiling_effect",
+                "statement": "Der Effekt entsteht durch Ceiling-Effekt, nicht durch die Intervention.",
+                "assessment": {
+                    "status": "checked",
+                    "outcome": "supports_primary",
+                    "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                    "pending_checks": [],
+                    "limitations": [],
+                    "confidence": "medium",
+                },
+            }
+        ]
+    return {
+        "version": 1,
+        "falsification_criterion": falsification_criterion,
+        "counter_hypotheses": counter_hypotheses,
+    }
+
+
+class StructuredFalsifiabilityTests(unittest.TestCase):
+    """Tests for the structured v1 falsifiability evaluation path.
+
+    Tests 1–10 from the contract specification:
+      1. documented/not_checked → not_ready (assessment_not_checked in missing)
+      2. pending/not_checked → not_ready (assessment_not_checked in missing)
+      3. partially_checked/inconclusive + pending_checks → not_ready (assessment_pending_blocking)
+      4. checked/supports_primary + evidence_refs + no pending → ready
+      5. supports_counterhypothesis → not_ready (assessment_counterhypothesis_supported)
+      6. mixed outcome distinct from inconclusive (both produce signals)
+      7. blocked → not_ready (assessment_blocked)
+      8. multiple counter_hypotheses supported
+      9. checked without evidence_refs → warning (non-blocking for supports_primary)
+      10. historical_escape with structured format not counted against not_ready
+    Plus: legacy and structured routing, falsification_criterion validation.
+    """
+
+    def _eval(self, falsifiability: dict) -> tuple[list[str], list[str]]:
+        state = vpr.classify_experiment(
+            make_manifest(
+                status="testing",
+                execution_status="executed",
+                falsifiability=falsifiability,
+            )
+        )
+        return vpr.evaluate_falsifiability(state)
+
+    # --- Test 1: documented → not_ready ---
+    def test_documented_is_not_ready(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Alternativerklärung: der Effekt kommt von einer Drittvariable.",
+                    "assessment": {"status": "documented", "outcome": "not_checked"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_not_checked", missing)
+        self.assertNotIn("falsifiability.assessment_pending_blocking", missing)
+
+    # --- Test 2: pending → not_ready ---
+    def test_pending_is_not_ready(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Alternativerklärung: Reihenfolgeeffekt erklärt alle Ergebnisse.",
+                    "assessment": {"status": "pending", "outcome": "not_checked"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_not_checked", missing)
+
+    # --- Test 3: partially_checked/inconclusive + pending_checks → not_ready ---
+    def test_partially_checked_inconclusive_with_pending_is_not_ready(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "ceiling_effect",
+                    "statement": "Der 0/0-Drift entsteht durch Ceiling-Effekt, nicht durch das Protokoll.",
+                    "assessment": {
+                        "status": "partially_checked",
+                        "outcome": "inconclusive",
+                        "evidence_refs": [{"path": "results/result.md"}],
+                        "pending_checks": ["Iteration-4-Ausführung"],
+                    },
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_pending_blocking", missing)
+        self.assertNotIn("falsifiability.assessment_not_checked", missing)
+
+    # --- Test 3b: partially_checked/inconclusive without pending_checks → warning only ---
+    def test_partially_checked_inconclusive_no_pending_is_warning_only(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "ceiling_effect",
+                    "statement": "Der Effekt entsteht durch Ceiling-Effekt, alle geplanten Checks durchgeführt.",
+                    "assessment": {
+                        "status": "partially_checked",
+                        "outcome": "inconclusive",
+                        "evidence_refs": [{"path": "results/result.md"}],
+                        "pending_checks": [],
+                    },
+                }]
+            )
+        )
+        self.assertNotIn("falsifiability.assessment_pending_blocking", missing)
+        self.assertNotIn("falsifiability.assessment_not_checked", missing)
+        self.assertIn("falsifiability_assessment_inconclusive", warnings)
+
+    # --- Test 4: checked/supports_primary + evidence_refs + no pending → ready ---
+    def test_checked_supports_primary_no_pending_is_ready(self) -> None:
+        missing, warnings = self._eval(make_structured_falsifiability())
+        self.assertEqual(missing, [])
+        self.assertEqual(warnings, [])
+
+    # --- Test 5: supports_counterhypothesis → not_ready ---
+    def test_supports_counterhypothesis_is_not_ready(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Token-Volumen erklärt den Effekt vollständig, nicht Spec-First.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_counterhypothesis",
+                        "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                    },
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_counterhypothesis_supported", missing)
+
+    # --- Test 6: mixed outcome is distinct from inconclusive ---
+    def test_mixed_with_pending_is_not_ready(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Gemischte Evidenz: einige Runs stützen die Haupthypothese, andere die Gegenhypothese.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "mixed",
+                        "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                        "pending_checks": ["Weiterer unabhängiger Run"],
+                    },
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_pending_blocking", missing)
+
+    def test_mixed_no_pending_is_warning_only(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Gemischte Evidenz ohne ausstehende Checks: alle Prüfungen abgeschlossen.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "mixed",
+                        "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                        "pending_checks": [],
+                    },
+                }]
+            )
+        )
+        self.assertNotIn("falsifiability.assessment_pending_blocking", missing)
+        self.assertIn("falsifiability_assessment_inconclusive", warnings)
+
+    # --- Test 7: blocked → not_ready ---
+    def test_blocked_is_not_ready(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Externer Review war geplant, konnte aber nicht durchgeführt werden.",
+                    "assessment": {"status": "blocked", "outcome": "not_applicable"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_blocked", missing)
+
+    # --- Test 8: multiple counter_hypotheses ---
+    def test_multiple_hypotheses_all_ready(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[
+                    {
+                        "id": "h1",
+                        "statement": "Erste Gegenhypothese: Effekt durch Promptlänge erklärbar.",
+                        "assessment": {
+                            "status": "checked",
+                            "outcome": "supports_primary",
+                            "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                            "pending_checks": [],
+                        },
+                    },
+                    {
+                        "id": "h2",
+                        "statement": "Zweite Gegenhypothese: Effekt durch Executor-Bias erklärbar.",
+                        "assessment": {
+                            "status": "checked",
+                            "outcome": "supports_primary",
+                            "evidence_refs": [{"path": "artifacts/review.md"}],
+                            "pending_checks": [],
+                        },
+                    },
+                ]
+            )
+        )
+        self.assertEqual(missing, [])
+
+    def test_multiple_hypotheses_one_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[
+                    {
+                        "id": "h1",
+                        "statement": "Erste Gegenhypothese: geprüft und primäre Hypothese gestützt.",
+                        "assessment": {
+                            "status": "checked",
+                            "outcome": "supports_primary",
+                            "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                            "pending_checks": [],
+                        },
+                    },
+                    {
+                        "id": "h2",
+                        "statement": "Zweite Gegenhypothese: noch nicht geprüft, nur dokumentiert.",
+                        "assessment": {"status": "documented", "outcome": "not_checked"},
+                    },
+                ]
+            )
+        )
+        self.assertIn("falsifiability.assessment_not_checked", missing)
+
+    # --- Test 9: checked without evidence_refs → warning (non-blocking for supports_primary) ---
+    def test_checked_supports_primary_no_evidence_refs_warns(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Gegenhypothese geprüft ohne explizite Evidenzreferenzen.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_primary",
+                        "pending_checks": [],
+                    },
+                }]
+            )
+        )
+        self.assertEqual(missing, [])
+        self.assertIn("falsifiability.evidence_refs_missing", warnings)
+
+    # --- Test 10: historical_escape with structured format → not counted against not_ready ---
+    def test_historical_escape_with_structured_format(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            import yaml as _yaml
+            root = Path(td)
+            exp_dir = root / "exp-historical-structured"
+            exp_dir.mkdir()
+            manifest = {
+                "schema_version": "0.1.0",
+                "experiment": {
+                    "name": "historical",
+                    "hypothesis": "placeholder",
+                    "status": "adopted",
+                    "category": "technique",
+                    "evidence_level": "experimental",
+                    "execution_status": "reconstructed",
+                    "adoption_basis": "reconstructed",
+                    "falsifiability": make_structured_falsifiability(
+                        counter_hypotheses=[{
+                            "id": "h1",
+                            "statement": "Historische Gegenhypothese, noch nicht geprüft.",
+                            "assessment": {"status": "documented", "outcome": "not_checked"},
+                        }]
+                    ),
+                },
+            }
+            (exp_dir / "manifest.yml").write_text(
+                _yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8"
+            )
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entry = vpr.evaluate_experiment(exp_dir)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            self.assertIsNotNone(entry)
+            self.assertTrue(entry["historical_escape"])
+            self.assertIn("historical_escape", entry["notes"])
+            self.assertIn("not_counted_against_promotion_readiness", entry["notes"])
+            # Blocking signals from structured evaluation are not counted for historical_escape.
+            self.assertEqual(entry["missing"], [])
+
+    # --- Structured routing: counter_hypotheses key triggers structured evaluator ---
+    def test_structured_routing_detected_by_key(self) -> None:
+        fal = make_structured_falsifiability()
+        self.assertTrue(vpr._is_structured(fal))
+        fal_legacy = {"counter_hypothesis": "x" * 15, "falsification_criterion": "y" * 15, "counterevidence_checked": True}
+        self.assertFalse(vpr._is_structured(fal_legacy))
+
+    # --- falsification_criterion required in structured format ---
+    def test_structured_missing_falsification_criterion_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            {
+                "version": 1,
+                "counter_hypotheses": [{
+                    "id": "h1",
+                    "statement": "Gegenhypothese ohne übergeordnetes Falsifizierungskriterium.",
+                    "assessment": {"status": "checked", "outcome": "supports_primary"},
+                }],
+            }
+        )
+        self.assertIn("falsifiability.falsification_criterion_missing_or_short", missing)
+
+    # --- empty counter_hypotheses list is blocking ---
+    def test_structured_empty_counter_hypotheses_is_blocking(self) -> None:
+        missing, _ = self._eval({"version": 1, "falsification_criterion": "Kriterium lang genug.", "counter_hypotheses": []})
+        self.assertIn("falsifiability.counter_hypotheses_empty", missing)
+
+    # --- checked/supports_primary with pending_checks → still blocking ---
+    def test_checked_supports_primary_with_pending_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Unterstützt primäre Hypothese, aber weitere Checks ausstehend.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_primary",
+                        "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                        "pending_checks": ["Replikation mit unabhängigem Executor"],
+                    },
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_pending_blocking", missing)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
