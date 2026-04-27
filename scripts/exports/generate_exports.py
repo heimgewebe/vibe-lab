@@ -26,11 +26,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "docmeta"))
 from _paths import write_if_changed  # noqa: E402
 
-SOURCE_DIR = REPO_ROOT / "instruction-blocks"
-EXPORT_TARGETS: dict[str, Path] = {
-    "copilot": REPO_ROOT / "exports" / "copilot",
-    "cursor": REPO_ROOT / "exports" / "cursor",
-}
+# Export-Contract: SOURCE_DIR, EXPORT_TARGETS und Namenslogik aus zentraler Quelle.
+# Validator und Generator müssen dieselbe Konfiguration sehen.
+from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name  # noqa: E402
 
 GENERATOR_ID = "scripts/exports/generate_exports.py"
 
@@ -181,9 +179,9 @@ def generate_exports() -> dict[str, int]:
 
         for src in source_files:
             content = _build_export(src, target_system)
-            out_file = target_dir / src.name
+            out_file = target_dir / expected_export_name(src)
             write_if_changed(out_file, content)
-            exported_names.add(src.name)
+            exported_names.add(expected_export_name(src))
 
         # Entferne veraltete Exporte, die keine Quelle mehr haben
         for existing in target_dir.iterdir():

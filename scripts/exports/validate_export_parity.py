@@ -7,6 +7,7 @@ Mutiert KEINE Dateien — liest ausschließlich den committed Repo-Zustand.
 Prüfungen:
   1. Kollision   — zwei Quelldateien würden denselben Ziel-Dateinamen erzeugen
   2. Orphan      — Export existiert, aber die Quelldatei fehlt
+                   Scope: nur *.md — andere Dateien (z.B. .gitkeep) sind kein Fehler
   3. Missing     — Quelldatei existiert, aber der Export fehlt
 
 Exit-Codes:
@@ -19,20 +20,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-SOURCE_DIR = REPO_ROOT / "instruction-blocks"
-EXPORT_TARGETS: dict[str, Path] = {
-    "copilot": REPO_ROOT / "exports" / "copilot",
-    "cursor": REPO_ROOT / "exports" / "cursor",
-}
+# Export-Contract: SOURCE_DIR, EXPORT_TARGETS und Namenslogik aus zentraler Quelle.
+# Nie hier duplizieren — Validator und Generator müssen dieselbe Konfiguration sehen.
+_HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(_HERE))
+from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name  # noqa: E402
 
-
-def _source_names(source_dir: Path) -> dict[str, list[Path]]:
-    """Gibt ein Mapping name → [quelldateien] zurück."""
-    result: dict[str, list[Path]] = {}
-    for f in sorted(source_dir.glob("*.md")):
-        result.setdefault(f.name, []).append(f)
-    return result
+REPO_ROOT = SOURCE_DIR.parent
 
 
 def _rel(p: Path) -> str:
@@ -42,7 +36,17 @@ def _rel(p: Path) -> str:
         return str(p)
 
 
+def _source_name_map(source_dir: Path) -> dict[str, list[Path]]:
+    """Mapping ziel_dateiname → [quelldateien] für alle *.md in source_dir."""
+    result: dict[str, list[Path]] = {}
+    for f in sorted(source_dir.glob("*.md")):
+        target_name = expected_export_name(f)
+        result.setdefault(target_name, []).append(f)
+    return result
+
+
 def check_collisions(name_map: dict[str, list[Path]]) -> list[str]:
+    """Kollision: zwei Quelldateien → gleicher Ziel-Dateiname."""
     errors: list[str] = []
     for name, srcs in name_map.items():
         if len(srcs) > 1:
@@ -52,18 +56,27 @@ def check_collisions(name_map: dict[str, list[Path]]) -> list[str]:
 
 
 def check_orphans(name_map: dict[str, list[Path]], target_system: str, target_dir: Path) -> list[str]:
+    """Orphan: *.md in exports/ ohne entsprechende Quelldatei.
+
+    Nicht-Markdown-Dateien (z.B. .gitkeep) werden explizit ignoriert —
+    die exports/-Dirs dürfen ausschließlich generierte Markdown-Exporte enthalten,
+    aber non-md-Dateien gelten nicht als Paritätsverletzung.
+    """
     if not target_dir.exists():
         return []
     source_names = set(name_map.keys())
     errors: list[str] = []
-    for export_file in sorted(target_dir.iterdir()):
+    for export_file in sorted(target_dir.glob("*.md")):
         if export_file.name not in source_names:
-            errors.append(f"Orphan in exports/{target_system}/: '{export_file.name}' hat keine Quelle in instruction-blocks/")
+            errors.append(
+                f"Orphan in exports/{target_system}/: '{export_file.name}' hat keine Quelle in instruction-blocks/"
+            )
     return errors
 
 
 def check_missing(name_map: dict[str, list[Path]], target_system: str, target_dir: Path) -> list[str]:
-    export_names = {f.name for f in target_dir.iterdir()} if target_dir.exists() else set()
+    """Missing: Quelldatei existiert, aber der Export fehlt."""
+    export_names = {f.name for f in target_dir.glob("*.md")} if target_dir.exists() else set()
     errors: list[str] = []
     for name in sorted(name_map.keys()):
         if name not in export_names:
@@ -79,7 +92,7 @@ def validate(
     if export_targets is None:
         export_targets = EXPORT_TARGETS
 
-    name_map = _source_names(source_dir)
+    name_map = _source_name_map(source_dir)
     all_errors: list[str] = []
 
     all_errors.extend(check_collisions(name_map))
@@ -108,8 +121,10 @@ def main() -> int:
         )
         return 1
 
-    print(f"✅ Export-Parität OK ({len(list(SOURCE_DIR.glob('*.md')))} Quelldatei(en), "
-          f"{len(EXPORT_TARGETS)} Ziel(e))")
+    print(
+        f"✅ Export-Parität OK ({len(list(SOURCE_DIR.glob('*.md')))} Quelldatei(en), "
+        f"{len(EXPORT_TARGETS)} Ziel(e))"
+    )
     return 0
 
 
