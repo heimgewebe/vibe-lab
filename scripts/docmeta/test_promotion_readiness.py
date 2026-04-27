@@ -1021,5 +1021,123 @@ class SchemaFalsifiabilityRegressionTests(unittest.TestCase):
         self.assertFalse(self._is_valid(doc))
 
 
+class EvidenceRefsInvalidWarningTests(unittest.TestCase):
+    """Non-blocking warning for malformed evidence_refs entries.
+
+    evidence_refs_invalid is issued when evidence_refs is present but:
+      - not a list, OR
+      - contains an item that is not a dict, OR
+      - contains a dict with no non-empty 'path' key.
+    Promotion_ready must remain unaffected (warning only, not blocking).
+    """
+
+    def _eval(self, falsifiability: dict) -> tuple[list[str], list[str]]:
+        state = vpr.classify_experiment(
+            make_manifest(
+                status="testing",
+                execution_status="executed",
+                falsifiability=falsifiability,
+            )
+        )
+        return vpr.evaluate_falsifiability(state)
+
+    def test_evidence_refs_not_a_list_warns(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "evidence_refs ist ein String statt einer Liste.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_primary",
+                        "evidence_refs": "results/evidence.jsonl",
+                    },
+                }]
+            )
+        )
+        self.assertEqual(missing, [])
+        self.assertIn("falsifiability.evidence_refs_invalid", warnings)
+        self.assertNotIn("falsifiability.evidence_refs_missing", warnings)
+
+    def test_evidence_refs_item_not_a_dict_warns(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "evidence_refs enthält einen String statt eines Objekts.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_primary",
+                        "evidence_refs": ["results/evidence.jsonl"],
+                    },
+                }]
+            )
+        )
+        self.assertEqual(missing, [])
+        self.assertIn("falsifiability.evidence_refs_invalid", warnings)
+
+    def test_evidence_refs_item_empty_dict_warns(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "evidence_refs enthält ein leeres Objekt ohne path-Feld.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_primary",
+                        "evidence_refs": [{}],
+                    },
+                }]
+            )
+        )
+        self.assertEqual(missing, [])
+        self.assertIn("falsifiability.evidence_refs_invalid", warnings)
+
+    def test_evidence_refs_item_missing_path_warns(self) -> None:
+        missing, warnings = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "evidence_refs item hat nur section, kein path-Feld.",
+                    "assessment": {
+                        "status": "checked",
+                        "outcome": "supports_primary",
+                        "evidence_refs": [{"section": "Ergebnisse"}],
+                    },
+                }]
+            )
+        )
+        self.assertEqual(missing, [])
+        self.assertIn("falsifiability.evidence_refs_invalid", warnings)
+
+    def test_valid_evidence_refs_no_invalid_warning(self) -> None:
+        missing, warnings = self._eval(make_structured_falsifiability())
+        self.assertEqual(missing, [])
+        self.assertNotIn("falsifiability.evidence_refs_invalid", warnings)
+
+    def test_evidence_refs_invalid_is_non_blocking(self) -> None:
+        """Invalid evidence_refs must not set promotion_ready=false on its own."""
+        state = vpr.classify_experiment(
+            make_manifest(
+                status="testing",
+                execution_status="executed",
+                falsifiability=make_structured_falsifiability(
+                    counter_hypotheses=[{
+                        "id": "h1",
+                        "statement": "Ungültige evidence_refs soll nur warnen, nicht blockieren.",
+                        "assessment": {
+                            "status": "checked",
+                            "outcome": "supports_primary",
+                            "evidence_refs": [{"section": "no path here"}],
+                        },
+                    }]
+                ),
+            )
+        )
+        missing, warnings = vpr.evaluate_falsifiability(state)
+        self.assertEqual(missing, [])
+        self.assertIn("falsifiability.evidence_refs_invalid", warnings)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

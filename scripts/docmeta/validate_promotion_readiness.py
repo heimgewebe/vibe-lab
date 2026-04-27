@@ -35,7 +35,7 @@ Falsifizierbarkeits-Formate (Phase 1):
             limitations: [<string>]
             confidence: low | medium | high
 
-  Erkennung: Wenn falsifiability.counter_hypotheses vorhanden → structured v1.
+  Erkennung: Wenn 'version' oder 'counter_hypotheses' Key vorhanden → Structured-Intent → v1.
   Sonst → legacy. Legacy bleibt dauerhaft akzeptiert, aber deprecated für neue Manifeste.
 
 Structured-Format Semantik-Gate:
@@ -241,6 +241,7 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
     any_blocked = False
     any_inconclusive_no_pending = False
     any_evidence_refs_missing = False
+    any_evidence_refs_invalid = False
 
     for ch in chs:
         if not isinstance(ch, dict):
@@ -267,7 +268,21 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
         if not status_valid or not outcome_valid:
             continue
         pending = assessment.get("pending_checks") or []
-        evidence_refs = assessment.get("evidence_refs") or []
+
+        # Deep-validate evidence_refs if present.
+        raw_refs = assessment.get("evidence_refs")
+        this_refs_invalid = False
+        if raw_refs is not None:
+            if not isinstance(raw_refs, list):
+                this_refs_invalid = True
+            else:
+                for ref in raw_refs:
+                    if not isinstance(ref, dict) or not ref.get("path"):
+                        this_refs_invalid = True
+                        break
+        if this_refs_invalid:
+            any_evidence_refs_invalid = True
+        evidence_refs = raw_refs if isinstance(raw_refs, list) else []
 
         if status in _NOT_CHECKED_STATUSES:
             any_not_checked = True
@@ -292,8 +307,9 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
         if status == "checked" and outcome == "supports_primary" and pending:
             any_pending_blocking = True
 
-        # evidence_refs recommended for partially_checked/checked
-        if status in ("partially_checked", "checked") and not evidence_refs:
+        # evidence_refs recommended for partially_checked/checked;
+        # suppress if refs were present-but-invalid (different signal).
+        if status in ("partially_checked", "checked") and not evidence_refs and not this_refs_invalid:
             any_evidence_refs_missing = True
 
     # Structural blocking signals (enum/format violations).
@@ -321,6 +337,8 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
         warnings.append("falsifiability_assessment_inconclusive")
     if any_evidence_refs_missing:
         warnings.append("falsifiability.evidence_refs_missing")
+    if any_evidence_refs_invalid:
+        warnings.append("falsifiability.evidence_refs_invalid")
 
     return missing, warnings
 
