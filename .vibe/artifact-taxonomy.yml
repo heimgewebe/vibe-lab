@@ -708,7 +708,21 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: scripts/exports/export_contract.py
+    layer: governance
+    kind: implementation_script
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: scripts/exports/generate_*.py
+    layer: governance
+    kind: implementation_script
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/exports/validate_*.py
     layer: governance
     kind: implementation_script
     authority: procedure_contract
