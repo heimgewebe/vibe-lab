@@ -23,10 +23,17 @@ experiment:
     - "artifacts/metrics.json"
     - "artifacts/iteration4-reconciliation.md"
   created: "2026-04-15"
-  updated: "2026-04-16"
+  updated: "2026-04-27"
   author: "GPT-5.3-Codex"
   iteration: 4
   evidence_level: experimental
+  # Falsifizierbarkeits-Retrofit (Phase-1 Dry-Run, Trigger: need_for_reproducibility).
+  # Gegenhypothesen — Ceiling-Effekt und Executor-Bias — sind in results/result.md
+  # (Abschnitt 'Epistemische Lücken') aktiv als Alternativerklärungen dokumentiert.
+  falsifiability:
+    counter_hypothesis: "Der 0/0-Scope-Drift in Iteration 3 entsteht nicht durch das Task-Protokoll, sondern durch Ceiling-Effekt bei Text-Level-Komplexität (beide Arme zu leicht für messbare Drift) oder Executor-Bias (gleicher Executor für beide Arme mit vollem Designwissen). Das Protokoll wäre damit kein nachgewiesener kausaler Faktor."
+    falsification_criterion: "Das Protokoll wäre nicht kausal, wenn Control- und Treatment-Arm bei Logic-Level-Komplexität (Iteration 4) gleiche Scope-Drift-Raten zeigen, oder wenn ein unabhängiger externer Blind-Review keinen Unterschied in Review-Friction zwischen den Armen feststellt."
+    counterevidence_checked: true  # true: Ceiling-Effekt und Executor-Bias wurden in results/result.md aktiv als Alternativerklärungen für den 0/0-Drift identifiziert (results/result.md, Abschnitt 'Epistemische Lücken', drei explizite Alternativerklärungen). Control-Arm (run-003-control) prüfte den Protokolleffekt direkt; Ergebnis inconclusive. Blind-Review und Iteration-4-Ausführung bleiben ausstehend.
 
 context:
   tools: ["LLM-Agent", "Git", "Pull Requests", "Code Review", "rg"]

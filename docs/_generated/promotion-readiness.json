@@ -146,12 +146,10 @@
       "execution_status": "executed",
       "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [
-        "falsifiability"
-      ],
+      "missing": [],
       "notes": [],
       "path": "experiments/2026-04-15_agent-task-validity",
-      "promotion_ready": false,
+      "promotion_ready": true,
       "status": "testing",
       "warnings": []
     },
@@ -201,8 +199,8 @@
   "summary": {
     "experiments_checked": 14,
     "historical_escape": 1,
-    "not_ready": 10,
-    "ready": 3,
+    "not_ready": 9,
+    "ready": 4,
     "warnings": 1
   },
   "trigger": "need_for_reproducibility"
