@@ -136,7 +136,8 @@ def detect_collisions(source_files: list[Path]) -> list[tuple[str, list[Path]]]:
     """
     seen: dict[str, list[Path]] = {}
     for src in source_files:
-        seen.setdefault(src.name, []).append(src)
+        target_name = expected_export_name(src)
+        seen.setdefault(target_name, []).append(src)
     return [(name, srcs) for name, srcs in seen.items() if len(srcs) > 1]
 
 
@@ -183,8 +184,10 @@ def generate_exports() -> dict[str, int]:
             write_if_changed(out_file, content)
             exported_names.add(expected_export_name(src))
 
-        # Entferne veraltete Exporte, die keine Quelle mehr haben
-        for existing in target_dir.iterdir():
+        # Entferne veraltete *.md-Exporte ohne entsprechende Quelldatei.
+        # Scope auf *.md: non-md-Dateien (z.B. aus anderen Prozessen) werden
+        # nicht berührt — konsistent mit der Orphan-Policy des Validators.
+        for existing in target_dir.glob("*.md"):
             if existing.name not in exported_names:
                 existing.unlink()
 
