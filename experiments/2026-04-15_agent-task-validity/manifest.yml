@@ -23,10 +23,43 @@ experiment:
     - "artifacts/metrics.json"
     - "artifacts/iteration4-reconciliation.md"
   created: "2026-04-15"
-  updated: "2026-04-16"
+  updated: "2026-04-27"
   author: "GPT-5.3-Codex"
   iteration: 4
   evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: "Das Protokoll wäre nicht kausal, wenn Control- und Treatment-Arm bei Logic-Level-Komplexität (Iteration 4) gleiche Scope-Drift-Raten zeigen, oder wenn ein unabhängiger externer Blind-Review keinen Unterschied in Review-Friction zwischen den Armen feststellt."
+    counter_hypotheses:
+      - id: ceiling_effect
+        statement: "Der 0/0-Scope-Drift in Iteration 3 entsteht durch Ceiling-Effekt bei Text-Level-Komplexität: beide Arme waren zu leicht für messbare Drift, unabhängig vom Protokoll."
+        assessment:
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: experiments/2026-04-15_agent-task-validity/results/result.md
+              section: "Epistemische Lücken"
+            - path: experiments/2026-04-15_agent-task-validity/results/decision.yml
+          pending_checks:
+            - "Iteration-4-Ausführung mit Logic-Level-Tasks (tasks.iteration4.jsonl)"
+          limitations:
+            - "Control-Arm (run-003-control) nur mit Text-Level-Tasks; kein höherer Komplexitätstest"
+          confidence: low
+      - id: executor_bias
+        statement: "Der gleiche Executor für beide Arme (mit vollem Designwissen) macht einen messbaren Unterschied zwischen Control und Treatment unbeobachtbar."
+        assessment:
+          status: documented
+          outcome: not_checked
+          evidence_refs:
+            - path: experiments/2026-04-15_agent-task-validity/results/result.md
+              section: "Epistemische Lücken"
+          pending_checks:
+            - "Externes Blind-Review durch unabhängigen Reviewer (run-003-control vs run-004-treatment)"
+            - "Replikation mit anderem Executor"
+          limitations:
+            - "Kein Blind-Review durchgeführt"
+            - "Kein unabhängiger zweiter Executor"
+          confidence: low
 
 context:
   tools: ["LLM-Agent", "Git", "Pull Requests", "Code Review", "rg"]

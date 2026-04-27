@@ -85,25 +85,124 @@
         },
         "falsifiability": {
           "type": "object",
-          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Optional im JSON-Schema: wenn der Block vorhanden ist, müssen alle drei Felder gesetzt sein (strukturelle Pflicht). Die konditionale Pflicht für execution_status∈{executed,replicated} und für status=adopted mit adoption_basis∈{executed,replicated} wird in Phase 1 ausschließlich durch scripts/docmeta/validate_promotion_readiness.py als Dry-Run diagnostiziert — nicht durch dieses JSON-Schema hart erzwungen. Kein allOf-Gate hier. adoption_basis='reconstructed' bleibt als historischer Altbestand ausgenommen (historical_escape). Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
-          "properties": {
-            "counter_hypothesis": {
-              "type": "string",
-              "minLength": 10,
-              "description": "Alternativerklärung, die die beobachteten Effekte ebenfalls erklären könnte (z. B. Störvariable, Confounder, Placebo-Struktur)."
+          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Genau eines von zwei Formaten muss verwendet werden: Legacy-Format (counter_hypothesis + falsification_criterion + counterevidence_checked) oder Structured-Format v1 (version=1 + falsification_criterion + counter_hypotheses[]). Hybride Blöcke und lose Blöcke (z. B. {version: 1} ohne counter_hypotheses) sind ungültig. Semantik-Gate in validate_promotion_readiness.py. Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
+          "oneOf": [
+            {
+              "title": "Legacy-Format",
+              "description": "Rückwärtskompatibles Format: counter_hypothesis + falsification_criterion + counterevidence_checked. Für neue Manifeste Structured-Format v1 verwenden.",
+              "required": ["counter_hypothesis", "falsification_criterion", "counterevidence_checked"],
+              "additionalProperties": false,
+              "properties": {
+                "counter_hypothesis": {
+                  "type": "string",
+                  "minLength": 10,
+                  "description": "Alternativerklärung, die die beobachteten Effekte ebenfalls erklären könnte."
+                },
+                "falsification_criterion": {
+                  "type": "string",
+                  "minLength": 10,
+                  "description": "Operationale Bedingung, unter der die Hypothese als widerlegt oder geschwächt gelten würde."
+                },
+                "counterevidence_checked": {
+                  "type": "boolean",
+                  "description": "Wurde aktiv nach Gegenevidenz gesucht? Decision-Kreuzregel in validate_schema.py prüft verdict=confirms + counterevidence_checked=false in decision.yml."
+                }
+              }
             },
-            "falsification_criterion": {
-              "type": "string",
-              "minLength": 10,
-              "description": "Operationale Bedingung, unter der die Hypothese als widerlegt oder geschwächt gelten würde."
-            },
-            "counterevidence_checked": {
-              "type": "boolean",
-              "description": "Wurde aktiv nach Gegenevidenz gesucht (nicht bloß behauptet)? Im Manifest ist dieses Feld Teil des optionalen falsifiability-Blocks. Die Decision-Kreuzregel in scripts/docmeta/validate_schema.py beanstandet nur die explizite Kombination decision_type=result_assessment + verdict=confirms + counterevidence_checked=false in decision.yml; ein fehlender Decision-Wert ist kein eigener Verstoß."
+            {
+              "title": "Structured-Format v1",
+              "description": "Strukturiertes Format mit separaten Gegenhypothesen und maschinenlesbarem Assessment-Zustand.",
+              "required": ["version", "falsification_criterion", "counter_hypotheses"],
+              "additionalProperties": false,
+              "properties": {
+                "version": {
+                  "type": "integer",
+                  "const": 1,
+                  "description": "Muss 1 sein. Zukünftige Versionen erhalten eigene Einträge."
+                },
+                "falsification_criterion": {
+                  "type": "string",
+                  "minLength": 10,
+                  "description": "Operationale Bedingung, unter der die Haupthypothese als widerlegt oder geschwächt gelten würde."
+                },
+                "counter_hypotheses": {
+                  "type": "array",
+                  "minItems": 1,
+                  "description": "Nicht-leere Liste von Gegenhypothesen mit Bewertungsstruktur.",
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "statement", "assessment"],
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Stabiler Slug der Gegenhypothese (z. B. 'ceiling_effect')"
+                      },
+                      "statement": {
+                        "type": "string",
+                        "minLength": 10,
+                        "description": "Vollständige Formulierung der Gegenhypothese"
+                      },
+                      "assessment": {
+                        "type": "object",
+                        "required": ["status", "outcome"],
+                        "additionalProperties": false,
+                        "description": "Bewertungsstand für diese Gegenhypothese",
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["documented", "pending", "partially_checked", "checked", "blocked", "not_applicable"],
+                            "description": "documented/pending: noch nicht geprüft; partially_checked: Prüfung begonnen; checked: abgeschlossen; blocked: nicht möglich; not_applicable: nicht relevant"
+                          },
+                          "outcome": {
+                            "type": "string",
+                            "enum": ["not_checked", "inconclusive", "supports_primary", "supports_counterhypothesis", "mixed", "not_applicable"],
+                            "description": "Ergebnis: supports_primary stärkt Haupthypothese; supports_counterhypothesis widerlegt sie; inconclusive/mixed: keine klare Richtung"
+                          },
+                          "evidence_refs": {
+                            "type": "array",
+                            "description": "Verweise auf Evidenzdateien, die die Bewertung stützen",
+                            "items": {
+                              "type": "object",
+                              "required": ["path"],
+                              "additionalProperties": false,
+                              "properties": {
+                                "path": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "description": "Repo-relativer Pfad zur Evidenzdatei"
+                                },
+                                "section": {
+                                  "type": "string",
+                                  "description": "Optionaler Abschnitt oder Überschrift in der Datei"
+                                }
+                              }
+                            }
+                          },
+                          "pending_checks": {
+                            "type": "array",
+                            "items": { "type": "string", "minLength": 1 },
+                            "description": "Ausstehende Prüfschritte"
+                          },
+                          "limitations": {
+                            "type": "array",
+                            "items": { "type": "string", "minLength": 1 },
+                            "description": "Residuale Einschränkungen oder Confounder"
+                          },
+                          "confidence": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high"],
+                            "description": "Konfidenz in die Bewertung"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
-          },
-          "required": ["counter_hypothesis", "falsification_criterion", "counterevidence_checked"],
-          "additionalProperties": false
+          ]
         }
       },
       "required": ["name", "hypothesis", "status", "category", "evidence_level"],

@@ -147,7 +147,8 @@
       "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "falsifiability"
+        "falsifiability.assessment_not_checked",
+        "falsifiability.assessment_pending_blocking"
       ],
       "notes": [],
       "path": "experiments/2026-04-15_agent-task-validity",
