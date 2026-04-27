@@ -117,13 +117,53 @@ def _build_export(
     return f"{header}\n# {title}\n{body}"
 
 
+def _rel_path(p: Path) -> str:
+    try:
+        return str(p.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(p)
+
+
+def detect_collisions(source_files: list[Path]) -> list[tuple[str, list[Path]]]:
+    """Prüft, ob zwei Quelldateien denselben Ziel-Dateinamen erzeugen würden.
+
+    Das aktuelle Mapping ist 1:1 (src.name → target/src.name), aber diese
+    Funktion ist zukunftssicher: falls SOURCE_DIR je auf Subverzeichnisse
+    ausgeweitet wird, würden gleichnamige Dateien in verschiedenen Unterordnern
+    kollidieren. Kollisionen werden vor jeder Dateiänderung gemeldet.
+
+    Returns:
+        Liste von (ziel_name, [konfligierende_quelldateien]) für alle Kollisionen.
+        Leer, wenn keine Kollision vorliegt.
+    """
+    seen: dict[str, list[Path]] = {}
+    for src in source_files:
+        seen.setdefault(src.name, []).append(src)
+    return [(name, srcs) for name, srcs in seen.items() if len(srcs) > 1]
+
+
 def generate_exports() -> dict[str, int]:
     """Hauptlogik: liest instruction-blocks/, schreibt nach exports/.
+
+    Bricht mit SystemExit(1) ab, wenn zwei Quelldateien denselben
+    Ziel-Dateinamen erzeugen würden (Kollisions-Gate).
 
     Returns:
         dict mit target_system → Anzahl exportierter Dateien.
     """
     source_files = sorted(SOURCE_DIR.glob("*.md"))
+
+    collisions = detect_collisions(source_files)
+    if collisions:
+        print("ERROR: Export-Kollision erkannt — Build abgebrochen.", file=sys.stderr)
+        for target_name, conflicting in collisions:
+            paths = ", ".join(_rel_path(p) for p in conflicting)
+            print(f"  Kollision: '{target_name}' ← [{paths}]", file=sys.stderr)
+        print(
+            "Lösung: Quelldateien umbenennen, sodass jede einen eindeutigen Ziel-Dateinamen ergibt.",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
 
     stats: dict[str, int] = {}
 
