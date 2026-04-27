@@ -132,8 +132,14 @@ jobs:
       - name: Test epistemic state generator
         run: python3 scripts/docmeta/test_generate_epistemic_state.py
 
+      - name: Validate export parity (collision / orphan / missing)
+        run: python3 scripts/exports/validate_export_parity.py
+
       - name: Test export generator
         run: python3 scripts/exports/test_generate_exports.py
+
+      - name: Test export parity validator
+        run: python3 scripts/exports/test_validate_export_parity.py
 
       - name: Test promotion-readiness validator
         run: python3 scripts/docmeta/test_promotion_readiness.py

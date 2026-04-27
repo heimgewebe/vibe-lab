@@ -27,6 +27,7 @@ from generate_exports import (  # noqa: E402
     _build_header,
     _strip_frontmatter,
     compute_source_hash,
+    detect_collisions,
     generate_exports,
 )
 
@@ -65,6 +66,31 @@ class TestBuildHeader(unittest.TestCase):
         for line in header.strip().splitlines():
             self.assertTrue(line.startswith("<!--"), f"Not a comment: {line}")
             self.assertTrue(line.endswith("-->"), f"Not a comment: {line}")
+
+
+class TestDetectCollisions(unittest.TestCase):
+    """detect_collisions() must use expected_export_name(), not src.name."""
+
+    def test_no_collision_flat_files(self):
+        files = [Path(f"/repo/instruction-blocks/{n}.md") for n in ("a", "b", "c")]
+        self.assertEqual(detect_collisions(files), [])
+
+    def test_collision_uses_expected_export_name(self):
+        """If expected_export_name() maps two paths to the same target, detect it."""
+        from unittest.mock import patch
+        files = [
+            Path("/repo/instruction-blocks/a.md"),
+            Path("/repo/instruction-blocks/b.md"),
+        ]
+        with patch("generate_exports.expected_export_name", lambda _p: "same.md"):
+            collisions = detect_collisions(files)
+        self.assertEqual(len(collisions), 1, "Expected one collision")
+        name, srcs = collisions[0]
+        self.assertEqual(name, "same.md")
+        self.assertEqual(len(srcs), 2)
+
+    def test_no_collision_empty_input(self):
+        self.assertEqual(detect_collisions([]), [])
 
 
 class TestDeterministicGeneration(unittest.TestCase):

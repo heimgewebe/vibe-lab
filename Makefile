@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
 
 # Minimaler Guard-Stack
-validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-promotion-readiness-tests
+validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-export-parity validate-exports-tests validate-export-parity-tests validate-promotion-readiness-tests
 	@# Promotion-Readiness als Dry-Run (Phase 1): inhaltliche not_ready-Befunde
 	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
 	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
@@ -139,6 +139,14 @@ validate-exports-tests:
 	@echo "🧪 Running export generator regression tests..."
 	@python3 scripts/exports/test_generate_exports.py
 
+validate-export-parity:
+	@echo "🔎 Validating export parity (collision / orphan / missing)..."
+	@python3 scripts/exports/validate_export_parity.py
+
+validate-export-parity-tests:
+	@echo "🧪 Running export parity validator regression tests..."
+	@python3 scripts/exports/test_validate_export_parity.py
+
 validate-promotion-readiness:
 	@echo "🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)..."
 	@python3 scripts/docmeta/validate_promotion_readiness.py
@@ -260,6 +268,8 @@ help:
 	@echo "  make validate-adoption-completeness-tests — Run adoption completeness regression tests (path-match)"
 	@echo "  make validate-epistemic-state-tests — Run interpretation risk regression tests"
 	@echo "  make validate-exports-tests — Run export generator regression tests"
+	@echo "  make validate-export-parity — Validate export parity: collision / orphan / missing (blocking)"
+	@echo "  make validate-export-parity-tests — Run export parity validator regression tests"
 	@echo "  make validate-promotion-readiness — Dry-run Phase-1 promotion-readiness gate (non-blocking)"
 	@echo "  make validate-promotion-readiness-tests — Run promotion-readiness regression tests"
 	@echo "  make check-decisions         — Validate system decisions and gate required features"

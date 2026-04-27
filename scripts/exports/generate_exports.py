@@ -26,11 +26,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "docmeta"))
 from _paths import write_if_changed  # noqa: E402
 
-SOURCE_DIR = REPO_ROOT / "instruction-blocks"
-EXPORT_TARGETS: dict[str, Path] = {
-    "copilot": REPO_ROOT / "exports" / "copilot",
-    "cursor": REPO_ROOT / "exports" / "cursor",
-}
+# Export-Contract: SOURCE_DIR, EXPORT_TARGETS und Namenslogik aus zentraler Quelle.
+# Validator und Generator müssen dieselbe Konfiguration sehen.
+from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name  # noqa: E402
 
 GENERATOR_ID = "scripts/exports/generate_exports.py"
 
@@ -117,13 +115,54 @@ def _build_export(
     return f"{header}\n# {title}\n{body}"
 
 
+def _rel_path(p: Path) -> str:
+    try:
+        return str(p.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(p)
+
+
+def detect_collisions(source_files: list[Path]) -> list[tuple[str, list[Path]]]:
+    """Prüft, ob zwei Quelldateien denselben Ziel-Dateinamen erzeugen würden.
+
+    Das aktuelle Mapping ist 1:1 (src.name → target/src.name), aber diese
+    Funktion ist zukunftssicher: falls SOURCE_DIR je auf Subverzeichnisse
+    ausgeweitet wird, würden gleichnamige Dateien in verschiedenen Unterordnern
+    kollidieren. Kollisionen werden vor jeder Dateiänderung gemeldet.
+
+    Returns:
+        Liste von (ziel_name, [konfligierende_quelldateien]) für alle Kollisionen.
+        Leer, wenn keine Kollision vorliegt.
+    """
+    seen: dict[str, list[Path]] = {}
+    for src in source_files:
+        target_name = expected_export_name(src)
+        seen.setdefault(target_name, []).append(src)
+    return [(name, srcs) for name, srcs in seen.items() if len(srcs) > 1]
+
+
 def generate_exports() -> dict[str, int]:
     """Hauptlogik: liest instruction-blocks/, schreibt nach exports/.
+
+    Bricht mit SystemExit(1) ab, wenn zwei Quelldateien denselben
+    Ziel-Dateinamen erzeugen würden (Kollisions-Gate).
 
     Returns:
         dict mit target_system → Anzahl exportierter Dateien.
     """
     source_files = sorted(SOURCE_DIR.glob("*.md"))
+
+    collisions = detect_collisions(source_files)
+    if collisions:
+        print("ERROR: Export-Kollision erkannt — Build abgebrochen.", file=sys.stderr)
+        for target_name, conflicting in collisions:
+            paths = ", ".join(_rel_path(p) for p in conflicting)
+            print(f"  Kollision: '{target_name}' ← [{paths}]", file=sys.stderr)
+        print(
+            "Lösung: Quelldateien umbenennen, sodass jede einen eindeutigen Ziel-Dateinamen ergibt.",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
 
     stats: dict[str, int] = {}
 
@@ -141,12 +180,14 @@ def generate_exports() -> dict[str, int]:
 
         for src in source_files:
             content = _build_export(src, target_system)
-            out_file = target_dir / src.name
+            out_file = target_dir / expected_export_name(src)
             write_if_changed(out_file, content)
-            exported_names.add(src.name)
+            exported_names.add(expected_export_name(src))
 
-        # Entferne veraltete Exporte, die keine Quelle mehr haben
-        for existing in target_dir.iterdir():
+        # Entferne veraltete *.md-Exporte ohne entsprechende Quelldatei.
+        # Scope auf *.md: non-md-Dateien (z.B. aus anderen Prozessen) werden
+        # nicht berührt — konsistent mit der Orphan-Policy des Validators.
+        for existing in target_dir.glob("*.md"):
             if existing.name not in exported_names:
                 existing.unlink()
 
