@@ -725,5 +725,301 @@ class StructuredFalsifiabilityTests(unittest.TestCase):
         self.assertIn("falsifiability.assessment_pending_blocking", missing)
 
 
+class MalformedStructuredBlockTests(unittest.TestCase):
+    """Regression tests: malformed structured blocks must never produce promotion_ready=true.
+
+    Covers the P1 gap: STRUCTURED_STATUSES/STRUCTURED_OUTCOMES were defined but
+    not previously used. Invalid or missing enum values must produce blocking signals
+    and must not silently fall through to the semantic ready-logic.
+    """
+
+    def _eval(self, falsifiability: dict) -> tuple[list[str], list[str]]:
+        state = vpr.classify_experiment(
+            make_manifest(
+                status="testing",
+                execution_status="executed",
+                falsifiability=falsifiability,
+            )
+        )
+        return vpr.evaluate_falsifiability(state)
+
+    # --- Invalid status (typo) ---
+    def test_invalid_status_typo_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Tippfehler im Status: 'cheked' statt 'checked'.",
+                    "assessment": {"status": "cheked", "outcome": "supports_primary"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_invalid_status", missing)
+        self.assertNotIn("falsifiability.assessment_not_checked", missing)
+
+    # --- Missing status ---
+    def test_missing_status_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Kein status-Feld im assessment vorhanden.",
+                    "assessment": {"outcome": "supports_primary"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_invalid_status", missing)
+
+    # --- Invalid outcome (typo) ---
+    def test_invalid_outcome_typo_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Tippfehler im Outcome: 'supports_prmary' statt 'supports_primary'.",
+                    "assessment": {"status": "checked", "outcome": "supports_prmary"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_invalid_outcome", missing)
+        self.assertNotIn("falsifiability.assessment_not_checked", missing)
+
+    # --- Missing outcome ---
+    def test_missing_outcome_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Kein outcome-Feld im assessment vorhanden.",
+                    "assessment": {"status": "checked"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_invalid_outcome", missing)
+
+    # --- Invalid status/outcome must not silently become ready ---
+    def test_invalid_status_cannot_produce_ready(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Ungültiger Status soll kein promotion_ready=true erzeugen.",
+                    "assessment": {"status": "fully_done", "outcome": "supports_primary"},
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_invalid_status", missing)
+        # promotion_ready = (len(missing) == 0) → must be False
+        self.assertNotEqual(missing, [])
+
+    # --- counter_hypotheses present, version missing → structured path, version_invalid ---
+    def test_counter_hypotheses_without_version_is_not_legacy(self) -> None:
+        fal = {
+            "falsification_criterion": "Kriterium ist lang genug um zu gelten.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Block hat counter_hypotheses aber keine version.",
+                "assessment": {"status": "checked", "outcome": "supports_primary"},
+            }],
+        }
+        self.assertTrue(vpr._is_structured(fal))
+        missing, _ = self._eval(fal)
+        self.assertIn("falsifiability.version_invalid_or_missing", missing)
+
+    # --- version: 2 is not v1 → blocking ---
+    def test_version_2_is_blocking(self) -> None:
+        fal = {
+            "version": 2,
+            "falsification_criterion": "Kriterium ist lang genug um zu gelten.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Version 2 ist noch nicht spezifiziert und muss blockieren.",
+                "assessment": {"status": "checked", "outcome": "supports_primary"},
+            }],
+        }
+        missing, _ = self._eval(fal)
+        self.assertIn("falsifiability.version_invalid_or_missing", missing)
+
+    # --- {version: 1} alone (no counter_hypotheses) → counter_hypotheses_empty ---
+    def test_version_only_block_is_not_ready(self) -> None:
+        fal = {"version": 1}
+        self.assertTrue(vpr._is_structured(fal))
+        missing, _ = self._eval(fal)
+        self.assertIn("falsifiability.counter_hypotheses_empty", missing)
+        self.assertNotEqual(missing, [])
+
+    # --- Legacy block still uses legacy evaluator ---
+    def test_legacy_block_still_uses_legacy_evaluator(self) -> None:
+        fal = {
+            "counter_hypothesis": "Die Verbesserung ist durch Promptlänge erklärbar.",
+            "falsification_criterion": "Gleich langer Nicht-Spec-Prompt liefert gleiche Ergebnisse.",
+            "counterevidence_checked": True,
+        }
+        self.assertFalse(vpr._is_structured(fal))
+        missing, warnings = self._eval(fal)
+        self.assertEqual(missing, [])
+        self.assertEqual(warnings, [])
+
+    # --- assessment dict missing → assessment_missing ---
+    def test_missing_assessment_dict_is_blocking(self) -> None:
+        missing, _ = self._eval(
+            make_structured_falsifiability(
+                counter_hypotheses=[{
+                    "id": "h1",
+                    "statement": "Diese Gegenhypothese hat kein assessment-Objekt.",
+                }]
+            )
+        )
+        self.assertIn("falsifiability.assessment_missing", missing)
+
+
+try:
+    from jsonschema import Draft202012Validator
+    _JSONSCHEMA_AVAILABLE = True
+except ImportError:
+    _JSONSCHEMA_AVAILABLE = False
+
+SCHEMA_PATH = Path(__file__).resolve().parent.parent.parent / "schemas" / "experiment.manifest.schema.json"
+
+
+def _make_minimal_manifest(falsifiability: dict) -> dict:
+    """Wraps a falsifiability block into the minimal valid manifest envelope."""
+    return {
+        "schema_version": "0.1.0",
+        "experiment": {
+            "name": "fixture",
+            "hypothesis": "placeholder",
+            "status": "testing",
+            "category": "technique",
+            "evidence_level": "experimental",
+            "execution_status": "executed",
+            "execution_refs": ["results/evidence.jsonl"],
+            "falsifiability": falsifiability,
+        },
+    }
+
+
+@unittest.skipUnless(_JSONSCHEMA_AVAILABLE, "jsonschema not installed")
+class SchemaFalsifiabilityRegressionTests(unittest.TestCase):
+    """Schema-level regression tests for the falsifiability oneOf contract.
+
+    These tests use jsonschema directly and do NOT require rfc3339-validator
+    (format checks are disabled via format_checker=None).
+    """
+
+    def setUp(self) -> None:
+        with open(SCHEMA_PATH) as f:
+            import json as _json
+            schema = _json.load(f)
+        self.validator = Draft202012Validator(schema)
+
+    def _is_valid(self, manifest: dict) -> bool:
+        return self.validator.is_valid(manifest)
+
+    def _errors(self, manifest: dict) -> list:
+        return list(self.validator.iter_errors(manifest))
+
+    # --- Legacy block validates ---
+    def test_legacy_block_is_schema_valid(self) -> None:
+        doc = _make_minimal_manifest({
+            "counter_hypothesis": "Die Verbesserung ist durch Promptlänge erklärbar.",
+            "falsification_criterion": "Gleich langer Nicht-Spec-Prompt liefert gleiche Ergebnisse.",
+            "counterevidence_checked": True,
+        })
+        self.assertTrue(self._is_valid(doc))
+
+    # --- Structured v1 block validates ---
+    def test_structured_v1_block_is_schema_valid(self) -> None:
+        doc = _make_minimal_manifest({
+            "version": 1,
+            "falsification_criterion": "Kontrollarm zeigt gleiche Ergebnisse wie Behandlungsarm.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Der Effekt entsteht durch Ceiling-Effekt, nicht durch die Intervention.",
+                "assessment": {
+                    "status": "checked",
+                    "outcome": "supports_primary",
+                    "evidence_refs": [{"path": "results/evidence.jsonl"}],
+                },
+            }],
+        })
+        self.assertTrue(self._is_valid(doc))
+
+    # --- {version: 1} without counter_hypotheses fails schema ---
+    def test_version_only_fails_schema(self) -> None:
+        doc = _make_minimal_manifest({"version": 1})
+        self.assertFalse(self._is_valid(doc))
+
+    # --- counter_hypotheses without version fails schema ---
+    def test_counter_hypotheses_without_version_fails_schema(self) -> None:
+        doc = _make_minimal_manifest({
+            "falsification_criterion": "Kriterium lang genug.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Gegenhypothese ohne version-Feld.",
+                "assessment": {"status": "checked", "outcome": "supports_primary"},
+            }],
+        })
+        self.assertFalse(self._is_valid(doc))
+
+    # --- evidence_refs item without path fails schema ---
+    def test_evidence_refs_item_without_path_fails_schema(self) -> None:
+        doc = _make_minimal_manifest({
+            "version": 1,
+            "falsification_criterion": "Kriterium lang genug für die Validierung.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "evidence_refs item hat keinen path.",
+                "assessment": {
+                    "status": "checked",
+                    "outcome": "supports_primary",
+                    "evidence_refs": [{"section": "Ergebnisse"}],
+                },
+            }],
+        })
+        self.assertFalse(self._is_valid(doc))
+
+    # --- Hybrid legacy + structured fields fail schema (neither oneOf branch matches) ---
+    def test_hybrid_block_fails_schema(self) -> None:
+        doc = _make_minimal_manifest({
+            "counter_hypothesis": "Legacy-Feld.",
+            "falsification_criterion": "Gemeinsames Feld vorhanden.",
+            "counterevidence_checked": True,
+            "version": 1,
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Hybride Blöcke dürfen nicht valid sein.",
+                "assessment": {"status": "checked", "outcome": "supports_primary"},
+            }],
+        })
+        self.assertFalse(self._is_valid(doc))
+
+    # --- Invalid status enum fails schema ---
+    def test_invalid_status_enum_fails_schema(self) -> None:
+        doc = _make_minimal_manifest({
+            "version": 1,
+            "falsification_criterion": "Kriterium lang genug für die Validierung.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Ungültiger status-Wert soll Schema-Fehler erzeugen.",
+                "assessment": {"status": "fully_done", "outcome": "supports_primary"},
+            }],
+        })
+        self.assertFalse(self._is_valid(doc))
+
+    # --- Invalid outcome enum fails schema ---
+    def test_invalid_outcome_enum_fails_schema(self) -> None:
+        doc = _make_minimal_manifest({
+            "version": 1,
+            "falsification_criterion": "Kriterium lang genug für die Validierung.",
+            "counter_hypotheses": [{
+                "id": "h1",
+                "statement": "Ungültiger outcome-Wert soll Schema-Fehler erzeugen.",
+                "assessment": {"status": "checked", "outcome": "confirmed"},
+            }],
+        })
+        self.assertFalse(self._is_valid(doc))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

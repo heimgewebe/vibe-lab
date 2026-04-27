@@ -178,8 +178,12 @@ def is_historical_escape(state: dict[str, Any]) -> bool:
 
 
 def _is_structured(fal: dict) -> bool:
-    """True wenn der Block das structured v1-Format verwendet (counter_hypotheses-Key)."""
-    return "counter_hypotheses" in fal
+    """True wenn der Block Structured-Intent hat: 'version' oder 'counter_hypotheses' Key vorhanden.
+
+    Structured-Intent: Block wird als v1 evaluiert, auch wenn er malformed ist.
+    Ungültige oder fehlende version ist ein blocking Structured-Signal, kein Legacy-Fallback.
+    """
+    return "version" in fal or "counter_hypotheses" in fal
 
 
 def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]:
@@ -188,7 +192,16 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
     Gibt (missing, warnings) zurück. ``missing`` enthält blocking Signale,
     die promotion_ready verhindern. ``warnings`` sind nicht-blockierende Hinweise.
 
-    Blocking-Regeln:
+    Strukturelle Blocking-Regeln (Enum/Version-Validierung):
+      - version fehlt oder ist nicht 1 → version_invalid_or_missing
+      - counter_hypotheses fehlt, kein Array oder leer → counter_hypotheses_empty
+      - Item in counter_hypotheses kein Dict → counter_hypothesis_invalid
+      - assessment fehlt oder kein Dict → assessment_missing
+      - status fehlt oder nicht in STRUCTURED_STATUSES → assessment_invalid_status
+      - outcome fehlt oder nicht in STRUCTURED_OUTCOMES → assessment_invalid_outcome
+      Ungültige status/outcome-Werte dürfen NICHT in die semantische Logik fallen.
+
+    Semantische Blocking-Regeln (nur für valide status/outcome):
       - assessment.status ∈ {documented, pending} → assessment_not_checked
       - status ∈ {partially_checked, checked} + outcome ∈ {inconclusive, mixed}
         + pending_checks non-empty → assessment_pending_blocking
@@ -197,12 +210,17 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
       - outcome == supports_counterhypothesis → assessment_counterhypothesis_supported
       - status == blocked → assessment_blocked
 
-    Non-blocking:
-      - outcome ∈ {inconclusive, mixed} + pending_checks leer → warning inconclusive
-      - status ∈ {partially_checked, checked} + keine evidence_refs → warning
+    Non-blocking (→ warnings[]):
+      - outcome ∈ {inconclusive, mixed} + pending_checks leer → falsifiability_assessment_inconclusive
+      - status ∈ {partially_checked, checked} + keine evidence_refs → evidence_refs_missing
     """
     missing: list[str] = []
     warnings: list[str] = []
+
+    # Version: muss 1 sein.
+    version = fal.get("version")
+    if version != 1:
+        missing.append("falsifiability.version_invalid_or_missing")
 
     fc = fal.get("falsification_criterion")
     if not isinstance(fc, str) or len(fc.strip()) < FALSIFIABILITY_MIN_LEN:
@@ -213,6 +231,10 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
         missing.append("falsifiability.counter_hypotheses_empty")
         return missing, warnings
 
+    any_invalid_hypothesis = False
+    any_missing_assessment = False
+    any_invalid_status = False
+    any_invalid_outcome = False
     any_not_checked = False
     any_pending_blocking = False
     any_counterhypothesis_supported = False
@@ -222,16 +244,28 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
 
     for ch in chs:
         if not isinstance(ch, dict):
-            any_not_checked = True
+            any_invalid_hypothesis = True
             continue
 
         assessment = ch.get("assessment")
         if not isinstance(assessment, dict):
-            any_not_checked = True
+            any_missing_assessment = True
             continue
 
-        status = assessment.get("status", "")
-        outcome = assessment.get("outcome", "")
+        status = assessment.get("status")
+        outcome = assessment.get("outcome")
+
+        status_valid = isinstance(status, str) and status in STRUCTURED_STATUSES
+        outcome_valid = isinstance(outcome, str) and outcome in STRUCTURED_OUTCOMES
+
+        if not status_valid:
+            any_invalid_status = True
+        if not outcome_valid:
+            any_invalid_outcome = True
+
+        # Invalid status/outcome must not fall through into semantic logic.
+        if not status_valid or not outcome_valid:
+            continue
         pending = assessment.get("pending_checks") or []
         evidence_refs = assessment.get("evidence_refs") or []
 
@@ -262,6 +296,17 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
         if status in ("partially_checked", "checked") and not evidence_refs:
             any_evidence_refs_missing = True
 
+    # Structural blocking signals (enum/format violations).
+    if any_invalid_hypothesis:
+        missing.append("falsifiability.counter_hypothesis_invalid")
+    if any_missing_assessment:
+        missing.append("falsifiability.assessment_missing")
+    if any_invalid_status:
+        missing.append("falsifiability.assessment_invalid_status")
+    if any_invalid_outcome:
+        missing.append("falsifiability.assessment_invalid_outcome")
+
+    # Semantic blocking signals (only reached for valid status/outcome).
     if any_not_checked:
         missing.append("falsifiability.assessment_not_checked")
     if any_pending_blocking:
@@ -270,6 +315,8 @@ def evaluate_falsifiability_structured(fal: dict) -> tuple[list[str], list[str]]
         missing.append("falsifiability.assessment_counterhypothesis_supported")
     if any_blocked:
         missing.append("falsifiability.assessment_blocked")
+
+    # Non-blocking signals.
     if any_inconclusive_no_pending:
         warnings.append("falsifiability_assessment_inconclusive")
     if any_evidence_refs_missing:
@@ -282,8 +329,11 @@ def evaluate_falsifiability(state: dict[str, Any]) -> tuple[list[str], list[str]
     """Bewertet das falsifiability-Objekt.
 
     Routed zu structured (v1) oder legacy Evaluierung je nach Block-Form:
-      - Structured: ``counter_hypotheses`` Key vorhanden → evaluate_falsifiability_structured()
-      - Legacy: ``counter_hypothesis`` + ``falsification_criterion`` + ``counterevidence_checked``
+      - Structured-Intent: ``version`` oder ``counter_hypotheses`` Key vorhanden
+        → evaluate_falsifiability_structured() (auch bei malformed Blöcken).
+        Ungültige/fehlende version erzeugt blocking Signal, kein Legacy-Fallback.
+      - Legacy: kein ``version``- und kein ``counter_hypotheses``-Key
+        → counter_hypothesis + falsification_criterion + counterevidence_checked
 
     Legacy bleibt dauerhaft akzeptiert (rückwärtskompatibel). Für neue Manifeste
     ist das structured v1-Format bevorzugt.

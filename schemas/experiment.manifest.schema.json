@@ -85,97 +85,124 @@
         },
         "falsifiability": {
           "type": "object",
-          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Akzeptiert Legacy-Format (counter_hypothesis + falsification_criterion + counterevidence_checked) und strukturiertes Format v1 (version=1 + falsification_criterion + counter_hypotheses[]). Semantik-Gate ausschließlich in scripts/docmeta/validate_promotion_readiness.py — nicht in diesem JSON-Schema hart erzwungen. historical_escape (adoption_basis=reconstructed) bleibt als Ausnahme; Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
-          "properties": {
-            "version": {
-              "type": "integer",
-              "const": 1,
-              "description": "Structured-Format-Version. Wenn vorhanden, wird das structured (v1) Evaluierungsprotokoll angewandt."
+          "description": "Falsifizierbarkeitsstruktur (Promotion-Readiness Dry-Run Gate, Phase 1). Genau eines von zwei Formaten muss verwendet werden: Legacy-Format (counter_hypothesis + falsification_criterion + counterevidence_checked) oder Structured-Format v1 (version=1 + falsification_criterion + counter_hypotheses[]). Hybride Blöcke und lose Blöcke (z. B. {version: 1} ohne counter_hypotheses) sind ungültig. Semantik-Gate in validate_promotion_readiness.py. Leitthese: Bestätigung verteuern, nicht Wahrheit quantifizieren.",
+          "oneOf": [
+            {
+              "title": "Legacy-Format",
+              "description": "Rückwärtskompatibles Format: counter_hypothesis + falsification_criterion + counterevidence_checked. Für neue Manifeste Structured-Format v1 verwenden.",
+              "required": ["counter_hypothesis", "falsification_criterion", "counterevidence_checked"],
+              "additionalProperties": false,
+              "properties": {
+                "counter_hypothesis": {
+                  "type": "string",
+                  "minLength": 10,
+                  "description": "Alternativerklärung, die die beobachteten Effekte ebenfalls erklären könnte."
+                },
+                "falsification_criterion": {
+                  "type": "string",
+                  "minLength": 10,
+                  "description": "Operationale Bedingung, unter der die Hypothese als widerlegt oder geschwächt gelten würde."
+                },
+                "counterevidence_checked": {
+                  "type": "boolean",
+                  "description": "Wurde aktiv nach Gegenevidenz gesucht? Decision-Kreuzregel in validate_schema.py prüft verdict=confirms + counterevidence_checked=false in decision.yml."
+                }
+              }
             },
-            "counter_hypothesis": {
-              "type": "string",
-              "minLength": 10,
-              "description": "LEGACY: Einzelne Gegenhypothesen-Zeichenkette. Für neue Manifeste counter_hypotheses[] verwenden."
-            },
-            "falsification_criterion": {
-              "type": "string",
-              "minLength": 10,
-              "description": "Operationale Bedingung, unter der die Hypothese als widerlegt oder geschwächt gelten würde. Pflicht in Legacy- und Structured-Format."
-            },
-            "counterevidence_checked": {
-              "type": "boolean",
-              "description": "LEGACY: Boolean-Feld. Für neue Manifeste structured counter_hypotheses[].assessment verwenden. Semantik: wurde aktiv nach Gegenevidenz gesucht? Die Decision-Kreuzregel in scripts/docmeta/validate_schema.py prüft nur verdict=confirms + counterevidence_checked=false in decision.yml."
-            },
-            "counter_hypotheses": {
-              "type": "array",
-              "description": "Structured-Format v1: Liste von Gegenhypothesen mit Bewertungsstruktur. Semantik-Gate in validate_promotion_readiness.py.",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "minLength": 1,
-                    "description": "Stabiler Slug der Gegenhypothese (z. B. 'ceiling_effect', 'executor_bias')"
-                  },
-                  "statement": {
-                    "type": "string",
-                    "minLength": 10,
-                    "description": "Vollständige Formulierung der Gegenhypothese"
-                  },
-                  "assessment": {
+            {
+              "title": "Structured-Format v1",
+              "description": "Strukturiertes Format mit separaten Gegenhypothesen und maschinenlesbarem Assessment-Zustand.",
+              "required": ["version", "falsification_criterion", "counter_hypotheses"],
+              "additionalProperties": false,
+              "properties": {
+                "version": {
+                  "type": "integer",
+                  "const": 1,
+                  "description": "Muss 1 sein. Zukünftige Versionen erhalten eigene Einträge."
+                },
+                "falsification_criterion": {
+                  "type": "string",
+                  "minLength": 10,
+                  "description": "Operationale Bedingung, unter der die Haupthypothese als widerlegt oder geschwächt gelten würde."
+                },
+                "counter_hypotheses": {
+                  "type": "array",
+                  "minItems": 1,
+                  "description": "Nicht-leere Liste von Gegenhypothesen mit Bewertungsstruktur.",
+                  "items": {
                     "type": "object",
-                    "description": "Bewertungsstand für diese Gegenhypothese",
+                    "required": ["id", "statement", "assessment"],
+                    "additionalProperties": false,
                     "properties": {
-                      "status": {
+                      "id": {
                         "type": "string",
-                        "enum": ["documented", "pending", "partially_checked", "checked", "blocked", "not_applicable"],
-                        "description": "documented/pending: noch nicht geprüft; partially_checked: Prüfung begonnen; checked: Prüfung abgeschlossen; blocked: Prüfung nicht möglich; not_applicable: Hypothese nicht relevant"
+                        "minLength": 1,
+                        "description": "Stabiler Slug der Gegenhypothese (z. B. 'ceiling_effect')"
                       },
-                      "outcome": {
+                      "statement": {
                         "type": "string",
-                        "enum": ["not_checked", "inconclusive", "supports_primary", "supports_counterhypothesis", "mixed", "not_applicable"],
-                        "description": "Ergebnis der Prüfung: supports_primary stärkt die Haupthypothese; supports_counterhypothesis widerlegt sie; inconclusive/mixed: keine klare Richtung; not_checked: noch nicht geprüft; not_applicable: Outcome nicht bestimmbar"
+                        "minLength": 10,
+                        "description": "Vollständige Formulierung der Gegenhypothese"
                       },
-                      "evidence_refs": {
-                        "type": "array",
-                        "description": "Verweise auf Evidenzdateien, die die Bewertung stützen",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "path": {
-                              "type": "string",
-                              "description": "Repo-relativer Pfad zur Evidenzdatei"
-                            },
-                            "section": {
-                              "type": "string",
-                              "description": "Optionaler Abschnitt oder Überschrift in der Datei"
+                      "assessment": {
+                        "type": "object",
+                        "required": ["status", "outcome"],
+                        "additionalProperties": false,
+                        "description": "Bewertungsstand für diese Gegenhypothese",
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["documented", "pending", "partially_checked", "checked", "blocked", "not_applicable"],
+                            "description": "documented/pending: noch nicht geprüft; partially_checked: Prüfung begonnen; checked: abgeschlossen; blocked: nicht möglich; not_applicable: nicht relevant"
+                          },
+                          "outcome": {
+                            "type": "string",
+                            "enum": ["not_checked", "inconclusive", "supports_primary", "supports_counterhypothesis", "mixed", "not_applicable"],
+                            "description": "Ergebnis: supports_primary stärkt Haupthypothese; supports_counterhypothesis widerlegt sie; inconclusive/mixed: keine klare Richtung"
+                          },
+                          "evidence_refs": {
+                            "type": "array",
+                            "description": "Verweise auf Evidenzdateien, die die Bewertung stützen",
+                            "items": {
+                              "type": "object",
+                              "required": ["path"],
+                              "additionalProperties": false,
+                              "properties": {
+                                "path": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "description": "Repo-relativer Pfad zur Evidenzdatei"
+                                },
+                                "section": {
+                                  "type": "string",
+                                  "description": "Optionaler Abschnitt oder Überschrift in der Datei"
+                                }
+                              }
                             }
+                          },
+                          "pending_checks": {
+                            "type": "array",
+                            "items": { "type": "string", "minLength": 1 },
+                            "description": "Ausstehende Prüfschritte"
+                          },
+                          "limitations": {
+                            "type": "array",
+                            "items": { "type": "string", "minLength": 1 },
+                            "description": "Residuale Einschränkungen oder Confounder"
+                          },
+                          "confidence": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high"],
+                            "description": "Konfidenz in die Bewertung"
                           }
                         }
-                      },
-                      "pending_checks": {
-                        "type": "array",
-                        "items": { "type": "string" },
-                        "description": "Ausstehende Prüfschritte, die noch durchgeführt werden müssen"
-                      },
-                      "limitations": {
-                        "type": "array",
-                        "items": { "type": "string" },
-                        "description": "Residuale Einschränkungen oder Confounder, die nach Abschluss der Prüfung verbleiben"
-                      },
-                      "confidence": {
-                        "type": "string",
-                        "enum": ["low", "medium", "high"],
-                        "description": "Konfidenz in die Bewertung"
                       }
-                    },
-                    "required": ["status", "outcome"]
+                    }
                   }
-                },
-                "required": ["id", "statement", "assessment"]
+                }
               }
             }
-          }
+          ]
         }
       },
       "required": ["name", "hypothesis", "status", "category", "evidence_level"],
