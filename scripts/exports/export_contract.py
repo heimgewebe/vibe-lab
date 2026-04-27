@@ -1,7 +1,8 @@
 """export_contract.py — Single source of truth für Export-Pfade und Namenslogik.
 
 Importiert von generate_exports.py und validate_export_parity.py.
-Nie direkt editieren: Änderungen hier wirken sich auf Generator UND Validator aus.
+Änderungen an Pfaden oder Namenslogik nur hier vornehmen; Generator und Validator
+nicht separat anpassen, da Änderungen hier auf beide wirken.
 """
 
 from __future__ import annotations

@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name  # noqa: E402
+from export_contract import expected_export_name  # noqa: E402
 from validate_export_parity import (  # noqa: E402
     _source_name_map,
     check_collisions,
@@ -278,7 +278,7 @@ class TestValidateIntegration(unittest.TestCase):
 
 
 class TestLiveRepoState(unittest.TestCase):
-    """Prüft den tatsächlichen committed Repo-Zustand — mutiert nichts."""
+    """Prüft den aktuellen Checkout/Working Tree auf Export-Parität — mutiert nichts."""
 
     def test_live_repo_parity(self):
         errors = validate()

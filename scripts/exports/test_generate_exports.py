@@ -18,7 +18,6 @@ from pathlib import Path
 
 # Ensure import path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from export_contract import expected_export_name  # noqa: E402
 from generate_exports import (  # noqa: E402
     EXPORT_TARGETS,
     GENERATOR_ID,
@@ -78,25 +77,17 @@ class TestDetectCollisions(unittest.TestCase):
 
     def test_collision_uses_expected_export_name(self):
         """If expected_export_name() maps two paths to the same target, detect it."""
-        # Patch expected_export_name to simulate a collision (both → "same.md")
-        import export_contract as ec
-        original = ec.expected_export_name
-        ec.expected_export_name = lambda _p: "same.md"
-        import generate_exports as gen
-        gen.expected_export_name = ec.expected_export_name
-        try:
-            files = [
-                Path("/repo/instruction-blocks/a.md"),
-                Path("/repo/instruction-blocks/b.md"),
-            ]
+        from unittest.mock import patch
+        files = [
+            Path("/repo/instruction-blocks/a.md"),
+            Path("/repo/instruction-blocks/b.md"),
+        ]
+        with patch("generate_exports.expected_export_name", lambda _p: "same.md"):
             collisions = detect_collisions(files)
-            self.assertEqual(len(collisions), 1, "Expected one collision")
-            name, srcs = collisions[0]
-            self.assertEqual(name, "same.md")
-            self.assertEqual(len(srcs), 2)
-        finally:
-            ec.expected_export_name = original
-            gen.expected_export_name = original
+        self.assertEqual(len(collisions), 1, "Expected one collision")
+        name, srcs = collisions[0]
+        self.assertEqual(name, "same.md")
+        self.assertEqual(len(srcs), 2)
 
     def test_no_collision_empty_input(self):
         self.assertEqual(detect_collisions([]), [])

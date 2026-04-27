@@ -2,7 +2,8 @@
 """validate_export_parity.py — Prüft Export-Parität zwischen instruction-blocks/ und exports/.
 
 Läuft als eigenständiger CI-Validator (blocking), unabhängig von der Testsuite.
-Mutiert KEINE Dateien — liest ausschließlich den committed Repo-Zustand.
+Mutiert KEINE Dateien — liest den aktuell ausgecheckten Working-Tree-Zustand
+einschließlich möglicher uncommitted Änderungen.
 
 Prüfungen:
   1. Kollision   — zwei Quelldateien würden denselben Ziel-Dateinamen erzeugen
