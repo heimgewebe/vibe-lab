@@ -690,14 +690,14 @@ def ratchet_check(
         else:
             fe = frozen_by_path[path]
             allowed = set(fe.get("allowed_missing") or [])
-            if allowed < actual_missing:
-                uncovered = sorted(actual_missing - allowed)
+            uncovered = sorted(actual_missing - allowed)
+            excess = sorted(allowed - actual_missing)
+            if uncovered:
                 errors.append(
                     f"ratchet.freeze_insufficient: {path!r} freeze does not cover "
                     f"all missing signals (uncovered={uncovered})"
                 )
-            elif allowed > actual_missing:
-                excess = sorted(allowed - actual_missing)
+            if excess:
                 errors.append(
                     f"ratchet.freeze_too_broad: {path!r} freeze allows more than needed "
                     f"(excess={excess})"

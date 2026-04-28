@@ -1401,6 +1401,65 @@ class RatchetModeTests(unittest.TestCase):
             msg=f"Expected freeze_insufficient error, got: {errors}",
         )
 
+    # --- Test: disjunkter/gemischter Set → beide Fehler gleichzeitig ---
+    def test_freeze_mismatched_missing_set_fails_both_insufficient_and_too_broad(self) -> None:
+        """Disjoint allowed vs actual → both freeze_insufficient AND freeze_too_broad.
+
+        allowed = {"falsifiability"}
+        actual  = {"falsifiability.assessment_not_checked"}
+
+        Neither is a subset of the other. The elif chain previously produced a
+        false-green. Both signals must be reported independently.
+        """
+        entry = self._make_not_ready_entry(
+            "experiments/exp-drifted",
+            missing=["falsifiability.assessment_not_checked"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-drifted",
+            "allowed_missing": ["falsifiability"],  # disjunkt — falsch und unvollständig
+            "reason": "Drift: allowed_missing wurde nicht aktualisiert.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("freeze_insufficient" in e for e in errors),
+            msg=f"Expected freeze_insufficient error, got: {errors}",
+        )
+        self.assertTrue(
+            any("freeze_too_broad" in e for e in errors),
+            msg=f"Expected freeze_too_broad error, got: {errors}",
+        )
+
+    def test_freeze_partial_overlap_reports_both_directions(self) -> None:
+        """Partial overlap: some signals covered, one uncovered, one excess → both errors.
+
+        actual  = {"falsifiability", "falsifiability.assessment_not_checked"}
+        allowed = {"falsifiability", "falsifiability.assessment_blocked"}
+
+        "falsifiability" matches.
+        "assessment_not_checked" is uncovered → freeze_insufficient.
+        "assessment_blocked" is excess → freeze_too_broad.
+        Both must be reported.
+        """
+        entry = self._make_not_ready_entry(
+            "experiments/exp-overlap",
+            missing=["falsifiability", "falsifiability.assessment_not_checked"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-overlap",
+            "allowed_missing": ["falsifiability", "falsifiability.assessment_blocked"],
+            "reason": "Partial overlap: wrong second signal.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("freeze_insufficient" in e for e in errors),
+            msg=f"Expected freeze_insufficient in {errors}",
+        )
+        self.assertTrue(
+            any("freeze_too_broad" in e for e in errors),
+            msg=f"Expected freeze_too_broad in {errors}",
+        )
+
     # --- load_freeze_config: not present → None ---
     def test_load_freeze_config_returns_none_if_absent(self) -> None:
         absent = Path("/tmp/does_not_exist_promotion_readiness_freeze.yml")
