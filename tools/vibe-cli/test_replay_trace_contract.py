@@ -118,6 +118,22 @@ class ReplayTraceContractTests(unittest.TestCase):
         _, second = _capture_emit_json(VALID_CHAIN)
         self.assertEqual(first, second)
 
+    def test_summary_counts_are_consistent_for_valid_chain(self) -> None:
+        """Summary counters must match the materialized top-level and step-level data."""
+        _, raw = _capture_emit_json(VALID_CHAIN)
+        payload = json.loads(raw)
+
+        self.assertEqual(
+            payload["summary"]["record_count"],
+            payload["summary"]["step_count"]
+            + payload["summary"]["skipped_record_count"],
+        )
+        self.assertEqual(
+            payload["summary"]["error_count"],
+            len(payload["errors"])
+            + sum(len(step["errors"]) for step in payload["steps"]),
+        )
+
     # ------------------------------------------------------------------
     # T5 — invalid chain produces clear error structure
     # ------------------------------------------------------------------
@@ -207,6 +223,16 @@ class ReplayTraceContractTests(unittest.TestCase):
             self.assertEqual(payload["summary"]["record_count"], 1)
             self.assertEqual(payload["summary"]["step_count"], 0)
             self.assertEqual(payload["summary"]["skipped_record_count"], 1)
+            self.assertEqual(
+                payload["summary"]["record_count"],
+                payload["summary"]["step_count"]
+                + payload["summary"]["skipped_record_count"],
+            )
+            self.assertEqual(
+                payload["summary"]["error_count"],
+                len(payload["errors"])
+                + sum(len(step["errors"]) for step in payload["steps"]),
+            )
 
 
 if __name__ == "__main__":
