@@ -411,6 +411,45 @@ class ReplayTraceContractTests(unittest.TestCase):
         self.assertEqual(payload["summary"]["skipped_record_count"], 1)
         self._assert_summary_counts_consistent(payload)
 
+    def test_non_object_record_does_not_crash_emit_json_path(self) -> None:
+        """CLI path: non-object records must produce v0.2 diagnostics, not crash."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "non-object-record.json"
+            chain_path.write_text(
+                json.dumps(["not-an-object"]),
+                encoding="utf-8",
+            )
+
+            code, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+
+            self.assertEqual(code, 1)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+            self.assertEqual(
+                payload["skipped_records"],
+                [
+                    {
+                        "index": 0,
+                        "command": "<non_object_record>",
+                        "reason": "non_object_record",
+                    }
+                ],
+            )
+            self._assert_summary_counts_consistent(payload)
+
+    def test_builder_marks_skipped_record_invalid_even_without_validator_error(self) -> None:
+        """Skipped records must force valid_chain=false even when errors[] is empty."""
+        payload = rm._build_trace_v0_2(
+            "<external>/unknown.json",
+            [{"command": "unknown_command"}],
+            [],
+        )
+        self.validator.validate(payload)
+        self.assertFalse(payload["valid_chain"])
+        self.assertEqual(payload["summary"]["skipped_record_count"], 1)
+        self._assert_summary_counts_consistent(payload)
+
 
 if __name__ == "__main__":
     unittest.main()

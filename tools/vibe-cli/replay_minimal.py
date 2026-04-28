@@ -233,7 +233,7 @@ def _build_trace_v0_2(
             "skipped_record_count": len(skipped_records),
             "step_count": len(steps),
         },
-        "valid_chain": not bool(errors),
+        "valid_chain": (not bool(errors)) and (not bool(skipped_records)),
         "version": "v0.2",
         "would_mutate": False,
     }

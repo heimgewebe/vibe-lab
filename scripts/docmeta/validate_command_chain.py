@@ -134,7 +134,7 @@ def _validators_by_command() -> dict[str, Draft202012Validator]:
     return out
 
 
-def load_chain(chain_path: Path) -> list[dict[str, Any]]:
+def load_chain(chain_path: Path) -> list[Any]:
     """Load a chain JSON file; exits with code 2 on any setup error.
 
     Public because ``tools/vibe-cli/replay_minimal.py`` reuses it.
@@ -150,10 +150,6 @@ def load_chain(chain_path: Path) -> list[dict[str, Any]]:
     if not isinstance(data, list):
         print("ERROR: chain file must contain a JSON array of command records")
         sys.exit(2)
-    for i, item in enumerate(data):
-        if not isinstance(item, dict):
-            print(f"ERROR: chain[{i}] must be an object")
-            sys.exit(2)
     return data
 
 
@@ -163,12 +159,25 @@ def load_chain(chain_path: Path) -> list[dict[str, Any]]:
 
 
 def _validate_individual(
-    chain: list[dict[str, Any]],
+    chain: list[Any],
     validators: dict[str, Draft202012Validator],
     chain_label: str,
 ) -> list[ChainError]:
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):
+        if not isinstance(record, dict):
+            errors.append(
+                ChainError(
+                    code="contract_invalid",
+                    message=(
+                        f"chain[{idx}] must be a JSON object, got "
+                        f"{type(record).__name__}"
+                    ),
+                    command_index=idx,
+                    path=chain_label,
+                )
+            )
+            continue
         command = record.get("command")
         # Guard against unhashable command values (e.g. dict, list): an
         # unhashable value can never match a key in `validators`, so treat
@@ -206,7 +215,7 @@ def _validate_individual(
 
 
 def _validate_sequence(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     """Only accept the exact canonical sequence in v0.1.
 
@@ -214,7 +223,10 @@ def _validate_sequence(
     the v0.1 chain is fixed to read_context → write_change → validate_change.
     No prefix/partial chains are considered valid.
     """
-    actual = tuple(r.get("command") for r in chain)
+    actual = tuple(
+        r.get("command") if isinstance(r, dict) else "<non_object_record>"
+        for r in chain
+    )
     if actual == EXPECTED_SEQUENCE:
         return []
     return [
@@ -232,11 +244,13 @@ def _validate_sequence(
 
 
 def _validate_version_consistency(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     errors: list[ChainError] = []
     versions: set[Any] = set()
     for r in chain:
+        if not isinstance(r, dict):
+            continue
         if "version" in r:
             v = r.get("version")
             try:
@@ -263,7 +277,7 @@ def _validate_version_consistency(
 
 
 def _validate_target_files_continuity(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     # Only meaningful if chain matches the expected shape.
     # Build command→record map safely: skip records whose command value is
@@ -291,7 +305,11 @@ def _validate_target_files_continuity(
         return []
 
     write_idx = next(
-        (i for i, r in enumerate(chain) if r.get("command") == "write_change"),
+        (
+            i
+            for i, r in enumerate(chain)
+            if isinstance(r, dict) and r.get("command") == "write_change"
+        ),
         -1,
     )
     return [
@@ -308,7 +326,7 @@ def _validate_target_files_continuity(
 
 
 def _validate_locator_continuity(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     """Validate locator fields in write_change records.
 
@@ -335,6 +353,8 @@ def _validate_locator_continuity(
     """
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):
+        if not isinstance(record, dict):
+            continue
         if record.get("command") != "write_change":
             continue
         locator = record.get("locator")
@@ -351,11 +371,13 @@ def _validate_locator_continuity(
 
 
 def _validate_semantic_anti_invariants(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     """Encodes single-record anti-invariants from command-semantics.md."""
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):
+        if not isinstance(record, dict):
+            continue
         command = record.get("command")
         if command == "write_change":
             change_type = record.get("change_type")
@@ -423,7 +445,7 @@ def _validate_semantic_anti_invariants(
 
 
 def _validate_error_check_binding(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     """Each errors[] entry in validate_change must be bindable to a checks[].
 
@@ -450,6 +472,8 @@ def _validate_error_check_binding(
     """
     errors: list[ChainError] = []
     for idx, record in enumerate(chain):
+        if not isinstance(record, dict):
+            continue
         if record.get("command") != "validate_change":
             continue
         if record.get("success") is not False:
@@ -483,7 +507,7 @@ def _validate_error_check_binding(
 
 
 def _validate_validate_result_seam(
-    chain: list[dict[str, Any]], chain_label: str
+    chain: list[Any], chain_label: str
 ) -> list[ChainError]:
     """Validate→Result seam: plausibility checks between validate_change and write_change.
 
@@ -571,7 +595,7 @@ def _validate_validate_result_seam(
 
 
 def validate_chain(
-    chain: list[dict[str, Any]],
+    chain: list[Any],
     chain_label: str,
     validators: dict[str, Draft202012Validator] | None = None,
 ) -> list[ChainError]:
