@@ -76,7 +76,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -541,6 +543,20 @@ VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
 })
 
 
+_ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _is_strict_iso_date(value: str) -> bool:
+    """True wenn value exakt dem Format YYYY-MM-DD entspricht und ein gültiges Datum ist."""
+    if not _ISO_DATE_RE.fullmatch(value):
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
 def load_freeze_config(freeze_path: Path) -> dict[str, Any] | None:
     """Lädt .vibe/promotion-readiness-freeze.yml.
 
@@ -593,6 +609,11 @@ def validate_freeze_config(freeze_data: dict[str, Any]) -> list[str]:
     frozen_at = root.get("frozen_at")
     if not isinstance(frozen_at, str) or not frozen_at.strip():
         errors.append("freeze.missing_frozen_at: frozen_at must be a non-empty string")
+    elif not _is_strict_iso_date(frozen_at):
+        errors.append(
+            "freeze.invalid_frozen_at: frozen_at must be a valid ISO date YYYY-MM-DD "
+            f"(got {frozen_at!r})"
+        )
 
     experiments = root.get("experiments")
     if not isinstance(experiments, list):
@@ -617,7 +638,20 @@ def validate_freeze_config(freeze_data: dict[str, Any]) -> list[str]:
         if not isinstance(allowed_missing, list) or len(allowed_missing) == 0:
             errors.append(f"{prefix}.allowed_missing: must be a non-empty list")
         else:
+            seen_allowed: set[str] = set()
             for val in allowed_missing:
+                if not isinstance(val, str):
+                    errors.append(
+                        f"{prefix}.allowed_missing: value must be a string, "
+                        f"got {type(val).__name__!r}"
+                    )
+                    continue
+                if val in seen_allowed:
+                    errors.append(
+                        f"{prefix}.allowed_missing.duplicate_value: {val!r} "
+                        "appears more than once in this entry"
+                    )
+                seen_allowed.add(val)
                 if val not in VALID_ALLOWED_MISSING:
                     errors.append(
                         f"{prefix}.allowed_missing: unknown value {val!r} "

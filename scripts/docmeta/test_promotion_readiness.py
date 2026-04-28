@@ -1533,6 +1533,125 @@ class RatchetModeTests(unittest.TestCase):
             msg=f"Committed freeze file has duplicate paths: {duplicate_errors}",
         )
 
+    # --- frozen_at: strict ISO date validation ---
+    def _make_freeze_config_with_frozen_at(self, frozen_at: object) -> dict:
+        config: dict = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "experiments": [],
+            }
+        }
+        if frozen_at is not None:
+            config["promotion_readiness_freeze"]["frozen_at"] = frozen_at
+        return config
+
+    def test_valid_frozen_at_accepted(self) -> None:
+        """A properly formatted ISO date string is accepted."""
+        config = self._make_freeze_config_with_frozen_at("2026-04-27")
+        errors = vpr.validate_freeze_config(config)
+        self.assertFalse(
+            any("frozen_at" in e for e in errors),
+            msg=f"Expected valid frozen_at to be accepted, got: {errors}",
+        )
+
+    def test_frozen_at_missing_leading_zero_fails(self) -> None:
+        """'2026-4-27' (no zero-pad month) must be rejected."""
+        config = self._make_freeze_config_with_frozen_at("2026-4-27")
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("invalid_frozen_at" in e for e in errors),
+            msg=f"Expected invalid_frozen_at for '2026-4-27', got: {errors}",
+        )
+
+    def test_frozen_at_nonexistent_date_fails(self) -> None:
+        """'2026-02-31' (Feb 31 doesn't exist) must be rejected."""
+        config = self._make_freeze_config_with_frozen_at("2026-02-31")
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("invalid_frozen_at" in e for e in errors),
+            msg=f"Expected invalid_frozen_at for '2026-02-31', got: {errors}",
+        )
+
+    def test_frozen_at_missing_still_fails(self) -> None:
+        """Absent frozen_at still produces missing_frozen_at error."""
+        config = self._make_freeze_config_with_frozen_at(None)
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("frozen_at" in e for e in errors),
+            msg=f"Expected frozen_at error for missing field, got: {errors}",
+        )
+
+    def test_actual_freeze_file_has_valid_frozen_at(self) -> None:
+        """The committed freeze file has a valid ISO frozen_at."""
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data)
+        errors = vpr.validate_freeze_config(freeze_data)  # type: ignore[arg-type]
+        frozen_at_errors = [e for e in errors if "frozen_at" in e]
+        self.assertEqual(
+            frozen_at_errors, [],
+            msg=f"Committed freeze file has frozen_at errors: {frozen_at_errors}",
+        )
+
+    # --- allowed_missing: duplicate values per entry ---
+    def test_duplicate_allowed_missing_value_in_same_entry_fails(self) -> None:
+        """The same value twice in allowed_missing of one entry is rejected."""
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "frozen_at": "2026-04-27",
+                "experiments": [{
+                    "path": "experiments/exp-dup-allowed",
+                    "allowed_missing": ["falsifiability", "falsifiability"],
+                    "reason": "Duplicate allowed_missing value.",
+                }],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(
+            any("duplicate_value" in e for e in errors),
+            msg=f"Expected duplicate_value error, got: {errors}",
+        )
+
+    def test_same_value_in_different_entries_is_allowed(self) -> None:
+        """The same allowed_missing value in distinct entries is fine."""
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "frozen_at": "2026-04-27",
+                "experiments": [
+                    {
+                        "path": "experiments/exp-a",
+                        "allowed_missing": ["falsifiability"],
+                        "reason": "Entry A.",
+                    },
+                    {
+                        "path": "experiments/exp-b",
+                        "allowed_missing": ["falsifiability"],
+                        "reason": "Entry B — same value, different path, OK.",
+                    },
+                ],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertFalse(
+            any("duplicate_value" in e for e in errors),
+            msg=f"Same value in different entries must not be an error, got: {errors}",
+        )
+
+    def test_actual_freeze_has_no_duplicate_allowed_missing_values(self) -> None:
+        """No entry in the committed freeze file has duplicate allowed_missing values."""
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data)
+        errors = vpr.validate_freeze_config(freeze_data)  # type: ignore[arg-type]
+        dup_errors = [e for e in errors if "duplicate_value" in e]
+        self.assertEqual(
+            dup_errors, [],
+            msg=f"Committed freeze has duplicate allowed_missing values: {dup_errors}",
+        )
+
 
 class ValidAllowedMissingCoverageTests(unittest.TestCase):
     """Guards VALID_ALLOWED_MISSING against drift from evaluate_falsifiability.
@@ -1584,6 +1703,82 @@ class ValidAllowedMissingCoverageTests(unittest.TestCase):
             missing_from_constant,
             set(),
             msg=f"Structured signals not in VALID_ALLOWED_MISSING: {missing_from_constant}",
+        )
+
+
+class ValidAllowedMissingStaticCoverageTests(unittest.TestCase):
+    """AST-based drift guard: literal missing signals emitted by the validator
+    must all appear in VALID_ALLOWED_MISSING.
+
+    Captures all `missing.append("falsifiability...")` call nodes whose argument
+    is a string constant starting with "falsifiability". This covers the structured-
+    format v1 signals and the top-level "falsifiability" signal (the majority).
+
+    Limitation: f-string-generated legacy signals
+    (`f"falsifiability.{field}"`, `f"falsifiability.{field}_not_string"`,
+    `f"falsifiability.{field}_too_short"`) are NOT string constants and therefore
+    not captured by the AST visitor. They are covered by:
+    - ValidAllowedMissingCoverageTests.test_all_real_missing_signals_are_in_valid_allowed_missing
+      (real-corpus test against current experiments directory)
+    - Their values are stable legacy signals unlikely to change.
+
+    If the validator is ever refactored to emit new signals via f-strings, extend
+    the real-corpus test or centralise signal emission via a helper.
+    """
+
+    def test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing(
+        self,
+    ) -> None:
+        """All `missing.append("falsifiability...")` literals in the validator are in VALID_ALLOWED_MISSING."""
+        import ast as _ast
+
+        source_path = Path(vpr.__file__)
+        tree = _ast.parse(source_path.read_text(encoding="utf-8"))
+        observed: set[str] = set()
+
+        class _Visitor(_ast.NodeVisitor):
+            def visit_Call(self, node: _ast.Call) -> None:  # type: ignore[override]
+                if (
+                    isinstance(node.func, _ast.Attribute)
+                    and isinstance(node.func.value, _ast.Name)
+                    and node.func.value.id == "missing"
+                ):
+                    if node.func.attr == "append" and len(node.args) == 1:
+                        arg = node.args[0]
+                        if (
+                            isinstance(arg, _ast.Constant)
+                            and isinstance(arg.value, str)
+                            and arg.value.startswith("falsifiability")
+                        ):
+                            observed.add(arg.value)
+                    elif node.func.attr == "extend" and len(node.args) == 1:
+                        arg = node.args[0]
+                        if isinstance(arg, (_ast.List, _ast.Tuple)):
+                            for elt in arg.elts:
+                                if (
+                                    isinstance(elt, _ast.Constant)
+                                    and isinstance(elt.value, str)
+                                    and elt.value.startswith("falsifiability")
+                                ):
+                                    observed.add(elt.value)
+                self.generic_visit(node)
+
+        _Visitor().visit(tree)
+
+        self.assertGreater(
+            len(observed),
+            0,
+            msg="AST visitor found no literal falsifiability signals — visitor may be broken.",
+        )
+
+        unknown = observed - vpr.VALID_ALLOWED_MISSING
+        self.assertEqual(
+            unknown,
+            set(),
+            msg=(
+                f"Validator emits literal missing signals not in VALID_ALLOWED_MISSING: "
+                f"{sorted(unknown)}. Update VALID_ALLOWED_MISSING in validate_promotion_readiness.py."
+            ),
         )
 
 
