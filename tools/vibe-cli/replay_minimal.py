@@ -260,7 +260,15 @@ def _load_chain_emit_json_safe(chain_path: Path) -> tuple[list[Any], list[str], 
     if not chain_path.is_file():
         return [], [f"chain file missing: {display_path_v0_2(chain_path)}"], 2
     try:
-        data = json.loads(chain_path.read_text(encoding="utf-8"))
+        raw = chain_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        return (
+            [],
+            [f"chain file could not be read: {display_path_v0_2(chain_path)} ({type(exc).__name__})"],
+            2,
+        )
+    try:
+        data = json.loads(raw)
     except json.JSONDecodeError as exc:
         return (
             [],
@@ -309,7 +317,7 @@ def run(chain_path: Path, emit_json: bool = False) -> int:
     result = _build_trace_v0_2(chain_label, chain, errors)
     result = _sanitize_v0_2_payload(result)
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0 if not errors else 1
+    return 0 if result["valid_chain"] else 1
 
 
 def main() -> None:
