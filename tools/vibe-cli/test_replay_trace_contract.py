@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 """Contract tests for the v0.2 replay trace format (--emit-json mode).
 
-Seven invariants verified:
-  T1  Valid minimal chain → JSON conforms to schemas/replay.trace.schema.json
-  T2  Every step has would_mutate: false
-  T3  Top-level has would_mutate: false
-  T4  Output is byte-identical over two runs (determinism)
-  T5  Invalid chain → clear error structure (valid_chain=false, errors non-empty)
-  T6  --dry-run --emit-json work together; stdout is schema-conformant v0.2 JSON
-  T7  JSON contains no absolute local machine paths
+Core invariants verified:
+    T1  Valid minimal chain → JSON conforms to schemas/replay.trace.schema.json
+    T2  Every step has would_mutate: false
+    T3  Top-level has would_mutate: false
+    T4  Output is byte-identical over two runs (determinism)
+    T5  Invalid chain → clear error structure (valid_chain=false, errors non-empty)
+    T6  --dry-run --emit-json work together; stdout is schema-conformant v0.2 JSON
+    T7  No absolute local machine paths in any v0.2 payload string
+    T8  Setup failures still emit schema-conformant v0.2 JSON (exit code 2)
 """
 
 from __future__ import annotations
 
 import io
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -71,6 +73,31 @@ def _capture_legacy_output(chain_path: Path) -> tuple[int, str]:
     finally:
         sys.stdout = saved
     return code, buf.getvalue()
+
+
+def _iter_strings(node: Any) -> list[str]:
+    """Collect all string leaves recursively from a JSON-like structure."""
+    out: list[str] = []
+    if isinstance(node, dict):
+        for v in node.values():
+            out.extend(_iter_strings(v))
+    elif isinstance(node, list):
+        for item in node:
+            out.extend(_iter_strings(item))
+    elif isinstance(node, str):
+        out.append(node)
+    return out
+
+
+def _contains_absolute_posix_path(value: str) -> bool:
+    """Return true when value contains a likely POSIX absolute path token."""
+    # Ignore redaction marker and URL authorities.
+    if value.startswith("<external>/") or "//" in value:
+        return False
+    # Detect path-like tokens such as /tmp/a.txt or /home/x/file.py:12
+    return bool(
+        re.search(r"(^|[\s:=\[\]\(\)\{\}\"',])/[^\s\"'<>|\[\]{}(),;]+", value)
+    )
 
 
 class ReplayTraceContractTests(unittest.TestCase):
@@ -217,11 +244,66 @@ class ReplayTraceContractTests(unittest.TestCase):
         )
 
     # ------------------------------------------------------------------
+    # T8 — setup failures must still emit schema-valid JSON
+    # ------------------------------------------------------------------
+
+    def test_emit_json_missing_chain_file_returns_schema_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            missing_path = Path(tmpdir) / "does-not-exist.json"
+            code, raw = _capture_emit_json(missing_path)
+            payload = json.loads(raw)
+
+            self.assertEqual(code, 2)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+            self.assertEqual(payload["steps"], [])
+            self.assertEqual(payload["skipped_records"], [])
+            self.assertEqual(payload["summary"]["record_count"], 0)
+            self.assertEqual(payload["summary"]["step_count"], 0)
+            self.assertEqual(payload["summary"]["skipped_record_count"], 0)
+            self.assertGreaterEqual(payload["summary"]["error_count"], 1)
+            self.assertTrue(payload["errors"])
+            self.assertNotIn(tmpdir, raw)
+
+    def test_emit_json_malformed_json_returns_schema_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            malformed_path = Path(tmpdir) / "malformed.json"
+            malformed_path.write_text("{not json", encoding="utf-8")
+
+            code, raw = _capture_emit_json(malformed_path)
+            payload = json.loads(raw)
+
+            self.assertEqual(code, 2)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+            self.assertTrue(payload["errors"])
+            self.assertEqual(payload["steps"], [])
+            self.assertNotIn(tmpdir, raw)
+
+    def test_emit_json_non_array_json_returns_schema_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            non_array_path = Path(tmpdir) / "non-array.json"
+            non_array_path.write_text(
+                json.dumps({"command": "read_context"}),
+                encoding="utf-8",
+            )
+
+            code, raw = _capture_emit_json(non_array_path)
+            payload = json.loads(raw)
+
+            self.assertEqual(code, 2)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+            self.assertEqual(payload["steps"], [])
+            self.assertEqual(payload["summary"]["record_count"], 0)
+            self.assertGreaterEqual(payload["summary"]["error_count"], 1)
+
+    # ------------------------------------------------------------------
     # T7 — no absolute local machine paths in output
     # ------------------------------------------------------------------
 
-    def test_t7_no_absolute_paths_in_output(self) -> None:
-        """External chain paths are redacted deterministically and remain schema-valid."""
+    def test_v0_2_payload_contains_no_absolute_paths_recursively(self) -> None:
+        """No absolute local paths may appear in any payload string leaf."""
         with tempfile.TemporaryDirectory() as tmpdir:
             external_chain = Path(tmpdir) / "valid-minimal.json"
             external_chain.write_text(VALID_CHAIN.read_text(encoding="utf-8"), encoding="utf-8")
@@ -231,10 +313,97 @@ class ReplayTraceContractTests(unittest.TestCase):
             self._assert_summary_counts_consistent(payload)
 
             self.validator.validate(payload)
-            self.assertEqual(payload["chain_path"], "<external>/valid-minimal.json")
-            self.assertEqual(payload["skipped_records"], [])
+            for s in _iter_strings(payload):
+                self.assertFalse(
+                    _contains_absolute_posix_path(s),
+                    f"absolute path leaked in payload string: {s!r}",
+                )
             self.assertNotIn(str(REPO_ROOT), raw)
             self.assertNotIn(tmpdir, raw)
+
+    def test_absolute_target_files_are_redacted_or_normalized(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "abs-target.json"
+            abs_target = "/tmp/sensitive/readme.md"
+            chain_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "command": "read_context",
+                            "version": "v0.1",
+                            "target_files": [abs_target],
+                            "extracted_facts": ["fact"],
+                        },
+                        {
+                            "command": "write_change",
+                            "version": "v0.1",
+                            "target_files": [abs_target],
+                            "change_type": "modify",
+                            "locator": "docs/index.md#L1",
+                            "exact_before": "a",
+                            "exact_after": "b",
+                            "forbidden_changes": [],
+                        },
+                        {
+                            "command": "validate_change",
+                            "version": "v0.1",
+                            "checks": ["lint"],
+                            "success": True,
+                            "errors": [],
+                        },
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            _, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.validator.validate(payload)
+            self.assertNotIn(abs_target, raw)
+            for s in _iter_strings(payload):
+                self.assertFalse(_contains_absolute_posix_path(s), s)
+
+    def test_absolute_locator_is_redacted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "abs-locator.json"
+            abs_locator = "/tmp/sensitive/readme.md:10"
+            chain_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "command": "read_context",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md"],
+                            "extracted_facts": ["fact"],
+                        },
+                        {
+                            "command": "write_change",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md"],
+                            "change_type": "modify",
+                            "locator": abs_locator,
+                            "exact_before": "a",
+                            "exact_after": "b",
+                            "forbidden_changes": [],
+                        },
+                        {
+                            "command": "validate_change",
+                            "version": "v0.1",
+                            "checks": ["lint"],
+                            "success": True,
+                            "errors": [],
+                        },
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            _, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.validator.validate(payload)
+            self.assertNotIn(abs_locator, raw)
+            for s in _iter_strings(payload):
+                self.assertFalse(_contains_absolute_posix_path(s), s)
 
     def test_legacy_external_chain_path_remains_unredacted(self) -> None:
         """Legacy output keeps its external path behavior; v0.2 keeps redacted behavior."""

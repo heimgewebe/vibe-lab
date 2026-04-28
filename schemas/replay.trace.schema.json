@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "replay.trace.schema.json",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/replay.trace.schema.json",
   "title": "Replay Trace Contract v0.2",
   "description": "Schema for the deterministic, non-mutating replay trace emitted by replay_minimal.py --emit-json.",
   "type": "object",
