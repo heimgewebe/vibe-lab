@@ -110,6 +110,13 @@ rules:
     origin: handcrafted
 
   # ---- contracts / schemas ---------------------------------------------------
+  - pattern: .vibe/promotion-readiness-freeze.yml
+    layer: governance
+    kind: governance_baseline
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: .vibe/generated-artifacts.yml
     layer: contract
     kind: generated_artifact_contract

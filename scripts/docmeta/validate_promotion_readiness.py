@@ -61,9 +61,11 @@ Nicht-Ziele (Phase 1):
     siehe docs/blueprints/blueprint-v2.md Übergangsregel) — solche
     Experimente werden als ``historical_escape`` markiert, nie blockiert.
 
-Zukünftige Phasen (nicht in diesem PR):
-  * Phase 2: Hard-Fail nur für NEUE Experimente via freeze-list.
-  * Phase 3: globaler Hard-Fail.
+Aktuelle Phasen:
+  * Phase 1 (Default): Dry-run-Report, exit=0 bei not_ready.
+  * Phase 2 (--ratchet): Hard-Fail für neue nicht eingefrorene Verstöße
+    gegen die Freeze-Baseline.
+  * Phase 3: globaler Hard-Fail ohne Freeze-Baseline (zukünftige Option).
 
 Determinismus:
   * Keine Timestamps im Output.
@@ -74,8 +76,11 @@ Determinismus:
 
 from __future__ import annotations
 
+import argparse
 import json
+import re
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -95,6 +100,7 @@ except ImportError:
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 REPORT_PATH = REPO_ROOT / "docs" / "_generated" / "promotion-readiness.json"
+FREEZE_PATH = REPO_ROOT / ".vibe" / "promotion-readiness-freeze.yml"
 REPORT_SCHEMA_VERSION = "0.1.0"
 REPORT_MODE = "dry_run"
 REPORT_TRIGGER = "need_for_reproducibility"
@@ -507,7 +513,209 @@ def render_report(report: dict[str, Any]) -> str:
     return json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
 
 
+# ---------------------------------------------------------------------------
+# Ratchet-Modus (Phase 2)
+# ---------------------------------------------------------------------------
+
+VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
+    "falsifiability",
+    "falsifiability.counter_hypothesis",
+    "falsifiability.falsification_criterion",
+    "falsifiability.counterevidence_checked",
+    "falsifiability.counter_hypothesis_not_string",
+    "falsifiability.counter_hypothesis_too_short",
+    "falsifiability.falsification_criterion_not_string",
+    "falsifiability.falsification_criterion_too_short",
+    "falsifiability.version_invalid_or_missing",
+    "falsifiability.falsification_criterion_missing_or_short",
+    "falsifiability.counter_hypotheses_empty",
+    "falsifiability.counter_hypothesis_invalid",
+    "falsifiability.assessment_missing",
+    "falsifiability.assessment_invalid_status",
+    "falsifiability.assessment_invalid_outcome",
+    "falsifiability.assessment_not_checked",
+    "falsifiability.assessment_pending_blocking",
+    "falsifiability.assessment_counterhypothesis_supported",
+    "falsifiability.assessment_blocked",
+})
+
+_ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _is_strict_iso_date(value: str) -> bool:
+    if not _ISO_DATE_RE.fullmatch(value):
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def load_freeze_config(freeze_path: Path) -> dict[str, Any] | None:
+    if not freeze_path.is_file():
+        return None
+    try:
+        with open(freeze_path) as f:
+            data = yaml.safe_load(f) or {}
+    except Exception as exc:
+        return {"_load_error": str(exc)}
+    if not isinstance(data, dict):
+        return {"_load_error": "root is not a mapping"}
+    return data
+
+
+def validate_freeze_config(freeze_data: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if "_load_error" in freeze_data:
+        errors.append(f"freeze.load_error: {freeze_data['_load_error']}")
+        return errors
+
+    root = freeze_data.get("promotion_readiness_freeze")
+    if not isinstance(root, dict):
+        errors.append("freeze.missing_root_key: 'promotion_readiness_freeze' must be a mapping")
+        return errors
+
+    if root.get("version") != 1:
+        errors.append(f"freeze.invalid_version: expected 1, got {root.get('version')!r}")
+
+    reason = root.get("reason")
+    if not isinstance(reason, str) or not reason.strip():
+        errors.append("freeze.missing_reason: top-level reason must be a non-empty string")
+
+    frozen_at = root.get("frozen_at")
+    if not isinstance(frozen_at, str) or not frozen_at.strip():
+        errors.append("freeze.missing_frozen_at: frozen_at must be a non-empty string")
+    elif not _is_strict_iso_date(frozen_at):
+        errors.append(
+            "freeze.invalid_frozen_at: frozen_at must be a valid ISO date YYYY-MM-DD "
+            f"(got {frozen_at!r})"
+        )
+
+    experiments = root.get("experiments")
+    if not isinstance(experiments, list):
+        errors.append("freeze.experiments_not_a_list: 'experiments' must be a list")
+        return errors
+
+    seen_paths: dict[str, int] = {}
+    for i, entry in enumerate(experiments):
+        prefix = f"freeze.experiments[{i}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{prefix}: entry must be a mapping")
+            continue
+
+        path = entry.get("path")
+        if not isinstance(path, str) or not path.strip():
+            errors.append(f"{prefix}.path: must be a non-empty string")
+        elif path in seen_paths:
+            errors.append(
+                f"freeze.duplicate_path: {path!r} appears more than once "
+                f"(first at index {seen_paths[path]}, again at index {i})"
+            )
+        else:
+            seen_paths[path] = i
+
+        entry_reason = entry.get("reason")
+        if not isinstance(entry_reason, str) or not entry_reason.strip():
+            errors.append(f"{prefix}.reason: must be a non-empty string")
+
+        allowed_missing = entry.get("allowed_missing")
+        if not isinstance(allowed_missing, list) or len(allowed_missing) == 0:
+            errors.append(f"{prefix}.allowed_missing: must be a non-empty list")
+            continue
+        seen_allowed: set[str] = set()
+        for val in allowed_missing:
+            if not isinstance(val, str):
+                errors.append(
+                    f"{prefix}.allowed_missing: value must be a string, "
+                    f"got {type(val).__name__!r}"
+                )
+                continue
+            if val in seen_allowed:
+                errors.append(
+                    f"{prefix}.allowed_missing.duplicate_value: {val!r} "
+                    "appears more than once in this entry"
+                )
+            seen_allowed.add(val)
+            if val not in VALID_ALLOWED_MISSING:
+                errors.append(
+                    f"{prefix}.allowed_missing: unknown value {val!r} "
+                    "(valid: see VALID_ALLOWED_MISSING in validate_promotion_readiness.py)"
+                )
+    return errors
+
+
+def ratchet_check(
+    entries: list[dict[str, Any]],
+    freeze_config: dict[str, Any],
+) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    root = freeze_config.get("promotion_readiness_freeze", {})
+    frozen_list = root.get("experiments") or []
+    frozen_by_path: dict[str, dict] = {}
+    for fe in frozen_list:
+        if isinstance(fe, dict) and isinstance(fe.get("path"), str):
+            frozen_by_path[fe["path"]] = fe
+    entry_by_path: dict[str, dict] = {e["path"]: e for e in entries}
+
+    for entry in entries:
+        if entry["promotion_ready"] or entry["historical_escape"]:
+            continue
+        path = entry["path"]
+        actual_missing = set(entry["missing"])
+        if path not in frozen_by_path:
+            errors.append(
+                f"ratchet.unregistered_violation: {path!r} is not_ready and not in freeze "
+                f"(missing={sorted(actual_missing)})"
+            )
+            continue
+        allowed = set((frozen_by_path[path] or {}).get("allowed_missing") or [])
+        uncovered = sorted(actual_missing - allowed)
+        excess = sorted(allowed - actual_missing)
+        if uncovered:
+            errors.append(
+                f"ratchet.freeze_insufficient: {path!r} freeze does not cover "
+                f"all missing signals (uncovered={uncovered})"
+            )
+        if excess:
+            errors.append(
+                f"ratchet.freeze_too_broad: {path!r} freeze allows more than needed "
+                f"(excess={excess})"
+            )
+
+    for path in frozen_by_path:
+        if path not in entry_by_path:
+            errors.append(
+                f"ratchet.stale_freeze_entry: {path!r} is in freeze but not found "
+                "in evaluated experiments (deleted or renamed?)"
+            )
+            continue
+        entry = entry_by_path[path]
+        if entry["promotion_ready"]:
+            errors.append(
+                f"ratchet.obsolete_freeze_entry: {path!r} is now promotion_ready; "
+                "remove it from .vibe/promotion-readiness-freeze.yml"
+            )
+        elif entry["historical_escape"]:
+            errors.append(
+                f"ratchet.obsolete_freeze_entry: {path!r} is a historical_escape; "
+                "historical escapes do not need a freeze entry"
+            )
+
+    return errors, warnings
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Promotion-Readiness validator. Default: dry-run (always exit 0). "
+            "Use --ratchet for blocking Phase-2 checks."
+        )
+    )
+    parser.add_argument("--ratchet", action="store_true", help="Enable blocking ratchet mode")
+    args = parser.parse_args()
+
     experiments_dir = REPO_ROOT / "experiments"
     if not experiments_dir.is_dir():
         print(
@@ -543,10 +751,57 @@ def main() -> int:
         for e in not_ready_entries:
             missing = ", ".join(e["missing"]) or "(none)"
             print(f"    - {e['path']}: missing={missing}")
-    print()
-    print("  (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)")
+    if not args.ratchet:
+        print()
+        print("  (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)")
+        return 0
 
-    # Dry-Run: exit=0 auch bei not_ready.
+    print()
+    print("  (Phase-1 dry-run report above is informational; --ratchet below is blocking.)")
+    print()
+    print("🔒 Ratchet Mode (Phase 2)")
+    rel_freeze = FREEZE_PATH.relative_to(REPO_ROOT).as_posix()
+    freeze_data = load_freeze_config(FREEZE_PATH)
+    if freeze_data is None:
+        print(f"  ERROR: --ratchet requires {rel_freeze} to exist.", file=sys.stderr)
+        return 1
+    config_errors = validate_freeze_config(freeze_data)
+    if config_errors:
+        print(f"  ERROR: {rel_freeze} is invalid:", file=sys.stderr)
+        for err in config_errors:
+            print(f"    - {err}", file=sys.stderr)
+        return 1
+
+    ratchet_errors, ratchet_warnings = ratchet_check(entries, freeze_data)
+    if ratchet_warnings:
+        print("  Warnings:")
+        for warning in ratchet_warnings:
+            print(f"    - {warning}")
+    if ratchet_errors:
+        print("  RATCHET FAILED — blocking violations found:", file=sys.stderr)
+        for err in ratchet_errors:
+            print(f"    ❌ {err}", file=sys.stderr)
+        print(file=sys.stderr)
+        print(
+            "  To freeze a legitimate historical not_ready: add an entry with explicit\n"
+            f"  reason to {rel_freeze}.",
+            file=sys.stderr,
+        )
+        print(
+            "  To add a genuinely new experiment: ensure falsifiability is present\n"
+            "  before merging.",
+            file=sys.stderr,
+        )
+        return 1
+
+    frozen_count = len(
+        (freeze_data.get("promotion_readiness_freeze") or {}).get("experiments") or []
+    )
+    print(
+        f"  ✅ Ratchet passed: {len(not_ready_entries)} frozen not_ready case(s) tolerated, "
+        f"{frozen_count} freeze entries validated."
+    )
+    print("     No unregistered violations. No stale or over-permissive freeze entries.")
     return 0
 
 
