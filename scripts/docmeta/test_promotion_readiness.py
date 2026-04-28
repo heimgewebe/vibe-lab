@@ -16,6 +16,7 @@ Covers:
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -1198,6 +1199,11 @@ class RatchetModeTests(unittest.TestCase):
             }
         }
 
+    _PATH_NORMALFORM_ERROR = (
+        "must be a normalized repo-relative direct experiments/<name> path without '.', '..', "
+        "duplicate separators, backslashes, or surrounding whitespace"
+    )
+
     def test_frozen_not_ready_accepted_by_ratchet(self) -> None:
         entry = self._make_not_ready_entry("experiments/exp-historical")
         freeze = self._make_freeze_config([{
@@ -1268,6 +1274,96 @@ class RatchetModeTests(unittest.TestCase):
         }])
         errors = vpr.validate_freeze_config(config)
         self.assertTrue(any("path" in e for e in errors))
+
+    def test_invalid_freeze_non_experiment_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": ".vibe/other.yml",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Invalid path root.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_absolute_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "/experiments/foo",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Absolute path is not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_parent_traversal_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/../secrets",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Parent traversal is not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_duplicate_separator_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments//foo",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Duplicate separators are not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_dot_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/.",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Dot segment is not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_trailing_slash_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/foo/",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Trailing slash is not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_nested_experiment_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/foo/bar",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Nested path is not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_backslash_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments\\foo",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Backslashes are not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_invalid_freeze_path_with_whitespace_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": " experiments/foo ",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Surrounding whitespace is not allowed.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
+
+    def test_valid_freeze_direct_experiment_path_passes_path_validation(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/2026-04-12_spec-first-legacy",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Direct experiment path should be valid.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertFalse(any(self._PATH_NORMALFORM_ERROR in e for e in errors))
 
     def test_invalid_freeze_unknown_allowed_missing_value_fails(self) -> None:
         config = self._make_freeze_config([{
@@ -1363,6 +1459,70 @@ class RatchetModeTests(unittest.TestCase):
         assert isinstance(freeze_data, dict)
         errors, _ = vpr.ratchet_check(entries, freeze_data)
         self.assertEqual(errors, [])
+
+    def test_cli_ratchet_passes_with_actual_freeze(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            report_path = Path(temp_dir) / "promotion-readiness.json"
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(Path(vpr.__file__)),
+                    "--ratchet",
+                    "--report-path",
+                    str(report_path),
+                ],
+                cwd=vpr.REPO_ROOT,
+                capture_output=True,
+                text=True,
+            )
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        self.assertIn("Ratchet passed", result.stdout)
+
+    def test_cli_ratchet_fails_when_freeze_file_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            freeze_path = Path(temp_dir) / "missing-freeze.yml"
+            report_path = Path(temp_dir) / "promotion-readiness.json"
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(Path(vpr.__file__)),
+                    "--ratchet",
+                    "--freeze-path",
+                    str(freeze_path),
+                    "--report-path",
+                    str(report_path),
+                ],
+                cwd=vpr.REPO_ROOT,
+                capture_output=True,
+                text=True,
+            )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("requires", result.stderr)
+
+    def test_cli_ratchet_fails_with_invalid_freeze_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            invalid_file = Path(temp_dir) / "invalid-freeze.yml"
+            report_path = Path(temp_dir) / "promotion-readiness.json"
+            invalid_file.write_text("- not-a-mapping\n", encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(Path(vpr.__file__)),
+                    "--ratchet",
+                    "--freeze-path",
+                    str(invalid_file),
+                    "--report-path",
+                    str(report_path),
+                ],
+                cwd=vpr.REPO_ROOT,
+                capture_output=True,
+                text=True,
+            )
+        self.assertEqual(result.returncode, 1)
+        self.assertTrue(
+            "invalid" in result.stderr or "load_error" in result.stderr,
+            msg=result.stderr,
+        )
 
     def test_duplicate_path_in_freeze_fails_validation(self) -> None:
         config = {
