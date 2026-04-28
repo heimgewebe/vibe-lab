@@ -1290,8 +1290,12 @@ class RatchetModeTests(unittest.TestCase):
         self.assertTrue(any("version" in e for e in errors))
 
     def test_load_freeze_config_returns_none_if_absent(self) -> None:
-        absent = Path("/tmp/does_not_exist_promotion_readiness_freeze.yml")
-        result = vpr.load_freeze_config(absent)
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            absent = Path(temp_dir) / "does_not_exist_promotion_readiness_freeze.yml"
+            self.assertFalse(absent.exists())
+            result = vpr.load_freeze_config(absent)
         self.assertIsNone(result)
 
     def test_freeze_too_broad_fails_ratchet(self) -> None:
@@ -1347,15 +1351,17 @@ class RatchetModeTests(unittest.TestCase):
 
     def test_actual_freeze_file_is_valid(self) -> None:
         freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
-        self.assertIsNotNone(freeze_data)
-        errors = vpr.validate_freeze_config(freeze_data)  # type: ignore[arg-type]
+        self.assertIsInstance(freeze_data, dict)
+        assert isinstance(freeze_data, dict)
+        errors = vpr.validate_freeze_config(freeze_data)
         self.assertEqual(errors, [])
 
     def test_actual_freeze_passes_ratchet_against_real_experiments(self) -> None:
         entries = vpr.collect_experiments(vpr.REPO_ROOT / "experiments")
         freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
-        self.assertIsNotNone(freeze_data)
-        errors, _ = vpr.ratchet_check(entries, freeze_data)  # type: ignore[arg-type]
+        self.assertIsInstance(freeze_data, dict)
+        assert isinstance(freeze_data, dict)
+        errors, _ = vpr.ratchet_check(entries, freeze_data)
         self.assertEqual(errors, [])
 
     def test_duplicate_path_in_freeze_fails_validation(self) -> None:
