@@ -81,7 +81,7 @@ import json
 import re
 import sys
 from datetime import date
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 # Gemeinsame Pfad-Logik
@@ -556,7 +556,7 @@ def load_freeze_config(freeze_path: Path) -> dict[str, Any] | None:
     if not freeze_path.is_file():
         return None
     try:
-        with open(freeze_path) as f:
+        with open(freeze_path, encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
     except Exception as exc:
         return {"_load_error": str(exc)}
@@ -607,6 +607,12 @@ def validate_freeze_config(freeze_data: dict[str, Any]) -> list[str]:
         path = entry.get("path")
         if not isinstance(path, str) or not path.strip():
             errors.append(f"{prefix}.path: must be a non-empty string")
+        elif not _is_valid_freeze_experiment_path(path):
+            errors.append(
+                f"{prefix}.path: must be a normalized repo-relative direct experiments/<name> "
+                "path without '.', '..', duplicate separators, backslashes, or surrounding "
+                "whitespace"
+            )
         elif path in seen_paths:
             errors.append(
                 f"freeze.duplicate_path: {path!r} appears more than once "
@@ -643,6 +649,21 @@ def validate_freeze_config(freeze_data: dict[str, Any]) -> list[str]:
                     "(valid: see VALID_ALLOWED_MISSING in validate_promotion_readiness.py)"
                 )
     return errors
+
+
+def _is_valid_freeze_experiment_path(path: str) -> bool:
+    if path != path.strip():
+        return False
+    if "\\" in path:
+        return False
+    posix = PurePosixPath(path)
+    return (
+        not posix.is_absolute()
+        and path == posix.as_posix()
+        and len(posix.parts) == 2
+        and posix.parts[0] == "experiments"
+        and all(part not in {"", ".", ".."} for part in posix.parts)
+    )
 
 
 def ratchet_check(
@@ -714,6 +735,12 @@ def main() -> int:
         )
     )
     parser.add_argument("--ratchet", action="store_true", help="Enable blocking ratchet mode")
+    parser.add_argument(
+        "--freeze-path",
+        default=str(FREEZE_PATH),
+        help="Path to promotion-readiness freeze file (default: .vibe/promotion-readiness-freeze.yml)",
+    )
+    parser.add_argument("--report-path", default=str(REPORT_PATH), help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     experiments_dir = REPO_ROOT / "experiments"
@@ -728,8 +755,17 @@ def main() -> int:
     report = build_report(entries)
     content = render_report(report)
 
-    changed = write_if_changed(REPORT_PATH, content)
-    rel_report = REPORT_PATH.relative_to(REPO_ROOT).as_posix()
+    report_path = Path(args.report_path)
+    if not report_path.is_absolute():
+        report_path = (REPO_ROOT / report_path).resolve()
+    else:
+        report_path = report_path.resolve()
+
+    changed = write_if_changed(report_path, content)
+    try:
+        rel_report = report_path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        rel_report = report_path.as_posix()
 
     print("🔎 Promotion-Readiness Dry-Run (Phase 1)")
     print(f"  trigger: {REPORT_TRIGGER}")
@@ -760,8 +796,16 @@ def main() -> int:
     print("  (Phase-1 dry-run report above is informational; --ratchet below is blocking.)")
     print()
     print("🔒 Ratchet Mode (Phase 2)")
-    rel_freeze = FREEZE_PATH.relative_to(REPO_ROOT).as_posix()
-    freeze_data = load_freeze_config(FREEZE_PATH)
+    freeze_path = Path(args.freeze_path)
+    if not freeze_path.is_absolute():
+        freeze_path = (REPO_ROOT / freeze_path).resolve()
+    else:
+        freeze_path = freeze_path.resolve()
+    try:
+        rel_freeze = freeze_path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        rel_freeze = freeze_path.as_posix()
+    freeze_data = load_freeze_config(freeze_path)
     if freeze_data is None:
         print(f"  ERROR: --ratchet requires {rel_freeze} to exist.", file=sys.stderr)
         return 1
