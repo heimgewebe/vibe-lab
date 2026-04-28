@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "target_files": [
+    "catalog/vibe-patterns/agent-handoff.md"
+  ],
+  "locator": "## Summary",
+  "change_type": "add",
+  "scope": "Add agent handoff example to catalog",
+  "normalized_task": "Promote agent handoff pattern to catalog with full metadata",
+  "critic_signature": "experiment-critic/v1",
+  "exact_before": "",
+  "exact_after": "## Summary\n\nThis entry documents the agent handoff pattern.\n",
+  "constraints": [
+    "must follow catalog format",
+    "must include frontmatter"
+  ],
+  "risks": [
+    "could conflict with existing catalog entries"
+  ],
+  "validation_plan": [
+    "lint frontmatter",
+    "check catalog schema conformance"
+  ],
+  "handoff": {
+    "algo": "sha256",
+    "canon": "v1",
+    "hash": "2f5c8573202f1e6d4dfaec5bec384968ad9f1ae972b98ce8f330576c20b9d617"
+  }
+}

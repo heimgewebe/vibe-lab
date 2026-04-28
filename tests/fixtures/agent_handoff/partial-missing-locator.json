@@ -1,0 +1,17 @@
+{
+  "status": "PARTIAL",
+  "target_files": [
+    "scripts/docmeta/validate_agent_handoff.py"
+  ],
+  "change_type": "modify",
+  "scope": "Demonstrate PARTIAL without locator",
+  "normalized_task": "Create contract-invalid fixture for PARTIAL missing required locator",
+  "critic_signature": "experiment-critic/v1",
+  "expected_error": "contract_invalid",
+  "blocked_by": [
+    "locator missing by design"
+  ],
+  "required_fixes": [
+    "add locator field to handoff"
+  ]
+}

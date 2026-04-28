@@ -1,0 +1,15 @@
+{
+  "status": "FAIL",
+  "locator": "scripts/docmeta/validate_agent_handoff.py",
+  "change_type": "modify",
+  "scope": "Demonstrate FAIL without target_files",
+  "normalized_task": "Create contract-invalid fixture for FAIL missing required target_files",
+  "critic_signature": "experiment-critic/v1",
+  "expected_error": "contract_invalid",
+  "blocked_by": [
+    "missing target_files by design"
+  ],
+  "required_fixes": [
+    "add target_files field to handoff"
+  ]
+}

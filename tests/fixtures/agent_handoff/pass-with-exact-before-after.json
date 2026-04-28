@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "target_files": [
+    "docs/index.md"
+  ],
+  "locator": "## Laufende Versuche",
+  "change_type": "modify",
+  "scope": "Fix heading whitespace in docs/index.md",
+  "normalized_task": "Remove leading newline from section heading",
+  "critic_signature": "experiment-critic/v1",
+  "exact_before": "\n## Laufende Versuche",
+  "exact_after": "## Laufende Versuche",
+  "handoff": {
+    "algo": "sha256",
+    "canon": "v1",
+    "hash": "b205f54c430a475382bfca177bbb7faa25a99352ff4027a3d987adda1bf8a228"
+  }
+}
