@@ -161,20 +161,28 @@ def _build_trace_v0_2(
             if err.code == "contract_invalid":
                 contract_invalid_indices.add(err.command_index)
 
-    # Build steps; unknown-command steps are skipped — their errors go top-level.
+    # Build steps; unknown/missing-command records are skipped — their errors go top-level.
     steps: list[dict[str, Any]] = []
     skipped_records: list[dict[str, Any]] = []
     skipped_record_count = 0
     for i, record in enumerate(chain):
         command = record.get("command")
-        if command not in _KNOWN_COMMANDS:
+        # Distinguish between missing/non-string and unknown string commands.
+        if not isinstance(command, str) or command not in _KNOWN_COMMANDS:
             top_level_msgs.extend(step_errors_by_idx.get(i, []))
             skipped_record_count += 1
+            # Determine reason and label based on command type.
+            if not isinstance(command, str):
+                reason = "missing_or_non_string_command"
+                command_label = "<missing_or_non_string_command>"
+            else:
+                reason = "unknown_command"
+                command_label = command
             skipped_records.append(
                 {
                     "index": i,
-                    "command": str(command),
-                    "reason": "unknown_command",
+                    "command": command_label,
+                    "reason": reason,
                 }
             )
             continue

@@ -119,25 +119,39 @@ class ReplayTraceContractTests(unittest.TestCase):
         _, second = _capture_emit_json(VALID_CHAIN)
         self.assertEqual(first, second)
 
-    def test_summary_counts_are_consistent_for_valid_chain(self) -> None:
-        """Summary counters must match the materialized top-level and step-level data."""
-        _, raw = _capture_emit_json(VALID_CHAIN)
-        payload = json.loads(raw)
-
+    def _assert_summary_counts_consistent(self, payload: dict) -> None:
+        """Helper: verify that all summary counters are consistent with materialized data."""
+        # record_count = step_count + skipped_record_count
         self.assertEqual(
             payload["summary"]["record_count"],
             payload["summary"]["step_count"]
             + payload["summary"]["skipped_record_count"],
         )
+        # skipped_record_count must match len(skipped_records)
         self.assertEqual(
             payload["summary"]["skipped_record_count"],
             len(payload["skipped_records"]),
         )
+        # error_count = len(top-level errors) + sum(step-level errors)
         self.assertEqual(
             payload["summary"]["error_count"],
             len(payload["errors"])
             + sum(len(step["errors"]) for step in payload["steps"]),
         )
+        # commands_seen must equal the unique commands from steps, sorted.
+        commands_from_steps = sorted({step["command"] for step in payload["steps"]})
+        self.assertEqual(payload["summary"]["commands_seen"], commands_from_steps)
+        # Uniqueness: no duplicates in commands_seen.
+        self.assertEqual(
+            len(payload["summary"]["commands_seen"]),
+            len(set(payload["summary"]["commands_seen"])),
+        )
+
+    def test_summary_counts_are_consistent_for_valid_chain(self) -> None:
+        """Summary counters must match the materialized top-level and step-level data."""
+        _, raw = _capture_emit_json(VALID_CHAIN)
+        payload = json.loads(raw)
+        self._assert_summary_counts_consistent(payload)
 
     # ------------------------------------------------------------------
     # T5 — invalid chain produces clear error structure
@@ -156,6 +170,8 @@ class ReplayTraceContractTests(unittest.TestCase):
         self.assertTrue(has_errors, "invalid chain must carry at least one error message")
         # The v0.2 structure must still be schema-conformant.
         self.validator.validate(payload)
+        # Verify summary counts consistency even for invalid chains.
+        self._assert_summary_counts_consistent(payload)
 
     # ------------------------------------------------------------------
     # T6 — --dry-run --emit-json work together
@@ -180,6 +196,7 @@ class ReplayTraceContractTests(unittest.TestCase):
         self.assertEqual(cm.exception.code, 0)
         payload = json.loads(buf_out.getvalue())
         self.validator.validate(payload)
+        self._assert_summary_counts_consistent(payload)
         self.assertIn(
             "dry-run",
             buf_err.getvalue(),
@@ -198,6 +215,7 @@ class ReplayTraceContractTests(unittest.TestCase):
 
             _, raw = _capture_emit_json(external_chain)
             payload = json.loads(raw)
+            self._assert_summary_counts_consistent(payload)
 
             self.validator.validate(payload)
             self.assertEqual(payload["chain_path"], "<external>/valid-minimal.json")
@@ -239,20 +257,36 @@ class ReplayTraceContractTests(unittest.TestCase):
             self.assertEqual(payload["summary"]["record_count"], 1)
             self.assertEqual(payload["summary"]["step_count"], 0)
             self.assertEqual(payload["summary"]["skipped_record_count"], 1)
-            self.assertEqual(
-                payload["summary"]["record_count"],
-                payload["summary"]["step_count"]
-                + payload["summary"]["skipped_record_count"],
+            self._assert_summary_counts_consistent(payload)
+
+    def test_missing_command_field_is_visible_as_separate_reason(self) -> None:
+        """Records without 'command' field: reason=missing_or_non_string_command, deterministic label."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "missing-cmd.json"
+            chain_path.write_text(
+                json.dumps([{"version": "v0.1"}]),  # missing "command" field
+                encoding="utf-8",
             )
+
+            code, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.assertEqual(code, 1)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
             self.assertEqual(
-                payload["summary"]["skipped_record_count"],
-                len(payload["skipped_records"]),
+                payload["skipped_records"],
+                [
+                    {
+                        "index": 0,
+                        "command": "<missing_or_non_string_command>",
+                        "reason": "missing_or_non_string_command",
+                    }
+                ],
             )
-            self.assertEqual(
-                payload["summary"]["error_count"],
-                len(payload["errors"])
-                + sum(len(step["errors"]) for step in payload["steps"]),
-            )
+            self.assertEqual(payload["summary"]["record_count"], 1)
+            self.assertEqual(payload["summary"]["step_count"], 0)
+            self.assertEqual(payload["summary"]["skipped_record_count"], 1)
+            self._assert_summary_counts_consistent(payload)
 
 
 if __name__ == "__main__":

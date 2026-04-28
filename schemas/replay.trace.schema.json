@@ -47,7 +47,7 @@
             "type": "string"
           },
           "reason": {
-            "enum": ["unknown_command"]
+            "enum": ["unknown_command", "missing_or_non_string_command"]
           }
         }
       }
