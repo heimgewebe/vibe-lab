@@ -80,6 +80,9 @@ jobs:
       - name: Test replay runner
         run: python3 tools/vibe-cli/test_replay_minimal.py
 
+      - name: Test replay trace contract (v0.2)
+        run: python3 tools/vibe-cli/test_replay_trace_contract.py
+
       - name: Validate Phase-1c fixture checker corpus
         run: python3 scripts/docmeta/validate_experiment_structure_phase1c_fixtures.py
 

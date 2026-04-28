@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "replay.trace.schema.json",
+  "title": "Replay Trace Contract v0.2",
+  "description": "Schema for the deterministic, non-mutating replay trace emitted by replay_minimal.py --emit-json.",
+  "type": "object",
+  "required": [
+    "version",
+    "mode",
+    "chain_path",
+    "valid_chain",
+    "would_mutate",
+    "steps",
+    "errors",
+    "summary"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "v0.2"
+    },
+    "mode": {
+      "const": "dry_run"
+    },
+    "chain_path": {
+      "type": "string"
+    },
+    "valid_chain": {
+      "type": "boolean"
+    },
+    "would_mutate": {
+      "const": false
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "command", "valid_contract", "would_mutate", "errors"],
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "command": {
+            "enum": ["read_context", "write_change", "validate_change"]
+          },
+          "valid_contract": {
+            "type": "boolean"
+          },
+          "would_mutate": {
+            "const": false
+          },
+          "target_files": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "locator": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "errors": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "summary": {
+      "type": "object",
+      "required": ["step_count", "error_count", "commands_seen", "non_mutation_guarantee"],
+      "additionalProperties": false,
+      "properties": {
+        "step_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "error_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "commands_seen": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "non_mutation_guarantee": {
+          "const": true
+        }
+      }
+    }
+  }
+}
