@@ -368,6 +368,26 @@ class ChainValidatorTests(unittest.TestCase):
         codes = {e.code for e in errors}
         self.assertIn("validate_error_unbindable", codes)
 
+    # Phase E: success_with_errors / failure_without_errors in chain context ------
+
+    def test_chain_success_with_errors_yields_contract_invalid(self) -> None:
+        """validate_change with success=true and non-empty errors must be caught in chain."""
+        chain = _chain("invalid-success-with-errors-in-chain.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-success-with-errors-in-chain.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("contract_invalid", codes)
+
+    def test_chain_failure_without_errors_yields_contract_invalid(self) -> None:
+        """validate_change with success=false and empty errors must be caught in chain."""
+        chain = _chain("invalid-failure-without-errors-in-chain.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-failure-without-errors-in-chain.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("contract_invalid", codes)
+
 
 class ValidateResultSeamTests(unittest.TestCase):
     """Tests for the Validate→Result seam (v0.1 minimal).

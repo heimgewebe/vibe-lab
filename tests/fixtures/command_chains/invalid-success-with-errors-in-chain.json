@@ -1,0 +1,23 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/main.py"],
+    "extracted_facts": ["main() function at line 1"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["src/main.py"],
+    "locator": "def main",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint"],
+    "success": true,
+    "errors": ["lint: E501 line too long"]
+  }
+]

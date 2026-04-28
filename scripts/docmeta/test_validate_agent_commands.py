@@ -97,6 +97,22 @@ class ValidateAgentCommandsTests(unittest.TestCase):
         self.assertTrue(errors)
         self.assertIn("contract_invalid", errors[0])
 
+    def test_validate_change_contract_invalid_wrong_version(self) -> None:
+        """validate_change with version 'v0.2' must yield contract_invalid (const violation).
+
+        This is the Phase E gap that was previously marked covered: false in the
+        fixture-matrix (section 1.3 validate_change).
+        """
+        validator = self._validator_for("validate_change")
+        path = (
+            self.fixture_root
+            / "validate_change"
+            / "contract-invalid-wrong-version.json"
+        )
+        errors = vac.validate_one(path, validator)
+        self.assertTrue(errors)
+        self.assertIn("contract_invalid", errors[0])
+
     # Helpers -------------------------------------------------------------
     def test_detect_expected_error_supported_only(self) -> None:
         path = (

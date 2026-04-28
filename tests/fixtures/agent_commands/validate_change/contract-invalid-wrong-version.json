@@ -1,0 +1,8 @@
+{
+  "command": "validate_change",
+  "version": "v0.2",
+  "checks": ["lint"],
+  "success": true,
+  "errors": [],
+  "expected_error": "contract_invalid"
+}
