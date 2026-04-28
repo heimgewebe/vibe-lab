@@ -157,7 +157,7 @@ def _build_trace_step_v0_2(
 
 def _build_trace_v0_2(
     chain_label: str,
-    chain: list[dict[str, Any]],
+    chain: list[Any],
     errors: list[Any],
 ) -> dict[str, Any]:
     """Pure function: (label, chain, errors) → v0.2 trace dict. No I/O."""
@@ -178,6 +178,17 @@ def _build_trace_v0_2(
     steps: list[dict[str, Any]] = []
     skipped_records: list[dict[str, Any]] = []
     for i, record in enumerate(chain):
+        if not isinstance(record, dict):
+            top_level_msgs.extend(step_errors_by_idx.get(i, []))
+            skipped_records.append(
+                {
+                    "index": i,
+                    "command": "<non_object_record>",
+                    "reason": "non_object_record",
+                }
+            )
+            continue
+
         command = record.get("command")
         # Distinguish between missing/non-string/empty and unknown commands.
         if (

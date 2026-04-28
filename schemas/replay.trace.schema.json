@@ -48,7 +48,7 @@
             "minLength": 1
           },
           "reason": {
-            "enum": ["unknown_command", "missing_or_non_string_command"]
+            "enum": ["unknown_command", "missing_or_non_string_command", "non_object_record"]
           }
         }
       }

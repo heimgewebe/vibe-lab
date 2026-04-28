@@ -381,6 +381,36 @@ class ReplayTraceContractTests(unittest.TestCase):
             self.assertNotIn("checks", step_by_index[1])
             self._assert_summary_counts_consistent(payload)
 
+    def test_non_object_record_is_visible_as_skipped_record(self) -> None:
+        """Builder hardening: non-object records are surfaced as skipped_records entries."""
+        chain = ["not-an-object"]
+        errors = [
+            rm.vcc.ChainError(
+                code="contract_invalid",
+                message="chain[0] must be an object",
+                command_index=0,
+                path="<external>/non-object-record.json",
+            )
+        ]
+
+        payload = rm._build_trace_v0_2("<external>/non-object-record.json", chain, errors)
+        self.validator.validate(payload)
+        self.assertFalse(payload["valid_chain"])
+        self.assertEqual(
+            payload["skipped_records"],
+            [
+                {
+                    "index": 0,
+                    "command": "<non_object_record>",
+                    "reason": "non_object_record",
+                }
+            ],
+        )
+        self.assertEqual(payload["summary"]["record_count"], 1)
+        self.assertEqual(payload["summary"]["step_count"], 0)
+        self.assertEqual(payload["summary"]["skipped_record_count"], 1)
+        self._assert_summary_counts_consistent(payload)
+
 
 if __name__ == "__main__":
     unittest.main()
