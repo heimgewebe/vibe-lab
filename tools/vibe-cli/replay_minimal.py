@@ -138,16 +138,20 @@ def _build_trace_step_v0_2(
     }
     # Optional fields — include only when present and applicable.
     target_files = record.get("target_files")
-    if isinstance(target_files, list):
-        step["target_files"] = [f for f in target_files if isinstance(f, str)]
+    if isinstance(target_files, list) and all(
+        isinstance(f, str) for f in target_files
+    ):
+        step["target_files"] = target_files
     if command == "write_change":
         locator = record.get("locator")
         if isinstance(locator, str):
             step["locator"] = locator
     if command == "validate_change":
         checks = record.get("checks")
-        if isinstance(checks, list):
-            step["checks"] = [c for c in checks if isinstance(c, str)]
+        if isinstance(checks, list) and all(
+            isinstance(c, str) for c in checks
+        ):
+            step["checks"] = checks
     return step
 
 
@@ -173,15 +177,17 @@ def _build_trace_v0_2(
     # Build steps; unknown/missing-command records are skipped — their errors go top-level.
     steps: list[dict[str, Any]] = []
     skipped_records: list[dict[str, Any]] = []
-    skipped_record_count = 0
     for i, record in enumerate(chain):
         command = record.get("command")
-        # Distinguish between missing/non-string and unknown string commands.
-        if not isinstance(command, str) or command not in _KNOWN_COMMANDS:
+        # Distinguish between missing/non-string/empty and unknown commands.
+        if (
+            not isinstance(command, str)
+            or not command.strip()
+            or command not in _KNOWN_COMMANDS
+        ):
             top_level_msgs.extend(step_errors_by_idx.get(i, []))
-            skipped_record_count += 1
             # Determine reason and label based on command type.
-            if not isinstance(command, str):
+            if not isinstance(command, str) or not command.strip():
                 reason = "missing_or_non_string_command"
                 command_label = "<missing_or_non_string_command>"
             else:
@@ -213,7 +219,7 @@ def _build_trace_v0_2(
             "error_count": total_error_count,
             "non_mutation_guarantee": True,
             "record_count": len(chain),
-            "skipped_record_count": skipped_record_count,
+            "skipped_record_count": len(skipped_records),
             "step_count": len(steps),
         },
         "valid_chain": not bool(errors),

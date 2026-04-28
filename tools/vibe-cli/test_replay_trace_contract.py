@@ -45,6 +45,7 @@ INVALID_CHAIN = (
 def _load_validator() -> Draft202012Validator:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     cls = validator_for(schema, default=Draft202012Validator)
+    cls.check_schema(schema)
     return cls(schema)
 
 
@@ -317,6 +318,67 @@ class ReplayTraceContractTests(unittest.TestCase):
             self.assertEqual(payload["summary"]["record_count"], 1)
             self.assertEqual(payload["summary"]["step_count"], 0)
             self.assertEqual(payload["summary"]["skipped_record_count"], 1)
+            self._assert_summary_counts_consistent(payload)
+
+    def test_empty_command_field_is_visible_as_missing_or_non_string(self) -> None:
+        """Records with empty command string are treated as missing/non-string command."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "empty-cmd.json"
+            chain_path.write_text(
+                json.dumps([{"command": "", "version": "v0.1"}]),
+                encoding="utf-8",
+            )
+
+            code, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.assertEqual(code, 1)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+            self.assertEqual(
+                payload["skipped_records"],
+                [
+                    {
+                        "index": 0,
+                        "command": "<missing_or_non_string_command>",
+                        "reason": "missing_or_non_string_command",
+                    }
+                ],
+            )
+            self._assert_summary_counts_consistent(payload)
+
+    def test_invalid_list_fields_are_not_partially_filtered(self) -> None:
+        """Invalid mixed-type list fields are omitted rather than partially projected."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "mixed-list-fields.json"
+            chain_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "command": "read_context",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md", 123],
+                        },
+                        {
+                            "command": "validate_change",
+                            "version": "v0.1",
+                            "checks": ["lint", 123],
+                            "success": False,
+                            "errors": ["check failed"],
+                        },
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            code, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.assertEqual(code, 1)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+
+            step_by_index = {step["index"]: step for step in payload["steps"]}
+            self.assertNotIn("target_files", step_by_index[0])
+            self.assertNotIn("checks", step_by_index[1])
             self._assert_summary_counts_consistent(payload)
 
 
