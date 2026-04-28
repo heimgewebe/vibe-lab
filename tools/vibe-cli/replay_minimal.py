@@ -59,7 +59,16 @@ _KNOWN_COMMANDS: frozenset[str] = frozenset(
 )
 
 
-def display_path(path: Path) -> str:
+def display_path_legacy(path: Path) -> str:
+    """Legacy path display logic used by non-JSON replay output."""
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def display_path_v0_2(path: Path) -> str:
+    """v0.2 path display logic with deterministic redaction for externals."""
     resolved = path.resolve(strict=False)
     try:
         return str(resolved.relative_to(REPO_ROOT))
@@ -220,7 +229,11 @@ def _build_trace_v0_2(
 
 def run(chain_path: Path, emit_json: bool = False) -> int:
     chain = vcc.load_chain(chain_path)  # exits 2 on missing/invalid
-    chain_label = display_path(chain_path)
+    chain_label = (
+        display_path_v0_2(chain_path)
+        if emit_json
+        else display_path_legacy(chain_path)
+    )
     errors = vcc.validate_chain(chain, chain_label)
 
     if emit_json:

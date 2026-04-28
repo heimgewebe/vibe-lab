@@ -60,6 +60,18 @@ def _capture_emit_json(chain_path: Path) -> tuple[int, str]:
     return code, buf.getvalue()
 
 
+def _capture_legacy_output(chain_path: Path) -> tuple[int, str]:
+    """Run rm.run() in legacy mode; return (exit_code, raw_stdout)."""
+    buf = io.StringIO()
+    saved = sys.stdout
+    sys.stdout = buf
+    try:
+        code = rm.run(chain_path, emit_json=False)
+    finally:
+        sys.stdout = saved
+    return code, buf.getvalue()
+
+
 class ReplayTraceContractTests(unittest.TestCase):
     def setUp(self) -> None:
         self.validator = _load_validator()
@@ -222,6 +234,25 @@ class ReplayTraceContractTests(unittest.TestCase):
             self.assertEqual(payload["skipped_records"], [])
             self.assertNotIn(str(REPO_ROOT), raw)
             self.assertNotIn(tmpdir, raw)
+
+    def test_legacy_external_chain_path_remains_unredacted(self) -> None:
+        """Legacy output keeps its external path behavior; v0.2 keeps redacted behavior."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            external_chain = Path(tmpdir) / "valid-minimal.json"
+            external_chain.write_text(
+                VALID_CHAIN.read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
+
+            legacy_code, legacy_raw = _capture_legacy_output(external_chain)
+            self.assertEqual(legacy_code, 0)
+            legacy_payload = json.loads(legacy_raw)
+            self.assertEqual(legacy_payload["chain"], str(external_chain))
+
+            json_code, json_raw = _capture_emit_json(external_chain)
+            self.assertEqual(json_code, 0)
+            json_payload = json.loads(json_raw)
+            self.assertEqual(json_payload["chain_path"], "<external>/valid-minimal.json")
 
     def test_unknown_command_is_visible_via_summary_counts(self) -> None:
         """Unknown commands must not disappear semantically from the v0.2 trace."""

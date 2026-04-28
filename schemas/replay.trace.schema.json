@@ -44,7 +44,8 @@
             "minimum": 0
           },
           "command": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "reason": {
             "enum": ["unknown_command", "missing_or_non_string_command"]
@@ -117,7 +118,10 @@
         },
         "commands_seen": {
           "type": "array",
-          "items": {"type": "string"}
+          "uniqueItems": true,
+          "items": {
+            "enum": ["read_context", "write_change", "validate_change"]
+          }
         },
         "non_mutation_guarantee": {
           "const": true
