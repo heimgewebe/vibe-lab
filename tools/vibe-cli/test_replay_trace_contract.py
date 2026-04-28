@@ -16,6 +16,7 @@ from __future__ import annotations
 import io
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -78,6 +79,8 @@ class ReplayTraceContractTests(unittest.TestCase):
         self.assertEqual(payload["mode"], "dry_run")
         self.assertTrue(payload["valid_chain"])
         self.assertEqual(payload["summary"]["non_mutation_guarantee"], True)
+        self.assertEqual(payload["summary"]["record_count"], 3)
+        self.assertEqual(payload["summary"]["skipped_record_count"], 0)
 
     # ------------------------------------------------------------------
     # T2 — every step has would_mutate: false
@@ -167,14 +170,43 @@ class ReplayTraceContractTests(unittest.TestCase):
     # ------------------------------------------------------------------
 
     def test_t7_no_absolute_paths_in_output(self) -> None:
-        """JSON output contains no absolute machine-local paths (repo root not present)."""
-        _, raw = _capture_emit_json(VALID_CHAIN)
-        repo_root_str = str(REPO_ROOT)
-        self.assertNotIn(
-            repo_root_str,
-            raw,
-            f"JSON must not embed absolute repo root path: {repo_root_str}",
-        )
+        """External chain paths are redacted deterministically and remain schema-valid."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            external_chain = Path(tmpdir) / "valid-minimal.json"
+            external_chain.write_text(VALID_CHAIN.read_text(encoding="utf-8"), encoding="utf-8")
+
+            _, raw = _capture_emit_json(external_chain)
+            payload = json.loads(raw)
+
+            self.validator.validate(payload)
+            self.assertEqual(payload["chain_path"], "<external>/valid-minimal.json")
+            self.assertNotIn(str(REPO_ROOT), raw)
+            self.assertNotIn(tmpdir, raw)
+
+    def test_unknown_command_is_visible_via_summary_counts(self) -> None:
+        """Unknown commands must not disappear semantically from the v0.2 trace."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "unknown-command.json"
+            chain_path.write_text(
+                json.dumps([
+                    {
+                        "command": "unknown_command",
+                        "version": "v0.1",
+                    }
+                ]),
+                encoding="utf-8",
+            )
+
+            code, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+
+            self.assertEqual(code, 1)
+            self.validator.validate(payload)
+            self.assertFalse(payload["valid_chain"])
+            self.assertTrue(payload["errors"] or any(step["errors"] for step in payload["steps"]))
+            self.assertEqual(payload["summary"]["record_count"], 1)
+            self.assertEqual(payload["summary"]["step_count"], 0)
+            self.assertEqual(payload["summary"]["skipped_record_count"], 1)
 
 
 if __name__ == "__main__":

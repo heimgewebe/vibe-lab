@@ -60,10 +60,13 @@ _KNOWN_COMMANDS: frozenset[str] = frozenset(
 
 
 def display_path(path: Path) -> str:
+    resolved = path.resolve(strict=False)
     try:
-        return str(path.relative_to(REPO_ROOT))
+        return str(resolved.relative_to(REPO_ROOT))
     except ValueError:
-        return str(path)
+        if resolved.name:
+            return f"<external>/{resolved.name}"
+        return "<external-chain>"
 
 
 def _simulate_step(index: int, record: dict[str, Any]) -> dict[str, Any]:
@@ -160,10 +163,12 @@ def _build_trace_v0_2(
 
     # Build steps; unknown-command steps are skipped — their errors go top-level.
     steps: list[dict[str, Any]] = []
+    skipped_record_count = 0
     for i, record in enumerate(chain):
         command = record.get("command")
         if command not in _KNOWN_COMMANDS:
             top_level_msgs.extend(step_errors_by_idx.get(i, []))
+            skipped_record_count += 1
             continue
         step_errs = step_errors_by_idx.get(i, [])
         is_valid = i not in contract_invalid_indices
@@ -181,6 +186,8 @@ def _build_trace_v0_2(
             "commands_seen": commands_seen,
             "error_count": total_error_count,
             "non_mutation_guarantee": True,
+            "record_count": len(chain),
+            "skipped_record_count": skipped_record_count,
             "step_count": len(steps),
         },
         "valid_chain": not bool(errors),
