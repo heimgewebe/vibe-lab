@@ -78,6 +78,7 @@ class ReplayTraceContractTests(unittest.TestCase):
         self.assertEqual(payload["version"], "v0.2")
         self.assertEqual(payload["mode"], "dry_run")
         self.assertTrue(payload["valid_chain"])
+        self.assertEqual(payload["skipped_records"], [])
         self.assertEqual(payload["summary"]["non_mutation_guarantee"], True)
         self.assertEqual(payload["summary"]["record_count"], 3)
         self.assertEqual(payload["summary"]["skipped_record_count"], 0)
@@ -127,6 +128,10 @@ class ReplayTraceContractTests(unittest.TestCase):
             payload["summary"]["record_count"],
             payload["summary"]["step_count"]
             + payload["summary"]["skipped_record_count"],
+        )
+        self.assertEqual(
+            payload["summary"]["skipped_record_count"],
+            len(payload["skipped_records"]),
         )
         self.assertEqual(
             payload["summary"]["error_count"],
@@ -196,6 +201,7 @@ class ReplayTraceContractTests(unittest.TestCase):
 
             self.validator.validate(payload)
             self.assertEqual(payload["chain_path"], "<external>/valid-minimal.json")
+            self.assertEqual(payload["skipped_records"], [])
             self.assertNotIn(str(REPO_ROOT), raw)
             self.assertNotIn(tmpdir, raw)
 
@@ -220,6 +226,16 @@ class ReplayTraceContractTests(unittest.TestCase):
             self.validator.validate(payload)
             self.assertFalse(payload["valid_chain"])
             self.assertTrue(payload["errors"] or any(step["errors"] for step in payload["steps"]))
+            self.assertEqual(
+                payload["skipped_records"],
+                [
+                    {
+                        "index": 0,
+                        "command": "unknown_command",
+                        "reason": "unknown_command",
+                    }
+                ],
+            )
             self.assertEqual(payload["summary"]["record_count"], 1)
             self.assertEqual(payload["summary"]["step_count"], 0)
             self.assertEqual(payload["summary"]["skipped_record_count"], 1)
@@ -227,6 +243,10 @@ class ReplayTraceContractTests(unittest.TestCase):
                 payload["summary"]["record_count"],
                 payload["summary"]["step_count"]
                 + payload["summary"]["skipped_record_count"],
+            )
+            self.assertEqual(
+                payload["summary"]["skipped_record_count"],
+                len(payload["skipped_records"]),
             )
             self.assertEqual(
                 payload["summary"]["error_count"],

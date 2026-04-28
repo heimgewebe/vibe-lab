@@ -10,6 +10,7 @@
     "chain_path",
     "valid_chain",
     "would_mutate",
+    "skipped_records",
     "steps",
     "errors",
     "summary"
@@ -30,6 +31,26 @@
     },
     "would_mutate": {
       "const": false
+    },
+    "skipped_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "command", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "command": {
+            "type": "string"
+          },
+          "reason": {
+            "enum": ["unknown_command"]
+          }
+        }
+      }
     },
     "steps": {
       "type": "array",

@@ -163,12 +163,20 @@ def _build_trace_v0_2(
 
     # Build steps; unknown-command steps are skipped — their errors go top-level.
     steps: list[dict[str, Any]] = []
+    skipped_records: list[dict[str, Any]] = []
     skipped_record_count = 0
     for i, record in enumerate(chain):
         command = record.get("command")
         if command not in _KNOWN_COMMANDS:
             top_level_msgs.extend(step_errors_by_idx.get(i, []))
             skipped_record_count += 1
+            skipped_records.append(
+                {
+                    "index": i,
+                    "command": str(command),
+                    "reason": "unknown_command",
+                }
+            )
             continue
         step_errs = step_errors_by_idx.get(i, [])
         is_valid = i not in contract_invalid_indices
@@ -181,6 +189,7 @@ def _build_trace_v0_2(
         "chain_path": chain_label,
         "errors": top_level_msgs,
         "mode": "dry_run",
+        "skipped_records": skipped_records,
         "steps": steps,
         "summary": {
             "commands_seen": commands_seen,
