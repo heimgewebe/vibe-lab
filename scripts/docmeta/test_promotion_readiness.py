@@ -1139,5 +1139,347 @@ class EvidenceRefsInvalidWarningTests(unittest.TestCase):
         self.assertIn("falsifiability.evidence_refs_invalid", warnings)
 
 
+class RatchetModeTests(unittest.TestCase):
+    """Tests for the --ratchet mode (Phase 2 gate)."""
+
+    def _make_not_ready_entry(
+        self,
+        path: str,
+        missing: list[str] | None = None,
+    ) -> dict:
+        return {
+            "path": path,
+            "status": "testing",
+            "execution_status": "executed",
+            "adoption_basis": "",
+            "falsifiability_triggered": True,
+            "historical_escape": False,
+            "promotion_ready": False,
+            "missing": missing if missing is not None else ["falsifiability"],
+            "warnings": [],
+            "notes": [],
+        }
+
+    def _make_ready_entry(self, path: str) -> dict:
+        return {
+            "path": path,
+            "status": "testing",
+            "execution_status": "executed",
+            "adoption_basis": "",
+            "falsifiability_triggered": True,
+            "historical_escape": False,
+            "promotion_ready": True,
+            "missing": [],
+            "warnings": [],
+            "notes": [],
+        }
+
+    def _make_historical_escape_entry(self, path: str) -> dict:
+        return {
+            "path": path,
+            "status": "adopted",
+            "execution_status": "reconstructed",
+            "adoption_basis": "reconstructed",
+            "falsifiability_triggered": False,
+            "historical_escape": True,
+            "promotion_ready": False,
+            "missing": [],
+            "warnings": [],
+            "notes": ["historical_escape", "not_counted_against_promotion_readiness"],
+        }
+
+    def _make_freeze_config(self, experiments: list[dict]) -> dict:
+        return {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "frozen_at": "2026-04-27",
+                "experiments": experiments,
+            }
+        }
+
+    def test_frozen_not_ready_accepted_by_ratchet(self) -> None:
+        entry = self._make_not_ready_entry("experiments/exp-historical")
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-historical",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Historical baseline before Phase-2 ratchet.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertEqual(errors, [], msg=f"Expected no errors, got: {errors}")
+        self.assertFalse(entry["promotion_ready"])
+
+    def test_unfrozen_not_ready_fails_ratchet(self) -> None:
+        entry = self._make_not_ready_entry("experiments/exp-new-violation")
+        freeze = self._make_freeze_config([])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("unregistered_violation" in e for e in errors),
+            msg=f"Expected unregistered_violation error, got: {errors}",
+        )
+
+    def test_ready_experiment_accepted_without_freeze_entry(self) -> None:
+        entry = self._make_ready_entry("experiments/exp-ready")
+        freeze = self._make_freeze_config([])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertEqual(errors, [], msg=f"Expected no errors, got: {errors}")
+
+    def test_stale_freeze_entry_for_ready_experiment_fails(self) -> None:
+        entry = self._make_ready_entry("experiments/exp-now-ready")
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-now-ready",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Was not_ready before Phase-2; now fixed.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(any("obsolete_freeze_entry" in e for e in errors))
+
+    def test_stale_freeze_entry_nonexistent_experiment_fails(self) -> None:
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-deleted",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Experiment was deleted.",
+        }])
+        errors, _ = vpr.ratchet_check([], freeze)
+        self.assertTrue(any("stale_freeze_entry" in e for e in errors))
+
+    def test_stale_freeze_entry_for_historical_escape_fails(self) -> None:
+        entry = self._make_historical_escape_entry("experiments/exp-historical-escape")
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-historical-escape",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Historical escape wrongly added to freeze.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(any("obsolete_freeze_entry" in e for e in errors))
+
+    def test_invalid_freeze_missing_reason_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/exp-no-reason",
+            "allowed_missing": ["falsifiability"],
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any("reason" in e for e in errors))
+
+    def test_invalid_freeze_missing_path_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "allowed_missing": ["falsifiability"],
+            "reason": "Has no path.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any("path" in e for e in errors))
+
+    def test_invalid_freeze_unknown_allowed_missing_value_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/exp-bad-missing",
+            "allowed_missing": ["not_a_valid_signal"],
+            "reason": "Invalid allowed_missing value.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any("unknown value" in e for e in errors))
+
+    def test_invalid_freeze_missing_version_fails(self) -> None:
+        config = {
+            "promotion_readiness_freeze": {
+                "reason": "Top-level reason.",
+                "frozen_at": "2026-04-27",
+                "experiments": [],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any("version" in e for e in errors))
+
+    def test_load_freeze_config_returns_none_if_absent(self) -> None:
+        absent = Path("/tmp/does_not_exist_promotion_readiness_freeze.yml")
+        result = vpr.load_freeze_config(absent)
+        self.assertIsNone(result)
+
+    def test_freeze_too_broad_fails_ratchet(self) -> None:
+        entry = self._make_not_ready_entry("experiments/exp-partial", missing=["falsifiability"])
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-partial",
+            "allowed_missing": ["falsifiability", "falsifiability.assessment_not_checked"],
+            "reason": "Over-permissive freeze.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(any("freeze_too_broad" in e for e in errors))
+
+    def test_freeze_insufficient_fails_ratchet(self) -> None:
+        entry = self._make_not_ready_entry(
+            "experiments/exp-new-signal",
+            missing=["falsifiability", "falsifiability.assessment_not_checked"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-new-signal",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Freeze predates new structured signal.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(any("freeze_insufficient" in e for e in errors))
+
+    def test_freeze_mismatched_missing_set_fails_both(self) -> None:
+        entry = self._make_not_ready_entry(
+            "experiments/exp-drifted",
+            missing=["falsifiability.assessment_not_checked"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-drifted",
+            "allowed_missing": ["falsifiability"],
+            "reason": "Drift",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(any("freeze_insufficient" in e for e in errors))
+        self.assertTrue(any("freeze_too_broad" in e for e in errors))
+
+    def test_freeze_partial_overlap_reports_both_directions(self) -> None:
+        entry = self._make_not_ready_entry(
+            "experiments/exp-overlap",
+            missing=["falsifiability", "falsifiability.assessment_not_checked"],
+        )
+        freeze = self._make_freeze_config([{
+            "path": "experiments/exp-overlap",
+            "allowed_missing": ["falsifiability", "falsifiability.assessment_blocked"],
+            "reason": "Partial overlap: wrong second signal.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(any("freeze_insufficient" in e for e in errors))
+        self.assertTrue(any("freeze_too_broad" in e for e in errors))
+
+    def test_actual_freeze_file_is_valid(self) -> None:
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data)
+        errors = vpr.validate_freeze_config(freeze_data)  # type: ignore[arg-type]
+        self.assertEqual(errors, [])
+
+    def test_actual_freeze_passes_ratchet_against_real_experiments(self) -> None:
+        entries = vpr.collect_experiments(vpr.REPO_ROOT / "experiments")
+        freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
+        self.assertIsNotNone(freeze_data)
+        errors, _ = vpr.ratchet_check(entries, freeze_data)  # type: ignore[arg-type]
+        self.assertEqual(errors, [])
+
+    def test_duplicate_path_in_freeze_fails_validation(self) -> None:
+        config = {
+            "promotion_readiness_freeze": {
+                "version": 1,
+                "reason": "Test baseline.",
+                "frozen_at": "2026-04-27",
+                "experiments": [
+                    {"path": "experiments/exp-a", "allowed_missing": ["falsifiability"], "reason": "First."},
+                    {"path": "experiments/exp-b", "allowed_missing": ["falsifiability"], "reason": "Second."},
+                    {"path": "experiments/exp-a", "allowed_missing": ["falsifiability"], "reason": "Duplicate."},
+                ],
+            }
+        }
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any("duplicate_path" in e for e in errors))
+
+    def test_frozen_at_variants(self) -> None:
+        valid = self._make_freeze_config([])
+        self.assertFalse(any("frozen_at" in e for e in vpr.validate_freeze_config(valid)))
+
+        no_zero = self._make_freeze_config([])
+        no_zero["promotion_readiness_freeze"]["frozen_at"] = "2026-4-27"
+        self.assertTrue(any("invalid_frozen_at" in e for e in vpr.validate_freeze_config(no_zero)))
+
+        impossible = self._make_freeze_config([])
+        impossible["promotion_readiness_freeze"]["frozen_at"] = "2026-02-31"
+        self.assertTrue(any("invalid_frozen_at" in e for e in vpr.validate_freeze_config(impossible)))
+
+    def test_duplicate_allowed_missing_value_in_same_entry_fails(self) -> None:
+        config = self._make_freeze_config([{
+            "path": "experiments/exp-dup-allowed",
+            "allowed_missing": ["falsifiability", "falsifiability"],
+            "reason": "Duplicate allowed_missing value.",
+        }])
+        errors = vpr.validate_freeze_config(config)
+        self.assertTrue(any("duplicate_value" in e for e in errors))
+
+    def test_same_value_in_different_entries_is_allowed(self) -> None:
+        config = self._make_freeze_config([
+            {
+                "path": "experiments/exp-a",
+                "allowed_missing": ["falsifiability"],
+                "reason": "Entry A.",
+            },
+            {
+                "path": "experiments/exp-b",
+                "allowed_missing": ["falsifiability"],
+                "reason": "Entry B — same value, different path, OK.",
+            },
+        ])
+        errors = vpr.validate_freeze_config(config)
+        self.assertFalse(any("duplicate_value" in e for e in errors))
+
+
+class ValidAllowedMissingCoverageTests(unittest.TestCase):
+    def test_all_real_missing_signals_are_in_valid_allowed_missing(self) -> None:
+        entries = vpr.collect_experiments(vpr.REPO_ROOT / "experiments")
+        observed: set[str] = set()
+        for entry in entries:
+            observed.update(entry.get("missing", []))
+        unknown = observed - vpr.VALID_ALLOWED_MISSING
+        self.assertEqual(unknown, set())
+
+    def test_structured_signals_are_covered(self) -> None:
+        structured_signals = {
+            "falsifiability.assessment_not_checked",
+            "falsifiability.assessment_pending_blocking",
+            "falsifiability.assessment_counterhypothesis_supported",
+            "falsifiability.assessment_blocked",
+            "falsifiability.version_invalid_or_missing",
+            "falsifiability.counter_hypotheses_empty",
+        }
+        self.assertEqual(structured_signals - vpr.VALID_ALLOWED_MISSING, set())
+
+    def test_valid_allowed_missing_is_nonempty(self) -> None:
+        self.assertGreater(len(vpr.VALID_ALLOWED_MISSING), 0)
+
+    def test_falsifiability_top_level_signal_is_covered(self) -> None:
+        self.assertIn("falsifiability", vpr.VALID_ALLOWED_MISSING)
+
+
+class ValidAllowedMissingStaticCoverageTests(unittest.TestCase):
+    def test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing(
+        self,
+    ) -> None:
+        import ast as _ast
+        source_path = Path(vpr.__file__)
+        tree = _ast.parse(source_path.read_text(encoding="utf-8"))
+        observed: set[str] = set()
+
+        class _Visitor(_ast.NodeVisitor):
+            def visit_Call(self, node: _ast.Call) -> None:  # type: ignore[override]
+                if (
+                    isinstance(node.func, _ast.Attribute)
+                    and isinstance(node.func.value, _ast.Name)
+                    and node.func.value.id == "missing"
+                ):
+                    if node.func.attr == "append" and len(node.args) == 1:
+                        arg = node.args[0]
+                        if (
+                            isinstance(arg, _ast.Constant)
+                            and isinstance(arg.value, str)
+                            and arg.value.startswith("falsifiability")
+                        ):
+                            observed.add(arg.value)
+                    elif node.func.attr == "extend" and len(node.args) == 1:
+                        arg = node.args[0]
+                        if isinstance(arg, (_ast.List, _ast.Tuple)):
+                            for elt in arg.elts:
+                                if (
+                                    isinstance(elt, _ast.Constant)
+                                    and isinstance(elt.value, str)
+                                    and elt.value.startswith("falsifiability")
+                                ):
+                                    observed.add(elt.value)
+                self.generic_visit(node)
+
+        _Visitor().visit(tree)
+        self.assertGreater(len(observed), 0)
+        unknown = observed - vpr.VALID_ALLOWED_MISSING
+        self.assertEqual(unknown, set())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
