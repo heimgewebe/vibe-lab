@@ -16,10 +16,10 @@ relations:
 
 # Phase 2 — Semantic Contradiction (Archiv-Kopie)
 
-> Diese Datei archiviert den Phase-2-Ergebnisbericht im Originalzustand.
-> Sie ist eine Abschrift des ehemaligen `results/result.md` nach Abschluss
-> von Phase 2. Der kumulative Serienbericht ist `results/result.md`;
-> die maßgebliche Entscheidung ist `results/decision.yml`.
+> Diese Datei stabilisiert den Phase-2-Ergebnisbericht als eigene Phasenfassung.
+> Sie basiert auf dem ehemaligen `results/result.md` nach Abschluss von Phase 2
+> und wurde mit Frontmatter-Relationen versehen. Der kumulative Serienbericht
+> ist `results/result.md`; die maßgebliche Entscheidung ist `results/decision.yml`.
 
 ---
 

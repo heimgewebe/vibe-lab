@@ -33,6 +33,10 @@ rationale: |
   Teilhypothesen, die jeweils separat getestet wurden. Das Gesamtexperiment
   ist weiter offen (Phase 4 und 5 ausstehend).
 
+  `counter_hypothesis_outcome: found_and_confirming` bezieht sich auf die
+  Phase-3-Gegenhypothese (Chain-Validatoren decken Integrity-Stress-Kandidaten
+  bereits ab); das kumulative Gesamturteil bleibt `mixed`.
+
   Confidence=medium für den aktuellen Serienstand, weil:
   (a) Phase 2 scharfe Signale liefert (Signalwechsel reproduziert),
   (b) Phase 3 scharfe Negativ-Aussage liefert (begrenzt auf geprüfte Kandidaten),

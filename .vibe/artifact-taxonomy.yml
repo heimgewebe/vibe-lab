@@ -257,6 +257,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  - pattern: experiments/*/results/phase*.md
+    layer: experiment
+    kind: phase_result
+    authority: result_interpretation
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: experiments/README.md
     layer: docs
     kind: navigation_index

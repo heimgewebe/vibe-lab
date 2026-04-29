@@ -53,8 +53,9 @@ Die Entscheidung für die aktuell abgeschlossenen Phasen ist in
 Eine bislang tolerierte semantische Widerspruchsklasse —
 *"empty asserted state"* (`exact_*` auf der semantisch geforderten Seite
 gesetzt, aber leer `""`) — wurde reproduzierbar belegt und strukturell
-verankert. Toleranz-Rate vor Patch: 6/6 (alle Kandidaten toleriert).
-Nach Patch: 0/4 (alle Kandidaten korrekt abgewiesen).
+verankert. Initiale Probe: 6/6 Kandidaten toleriert, davon A–D zur Klasse
+H1/SEM-EMPTY-ASSERTED. Nach Patch: 0/4 H1-Kandidaten korrekt abgewiesen;
+H2/H3 bleiben outside_scope.
 
 ### Strukturkonsequenz Phase 2
 
