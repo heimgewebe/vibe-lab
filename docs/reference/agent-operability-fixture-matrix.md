@@ -201,6 +201,7 @@ Invariants (Handoff → Commands)".
 | `tests/fixtures/cross_contract/invalid/target_drift_extra.json` | `handoff_target_drift` | Target-Drift (umgekehrt) | Handoff hat ein File, Chain hat zwei — Chain enthält Dateien außerhalb des Handoff-Scopes. |
 | `tests/fixtures/cross_contract/invalid/state_drift.json` | `handoff_state_drift` | State-Drift | Handoff setzt `exact_before/exact_after`, `write_change` lässt beide weg — stille Divergenz. |
 | `tests/fixtures/cross_contract/invalid/contradiction.json` | `semantic_contradiction` | Semantischer Widerspruch | `change_type: remove` mit `exact_after` im `write_change` — Record-interne Verletzung innerhalb eines Cross-Contract-Tests. |
+| `tests/fixtures/cross_contract/invalid/empty_change_state.json` | `semantic_contradiction` | Empty asserted state | `change_type: add` mit `exact_after=""` — Post-Zustand wird behauptet, ist aber leer. Nahkontrast: `cross_contract/valid/minimal_chain_add.json` (gleiche Form, `exact_after` nicht-leer). Phase-2-Strukturkonsequenz aus Experiment `2026-04-23_agent-failure-surface`. |
 | `tests/fixtures/cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | Handoff-Intent + Sequenz | Handoff verlangt `modify`, Chain enthält kein `write_change` (nur `read_context → validate_change`) — Intent nicht erfüllt, Reihenfolge gebrochen, validate ohne write. |
 | `tests/fixtures/cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | Versions- + Contract-Verletzung | `write_change.version: "v0.2"` in Cross-Contract-Kontext — gleiche Prüfung wie im reinen Chain-Fall, aber eingebettet in Handoff-Szenario. |
 | `tests/fixtures/cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | Locator-Drift | `handoff.locator` und `write_change.locator` gesetzt, aber verschieden — stille Drift zwischen Handoff-Erwartung und tatsächlichem Locator. |
@@ -245,6 +246,7 @@ widersprüchlich (record-intern, durch `if/then` oder Chain-Check erkennbar).
 | SEM-SUCCESS-ERRORS | `success: true` + nicht-leeres `errors`. | `validate_change/contract-invalid-success-with-errors.json` |
 | SEM-FAILURE-EMPTY | `success: false` + leeres `errors`. | `validate_change/contract-invalid-failure-empty-errors.json` |
 | SEM-REMOVE-AFTER | `change_type: remove` + `exact_after` gesetzt. | `command_chains/invalid-remove-with-exact-after.json`, `cross_contract/invalid/contradiction.json` |
+| SEM-EMPTY-ASSERTED | `exact_*` auf der vom `change_type` geforderten Seite ist gesetzt, aber leer (`""`). | `cross_contract/invalid/empty_change_state.json` (negativ); `cross_contract/valid/minimal_chain_add.json` (positiver Kontrast) |
 
 ### 4.3 Cross-Step Continuity
 
@@ -388,6 +390,8 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 | Cross-Contract | target drift (extra file in chain) | `cross_contract/invalid/target_drift_extra.json` | `handoff_target_drift` | ✅ |
 | Cross-Contract | state drift (exact_before/after omitted) | `cross_contract/invalid/state_drift.json` | `handoff_state_drift` | ✅ |
 | Cross-Contract | semantic contradiction (remove+exact_after) | `cross_contract/invalid/contradiction.json` | `semantic_contradiction` | ✅ |
+| Cross-Contract | empty asserted state (add+`exact_after=""`) | `cross_contract/invalid/empty_change_state.json` | `semantic_contradiction` | ✅ |
+| Cross-Contract | empty asserted state — positive contrast (add with non-empty `exact_after`) | `cross_contract/valid/minimal_chain_add.json` | — | ✅ |
 | Cross-Contract | intent mismatch (no write_change) | `cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | ✅ |
 | Cross-Contract | version conflict | `cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Cross-Contract | locator drift (handoff vs write_change) | `cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | ✅ |

@@ -1,0 +1,31 @@
+schema_version: "1.0.0"
+decision_type: result_assessment
+verdict: confirms
+confidence: medium
+date: "2026-04-29"
+reviewer: "Copilot Agent (GPT-5.x)"
+rationale: |
+  Phase 2 (Semantic Contradiction) der Reihe Agent Failure Surface Mapping
+  bestätigt H1 ("empty asserted state"): eine bislang tolerierte Subklasse
+  von `semantic_contradiction` wurde reproduzierbar belegt und über ein
+  Negativ-Fixture (`tests/fixtures/cross_contract/invalid/empty_change_state.json`),
+  einen Positiv-Kontrast (`tests/fixtures/cross_contract/valid/minimal_chain_add.json`),
+  Tests in `tests/contracts/test_cross_contract_chain.py` und eine minimale
+  Erweiterung von `_validate_semantic_anti_invariants` in
+  `scripts/docmeta/validate_command_chain.py` verankert. Signalwechsel
+  reproduziert (siehe `results/evidence.jsonl` Metriken
+  `validator_signal_before_patch=0` und `validator_signal_after_patch=1`).
+  H2 (Facts↔Write-Change) und H3 (locator-Pfad-Mismatch) wurden begründet
+  außerhalb des v0.1-Validator-Scopes belassen. Confidence=medium, weil
+  Klasse zwar geschlossen und reproduzierbar ist, aber nur den
+  Leerstring-Fall (`""`) erfasst; Whitespace- und tiefere Vakuums-Varianten
+  liegen explizit außerhalb.
+counter_hypothesis_outcome: not_found
+counterevidence_checked: true
+evidence_summary:
+  positive: 2
+  negative: 0
+  neutral: 5
+next_steps:
+  - "Phase 3 (Chain Integrity Stress) gem. method.md in eigenem PR ausführen."
+  - "Bei künftigen Adoption-Entscheidungen prüfen, ob Whitespace-only-exact_*-Snapshots als eigene Klasse aufgenommen werden müssen (aktuell bewusst ausgenommen)."

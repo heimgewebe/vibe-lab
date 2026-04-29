@@ -170,6 +170,12 @@ aller bestehenden Validatoren.
 - ⚙️ **Chain-Check** `change_type: "add"` mit gesetztem `exact_before`. Ein Add hat keinen
   Vorher-Zustand an derselben Stelle.
 - ⚙️ **Chain-Check** `exact_before == exact_after`. Kein echter Change.
+- ⚙️ **Chain-Check** *Empty asserted state*: Wenn ein `exact_*`-Feld auf der vom
+  `change_type` semantisch geforderten Seite gesetzt, aber leer (`""`) ist, ist
+  die behauptete Zustandsaussage vakuum. Fehlerfall: `change_type=add` +
+  `exact_after=""`, `change_type=remove` + `exact_before=""`,
+  `change_type=modify`/`replace` + leerem `exact_before` oder `exact_after`.
+  Wird als `semantic_contradiction` gemeldet.
 - ⚙️ **Chain-Check** `target_files` enthält Pfade, die nicht in `read_context.target_files`
   vorkamen — im Chain-Kontext: `target_files_mismatch`.
 - ✅ **Schema** `locator` ist leer (geblockt per `minLength: 1` im Schema).
