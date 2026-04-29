@@ -6,7 +6,6 @@
 | Path | Title | Status | Canonicality |
 | ---- | ----- | ------ | ------------ |
 | `.vibe/intent.md` | intent | — | — |
-| `.vibe/replay-v0.2-redaction-sanitization.md` | replay-v0.2-redaction-sanitization | — | — |
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
 | `README.md` | README | — | — |
@@ -41,6 +40,7 @@
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
 | `docs/reference/agent-operability-fixture-matrix.md` | Agent Operability — Fixture-Matrix (v0.1) | active | derived |
 | `docs/reference/manifest-schema.md` | Referenz: Manifest-Schema-Semantik | active | operative |
+| `docs/reference/replay-trace-redaction.md` | Referenz: Replay-Trace-Redaction | active | operative |
 | `experiments/2026-04-08_spec-first/CONTEXT.md` | Spec-First Vibe-Coding — Experiment-Kontext | adopted | operative |
 | `experiments/2026-04-08_spec-first/INITIAL.md` | Spec-First Vibe-Coding — Initiale Situation | adopted | operative |
 | `experiments/2026-04-08_spec-first/failure_modes.md` | Failure Modes — Spec-First Vibe-Coding | adopted | operative |

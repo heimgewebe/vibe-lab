@@ -290,3 +290,11 @@
 ## `tests/fixtures/cross_contract`
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
+## `tools/vibe-cli/replay_minimal.py`
+
+- ← `docs/reference/replay-trace-redaction.md` (references)
+
+## `tools/vibe-cli/test_replay_trace_contract.py`
+
+- ← `docs/reference/replay-trace-redaction.md` (references)

@@ -11,14 +11,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 577
-- classified: 577
+- total: 592
+- classified: 591
   - of which fallback_classified (catch-all rule): 160
-  - fallback_share: 27.7% (160 / 577)
+  - fallback_share: 27.1% (160 / 591)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 0
+- unknown: 1
 - ambiguous: 0
 - conflict: 0
 
@@ -26,17 +26,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
+| <none> | 1 |
 | agent | 3 |
 | archive | 23 |
 | capture | 5 |
 | catalog | 12 |
-| contract | 18 |
+| contract | 19 |
 | docs | 19 |
 | experiment | 323 |
 | export | 15 |
 | generated | 8 |
 | governance | 45 |
-| test | 106 |
+| test | 119 |
 
 ### By authority
 
@@ -54,17 +55,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | raw_capture | 20 |
 | result_interpretation | 45 |
 | runtime_observation | 50 |
-| schema_truth | 11 |
+| schema_truth | 12 |
 | sovereign_source | 3 |
-| test_expectation | 106 |
-| unknown | 23 |
+| test_expectation | 119 |
+| unknown | 24 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
+| <none> | 1 |
 | append_only | 211 |
-| handcrafted | 313 |
+| handcrafted | 327 |
 | regenerated | 18 |
 | revision_with_reason | 33 |
 | superseded_not_rewritten | 2 |
@@ -75,7 +77,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 205 |
+| ci_blocking | 219 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
 | no_rewrite | 211 |
@@ -86,7 +88,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 ## Unknown artifacts
 
-_none_
+- `.vibe/replay-v0.2-redaction-sanitization.md`
 
 ## Ambiguous artifacts
 
@@ -316,6 +318,7 @@ _none_
 - `schemas/command.write_change.schema.json`
 - `schemas/decision.schema.json`
 - `schemas/experiment.manifest.schema.json`
+- `schemas/replay.trace.schema.json`
 - `schemas/run_meta.schema.json`
 
 ## Fallback classified: by matched pattern

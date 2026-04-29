@@ -307,6 +307,18 @@
       "status": "classified"
     },
     {
+      "authority": "unknown",
+      "catchall_match": false,
+      "enforcement": [],
+      "kind": null,
+      "layer": null,
+      "lifecycle": null,
+      "matched_patterns": [],
+      "origin": null,
+      "path": ".vibe/replay-v0.2-redaction-sanitization.md",
+      "status": "unknown"
+    },
+    {
       "authority": "sovereign_source",
       "catchall_match": false,
       "enforcement": [
@@ -7142,6 +7154,22 @@
         "schemas/*.json"
       ],
       "origin": "handcrafted",
+      "path": "schemas/replay.trace.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "schemas/run_meta.schema.json",
       "status": "classified"
     },
@@ -8070,6 +8098,22 @@
         "tests/fixtures/agent_commands/**/*.json"
       ],
       "origin": "handcrafted",
+      "path": "tests/fixtures/agent_commands/validate_change/contract-invalid-wrong-version.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_command_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_commands/**/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "tests/fixtures/agent_commands/validate_change/valid-edge-multi-checks.json",
       "status": "classified"
     },
@@ -8278,7 +8322,39 @@
         "tests/fixtures/agent_handoff/*.json"
       ],
       "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/fail-missing-target-files.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "tests/fixtures/agent_handoff/hash-mismatch.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/partial-missing-locator.json",
       "status": "classified"
     },
     {
@@ -8311,6 +8387,86 @@
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/agent_handoff/pass-minimal.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/pass-normalized-task-drift.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/pass-unsupported-canon.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/pass-with-exact-before-after.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/promotion-near-invalid.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_handoff_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/agent_handoff/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/agent_handoff/promotion-near-valid.json",
       "status": "classified"
     },
     {
@@ -8486,6 +8642,38 @@
         "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-failure-without-errors-in-chain.expected.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-failure-without-errors-in-chain.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-mixed-versions.expected.json",
       "status": "classified"
     },
@@ -8535,6 +8723,38 @@
       ],
       "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-remove-with-exact-after.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-success-with-errors-in-chain.expected.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-success-with-errors-in-chain.json",
       "status": "classified"
     },
     {
@@ -9254,6 +9474,22 @@
       "origin": "handcrafted",
       "path": "tools/vibe-cli/test_replay_minimal.py",
       "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "tools/vibe-cli/test_replay_trace_contract.py",
+      "status": "classified"
     }
   ],
   "conflict_artifacts": [],
@@ -9748,6 +9984,7 @@
     "schemas/command.write_change.schema.json",
     "schemas/decision.schema.json",
     "schemas/experiment.manifest.schema.json",
+    "schemas/replay.trace.schema.json",
     "schemas/run_meta.schema.json"
   ],
   "summary": {
@@ -9765,15 +10002,15 @@
       "raw_capture": 20,
       "result_interpretation": 45,
       "runtime_observation": 50,
-      "schema_truth": 11,
+      "schema_truth": 12,
       "sovereign_source": 3,
-      "test_expectation": 106,
-      "unknown": 23
+      "test_expectation": 119,
+      "unknown": 24
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 205,
+      "ci_blocking": 219,
       "diagnostic": 1,
       "no_manual_edit": 18,
       "no_rewrite": 211,
@@ -9783,34 +10020,38 @@
       "review_required": 173
     },
     "by_layer": {
+      "<none>": 1,
       "agent": 3,
       "archive": 23,
       "capture": 5,
       "catalog": 12,
-      "contract": 18,
+      "contract": 19,
       "docs": 19,
       "experiment": 323,
       "export": 15,
       "generated": 8,
       "governance": 45,
-      "test": 106
+      "test": 119
     },
     "by_lifecycle": {
+      "<none>": 1,
       "append_only": 211,
-      "handcrafted": 313,
+      "handcrafted": 327,
       "regenerated": 18,
       "revision_with_reason": 33,
       "superseded_not_rewritten": 2
     },
-    "classified": 577,
+    "classified": 591,
     "conflict": 0,
     "fallback_classified": 160,
-    "fallback_share": 0.2772963604852686,
+    "fallback_share": 0.2707275803722504,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 577,
-    "unknown": 0
+    "total": 592,
+    "unknown": 1
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": []
+  "unknown_artifacts": [
+    ".vibe/replay-v0.2-redaction-sanitization.md"
+  ]
 }
