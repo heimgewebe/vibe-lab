@@ -21,9 +21,27 @@ experiment:
   iteration: 1
   evidence_level: experimental
   falsifiability:
-    counter_hypothesis: "Die bestehenden Chain-Validatoren decken die in method.md §Phase 3 benannten Transition-Fehlerklassen (falsche Reihenfolge, falsche Kombination valider Einzelcommands) bereits ausreichend ab, sodass keine Validator- oder Fixture-Erweiterung nötig ist."
-    falsification_criterion: "Die Phase-3-Negativaussage ist widerlegt, sobald mindestens ein Kandidat aus method.md §Phase 3 Injektions-Set vom bestehenden validate_chain-Stack ohne Fehlercode toleriert wird (tolerated_but_wrong). Geprüft via direkter Live-Probe (results/result.md §Probe-Kandidaten): 7/7 Kandidaten liefern ≥1 Fehlercode; Toleranz-Rate=0/7."
-    counterevidence_checked: true
+    version: 1
+    falsification_criterion: "Die Gesamthypothese ist geschwächt, wenn keine einzige Phase eine neue testbare Toleranzzone identifiziert (alle Phasen enden als No-Patch ohne strukturelle Konsequenz). Sie ist gestärkt, wenn mindestens eine Phase eine reproduzierbare Lücke in Fixture/Test/Validator überführt."
+    counter_hypotheses:
+      - id: phase2_empty_state_tolerated
+        statement: "Leere exact_*-Strings auf der semantisch behaupteten Seite sind keine echte semantic_contradiction, sondern zulässige optionale Snapshots ohne Aussage — der Validator überinterpretiert ein erlaubtes Nichtvorhandensein als Fehler."
+        assessment:
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: results/evidence.jsonl
+              section: "validator_signal_before_patch / validator_signal_after_patch"
+            - path: artifacts/run-phase2/execution.txt
+      - id: phase3_chain_transitions_already_covered
+        statement: "Die bestehenden Chain-Validatoren decken die in method.md §Phase 3 benannten Transition-Fehlerklassen (falsche Reihenfolge, falsche Kombination valider Einzelcommands) bereits ausreichend ab, sodass keine Validator- oder Fixture-Erweiterung nötig ist."
+        assessment:
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: results/evidence.jsonl
+              section: "phase_3_candidate_uncaught_count"
+            - path: artifacts/run-phase3/execution.txt
 
 context:
   tools: ["LLM-Agent", "make validate", "Python 3.11", "JSON Schema Draft 2020-12"]

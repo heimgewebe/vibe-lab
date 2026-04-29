@@ -1,43 +1,53 @@
 schema_version: "0.1.0"
 decision_type: result_assessment
-verdict: refutes
+verdict: mixed
 confidence: medium
 date: "2026-04-29"
 reviewer: "Copilot Agent (GPT-5.x)"
 rationale: |
-  Phase 3 (Chain Integrity Stress) der Reihe Agent Failure Surface
-  Mapping refutiert die Phase-3-Leithypothese ("valide Einzelcommands
-  können in falscher Reihenfolge oder falscher Kombination als Chain
-  ungültig sein, ohne dass die bestehenden Validatoren das melden")
-  für die geprüften Kandidaten und bestätigt zugleich die Antithese
-  ("die bestehenden Chain-Validatoren decken diese Fehler bereits
-  ausreichend ab"). Sieben Kandidaten aus `method.md` §"Phase 3
-  Injektions-Set" wurden direkt gegen `validate_chain` geprüft; alle
-  sieben lösen mindestens einen dokumentierten Fehlercode aus
-  (Toleranz-Rate=0/7). Ein zusätzlicher Kandidat
-  (`validate_change(locator B abweichend)`) liegt outside_scope, weil
-  das `command.validate_change`-Schema kein `locator`-Feld definiert.
-  Konsequenz nach `method.md` §"Patch-Gate": **No-Patch-Pfad** —
-  keine Erweiterung von `scripts/docmeta/validate_command_chain.py`,
-  keine Änderung an `tests/fixtures/command_chains/`,
-  `contracts/command-semantics.md` oder
-  `docs/reference/agent-operability-fixture-matrix.md`. Die
-  Mindestschärfe (`method.md` §"Mindestschärfe der
-  Strukturkonsequenz") ist über die zweite zulässige Form erfüllt:
-  belegte Nicht-Änderungsentscheidung mit Kandidatenmatrix
-  (`results/result.md` §"Kandidatenmatrix") und Testausgabe
-  (`artifacts/run-phase3/execution.txt`). Confidence=medium, weil die
-  Negativ-Aussage strikt auf den geprüften Kandidatenraum begrenzt
-  ist; die starke Wirkung von `_validate_sequence` als Generalfänger
-  hängt an der harten v0.1-Sequenz-Bindung und ist bei künftigen
-  v0.2-Lockerungen erneut zu prüfen.
-counter_hypothesis_outcome: found_and_confirming
+  Kumulativer Serienstand nach Abschluss von Phase 2 und Phase 3 der Reihe
+  Agent Failure Surface Mapping. Verdict `mixed`, weil die beiden
+  abgeschlossenen Phasen entgegengesetzte Ergebnisse haben und beide
+  epistemisch belastbar sind:
+
+  **Phase 2 — Semantic Contradiction (confirms):**
+  H1 ("empty asserted state") wurde reproduzierbar belegt. Vor Patch lieferte
+  `validate_cross_contract` auf dem Kandidaten `change_type=add +
+  exact_after=""` keine Fehler (Toleranz-Rate 6/6). Nach Erweiterung von
+  `_validate_semantic_anti_invariants` schlägt der Fall mit
+  `semantic_contradiction` an; Positiv-Kontrast bleibt valide. Signalwechsel
+  durch Negativ-Fixtures, Tests und `make validate` reproduziert. Vollständiger
+  Phasen-Bericht: `results/phase2-semantic-contradiction.md`, Laufartefakt:
+  `artifacts/run-phase2/`.
+
+  **Phase 3 — Chain Integrity Stress (refutes phase-3 hypothesis):**
+  Die Phase-3-Leithypothese ("valide Einzelcommands können in falscher
+  Reihenfolge oder Kombination als Chain ungültig sein, ohne dass bestehende
+  Validatoren das melden") wurde im geprüften Kandidatenraum widerlegt.
+  7/7 konstruierte Transitions lösten ≥1 dokumentierten Fehlercode aus;
+  Toleranz-Rate=0/7. Phase-3-Antithese ("bestehende Chain-Validatoren decken
+  diese Fehler bereits ab") bestätigt. No-Patch. Vollständiger Phasen-Bericht:
+  `results/phase3-chain-integrity-stress.md`, Laufartefakt: `artifacts/run-phase3/`.
+
+  Phase 3 widerlegt nicht Phase 2: es gibt zwei voneinander unabhängige
+  Teilhypothesen, die jeweils separat getestet wurden. Das Gesamtexperiment
+  ist weiter offen (Phase 4 und 5 ausstehend).
+
+  Confidence=medium für den aktuellen Serienstand, weil:
+  (a) Phase 2 scharfe Signale liefert (Signalwechsel reproduziert),
+  (b) Phase 3 scharfe Negativ-Aussage liefert (begrenzt auf geprüfte Kandidaten),
+  (c) Phase 4 und 5 die Gesamtbewertung noch verschieben können.
+counter_hypothesis_outcome: not_found
 counterevidence_checked: true
 evidence_summary:
-  observations: 3
-  positive: 0
+  phases_completed: 2
+  phase2_verdict: confirms
+  phase3_verdict: refutes_phase3_hypothesis
+  total_observations: 12
+  positive: 3
   negative: 1
-  neutral: 4
+  neutral: 8
 next_steps:
   - "Phase 4 (Replay Reality Gap) gem. method.md in eigenem PR ausführen."
-  - "Bei v0.2-Lockerung der Chain-Sequenz (z. B. optionale Wiederholungs-Reads) Phase 3 mit erweitertem Kandidatenraum erneut ausführen."
+  - "Bei v0.2-Lockerung der Chain-Sequenz Phase 3 mit erweitertem Kandidatenraum erneut ausführen."
+  - "Whitespace-only exact_*-Snapshots als potenzielle eigene Klasse bei Adoption-Entscheidungen prüfen (aktuell außerhalb Phase-2-Scope)."
