@@ -13,6 +13,10 @@ relations:
   - type: references
     target: ../../../docs/reference/agent-operability-fixture-matrix.md
   - type: references
+    target: phase2-semantic-contradiction.md
+  - type: references
+    target: phase3-chain-integrity-stress.md
+  - type: references
     target: decision.yml
   - type: references
     target: replay-gap-candidates.md
@@ -27,6 +31,12 @@ Agent Failure Surface Mapping fuer die bisher abgeschlossenen Phasen.
 
 Phase 2 und Phase 3 bleiben unveraendert erhalten; Phase 4 wird als
 qualitative Replay-Gap-Kandidateninventur ergaenzt (no_patch).
+
+Eigene Phasenberichte unter `results/`:
+
+- Phase 2 - `results/phase2-semantic-contradiction.md`
+- Phase 3 - `results/phase3-chain-integrity-stress.md`
+- Phase 4 - `results/replay-gap-candidates.md`
 
 ## Gesamtstatus der Phasen
 
@@ -51,6 +61,8 @@ geschlossen.
 
 Die Phase-2-Aussage bleibt in diesem kumulativen Bericht unveraendert erhalten.
 
+Vollbericht: `results/phase2-semantic-contradiction.md`.
+
 ## Phase 3 - Chain Integrity Stress (refutes phase-3 hypothesis)
 
 Belegte Kernaussage: Im geprueften Kandidatenraum wurden keine neuen
@@ -61,6 +73,8 @@ Chain-Integrity-Luecken gefunden.
 - Folgeentscheidung: no_patch nach Patch-Gate (kein tolerated_but_wrong).
 
 Die Phase-3-Aussage bleibt unveraendert erhalten.
+
+Vollbericht: `results/phase3-chain-integrity-stress.md`.
 
 ## Phase 4 - Replay Reality Gap
 

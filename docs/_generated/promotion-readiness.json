@@ -172,14 +172,16 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [],
+      "missing": [
+        "falsifiability.assessment_counterhypothesis_supported"
+      ],
       "notes": [],
       "path": "experiments/2026-04-23_agent-failure-surface",
-      "promotion_ready": true,
-      "status": "designed",
+      "promotion_ready": false,
+      "status": "testing",
       "warnings": []
     },
     {
@@ -202,8 +204,8 @@
   "summary": {
     "experiments_checked": 14,
     "historical_escape": 1,
-    "not_ready": 10,
-    "ready": 3,
+    "not_ready": 11,
+    "ready": 2,
     "warnings": 1
   },
   "trigger": "need_for_reproducibility"

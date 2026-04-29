@@ -6,15 +6,43 @@ schema_version: "0.1.0"
 experiment:
   name: "Agent Failure Surface Mapping"
   hypothesis: "Die Grenze zwischen 'agentisch korrekt' und 'agentisch falsch' ist im aktuellen Contract-/Fixture-Layer nicht überall scharf; gezielt konstruierte Drift-, Widerspruchs-, Chain- und Replay-Fälle decken Toleranzzonen auf, die in Fixtures/Tests/Validatoren überführt werden können."
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - results/evidence.jsonl
+    - results/result.md
+    - results/decision.yml
+    - results/replay-gap-candidates.md
+    - artifacts/run-phase2/run_meta.json
+    - artifacts/run-phase3/run_meta.json
   created: "2026-04-23"
-  updated: "2026-04-23"
+  updated: "2026-04-29"
   author: "Claude Opus 4.7"
   iteration: 1
   evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: "Die Gesamthypothese ist geschwaecht, wenn keine einzige Phase eine neue testbare Toleranzzone identifiziert oder wenn qualitative Folgephasen nur scheinbar Historie ersetzen statt sie kumulativ zu ergaenzen. Sie ist gestaerkt, wenn mindestens eine Phase eine reproduzierbare Luecke in Fixture/Test/Validator ueberfuehrt und spaetere Phasen die bestehende Serienhistorie konsistent fortschreiben."
+    counter_hypotheses:
+      - id: phase2_empty_state_tolerated
+        statement: "Leere exact_*-Strings auf der semantisch behaupteten Seite sind keine echte semantic_contradiction, sondern zulaessige optionale Snapshots ohne Aussage - der Validator ueberinterpretiert ein erlaubtes Nichtvorhandensein als Fehler."
+        assessment:
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: results/evidence.jsonl
+              section: "validator_signal_before_patch / validator_signal_after_patch"
+            - path: artifacts/run-phase2/execution.txt
+      - id: phase3_chain_transitions_already_covered
+        statement: "Die bestehenden Chain-Validatoren decken die in method.md fuer Phase 3 benannten Transition-Fehlerklassen bereits ausreichend ab, sodass keine Validator- oder Fixture-Erweiterung noetig ist."
+        assessment:
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: results/evidence.jsonl
+              section: "phase_3_candidate_uncaught_count"
+            - path: artifacts/run-phase3/execution.txt
 
 context:
   tools: ["LLM-Agent", "make validate", "Python 3.11", "JSON Schema Draft 2020-12"]

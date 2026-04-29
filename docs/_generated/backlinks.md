@@ -199,12 +199,24 @@
 
 ## `experiments/2026-04-23_agent-failure-surface/method.md`
 
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `experiments/2026-04-23_agent-failure-surface/results/decision.yml`
 
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md`
+
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
@@ -213,6 +225,8 @@
 
 ## `experiments/2026-04-23_agent-failure-surface/results/result.md`
 
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` (references)
 
 ## `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`

@@ -1,0 +1,40 @@
+# Phase 3 - verification run output
+# Generated 2026-04-29; commands as in artifacts/run-phase3/run_meta.json
+
+=== python3 scripts/docmeta/test_validate_command_chain.py ===
+.......................................
+----------------------------------------------------------------------
+Ran 39 tests in 0.278s
+
+OK
+
+=== python3 tests/contracts/test_cross_contract_chain.py ===
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.173s
+
+OK
+ERROR: fixture /tmp/tmp4t_7ttib.json: chain[0] must be a JSON object, got int
+
+=== python3 scripts/docmeta/test_fixture_matrix_audit_surface.py ===
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+
+=== python3 scripts/docmeta/test_fixture_matrix_known_gaps_audit.py ===
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+
+=== python3 scripts/docmeta/test_promotion_readiness.py ===
+Ran 99 tests, OK
+
+=== python3 scripts/docmeta/validate_promotion_readiness.py (dry-run) ===
+Promotion-Readiness Dry-Run completed with exit=0.
+
+=== make validate (final summary) ===
+Validation passed.
