@@ -41,7 +41,7 @@ _KNOWN_COMMANDS: frozenset[str] = frozenset(
 )
 
 _ABS_PATH_PATTERN = re.compile(
-    r"(?<!<external>)(^|[\s:=\[\]\(\)\{\}\"',])(/(?:[^\s\"'<>|\[\]{}(),;]+))"
+    r"(^|[\s:=\[\]\(\)\{\}\"',`])((?<!<external>)/(?:[^\s\"'<>|\[\]{}(),;`]+))"
 )
 
 
@@ -214,7 +214,7 @@ def _build_trace_v0_2(
 
 def _redact_path_like_token(token: str) -> str:
     """Redact one absolute path-like token deterministically.
-    
+
     Supports both colon line format (path:10) and hash line format (path#L10).
     """
     if token.startswith("//"):

@@ -448,6 +448,24 @@ class ReplayTraceContractTests(unittest.TestCase):
             for s in _iter_strings(payload):
                 self.assertFalse(_contains_absolute_posix_path(s), s)
 
+    def test_redaction_handles_backtick_prefixed_absolute_path(self) -> None:
+        self.assertEqual(
+            rm._redact_absolute_paths_in_string("`/tmp/secret.txt`"),
+            "`<external>/secret.txt`",
+        )
+
+    def test_redaction_handles_external_prefix_then_absolute_path(self) -> None:
+        self.assertEqual(
+            rm._redact_absolute_paths_in_string("<external> /tmp/secret.txt"),
+            "<external> <external>/secret.txt",
+        )
+
+    def test_redaction_keeps_already_redacted_path_unchanged(self) -> None:
+        self.assertEqual(
+            rm._redact_absolute_paths_in_string("<external>/secret.txt"),
+            "<external>/secret.txt",
+        )
+
     def test_repo_relative_hash_locator_is_preserved(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             chain_path = Path(tmpdir) / "repo-relative-locator-hash.json"
