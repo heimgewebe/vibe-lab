@@ -1,0 +1,25 @@
+Phase 2 — Semantic Contradiction — Execution Log
+run_id: run-phase2
+timestamp_start: 2026-04-29T07:00:00Z
+
+CMD: python3 tests/contracts/test_cross_contract_chain.py
+......................................
+Ran 16 tests in 0.201s
+OK
+ERROR: fixture /tmp/tmp.json: chain[0] must be a JSON object, got int
+NOTE: Expected diagnostic emitted by negative fixture coverage; command exit remained 0.
+
+CMD: python3 scripts/docmeta/test_validate_command_chain.py
+.......................................
+Ran 39 tests in 0.333s
+OK
+
+CMD: python3 scripts/docmeta/test_validate_agent_handoff.py
+.............
+Ran 13 tests in 0.082s
+OK
+
+CMD: make validate
+[output: Validation passed]
+
+EXIT CODE: 0

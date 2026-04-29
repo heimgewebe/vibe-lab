@@ -52,6 +52,21 @@ class CrossContractPositiveTests(unittest.TestCase):
         )
         self.assertEqual(errors, [])
 
+    def test_minimal_chain_add_is_accepted(self) -> None:
+        """Near-positive contrast for empty-asserted-state class.
+
+        Same shape as ``empty_change_state`` (``change_type=add`` with
+        ``write_change.exact_after`` present), but ``exact_after`` carries
+        non-empty content. Must validate cleanly,
+        proving the new rule does not over-reach to non-empty post-states.
+        """
+        handoff, chain, expected = _load("valid/minimal_chain_add.json")
+        self.assertEqual(expected, [])
+        errors = vcc.validate_cross_contract(
+            handoff, chain, "valid/minimal_chain_add.json", self.validators
+        )
+        self.assertEqual(errors, [])
+
     def test_no_implicit_defaults_are_injected(self) -> None:
         """Validation must not mutate handoff or chain (no silent
         defaults, no field invention)."""
@@ -102,6 +117,22 @@ class CrossContractNegativeTests(unittest.TestCase):
         """Chain is formally valid but semantically contradictory
         (remove with exact_after set)."""
         observed, expected = self._observed("invalid/contradiction.json")
+        self.assertIn("semantic_contradiction", observed)
+        self.assertEqual(observed, expected)
+
+    def test_empty_change_state_fails(self) -> None:
+        """Empty asserted state: ``change_type=add`` with ``exact_after=""``
+        passes the schema but asserts a vacuous post-state.
+
+        Phase 2 (Semantic Contradiction) class **empty asserted state**:
+        when an ``exact_*`` field is present on the side that the
+        ``change_type`` semantically asserts (``add → exact_after``,
+        ``remove → exact_before``, ``modify``/``replace`` → both), the
+        value must not be the empty string. The negative fixture isolates
+        exactly this invariant; the near-positive contrast
+        (``valid/minimal_chain_add.json``) validates cleanly.
+        """
+        observed, expected = self._observed("invalid/empty_change_state.json")
         self.assertIn("semantic_contradiction", observed)
         self.assertEqual(observed, expected)
 

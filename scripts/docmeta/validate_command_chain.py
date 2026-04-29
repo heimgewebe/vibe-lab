@@ -420,6 +420,38 @@ def _validate_semantic_anti_invariants(
                         path=chain_label,
                     )
                 )
+            # Empty-asserted-state contradictions: when an exact_* field is
+            # present, the side that the change_type semantically asserts must
+            # not be empty. The forbidden-side rules above already cover the
+            # case where the wrong side is set; this rule covers the
+            # complementary case where the right side is set but vacuous.
+            #
+            # Asserted side per change_type (only checked when present):
+            #   add      -> exact_after  must be non-empty (post-state asserted)
+            #   remove   -> exact_before must be non-empty (pre-state asserted)
+            #   modify   -> both sides, when present, must be non-empty
+            #   replace  -> both sides, when present, must be non-empty
+            asserted_fields: tuple[str, ...] = ()
+            if change_type == "add":
+                asserted_fields = ("exact_after",)
+            elif change_type == "remove":
+                asserted_fields = ("exact_before",)
+            elif change_type in ("modify", "replace"):
+                asserted_fields = ("exact_before", "exact_after")
+            for field in asserted_fields:
+                value = record.get(field)
+                if isinstance(value, str) and value == "":
+                    errors.append(
+                        ChainError(
+                            code="semantic_contradiction",
+                            message=(
+                                f"change_type={change_type} with empty {field}; "
+                                "asserted state is vacuous"
+                            ),
+                            command_index=idx,
+                            path=chain_label,
+                        )
+                    )
             tf = record.get("target_files") or []
             if isinstance(tf, list) and len(tf) != len(set(tf)):
                 errors.append(

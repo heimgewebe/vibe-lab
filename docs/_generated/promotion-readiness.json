@@ -172,14 +172,14 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [],
       "notes": [],
       "path": "experiments/2026-04-23_agent-failure-surface",
       "promotion_ready": true,
-      "status": "designed",
+      "status": "testing",
       "warnings": []
     },
     {

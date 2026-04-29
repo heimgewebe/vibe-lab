@@ -3,21 +3,21 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-24T10:15:40Z
+Latest Evidence Timestamp: 2026-04-29T08:56:51Z
 
 ## Gate Snapshot
 
-- Total events: **249**
+- Total events: **257**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **13**
+- Source evidence files: **14**
 
 ## Event Type Counts
 
 | event_type | events |
 | --- | ---: |
-| decision | 12 |
-| measurement | 122 |
-| observation | 96 |
+| decision | 13 |
+| measurement | 127 |
+| observation | 98 |
 | run | 19 |
 
 ## Metric Aggregates
@@ -33,8 +33,10 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | architecture-single-shot | 1 | 0 | - | - | - |
 | asymmetric_comparison_bias | 1 | 0 | - | - | - |
 | blind_review_available | 1 | 1 | 0 | 0 | 0 |
+| branch_coverage_extended | 1 | 0 | - | - | - |
 | branch_setup_completed | 4 | 0 | - | - | - |
 | bug-task2-incremental-cli-parser | 1 | 0 | - | - | - |
+| candidate_probe_uncaught_count | 1 | 1 | 6 | 6 | 6 |
 | canonical_contract_fix_committed | 1 | 0 | - | - | - |
 | canonical_doc_change_committed | 4 | 0 | - | - | - |
 | canonical_generator_nondeterminism | 2 | 0 | - | - | - |
@@ -62,6 +64,7 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | controlled_schema_deviation_injected | 1 | 1 | 1 | 1 | 1 |
 | design-sharpening | 1 | 0 | - | - | - |
 | detection_latency_seconds | 3 | 3 | 47 | 97 | 48 |
+| diagnosis_baseline | 1 | 0 | - | - | - |
 | diagnosis_clarity_score | 4 | 4 | 4 | 5 | 5 |
 | discovery_defined_a0_1 | 1 | 1 | 1 | 1 | 1 |
 | duration_seconds | 3 | 3 | 14 | 113 | 85 |
@@ -91,6 +94,7 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | http_status_coverage_strict | 2 | 0 | - | - | - |
 | http_status_coverage_structural | 1 | 0 | - | - | - |
 | hypothesis_confirmed | 3 | 3 | 1 | 1 | 1 |
+| hypothesis_selection | 1 | 0 | - | - | - |
 | implementation_lines | 2 | 2 | 196 | 288 | 242 |
 | incremental-input1 | 1 | 0 | - | - | - |
 | incremental-input2 | 1 | 0 | - | - | - |
@@ -111,6 +115,7 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | patch_size | 1 | 1 | 7 | 7 | 7 |
 | phase0-setup | 1 | 0 | - | - | - |
 | phase1_execution_run | 1 | 0 | - | - | - |
+| phase_2_outcome | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
 | pr_opened_run_003 | 1 | 0 | - | - | - |
@@ -178,6 +183,7 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | test_pass_rate_spec_first | 2 | 2 | 1 | 1 | 1 |
 | test_pass_rate_test_first | 1 | 1 | 1 | 1 | 1 |
 | test_pass_rate_unpatched | 1 | 0 | - | - | - |
+| test_suite_status | 1 | 0 | - | - | - |
 | testability-incremental | 1 | 0 | - | - | - |
 | testability-single-shot | 1 | 0 | - | - | - |
 | tests-missing | 1 | 0 | - | - | - |
@@ -189,6 +195,8 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | unnecessary_commit_delta | 4 | 4 | 0 | 2 | 1.5 |
 | validation-completeness | 1 | 0 | - | - | - |
 | validation_completeness | 1 | 0 | - | - | - |
+| validator_signal_after_patch | 1 | 1 | 1 | 1 | 1 |
+| validator_signal_before_patch | 1 | 1 | 0 | 0 | 0 |
 | verdict | 3 | 0 | - | - | - |
 | verdict-recalibrated | 1 | 0 | - | - | - |
 
@@ -206,4 +214,5 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 - `experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl`
 - `experiments/2026-04-15_agent-task-validity/results/evidence.jsonl`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
+- `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`

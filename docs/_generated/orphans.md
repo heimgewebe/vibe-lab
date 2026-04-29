@@ -92,7 +92,7 @@ Documents not referenced by any other document via frontmatter relations (113 fo
 - `experiments/2026-04-23_agent-failure-surface/CONTEXT.md`
 - `experiments/2026-04-23_agent-failure-surface/INITIAL.md`
 - `experiments/2026-04-23_agent-failure-surface/failure_modes.md`
-- `experiments/2026-04-23_agent-failure-surface/method.md`
+- `experiments/2026-04-23_agent-failure-surface/results/result.md`
 - `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md`
 - `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md`
