@@ -92,12 +92,24 @@ fehlende Felder bleiben weiterhin zulässig (v0.1 hält Felder optional).
 
 ### Fixtures (Kontrastpaar gem. method.md §Mindestschärfe)
 
+**Chain-Direktbeweis (validate_command_chain):**
+
+- **Negativ** — `tests/fixtures/command_chains/invalid-empty-asserted-state.json`:
+  `change_type=add`, `exact_after=""`. Erwartet: `semantic_contradiction`.
+
+**Cross-Contract-Ebene:**
+
 - **Negativ** — `tests/fixtures/cross_contract/invalid/empty_change_state.json`:
   `change_type=add`, `exact_after=""`. Erwartet: `semantic_contradiction`.
 - **Positiv-Kontrast** — `tests/fixtures/cross_contract/valid/minimal_chain_add.json`:
   Identische Form, `exact_after` non-empty. Bleibt gültig.
 
 ### Test
+
+Neue Methoden in `scripts/docmeta/test_validate_command_chain.py` (direkter Chain-Beweis):
+
+- `test_semantic_contradiction_empty_asserted_state` (Negativ; erwartet `semantic_contradiction`)
+- `test_no_false_positive_add_with_nonempty_exact_after` (Positiv-Kontrast)
 
 Neue Methoden in `tests/contracts/test_cross_contract_chain.py`:
 
@@ -119,7 +131,7 @@ Neue Methoden in `tests/contracts/test_cross_contract_chain.py`:
 | Probe nach Patch                                                       | `["semantic_contradiction"]` |
 | Positiv-Kontrast (`add` + `exact_after` non-empty)                     | `[]` — gültig |
 | `python3 tests/contracts/test_cross_contract_chain.py`                 | `Ran 16 tests, OK` |
-| `python3 scripts/docmeta/test_validate_command_chain.py`               | `Ran 35 tests, OK` |
+| `python3 scripts/docmeta/test_validate_command_chain.py`               | `Ran 37 tests, OK` |
 | `python3 scripts/docmeta/test_validate_agent_handoff.py`               | `Ran 13 tests, OK` |
 
 ## Geltungsgrenzen
