@@ -1,3 +1,19 @@
+---
+title: "Phase 3 — Chain Integrity Stress (Phasen-Ergebnisbericht)"
+status: draft
+canonicality: operative
+created: "2026-04-29"
+updated: "2026-04-29"
+author: "Copilot Agent (GPT-5.x)"
+relations:
+  - type: references
+    target: result.md
+  - type: references
+    target: decision.yml
+  - type: references
+    target: ../method.md
+---
+
 # Phase 3 — Chain Integrity Stress (Phasen-Ergebnisbericht)
 
 > Dieser Bericht dokumentiert Phase 3 der Reihe Agent Failure Surface Mapping.

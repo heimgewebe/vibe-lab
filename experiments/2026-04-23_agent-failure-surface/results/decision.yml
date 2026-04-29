@@ -37,7 +37,7 @@ rationale: |
   (a) Phase 2 scharfe Signale liefert (Signalwechsel reproduziert),
   (b) Phase 3 scharfe Negativ-Aussage liefert (begrenzt auf geprüfte Kandidaten),
   (c) Phase 4 und 5 die Gesamtbewertung noch verschieben können.
-counter_hypothesis_outcome: not_found
+counter_hypothesis_outcome: found_and_confirming
 counterevidence_checked: true
 evidence_summary:
   phases_completed: 2

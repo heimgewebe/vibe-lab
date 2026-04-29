@@ -12,6 +12,12 @@ relations:
     target: ../../../contracts/command-semantics.md
   - type: references
     target: ../../../docs/reference/agent-operability-fixture-matrix.md
+  - type: references
+    target: phase2-semantic-contradiction.md
+  - type: references
+    target: phase3-chain-integrity-stress.md
+  - type: references
+    target: decision.yml
 ---
 
 # result.md — Serienbericht (Phase 2 + 3)

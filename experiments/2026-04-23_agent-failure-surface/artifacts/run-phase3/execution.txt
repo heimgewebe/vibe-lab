@@ -4,17 +4,17 @@
 === python3 scripts/docmeta/test_validate_command_chain.py ===
 .......................................
 ----------------------------------------------------------------------
-Ran 39 tests in 0.333s
+Ran 39 tests in 0.278s
 
 OK
 
 === python3 tests/contracts/test_cross_contract_chain.py ===
 ................
 ----------------------------------------------------------------------
-Ran 16 tests in 0.203s
+Ran 16 tests in 0.173s
 
 OK
-ERROR: fixture /tmp/tmp1qfpjtg8.json: chain[0] must be a JSON object, got int
+ERROR: fixture /tmp/tmp4t_7ttib.json: chain[0] must be a JSON object, got int
 
 === python3 scripts/docmeta/test_fixture_matrix_audit_surface.py ===
 .
@@ -133,7 +133,7 @@ test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTest
 test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests.test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing) ... ok
 
 ----------------------------------------------------------------------
-Ran 99 tests in 0.367s
+Ran 99 tests in 0.328s
 
 OK
 

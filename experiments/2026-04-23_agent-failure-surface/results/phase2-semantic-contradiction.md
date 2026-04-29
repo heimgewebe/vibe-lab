@@ -1,3 +1,19 @@
+---
+title: "Phase 2 — Semantic Contradiction (Archiv-Kopie)"
+status: draft
+canonicality: operative
+created: "2026-04-29"
+updated: "2026-04-29"
+author: "Copilot Agent (GPT-5.x)"
+relations:
+  - type: references
+    target: result.md
+  - type: references
+    target: decision.yml
+  - type: references
+    target: ../method.md
+---
+
 # Phase 2 — Semantic Contradiction (Archiv-Kopie)
 
 > Diese Datei archiviert den Phase-2-Ergebnisbericht im Originalzustand.
