@@ -195,6 +195,32 @@
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
 
+## `experiments/2026-04-23_agent-failure-surface/failure_modes.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/method.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/results/decision.yml`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/results/result.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` (references)
+
 ## `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`
 
 - ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md` (references)

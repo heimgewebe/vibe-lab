@@ -3,13 +3,13 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-24T10:15:40Z
+Latest Evidence Timestamp: 2026-04-29T00:00:00Z
 
 ## Gate Snapshot
 
-- Total events: **249**
+- Total events: **252**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **13**
+- Source evidence files: **14**
 
 ## Event Type Counts
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | --- | ---: |
 | decision | 12 |
 | measurement | 122 |
-| observation | 96 |
+| observation | 99 |
 | run | 19 |
 
 ## Metric Aggregates
@@ -111,6 +111,9 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 | patch_size | 1 | 1 | 7 | 7 | 7 |
 | phase0-setup | 1 | 0 | - | - | - |
 | phase1_execution_run | 1 | 0 | - | - | - |
+| phase_4_diagnosis_baseline | 1 | 0 | - | - | - |
+| phase_4_outcome | 1 | 0 | - | - | - |
+| phase_4_replay_gap_candidates | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
 | pr_opened_run_003 | 1 | 0 | - | - | - |
@@ -206,4 +209,5 @@ Latest Evidence Timestamp: 2026-04-24T10:15:40Z
 - `experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl`
 - `experiments/2026-04-15_agent-task-validity/results/evidence.jsonl`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
+- `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`

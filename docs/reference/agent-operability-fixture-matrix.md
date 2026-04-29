@@ -3,7 +3,7 @@ title: "Agent Operability — Fixture-Matrix (v0.1)"
 status: active
 canonicality: derived
 created: "2026-04-21"
-updated: "2026-04-23"
+updated: "2026-04-29"
 author: "vibe-lab maintainers"
 relations:
   - type: references
@@ -391,3 +391,20 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 | Cross-Contract | intent mismatch (no write_change) | `cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | ✅ |
 | Cross-Contract | version conflict | `cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Cross-Contract | locator drift (handoff vs write_change) | `cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | ✅ |
+
+---
+
+## 7. Intentional Gap - Replay Reality Gap
+
+Dieser Eintrag dokumentiert eine bewusst qualitative Luecke zwischen
+Dry-Run-Replay und hypothetischer Realausfuehrung.
+
+- keine Fixture-Klasse
+- kein Validator-Signal
+- qualitative Kandidateninventur
+- Referenz: `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
+
+Audit:
+- `covered: false`
+- `test_ref: experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
+- `gap: intentional (v0.2)`
