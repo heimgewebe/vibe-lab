@@ -1,5 +1,5 @@
 ---
-title: "Phase 3 - Chain Integrity Stress (Phasen-Ergebnisbericht)"
+title: "Phase 3 — Chain Integrity Stress (Phasen-Ergebnisbericht)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
@@ -14,7 +14,7 @@ relations:
     target: ../method.md
 ---
 
-# Phase 3 - Chain Integrity Stress (Phasen-Ergebnisbericht)
+# Phase 3 — Chain Integrity Stress (Phasen-Ergebnisbericht)
 
 > Dieser Bericht dokumentiert Phase 3 der Reihe Agent Failure Surface Mapping.
 > Der kumulative Serienbericht ist `results/result.md`;
@@ -24,29 +24,34 @@ relations:
 
 ## Outcome
 
-**Phase 3 abgeschlossen - keine neue tolerierte Chain-Integrity-Luecke
-in den geprueften Kandidaten.** Alle Phase-3-Probekandidaten wurden vom
+**Phase 3 abgeschlossen — keine neue tolerierte Chain-Integrity-Lücke
+in den geprüften Kandidaten.** Alle Phase-3-Probekandidaten wurden vom
 bestehenden `validate_chain`-Stack bereits erkannt oder liegen
-nachweislich ausserhalb des v0.1-Validator-Scopes. Konsequenz nach
-`method.md` Patch-Gate: **No-Patch-Pfad**.
+nachweislich außerhalb des v0.1-Validator-Scopes. Konsequenz nach
+`method.md` §"Patch-Gate": **No-Patch-Pfad** — kein neues Fixture, kein
+Validator-Eingriff, keine Contract- oder Fixture-Matrix-Doku-Erweiterung.
 
 ## Diagnose (Ist-Zustand vor Probe)
 
 `scripts/docmeta/validate_command_chain.py` deckt zum Zeitpunkt von
 Phase 3 folgende Chain-Fehlerklassen ab:
 
-- `_validate_individual`: `contract_invalid`
-- `_validate_sequence`: `command_sequence_invalid`
-- `_validate_version_consistency`: `command_sequence_invalid`
-- `_validate_target_files_continuity`: `target_files_mismatch`
-- `_validate_locator_continuity`: `locator_continuity_violation`
-- `_validate_semantic_anti_invariants`: `semantic_contradiction`
-- `_validate_error_check_binding`: `validate_error_unbindable`
-- `_validate_validate_result_seam`: `validate_without_write`, `validate_targets_out_of_scope`
+| Schicht                            | Funktion                                   | Erfasste Klassen                                                                                                                                                          |
+| ---------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Einzelrecord-Schema                | `_validate_individual` (Z. 161-214)        | `contract_invalid`                                                                                                                                                        |
+| Sequenz                            | `_validate_sequence` (Z. 217-243)          | `command_sequence_invalid` (jede Abweichung von `read_context → write_change → validate_change`, inkl. Mehrfach-Commands, Vertauschungen, fehlendem `write_change`)        |
+| Versionen                          | `_validate_version_consistency` (Z. 246-276) | `command_sequence_invalid` (gemischte Versionen)                                                                                                                          |
+| Target-Files-Kontinuität           | `_validate_target_files_continuity` (Z. 279-325) | `target_files_mismatch`                                                                                                                                                   |
+| Locator-Kontinuität                | `_validate_locator_continuity` (Z. 328-370) | `locator_continuity_violation`                                                                                                                                            |
+| Semantische Anti-Invarianten       | `_validate_semantic_anti_invariants` (Z. 373-476) | `semantic_contradiction` (inkl. SEM-EMPTY-ASSERTED aus Phase 2)                                                                                                           |
+| Error-Bindung                      | `_validate_error_check_binding` (Z. 479-538) | `validate_error_unbindable`                                                                                                                                               |
+| Validate-Result-Seam               | `_validate_validate_result_seam` (Z. 541-621) | `validate_without_write`, `validate_targets_out_of_scope`                                                                                                                 |
+
+**Transition-relevante Schichten:** `_validate_sequence`, `_validate_version_consistency`, `_validate_target_files_continuity`, `_validate_validate_result_seam`.
 
 ## Probe-Kandidaten (direkter `validate_chain(...)`-Lauf)
 
-```text
+```
 A_two_writes:                                   ['command_sequence_invalid']
 B_no_write:                                     ['command_sequence_invalid', 'validate_without_write']
 C_mixed_versions:                               ['command_sequence_invalid', 'contract_invalid']
@@ -60,43 +65,45 @@ Toleranz-Rate: **0/7**.
 
 ## Kandidatenmatrix
 
-| # | Kandidat | Observed error codes | Bewertung |
-| - | -------- | -------------------- | --------- |
-| A | `read->write->write->validate` | `command_sequence_invalid` | `already_detected` |
-| B | `read->validate` (kein write) | `command_sequence_invalid`, `validate_without_write` | `already_detected` |
-| C | gemischte Versionen v0.1/v0.2 | `command_sequence_invalid`, `contract_invalid` | `already_detected` |
-| D | `validate->read->write` | `command_sequence_invalid`, `validate_without_write` | `already_detected` |
-| E | `write.target_files` nicht in `read.target_files` | `target_files_mismatch` | `already_detected` |
-| F | `add` dann `remove` | `command_sequence_invalid` | `already_detected` |
-| G | `write.target_files=[]` vor `validate(checks)` | `contract_invalid`, `validate_targets_out_of_scope` | `already_detected` |
-| - | `validate_change.locator B abweichend` | n/a | `outside_scope` |
+| # | Kandidat (Phase-3-Klasse aus `method.md`)                                                              | Erwartete Fehlerklasse                                        | Observed error codes                                          | Bewertung           |
+| - | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------- |
+| A | `read_context → write_change → write_change → validate_change`                                         | `command_sequence_invalid`                                    | `command_sequence_invalid`                                    | `already_detected`  |
+| B | `read_context → validate_change` ohne `write_change`                                                   | `command_sequence_invalid`, `validate_without_write`          | `command_sequence_invalid`, `validate_without_write`          | `already_detected`  |
+| C | Gemischte Versionen `v0.1 → v0.2 → v0.1`                                                               | `command_sequence_invalid`, `contract_invalid`                | `command_sequence_invalid`, `contract_invalid`                | `already_detected`  |
+| D | `validate_change(success=true) → read_context → write_change`                                          | `command_sequence_invalid`, `validate_without_write`          | `command_sequence_invalid`, `validate_without_write`          | `already_detected`  |
+| E | `write_change.target_files` enthält Pfad außerhalb `read_context.target_files`                         | `target_files_mismatch`                                       | `target_files_mismatch`                                       | `already_detected`  |
+| F | `add` dann `remove` auf gleichem Locator (zwei `write_change`-Records)                                 | `command_sequence_invalid`                                    | `command_sequence_invalid`                                    | `already_detected`  |
+| G | `write_change.target_files=[]` vor `validate_change` mit `checks`                                     | `contract_invalid`, `validate_targets_out_of_scope`           | `contract_invalid`, `validate_targets_out_of_scope`           | `already_detected`  |
+| – | `validate_change(locator B abweichend)`                                                                | n/a (`validate_change` hat per Schema kein `locator`-Feld)    | —                                                             | `outside_scope`     |
 
 ## Hypothesen (Bewertung)
 
-- **Leithypothese (Phase 3):** refuted fuer die geprueften Kandidaten.
-- **Antithese:** confirmed - bestehende Chain-Validatoren greifen bei allen konstruierten Transitions.
+- **Leithypothese (Phase 3):** refuted für die geprüften Kandidaten.
+- **Antithese:** confirmed — bestehende Chain-Validatoren greifen bei allen konstruierten Transitions.
 
 ## Verifikation
 
-| Schritt | Ergebnis |
-| ------- | -------- |
-| Probe Kandidaten A-G | 0/7 toleriert |
-| `test_validate_command_chain.py` | `Ran 39 tests, OK` |
-| `test_cross_contract_chain.py` | `Ran 16 tests, OK` |
-| `test_fixture_matrix_audit_surface.py` | `Ran 1 test, OK` |
-| `test_fixture_matrix_known_gaps_audit.py` | `Ran 1 test, OK` |
-| `test_promotion_readiness.py` | `Ran 99 tests, OK` |
-| `validate_promotion_readiness.py` | dry-run, exit=0 |
-| `make validate` | `Validation passed` |
+| Schritt                                                              | Ergebnis                              |
+| -------------------------------------------------------------------- | ------------------------------------- |
+| Probe vor Phase-3-Patchversuch (Kandidaten A–G)                      | jeweils ≥1 Fehlercode (0/7 toleriert) |
+| `python3 scripts/docmeta/test_validate_command_chain.py`             | `Ran 39 tests, OK`                    |
+| `python3 tests/contracts/test_cross_contract_chain.py`               | `Ran 16 tests, OK`                    |
+| `python3 scripts/docmeta/test_fixture_matrix_audit_surface.py`       | `Ran 1 test, OK`                      |
+| `python3 scripts/docmeta/test_fixture_matrix_known_gaps_audit.py`    | `Ran 1 test, OK`                      |
+| `python3 scripts/docmeta/test_promotion_readiness.py`                | `Ran 99 tests, OK`                    |
+| `python3 scripts/docmeta/validate_promotion_readiness.py`            | dry-run, `exit=0`                     |
+| `make validate`                                                      | `✅ Validation passed`                |
 
-Vollstaendige Konsolen-Ausgabe: `artifacts/run-phase3/execution.txt`.
+Vollständige Konsolen-Ausgabe: `artifacts/run-phase3/execution.txt`.
+
+Hinweis: Die `ERROR: fixture ... got int`-Zeile im Laufartefakt ist erwartete Diagnostik aus Negativ-Fixture-Coverage; der zugehörige Testprozess endet mit Exit 0.
 
 ## Geltungsgrenzen
 
-- Negativ-Aussage strikt auf den geprueften Kandidatenraum begrenzt.
-- Die v0.1-Sequenz-Strenge ist der Hauptgrund, warum viele Phase-3-Permutationen automatisch `command_sequence_invalid` ausloesen.
-- Bei v0.2-Lockerung muss Phase 3 mit erweitertem Kandidatenraum erneut geprueft werden.
+- Negativ-Aussage strikt auf den geprüften Kandidatenraum begrenzt.
+- Die v0.1-Sequenz-Strenge (`_validate_sequence` harte Bindung auf 3 Records) ist der Hauptgrund, warum viele Phase-3-Permutationen automatisch `command_sequence_invalid` auslösen. Bei v0.2-Lockerung muss Phase 3 mit erweitertem Kandidatenraum erneut geprüft werden.
+- Cross-Contract-Validatoren (Handoff↔Chain) wurden bewusst nicht variiert.
 
 ## Entscheidung
 
-**Phase 3 abgeschlossen, No-Patch.** Die Nicht-Aenderungsentscheidung ist mit Kandidatenmatrix und Testausgabe belegt.
+**Phase 3 abgeschlossen, No-Patch.** `method.md` §"Mindestschärfe der Strukturkonsequenz" ist über die zweite zulässige Form erfüllt: belegte Nicht-Änderungsentscheidung mit Kandidatenmatrix und Testausgabe.
