@@ -1,5 +1,5 @@
 ---
-title: "Result: Phase 2 — Semantic Contradiction"
+title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
@@ -12,147 +12,135 @@ relations:
     target: ../../../contracts/command-semantics.md
   - type: references
     target: ../../../docs/reference/agent-operability-fixture-matrix.md
+  - type: references
+    target: phase2-semantic-contradiction.md
+  - type: references
+    target: phase3-chain-integrity-stress.md
+  - type: references
+    target: decision.yml
 ---
 
-# result.md — Phase 2 (Semantic Contradiction)
+# result.md — Serienbericht (Phase 2 + 3)
 
-## Outcome
+Dieser Bericht ist der kumulative Ergebnisstand der Reihe
+*Agent Failure Surface Mapping*. Jede Phase hat einen eigenen
+Phasen-Ergebnisbericht unter `results/`:
 
-**Phase 2 abgeschlossen.** Eine bislang tolerierte semantische
-Widerspruchsklasse — *"empty asserted state"* — wurde reproduzierbar belegt
-und über Negativ-Fixture, Positiv-Kontrast, Test und minimale
-Validator-Erweiterung verankert. Keine weitere Phase-2-Nacharbeit erforderlich;
-die Gesamtserie bleibt offen und Phase 3 folgt in eigenem PR.
+- Phase 2 — Semantic Contradiction: `results/phase2-semantic-contradiction.md`
+- Phase 3 — Chain Integrity Stress: `results/phase3-chain-integrity-stress.md`
 
-## Diagnose (Ist-Zustand vor Patch)
+Die Entscheidung für die aktuell abgeschlossenen Phasen ist in
+`results/decision.yml` (kumulativ, `verdict: mixed`).
 
-`_validate_semantic_anti_invariants`
-in `scripts/docmeta/validate_command_chain.py` (Funktion vor Patch ca. Z. 373-444; nach Patch um die unten beschriebene Klasse erweitert) deckte bereits ab:
+---
 
-- `change_type=remove` + `exact_after is not None` (Z. 386-397)
-- `change_type=add` + `exact_before is not None` (Z. 398-409)
-- `exact_before == exact_after` (Z. 410-422)
-- duplicate `target_files` in `write_change`/`read_context` (Z. 423-443)
+## Gesamtstatus der Serie
 
-Die Regeln prüfen jeweils nur die *verbotene* Seite des Zustands. Die
-*geforderte* Seite — der `exact_*`-Wert, der laut `change_type` einen echten
-Pre-/Post-State tragen soll — wird nur dann angefasst, wenn sie identisch
-zur anderen Seite ist. Schema lässt `exact_before`/`exact_after` als
-beliebige Strings zu (`schemas/command.write_change.schema.json:33-37`),
-inklusive `""`.
+| Phase | Leithypothese | Ergebnis | Strukturkonsequenz |
+| ----- | ------------- | -------- | ------------------ |
+| 1 — Drift Injection | Kleine Drifts (Off-by-one, Trailing-Slash) werden nicht erkannt | (in eigenem PR — nicht Gegenstand dieser Artefakte) | — |
+| **2 — Semantic Contradiction** | Formal gültige, semantisch vakuume `exact_*`-Zustände werden toleriert | **confirms** — Klasse SEM-EMPTY-ASSERTED belegt | Validator-Erweiterung, 3 Negativ-Fixtures, 2 Cross-Contract-Fixtures, 6 Tests |
+| **3 — Chain Integrity Stress** | Valide Einzelcommands können in falscher Reihenfolge/Kombination als Chain ungültig sein, ohne dass bestehende Validatoren das melden | **refutes** (im geprüften Kandidatenraum) — alle 7 Kandidaten erkannt, Toleranz-Rate 0/7 | No-Patch — kein Fixture, kein Validator-Eingriff |
+| 4 — Replay Reality Gap | (folgt) | — | — |
+| 5 — Adversarial Agent Simulation | (folgt) | — | — |
 
-## Hypothesen
+---
 
-- **H1 — empty asserted state (operationalisiert)**: Wenn ein `exact_*`
-  auf der vom `change_type` semantisch geforderten Seite gesetzt, aber
-  leer (`""`) ist, ist die Zustandsbehauptung vakuum. Die Klasse ist
-  reproduzierbar ohne file-IO/NLP.
-- **H2 — `read_context.extracted_facts` widerspricht `write_change`**:
-  verworfen. v0.1 dokumentiert explizit, dass eine maschinelle Prüfung
-  Datei-I/O oder strukturierte Facts erfordern würde
-  (`contracts/command-semantics.md:160-162`).
-- **H3 — locator-Pfad ≠ `target_files`**: verworfen. `locator` ist per
-  Contract opakes Anchor-/Headingstring-Material; eine Pfadextraktion wäre
-  Heuristik außerhalb des v0.1-Scopes.
+## Phase 2 — Semantic Contradiction: confirms
 
-## Live-Probe (vor Patch)
+**Kurzfassung** (Vollbericht: `results/phase2-semantic-contradiction.md`):
 
-Sechs Kandidaten direkt gegen `vcc.validate_cross_contract` getestet — alle
-sechs liefern leere Fehlerlisten (Toleranz-Rate 6/6):
+Eine bislang tolerierte semantische Widerspruchsklasse —
+*"empty asserted state"* (`exact_*` auf der semantisch geforderten Seite
+gesetzt, aber leer `""`) — wurde reproduzierbar belegt und strukturell
+verankert. Initiale Probe: 6/6 Kandidaten toleriert, davon A–D zur Klasse
+H1/SEM-EMPTY-ASSERTED. Nach Patch: 0/4 H1-Kandidaten korrekt abgewiesen;
+H2/H3 bleiben outside_scope.
 
-```
-A_add_empty_after:        []
-B_modify_empty_before:    []
-C_modify_empty_after:     []
-D_replace_empty_before:   []
-E_facts_contradict_before:[]
-F_locator_path_mismatch:  []
-```
+### Strukturkonsequenz Phase 2
 
-H1 deckt A–D mit einer einzigen, scharf bezeichneten Regel ab.
+- `scripts/docmeta/validate_command_chain.py` —
+  `_validate_semantic_anti_invariants` um Klasse *empty asserted state*
+  erweitert.
+- **Fixtures (Negativ):** `tests/fixtures/command_chains/invalid-empty-asserted-state.json` (add),
+  `tests/fixtures/command_chains/invalid-empty-asserted-state-remove.json` (remove),
+  `tests/fixtures/command_chains/invalid-empty-asserted-state-modify.json` (modify);
+  `cross_contract/invalid/empty_change_state.json`.
+- **Fixture (Positiv-Kontrast):** `cross_contract/valid/minimal_chain_add.json`.
+- **Tests:** 4 neue Methoden in `test_validate_command_chain.py`, 2 in
+  `test_cross_contract_chain.py`.
+- **Doku:** `contracts/command-semantics.md` §Anti-Invariants um *Empty
+  asserted state* ergänzt; `docs/reference/agent-operability-fixture-matrix.md`
+  Klasse `SEM-EMPTY-ASSERTED`.
 
-## Strukturkonsequenz
+### Verifikation Phase 2
 
-### Validator-Erweiterung
+| Schritt | Ergebnis |
+| ------- | -------- |
+| Kandidat A vor Patch (`add` + `exact_after=""`) | `[]` — toleriert |
+| Kandidat A nach Patch | `["semantic_contradiction"]` |
+| Positiv-Kontrast (non-empty `exact_after`) | `[]` — gültig |
+| `test_validate_command_chain.py` | `Ran 39 tests, OK` |
+| `test_cross_contract_chain.py` | `Ran 16 tests, OK` |
+| `test_validate_agent_handoff.py` | `Ran 13 tests, OK` |
 
-`scripts/docmeta/validate_command_chain.py` —
-`_validate_semantic_anti_invariants` um Klasse *empty asserted state*
-ergänzt. Symmetrisch zu den bestehenden Regeln; nur eine zusätzliche
-Code-Klasse: `semantic_contradiction`. Mapping:
+Laufartefakt: `artifacts/run-phase2/run_meta.json`,
+`artifacts/run-phase2/execution.txt`.
 
-| `change_type` | Asserted-Side(n)               |
-| ------------- | ------------------------------- |
-| `add`         | `exact_after`                   |
-| `remove`      | `exact_before`                  |
-| `modify`      | `exact_before`, `exact_after`   |
-| `replace`     | `exact_before`, `exact_after`   |
+---
 
-Regel feuert nur, wenn das jeweilige Feld *präsent* und gleich `""` ist —
-fehlende Felder bleiben weiterhin zulässig (v0.1 hält Felder optional).
+## Phase 3 — Chain Integrity Stress: refutes (im geprüften Kandidatenraum)
 
-### Fixtures (Kontrastpaar gem. method.md §Mindestschärfe)
+**Kurzfassung** (Vollbericht: `results/phase3-chain-integrity-stress.md`):
 
-**Chain-Direktbeweis (validate_command_chain):**
+Sieben konstruierte Transition-Kandidaten (falsche Reihenfolge, Mehrfach-Write,
+gemischte Versionen, fehlender `write_change`, `target_files`-Mismatch) wurden
+direkt gegen `validate_chain` geprüft. Alle sieben lösen mindestens einen
+dokumentierten Fehlercode aus. Die Phase-3-Antithese
+(„bestehende Chain-Validatoren decken diese Fehler bereits ab") wurde bestätigt;
+die Leithypothese im geprüften Kandidatenraum widerlegt.
 
-- **Negativ (add)** — `tests/fixtures/command_chains/invalid-empty-asserted-state.json`:
-  `change_type=add`, `exact_after=""`. Erwartet: `semantic_contradiction`.
-- **Negativ (remove)** — `tests/fixtures/command_chains/invalid-empty-asserted-state-remove.json`:
-  `change_type=remove`, `exact_before=""`. Erwartet: `semantic_contradiction`.
-- **Negativ (modify)** — `tests/fixtures/command_chains/invalid-empty-asserted-state-modify.json`:
-  `change_type=modify`, `exact_before=""`, `exact_after` non-empty. Erwartet: `semantic_contradiction`.
+### Kandidatenmatrix Phase 3 (Kurzform)
 
-**Cross-Contract-Ebene:**
+| # | Kandidat | Observed codes | Bewertung |
+| - | -------- | -------------- | --------- |
+| A | `read→write→write→validate` | `command_sequence_invalid` | already_detected |
+| B | `read→validate` (kein write) | `command_sequence_invalid`, `validate_without_write` | already_detected |
+| C | gemischte Versionen v0.1/v0.2 | `command_sequence_invalid`, `contract_invalid` | already_detected |
+| D | `validate→read→write` | `command_sequence_invalid`, `validate_without_write` | already_detected |
+| E | `write.target_files` ⊄ `read.target_files` | `target_files_mismatch` | already_detected |
+| F | `add` dann `remove` (zwei writes) | `command_sequence_invalid` | already_detected |
+| G | `write.target_files=[]` vor `validate(checks)` | `contract_invalid`, `validate_targets_out_of_scope` | already_detected |
+| – | `validate_change.locator B abweichend` | n/a | outside_scope |
 
-- **Negativ** — `tests/fixtures/cross_contract/invalid/empty_change_state.json`:
-  `change_type=add`, `exact_after=""`. Erwartet: `semantic_contradiction`.
-- **Positiv-Kontrast** — `tests/fixtures/cross_contract/valid/minimal_chain_add.json`:
-  Identische Form, `exact_after` non-empty. Bleibt gültig.
+Toleranz-Rate: **0/7**.
 
-### Test
+### Strukturkonsequenz Phase 3
 
-Neue Methoden in `scripts/docmeta/test_validate_command_chain.py` (direkter Chain-Beweis):
+**No-Patch.** `method.md` §"Patch-Gate" greift nicht (kein
+`tolerated_but_wrong`). Mindestschärfe über belegte
+Nicht-Änderungsentscheidung mit Kandidatenmatrix + Testausgabe erfüllt.
 
-- `test_semantic_contradiction_empty_asserted_state` (Negativ add; erwartet `semantic_contradiction`)
-- `test_no_false_positive_add_with_nonempty_exact_after` (Positiv-Kontrast)
-- `test_semantic_contradiction_empty_asserted_state_remove` (Negativ remove; Branch-Coverage)
-- `test_semantic_contradiction_empty_asserted_state_modify` (Negativ modify; Branch-Coverage)
+### Verifikation Phase 3
 
-Neue Methoden in `tests/contracts/test_cross_contract_chain.py`:
+| Schritt | Ergebnis |
+| ------- | -------- |
+| Probe Kandidaten A–G | 0/7 toleriert |
+| `test_validate_command_chain.py` | `Ran 39 tests, OK` |
+| `test_cross_contract_chain.py` | `Ran 16 tests, OK` |
+| `test_fixture_matrix_audit_surface.py` | `Ran 1 test, OK` |
+| `test_fixture_matrix_known_gaps_audit.py` | `Ran 1 test, OK` |
+| `test_promotion_readiness.py` | `Ran 99 tests, OK` |
+| `validate_promotion_readiness.py` | dry-run, exit=0 |
+| `make validate` | ✅ Validation passed |
 
-- `test_minimal_chain_add_is_accepted` (Positiv-Kontrast)
-- `test_empty_change_state_fails` (Negativ; erwartet `semantic_contradiction`)
+Laufartefakt: `artifacts/run-phase3/run_meta.json`,
+`artifacts/run-phase3/execution.txt`.
 
-### Doku
+---
 
-- `contracts/command-semantics.md` §"Anti-Invariants" um Punkt
-  *Empty asserted state* ergänzt.
-- `docs/reference/agent-operability-fixture-matrix.md`: neue Klasse
-  `SEM-EMPTY-ASSERTED` und Cross-Contract-Audit-Eintrag.
+## Nächste Phase
 
-## Verifikation (Signalwechsel)
-
-| Schritt                                                                | Ergebnis |
-| ---------------------------------------------------------------------- | -------- |
-| Probe vor Patch (Kandidat A: `add` + `exact_after=""`)                 | `[]` — toleriert |
-| Probe nach Patch                                                       | `["semantic_contradiction"]` |
-| Positiv-Kontrast (`add` + `exact_after` non-empty)                     | `[]` — gültig |
-| `python3 tests/contracts/test_cross_contract_chain.py`                 | `Ran 16 tests, OK` |
-| `python3 scripts/docmeta/test_validate_command_chain.py`               | `Ran 39 tests, OK` |
-| `python3 scripts/docmeta/test_validate_agent_handoff.py`               | `Ran 13 tests, OK` |
-
-## Geltungsgrenzen
-
-- Klasse erfasst nur den **leerer-String**-Fall (`""`). Whitespace-only
-  Strings werden bewusst nicht über diese Regel gefangen, weil `exact_*`
-  Snapshots sind und Whitespace bedeutungstragend sein kann.
-- Felder, die *gar nicht gesetzt* sind, bleiben weiter tolerant — das war
-  bereits design-konformer Scope (Optionalität in v0.1).
-- Klasse ersetzt **nicht** H2/H3; diese verbleiben außerhalb des
-  v0.1-Validator-Zuständigkeitsbereichs (siehe `failure_modes.md`
-  §"Validator-Überdehnung").
-
-## Entscheidung
-
-**Phase 2 abgeschlossen.** Strukturkonsequenz erfüllt
-`method.md` §"Mindestschärfe der Strukturkonsequenz" (benannte
-Äquivalenzklasse + zwei kontrastierende Fälle).
+**Phase 4 — Replay Reality Gap** (gem. `method.md` §"Phase 4") folgt in
+eigenem PR. Methodischer Hinweis: Phase 4 ist qualitativ und erzeugt eine
+Kandidatenliste, keine direkte Validator-Änderung.

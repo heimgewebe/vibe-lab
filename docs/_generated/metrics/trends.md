@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-29T08:56:51Z
+Latest Evidence Timestamp: 2026-04-29T11:30:00Z
 
 ## Gate Snapshot
 
-- Total events: **257**
+- Total events: **263**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **14**
 
@@ -15,10 +15,10 @@ Latest Evidence Timestamp: 2026-04-29T08:56:51Z
 
 | event_type | events |
 | --- | ---: |
-| decision | 13 |
-| measurement | 127 |
-| observation | 98 |
-| run | 19 |
+| decision | 14 |
+| measurement | 128 |
+| observation | 101 |
+| run | 20 |
 
 ## Metric Aggregates
 
@@ -116,6 +116,12 @@ Latest Evidence Timestamp: 2026-04-29T08:56:51Z
 | phase0-setup | 1 | 0 | - | - | - |
 | phase1_execution_run | 1 | 0 | - | - | - |
 | phase_2_outcome | 1 | 0 | - | - | - |
+| phase_3_candidate_classification | 1 | 0 | - | - | - |
+| phase_3_candidate_uncaught_count | 1 | 1 | 0 | 0 | 0 |
+| phase_3_diagnosis_baseline | 1 | 0 | - | - | - |
+| phase_3_outcome | 1 | 0 | - | - | - |
+| phase_3_test_suite_status | 1 | 0 | - | - | - |
+| phase_result_separation | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
 | pr_opened_run_003 | 1 | 0 | - | - | - |

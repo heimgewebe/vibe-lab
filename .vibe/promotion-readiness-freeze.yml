@@ -78,3 +78,14 @@ promotion_readiness_freeze:
       reason: >-
         Executed in Phase 1 before falsifiability was mandatory. Pending
         structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-23_agent-failure-surface
+      allowed_missing:
+        - falsifiability.assessment_counterhypothesis_supported
+      reason: >-
+        Multi-phase experiment in progress (Phases 4-5 not yet executed).
+        Phase 3 counter hypothesis ("existing chain validators already cover
+        transition failures") was confirmed in the tested scope (Toleranz-Rate
+        0/7). This is a legitimate bounded finding, not a flaw. Frozen at this
+        specific signal to allow series completion; must be resolved before
+        adoption_assessment.

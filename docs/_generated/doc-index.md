@@ -134,7 +134,9 @@
 | `experiments/2026-04-23_agent-failure-surface/INITIAL.md` | Initiale Situation: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/failure_modes.md` | Failure Modes: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/method.md` | Methode: Agent Failure Surface Mapping | draft | operative |
-| `experiments/2026-04-23_agent-failure-surface/results/result.md` | Result: Phase 2 — Semantic Contradiction | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md` | Phase 2 — Semantic Contradiction (Phasenfassung) | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md` | Phase 3 — Chain Integrity Stress (Phasen-Ergebnisbericht) | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/results/result.md` | Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3) | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md` | Initial: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` | Artifacts: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md` | Run Template: Phase 1 Drift Injection | draft | operative |
