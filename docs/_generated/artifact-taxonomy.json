@@ -6110,6 +6110,39 @@
       "status": "classified"
     },
     {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase2/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase2/run_meta.json",
+      "status": "classified"
+    },
+    {
       "authority": "result_interpretation",
       "catchall_match": false,
       "enforcement": [
@@ -8567,6 +8600,38 @@
         "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-empty-asserted-state.expected.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-empty-asserted-state.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-empty-locator.expected.json",
       "status": "classified"
     },
@@ -10088,23 +10153,23 @@
       "procedure_contract": 84,
       "raw_capture": 20,
       "result_interpretation": 46,
-      "runtime_observation": 50,
+      "runtime_observation": 52,
       "schema_truth": 12,
       "sovereign_source": 3,
-      "test_expectation": 121,
+      "test_expectation": 123,
       "unknown": 23
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 223,
+      "ci_blocking": 225,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 212,
+      "no_rewrite": 213,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 175
+      "review_required": 177
     },
     "by_layer": {
       "agent": 3,
@@ -10113,26 +10178,26 @@
       "catalog": 12,
       "contract": 19,
       "docs": 20,
-      "experiment": 326,
+      "experiment": 328,
       "export": 15,
       "generated": 8,
       "governance": 45,
-      "test": 121
+      "test": 123
     },
     "by_lifecycle": {
-      "append_only": 212,
-      "handcrafted": 332,
+      "append_only": 213,
+      "handcrafted": 334,
       "regenerated": 18,
-      "revision_with_reason": 33,
+      "revision_with_reason": 34,
       "superseded_not_rewritten": 2
     },
-    "classified": 597,
+    "classified": 601,
     "conflict": 0,
     "fallback_classified": 160,
-    "fallback_share": 0.26800670016750416,
+    "fallback_share": 0.26622296173044924,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 597,
+    "total": 601,
     "unknown": 0
   },
   "transition_risk_hints": [],

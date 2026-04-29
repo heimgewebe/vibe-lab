@@ -7,6 +7,7 @@ CMD: python3 tests/contracts/test_cross_contract_chain.py
 Ran 16 tests in 0.201s
 OK
 ERROR: fixture /tmp/tmp.json: chain[0] must be a JSON object, got int
+NOTE: Expected diagnostic emitted by negative fixture coverage; command exit remained 0.
 
 CMD: python3 scripts/docmeta/test_validate_command_chain.py
 ...................................

@@ -21,7 +21,8 @@ relations:
 **Phase 2 abgeschlossen.** Eine bislang tolerierte semantische
 Widerspruchsklasse — *"empty asserted state"* — wurde reproduzierbar belegt
 und über Negativ-Fixture, Positiv-Kontrast, Test und minimale
-Validator-Erweiterung verankert. Folgephase nicht erforderlich.
+Validator-Erweiterung verankert. Keine weitere Phase-2-Nacharbeit erforderlich;
+die Gesamtserie bleibt offen und Phase 3 folgt in eigenem PR.
 
 ## Diagnose (Ist-Zustand vor Patch)
 
