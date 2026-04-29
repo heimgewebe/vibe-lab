@@ -1,5 +1,5 @@
 ---
-title: "Phase 2 — Semantic Contradiction (Archiv-Kopie)"
+title: "Phase 2 — Semantic Contradiction (Phasenfassung)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
@@ -14,7 +14,7 @@ relations:
     target: ../method.md
 ---
 
-# Phase 2 — Semantic Contradiction (Archiv-Kopie)
+# Phase 2 — Semantic Contradiction (Phasenfassung)
 
 > Diese Datei stabilisiert den Phase-2-Ergebnisbericht als eigene Phasenfassung.
 > Sie basiert auf dem ehemaligen `results/result.md` nach Abschluss von Phase 2
