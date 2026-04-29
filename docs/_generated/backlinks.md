@@ -141,6 +141,10 @@
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
 
+## `docs/reference/replay-trace-redaction.md`
+
+- ← `docs/index.md` (references)
+
 ## `experiments/2026-04-08_spec-first/results/result.md`
 
 - ← `catalog/anti-patterns/vague-prompt-and-fix.md` (references)
@@ -290,3 +294,11 @@
 ## `tests/fixtures/cross_contract`
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
+
+## `tools/vibe-cli/replay_minimal.py`
+
+- ← `docs/reference/replay-trace-redaction.md` (references)
+
+## `tools/vibe-cli/test_replay_trace_contract.py`
+
+- ← `docs/reference/replay-trace-redaction.md` (references)

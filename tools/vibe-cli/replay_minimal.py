@@ -41,7 +41,7 @@ _KNOWN_COMMANDS: frozenset[str] = frozenset(
 )
 
 _ABS_PATH_PATTERN = re.compile(
-    r"(?<!<external>)/(?:[^\s\"'<>|\[\]{}(),;]+)"
+    r"(^|[\s:=\[\]\(\)\{\}\"',`])((?<!<external>)/(?:[^\s\"'<>|\[\]{}(),;`]+))"
 )
 
 
@@ -112,11 +112,13 @@ def _build_trace_step_v0_2(
     }
     target_files = record.get("target_files")
     if isinstance(target_files, list) and all(isinstance(f, str) for f in target_files):
-        step["target_files"] = target_files
+        # Redact absolute paths in each target file
+        step["target_files"] = [_redact_absolute_paths_in_string(f) for f in target_files]
     if command == "write_change":
         locator = record.get("locator")
         if isinstance(locator, str):
-            step["locator"] = locator
+            # Redact absolute paths in locator (both :line and #Lline formats)
+            step["locator"] = _redact_absolute_paths_in_string(locator)
     if command == "validate_change":
         checks = record.get("checks")
         if isinstance(checks, list) and all(isinstance(c, str) for c in checks):
@@ -211,12 +213,16 @@ def _build_trace_v0_2(
 
 
 def _redact_path_like_token(token: str) -> str:
-    """Redact one absolute path-like token deterministically."""
+    """Redact one absolute path-like token deterministically.
+
+    Supports both colon line format (path:10) and hash line format (path#L10).
+    """
     if token.startswith("//"):
         return token
 
     line_suffix = ""
-    match = re.match(r"^(.*?)(:\d+(?::\d+)?)$", token)
+    # Match both colon format (:10, :10:5) and hash-L format (#L10)
+    match = re.match(r"^(.*?)(:\d+(?::\d+)?|#L\d+)$", token)
     if match:
         core = match.group(1)
         line_suffix = match.group(2)
@@ -239,7 +245,9 @@ def _redact_absolute_paths_in_string(value: str) -> str:
     """Redact absolute path substrings inside an arbitrary string."""
 
     def repl(match: re.Match[str]) -> str:
-        return _redact_path_like_token(match.group(0))
+        prefix = match.group(1)
+        token = match.group(2)
+        return prefix + _redact_path_like_token(token)
 
     return _ABS_PATH_PATTERN.sub(repl, value)
 

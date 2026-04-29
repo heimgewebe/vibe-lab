@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 577
-- classified: 577
+- total: 592
+- classified: 592
   - of which fallback_classified (catch-all rule): 160
-  - fallback_share: 27.7% (160 / 577)
+  - fallback_share: 27.0% (160 / 592)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -30,13 +30,13 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | archive | 23 |
 | capture | 5 |
 | catalog | 12 |
-| contract | 18 |
-| docs | 19 |
+| contract | 19 |
+| docs | 20 |
 | experiment | 323 |
 | export | 15 |
 | generated | 8 |
 | governance | 45 |
-| test | 106 |
+| test | 119 |
 
 ### By authority
 
@@ -48,15 +48,15 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | generated_projection | 10 |
 | historical_record | 160 |
 | implementation_behavior | 9 |
-| navigation_surface | 7 |
+| navigation_surface | 8 |
 | normative_contract | 15 |
 | procedure_contract | 84 |
 | raw_capture | 20 |
 | result_interpretation | 45 |
 | runtime_observation | 50 |
-| schema_truth | 11 |
+| schema_truth | 12 |
 | sovereign_source | 3 |
-| test_expectation | 106 |
+| test_expectation | 119 |
 | unknown | 23 |
 
 ### By lifecycle
@@ -64,7 +64,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | lifecycle | count |
 | --- | ---: |
 | append_only | 211 |
-| handcrafted | 313 |
+| handcrafted | 328 |
 | regenerated | 18 |
 | revision_with_reason | 33 |
 | superseded_not_rewritten | 2 |
@@ -75,14 +75,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 205 |
+| ci_blocking | 219 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
 | no_rewrite | 211 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 173 |
+| review_required | 174 |
 
 ## Unknown artifacts
 
@@ -316,6 +316,7 @@ _none_
 - `schemas/command.write_change.schema.json`
 - `schemas/decision.schema.json`
 - `schemas/experiment.manifest.schema.json`
+- `schemas/replay.trace.schema.json`
 - `schemas/run_meta.schema.json`
 
 ## Fallback classified: by matched pattern

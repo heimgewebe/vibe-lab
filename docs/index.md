@@ -37,6 +37,8 @@ relations:
     target: ../instruction-blocks/edge-case-enumeration.md
   - type: references
     target: reference/agent-operability-fixture-matrix.md
+  - type: references
+    target: reference/replay-trace-redaction.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -171,3 +173,4 @@ Portable Denkbausteine für Prompts und Workflows:
 
 - [Manifest-Schema-Semantik](reference/manifest-schema.md)
 - [Agent Operability — Fixture-Matrix (v0.1)](reference/agent-operability-fixture-matrix.md)
+- [Replay Trace Redaction (v0.2)](reference/replay-trace-redaction.md)
