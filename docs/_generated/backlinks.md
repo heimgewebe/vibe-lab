@@ -141,6 +141,10 @@
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
 
+## `docs/reference/replay-trace-redaction.md`
+
+- ← `docs/index.md` (references)
+
 ## `experiments/2026-04-08_spec-first/results/result.md`
 
 - ← `catalog/anti-patterns/vague-prompt-and-fix.md` (references)

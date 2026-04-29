@@ -3,11 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (114 found):
+Documents not referenced by any other document via frontmatter relations (113 found):
 
 - `.vibe/intent.md`
 - `docs/playbooks/plan-execution-checklist.md`
-- `docs/reference/replay-trace-redaction.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
