@@ -29,7 +29,7 @@ in den geprüften Kandidaten.** Alle Phase-3-Probekandidaten wurden vom
 bestehenden `validate_chain`-Stack bereits erkannt oder liegen
 nachweislich außerhalb des v0.1-Validator-Scopes. Konsequenz nach
 `method.md` §"Patch-Gate": **No-Patch-Pfad** — kein neues Fixture, kein
-Validator-Eingriff, keine Doku-Erweiterung.
+Validator-Eingriff, keine Contract- oder Fixture-Matrix-Doku-Erweiterung.
 
 ## Diagnose (Ist-Zustand vor Probe)
 

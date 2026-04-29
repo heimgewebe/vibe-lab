@@ -23,7 +23,7 @@ relations:
 
 ---
 
-# result.md — Phase 2 (Semantic Contradiction)
+## Stabilisiertes Phase-2-Ergebnis
 
 ## Outcome
 

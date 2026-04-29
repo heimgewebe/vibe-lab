@@ -62,9 +62,9 @@ H2/H3 bleiben outside_scope.
 - `scripts/docmeta/validate_command_chain.py` —
   `_validate_semantic_anti_invariants` um Klasse *empty asserted state*
   erweitert.
-- **Fixtures (Negativ):** `command_chains/invalid-empty-asserted-state.json` (add),
-  `invalid-empty-asserted-state-remove.json` (remove),
-  `invalid-empty-asserted-state-modify.json` (modify);
+- **Fixtures (Negativ):** `tests/fixtures/command_chains/invalid-empty-asserted-state.json` (add),
+  `tests/fixtures/command_chains/invalid-empty-asserted-state-remove.json` (remove),
+  `tests/fixtures/command_chains/invalid-empty-asserted-state-modify.json` (modify);
   `cross_contract/invalid/empty_change_state.json`.
 - **Fixture (Positiv-Kontrast):** `cross_contract/valid/minimal_chain_add.json`.
 - **Tests:** 4 neue Methoden in `test_validate_command_chain.py`, 2 in
