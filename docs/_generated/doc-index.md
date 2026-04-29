@@ -6,6 +6,7 @@
 | Path | Title | Status | Canonicality |
 | ---- | ----- | ------ | ------------ |
 | `.vibe/intent.md` | intent | — | — |
+| `.vibe/replay-v0.2-redaction-sanitization.md` | replay-v0.2-redaction-sanitization | — | — |
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
 | `README.md` | README | — | — |

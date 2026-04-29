@@ -405,6 +405,93 @@ class ReplayTraceContractTests(unittest.TestCase):
             for s in _iter_strings(payload):
                 self.assertFalse(_contains_absolute_posix_path(s), s)
 
+    def test_absolute_locator_with_hash_line_is_redacted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "abs-locator-hash.json"
+            abs_locator = "/tmp/sensitive/readme.md#L42"
+            chain_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "command": "read_context",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md"],
+                            "extracted_facts": ["fact"],
+                        },
+                        {
+                            "command": "write_change",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md"],
+                            "change_type": "modify",
+                            "locator": abs_locator,
+                            "exact_before": "a",
+                            "exact_after": "b",
+                            "forbidden_changes": [],
+                        },
+                        {
+                            "command": "validate_change",
+                            "version": "v0.1",
+                            "checks": ["lint"],
+                            "success": True,
+                            "errors": [],
+                        },
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            _, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.validator.validate(payload)
+            self.assertNotIn(abs_locator, raw)
+            self.assertIn("<external>/readme.md#L42", raw)
+            for s in _iter_strings(payload):
+                self.assertFalse(_contains_absolute_posix_path(s), s)
+
+    def test_repo_relative_hash_locator_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            chain_path = Path(tmpdir) / "repo-relative-locator-hash.json"
+            repo_relative_locator = "docs/index.md#L42"
+            chain_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "command": "read_context",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md"],
+                            "extracted_facts": ["fact"],
+                        },
+                        {
+                            "command": "write_change",
+                            "version": "v0.1",
+                            "target_files": ["docs/index.md"],
+                            "change_type": "modify",
+                            "locator": repo_relative_locator,
+                            "exact_before": "a",
+                            "exact_after": "b",
+                            "forbidden_changes": [],
+                        },
+                        {
+                            "command": "validate_change",
+                            "version": "v0.1",
+                            "checks": ["lint"],
+                            "success": True,
+                            "errors": [],
+                        },
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            _, raw = _capture_emit_json(chain_path)
+            payload = json.loads(raw)
+            self.validator.validate(payload)
+            self.assertIn(repo_relative_locator, raw)
+            self.assertNotIn("<external>/index.md#L42", raw)
+            for step in payload["steps"]:
+                if step["command"] == "write_change":
+                    self.assertEqual(step.get("locator"), repo_relative_locator)
+
     def test_legacy_external_chain_path_remains_unredacted(self) -> None:
         """Legacy output keeps its external path behavior; v0.2 keeps redacted behavior."""
         with tempfile.TemporaryDirectory() as tmpdir:

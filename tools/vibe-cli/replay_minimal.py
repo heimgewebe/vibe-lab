@@ -41,7 +41,7 @@ _KNOWN_COMMANDS: frozenset[str] = frozenset(
 )
 
 _ABS_PATH_PATTERN = re.compile(
-    r"(?<!<external>)/(?:[^\s\"'<>|\[\]{}(),;]+)"
+    r"(?<!<external>)(^|[\s:=\[\]\(\)\{\}\"',])(/(?:[^\s\"'<>|\[\]{}(),;]+))"
 )
 
 
@@ -245,7 +245,9 @@ def _redact_absolute_paths_in_string(value: str) -> str:
     """Redact absolute path substrings inside an arbitrary string."""
 
     def repl(match: re.Match[str]) -> str:
-        return _redact_path_like_token(match.group(0))
+        prefix = match.group(1)
+        token = match.group(2)
+        return prefix + _redact_path_like_token(token)
 
     return _ABS_PATH_PATTERN.sub(repl, value)
 
