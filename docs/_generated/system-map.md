@@ -8,12 +8,12 @@
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
 | `./` | 📁 Root | 8 | 3 |
-| `.vibe/` | 🏛️ Governance | 8 | 2 |
+| `.vibe/` | 🏛️ Governance | 7 | 1 |
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
 | `catalog/` | 📚 Bibliothek | 11 | 10 |
 | `contracts/` | 🏛️ Governance | 3 | 1 |
 | `decisions/` | 🏛️ Governance | 6 | 0 |
-| `docs/` | 📖 Dokumentation | 26 | 17 |
+| `docs/` | 📖 Dokumentation | 27 | 18 |
 | `docs/_generated/` | ⚙️ Generiert | 9 | 6 |
 | `experiments/` | 🔬 Labor | 331 | 108 |
 | `exports/` | ⚙️ Generiert | 10 | 10 |

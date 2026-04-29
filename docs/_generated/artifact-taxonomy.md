@@ -12,13 +12,13 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 ## Summary
 
 - total: 592
-- classified: 591
+- classified: 592
   - of which fallback_classified (catch-all rule): 160
-  - fallback_share: 27.1% (160 / 591)
+  - fallback_share: 27.0% (160 / 592)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 1
+- unknown: 0
 - ambiguous: 0
 - conflict: 0
 
@@ -26,13 +26,12 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
-| <none> | 1 |
 | agent | 3 |
 | archive | 23 |
 | capture | 5 |
 | catalog | 12 |
 | contract | 19 |
-| docs | 19 |
+| docs | 20 |
 | experiment | 323 |
 | export | 15 |
 | generated | 8 |
@@ -49,7 +48,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | generated_projection | 10 |
 | historical_record | 160 |
 | implementation_behavior | 9 |
-| navigation_surface | 7 |
+| navigation_surface | 8 |
 | normative_contract | 15 |
 | procedure_contract | 84 |
 | raw_capture | 20 |
@@ -58,15 +57,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | schema_truth | 12 |
 | sovereign_source | 3 |
 | test_expectation | 119 |
-| unknown | 24 |
+| unknown | 23 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| <none> | 1 |
 | append_only | 211 |
-| handcrafted | 327 |
+| handcrafted | 328 |
 | regenerated | 18 |
 | revision_with_reason | 33 |
 | superseded_not_rewritten | 2 |
@@ -84,11 +82,11 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 173 |
+| review_required | 174 |
 
 ## Unknown artifacts
 
-- `.vibe/replay-v0.2-redaction-sanitization.md`
+_none_
 
 ## Ambiguous artifacts
 

@@ -307,18 +307,6 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
-      "catchall_match": false,
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
-      "path": ".vibe/replay-v0.2-redaction-sanitization.md",
-      "status": "unknown"
-    },
-    {
       "authority": "sovereign_source",
       "catchall_match": false,
       "enforcement": [
@@ -1276,6 +1264,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/reference/manifest-schema.md",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "reference_doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/reference/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/reference/replay-trace-redaction.md",
       "status": "classified"
     },
     {
@@ -9996,7 +10000,7 @@
       "generated_projection": 10,
       "historical_record": 160,
       "implementation_behavior": 9,
-      "navigation_surface": 7,
+      "navigation_surface": 8,
       "normative_contract": 15,
       "procedure_contract": 84,
       "raw_capture": 20,
@@ -10005,7 +10009,7 @@
       "schema_truth": 12,
       "sovereign_source": 3,
       "test_expectation": 119,
-      "unknown": 24
+      "unknown": 23
     },
     "by_enforcement": {
       "advisory": 1,
@@ -10017,16 +10021,15 @@
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 173
+      "review_required": 174
     },
     "by_layer": {
-      "<none>": 1,
       "agent": 3,
       "archive": 23,
       "capture": 5,
       "catalog": 12,
       "contract": 19,
-      "docs": 19,
+      "docs": 20,
       "experiment": 323,
       "export": 15,
       "generated": 8,
@@ -10034,24 +10037,21 @@
       "test": 119
     },
     "by_lifecycle": {
-      "<none>": 1,
       "append_only": 211,
-      "handcrafted": 327,
+      "handcrafted": 328,
       "regenerated": 18,
       "revision_with_reason": 33,
       "superseded_not_rewritten": 2
     },
-    "classified": 591,
+    "classified": 592,
     "conflict": 0,
     "fallback_classified": 160,
-    "fallback_share": 0.2707275803722504,
+    "fallback_share": 0.2702702702702703,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
     "total": 592,
-    "unknown": 1
+    "unknown": 0
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": [
-    ".vibe/replay-v0.2-redaction-sanitization.md"
-  ]
+  "unknown_artifacts": []
 }
