@@ -1,20 +1,20 @@
 # Phase 3 — verification run output
-# Generated 2026-04-29; commands as in artifacts/run-phase3/run_meta.json + 'make validate'.
+# Generated 2026-04-29; commands as in artifacts/run-phase3/run_meta.json
 
 === python3 scripts/docmeta/test_validate_command_chain.py ===
 .......................................
 ----------------------------------------------------------------------
-Ran 39 tests in 0.328s
+Ran 39 tests in 0.333s
 
 OK
 
 === python3 tests/contracts/test_cross_contract_chain.py ===
 ................
 ----------------------------------------------------------------------
-Ran 16 tests in 0.210s
+Ran 16 tests in 0.203s
 
 OK
-ERROR: fixture /tmp/tmp44orjm55.json: chain[0] must be a JSON object, got int
+ERROR: fixture /tmp/tmp1qfpjtg8.json: chain[0] must be a JSON object, got int
 
 === python3 scripts/docmeta/test_fixture_matrix_audit_surface.py ===
 .
@@ -31,18 +31,120 @@ Ran 1 test in 0.001s
 OK
 
 === python3 scripts/docmeta/test_promotion_readiness.py ===
+test_no_trigger_designed (__main__.ClassifyAndTriggerTests.test_no_trigger_designed) ... ok
+test_no_trigger_prepared (__main__.ClassifyAndTriggerTests.test_no_trigger_prepared) ... ok
+test_reconstructed_historical_escape_not_blocking (__main__.ClassifyAndTriggerTests.test_reconstructed_historical_escape_not_blocking) ... ok
+test_trigger_adopted_executed_basis (__main__.ClassifyAndTriggerTests.test_trigger_adopted_executed_basis) ... ok
+test_trigger_executed (__main__.ClassifyAndTriggerTests.test_trigger_executed) ... ok
+test_trigger_replicated (__main__.ClassifyAndTriggerTests.test_trigger_replicated) ... ok
+test_confirms_plus_no_counterevidence_is_warning_not_missing (__main__.CrossRuleDocumentationTests.test_confirms_plus_no_counterevidence_is_warning_not_missing) ... ok
+test_report_has_no_timestamp_key (__main__.DeterminismTests.test_report_has_no_timestamp_key) ... ok
+test_report_rendering_is_deterministic (__main__.DeterminismTests.test_report_rendering_is_deterministic) ... ok
+test_report_shape_has_required_keys (__main__.DeterminismTests.test_report_shape_has_required_keys) ... ok
+test_counterevidence_false_is_warning_not_missing (__main__.EvaluateFalsifiabilityTests.test_counterevidence_false_is_warning_not_missing) ... ok
+test_missing_block (__main__.EvaluateFalsifiabilityTests.test_missing_block) ... ok
+test_missing_subfields (__main__.EvaluateFalsifiabilityTests.test_missing_subfields) ... ok
+test_non_string_fields_are_flagged (__main__.EvaluateFalsifiabilityTests.test_non_string_fields_are_flagged) ... ok
+test_too_short_counter_hypothesis (__main__.EvaluateFalsifiabilityTests.test_too_short_counter_hypothesis) ... ok
+test_valid_block (__main__.EvaluateFalsifiabilityTests.test_valid_block) ... ok
+test_evidence_refs_invalid_is_non_blocking (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_invalid_is_non_blocking)
+Invalid evidence_refs must not set promotion_ready=false on its own. ... ok
+test_evidence_refs_item_empty_dict_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_item_empty_dict_warns) ... ok
+test_evidence_refs_item_missing_path_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_item_missing_path_warns) ... ok
+test_evidence_refs_item_not_a_dict_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_item_not_a_dict_warns) ... ok
+test_evidence_refs_not_a_list_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_not_a_list_warns) ... ok
+test_valid_evidence_refs_no_invalid_warning (__main__.EvidenceRefsInvalidWarningTests.test_valid_evidence_refs_no_invalid_warning) ... ok
+test_invalid_fixture_triggers_missing_entries (__main__.FixtureShapeTests.test_invalid_fixture_triggers_missing_entries) ... ok
+test_valid_fixture_has_all_fields (__main__.FixtureShapeTests.test_valid_fixture_has_all_fields) ... ok
+test_full_scenario_matrix (__main__.IsolatedRepoScenarios.test_full_scenario_matrix) ... ok
+test_counter_hypotheses_without_version_is_not_legacy (__main__.MalformedStructuredBlockTests.test_counter_hypotheses_without_version_is_not_legacy) ... ok
+test_invalid_outcome_typo_is_blocking (__main__.MalformedStructuredBlockTests.test_invalid_outcome_typo_is_blocking) ... ok
+test_invalid_status_cannot_produce_ready (__main__.MalformedStructuredBlockTests.test_invalid_status_cannot_produce_ready) ... ok
+test_invalid_status_typo_is_blocking (__main__.MalformedStructuredBlockTests.test_invalid_status_typo_is_blocking) ... ok
+test_legacy_block_still_uses_legacy_evaluator (__main__.MalformedStructuredBlockTests.test_legacy_block_still_uses_legacy_evaluator) ... ok
+test_missing_assessment_dict_is_blocking (__main__.MalformedStructuredBlockTests.test_missing_assessment_dict_is_blocking) ... ok
+test_missing_outcome_is_blocking (__main__.MalformedStructuredBlockTests.test_missing_outcome_is_blocking) ... ok
+test_missing_status_is_blocking (__main__.MalformedStructuredBlockTests.test_missing_status_is_blocking) ... ok
+test_version_2_is_blocking (__main__.MalformedStructuredBlockTests.test_version_2_is_blocking) ... ok
+test_version_only_block_is_not_ready (__main__.MalformedStructuredBlockTests.test_version_only_block_is_not_ready) ... ok
+test_actual_freeze_file_is_valid (__main__.RatchetModeTests.test_actual_freeze_file_is_valid) ... ok
+test_actual_freeze_passes_ratchet_against_real_experiments (__main__.RatchetModeTests.test_actual_freeze_passes_ratchet_against_real_experiments) ... ok
+test_cli_ratchet_fails_when_freeze_file_missing (__main__.RatchetModeTests.test_cli_ratchet_fails_when_freeze_file_missing) ... ok
+test_cli_ratchet_fails_with_invalid_freeze_file (__main__.RatchetModeTests.test_cli_ratchet_fails_with_invalid_freeze_file) ... ok
+test_cli_ratchet_passes_with_actual_freeze (__main__.RatchetModeTests.test_cli_ratchet_passes_with_actual_freeze) ... ok
+test_duplicate_allowed_missing_value_in_same_entry_fails (__main__.RatchetModeTests.test_duplicate_allowed_missing_value_in_same_entry_fails) ... ok
+test_duplicate_path_in_freeze_fails_validation (__main__.RatchetModeTests.test_duplicate_path_in_freeze_fails_validation) ... ok
+test_freeze_insufficient_fails_ratchet (__main__.RatchetModeTests.test_freeze_insufficient_fails_ratchet) ... ok
+test_freeze_mismatched_missing_set_fails_both (__main__.RatchetModeTests.test_freeze_mismatched_missing_set_fails_both) ... ok
+test_freeze_partial_overlap_reports_both_directions (__main__.RatchetModeTests.test_freeze_partial_overlap_reports_both_directions) ... ok
+test_freeze_too_broad_fails_ratchet (__main__.RatchetModeTests.test_freeze_too_broad_fails_ratchet) ... ok
+test_frozen_at_variants (__main__.RatchetModeTests.test_frozen_at_variants) ... ok
+test_frozen_not_ready_accepted_by_ratchet (__main__.RatchetModeTests.test_frozen_not_ready_accepted_by_ratchet) ... ok
+test_invalid_freeze_absolute_path_fails (__main__.RatchetModeTests.test_invalid_freeze_absolute_path_fails) ... ok
+test_invalid_freeze_backslash_path_fails (__main__.RatchetModeTests.test_invalid_freeze_backslash_path_fails) ... ok
+test_invalid_freeze_dot_path_fails (__main__.RatchetModeTests.test_invalid_freeze_dot_path_fails) ... ok
+test_invalid_freeze_duplicate_separator_path_fails (__main__.RatchetModeTests.test_invalid_freeze_duplicate_separator_path_fails) ... ok
+test_invalid_freeze_missing_path_fails (__main__.RatchetModeTests.test_invalid_freeze_missing_path_fails) ... ok
+test_invalid_freeze_missing_reason_fails (__main__.RatchetModeTests.test_invalid_freeze_missing_reason_fails) ... ok
+test_invalid_freeze_missing_version_fails (__main__.RatchetModeTests.test_invalid_freeze_missing_version_fails) ... ok
+test_invalid_freeze_nested_experiment_path_fails (__main__.RatchetModeTests.test_invalid_freeze_nested_experiment_path_fails) ... ok
+test_invalid_freeze_non_experiment_path_fails (__main__.RatchetModeTests.test_invalid_freeze_non_experiment_path_fails) ... ok
+test_invalid_freeze_parent_traversal_path_fails (__main__.RatchetModeTests.test_invalid_freeze_parent_traversal_path_fails) ... ok
+test_invalid_freeze_path_with_whitespace_fails (__main__.RatchetModeTests.test_invalid_freeze_path_with_whitespace_fails) ... ok
+test_invalid_freeze_trailing_slash_path_fails (__main__.RatchetModeTests.test_invalid_freeze_trailing_slash_path_fails) ... ok
+test_invalid_freeze_unknown_allowed_missing_value_fails (__main__.RatchetModeTests.test_invalid_freeze_unknown_allowed_missing_value_fails) ... ok
+test_load_freeze_config_returns_none_if_absent (__main__.RatchetModeTests.test_load_freeze_config_returns_none_if_absent) ... ok
+test_ready_experiment_accepted_without_freeze_entry (__main__.RatchetModeTests.test_ready_experiment_accepted_without_freeze_entry) ... ok
+test_same_value_in_different_entries_is_allowed (__main__.RatchetModeTests.test_same_value_in_different_entries_is_allowed) ... ok
+test_stale_freeze_entry_for_historical_escape_fails (__main__.RatchetModeTests.test_stale_freeze_entry_for_historical_escape_fails) ... ok
+test_stale_freeze_entry_for_ready_experiment_fails (__main__.RatchetModeTests.test_stale_freeze_entry_for_ready_experiment_fails) ... ok
+test_stale_freeze_entry_nonexistent_experiment_fails (__main__.RatchetModeTests.test_stale_freeze_entry_nonexistent_experiment_fails) ... ok
+test_unfrozen_not_ready_fails_ratchet (__main__.RatchetModeTests.test_unfrozen_not_ready_fails_ratchet) ... ok
+test_valid_freeze_direct_experiment_path_passes_path_validation (__main__.RatchetModeTests.test_valid_freeze_direct_experiment_path_passes_path_validation) ... ok
+test_counter_hypotheses_without_version_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_counter_hypotheses_without_version_fails_schema) ... ok
+test_evidence_refs_item_without_path_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_evidence_refs_item_without_path_fails_schema) ... ok
+test_hybrid_block_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_hybrid_block_fails_schema) ... ok
+test_invalid_outcome_enum_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_invalid_outcome_enum_fails_schema) ... ok
+test_invalid_status_enum_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_invalid_status_enum_fails_schema) ... ok
+test_legacy_block_is_schema_valid (__main__.SchemaFalsifiabilityRegressionTests.test_legacy_block_is_schema_valid) ... ok
+test_structured_v1_block_is_schema_valid (__main__.SchemaFalsifiabilityRegressionTests.test_structured_v1_block_is_schema_valid) ... ok
+test_version_only_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_version_only_fails_schema) ... ok
+test_blocked_is_not_ready (__main__.StructuredFalsifiabilityTests.test_blocked_is_not_ready) ... ok
+test_checked_supports_primary_no_evidence_refs_warns (__main__.StructuredFalsifiabilityTests.test_checked_supports_primary_no_evidence_refs_warns) ... ok
+test_checked_supports_primary_no_pending_is_ready (__main__.StructuredFalsifiabilityTests.test_checked_supports_primary_no_pending_is_ready) ... ok
+test_checked_supports_primary_with_pending_is_blocking (__main__.StructuredFalsifiabilityTests.test_checked_supports_primary_with_pending_is_blocking) ... ok
+test_documented_is_not_ready (__main__.StructuredFalsifiabilityTests.test_documented_is_not_ready) ... ok
+test_historical_escape_with_structured_format (__main__.StructuredFalsifiabilityTests.test_historical_escape_with_structured_format) ... ok
+test_mixed_no_pending_is_warning_only (__main__.StructuredFalsifiabilityTests.test_mixed_no_pending_is_warning_only) ... ok
+test_mixed_with_pending_is_not_ready (__main__.StructuredFalsifiabilityTests.test_mixed_with_pending_is_not_ready) ... ok
+test_multiple_hypotheses_all_ready (__main__.StructuredFalsifiabilityTests.test_multiple_hypotheses_all_ready) ... ok
+test_multiple_hypotheses_one_blocking (__main__.StructuredFalsifiabilityTests.test_multiple_hypotheses_one_blocking) ... ok
+test_partially_checked_inconclusive_no_pending_is_warning_only (__main__.StructuredFalsifiabilityTests.test_partially_checked_inconclusive_no_pending_is_warning_only) ... ok
+test_partially_checked_inconclusive_with_pending_is_not_ready (__main__.StructuredFalsifiabilityTests.test_partially_checked_inconclusive_with_pending_is_not_ready) ... ok
+test_pending_is_not_ready (__main__.StructuredFalsifiabilityTests.test_pending_is_not_ready) ... ok
+test_structured_empty_counter_hypotheses_is_blocking (__main__.StructuredFalsifiabilityTests.test_structured_empty_counter_hypotheses_is_blocking) ... ok
+test_structured_missing_falsification_criterion_is_blocking (__main__.StructuredFalsifiabilityTests.test_structured_missing_falsification_criterion_is_blocking) ... ok
+test_structured_routing_detected_by_key (__main__.StructuredFalsifiabilityTests.test_structured_routing_detected_by_key) ... ok
+test_supports_counterhypothesis_is_not_ready (__main__.StructuredFalsifiabilityTests.test_supports_counterhypothesis_is_not_ready) ... ok
+test_all_real_missing_signals_are_in_valid_allowed_missing (__main__.ValidAllowedMissingCoverageTests.test_all_real_missing_signals_are_in_valid_allowed_missing) ... ok
+test_falsifiability_top_level_signal_is_covered (__main__.ValidAllowedMissingCoverageTests.test_falsifiability_top_level_signal_is_covered) ... ok
+test_structured_signals_are_covered (__main__.ValidAllowedMissingCoverageTests.test_structured_signals_are_covered) ... ok
+test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTests.test_valid_allowed_missing_is_nonempty) ... ok
 test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests.test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing) ... ok
 
 ----------------------------------------------------------------------
-Ran 99 tests in 0.355s
+Ran 99 tests in 0.367s
 
 OK
 
 === python3 scripts/docmeta/validate_promotion_readiness.py (dry-run) ===
+🔎 Promotion-Readiness Dry-Run (Phase 1)
+  trigger: need_for_reproducibility
+  mode:    dry_run
   report:  docs/_generated/promotion-readiness.json (unchanged)
   checked: 14
-  ready:   3
-  not_ready: 10
+  ready:   2
+  not_ready: 11
   historical_escape: 1
   warnings: 1
 
@@ -56,13 +158,15 @@ OK
     - experiments/2026-04-14_upfront-structuring-replication: missing=falsifiability
     - experiments/2026-04-15_agent-task-validity: missing=falsifiability.assessment_not_checked, falsifiability.assessment_pending_blocking
     - experiments/2026-04-19_generated-artifact-contract-validation: missing=falsifiability
+    - experiments/2026-04-23_agent-failure-surface: missing=falsifiability.assessment_counterhypothesis_supported
     - experiments/2026-04-23_phase-1-drift-injection: missing=falsifiability
 
   (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
 
 === make validate (final summary) ===
+
 🔒 Ratchet Mode (Phase 2)
-  ✅ Ratchet passed: 10 frozen not_ready case(s) tolerated, 10 freeze entries validated.
+  ✅ Ratchet passed: 11 frozen not_ready case(s) tolerated, 11 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
 make[1]: Leaving directory '/home/runner/work/vibe-lab/vibe-lab'
 ✅ Validation passed.

@@ -6143,6 +6143,39 @@
       "status": "classified"
     },
     {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase3/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase3/run_meta.json",
+      "status": "classified"
+    },
+    {
       "authority": "result_interpretation",
       "catchall_match": false,
       "enforcement": [
@@ -6221,6 +6254,38 @@
       ],
       "origin": "handcrafted",
       "path": "experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md",
       "status": "classified"
     },
     {
@@ -8600,6 +8665,70 @@
         "tests/fixtures/command_chains/*.json"
       ],
       "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-empty-asserted-state-modify.expected.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-empty-asserted-state-modify.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-empty-asserted-state-remove.expected.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/command_chains/invalid-empty-asserted-state-remove.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "command_chain_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/command_chains/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "tests/fixtures/command_chains/invalid-empty-asserted-state.expected.json",
       "status": "classified"
     },
@@ -9793,6 +9922,8 @@
     "experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md",
     "experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md",
     "experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md",
+    "experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md",
+    "experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md",
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md",
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md",
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json",
@@ -9807,13 +9938,13 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 160
+      "historical_record": 162
     },
     "by_layer": {
-      "experiment": 160
+      "experiment": 162
     },
     "by_matched_pattern": {
-      "experiments/**": 21,
+      "experiments/**": 23,
       "experiments/*/artifacts/**": 139
     },
     "high_risk_count": 0,
@@ -9868,10 +9999,11 @@
             "experiments/2026-04-14_tdd-vibe": 2,
             "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
             "experiments/2026-04-15_agent-task-validity": 4,
+            "experiments/2026-04-23_agent-failure-surface/results": 2,
             "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
             "experiments/2026-04-23_phase-1-drift-injection/results": 1
           },
-          "total": 21
+          "total": 23
         }
       ],
       "volume_first": [
@@ -9924,10 +10056,11 @@
             "experiments/2026-04-14_tdd-vibe": 2,
             "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
             "experiments/2026-04-15_agent-task-validity": 4,
+            "experiments/2026-04-23_agent-failure-surface/results": 2,
             "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
             "experiments/2026-04-23_phase-1-drift-injection/results": 1
           },
-          "total": 21
+          "total": 23
         }
       ]
     },
@@ -9981,10 +10114,11 @@
           "experiments/2026-04-14_tdd-vibe": 2,
           "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
           "experiments/2026-04-15_agent-task-validity": 4,
+          "experiments/2026-04-23_agent-failure-surface/results": 2,
           "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
           "experiments/2026-04-23_phase-1-drift-injection/results": 1
         },
-        "total": 21
+        "total": 23
       }
     ]
   },
@@ -10146,30 +10280,30 @@
       "diagnostic_signal": 7,
       "evidence_log": 15,
       "generated_projection": 10,
-      "historical_record": 160,
+      "historical_record": 162,
       "implementation_behavior": 9,
       "navigation_surface": 8,
       "normative_contract": 15,
       "procedure_contract": 84,
       "raw_capture": 20,
       "result_interpretation": 46,
-      "runtime_observation": 52,
+      "runtime_observation": 54,
       "schema_truth": 12,
       "sovereign_source": 3,
-      "test_expectation": 123,
+      "test_expectation": 127,
       "unknown": 23
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 225,
+      "ci_blocking": 229,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 213,
+      "no_rewrite": 216,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 177
+      "review_required": 179
     },
     "by_layer": {
       "agent": 3,
@@ -10178,26 +10312,26 @@
       "catalog": 12,
       "contract": 19,
       "docs": 20,
-      "experiment": 328,
+      "experiment": 332,
       "export": 15,
       "generated": 8,
       "governance": 45,
-      "test": 123
+      "test": 127
     },
     "by_lifecycle": {
-      "append_only": 213,
-      "handcrafted": 334,
+      "append_only": 216,
+      "handcrafted": 338,
       "regenerated": 18,
-      "revision_with_reason": 34,
+      "revision_with_reason": 35,
       "superseded_not_rewritten": 2
     },
-    "classified": 601,
+    "classified": 609,
     "conflict": 0,
-    "fallback_classified": 160,
-    "fallback_share": 0.26622296173044924,
+    "fallback_classified": 162,
+    "fallback_share": 0.2660098522167488,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 601,
+    "total": 609,
     "unknown": 0
   },
   "transition_risk_hints": [],

@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (113 found):
+Documents not referenced by any other document via frontmatter relations (115 found):
 
 - `.vibe/intent.md`
 - `docs/playbooks/plan-execution-checklist.md`
@@ -92,6 +92,8 @@ Documents not referenced by any other document via frontmatter relations (113 fo
 - `experiments/2026-04-23_agent-failure-surface/CONTEXT.md`
 - `experiments/2026-04-23_agent-failure-surface/INITIAL.md`
 - `experiments/2026-04-23_agent-failure-surface/failure_modes.md`
+- `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md`
+- `experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md`
 - `experiments/2026-04-23_agent-failure-surface/results/result.md`
 - `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md`
