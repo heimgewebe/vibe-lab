@@ -191,6 +191,7 @@ Invariants (Handoff → Commands)".
 | Fixture | Was getestet wird |
 | ------- | ----------------- |
 | `tests/fixtures/cross_contract/valid/minimal_chain.json` | Handoff (PASS, mit `exact_before/exact_after`) vollständig durch Chain erfüllt. `target_files`, `change_type`, `exact_before/exact_after` übereinstimmend. |
+| `tests/fixtures/cross_contract/valid/minimal_chain_add.json` | Nahkontrast für SEM-EMPTY-ASSERTED: `change_type=add` mit nicht-leerem `exact_after` — valide Post-Zustandsbehauptung. Belegt, dass die Regel nicht zu `add` mit gültigem Post-Zustand über-feuert. |
 
 **Ungültige Fixtures**
 
@@ -246,7 +247,7 @@ widersprüchlich (record-intern, durch `if/then` oder Chain-Check erkennbar).
 | SEM-SUCCESS-ERRORS | `success: true` + nicht-leeres `errors`. | `validate_change/contract-invalid-success-with-errors.json` |
 | SEM-FAILURE-EMPTY | `success: false` + leeres `errors`. | `validate_change/contract-invalid-failure-empty-errors.json` |
 | SEM-REMOVE-AFTER | `change_type: remove` + `exact_after` gesetzt. | `command_chains/invalid-remove-with-exact-after.json`, `cross_contract/invalid/contradiction.json` |
-| SEM-EMPTY-ASSERTED | `exact_*` auf der vom `change_type` geforderten Seite ist gesetzt, aber leer (`""`). | `command_chains/invalid-empty-asserted-state.json` (Chain-Direktbeweis); `cross_contract/invalid/empty_change_state.json` (negativ); `cross_contract/valid/minimal_chain_add.json` (positiver Kontrast) |
+| SEM-EMPTY-ASSERTED | `exact_*` auf der vom `change_type` geforderten Seite ist gesetzt, aber leer (`""`). | `command_chains/invalid-empty-asserted-state.json` (add, Chain-Direktbeweis); `command_chains/invalid-empty-asserted-state-remove.json` (remove); `command_chains/invalid-empty-asserted-state-modify.json` (modify); `cross_contract/invalid/empty_change_state.json` (negativ); `cross_contract/valid/minimal_chain_add.json` (positiver Kontrast) |
 
 ### 4.3 Cross-Step Continuity
 
@@ -375,6 +376,8 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 | Chain | target files mismatch | `command_chains/invalid-target-files-mismatch.json` | `target_files_mismatch` | ✅ |
 | Chain | remove+exact_after contradiction | `command_chains/invalid-remove-with-exact-after.json` | `semantic_contradiction` | ✅ |
 | Chain | empty asserted state (add+`exact_after=""`) — SEM-EMPTY-ASSERTED | `command_chains/invalid-empty-asserted-state.json` | `semantic_contradiction` | ✅ |
+| Chain | empty asserted state (remove+`exact_before=""`) — SEM-EMPTY-ASSERTED | `command_chains/invalid-empty-asserted-state-remove.json` | `semantic_contradiction` | ✅ |
+| Chain | empty asserted state (modify+`exact_before=""`) — SEM-EMPTY-ASSERTED | `command_chains/invalid-empty-asserted-state-modify.json` | `semantic_contradiction` | ✅ |
 | Chain | mixed versions | `command_chains/invalid-mixed-versions.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Chain | empty/whitespace locator | `command_chains/invalid-empty-locator.json` | `locator_continuity_violation` | ✅ |
 | Chain | add+exact_before contradiction | `command_chains/invalid-add-with-exact-before.json` | `semantic_contradiction` | ✅ |

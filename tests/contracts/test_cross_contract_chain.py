@@ -56,8 +56,8 @@ class CrossContractPositiveTests(unittest.TestCase):
         """Near-positive contrast for empty-asserted-state class.
 
         Same shape as ``empty_change_state`` (``change_type=add`` with
-        ``exact_after`` set on both handoff and write_change), but
-        ``exact_after`` carries non-empty content. Must validate cleanly,
+        ``write_change.exact_after`` present), but ``exact_after`` carries
+        non-empty content. Must validate cleanly,
         proving the new rule does not over-reach to non-empty post-states.
         """
         handoff, chain, expected = _load("valid/minimal_chain_add.json")

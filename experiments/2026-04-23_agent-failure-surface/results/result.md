@@ -94,8 +94,12 @@ fehlende Felder bleiben weiterhin zulässig (v0.1 hält Felder optional).
 
 **Chain-Direktbeweis (validate_command_chain):**
 
-- **Negativ** — `tests/fixtures/command_chains/invalid-empty-asserted-state.json`:
+- **Negativ (add)** — `tests/fixtures/command_chains/invalid-empty-asserted-state.json`:
   `change_type=add`, `exact_after=""`. Erwartet: `semantic_contradiction`.
+- **Negativ (remove)** — `tests/fixtures/command_chains/invalid-empty-asserted-state-remove.json`:
+  `change_type=remove`, `exact_before=""`. Erwartet: `semantic_contradiction`.
+- **Negativ (modify)** — `tests/fixtures/command_chains/invalid-empty-asserted-state-modify.json`:
+  `change_type=modify`, `exact_before=""`, `exact_after` non-empty. Erwartet: `semantic_contradiction`.
 
 **Cross-Contract-Ebene:**
 
@@ -108,8 +112,10 @@ fehlende Felder bleiben weiterhin zulässig (v0.1 hält Felder optional).
 
 Neue Methoden in `scripts/docmeta/test_validate_command_chain.py` (direkter Chain-Beweis):
 
-- `test_semantic_contradiction_empty_asserted_state` (Negativ; erwartet `semantic_contradiction`)
+- `test_semantic_contradiction_empty_asserted_state` (Negativ add; erwartet `semantic_contradiction`)
 - `test_no_false_positive_add_with_nonempty_exact_after` (Positiv-Kontrast)
+- `test_semantic_contradiction_empty_asserted_state_remove` (Negativ remove; Branch-Coverage)
+- `test_semantic_contradiction_empty_asserted_state_modify` (Negativ modify; Branch-Coverage)
 
 Neue Methoden in `tests/contracts/test_cross_contract_chain.py`:
 
@@ -131,7 +137,7 @@ Neue Methoden in `tests/contracts/test_cross_contract_chain.py`:
 | Probe nach Patch                                                       | `["semantic_contradiction"]` |
 | Positiv-Kontrast (`add` + `exact_after` non-empty)                     | `[]` — gültig |
 | `python3 tests/contracts/test_cross_contract_chain.py`                 | `Ran 16 tests, OK` |
-| `python3 scripts/docmeta/test_validate_command_chain.py`               | `Ran 37 tests, OK` |
+| `python3 scripts/docmeta/test_validate_command_chain.py`               | `Ran 39 tests, OK` |
 | `python3 scripts/docmeta/test_validate_agent_handoff.py`               | `Ran 13 tests, OK` |
 
 ## Geltungsgrenzen

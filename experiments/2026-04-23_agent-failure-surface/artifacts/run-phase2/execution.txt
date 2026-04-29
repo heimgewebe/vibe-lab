@@ -10,8 +10,8 @@ ERROR: fixture /tmp/tmp.json: chain[0] must be a JSON object, got int
 NOTE: Expected diagnostic emitted by negative fixture coverage; command exit remained 0.
 
 CMD: python3 scripts/docmeta/test_validate_command_chain.py
-.....................................
-Ran 37 tests in 0.290s
+.......................................
+Ran 39 tests in 0.333s
 OK
 
 CMD: python3 scripts/docmeta/test_validate_agent_handoff.py

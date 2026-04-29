@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-29T06:35:00Z
+Latest Evidence Timestamp: 2026-04-29T08:56:51Z
 
 ## Gate Snapshot
 
-- Total events: **256**
+- Total events: **257**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **14**
 
@@ -16,7 +16,7 @@ Latest Evidence Timestamp: 2026-04-29T06:35:00Z
 | event_type | events |
 | --- | ---: |
 | decision | 13 |
-| measurement | 126 |
+| measurement | 127 |
 | observation | 98 |
 | run | 19 |
 
@@ -33,6 +33,7 @@ Latest Evidence Timestamp: 2026-04-29T06:35:00Z
 | architecture-single-shot | 1 | 0 | - | - | - |
 | asymmetric_comparison_bias | 1 | 0 | - | - | - |
 | blind_review_available | 1 | 1 | 0 | 0 | 0 |
+| branch_coverage_extended | 1 | 0 | - | - | - |
 | branch_setup_completed | 4 | 0 | - | - | - |
 | bug-task2-incremental-cli-parser | 1 | 0 | - | - | - |
 | candidate_probe_uncaught_count | 1 | 1 | 6 | 6 | 6 |

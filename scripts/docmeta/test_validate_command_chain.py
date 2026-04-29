@@ -102,6 +102,33 @@ class ChainValidatorTests(unittest.TestCase):
         codes = {e.code for e in errors}
         self.assertNotIn("semantic_contradiction", codes)
 
+    def test_semantic_contradiction_empty_asserted_state_remove(self) -> None:
+        """Empty asserted state: ``change_type=remove`` with ``exact_before=""``
+        (empty pre-state) must be rejected as ``semantic_contradiction``.
+
+        Branch coverage for the SEM-EMPTY-ASSERTED rule on the remove branch.
+        """
+        chain = _chain("invalid-empty-asserted-state-remove.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-empty-asserted-state-remove.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("semantic_contradiction", codes)
+
+    def test_semantic_contradiction_empty_asserted_state_modify(self) -> None:
+        """Empty asserted state: ``change_type=modify`` with ``exact_before=""``
+        (empty pre-state, non-empty post-state) must be rejected as
+        ``semantic_contradiction``.
+
+        Branch coverage for the SEM-EMPTY-ASSERTED rule on the modify branch.
+        """
+        chain = _chain("invalid-empty-asserted-state-modify.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-empty-asserted-state-modify.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("semantic_contradiction", codes)
+
     def test_mixed_versions_yields_sequence_invalid(self) -> None:
         chain = _chain("invalid-mixed-versions.json")
         errors = vcc.validate_chain(
