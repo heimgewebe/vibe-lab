@@ -1,32 +1,43 @@
 schema_version: "0.1.0"
 decision_type: result_assessment
-verdict: confirms
+verdict: refutes
 confidence: medium
 date: "2026-04-29"
 reviewer: "Copilot Agent (GPT-5.x)"
 rationale: |
-  Phase 2 (Semantic Contradiction) der Reihe Agent Failure Surface Mapping
-  bestätigt H1 ("empty asserted state"): eine bislang tolerierte Subklasse
-  von `semantic_contradiction` wurde reproduzierbar belegt und über ein
-  Negativ-Fixture (`tests/fixtures/cross_contract/invalid/empty_change_state.json`),
-  einen Positiv-Kontrast (`tests/fixtures/cross_contract/valid/minimal_chain_add.json`),
-  Tests in `tests/contracts/test_cross_contract_chain.py` und eine minimale
-  Erweiterung von `_validate_semantic_anti_invariants` in
-  `scripts/docmeta/validate_command_chain.py` verankert. Signalwechsel
-  reproduziert (siehe `results/evidence.jsonl` Metriken
-  `validator_signal_before_patch=0` und `validator_signal_after_patch=1`).
-  H2 (Facts↔Write-Change) und H3 (locator-Pfad-Mismatch) wurden begründet
-  außerhalb des v0.1-Validator-Scopes belassen. Confidence=medium, weil
-  Klasse zwar geschlossen und reproduzierbar ist, aber nur den
-  Leerstring-Fall (`""`) erfasst; Whitespace- und tiefere Vakuums-Varianten
-  liegen explizit außerhalb.
-counter_hypothesis_outcome: not_found
+  Phase 3 (Chain Integrity Stress) der Reihe Agent Failure Surface
+  Mapping refutiert die Phase-3-Leithypothese ("valide Einzelcommands
+  können in falscher Reihenfolge oder falscher Kombination als Chain
+  ungültig sein, ohne dass die bestehenden Validatoren das melden")
+  für die geprüften Kandidaten und bestätigt zugleich die Antithese
+  ("die bestehenden Chain-Validatoren decken diese Fehler bereits
+  ausreichend ab"). Sieben Kandidaten aus `method.md` §"Phase 3
+  Injektions-Set" wurden direkt gegen `validate_chain` geprüft; alle
+  sieben lösen mindestens einen dokumentierten Fehlercode aus
+  (Toleranz-Rate=0/7). Ein zusätzlicher Kandidat
+  (`validate_change(locator B abweichend)`) liegt outside_scope, weil
+  das `command.validate_change`-Schema kein `locator`-Feld definiert.
+  Konsequenz nach `method.md` §"Patch-Gate": **No-Patch-Pfad** —
+  keine Erweiterung von `scripts/docmeta/validate_command_chain.py`,
+  keine Änderung an `tests/fixtures/command_chains/`,
+  `contracts/command-semantics.md` oder
+  `docs/reference/agent-operability-fixture-matrix.md`. Die
+  Mindestschärfe (`method.md` §"Mindestschärfe der
+  Strukturkonsequenz") ist über die zweite zulässige Form erfüllt:
+  belegte Nicht-Änderungsentscheidung mit Kandidatenmatrix
+  (`results/result.md` §"Kandidatenmatrix") und Testausgabe
+  (`artifacts/run-phase3/execution.txt`). Confidence=medium, weil die
+  Negativ-Aussage strikt auf den geprüften Kandidatenraum begrenzt
+  ist; die starke Wirkung von `_validate_sequence` als Generalfänger
+  hängt an der harten v0.1-Sequenz-Bindung und ist bei künftigen
+  v0.2-Lockerungen erneut zu prüfen.
+counter_hypothesis_outcome: found_and_confirming
 counterevidence_checked: true
 evidence_summary:
-  observations: 7
-  positive: 2
-  negative: 0
-  neutral: 5
+  observations: 3
+  positive: 0
+  negative: 1
+  neutral: 4
 next_steps:
-  - "Phase 3 (Chain Integrity Stress) gem. method.md in eigenem PR ausführen."
-  - "Bei künftigen Adoption-Entscheidungen prüfen, ob Whitespace-only-exact_*-Snapshots als eigene Klasse aufgenommen werden müssen (aktuell bewusst ausgenommen)."
+  - "Phase 4 (Replay Reality Gap) gem. method.md in eigenem PR ausführen."
+  - "Bei v0.2-Lockerung der Chain-Sequenz (z. B. optionale Wiederholungs-Reads) Phase 3 mit erweitertem Kandidatenraum erneut ausführen."

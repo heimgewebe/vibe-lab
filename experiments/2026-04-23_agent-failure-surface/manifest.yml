@@ -14,14 +14,15 @@ experiment:
     - results/result.md
     - results/decision.yml
     - artifacts/run-phase2/run_meta.json
+    - artifacts/run-phase3/run_meta.json
   created: "2026-04-23"
   updated: "2026-04-29"
   author: "Claude Opus 4.7"
   iteration: 1
   evidence_level: experimental
   falsifiability:
-    counter_hypothesis: "Leere exact_*-Strings auf der semantisch behaupteten Seite sind keine echte semantic_contradiction, sondern zulässige optionale Snapshots ohne Aussage — der Validator überinterpretiert ein erlaubtes Nichtvorhandensein als Fehler."
-    falsification_criterion: "Die H1-Regel ist geschwächt, wenn ein leerer asserted state nach Patch weiterhin ohne semantic_contradiction akzeptiert wird, oder wenn der Positiv-Kontrast mit nicht-leerem exact_after fälschlich rejected wird. Beides geprüft: Negativ-Fixture schlägt an, Kontrast-Fixture bleibt valid."
+    counter_hypothesis: "Die bestehenden Chain-Validatoren decken die in method.md §Phase 3 benannten Transition-Fehlerklassen (falsche Reihenfolge, falsche Kombination valider Einzelcommands) bereits ausreichend ab, sodass keine Validator- oder Fixture-Erweiterung nötig ist."
+    falsification_criterion: "Die Phase-3-Negativaussage ist widerlegt, sobald mindestens ein Kandidat aus method.md §Phase 3 Injektions-Set vom bestehenden validate_chain-Stack ohne Fehlercode toleriert wird (tolerated_but_wrong). Geprüft via direkter Live-Probe (results/result.md §Probe-Kandidaten): 7/7 Kandidaten liefern ≥1 Fehlercode; Toleranz-Rate=0/7."
     counterevidence_checked: true
 
 context:

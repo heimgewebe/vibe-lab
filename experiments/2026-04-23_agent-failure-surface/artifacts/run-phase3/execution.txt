@@ -1,0 +1,68 @@
+# Phase 3 — verification run output
+# Generated 2026-04-29; commands as in artifacts/run-phase3/run_meta.json + 'make validate'.
+
+=== python3 scripts/docmeta/test_validate_command_chain.py ===
+.......................................
+----------------------------------------------------------------------
+Ran 39 tests in 0.328s
+
+OK
+
+=== python3 tests/contracts/test_cross_contract_chain.py ===
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.210s
+
+OK
+ERROR: fixture /tmp/tmp44orjm55.json: chain[0] must be a JSON object, got int
+
+=== python3 scripts/docmeta/test_fixture_matrix_audit_surface.py ===
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+
+=== python3 scripts/docmeta/test_fixture_matrix_known_gaps_audit.py ===
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+
+=== python3 scripts/docmeta/test_promotion_readiness.py ===
+test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests.test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing) ... ok
+
+----------------------------------------------------------------------
+Ran 99 tests in 0.355s
+
+OK
+
+=== python3 scripts/docmeta/validate_promotion_readiness.py (dry-run) ===
+  report:  docs/_generated/promotion-readiness.json (unchanged)
+  checked: 14
+  ready:   3
+  not_ready: 10
+  historical_escape: 1
+  warnings: 1
+
+  Not-ready experiments (dry-run, non-blocking):
+    - experiments/2026-04-12_spec-first-legacy: missing=falsifiability
+    - experiments/2026-04-14_incremental-debuggability: missing=falsifiability
+    - experiments/2026-04-14_incremental-refinement: missing=falsifiability
+    - experiments/2026-04-14_premortem-prompting: missing=falsifiability
+    - experiments/2026-04-14_tdd-vibe: missing=falsifiability
+    - experiments/2026-04-14_upfront-structuring: missing=falsifiability
+    - experiments/2026-04-14_upfront-structuring-replication: missing=falsifiability
+    - experiments/2026-04-15_agent-task-validity: missing=falsifiability.assessment_not_checked, falsifiability.assessment_pending_blocking
+    - experiments/2026-04-19_generated-artifact-contract-validation: missing=falsifiability
+    - experiments/2026-04-23_phase-1-drift-injection: missing=falsifiability
+
+  (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
+
+=== make validate (final summary) ===
+🔒 Ratchet Mode (Phase 2)
+  ✅ Ratchet passed: 10 frozen not_ready case(s) tolerated, 10 freeze entries validated.
+     No unregistered violations. No stale or over-permissive freeze entries.
+make[1]: Leaving directory '/home/runner/work/vibe-lab/vibe-lab'
+✅ Validation passed.
