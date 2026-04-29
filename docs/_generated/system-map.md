@@ -15,14 +15,14 @@
 | `decisions/` | 🏛️ Governance | 6 | 0 |
 | `docs/` | 📖 Dokumentation | 27 | 18 |
 | `docs/_generated/` | ⚙️ Generiert | 9 | 6 |
-| `experiments/` | 🔬 Labor | 331 | 108 |
+| `experiments/` | 🔬 Labor | 334 | 109 |
 | `exports/` | ⚙️ Generiert | 10 | 10 |
 | `instruction-blocks/` | 📚 Bibliothek | 5 | 5 |
 | `prompts/` | 📚 Bibliothek | 2 | 2 |
 | `raw-vibes/` | 📥 Capture | 5 | 5 |
 | `schemas/` | 🏛️ Governance | 10 | 0 |
 | `scripts/` | 🔧 Tooling | 44 | 0 |
-| `tests/` | 📁 Root | 97 | 8 |
+| `tests/` | 📁 Root | 99 | 8 |
 | `tools/` | 🔧 Tooling | 4 | 0 |
 
-**Total:** 582 files in 17 directories
+**Total:** 587 files in 17 directories

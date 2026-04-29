@@ -1,4 +1,4 @@
-schema_version: "1.0.0"
+schema_version: "0.1.0"
 decision_type: result_assessment
 verdict: confirms
 confidence: medium
@@ -23,6 +23,7 @@ rationale: |
 counter_hypothesis_outcome: not_found
 counterevidence_checked: true
 evidence_summary:
+  observations: 7
   positive: 2
   negative: 0
   neutral: 5

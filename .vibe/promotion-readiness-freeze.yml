@@ -78,3 +78,12 @@ promotion_readiness_freeze:
       reason: >-
         Executed in Phase 1 before falsifiability was mandatory. Pending
         structured retrofit; frozen to avoid retroactive hard-fail.
+
+    - path: experiments/2026-04-23_agent-failure-surface
+      allowed_missing:
+        - falsifiability
+      reason: >-
+        Multi-phase experiment series (Phases 1–5). Phase 2 executed; phases
+        3–5 still pending. Falsifiability block will be added when the series
+        concludes. Frozen to allow incremental phase-by-phase execution without
+        blocking on a not-yet-complete falsifiability assessment.

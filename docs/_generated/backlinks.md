@@ -70,6 +70,7 @@
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
@@ -136,6 +137,7 @@
 
 - ← `docs/index.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `docs/reference/manifest-schema.md`
 
@@ -194,6 +196,10 @@
 ## `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md`
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
+
+## `experiments/2026-04-23_agent-failure-surface/method.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`
 

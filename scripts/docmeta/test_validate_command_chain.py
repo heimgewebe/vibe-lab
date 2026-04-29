@@ -52,6 +52,56 @@ class ChainValidatorTests(unittest.TestCase):
         codes = {e.code for e in errors}
         self.assertIn("semantic_contradiction", codes)
 
+    def test_semantic_contradiction_empty_asserted_state(self) -> None:
+        """Empty asserted state: ``change_type=add`` with ``exact_after=""``
+        (empty post-state) must be rejected as ``semantic_contradiction``.
+
+        Phase 2 (Semantic Contradiction) class **empty asserted state**.
+        Positive contrast: same fixture with a non-empty ``exact_after``
+        must pass cleanly (covered by
+        ``test_no_false_positive_add_with_nonempty_exact_after`` below).
+        """
+        chain = _chain("invalid-empty-asserted-state.json")
+        errors = vcc.validate_chain(
+            chain, "invalid-empty-asserted-state.json", self.validators
+        )
+        codes = {e.code for e in errors}
+        self.assertIn("semantic_contradiction", codes)
+
+    def test_no_false_positive_add_with_nonempty_exact_after(self) -> None:
+        """Positive contrast for the empty-asserted-state class.
+
+        ``change_type=add`` with a non-empty ``exact_after`` must NOT raise
+        ``semantic_contradiction``, proving the new rule does not over-fire
+        on valid post-states.
+        """
+        chain = [
+            {
+                "command": "read_context",
+                "version": "v0.1",
+                "target_files": ["docs/index.md"],
+            },
+            {
+                "command": "write_change",
+                "version": "v0.1",
+                "target_files": ["docs/index.md"],
+                "locator": "## Laufende Versuche",
+                "change_type": "add",
+                "exact_after": "- [ ] new entry\n",
+                "forbidden_changes": [],
+            },
+            {
+                "command": "validate_change",
+                "version": "v0.1",
+                "checks": ["lint"],
+                "success": True,
+                "errors": [],
+            },
+        ]
+        errors = vcc.validate_chain(chain, "synthetic", self.validators)
+        codes = {e.code for e in errors}
+        self.assertNotIn("semantic_contradiction", codes)
+
     def test_mixed_versions_yields_sequence_invalid(self) -> None:
         chain = _chain("invalid-mixed-versions.json")
         errors = vcc.validate_chain(

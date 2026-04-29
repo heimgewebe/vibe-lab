@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 592
-- classified: 592
+- total: 597
+- classified: 597
   - of which fallback_classified (catch-all rule): 160
-  - fallback_share: 27.0% (160 / 592)
+  - fallback_share: 26.8% (160 / 597)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -32,19 +32,19 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | catalog | 12 |
 | contract | 19 |
 | docs | 20 |
-| experiment | 323 |
+| experiment | 326 |
 | export | 15 |
 | generated | 8 |
 | governance | 45 |
-| test | 119 |
+| test | 121 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 13 |
+| decision_record | 14 |
 | diagnostic_signal | 7 |
-| evidence_log | 14 |
+| evidence_log | 15 |
 | generated_projection | 10 |
 | historical_record | 160 |
 | implementation_behavior | 9 |
@@ -52,19 +52,19 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | normative_contract | 15 |
 | procedure_contract | 84 |
 | raw_capture | 20 |
-| result_interpretation | 45 |
+| result_interpretation | 46 |
 | runtime_observation | 50 |
 | schema_truth | 12 |
 | sovereign_source | 3 |
-| test_expectation | 119 |
+| test_expectation | 121 |
 | unknown | 23 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 211 |
-| handcrafted | 328 |
+| append_only | 212 |
+| handcrafted | 332 |
 | regenerated | 18 |
 | revision_with_reason | 33 |
 | superseded_not_rewritten | 2 |
@@ -75,14 +75,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 219 |
+| ci_blocking | 223 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 211 |
+| no_rewrite | 212 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 174 |
+| review_required | 175 |
 
 ## Unknown artifacts
 
@@ -298,6 +298,8 @@ _none_
 - `experiments/2026-04-15_agent-task-validity/results/evidence.jsonl`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/decision.yml`
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
+- `experiments/2026-04-23_agent-failure-surface/results/decision.yml`
+- `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 - `experiments/2026-04-23_phase-1-drift-injection/results/decision.yml`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
 - `experiments/_template/results/decision.yml`

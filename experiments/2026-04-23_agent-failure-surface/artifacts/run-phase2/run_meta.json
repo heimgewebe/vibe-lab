@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-phase2",
+  "generated_at": "2026-04-29T07:00:00Z",
+  "executor": "local:copilot-agent",
+  "command": "python3 tests/contracts/test_cross_contract_chain.py && python3 scripts/docmeta/test_validate_command_chain.py && python3 scripts/docmeta/test_validate_agent_handoff.py && make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-phase2/execution.txt",
+  "provenance_level": "self_reported"
+}
