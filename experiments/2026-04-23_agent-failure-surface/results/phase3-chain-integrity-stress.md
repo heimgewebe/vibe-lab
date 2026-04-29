@@ -96,6 +96,8 @@ Toleranz-Rate: **0/7**.
 
 Vollständige Konsolen-Ausgabe: `artifacts/run-phase3/execution.txt`.
 
+Hinweis: Die `ERROR: fixture ... got int`-Zeile im Laufartefakt ist erwartete Diagnostik aus Negativ-Fixture-Coverage; der zugehörige Testprozess endet mit Exit 0.
+
 ## Geltungsgrenzen
 
 - Negativ-Aussage strikt auf den geprüften Kandidatenraum begrenzt.
