@@ -1,32 +1,48 @@
 schema_version: "0.1.0"
-decision_type: "result_assessment"
-verdict: "mixed"
-confidence: "medium"
+decision_type: result_assessment
+verdict: mixed
+confidence: medium
 date: "2026-04-29"
-reviewer: "GPT-5.3-Codex"
+reviewer: "Copilot Agent (GPT-5.3-Codex)"
 triggered_by: "user-request-2026-04-29-phase-4-replay-reality-gap"
 
 phases_completed: 3
+phase2_verdict: confirms
+phase3_verdict: refutes_phase3_hypothesis
 phase4_verdict: "qualitative_inventory / no_patch"
 
 rationale: |
-  Phase 4 wurde diagnose-first als qualitative Replay-Gap-Kandidateninventur
-  ausgefuehrt. Der belegte Ist-Zustand von replay_minimal.py, replay.trace.schema.json
-  und den zugehoerigen Tests zeigt einen bewusst non-mutativen Dry-Run-Vertrag
-  (mode=dry_run, would_mutate=false, non_mutation_guarantee=true).
+  Kumulativer Serienstand nach Phase 2, Phase 3 und Phase 4 der Reihe
+  Agent Failure Surface Mapping. Verdict `mixed`, weil die abgeschlossenen
+  Phasen unterschiedliche, jeweils belegte Resultate liefern.
 
-  Daraus wurden mehrere konkrete Kandidatenklassen fuer die Reality-Gap abgeleitet,
-  jeweils mit direktem Bezug zu bestehendem Code/Test/Schema. Es gab in dieser
-  Phase keinen belegten Grund fuer einen sofortigen Validator-/Schema-/Fixture-Patch.
+  Phase 2 (Semantic Contradiction) bleibt `confirms`:
+  Die Klasse SEM-EMPTY-ASSERTED wurde als reale semantic_contradiction-Luecke
+  belegt und mit Strukturkonsequenz geschlossen.
 
-  Das Gesamturteil bleibt mixed: Die Phase liefert nutzbare Blindstellenkartierung,
-  aber keinen Nachweis realer Replay-Sicherheit.
+  Phase 3 (Chain Integrity Stress) bleibt `refutes_phase3_hypothesis`:
+  Im geprueften Kandidatenraum wurden keine neuen Chain-Integrity-Luecken
+  gefunden (0/7 toleriert), daher no_patch.
+
+  Phase 4 (Replay Reality Gap) ergaenzt diese Historie und ersetzt sie nicht:
+  Qualitative Kandidateninventur mit direktem Code/Test/Schema-Bezug,
+  `phase4_verdict = qualitative_inventory / no_patch`.
+
+  Das Gesamturteil bleibt `mixed`: nutzbare Blindstellenkartierung vorhanden,
+  aber kein Nachweis realer Replay-Sicherheit.
+
+counter_hypothesis_outcome: found_and_confirming
+counterevidence_checked: true
 
 evidence_summary:
-  observations: 3
-  positive: 1
-  negative: 0
-  neutral: 2
+  phases_completed: 3
+  phase2_verdict: confirms
+  phase3_verdict: refutes_phase3_hypothesis
+  phase4_verdict: qualitative_inventory_no_patch
+  total_observations: 15
+  positive: 4
+  negative: 1
+  neutral: 10
 
 next_steps:
   - "Phase 5 als naechsten Serienabschnitt ausfuehren."

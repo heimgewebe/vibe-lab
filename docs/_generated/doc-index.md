@@ -135,7 +135,7 @@
 | `experiments/2026-04-23_agent-failure-surface/failure_modes.md` | Failure Modes: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/method.md` | Methode: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md` | Phase 4 - Replay Reality Gap (Kandidateninventur) | draft | operative |
-| `experiments/2026-04-23_agent-failure-surface/results/result.md` | Ergebnis: Agent Failure Surface Mapping (kumulativ) | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/results/result.md` | Result: Agent Failure Surface Mapping - Serienbericht (Phase 2 + 3 + 4) | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md` | Initial: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` | Artifacts: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md` | Run Template: Phase 1 Drift Injection | draft | operative |
