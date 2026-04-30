@@ -1,0 +1,114 @@
+schema_version: "0.1.0"
+decision_type: process_boundary
+verdict: out_of_scope_documented
+confidence: medium
+date: "2026-04-30"
+reviewer: "Copilot Agent"
+triggered_by: "experiments/2026-04-23_agent-failure-surface Phase F (RRG-03 real execution)"
+
+decision_id: rrg03-remediation-boundary
+status: proposed
+scope: process
+problem: "RRG-03 Locator Drift After Partial Apply"
+
+title: "RRG-03 Remediation Boundary nach Real-Execution-Beleg (v0.1)"
+
+rationale: |
+  Phase F des Experiments `2026-04-23_agent-failure-surface` hat im Real-Run
+  (`artifacts/run-phase-f-rrg03-real/`) belegt, dass eine kontrollierte
+  Fixture unter realer Mutation und Re-Resolution Locator-Drift produziert
+  (`classification: drifted`, `patch_gate.triggered: true`).
+
+  Der Real-Run beweist diesen Drift nur fixture-spezifisch. Er beweist
+  ausdrücklich nicht: allgemeine Runner-Korrektheit, allgemeine
+  Locator-Sicherheit, unmittelbare Notwendigkeit eines Runtime-Patches
+  oder die beste Patch-Strategie (siehe `claim_boundary` in `observed.json`).
+
+  Weil das Patch-Gate ausgelöst ist, aber die beste Remediation-Strategie
+  noch nicht belegt ist, dokumentiert diese Entscheidung eine
+  Prozess-Boundary statt einer technischen Lösung. Status: `proposed`,
+  bewusst nicht `accepted` — die bevorzugte Richtung (command-contract-first)
+  bleibt vorbehaltlich weiterer Diagnose.
+
+evidence_refs:
+  - path: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json"
+  - path: "experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md"
+
+finding:
+  classification: drifted
+  patch_gate: triggered
+  proof_scope: fixture_only
+
+decision:
+  - "Kein sofortiger Runtime-Patch."
+  - "Kein Schema-Patch."
+  - "Kein Validator-Patch."
+  - "Kein CI-Gate."
+  - "Remediation wird als Boundary dokumentiert, nicht als endgültige Lösung."
+  - "Bevorzugter nächster Pfad: command-contract-first — nicht als endgültige technische Lösung, sondern als zu prüfende Hypothese."
+
+alternatives:
+  - id: runner_patch
+    description: >
+      Runtime-Patch in `tools/vibe-cli/replay_minimal.py` oder einem
+      äquivalenten Runner, um Post-Apply-Locator-Drift abzufangen
+      (z.B. erneute Resolution mit zusätzlichem Anchor).
+    status: not_chosen
+    reason: >
+      Real-Run beweist Drift nur fixture-spezifisch; ein Runtime-Patch
+      ohne weiteren Beleg wäre overclaiming.
+  - id: validator_first
+    description: >
+      Validator-Erweiterung, die Drift-Risiko in Chains markiert (z.B.
+      Warnung bei mehrfach matchenden Locators oder bei Folgekommandos
+      ohne erneute Resolution).
+    status: deferred
+    reason: >
+      Möglich, aber benötigt zusätzlichen Beleg, dass das Risiko
+      validator-seitig adressierbar ist, ohne falsch-positive Signale
+      zu erzeugen.
+  - id: command_contract_first
+    description: >
+      Semantische Boundary in `contracts/command-semantics.md` schärfen:
+      `locator` ist menschlich lesbarer Anker, nicht stabile Identität.
+      v0.2-Kandidaten: post_apply_anchor, byte_range, exact_before-Hash,
+      explicit re_resolution_required, Validator-Warnung.
+    status: preferred_but_not_decided
+    reason: >
+      Drift entsteht aus schwacher Folgeadressierung; eine vertragliche
+      Klarstellung adressiert die Ursache. Endgültige Form (welcher der
+      v0.2-Kandidaten) ist offen.
+  - id: no_patch_observe_more
+    description: >
+      Keine semantische, validatorische oder Runtime-Änderung;
+      stattdessen weitere Real-Runs beobachten, bevor Remediation
+      entschieden wird.
+    status: deferred
+    reason: >
+      Bleibt zulässig; diese Entscheidung schließt zusätzliche Beobachtung
+      nicht aus, sondern dokumentiert nur die aktuelle Boundary.
+
+rationale_summary:
+  - "command_contract_first bevorzugt, weil Drift aus schwacher Folgeadressierung entsteht."
+  - "Runner- und Validator-Patches bleiben möglich, benötigen aber zusätzlichen Beleg."
+  - "Real-Run beweist Drift nur im Fixture, nicht allgemeine Locator-Unsicherheit."
+
+risks:
+  - id: overclaiming
+    description: >
+      Den fixture-spezifischen Beleg als allgemeine Aussage über
+      Runner- oder Locator-Sicherheit zu interpretieren.
+  - id: premature_runtime_patch
+    description: >
+      Einen Runtime-/Schema-/Validator-Patch ohne weiteren Beleg
+      einzubauen, der über den Fixture-Scope hinausgeht.
+  - id: contract_without_enforcement
+    description: >
+      Eine semantische Klarstellung in `contracts/command-semantics.md`
+      einzuführen, die nicht maschinell durchgesetzt wird; dies ist in
+      v0.1 bewusst akzeptiert, muss aber für v0.2 nachgehalten werden.
+
+follow_up:
+  - "Separate Diagnose für Remediation-Strategie (post_apply_anchor, byte_range, exact_before-Binding, explicit re_resolution_required, Validator-Warnung für mehrfach matchende Locator)."
+  - "Bei v0.2-Kandidatenwahl: erneute Real-Runs für RRG-03 sowie für RRG-01 und RRG-02 erwägen."
+  - "Keine Aufwertung dieser Entscheidung von `proposed` auf `accepted` ohne belegten Strategie-Vergleich."
