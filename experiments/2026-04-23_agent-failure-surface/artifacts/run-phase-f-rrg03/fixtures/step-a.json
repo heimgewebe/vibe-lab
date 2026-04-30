@@ -4,7 +4,7 @@
   "step_id": "A",
   "intent": "replace_c1_baseline_validate_token_occurrence",
   "target_files": ["fixtures/before.md"],
-  "change_type": "replace",
+  "change_type": "modify",
   "locator": "Validate token before session creation.",
   "description": "Replace the first 'Validate token' occurrence (under '## Authentication') with a semantically equivalent but lexically different phrase, e.g. 'Check token before session creation.' This removes the C1 baseline match from the match set for the follow-up locator 'Validate token', while the second occurrence ('Validate token after session restoration.' under '## Authentication Notes') remains intact. After real application of this step, Step B's locator 'Validate token' can no longer resolve to the same match as the C1 baseline resolution — it must either drift to the remaining second occurrence ('drifted') or fail to find the expected match ('not_found'/'ambiguous'). This is the intended drift-inducing condition for RRG-03.",
   "expected_post_apply_effect": {

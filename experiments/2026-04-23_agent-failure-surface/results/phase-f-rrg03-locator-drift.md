@@ -98,12 +98,12 @@ durch Step A aus der Match-Menge zu entfernen: Step A ersetzt
 `Validate token before session creation.` durch einen lexikalisch anderen
 Ausdruck (z. B. `Check token before session creation.`), während der zweite
 Treffer `Validate token after session restoration.` unverändert bleibt.
-Nach realer Anwendung von Step A kann Step B's Locator `Validate token`
+Nach realer Anwendung von Step A kann der Step-B-Locator `Validate token`
 nicht mehr denselben Treffer adressieren wie die C1-Baseline-Resolution —
 er muss entweder auf den verbleibenden zweiten Treffer driften (`drifted`)
 oder keinen nutzbaren Treffer finden (`not_found`/`ambiguous`).
 
-Diese Fixture ist damit genuinen drift-induzierend, nicht nur offset-verschiebend.
+Diese Fixture ist damit genuin drift-induzierend, nicht nur offset-verschiebend.
 
 ## Hypothesen (max. 3)
 
