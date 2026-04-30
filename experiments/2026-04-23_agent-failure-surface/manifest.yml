@@ -15,9 +15,11 @@ experiment:
     - results/decision.yml
     - results/replay-gap-candidates.md
     - results/phase5-adversarial-agent-simulation.md
+    - results/phase-f-rrg03-locator-drift.md
     - artifacts/run-phase2/run_meta.json
     - artifacts/run-phase3/run_meta.json
     - artifacts/run-phase5/run_meta.json
+    - artifacts/run-phase-f-rrg03/run_meta.json
   created: "2026-04-23"
   updated: "2026-04-30"
   author: "Claude Opus 4.7"

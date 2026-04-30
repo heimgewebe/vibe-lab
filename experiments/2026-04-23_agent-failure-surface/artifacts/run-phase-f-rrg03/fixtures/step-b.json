@@ -1,0 +1,18 @@
+{
+  "_comment_purpose": "Phase F / RRG-03 diagnosis fixture — step B. References a deliberately drift-prone locator. In fixtures/before.md the substring 'Validate token' occurs twice across two adjacent sections ('## Authentication' and '## Authentication Notes'), so any post-step-A mutation can change which occurrence resolves first.",
+  "_comment_scope": "Diagnosis-only fixture. Proof status: NOT_PROVEN. Patch-Gate: NOT_TRIGGERED.",
+  "step_id": "B",
+  "intent": "follow_up_modify_using_ambiguous_locator",
+  "target_files": ["fixtures/before.md"],
+  "change_type": "modify",
+  "locator": "Validate token",
+  "description": "In fixtures/before.md the substring 'Validate token' occurs twice: once under '## Authentication' (C1 baseline match: 'Validate token before session creation.') and once under '## Authentication Notes' ('Validate token after session restoration.'). Step A replaces/removes the C1 baseline match from the match set. After real application of step A, Step B's locator 'Validate token' can no longer resolve to the C1 baseline match — it must either drift to the remaining second occurrence ('drifted') or report no usable match ('not_found'/'ambiguous'). This is the core RRG-03 condition: locator drift after partial apply, where the C1 pre-apply baseline resolution diverges from the post-apply re-resolution.",
+  "expected_outcomes_classification": [
+    "stable",
+    "drifted",
+    "ambiguous",
+    "not_found"
+  ],
+  "executed": false,
+  "execution_note": "No real apply was performed. Without real file I/O between step A and step B, drift cannot be observed; this fixture only prepares the scenario."
+}

@@ -1,0 +1,20 @@
+{
+  "_comment_purpose": "Phase F / RRG-03 diagnosis fixture — expected diagnostic envelope. This file does NOT encode a verdict; it encodes the diagnostic vocabulary Phase F will use once a real fixture run is executed.",
+  "_comment_scope": "Diagnosis-only fixture. Proof status: NOT_PROVEN. Patch-Gate: NOT_TRIGGERED.",
+  "diagnosis_class": "not_proven",
+  "expected_possible_outcomes": [
+    "stable",
+    "drifted",
+    "ambiguous",
+    "not_found"
+  ],
+  "outcome_definitions": {
+    "stable": "Locator from step B resolves after Step A to the same byte range / occurrence as the C1 pre-apply baseline resolution.",
+    "drifted": "Locator from step B resolves after Step A to a different occurrence than the C1 pre-apply baseline resolution.",
+    "ambiguous": "Locator from step B matches more than one location after step A and the runner has no deterministic tie-breaker.",
+    "not_found": "Locator from step B no longer matches any location after step A."
+  },
+  "patch_gate_condition": "Patch the runner ONLY if a controlled fixture run shows that, after a real partial mutation, a follow-up command resolves differently than the current dry-run path can model (observed outcome is 'drifted', 'ambiguous', or 'not_found' while the dry-run remains non-mutating and performs no post-apply re-resolution).",
+  "current_proof_status": "NOT_PROVEN",
+  "patch_gate_status": "NOT_TRIGGERED"
+}
