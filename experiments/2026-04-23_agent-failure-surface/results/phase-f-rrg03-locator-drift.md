@@ -110,7 +110,7 @@ Siehe:
 - `../artifacts/run-phase-f-rrg03-real-02/observed.json`
 - `../artifacts/run-phase-f-rrg03-real-02/execution-real.txt`
 
-Fixture: `artifacts/run-phase-f-rrg03-real-02/fixtures/before.md` — API Gateway Notes,
+Fixture: `../artifacts/run-phase-f-rrg03-real-02/fixtures/before.md` — API Gateway Notes,
 Locator Step B: `"Process request"` (3 Treffer in Before-Stand).
 
 Beobachteter Ablauf:
