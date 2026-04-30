@@ -18,7 +18,7 @@ relations:
 
 ## Outcome
 
-Phase 4 liefert eine qualitative Kandidateninventur fuer blinde Stellen zwischen Dry-Run-Replay und realer Mutation. Es wurde kein Validator-, Schema-, Fixture- oder CI-Patch vorgenommen.
+Phase 4 liefert eine qualitative Kandidateninventur für blinde Stellen zwischen Dry-Run-Replay und realer Mutation. Es wurde kein Validator-, Schema-, Fixture- oder CI-Patch vorgenommen.
 
 ## Diagnose
 
@@ -35,7 +35,7 @@ step["would_mutate"] = False
 "summary": {"non_mutation_guarantee": True, ...}
 ```
 
-1. Der CLI-Text grenzt den Scope explizit ein: keine echte Ausfuehrung.
+1. Der CLI-Text grenzt den Scope explizit ein: keine echte Ausführung.
 
 ```python
 # tools/vibe-cli/replay_minimal.py
@@ -55,7 +55,7 @@ step["would_mutate"] = False
 }
 ```
 
-1. Tests sichern Determinismus, Schema-Konformitaet und Nicht-Mutation, nicht reale Mutationseffekte.
+1. Tests sichern Determinismus, Schema-Konformität und Nicht-Mutation, nicht reale Mutationseffekte.
 
 ```python
 # tools/vibe-cli/test_replay_minimal.py
@@ -70,22 +70,22 @@ self.assertEqual(payload["mode"], "dry_run")
 self.validator.validate(payload)
 ```
 
-Ableitung fuer Phase 4: Der aktuelle Replay-Mechanismus beweist Dry-Run-Konsistenz, aber nicht die Folgen realer Dateisystem- und Git-Zustandsaenderungen.
+Ableitung für Phase 4: Der aktuelle Replay-Mechanismus beweist Dry-Run-Konsistenz, aber nicht die Folgen realer Dateisystem- und Git-Zustandsänderungen.
 
 ## Hypothesen
 
-- H1: Der Dry-Run modelliert keine echte Disk-State-Veraenderung.
+- H1: Der Dry-Run modelliert keine echte Disk-State-Veränderung.
 - H2: Der Dry-Run modelliert keine Git-Index-/Working-Tree-Folgen.
 - H3: Der Dry-Run modelliert keine Locator-Drift nach partieller oder vorheriger Mutation.
 
 ## Kandidatenmatrix
 
-| Name | Beschreibung | Betroffene Achse | Konkreter Bezug zu Replay-Code/Test/Schema | Warum Dry-Run das nicht beweisen kann | Risiko | Empfohlene spaetere Pruefform | Status |
+| Name | Beschreibung | Betroffene Achse | Konkreter Bezug zu Replay-Code/Test/Schema | Warum Dry-Run das nicht beweisen kann | Risiko | Empfohlene spätere Prüfform | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| RRG-01 Disk-State-Apply-Delta | Reale `write_change`-Anwendung kann Disk-Inhalt veraendern (z. B. line endings, normalization, conflict markers), Dry-Run meldet weiter `would_mutate: false`. | Disk-State, Idempotenz vs. Nicht-Idempotenz, Validierung nach Mutation | `replay_minimal.py` setzt fuer `write_change` immer `would_mutate=False`; Schema erzwingt `would_mutate=false`; Tests pruefen nur diese Konstante. | Es gibt keine echte Datei-I/O auf `target_files`; nur Projektion/Simulation. | Mittel bis hoch: falsches Sicherheitsgefuehl bei realem Apply-Layer. | Phase F Runner-Probe mit realem Temp-Workspace: apply -> validate -> diff -> replay-compare. | candidate_for_phase_f |
-| RRG-02 Git-Working-Tree-Index-Effects | Reale Mutationen koennen untracked/modified/indexed Nebenwirkungen haben; Dry-Run bildet Git-Zustand nicht ab. | Git-Index / Working Tree, Reihenfolge realer Mutationen | `replay_minimal.py` kennt keine `git`-Operationen; vorhandene Replay-Tests validieren JSON-Vertrag, nicht `git status`; `make validate-replay-mutation-guard` prueft nur dieses Tool auf Nicht-Mutation in sauberem Tree. | Replay erzeugt Trace-Objekt, aber kein Modell fuer staged/unstaged oder Folgeeffekte mehrerer realer Writes. | Mittel: Integrationsrisiko bei realen Runner-Ketten. | Phase F Integrationslauf mit kontrolliertem Repo-Snapshot und Git-State-Assertions pro Step. | intentional_gap |
-| RRG-03 Locator-Drift-After-Partial-Apply | Nach partieller Mutation kann derselbe Locator auf andere Stelle zeigen; Dry-Run nutzt Locator nur deklarativ. | Locator-Drift, partielle Anwendung, Reihenfolge realer Mutationen | In v0.2-Step wird `locator` nur uebernommen/redacted; keine Aufloesung gegen realen Dateistand. Tests pruefen Redaction und Schema, nicht Re-Resolution. | Ohne echte Mutation und Re-Read gibt es keinen Drift-Nachweis ueber mehrere Schritte. | Hoch: Folgekommandos koennen semantisch falsch adressieren. | Phase F Szenario: apply step A, dann locator-resolve fuer step B gegen mutierten Stand, mit erwarteter Drift-Klassifikation. | candidate_for_phase_f |
-| RRG-04 Post-Mutation-Validation-Semantics | `validate_change` im Dry-Run bleibt struktur-/contract-nah; reale post-mutation Checks (lint/test/docs) koennen divergieren. | Validierung nach Mutation, Reihenfolge realer Mutationen | `replay_minimal.py` fuehrt keine realen Checks aus; Schema erlaubt `checks`/`errors` nur als deklarative Trace-Daten; Tests sichern Form, nicht reale Toolausfuehrung. | Kein echter Tool-Run nach Mutation, daher keine Evidenz ueber reale Semantikdelta. | Mittel: Phase-5-Adversarialfaelle koennen falsch eingeordnet werden. | Phase 5 oder Phase F: kontrollierter End-to-End-Run mit echter Check-Ausfuehrung gegen mutierten Zustand. | outside_scope |
+| RRG-01 Disk-State-Apply-Delta | Reale `write_change`-Anwendung kann Disk-Inhalt verändern (z. B. line endings, normalization, conflict markers), Dry-Run meldet weiter `would_mutate: false`. | Disk-State, Idempotenz vs. Nicht-Idempotenz, Validierung nach Mutation | `replay_minimal.py` setzt für `write_change` immer `would_mutate=False`; Schema erzwingt `would_mutate=false`; Tests prüfen nur diese Konstante. | Es gibt keine echte Datei-I/O auf `target_files`; nur Projektion/Simulation. | Mittel bis hoch: falsches Sicherheitsgefühl bei realem Apply-Layer. | Phase F Runner-Probe mit realem Temp-Workspace: apply -> validate -> diff -> replay-compare. | candidate_for_phase_f |
+| RRG-02 Git-Working-Tree-Index-Effects | Reale Mutationen können untracked/modified/indexed Nebenwirkungen haben; Dry-Run bildet Git-Zustand nicht ab. | Git-Index / Working Tree, Reihenfolge realer Mutationen | `replay_minimal.py` kennt keine `git`-Operationen; vorhandene Replay-Tests validieren JSON-Vertrag, nicht `git status`; `make validate-replay-mutation-guard` prüft nur dieses Tool auf Nicht-Mutation in sauberem Tree. | Replay erzeugt Trace-Objekt, aber kein Modell für staged/unstaged oder Folgeeffekte mehrerer realer Writes. | Mittel: Integrationsrisiko bei realen Runner-Ketten. | Phase F Integrationslauf mit kontrolliertem Repo-Snapshot und Git-State-Assertions pro Step. | intentional_gap |
+| RRG-03 Locator-Drift-After-Partial-Apply | Nach partieller Mutation kann derselbe Locator auf andere Stelle zeigen; Dry-Run nutzt Locator nur deklarativ. | Locator-Drift, partielle Anwendung, Reihenfolge realer Mutationen | In v0.2-Step wird `locator` nur übernommen/redacted; keine Auflösung gegen realen Dateistand. Tests prüfen Redaction und Schema, nicht Re-Resolution. | Ohne echte Mutation und Re-Read gibt es keinen Drift-Nachweis über mehrere Schritte. | Hoch: Folgekommandos können semantisch falsch adressieren. | Phase F Szenario: apply step A, dann locator-resolve für step B gegen mutierten Stand, mit erwarteter Drift-Klassifikation. | candidate_for_phase_f |
+| RRG-04 Post-Mutation-Validation-Semantics | `validate_change` im Dry-Run bleibt struktur-/contract-nah; reale post-mutation Checks (lint/test/docs) können divergieren. | Validierung nach Mutation, Reihenfolge realer Mutationen | `replay_minimal.py` führt keine realen Checks aus; Schema erlaubt `checks`/`errors` nur als deklarative Trace-Daten; Tests sichern Form, nicht reale Toolausführung. | Kein echter Tool-Run nach Mutation, daher keine Evidenz über reale Semantikdelta. | Mittel: Phase-5-Adversarialfälle können falsch eingeordnet werden. | Phase 5 oder Phase F: kontrollierter End-to-End-Run mit echter Check-Ausführung gegen mutierten Zustand. | outside_scope |
 
 ## Geltungsgrenzen
 
@@ -97,14 +97,14 @@ Ableitung fuer Phase 4: Der aktuelle Replay-Mechanismus beweist Dry-Run-Konsiste
 
 - `method.md` definiert Phase 4 explizit als qualitative Kandidateninventur.
 - Der Ist-Zustand zeigt keine direkt testbare, bereits reproduzierte neue Fehlklasse im bestehenden Dry-Run-Vertrag.
-- Ein Hardening-Patch ohne realen Mutationsbeleg waere spekulativ und verletzt diagnose-first.
+- Ein Hardening-Patch ohne realen Mutationsbeleg wäre spekulativ und verletzt diagnose-first.
 
-## Konsequenz fuer Phase 5 / Phase F
+## Konsequenz für Phase 5 / Phase F
 
 - Phase 5 bleibt adversarial auf vorhandener Validator-Welt.
-- Phase F sollte die oben priorisierten Kandidaten mit realer Mutation und Git-State-Beobachtung pruefen.
-- Prioritaet fuer Phase F: RRG-03, danach RRG-01, dann RRG-02.
+- Phase F sollte die oben priorisierten Kandidaten mit realer Mutation und Git-State-Beobachtung prüfen.
+- Priorität für Phase F: RRG-03, danach RRG-01, dann RRG-02.
 
 ## Entscheidung
 
-Phase 4 wird als `qualitative_inventory` mit `no_patch` abgeschlossen. Ergebnis ist eine kartierte Blindstellenliste fuer spaetere reale Replay-Runner-Pruefung.
+Phase 4 wird als `qualitative_inventory` mit `no_patch` abgeschlossen. Ergebnis ist eine kartierte Blindstellenliste für spätere reale Replay-Runner-Prüfung.

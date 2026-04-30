@@ -23,10 +23,10 @@ experiment:
   evidence_level: experimental
   falsifiability:
     version: 1
-    falsification_criterion: "Die Gesamthypothese ist geschwaecht, wenn keine einzige Phase eine neue testbare Toleranzzone identifiziert oder wenn qualitative Folgephasen nur scheinbar Historie ersetzen statt sie kumulativ zu ergaenzen. Sie ist gestaerkt, wenn mindestens eine Phase eine reproduzierbare Luecke in Fixture/Test/Validator ueberfuehrt und spaetere Phasen die bestehende Serienhistorie konsistent fortschreiben."
+    falsification_criterion: "Die Gesamthypothese ist geschwächt, wenn keine einzige Phase eine neue testbare Toleranzzone identifiziert oder wenn qualitative Folgephasen nur scheinbar Historie ersetzen statt sie kumulativ zu ergänzen. Sie ist gestärkt, wenn mindestens eine Phase eine reproduzierbare Lücke in Fixture/Test/Validator überführt und spätere Phasen die bestehende Serienhistorie konsistent fortschreiben."
     counter_hypotheses:
       - id: phase2_empty_state_tolerated
-        statement: "Leere exact_*-Strings auf der semantisch behaupteten Seite sind keine echte semantic_contradiction, sondern zulaessige optionale Snapshots ohne Aussage - der Validator ueberinterpretiert ein erlaubtes Nichtvorhandensein als Fehler."
+        statement: "Leere exact_*-Strings auf der semantisch behaupteten Seite sind keine echte semantic_contradiction, sondern zulässige optionale Snapshots ohne Aussage - der Validator überinterpretiert ein erlaubtes Nichtvorhandensein als Fehler."
         assessment:
           status: checked
           outcome: supports_primary
@@ -35,7 +35,7 @@ experiment:
               section: "validator_signal_before_patch / validator_signal_after_patch"
             - path: artifacts/run-phase2/execution.txt
       - id: phase3_chain_transitions_already_covered
-        statement: "Die bestehenden Chain-Validatoren decken die in method.md fuer Phase 3 benannten Transition-Fehlerklassen bereits ausreichend ab, sodass keine Validator- oder Fixture-Erweiterung noetig ist."
+        statement: "Die bestehenden Chain-Validatoren decken die in method.md für Phase 3 benannten Transition-Fehlerklassen bereits ausreichend ab, sodass keine Validator- oder Fixture-Erweiterung nötig ist."
         assessment:
           status: checked
           outcome: supports_counterhypothesis

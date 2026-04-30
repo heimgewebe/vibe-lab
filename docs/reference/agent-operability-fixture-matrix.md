@@ -344,10 +344,10 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 ### 5.4 Replay Reality Gap (Diagnoseartefakte vs. reale Mutationen)
 
 Replay-Dry-Run und statische Fixture-/Chain-Validierung bilden reale
-Ausfuehrungseffekte nur begrenzt ab. Besonders betroffen sind side-effect-lastige
+Ausführungseffekte nur begrenzt ab. Besonders betroffen sind side-effect-lastige
 Mutationen (Dateisystem, Git-Index/Working-Tree, bewegte Targets).
 
-Diese Luecke ist fuer v0.1 bewusst als Diagnose-/Methoden-Thema markiert und
+Diese Lücke ist für v0.1 bewusst als Diagnose-/Methoden-Thema markiert und
 nicht als Validator- oder Schema-Gate implementiert.
 
 **Audit:**
