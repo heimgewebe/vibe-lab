@@ -716,7 +716,7 @@
     },
     {
       "authority": "decision_record",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "review_required"
       ],
@@ -724,7 +724,7 @@
       "layer": "governance",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "decisions/**"
+        "decisions/process/*.yml"
       ],
       "origin": "handcrafted",
       "path": "decisions/process/p5-validator-scope-boundary.yml",
@@ -6209,6 +6209,70 @@
       "status": "classified"
     },
     {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5a-chain.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5b-cross-contract.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5c-chain.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5d-chain.json",
+      "status": "classified"
+    },
+    {
       "authority": "runtime_observation",
       "catchall_match": false,
       "enforcement": [
@@ -9854,7 +9918,6 @@
   ],
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
-    "decisions/process/p5-validator-scope-boundary.yml",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
@@ -10004,6 +10067,10 @@
     "experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md",
     "experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md",
     "experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md",
+    "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5a-chain.json",
+    "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5b-cross-contract.json",
+    "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5c-chain.json",
+    "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5d-chain.json",
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md",
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md",
     "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json",
@@ -10018,32 +10085,18 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "decision_record": 1,
-      "historical_record": 160
+      "historical_record": 164
     },
     "by_layer": {
-      "experiment": 160,
-      "governance": 1
+      "experiment": 164
     },
     "by_matched_pattern": {
-      "decisions/**": 1,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 139
+      "experiments/*/artifacts/**": 143
     },
-    "high_risk_count": 1,
+    "high_risk_count": 0,
     "residual_cluster_views": {
       "risk_first": [
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "decisions/**",
-          "top_basenames": {
-            "p5-validator-scope-boundary.yml": 1
-          },
-          "top_parent_dirs": {
-            "decisions/process": 1
-          },
-          "total": 1
-        },
         {
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
@@ -10071,7 +10124,7 @@
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
             "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
           },
-          "total": 139
+          "total": 143
         },
         {
           "high_risk_count": 0,
@@ -10127,7 +10180,7 @@
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
             "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
           },
-          "total": 139
+          "total": 143
         },
         {
           "high_risk_count": 0,
@@ -10153,32 +10206,10 @@
             "experiments/2026-04-23_phase-1-drift-injection/results": 1
           },
           "total": 21
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "decisions/**",
-          "top_basenames": {
-            "p5-validator-scope-boundary.yml": 1
-          },
-          "top_parent_dirs": {
-            "decisions/process": 1
-          },
-          "total": 1
         }
       ]
     },
     "residual_clusters": [
-      {
-        "high_risk_count": 1,
-        "matched_pattern": "decisions/**",
-        "top_basenames": {
-          "p5-validator-scope-boundary.yml": 1
-        },
-        "top_parent_dirs": {
-          "decisions/process": 1
-        },
-        "total": 1
-      },
       {
         "high_risk_count": 0,
         "matched_pattern": "experiments/*/artifacts/**",
@@ -10206,7 +10237,7 @@
           "experiments/2026-04-15_agent-task-validity/artifacts": 7,
           "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
         },
-        "total": 139
+        "total": 143
       },
       {
         "high_risk_count": 0,
@@ -10394,7 +10425,7 @@
       "diagnostic_signal": 7,
       "evidence_log": 15,
       "generated_projection": 10,
-      "historical_record": 160,
+      "historical_record": 164,
       "implementation_behavior": 9,
       "navigation_surface": 8,
       "normative_contract": 15,
@@ -10413,7 +10444,7 @@
       "ci_blocking": 229,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 215,
+      "no_rewrite": 219,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
@@ -10426,26 +10457,26 @@
       "catalog": 12,
       "contract": 19,
       "docs": 20,
-      "experiment": 336,
+      "experiment": 340,
       "export": 15,
       "generated": 8,
       "governance": 46,
       "test": 127
     },
     "by_lifecycle": {
-      "append_only": 215,
+      "append_only": 219,
       "handcrafted": 343,
       "regenerated": 18,
       "revision_with_reason": 36,
       "superseded_not_rewritten": 2
     },
-    "classified": 614,
+    "classified": 618,
     "conflict": 0,
-    "fallback_classified": 161,
-    "fallback_share": 0.26221498371335505,
+    "fallback_classified": 164,
+    "fallback_share": 0.26537216828478966,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 614,
+    "total": 618,
     "unknown": 0
   },
   "transition_risk_hints": [],

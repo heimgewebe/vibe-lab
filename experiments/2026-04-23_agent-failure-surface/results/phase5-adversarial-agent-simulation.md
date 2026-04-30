@@ -367,20 +367,29 @@ Fixture-Matrix unter §5 als neue Unterabschnitte dokumentiert.
 
 **Eingabeartefakte:** Die vier P5-Simulationsfixtures sind unter
 `artifacts/run-phase5/fixtures/` eingecheckt und können mit den bestehenden
-Validator-Skripten reproduziert werden:
+Validator-Skripten reproduziert werden. Chain-Fixtures (P5-A, P5-C, P5-D)
+liegen unter `fixtures/chains/`; das Cross-Contract-Fixture (P5-B) liegt
+unter `fixtures/cross-contract/`:
 
 ```
 python3 scripts/docmeta/validate_command_chain.py \
-  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5a-chain.json
+  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json
 
 python3 scripts/docmeta/validate_command_chain.py \
-  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5c-chain.json
+  --cross-contract-fixtures \
+  experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract
 
 python3 scripts/docmeta/validate_command_chain.py \
-  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5d-chain.json
+  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5c-chain.json
+
+python3 scripts/docmeta/validate_command_chain.py \
+  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5d-chain.json
 ```
 
-(P5-B verwendet `--cross-contract-fixtures` mit `fixtures/p5b-cross-contract.json`.)
+Die Chain- und Cross-Contract-Fixtures sind in Unterordner getrennt, damit
+`--cross-contract-fixtures` nicht versehentlich Chain-Fixtures als
+Cross-Contract-Objekte interpretiert (der Validator liest alle JSON-Dateien
+im Zielordner via rglob).
 
 **Execution-Log:** `artifacts/run-phase5/execution.txt` ist ein kuratiertes
 Execution-Protokoll (curated transcript) der Validator-Läufe — kein roher

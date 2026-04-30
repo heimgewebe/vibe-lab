@@ -3,16 +3,16 @@
   "run_id": "run-phase5",
   "generated_at": "2026-04-30T06:06:16Z",
   "executor": "local:copilot-agent",
-  "command": "python3 scripts/docmeta/validate_agent_commands.py --mode strict && python3 scripts/docmeta/validate_agent_handoff.py --mode strict && python3 scripts/docmeta/validate_command_chain.py --chain artifacts/run-phase5/fixtures/p5a-chain.json && python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures artifacts/run-phase5/fixtures/ && python3 scripts/docmeta/validate_command_chain.py --chain artifacts/run-phase5/fixtures/p5c-chain.json && python3 scripts/docmeta/validate_command_chain.py --chain artifacts/run-phase5/fixtures/p5d-chain.json && make validate",
+  "command": "python3 scripts/docmeta/validate_agent_commands.py --mode strict && python3 scripts/docmeta/validate_agent_handoff.py --mode strict && python3 scripts/docmeta/validate_command_chain.py --chain artifacts/run-phase5/fixtures/chains/p5a-chain.json && python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures artifacts/run-phase5/fixtures/cross-contract && python3 scripts/docmeta/validate_command_chain.py --chain artifacts/run-phase5/fixtures/chains/p5c-chain.json && python3 scripts/docmeta/validate_command_chain.py --chain artifacts/run-phase5/fixtures/chains/p5d-chain.json && make validate",
   "exit_code": 0,
   "test_output_file": "artifacts/run-phase5/execution.txt",
   "provenance_level": "self_reported",
-  "provenance_note": "Simulation input fixtures are committed under artifacts/run-phase5/fixtures/ for reproducibility. The execution.txt is a curated transcript of the validator runs, not raw stdout capture. Validator outputs were observed and transcribed during the agent session; exact CLI output is reconstructed from session memory.",
+  "provenance_note": "Simulation input fixtures are committed under artifacts/run-phase5/fixtures/ for reproducibility. Chain fixtures (P5-A, P5-C, P5-D) are under fixtures/chains/; cross-contract fixture (P5-B) is under fixtures/cross-contract/. The execution.txt is a curated transcript of the validator runs, not raw stdout capture. Validator outputs were observed and transcribed during the agent session; exact CLI output is reconstructed from session memory.",
   "fixtures": {
-    "P5-A": "artifacts/run-phase5/fixtures/p5a-chain.json",
-    "P5-B": "artifacts/run-phase5/fixtures/p5b-cross-contract.json",
-    "P5-C": "artifacts/run-phase5/fixtures/p5c-chain.json",
-    "P5-D": "artifacts/run-phase5/fixtures/p5d-chain.json"
+    "P5-A": "artifacts/run-phase5/fixtures/chains/p5a-chain.json",
+    "P5-B": "artifacts/run-phase5/fixtures/cross-contract/p5b-cross-contract.json",
+    "P5-C": "artifacts/run-phase5/fixtures/chains/p5c-chain.json",
+    "P5-D": "artifacts/run-phase5/fixtures/chains/p5d-chain.json"
   },
   "simulations": {
     "P5-A": {
