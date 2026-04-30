@@ -1,16 +1,16 @@
 {
-  "_comment_purpose": "Phase F / RRG-03 diagnosis fixture — step A. Documents an *intended* mutation that, if applied for real, would shift later locator anchors in fixtures/before.md. Not executed by replay_minimal.py; no real file I/O is performed in this PR.",
+  "_comment_purpose": "Phase F / RRG-03 diagnosis fixture — step A. Documents an *intended* mutation that, if applied for real, would remove the C1 baseline match for the follow-up locator 'Validate token', making the fixture genuinely drift-inducing. Not executed by replay_minimal.py; no real file I/O is performed in this PR.",
   "_comment_scope": "Diagnosis-only fixture. Proof status: NOT_PROVEN. Patch-Gate: NOT_TRIGGERED.",
   "step_id": "A",
-  "intent": "modify_section_near_authentication_heading",
+  "intent": "replace_c1_baseline_validate_token_occurrence",
   "target_files": ["fixtures/before.md"],
-  "change_type": "modify",
-  "locator": "## Authentication",
-  "description": "Insert a new sentence directly under the '## Authentication' heading. The mutation itself is small, but it shifts the byte offsets and line numbers of the two remaining 'Validate token' occurrences below it.",
+  "change_type": "replace",
+  "locator": "Validate token before session creation.",
+  "description": "Replace the first 'Validate token' occurrence (under '## Authentication') with a semantically equivalent but lexically different phrase, e.g. 'Check token before session creation.' This removes the C1 baseline match from the match set for the follow-up locator 'Validate token', while the second occurrence ('Validate token after session restoration.' under '## Authentication Notes') remains intact. After real application of this step, Step B's locator 'Validate token' can no longer resolve to the same match as the C1 baseline resolution — it must either drift to the remaining second occurrence ('drifted') or fail to find the expected match ('not_found'/'ambiguous'). This is the intended drift-inducing condition for RRG-03.",
   "expected_post_apply_effect": {
-    "shifts_anchors_below": true,
+    "shifts_anchors_below": false,
     "introduces_new_match_for_followup_locator": false,
-    "removes_existing_match_for_followup_locator": false
+    "removes_existing_match_for_followup_locator": true
   },
   "executed": false,
   "execution_note": "No real apply was performed. This step exists only to document the *kind* of mutation that would create the conditions Phase F / RRG-03 wants to study."

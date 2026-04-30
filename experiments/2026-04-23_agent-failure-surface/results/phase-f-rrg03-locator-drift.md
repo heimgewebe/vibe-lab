@@ -53,7 +53,7 @@ Schema oder an Validatoren angefasst wird.
 - Ein minimaler Verweis aus
   `experiments/2026-04-23_agent-failure-surface/results/result.md` auf dieses
   Dokument.
-- Ggf. additiver `execution_ref` im Manifest.
+- Ggf. additiver Eintrag in execution_refs im Manifest.
 
 ## Nicht-Ziele
 
@@ -90,6 +90,20 @@ Belegter Ist-Zustand aus Phase 4 (siehe `replay-gap-candidates.md`):
 Daraus folgt für Phase F: Ohne reale Datei-I/O und ohne Re-Resolution gegen
 einen mutierten Dateistand kann RRG-03 *nicht* bewiesen werden — und
 darf entsprechend hier nicht als bewiesen markiert werden.
+
+## Fixture-Design: Drift-Mechanismus
+
+Die vorbereitete RRG-03-Fixture zielt konkret darauf, den C1-Baseline-Treffer
+durch Step A aus der Match-Menge zu entfernen: Step A ersetzt
+`Validate token before session creation.` durch einen lexikalisch anderen
+Ausdruck (z. B. `Check token before session creation.`), während der zweite
+Treffer `Validate token after session restoration.` unverändert bleibt.
+Nach realer Anwendung von Step A kann Step B's Locator `Validate token`
+nicht mehr denselben Treffer adressieren wie die C1-Baseline-Resolution —
+er muss entweder auf den verbleibenden zweiten Treffer driften (`drifted`)
+oder keinen nutzbaren Treffer finden (`not_found`/`ambiguous`).
+
+Diese Fixture ist damit genuinen drift-induzierend, nicht nur offset-verschiebend.
 
 ## Hypothesen (max. 3)
 
@@ -207,7 +221,7 @@ den Replay-Pfad zu kleben.
   `results/evidence.jsonl`
   (`metric: phase_f_rrg03_planning_started`).
 - Minimaler Verweis aus `results/result.md`.
-- Additiver `execution_ref` im `manifest.yml`.
+- Additiver execution_refs-Eintrag im manifest.yml.
 
 Klare Aussage:
 
