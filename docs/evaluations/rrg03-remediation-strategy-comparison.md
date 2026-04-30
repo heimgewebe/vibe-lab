@@ -36,6 +36,7 @@ Ist-Zustand bewertet werden, der den Befund erzeugt hat.
 
 Quellen:
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json`
 - `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md`
 - `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
 
@@ -85,11 +86,11 @@ Zeile 7 (byte 81–95). Der Beleg gilt ausschließlich für diese Fixture.
 
 | Kandidat | Ursache? | Maschinell? | Rückwärtskomp. | Falsch-positiv | Scope-Drift | Aufwand | v0.1-Verhältnis | Zusatzbelege |
 |----------|----------|-------------|----------------|----------------|-------------|---------|-----------------|--------------|
-| post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | 1 Real-Run alt. Fixture |
+| post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 offen |
 | byte_range | teilweise | ja (Schema) | niedrig (breaking) | niedrig | niedrig | hoch | bricht | mehrere Fixtures |
-| exact_before hash | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | 1 Real-Run |
-| re_resolution_required | ja | ja (Schema+Validator) | mittel | niedrig | niedrig | niedrig | schärft | 1 Real-Run |
-| validator multi-match | nein (Symptom) | ja (Validator) | hoch | mittel | niedrig | niedrig | schärft | 1 Real-Run |
+| exact_before hash | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 offen |
+| re_resolution_required | ja | ja (Schema+Validator) | mittel | niedrig | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 offen |
+| validator multi-match | nein (Symptom) | ja (Validator) | hoch | mittel | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 offen |
 | runner hardening | nein (Symptom) | nein | hoch | mittel | hoch | hoch | außerhalb v0.1 | viele Fixtures, allg. Beleg |
 | no_patch_observe_more | nein | nein | hoch | keines | keines | keines | neutral | weitere Real-Runs |
 
