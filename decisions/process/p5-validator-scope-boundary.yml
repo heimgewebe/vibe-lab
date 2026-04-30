@@ -38,7 +38,7 @@ scope_boundary:
         Inhaltliche NLP-Analyse von extracted_facts ist in v0.1 nicht
         spezifiziert und wäre nicht maschinell operationalisierbar ohne
         semantisches Verständnis des gelesenen Datei-Sets.
-      fixture_matrix_ref: "5.2 locator ↔ extracted_facts (intentional gap, v0.2)"
+      fixture_matrix_ref: "5.5 Inhaltliche Tiefe von extracted_facts (P5-A) (intentional gap, v0.1)"
 
     - id: "P5-B-scope-vs-change-content"
       description: >
@@ -51,7 +51,7 @@ scope_boundary:
         prüfbare Bindung an Änderungsinhalt. Validator prüft, OB exact_before/
         exact_after übereinstimmen (handoff_state_drift), nicht WAS ihr Inhalt ist.
         NLP-basierte Relevanzprüfung ist v0.1-out-of-scope.
-      fixture_matrix_ref: "Neue Known Gap P5-B (dieser PR)"
+      fixture_matrix_ref: "5.6 Semantische Konsistenz von scope/normalized_task vs. Änderungsinhalt (P5-B) (intentional gap, v0.1)"
 
     - id: "P5-C-check-relevance"
       description: >
@@ -62,7 +62,7 @@ scope_boundary:
         checks[] ist als offene String-Liste designt ("avoid locking in check
         vocabulary before practical use confirms the right set", Schema-Kommentar).
         Datei-typ-basierte Check-Relevanz ist keine v0.1-Invariante.
-      fixture_matrix_ref: "Neue Known Gap P5-C (dieser PR)"
+      fixture_matrix_ref: "5.7 Semantische Relevanz von checks[] relativ zum Datei-Typ (P5-C) (intentional gap, v0.1)"
 
     - id: "P5-D-missing-exact-fields"
       description: >
@@ -74,7 +74,7 @@ scope_boundary:
         und contracts/command-semantics.md. Ihre Abwesenheit ist bewusst erlaubt.
         Komplementärbedingung zu SEM-EMPTY-ASSERTED (Phase 2): jene Regel feuert
         nur wenn das Feld gesetzt UND leer ist; nicht wenn es fehlt.
-      fixture_matrix_ref: "Neue Known Gap P5-D (dieser PR)"
+      fixture_matrix_ref: "5.8 Fehlende exact_before/exact_after bei modify-Changes (P5-D) (intentional gap, v0.1)"
 
 no_patch_rationale: >
   Kein Validator-Patch ist gerechtfertigt, weil kein einziger der vier Fälle

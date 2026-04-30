@@ -4,12 +4,14 @@
   "generated_at": "2026-04-30T06:06:16Z",
   "executor": "local:copilot-agent",
   "cwd": "repo_root",
-  "command": "python3 scripts/docmeta/validate_agent_commands.py --mode strict && python3 scripts/docmeta/validate_agent_handoff.py --mode strict && python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json && python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract && python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5c-chain.json && python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5d-chain.json && make validate",
+  "command": "python3 scripts/docmeta/validate_agent_commands.py --mode strict --fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands && python3 scripts/docmeta/validate_agent_handoff.py --mode strict --fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_handoff && python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json && python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract && python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5c-chain.json && python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5d-chain.json && make validate",
   "exit_code": 0,
   "test_output_file": "artifacts/run-phase5/execution.txt",
   "provenance_level": "self_reported",
-  "provenance_note": "Simulation input fixtures are committed under artifacts/run-phase5/fixtures/ for reproducibility. Chain fixtures (P5-A, P5-C, P5-D) are under fixtures/chains/; cross-contract fixture (P5-B) is under fixtures/cross-contract/. The execution.txt is a curated transcript of the validator runs, not raw stdout capture. Validator outputs were observed and transcribed during the agent session; exact CLI output is reconstructed from session memory.",
+  "provenance_note": "Simulation input fixtures are committed under artifacts/run-phase5/fixtures/ for reproducibility. Standalone agent_commands fixtures (P5-A: read_context, plus write_change and validate_change stubs) are under fixtures/agent_commands/; standalone handoff fixture (P5-B) is under fixtures/agent_handoff/; chain fixtures (P5-A, P5-C, P5-D) are under fixtures/chains/; cross-contract fixture (P5-B) is under fixtures/cross-contract/. The execution.txt is a curated transcript of the validator runs, not raw stdout capture. Validator outputs were observed and transcribed during the agent session; exact CLI output is reconstructed from session memory.",
   "fixtures": {
+    "P5-A-agent-commands": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands",
+    "P5-B-agent-handoff": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_handoff",
     "P5-A": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json",
     "P5-B": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract/p5b-cross-contract.json",
     "P5-C": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5c-chain.json",
@@ -18,13 +20,13 @@
   "simulations": {
     "P5-A": {
       "description": "read_context with epistemically empty extracted_facts [\"ok\"]",
-      "validators": ["validate_agent_commands.py", "validate_command_chain.py"],
+      "validators": ["validate_agent_commands.py --fixtures fixtures/agent_commands", "validate_command_chain.py"],
       "exit_code": 0,
       "classification": "passed_but_out_of_scope"
     },
     "P5-B": {
       "description": "write_change whitespace-only diff; handoff scope claims major implementation",
-      "validators": ["validate_agent_handoff.py", "validate_command_chain.py --cross-contract-fixtures"],
+      "validators": ["validate_agent_handoff.py --fixtures fixtures/agent_handoff", "validate_command_chain.py --cross-contract-fixtures"],
       "exit_code": 0,
       "classification": "passed_but_out_of_scope"
     },

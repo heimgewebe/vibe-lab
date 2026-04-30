@@ -111,18 +111,18 @@ In einer vollständigen Chain:
 ```
 
 **Ausgeführte Validatoren:**
-1. `python3 scripts/docmeta/validate_agent_commands.py --mode strict`
-2. `python3 scripts/docmeta/validate_command_chain.py --chain p5a-chain.json`
+1. `python3 scripts/docmeta/validate_agent_commands.py --mode strict --fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands`
+2. `python3 scripts/docmeta/validate_command_chain.py --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json`
 
 **CLI-Output:**
 ```
-# Schema-Check:
-✅ p5a-read-context.json
+# Schema-Check (Standalone-Fixture p5a-read-context.json):
+✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands/read_context/p5a-read-context.json
 ✅ Agent command validation passed.
 EXIT CODE: 0
 
 # Chain-Check:
-✅ Chain valid: p5a-chain.json
+✅ Chain valid: experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json
 EXIT CODE: 0
 ```
 
@@ -175,18 +175,18 @@ einfügt.
 ```
 
 **Ausgeführte Validatoren:**
-1. `python3 scripts/docmeta/validate_agent_handoff.py --mode strict`
-2. `python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures p5b-cross-dir`
+1. `python3 scripts/docmeta/validate_agent_handoff.py --mode strict --fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_handoff`
+2. `python3 scripts/docmeta/validate_command_chain.py --cross-contract-fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract`
 
 **CLI-Output:**
 ```
-# Handoff-Check:
-✅ p5b-handoff.json
+# Handoff-Check (Standalone-Fixture p5b-handoff.json):
+✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_handoff/p5b-handoff.json
 ✅ Agent handoff validation passed.
 EXIT CODE: 0
 
 # Cross-Contract-Check:
-✅ p5b-cross-contract.json
+✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract/p5b-cross-contract.json
 ✅ Cross-contract validation passed.
 EXIT CODE: 0
 ```
@@ -365,13 +365,28 @@ Fixture-Matrix unter §5 als neue Unterabschnitte dokumentiert.
 
 ## 6. Provenance
 
-**Eingabeartefakte:** Die vier P5-Simulationsfixtures sind unter
+**Eingabeartefakte:** Alle P5-Simulationsfixtures sind unter
 `artifacts/run-phase5/fixtures/` eingecheckt und können mit den bestehenden
-Validator-Skripten reproduziert werden. Chain-Fixtures (P5-A, P5-C, P5-D)
-liegen unter `fixtures/chains/`; das Cross-Contract-Fixture (P5-B) liegt
-unter `fixtures/cross-contract/`:
+Validator-Skripten reproduziert werden:
+
+- **Standalone agent_commands-Fixtures** (P5-A — Schema-Prüfung read_context,
+  write_change, validate_change) liegen unter `fixtures/agent_commands/`:
+  - `fixtures/agent_commands/read_context/p5a-read-context.json`
+  - `fixtures/agent_commands/write_change/p5a-write-change.json`
+  - `fixtures/agent_commands/validate_change/p5a-validate-change.json`
+- **Standalone handoff-Fixture** (P5-B — Handoff-Schema + Hash) liegt unter
+  `fixtures/agent_handoff/`:
+  - `fixtures/agent_handoff/p5b-handoff.json`
+- **Chain-Fixtures** (P5-A, P5-C, P5-D) liegen unter `fixtures/chains/`.
+- **Cross-Contract-Fixture** (P5-B) liegt unter `fixtures/cross-contract/`.
 
 ```
+python3 scripts/docmeta/validate_agent_commands.py --mode strict \
+  --fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands
+
+python3 scripts/docmeta/validate_agent_handoff.py --mode strict \
+  --fixtures experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_handoff
+
 python3 scripts/docmeta/validate_command_chain.py \
   --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json
 
@@ -389,7 +404,9 @@ python3 scripts/docmeta/validate_command_chain.py \
 Die Chain- und Cross-Contract-Fixtures sind in Unterordner getrennt, damit
 `--cross-contract-fixtures` nicht versehentlich Chain-Fixtures als
 Cross-Contract-Objekte interpretiert (der Validator liest alle JSON-Dateien
-im Zielordner via rglob).
+im Zielordner via rglob). Die agent_commands- und agent_handoff-Verzeichnisse
+enthalten je nur P5-spezifische Fixtures, damit `--fixtures` exakt die
+simulierten P5-Inputs prüft.
 
 **Execution-Log:** `artifacts/run-phase5/execution.txt` ist ein kuratiertes
 Execution-Protokoll (curated transcript) der Validator-Läufe — kein roher
@@ -398,8 +415,8 @@ der Agent-Session beobachtet und transkribiert. Das `provenance_level:
 self_reported` in `run_meta.json` reflektiert dies korrekt.
 
 **Reproduzierbarkeit:** Die Fixtures sind vollständig spezifiziert. Ein
-unabhängiger Prüfer kann die vier Validatoren gegen die vier Fixture-Dateien
-ausführen und dasselbe Ergebnis (exit 0, alle `passed_but_out_of_scope`)
+unabhängiger Prüfer kann alle sechs Validator-Kommandos gegen die eingecheckten
+Fixtures ausführen und dasselbe Ergebnis (exit 0, alle `passed_but_out_of_scope`)
 beobachten.
 
 ---
