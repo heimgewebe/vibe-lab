@@ -2,7 +2,7 @@
   "schema_version": "0.1.0",
   "run_id": "run-phase-f-rrg03-real-02",
   "proof_target": "RRG-03 Locator Drift After Partial Apply — Injection-Before Pattern",
-  "workspace": "temp",
+  "workspace": "in_memory",
   "source_fixture_ref": "artifacts/run-phase-f-rrg03-real-02/fixtures/before.md",
   "execution_log_ref": "artifacts/run-phase-f-rrg03-real-02/execution-real.txt",
   "step_a_applied": true,
