@@ -50,8 +50,8 @@ evidence_summary:
   phase2_verdict: confirms
   phase3_verdict: refutes_phase3_hypothesis
   phase4_verdict: qualitative_inventory_no_patch
-  total_observations: 15
-  positive: 3
+  total_observations: 16
+  positive: 4
   negative: 1
   neutral: 11
 next_steps:
