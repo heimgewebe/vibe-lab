@@ -8,6 +8,8 @@ relations:
   - type: references
     target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json"
   - type: references
+    target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json"
+  - type: references
     target: "../../experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md"
   - type: references
     target: "../../decisions/process/2026-04-30-rrg03-remediation-boundary.yml"
@@ -118,14 +120,49 @@ Decision Preimage, nicht für eine abgeschlossene Entscheidung.
 
 ## Erforderliche nächste Belege
 
-1. Mindestens ein zusätzlicher Real-Run für RRG-03 mit alternativer Fixture
-   (anderer Locator, anderes Dokument, anderes Drift-Muster).
+1. ~~Mindestens ein zusätzlicher Real-Run für RRG-03 mit alternativer Fixture
+   (anderer Locator, anderes Dokument, anderes Drift-Muster).~~ ✓ Erledigt: Run 02
 2. Separate Diagnose, ob RRG-01 und RRG-02 denselben Remediation-Pfad
    benötigen oder ob ihre Drift-Ursachen abweichen.
 3. Prüfung, ob v0.2 einen Breaking Change für bestehende Chains bedeutet —
    insbesondere bei `byte_range` und `re_resolution_required`.
 4. Erst danach: Decision Preimage auf Basis dieses Strategie-Vergleichs und
    der zusätzlichen Belege.
+
+---
+
+## Zusatzbeleg Run 02 (Injection-Before Pattern)
+
+Quelle: `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json`
+
+Run 02 prüft ein anderes Drift-Muster als Run 01:
+
+| | Run 01 | Run 02 |
+|---|---|---|
+| Fixture | Auth Flow Notes, Locator "Validate token" | API Gateway Notes, Locator "Process request" |
+| Drift-Muster | Removal-drift: erster Treffer entfernt | Injection-before-drift: neuer Treffer eingefügt oberhalb |
+| match_count C1→C3 | 2→1 | 3→4 |
+| C1 line | 4 | 7 |
+| C3 line | 7 | 4 |
+| Klassifikation | drifted | drifted |
+| Patch-Gate | TRIGGERED | TRIGGERED |
+
+**Befund:** Beide Fixtures bestätigen `classification=drifted` und `patch_gate.triggered=true`.
+Die Drift-Ursache ist dieselbe (schwache Folgeadressierung), tritt aber durch
+zwei verschiedene Mechanismen auf:
+- Run 01: Treffer-Reduktion verschiebt Index-0-Auswahl nach unten.
+- Run 02: Treffer-Injektion verschiebt Index-0-Auswahl nach oben.
+
+**Auswirkung auf Bewertungsmatrix:** Die Kandidatenbewertung ändert sich nicht
+grundlegend. Beide Runs stärken die Einschätzung, dass `post_apply_anchor` und
+`re_resolution_required` die Ursache adressieren (sie würden in beiden
+Drift-Mustern greifen), während `runner-side resolver hardening` und
+`validator warning for multi-match locator` weiterhin deferred bleiben
+(sie adressieren Symptome, nicht die Ursache).
+
+**Kein finaler Gewinner.** Zwei Messpunkte sind stärker als einer, aber kein
+Beweis für allgemeine Locator-Unsicherheit jenseits kontrollierter Fixtures.
+Scope-Boundary: `proof_scope=fixture_only` gilt für beide Runs.
 
 ---
 

@@ -24,6 +24,12 @@ relations:
     target: ../artifacts/run-phase-f-rrg03-real/observed.json
   - type: references
     target: ../artifacts/run-phase-f-rrg03-real/execution-real.txt
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03-real-02/run_meta.json
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03-real-02/observed.json
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03-real-02/execution-real.txt
 ---
 
 ## Phase F — RRG-03 Locator Drift (Real Execution Evidence)
@@ -95,3 +101,40 @@ Der Befund beweist nicht:
 - allgemeine Locator-Sicherheit
 - unmittelbare Notwendigkeit eines Runtime-Patches
 - beste Patch-Strategie
+
+## Additional Real-Run 02 — Injection-Before Pattern
+
+Siehe:
+
+- `../artifacts/run-phase-f-rrg03-real-02/run_meta.json`
+- `../artifacts/run-phase-f-rrg03-real-02/observed.json`
+- `../artifacts/run-phase-f-rrg03-real-02/execution-real.txt`
+
+Fixture: `artifacts/run-phase-f-rrg03-real-02/fixtures/before.md` — API Gateway Notes,
+Locator Step B: `"Process request"` (3 Treffer in Before-Stand).
+
+Beobachteter Ablauf:
+
+- C1: locator "Process request" matched 3 hits, selected index 0, line 7, byte 80-95.
+- C2: Step A ersetzte "Validate request before routing." durch
+  "Process request before routing.\nValidate request before routing." —
+  fuegte oberhalb des C1-Ziels eine neue identische Locator-Zeile ein.
+- C3: locator "Process request" matched 4 hits, selected index 0, line 4, byte 30-45
+  (der neu eingefuegte Treffer, nicht das originale C1-Ziel).
+- Klassifikation: drifted.
+- Patch-Gate: TRIGGERED.
+
+Drift-Mechanismus (Run 02 vs. Run 01):
+
+| | Run 01 | Run 02 |
+|---|---|---|
+| Drift-Muster | Removal-drift: erster Treffer entfernt, zweiter wird erster | Injection-before-drift: neuer Treffer oberhalb eingefuegt, Index-0 zeigt auf Injektion |
+| C1 line/byte | line 4, byte 33-47 | line 7, byte 80-95 |
+| C3 line/byte | line 7, byte 81-95 | line 4, byte 30-45 |
+| match_count C1→C3 | 2→1 | 3→4 |
+| Klassifikation | drifted | drifted |
+| Patch-Gate | TRIGGERED | TRIGGERED |
+
+Claim Boundary Run 02 (unveraendert gegenueber Run 01):
+Beweist nur dieses Fixture-Szenario. Beweist nicht allgemeine Runner-Korrektheit,
+allgemeine Locator-Sicherheit oder beste Remediation-Strategie.
