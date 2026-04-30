@@ -167,6 +167,38 @@ Scope-Boundary: `proof_scope=fixture_only` gilt für beide Runs.
 
 ---
 
+## Cross-Diagnosis Status
+
+Quelle: `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
+
+| Befund | Stand |
+|--------|-------|
+| Diagnose RRG-01 vs. RRG-03-Kandidaten | abgeschlossen (Diagnose-only, kein Real-Run) |
+| Diagnose RRG-02 vs. RRG-03-Kandidaten | abgeschlossen (Diagnose-only, kein Real-Run) |
+| RRG-01 Real-Run | ausstehend |
+| RRG-02 Real-Run | ausstehend |
+
+**Diagnosebefund (zusammengefasst):**
+
+> `RRG-01/RRG-02 partially overlap but need separate fixture proof`
+
+- RRG-01 teilt mit RRG-03 die Achse "post-apply state divergence", hat aber
+  einen anderen Failure-Mode (Content-Normalisierung statt Locator-Positionsdrift).
+  Stärkster Kandidat für RRG-01: `exact_before hash/snapshot binding`.
+- RRG-02 ist strukturell orthogonal zu RRG-03 (Git-Index-Drift vs. Text-Locator-Drift).
+  Keiner der aktuellen Kandidaten adressiert RRG-02 primär.
+- Breaking-Change-Scan: `byte_range` und `re_resolution_required` als Pflichtfelder
+  würden alle bestehenden validen Chains brechen. Additiv-optionale Einführung ist non-breaking.
+
+**Offene Punkte (aktualisiert):**
+
+1. ~~Mindestens ein zusätzlicher Real-Run für RRG-03 mit alternativer Fixture.~~ ✓ Erledigt: Run 02
+2. ~~Separate Diagnose, ob RRG-01 und RRG-02 denselben Remediation-Pfad benötigen.~~ ✓ Erledigt: Diagnose-Dokument erstellt; eigene Fixture-Beweise ausstehend.
+3. ~~Prüfung, ob v0.2 einen Breaking Change für bestehende Chains bedeutet.~~ ✓ Erledigt: Breaking-Change-Scan in Diagnose-Dokument.
+4. Erst danach: Decision Preimage auf Basis dieses Strategie-Vergleichs und der zusätzlichen Belege.
+
+---
+
 ## Nicht-Ziele dieses Dokuments
 
 - Keine Runtime-/Schema-/Validator-/CI-Änderung.
