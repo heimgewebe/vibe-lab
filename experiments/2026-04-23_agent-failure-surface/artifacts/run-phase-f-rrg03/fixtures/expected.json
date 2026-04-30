@@ -9,8 +9,8 @@
     "not_found"
   ],
   "outcome_definitions": {
-    "stable": "Locator from step B resolves to the same byte range / occurrence as the dry-run anticipated.",
-    "drifted": "Locator from step B resolves to a different occurrence than the dry-run anticipated, due to step A's partial mutation.",
+    "stable": "Locator from step B resolves after Step A to the same byte range / occurrence as the C1 pre-apply baseline resolution.",
+    "drifted": "Locator from step B resolves after Step A to a different occurrence than the C1 pre-apply baseline resolution.",
     "ambiguous": "Locator from step B matches more than one location after step A and the runner has no deterministic tie-breaker.",
     "not_found": "Locator from step B no longer matches any location after step A."
   },

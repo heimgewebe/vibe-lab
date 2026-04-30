@@ -95,7 +95,7 @@ darf entsprechend hier nicht als bewiesen markiert werden.
 
 - **H-F1:** Wenn Step A eine Datei real partiell mutiert und Step B
   anschließend einen Locator gegen den mutierten Stand auflöst, kann der
-  Locator auf eine andere Stelle zeigen als die Dry-Run-Annahme.
+  Locator auf eine andere Stelle zeigen als die C1-Baseline-Resolution vor Step A.
 - **H-F2:** Bei semantisch ähnlichen, mehrfach vorhandenen Locator-Strings
   (z. B. `"Validate token"` in zwei benachbarten Abschnitten) ist die
   Auflösung nach partieller Mutation **mehrdeutig** (`ambiguous`), nicht nur
@@ -141,8 +141,8 @@ erst nach realer Ausführung des Beweisplans (C1–C5).
 
 | Klasse | Bedeutung |
 | ------ | --------- |
-| `stable` | Locator aus Step B trifft nach Step A dieselbe Stelle wie der Dry-Run angenommen hat. |
-| `drifted` | Locator trifft eine andere Stelle als der Dry-Run angenommen hat (verschobene Anker / shifted offsets). |
+| `stable` | Locator aus Step B trifft nach Step A dieselbe Stelle wie die C1-Baseline-Resolution vor Step A. |
+| `drifted` | Locator trifft nach Step A eine andere Stelle als die C1-Baseline-Resolution vor Step A (verschobene Anker / shifted offsets). |
 | `ambiguous` | Locator passt nach Step A auf mehrere Stellen, ohne deterministischen Tie-Breaker. |
 | `not_found` | Locator passt nach Step A auf keine Stelle mehr. |
 

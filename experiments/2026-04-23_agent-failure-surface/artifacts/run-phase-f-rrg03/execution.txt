@@ -62,7 +62,7 @@ Patch-Gate: NOT_TRIGGERED
 Trigger condition (see fixtures/expected.json#patch_gate_condition):
 A controlled fixture run must show that, after a real partial
 mutation, a follow-up command resolves to a different location than
-the dry-run assumed. This condition is not met by a planning-only
+the C1 pre-apply baseline resolution. This condition is not met by a planning-only
 preparation.
 
 ============================================================
