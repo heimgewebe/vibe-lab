@@ -29,6 +29,7 @@
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/concepts/experiment-ontology.md` | Konzept: Iteration, Execution Scope und Reconciliation | active | operative |
+| `docs/evaluations/rrg03-remediation-strategy-comparison.md` | RRG-03 Remediation Strategy Comparison | draft | operative |
 | `docs/foundations/repo-plan.md` | Repository-Plan | active | foundational |
 | `docs/foundations/vision.md` | Systemvision | active | foundational |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
