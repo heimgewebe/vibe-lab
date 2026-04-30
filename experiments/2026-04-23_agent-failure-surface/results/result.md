@@ -267,3 +267,21 @@ Ergebnisstand:
 - Scope: **evidence-only**; kein Runtime-/Schema-/Validator-/CI-Patch
 
 Die Phase-F-Aussage ist damit additiv und auditfaehig: Die Planung bleibt historisch reproduzierbar, der Real-Run belegt den Fixture-spezifischen Drift separat.
+
+### Remediation Boundary (additiv, 2026-04-30)
+
+Nach dem Real-Run wurde die Remediation-Verantwortung als
+**vorgeschlagene Prozessentscheidung** dokumentiert
+(`decisions/process/2026-04-30-rrg03-remediation-boundary.yml`,
+Status: `proposed`). Diese Entscheidung schreibt die Boundary fest,
+ohne RRG-03 als technisch gelöst zu erklären:
+
+- Evidence bleibt **PROVEN_FOR_FIXTURE** (kein generalisierter Beleg).
+- Patch-Gate bleibt **TRIGGERED**.
+- Runtime-/Schema-/Validator-/CI-Scope bleibt **unverändert**.
+- Bevorzugter, aber **nicht endgültig bewiesener** nächster Pfad:
+  command-contract-first (semantische Klarstellung in
+  `contracts/command-semantics.md` §„Bekannte Drift-Klassen — RRG-03").
+- Offen: Wahl zwischen v0.2-Kandidaten (`post_apply_anchor`,
+  Byte-Range-Bindung, `exact_before`-Hash, `re_resolution_required`,
+  Validator-Warnung) — separater Diagnose-PR erforderlich.

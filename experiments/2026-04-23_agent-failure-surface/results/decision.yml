@@ -59,3 +59,4 @@ next_steps:
   - "Phase F separat mit realer Mutationsausführung für RRG-03, RRG-01, RRG-02 planen."
   - "Bei v0.2-Lockerung der Chain-Sequenz Phase 3 mit erweitertem Kandidatenraum erneut ausführen."
   - "Whitespace-only exact_*-Snapshots als potenzielle eigene Klasse bei Adoption-Entscheidungen prüfen."
+  - "RRG-03 Remediation Boundary (proposed) verfolgen: decisions/process/2026-04-30-rrg03-remediation-boundary.yml — kein Runtime-/Schema-/Validator-/CI-Patch; bevorzugter, aber nicht endgültig bewiesener Pfad ist command-contract-first; v0.2-Kandidaten (post_apply_anchor, byte_range, exact_before-Hash, re_resolution_required, Validator-Warnung) bleiben offen und benötigen separate Diagnose."

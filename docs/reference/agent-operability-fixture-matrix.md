@@ -414,6 +414,33 @@ Phase 2 schließt den Fall „gesetzt + leer"; Phase 5 bestätigt, dass
 - `gap: intentional (v0.1)`
 - `decision_ref: decisions/process/p5-validator-scope-boundary.yml §P5-D-missing-exact-fields`
 
+### 5.9 RRG-03 Locator Drift After Partial Apply
+
+Phase F des Experiments `2026-04-23_agent-failure-surface` hat im Real-Run
+fixture-spezifisch belegt, dass ein in C1 etablierter Locator nach realer
+Step-A-Mutation auf einen anderen Treffer re-resolved (`classification:
+drifted`, `patch_gate.triggered: true`). Der Beleg ist auf die Fixture
+beschränkt und beweist weder allgemeine Runner-Korrektheit noch allgemeine
+Locator-Sicherheit.
+
+Diese Lücke ist Coverage-/Audit-Referenz, **keine** neue Validierungslogik.
+v0.1 dokumentiert das Risiko ohne Runtime-, Schema-, Validator- oder
+CI-Eingriff. Vertragliche Ergänzung: `contracts/command-semantics.md`
+§„Bekannte Drift-Klassen — RRG-03".
+
+**Audit:**
+- `covered: true`
+- `test_ref: experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json`
+- `gap: intentional (v0.1)`
+- `evidence: classification=drifted; patch_gate.triggered=true`
+- `boundary: fixture-specific proof only`
+- `remediation_status: proposed_boundary`
+- `no_runtime_patch: true`
+- `no_schema_patch: true`
+- `no_validator_patch: true`
+- `no_ci_gate: true`
+- `decision_ref: decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
+
 ---
 
 ## 6. Mapping-Tabelle

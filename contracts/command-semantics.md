@@ -374,6 +374,50 @@ durch das Fixture-Korpus unter `tests/fixtures/cross_contract/`.
 - Glob/Regex in `target_files` / `locator`.
 - Runtime-Execution mit echten Datei-Mutationen (siehe Blueprint Phase F).
 
+## Bekannte Drift-Klassen
+
+### RRG-03 — Locator Drift After Partial Apply
+
+Phase F des Experiments `2026-04-23_agent-failure-surface` hat im Real-Run
+fixture-spezifisch belegt, dass ein in C1 etablierter Locator nach realer
+Step-A-Mutation auf einen anderen Treffer re-resolved werden kann
+(`classification: drifted`, `patch_gate.triggered: true`). Belege:
+`experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json`,
+`experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md`.
+
+**Klarstellungen für v0.1:**
+
+- `locator` ist ein menschlich lesbarer Anker, **keine** stabile Identität
+  über Mutationen hinweg.
+- `target_lines` und `exact_before`/`exact_after` erhöhen die Präzision der
+  beabsichtigten Adresse, beweisen aber **ohne** eine erneute Resolution
+  nach der Mutation **keine** Post-Apply-Stabilität.
+- Folgekommandos nach einer Mutation dürfen nicht so tun, als sei ein
+  vorab etablierter Locator automatisch noch identisch interpretierbar.
+
+**Boundary (v0.1):**
+
+- v0.1 dokumentiert das Risiko und macht es explizit auditierbar.
+- v0.1 erzwingt **keine** neue Semantik (kein Runtime-, Schema-, Validator-
+  oder CI-Eingriff). Diese Boundary ist bewusst:
+  `decisions/process/2026-04-30-rrg03-remediation-boundary.yml` (Status:
+  `proposed`).
+- Der Real-Run beweist Drift nur fixture-spezifisch; allgemeine
+  Runner-Korrektheit oder allgemeine Locator-Sicherheit ist damit nicht
+  belegt.
+
+**v0.2-Kandidaten (offen, zur weiteren Diagnose):**
+
+1. `post_apply_anchor` — zusätzlicher Anker, der nach Mutation neu
+   aufgelöst wird.
+2. Byte-Range-Bindung (`byte_range`) als Ergänzung zu `target_lines`.
+3. Hash-/Snapshot-Bindung von `exact_before`.
+4. Explizites `re_resolution_required`-Flag für Folgekommandos.
+5. Validator-Warnung für mehrfach matchende Locator.
+
+Welche dieser Optionen v0.2 trägt, ist nicht entschieden. Die Wahl setzt
+einen separaten Diagnose-PR mit Strategie-Vergleich voraus.
+
 ## Bezüge
 
 - `schemas/command.read_context.schema.json`
