@@ -152,9 +152,9 @@ Replay-Dry-Run und realer Ausführungswahrheit:
 
 Priorisierte Kandidaten für Phase F:
 
-- RRG-03 — Locator/Facts Drift unter Moving Target
-- RRG-01 — Disk-State/Opaque Side Effects
-- RRG-02 — Git Index/Working Tree Divergenz
+- RRG-03 — Locator-Drift-After-Partial-Apply
+- RRG-01 — Disk-State-Apply-Delta
+- RRG-02 — Git-Working-Tree-Index-Effects
 
 Ergänzend dokumentiert, aber aktuell nicht priorisiert:
 
