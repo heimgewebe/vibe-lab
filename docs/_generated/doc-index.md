@@ -29,6 +29,7 @@
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/concepts/experiment-ontology.md` | Konzept: Iteration, Execution Scope und Reconciliation | active | operative |
+| `docs/evaluations/rrg03-remediation-strategy-comparison.md` | RRG-03 Remediation Strategy Comparison | draft | operative |
 | `docs/foundations/repo-plan.md` | Repository-Plan | active | foundational |
 | `docs/foundations/vision.md` | Systemvision | active | foundational |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
@@ -134,6 +135,7 @@
 | `experiments/2026-04-23_agent-failure-surface/INITIAL.md` | Initiale Situation: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md` | before | — | — |
 | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/before.md` | before | — | — |
+| `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/before.md` | before | — | — |
 | `experiments/2026-04-23_agent-failure-surface/failure_modes.md` | Failure Modes: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/method.md` | Methode: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` | Phase F — RRG-03 Locator Drift (Real Execution Evidence) | draft | operative |

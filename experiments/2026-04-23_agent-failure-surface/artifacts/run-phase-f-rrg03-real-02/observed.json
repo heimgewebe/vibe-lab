@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-phase-f-rrg03-real-02",
+  "proof_target": "RRG-03 Locator Drift After Partial Apply \u2014 Injection-Before Pattern",
+  "workspace": "temp",
+  "step_a_applied": true,
+  "c1_pre_apply_resolution": {
+    "locator": "Process request",
+    "match_count": 3,
+    "selected_match_index": 0,
+    "line_start": 7,
+    "line_end": 7,
+    "byte_start": 80,
+    "byte_end": 95,
+    "matched_text": "Process request",
+    "sha256_before": "7b95d468034c0adaa207e342d86ac28c621d3e785449872646394ac09f620f04"
+  },
+  "c2_mutation": {
+    "exact_before": "Validate request before routing.",
+    "exact_after": "Process request before routing.\nValidate request before routing.",
+    "sha256_after": "702fb353688f6edaae25db595ef36f0e80eb1a3410236cf0444aa1dfbf122c4b",
+    "applied": true
+  },
+  "c3_post_apply_resolution": {
+    "locator": "Process request",
+    "match_count": 4,
+    "selected_match_index": 0,
+    "line_start": 4,
+    "line_end": 4,
+    "byte_start": 30,
+    "byte_end": 45,
+    "matched_text": "Process request"
+  },
+  "classification": "drifted",
+  "patch_gate": {
+    "triggered": true,
+    "reason": "Triggered because classification is drifted: Step A inserted a new 'Process request' occurrence at line 4, causing C3 re-resolution to resolve to line 4 instead of the C1 baseline at line 7. The drift mechanism is injection-before: a new match was prepended above the original C1 target, displacing index-0 selection to a different (newly created) location."
+  },
+  "claim_boundary": {
+    "proves": [
+      "Whether this controlled fixture produces locator drift under injection-before mutation: inserting a new identical locator occurrence above the C1 baseline causes index-0 re-resolution to point at the injected occurrence, not the original target."
+    ],
+    "does_not_prove": [
+      "General runner correctness.",
+      "General locator safety.",
+      "Need for immediate runtime patch.",
+      "Best remediation strategy."
+    ]
+  }
+}

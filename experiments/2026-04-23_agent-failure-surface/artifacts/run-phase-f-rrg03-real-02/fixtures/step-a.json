@@ -1,0 +1,12 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": [
+    "before.md"
+  ],
+  "change_type": "modify",
+  "locator": "Validate request before routing.",
+  "exact_before": "Validate request before routing.",
+  "exact_after": "Process request before routing.\nValidate request before routing.",
+  "forbidden_changes": []
+}

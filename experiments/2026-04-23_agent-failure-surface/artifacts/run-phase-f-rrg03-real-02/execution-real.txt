@@ -1,0 +1,41 @@
+[command] python3 /tmp/rrg03_run02_real_exec.py
+[command] mktemp -d
+[output] tmp_workspace=/tmp/rrg03-real-02-jscd56sc
+[command] cp fixtures/before.md <tmp>/before.md
+[output] fixture copied to temp workspace
+[command] C1 baseline resolution (locator="Process request")
+[output] {"match_count": 3, "selected_match_index": 0, "line_start": 7, "line_end": 7, "byte_start": 80, "byte_end": 95, "matched_text": "Process request"}
+[command] C2 apply Step A mutation (injection-before: insert new identical locator above C1 target)
+[output] exact_before="Validate request before routing."
+[output] exact_after="Process request before routing.
+Validate request before routing."
+[output] applied=true
+[output] sha256_before=7b95d468034c0adaa207e342d86ac28c621d3e785449872646394ac09f620f04
+[output] sha256_after=702fb353688f6edaae25db595ef36f0e80eb1a3410236cf0444aa1dfbf122c4b
+[command] diff -u before.md before.md(mutated)
+--- before.md
++++ before.md (mutated)
+@@ -1,6 +1,7 @@
+ # API Gateway Notes
+ 
+ ## Entry
++Process request before routing.
+ Validate request before routing.
+ 
+ ## Main handler
+[command] C3 post-apply re-resolution (locator="Process request")
+[output] {"match_count": 4, "selected_match_index": 0, "line_start": 4, "line_end": 4, "byte_start": 30, "byte_end": 45, "matched_text": "Process request"}
+[command] C4 classification
+[output] classification=drifted
+[output] patch_gate_triggered=true
+[output] drift_mechanism=injection-before: Step A prepended a new "Process request" occurrence at line 4; index-0 re-resolution now points to the injected line, not the original C1 target at line 7.
+[command] C5 dry-run comparison
+[output] Der aktuelle Dry-Run ist non-mutating.
+[output] Er fuehrt keine Post-Apply-Re-Resolution aus.
+[output] Er ist daher Baseline, kein Orakel fuer den mutierten Zustand.
+[output] Dieser Run prueft ein anderes Drift-Muster als Run 01:
+[output]   Run 01: erster Treffer entfernt → zweiter wird erster (removal drift).
+[output]   Run 02: neuer Treffer eingefuegt oberhalb → Index-0 zeigt auf neuen Treffer (injection-before drift).
+[command] make validate
+[output] Validation passed.
+[output] ratchet mode: passed (11 frozen not_ready cases tolerated)
