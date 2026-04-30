@@ -19,6 +19,8 @@ relations:
   - type: references
     target: phase5-adversarial-agent-simulation.md
   - type: references
+    target: phase-f-rrg03-locator-drift.md
+  - type: references
     target: decision.yml
   - type: references
     target: replay-gap-candidates.md
@@ -230,3 +232,33 @@ Laufartefakt: `artifacts/run-phase5/run_meta.json`, `artifacts/run-phase5/execut
 | **5 — Adversarial Agent Simulation** | Stack kann durch epistemisch leere Outputs getäuscht werden | **confirms** (out_of_scope_documented) | Scope-Grenze dokumentiert |
 
 Nächster Schritt: **Phase F** (reale Mutationsausführung) für RRG-01, RRG-02, RRG-03.
+
+---
+
+## Phase F — RRG-03 Locator Drift After Partial Apply: diagnosis-first (NOT_PROVEN)
+
+**Vollbericht:** `results/phase-f-rrg03-locator-drift.md`
+
+Phase F beginnt mit dem priorisierten Kandidaten **RRG-03 — Locator-Drift-After-Partial-Apply**
+diagnosis-first. Dieser PR commitet ausschließlich:
+
+- ein Diagnose-Dokument (`results/phase-f-rrg03-locator-drift.md`),
+- eine Fixture-/Szenario-Struktur unter
+  `artifacts/run-phase-f-rrg03/` (`fixtures/before.md`, `fixtures/step-a.json`,
+  `fixtures/step-b.json`, `fixtures/expected.json`, `run_meta.json`,
+  `execution.txt`),
+- eine zusätzliche Evidenzzeile in `results/evidence.jsonl`.
+
+Es gibt **keine** Änderung an `tools/vibe-cli/replay_minimal.py`,
+`schemas/replay.trace.schema.json`,
+`scripts/docmeta/validate_command_chain.py`, an Validatoren,
+an `.github/workflows/validate.yml` oder an Phase-5-Semantik.
+
+Ergebnisstand:
+
+- **RRG-03 proof status: NOT_PROVEN**
+- **Patch-Gate: NOT_TRIGGERED**
+
+Eine inhaltliche Phase-F-Aussage entsteht erst nach realer Ausführung
+des in `phase-f-rrg03-locator-drift.md` deklarierten Beweisplans (C1–C5)
+mit echter Datei-I/O.

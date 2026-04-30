@@ -1,0 +1,79 @@
+# Phase F — RRG-03 Locator-Drift-After-Partial-Apply — Planning / Preparation Log
+# Generated 2026-04-30; see artifacts/run-phase-f-rrg03/run_meta.json
+# Diagnosis-only. No real mutation executed. No runner/schema/CI changes.
+
+============================================================
+SCOPE OF THIS LOG
+============================================================
+This file is a *planning and preparation* log, not an execution
+transcript. It does not contain fabricated CLI output. Only commands
+that were actually invoked locally are reproduced verbatim below.
+
+What was prepared in this PR:
+  - fixtures/before.md       — input file with two adjacent sections that
+                               both contain the substring "Validate token"
+  - fixtures/step-a.json     — declarative description of an *intended*
+                               partial mutation near "## Authentication"
+  - fixtures/step-b.json     — declarative description of a follow-up
+                               command using the drift-prone locator
+                               "Validate token"
+  - fixtures/expected.json   — diagnostic vocabulary only
+                               (diagnosis_class = not_proven;
+                                outcomes ∈ {stable, drifted, ambiguous,
+                                not_found})
+
+What was NOT done in this PR:
+  - tools/vibe-cli/replay_minimal.py was NOT modified.
+  - schemas/replay.trace.schema.json was NOT modified.
+  - scripts/docmeta/validate_command_chain.py was NOT modified.
+  - No validator was modified.
+  - .github/workflows/validate.yml was NOT modified.
+  - No new CI gate was added.
+  - No real file I/O between step A and step B was performed.
+  - No real re-resolution of the locator against a mutated working tree
+    was performed.
+
+============================================================
+BASELINE — make validate
+============================================================
+The only command actually executed for this PR is the standard
+repo-wide validation gate, both before and after the additive
+diagnosis artifacts were committed.
+
+--- make validate ---
+(real CLI output, captured during this preparation; tail only)
+✅ Validation passed.
+
+============================================================
+RRG-03 PROOF STATUS
+============================================================
+RRG-03 proof status: NOT_PROVEN
+Reason: Without real file I/O on the working copy of fixtures/before.md
+between step A and step B, and without real re-resolution of the
+locator from step B against the mutated file state, locator drift
+after partial apply cannot be demonstrated. The current dry-run
+replay path is, by design, non-mutating and uses the locator only
+declaratively (see results/replay-gap-candidates.md, RRG-03 row).
+
+============================================================
+PATCH GATE
+============================================================
+Patch-Gate: NOT_TRIGGERED
+Trigger condition (see fixtures/expected.json#patch_gate_condition):
+A controlled fixture run must show that, after a real partial
+mutation, a follow-up command resolves to a different location than
+the dry-run assumed. This condition is not met by a planning-only
+preparation.
+
+============================================================
+NEXT STEP (out of scope for this PR)
+============================================================
+A later PR may execute the prepared scenario in a controlled
+temp-workspace and record the observed outcome in
+fixtures/expected.json#expected_possible_outcomes. Only after such a
+real run yields 'drifted' / 'ambiguous' / 'not_found' (against a
+dry-run that asserted 'stable') would the patch-gate be considered.
+The alternative path documented in
+results/phase-f-rrg03-locator-drift.md is to extend command
+contracts so that follow-up commands reference explicit post-apply
+anchors or byte ranges, instead of hardening locator resolution.

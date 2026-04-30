@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 618
-- classified: 618
-  - of which fallback_classified (catch-all rule): 164
-  - fallback_share: 26.5% (164 / 618)
+- total: 622
+- classified: 622
+  - of which fallback_classified (catch-all rule): 168
+  - fallback_share: 27.0% (168 / 622)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -32,7 +32,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | catalog | 12 |
 | contract | 19 |
 | docs | 20 |
-| experiment | 340 |
+| experiment | 344 |
 | export | 15 |
 | generated | 8 |
 | governance | 46 |
@@ -46,7 +46,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | diagnostic_signal | 7 |
 | evidence_log | 15 |
 | generated_projection | 10 |
-| historical_record | 164 |
+| historical_record | 168 |
 | implementation_behavior | 9 |
 | navigation_surface | 8 |
 | normative_contract | 15 |
@@ -63,7 +63,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 219 |
+| append_only | 223 |
 | handcrafted | 343 |
 | regenerated | 18 |
 | revision_with_reason | 36 |
@@ -78,7 +78,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | ci_blocking | 229 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 219 |
+| no_rewrite | 223 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
@@ -247,6 +247,10 @@ _none_
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands/read_context/p5a-read-context.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands/validate_change/p5a-validate-change.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_commands/write_change/p5a-write-change.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/agent_handoff/p5b-handoff.json`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5c-chain.json`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5d-chain.json`
@@ -332,8 +336,8 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 143 | 87.2% |
-| `experiments/**` | 21 | 12.8% |
+| `experiments/*/artifacts/**` | 147 | 87.5% |
+| `experiments/**` | 21 | 12.5% |
 
 ## Residual fallback clusters
 
@@ -347,7 +351,7 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 143 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 147 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 
 ### Volume-first clusters
@@ -356,7 +360,7 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 143 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 147 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 
 ## Fallback classified artifacts requiring review
