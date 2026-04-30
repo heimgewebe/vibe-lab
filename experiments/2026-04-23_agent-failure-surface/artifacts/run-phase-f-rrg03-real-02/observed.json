@@ -1,10 +1,8 @@
 {
   "schema_version": "0.1.0",
   "run_id": "run-phase-f-rrg03-real-02",
-  "proof_target": "RRG-03 Locator Drift After Partial Apply — Injection-Before Pattern",
-  "workspace": "in_memory",
-  "source_fixture_ref": "artifacts/run-phase-f-rrg03-real-02/fixtures/before.md",
-  "execution_log_ref": "artifacts/run-phase-f-rrg03-real-02/execution-real.txt",
+  "proof_target": "RRG-03 Locator Drift After Partial Apply \u2014 Injection-Before Pattern",
+  "workspace": "temp",
   "step_a_applied": true,
   "c1_pre_apply_resolution": {
     "locator": "Process request",
@@ -18,7 +16,6 @@
     "sha256_before": "7b95d468034c0adaa207e342d86ac28c621d3e785449872646394ac09f620f04"
   },
   "c2_mutation": {
-    "locator": "Validate request before routing.",
     "exact_before": "Validate request before routing.",
     "exact_after": "Process request before routing.\nValidate request before routing.",
     "sha256_after": "702fb353688f6edaae25db595ef36f0e80eb1a3410236cf0444aa1dfbf122c4b",
