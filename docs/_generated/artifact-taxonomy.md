@@ -247,10 +247,10 @@ _none_
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5a-chain.json`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5b-cross-contract.json`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5c-chain.json`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5d-chain.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5a-chain.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5c-chain.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/chains/p5d-chain.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/cross-contract/p5b-cross-contract.json`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-A1.json`
