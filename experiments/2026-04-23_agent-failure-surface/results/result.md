@@ -26,7 +26,7 @@ relations:
     target: replay-gap-candidates.md
 ---
 
-## result.md — Serienbericht (Phase 2 + 3 + 4)
+# result.md — Serienbericht (Phase 2 + 3 + 4)
 
 Dieser Bericht ist der kumulative Ergebnisstand der Reihe
 *Agent Failure Surface Mapping*. Jede Phase hat einen eigenen
