@@ -1,43 +1,50 @@
-# Phase F — RRG-03 Locator Drift (Planning)
+# Phase F — RRG-03 Locator Drift (Real Execution Evidence)
 
-Status: planning-only
+Status: real-execution-evidence
 
 ## Ziel
-RRG-03 real ausführen: kontrollierte partielle Mutation und Re-Resolution gegen denselben Locator.
+
+RRG-03 unter kontrollierten Bedingungen real pruefen: partielle Mutation anwenden und denselben Locator danach erneut aufloesen.
 
 ## Scope und Grenzen
-- Keine Runtime-, Schema-, Validator- oder CI-Änderung in diesem Planungsschritt.
+
+- Keine Runtime-, Schema-, Validator- oder CI-Aenderung in diesem Evidence-PR.
 - Kein Runner-Patch.
 - Kein Schema-Patch.
 - Kein Validator-Patch.
 - Kein CI-Gate.
 
 ## Proof Status
-- Proof status: NOT_PROVEN
-- Patch-Gate: NOT_TRIGGERED
 
-## Geplanter kontrollierter Ablauf
-1. Baseline-Resolution (C1) des Locators aus Step B gegen unveränderte Arbeitskopie.
-2. Reale Anwendung von Step A auf Temp-Arbeitskopie (C2).
-3. Re-Resolution desselben Step-B-Locators gegen mutierten Stand (C3).
-4. Klassifikation: stable | drifted | ambiguous | not_found (C4).
-5. Dry-Run-Abgleich: Baseline, kein Orakel für mutierten Zustand (C5).
+- Proof status: PROVEN_FOR_FIXTURE
+- Patch-Gate: TRIGGERED
 
 ## Fixtures
+
 Siehe:
+
 - artifacts/run-phase-f-rrg03/fixtures/before.md
 - artifacts/run-phase-f-rrg03/fixtures/step-a.json
 - artifacts/run-phase-f-rrg03/fixtures/step-b.json
 - artifacts/run-phase-f-rrg03/fixtures/expected.json
 
-## Real Execution Result
+## Befund
 
-- run_id: run-phase-f-rrg03-real
-- classification: drifted
-- patch-gate: TRIGGERED
-- evidence artifact: artifacts/run-phase-f-rrg03/observed.json
-- execution log: artifacts/run-phase-f-rrg03/execution-real.txt
+- C1: locator "Validate token" matched 2 hits, selected index 0, line 4, byte 33-47.
+- C2: "Validate token before session creation." wurde ersetzt durch "Check token before session creation."
+- C3: locator "Validate token" matched 1 hit, selected index 0, line 7, byte 81-95.
+- Klassifikation: drifted.
+- Patch-Gate: TRIGGERED.
 
-Interpretation:
-Diese kontrollierte Fixture zeigt Locator-Drift nach realer partieller Mutation und anschliessender Re-Resolution.
-Der Befund ist fixture-gebunden und kein allgemeiner Runner- oder Locator-Beweis.
+## Interpretation
+
+Diese kontrollierte Fixture belegt RRG-03 fuer genau dieses Szenario: Nach realer Step-A-Mutation driftet der Step-B-Locator von C1 Zeile 4 auf C3 Zeile 7.
+
+## Claim Boundary
+
+Der Befund beweist nicht:
+
+- allgemeine Runner-Korrektheit
+- allgemeine Locator-Sicherheit
+- unmittelbare Notwendigkeit eines Runtime-Patches
+- beste Patch-Strategie

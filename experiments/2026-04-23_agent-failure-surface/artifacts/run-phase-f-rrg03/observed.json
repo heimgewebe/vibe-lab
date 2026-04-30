@@ -34,7 +34,7 @@
   "classification": "drifted",
   "patch_gate": {
     "triggered": true,
-    "reason": "Set true only if classification is drifted, ambiguous, or not_found."
+    "reason": "Triggered because classification is drifted: after real Step-A mutation, the Step-B locator resolved to line 7 instead of the C1 baseline at line 4."
   },
   "claim_boundary": {
     "proves": [
