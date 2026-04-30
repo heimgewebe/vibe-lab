@@ -57,7 +57,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-ART = Path('experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03')
+ART = Path('experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real')
 FIXTURE = ART / 'fixtures' / 'before.md'
 WORKDIR = Path(tempfile.mkdtemp(prefix='rrg03-real-'))
 WORK_FILE = WORKDIR / 'before.md'

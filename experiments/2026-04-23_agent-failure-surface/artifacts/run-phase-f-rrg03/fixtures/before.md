@@ -1,7 +1,13 @@
-# Auth Flow Notes
+# Auth Guide
 
-Precondition:
+## Setup
+
+Use token validation here.
+
+## Authentication
+
 Validate token before session creation.
 
-Fallback:
-Validate token after session refresh.
+## Authentication Notes
+
+Validate token after session restoration.

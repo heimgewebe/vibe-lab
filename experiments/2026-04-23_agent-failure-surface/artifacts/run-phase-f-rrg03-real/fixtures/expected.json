@@ -1,0 +1,21 @@
+{
+  "proof_target": "RRG-03 Locator Drift After Partial Apply",
+  "diagnosis_class": "proven_for_fixture",
+  "current_proof_status": "PROVEN_FOR_FIXTURE",
+  "expected_possible_outcomes": [
+    "stable",
+    "drifted",
+    "ambiguous",
+    "not_found"
+  ],
+  "observed_outcome": "drifted",
+  "step_a": {
+    "exact_before": "Validate token before session creation.",
+    "exact_after": "Check token before session creation."
+  },
+  "step_b": {
+    "locator": "Validate token"
+  },
+  "patch_gate_condition": "Patch gate is triggered for this fixture when post-apply re-resolution of the Step-B locator differs from the C1 pre-apply baseline resolution, or becomes ambiguous/not_found.",
+  "patch_gate_status": "TRIGGERED"
+}

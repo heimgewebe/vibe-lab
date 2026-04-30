@@ -24,8 +24,6 @@ relations:
     target: decision.yml
   - type: references
     target: replay-gap-candidates.md
-  - type: references
-    target: phase-f-rrg03-locator-drift.md
 ---
 
 ## result.md — Serienbericht (Phase 2 + 3 + 4)
@@ -238,18 +236,21 @@ Nächster Schritt: **Phase F** (reale Mutationsausführung) für RRG-01, RRG-02,
 
 ---
 
-## Phase F — RRG-03 Locator Drift After Partial Apply: diagnosis-first (NOT_PROVEN)
+## Phase F — RRG-03 Locator Drift After Partial Apply: real execution evidence
 
 **Vollbericht:** `results/phase-f-rrg03-locator-drift.md`
 
-Phase F beginnt mit dem priorisierten Kandidaten **RRG-03 — Locator-Drift-After-Partial-Apply**
-diagnosis-first. Dieser PR commitet ausschließlich:
+Phase F enthaelt jetzt zwei sauber getrennte Ebenen fuer den priorisierten Kandidaten
+**RRG-03 — Locator-Drift-After-Partial-Apply**:
 
-- ein Diagnose-Dokument (`results/phase-f-rrg03-locator-drift.md`),
-- eine Fixture-/Szenario-Struktur unter
-  `artifacts/run-phase-f-rrg03/` (`fixtures/before.md`, `fixtures/step-a.json`,
-  `fixtures/step-b.json`, `fixtures/expected.json`, `run_meta.json`,
-  `execution.txt`),
+- einen historisierten Planning-Run unter `artifacts/run-phase-f-rrg03/`
+  (`fixtures/before.md`, `fixtures/step-a.json`, `fixtures/step-b.json`,
+  `fixtures/expected.json`, `run_meta.json`, `execution.txt`),
+- einen additiven Real-Run unter `artifacts/run-phase-f-rrg03-real/`
+  (`fixtures/before.md`, `fixtures/step-a.json`, `fixtures/step-b.json`,
+  `fixtures/expected.json`, `run_meta.json`, `observed.json`,
+  `execution-real.txt`),
+- ein Ergebnisdokument `results/phase-f-rrg03-locator-drift.md`,
 - eine zusätzliche Evidenzzeile in `results/evidence.jsonl`.
 
 Es gibt **keine** Änderung an `tools/vibe-cli/replay_minimal.py`,
@@ -259,9 +260,10 @@ an `.github/workflows/validate.yml` oder an Phase-5-Semantik.
 
 Ergebnisstand:
 
-- **RRG-03 proof status: NOT_PROVEN**
-- **Patch-Gate: NOT_TRIGGERED**
+- Planning-Run: **NOT_PROVEN**, **NOT_TRIGGERED**
+- Real execution: **drifted**
+- Proof status: **PROVEN_FOR_FIXTURE**
+- Patch gate: **TRIGGERED**
+- Scope: **evidence-only**; kein Runtime-/Schema-/Validator-/CI-Patch
 
-Eine inhaltliche Phase-F-Aussage entsteht erst nach realer Ausführung
-des in `phase-f-rrg03-locator-drift.md` deklarierten Beweisplans (C1–C5)
-mit echter Datei-I/O.
+Die Phase-F-Aussage ist damit additiv und auditfaehig: Die Planung bleibt historisch reproduzierbar, der Real-Run belegt den Fixture-spezifischen Drift separat.
