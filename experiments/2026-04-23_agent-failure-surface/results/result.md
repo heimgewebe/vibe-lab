@@ -1,9 +1,9 @@
 ---
-title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3 + 4)"
+title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3 + 4 + 5)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
-updated: "2026-04-29"
+updated: "2026-04-30"
 author: "Copilot Agent (GPT-5.x)"
 relations:
   - type: references
@@ -16,6 +16,10 @@ relations:
     target: phase2-semantic-contradiction.md
   - type: references
     target: phase3-chain-integrity-stress.md
+  - type: references
+    target: phase5-adversarial-agent-simulation.md
+  - type: references
+    target: phase-f-rrg03-locator-drift.md
   - type: references
     target: decision.yml
   - type: references
@@ -166,6 +170,98 @@ Ergänzend dokumentiert, aber aktuell nicht priorisiert:
 Scope-Entscheidung in Phase 4: **No-Patch** (diagnosis-first). Keine Änderung
 an Validatoren, Schemas, Fixtures oder CI-Härtung; nur Inventur und Evidenz.
 
-## Nächste Phase
+---
 
-**Phase 5 — Adversarial Agent Simulation** folgt als nächster Serienabschnitt.
+## Phase 5 — Adversarial Agent Simulation: out_of_scope_documented
+
+**Vollbericht:** `results/phase5-adversarial-agent-simulation.md`
+
+Phase 5 ergänzt die vorhandene Serienhistorie (Phase 2 + 3 + 4), ersetzt sie nicht.
+Sie prüft, ob formal gültige, epistemisch leere Agent-Outputs den bestehenden
+Validator-Stack passieren.
+
+### Simulationsmatrix Phase 5
+
+| Simulation | Beschreibung | Klassifikation |
+| ---------- | ------------ | -------------- |
+| P5-A | `read_context.extracted_facts: ["ok"]` — triviale Strings, schema-konform | `passed_but_out_of_scope` |
+| P5-B | `write_change.exact_after: "\n"` (Whitespace), Handoff `scope` behauptet Substanzarbeit | `passed_but_out_of_scope` |
+| P5-C | `validate_change.checks: ["css-audit", "design-review"]` für Python-Datei | `passed_but_out_of_scope` |
+| P5-D | `write_change change_type=modify`, kein `exact_before`, kein `exact_after` | `passed_but_out_of_scope` |
+
+Toleranz-Rate: **4/4** (alle Simulationen passieren den Validator-Stack).
+Patch-Gate: **nicht ausgelöst** (kein `passed_but_wrong`-Fall).
+
+### Strukturkonsequenz Phase 5
+
+**Out-of-Scope-Documented** (kein Patch):
+
+- `decisions/process/p5-validator-scope-boundary.yml` — formale Dokumentation
+  der vier identifizierten Scope-Grenzen.
+- `docs/reference/agent-operability-fixture-matrix.md` — Known Gaps §5.5 bis §5.8
+  um P5-A bis P5-D erweitert.
+
+### Ergebnis Phase 5 (Vorhypothese vs. Antithese)
+
+- **Vorhypothese** bestätigt: Der Stack kann von epistemisch leeren, formal
+  gültigen Outputs getäuscht werden.
+- **Antithese** widerlegt (partiell): Der Stack verhindert form-ungültige und
+  strukturell inkonsistente Outputs, ist aber kein Inhaltsrichter.
+- **Präzisierung**: Die vier identifizierten „Lücken" sind keine Validator-Fehler
+  innerhalb des deklarierten Scopes — sie sind bewusste v0.1-Architekturentscheidungen.
+
+### Verifikation Phase 5
+
+| Schritt | Ergebnis |
+| ------- | -------- |
+| P5-A (validate_agent_commands + chain) | exit 0 — `passed_but_out_of_scope` |
+| P5-B (validate_agent_handoff + cross-contract) | exit 0 — `passed_but_out_of_scope` |
+| P5-C (validate_command_chain) | exit 0 — `passed_but_out_of_scope` |
+| P5-D (validate_command_chain) | exit 0 — `passed_but_out_of_scope` |
+| `make validate` | ✅ Validation passed |
+
+Laufartefakt: `artifacts/run-phase5/run_meta.json`, `artifacts/run-phase5/execution.txt`.
+
+---
+
+## Serienstatus (nach Abschluss Phase 5)
+
+| Phase | Leithypothese | Ergebnis | Strukturkonsequenz |
+| ----- | ------------- | -------- | ------------------ |
+| 1 — Drift Injection | Kleine Drifts werden nicht erkannt | (eigenem PR) | — |
+| **2 — Semantic Contradiction** | Leere asserted states toleriert | **confirms** | Validator + Fixtures + Tests |
+| **3 — Chain Integrity Stress** | Transitions-Fehler unerkannt | **refutes** (No-Patch) | — |
+| **4 — Replay Reality Gap** | Replay bildet reale Mutationen nicht ab | **qualitative_inventory** (No-Patch) | Kandidateninventur |
+| **5 — Adversarial Agent Simulation** | Stack kann durch epistemisch leere Outputs getäuscht werden | **confirms** (out_of_scope_documented) | Scope-Grenze dokumentiert |
+
+Nächster Schritt: **Phase F** (reale Mutationsausführung) für RRG-01, RRG-02, RRG-03.
+
+---
+
+## Phase F — RRG-03 Locator Drift After Partial Apply: diagnosis-first (NOT_PROVEN)
+
+**Vollbericht:** `results/phase-f-rrg03-locator-drift.md`
+
+Phase F beginnt mit dem priorisierten Kandidaten **RRG-03 — Locator-Drift-After-Partial-Apply**
+diagnosis-first. Dieser PR commitet ausschließlich:
+
+- ein Diagnose-Dokument (`results/phase-f-rrg03-locator-drift.md`),
+- eine Fixture-/Szenario-Struktur unter
+  `artifacts/run-phase-f-rrg03/` (`fixtures/before.md`, `fixtures/step-a.json`,
+  `fixtures/step-b.json`, `fixtures/expected.json`, `run_meta.json`,
+  `execution.txt`),
+- eine zusätzliche Evidenzzeile in `results/evidence.jsonl`.
+
+Es gibt **keine** Änderung an `tools/vibe-cli/replay_minimal.py`,
+`schemas/replay.trace.schema.json`,
+`scripts/docmeta/validate_command_chain.py`, an Validatoren,
+an `.github/workflows/validate.yml` oder an Phase-5-Semantik.
+
+Ergebnisstand:
+
+- **RRG-03 proof status: NOT_PROVEN**
+- **Patch-Gate: NOT_TRIGGERED**
+
+Eine inhaltliche Phase-F-Aussage entsteht erst nach realer Ausführung
+des in `phase-f-rrg03-locator-drift.md` deklarierten Beweisplans (C1–C5)
+mit echter Datei-I/O.

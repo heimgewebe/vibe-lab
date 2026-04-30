@@ -4,15 +4,20 @@ status: draft
 canonicality: operative
 created: "2026-04-30"
 updated: "2026-04-30"
+author: "Claude Opus 4.7"
 relations:
-	- type: references
-		target: replay-gap-candidates.md
-	- type: references
-		target: evidence.jsonl
-	- type: references
-		target: ../artifacts/run-phase-f-rrg03/observed.json
-	- type: references
-		target: ../artifacts/run-phase-f-rrg03/execution-real.txt
+  - type: references
+    target: replay-gap-candidates.md
+  - type: references
+    target: evidence.jsonl
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03/run_meta.json
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03/execution.txt
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03/observed.json
+  - type: references
+    target: ../artifacts/run-phase-f-rrg03/execution-real.txt
 ---
 
 ## Phase F — RRG-03 Locator Drift (Real Execution Evidence)

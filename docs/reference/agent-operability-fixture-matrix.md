@@ -355,6 +355,65 @@ nicht als Validator- oder Schema-Gate implementiert.
 - `test_ref: experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
 - `gap: intentional (v0.2)`
 
+### 5.5 Inhaltliche Tiefe von `extracted_facts` (P5-A)
+
+`extracted_facts`-Strings in `read_context` unterliegen nur `minLength: 1`.
+Epistemisch triviale Strings (z.B. `"ok"`, `"done"`) sind schema-konform und
+passieren alle Validatoren. Eine inhaltliche NLP-Prüfung der Faktentiefe ist
+für v0.1 nicht spezifiziert.
+
+Diese Lücke wurde in Phase 5 (Adversarial Agent Simulation) als
+`passed_but_out_of_scope` klassifiziert. Kein Patch.
+
+**Audit:**
+- `covered: false`
+- `test_ref: —`
+- `gap: intentional (v0.1)`
+- `decision_ref: decisions/process/p5-validator-scope-boundary.yml §P5-A-fact-content`
+
+### 5.6 Semantische Konsistenz von `scope`/`normalized_task` vs. Änderungsinhalt (P5-B)
+
+Handoff-Felder `scope` und `normalized_task` sind Freitext-Strings. Kein
+Validator prüft, ob der behauptete Scope mit dem tatsächlichen Inhalt von
+`exact_before`/`exact_after` übereinstimmt. Eine Handoff mit grandiosem Scope
+und trivialem Änderungsinhalt passiert alle Cross-Contract-Validatoren.
+
+**Audit:**
+- `covered: false`
+- `test_ref: —`
+- `gap: intentional (v0.1)`
+- `decision_ref: decisions/process/p5-validator-scope-boundary.yml §P5-B-scope-vs-change-content`
+
+### 5.7 Semantische Relevanz von `checks[]` relativ zum Datei-Typ (P5-C)
+
+`validate_change.checks[]` ist eine offene String-Liste ohne Datei-typ-Bindung.
+`checks: ["css-audit", "design-review"]` für eine Python-Datei ist schema-konform.
+Der Validator prüft strukturelle Plausibilität (validate_change nach write_change
+mit non-empty target_files), nicht Check-Relevanz.
+
+**Audit:**
+- `covered: false`
+- `test_ref: —`
+- `gap: intentional (v0.1)`
+- `decision_ref: decisions/process/p5-validator-scope-boundary.yml §P5-C-check-relevance`
+
+### 5.8 Fehlende `exact_before`/`exact_after` bei modify-Changes (P5-D)
+
+Eine `write_change` mit `change_type=modify` ohne `exact_before`/`exact_after`
+ist schema-konform. Es gibt keinen operativen Nachweis dafür, was verändert
+wird. `SEM-EMPTY-ASSERTED` greift nur, wenn ein `exact_*`-Feld gesetzt UND
+leer ist — nicht wenn es fehlt.
+
+Diese Lücke ist die Komplementärbedingung zu Phase 2 (SEM-EMPTY-ASSERTED):
+Phase 2 schließt den Fall „gesetzt + leer"; Phase 5 bestätigt, dass
+„nicht gesetzt" bewusst valide bleibt.
+
+**Audit:**
+- `covered: false`
+- `test_ref: —`
+- `gap: intentional (v0.1)`
+- `decision_ref: decisions/process/p5-validator-scope-boundary.yml §P5-D-missing-exact-fields`
+
 ---
 
 ## 6. Mapping-Tabelle

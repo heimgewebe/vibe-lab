@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-phase-f-rrg03",
+  "generated_at": "2026-04-30T12:05:24Z",
+  "executor": "local:claude-opus-4-7",
+  "cwd": "repo_root",
+  "command": "make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-phase-f-rrg03/execution.txt",
+  "provenance_level": "self_reported",
+  "provenance_intent": "planned_fixture",
+  "provenance_note": "Phase F / RRG-03 diagnosis-first preparation. NO real mutation executed. NO replay runner patch. NO schema patch. NO CI gate. The fixtures under fixtures/ describe a scenario that, if executed against a real working tree with real file I/O, could produce locator drift after partial apply. This run_meta documents only the fixture preparation and the make-validate baseline that confirms the additive diagnosis artifacts do not break existing validators. provenance_level is set to 'self_reported' because the run_meta schema only allows 'self_reported' or 'machine_verified'; the additional field 'provenance_intent: planned_fixture' makes the planning-only character explicit.",
+  "outcome": "diagnosis_fixture_prepared",
+  "rrg03_proof_status": "NOT_PROVEN",
+  "patch_gate_triggered": false,
+  "fixtures": {
+    "before": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md",
+    "step_a": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/step-a.json",
+    "step_b": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/step-b.json",
+    "expected": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/expected.json"
+  }
+}

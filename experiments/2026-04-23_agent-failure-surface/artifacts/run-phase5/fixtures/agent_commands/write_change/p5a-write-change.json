@@ -1,0 +1,9 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": ["src/auth.py"],
+  "locator": "# module header",
+  "change_type": "add",
+  "exact_after": "# added by agent",
+  "forbidden_changes": []
+}

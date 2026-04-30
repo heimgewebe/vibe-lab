@@ -1,0 +1,24 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["docs/index.md"],
+    "extracted_facts": ["docs/index.md contains navigation structure"],
+    "uncertainties": []
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["docs/index.md"],
+    "locator": "## Table of Contents",
+    "change_type": "modify",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["docs-guard"],
+    "success": true,
+    "errors": []
+  }
+]

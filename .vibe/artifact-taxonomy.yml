@@ -528,6 +528,13 @@ rules:
     lifecycle: superseded_not_rewritten
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: decisions/process/*.yml
+    layer: governance
+    kind: decision_record
+    authority: decision_record
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: decisions/**
     layer: governance
     kind: decision_record

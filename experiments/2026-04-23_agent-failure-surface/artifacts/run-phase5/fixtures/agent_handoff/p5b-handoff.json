@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "target_files": ["src/auth.py"],
+  "locator": "# Authentication",
+  "change_type": "add",
+  "scope": "Add complete JWT authentication middleware with token validation and session management",
+  "normalized_task": "Implement JWT token validation middleware in src/auth.py",
+  "critic_signature": "experiment-critic/v1",
+  "handoff": {
+    "algo": "sha256",
+    "canon": "v1",
+    "hash": "0e4b9662a5d81f8a9feb7db7851c6716364af7d85ba3c3c7479eab60b975bea2"
+  }
+}

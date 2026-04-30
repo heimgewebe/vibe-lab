@@ -1,0 +1,26 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/auth.py"],
+    "extracted_facts": ["src/auth.py contains authentication logic"],
+    "uncertainties": []
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["src/auth.py"],
+    "locator": "def authenticate()",
+    "change_type": "modify",
+    "exact_before": "def authenticate(user):\n    pass",
+    "exact_after": "def authenticate(user):\n    return True",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["css-audit", "design-review"],
+    "success": true,
+    "errors": []
+  }
+]
