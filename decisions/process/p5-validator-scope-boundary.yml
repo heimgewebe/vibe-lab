@@ -1,0 +1,100 @@
+schema_version: "0.1.0"
+decision_type: process_boundary
+verdict: out_of_scope_documented
+confidence: high
+date: "2026-04-30"
+reviewer: "Copilot Agent (Claude Sonnet 4.5)"
+triggered_by: "experiments/2026-04-23_agent-failure-surface Phase 5"
+
+title: "Validator Scope Boundary — Epistemisch leere, formal gültige Agent-Outputs (v0.1)"
+
+rationale: |
+  Phase 5 (Adversarial Agent Simulation) des Experiments
+  `2026-04-23_agent-failure-surface` hat vier Klassen formal gültiger,
+  epistemisch leerer Agent-Outputs gegen den bestehenden Validator-Stack
+  getestet. Alle vier Simulationen passierten alle Validatoren (exit 0).
+  Kein Fall war `passed_but_wrong`; alle vier sind `passed_but_out_of_scope`.
+
+  Diese Entscheidung formalisiert die dabei identifizierten Scope-Grenzen als
+  Prozessdokumentation gemäß method.md §Phase 5 (Stop-Bedingung Phase 5:
+  Entscheidungen über "außerhalb der Validator-Zuständigkeit" sind in
+  `decisions/process/` zu dokumentieren).
+
+scope_boundary:
+  within_validator_scope:
+    - "Strukturelle Korrektheit (JSON-Schema)"
+    - "Sequenz- und Versionskonsistenz (Chain-Validator)"
+    - "Minimale semantische Anti-Invarianten (SEM-EMPTY-ASSERTED, wrong-side-asserted)"
+    - "Operative Grundbindung (validate_change braucht write_change mit target_files)"
+    - "Cross-Contract-Bindung (target_files, change_type, exact_before/after, locator)"
+
+  outside_validator_scope_v0_1:
+    - id: "P5-A-fact-content"
+      description: >
+        Inhaltliche Tiefe von extracted_facts-Strings.
+        Schema erzwingt minLength:1, aber nicht Erkenntnisgehalt.
+        Beliebig triviale Strings (z.B. "ok") sind schema-konform.
+      rationale: >
+        Inhaltliche NLP-Analyse von extracted_facts ist in v0.1 nicht
+        spezifiziert und wäre nicht maschinell operationalisierbar ohne
+        semantisches Verständnis des gelesenen Datei-Sets.
+      fixture_matrix_ref: "5.5 Inhaltliche Tiefe von extracted_facts (P5-A) (intentional gap, v0.1)"
+
+    - id: "P5-B-scope-vs-change-content"
+      description: >
+        Semantische Konsistenz zwischen Handoff-Feldern scope/normalized_task
+        und dem tatsächlichen Inhalt von exact_before/exact_after.
+        Ein Handoff kann eine substanzielle Arbeit beschreiben (scope), während
+        die tatsächliche Änderung trivial ist (z.B. einzelner Zeilenumbruch).
+      rationale: >
+        scope und normalized_task sind Freitext-Strings ohne maschinell
+        prüfbare Bindung an Änderungsinhalt. Validator prüft, OB exact_before/
+        exact_after übereinstimmen (handoff_state_drift), nicht WAS ihr Inhalt ist.
+        NLP-basierte Relevanzprüfung ist v0.1-out-of-scope.
+      fixture_matrix_ref: "5.6 Semantische Konsistenz von scope/normalized_task vs. Änderungsinhalt (P5-B) (intentional gap, v0.1)"
+
+    - id: "P5-C-check-relevance"
+      description: >
+        Semantische Relevanz von checks[]-Namen relativ zum betroffenen Datei-Typ.
+        validate_change mit checks ["css-audit", "design-review"] für eine
+        Python-Datei ist schema-konform und chain-valide.
+      rationale: >
+        checks[] ist als offene String-Liste designt ("avoid locking in check
+        vocabulary before practical use confirms the right set", Schema-Kommentar).
+        Datei-typ-basierte Check-Relevanz ist keine v0.1-Invariante.
+      fixture_matrix_ref: "5.7 Semantische Relevanz von checks[] relativ zum Datei-Typ (P5-C) (intentional gap, v0.1)"
+
+    - id: "P5-D-missing-exact-fields"
+      description: >
+        Abwesenheit von exact_before/exact_after bei modify-Changes.
+        Eine modify-Chain ohne diese Felder ist strukturell valide.
+        Es gibt keinen operativen Beweis dafür, was verändert wird.
+      rationale: >
+        exact_before/exact_after sind "optional precision fields" per Schema-Kommentar
+        und contracts/command-semantics.md. Ihre Abwesenheit ist bewusst erlaubt.
+        Komplementärbedingung zu SEM-EMPTY-ASSERTED (Phase 2): jene Regel feuert
+        nur wenn das Feld gesetzt UND leer ist; nicht wenn es fehlt.
+      fixture_matrix_ref: "5.8 Fehlende exact_before/exact_after bei modify-Changes (P5-D) (intentional gap, v0.1)"
+
+no_patch_rationale: >
+  Kein Validator-Patch ist gerechtfertigt, weil kein einziger der vier Fälle
+  `passed_but_wrong` war. Die Validatoren implementieren ihren deklarierten
+  Scope korrekt. Die Fälle P5-A bis P5-D sind `passed_but_out_of_scope` —
+  sie liegen jenseits der Validator-Zuständigkeit, nicht innerhalb einer
+  unerkannten Toleranzzone.
+
+  Scheinsicherheit durch übergriffige Validator-Theologie (method.md
+  §"Alternative Sinnachse") würde mehr schaden als nützen. Der Validator
+  ist kein Inhaltsrichter.
+
+next_steps:
+  - "Phase F (reale Mutationsausführung) separat für RRG-01, RRG-02, RRG-03 planen."
+  - "Fixture-Matrix um Known Gaps P5-A bis P5-D erweitern (dieser PR)."
+  - "Kein weiterer Validator-Eingriff ohne konkreten passed_but_wrong-Beleg."
+
+evidence_refs:
+  - path: "experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md"
+    section: "Gesamtbewertung"
+  - path: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/execution.txt"
+  - path: "experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl"
+    section: "phase_5_*"

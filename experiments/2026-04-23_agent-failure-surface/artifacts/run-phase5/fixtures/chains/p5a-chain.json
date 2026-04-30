@@ -1,0 +1,25 @@
+[
+  {
+    "command": "read_context",
+    "version": "v0.1",
+    "target_files": ["src/auth.py"],
+    "extracted_facts": ["ok"],
+    "uncertainties": ["done"]
+  },
+  {
+    "command": "write_change",
+    "version": "v0.1",
+    "target_files": ["src/auth.py"],
+    "locator": "# module header",
+    "change_type": "add",
+    "exact_after": "# added by agent",
+    "forbidden_changes": []
+  },
+  {
+    "command": "validate_change",
+    "version": "v0.1",
+    "checks": ["lint"],
+    "success": true,
+    "errors": []
+  }
+]

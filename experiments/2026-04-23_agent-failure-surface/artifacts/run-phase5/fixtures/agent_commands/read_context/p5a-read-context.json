@@ -1,0 +1,7 @@
+{
+  "command": "read_context",
+  "version": "v0.1",
+  "target_files": ["src/auth.py"],
+  "extracted_facts": ["ok"],
+  "uncertainties": ["done"]
+}
