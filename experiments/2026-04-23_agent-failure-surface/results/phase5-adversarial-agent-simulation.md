@@ -363,11 +363,44 @@ Fixture-Matrix unter §5 als neue Unterabschnitte dokumentiert.
 
 ---
 
-## 6. Verifikation
+## 6. Provenance
+
+**Eingabeartefakte:** Die vier P5-Simulationsfixtures sind unter
+`artifacts/run-phase5/fixtures/` eingecheckt und können mit den bestehenden
+Validator-Skripten reproduziert werden:
+
+```
+python3 scripts/docmeta/validate_command_chain.py \
+  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5a-chain.json
+
+python3 scripts/docmeta/validate_command_chain.py \
+  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5c-chain.json
+
+python3 scripts/docmeta/validate_command_chain.py \
+  --chain experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/fixtures/p5d-chain.json
+```
+
+(P5-B verwendet `--cross-contract-fixtures` mit `fixtures/p5b-cross-contract.json`.)
+
+**Execution-Log:** `artifacts/run-phase5/execution.txt` ist ein kuratiertes
+Execution-Protokoll (curated transcript) der Validator-Läufe — kein roher
+stdout-Capture. Die Einzel-Exit-Codes und Validator-Ausgaben wurden während
+der Agent-Session beobachtet und transkribiert. Das `provenance_level:
+self_reported` in `run_meta.json` reflektiert dies korrekt.
+
+**Reproduzierbarkeit:** Die Fixtures sind vollständig spezifiziert. Ein
+unabhängiger Prüfer kann die vier Validatoren gegen die vier Fixture-Dateien
+ausführen und dasselbe Ergebnis (exit 0, alle `passed_but_out_of_scope`)
+beobachten.
+
+---
+
+## 7. Verifikation
 
 ```
 make validate
 # → ✅ Validation passed (exit 0)
 ```
 
-Laufartefakte: `artifacts/run-phase5/execution.txt`, `artifacts/run-phase5/run_meta.json`.
+Laufartefakte: `artifacts/run-phase5/execution.txt` (curated transcript),
+`artifacts/run-phase5/run_meta.json`, `artifacts/run-phase5/fixtures/`.

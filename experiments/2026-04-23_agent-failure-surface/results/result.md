@@ -1,9 +1,9 @@
 ---
-title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3 + 4)"
+title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3 + 4 + 5)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
-updated: "2026-04-29"
+updated: "2026-04-30"
 author: "Copilot Agent (GPT-5.x)"
 relations:
   - type: references
@@ -16,6 +16,8 @@ relations:
     target: phase2-semantic-contradiction.md
   - type: references
     target: phase3-chain-integrity-stress.md
+  - type: references
+    target: phase5-adversarial-agent-simulation.md
   - type: references
     target: decision.yml
   - type: references

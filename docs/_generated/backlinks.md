@@ -231,6 +231,10 @@
 
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
+## `experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
 ## `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
 
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)

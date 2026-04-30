@@ -716,6 +716,22 @@
     },
     {
       "authority": "decision_record",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
+      "path": "decisions/process/p5-validator-scope-boundary.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
       "catchall_match": false,
       "enforcement": [
         "ci_blocking"
@@ -6176,6 +6192,39 @@
       "status": "classified"
     },
     {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/run_meta.json",
+      "status": "classified"
+    },
+    {
       "authority": "result_interpretation",
       "catchall_match": false,
       "enforcement": [
@@ -6286,6 +6335,22 @@
       ],
       "origin": "handcrafted",
       "path": "experiments/2026-04-23_agent-failure-surface/results/phase3-chain-integrity-stress.md",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "phase_result",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/phase*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md",
       "status": "classified"
     },
     {
@@ -9789,6 +9854,7 @@
   ],
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
+    "decisions/process/p5-validator-scope-boundary.yml",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
@@ -9952,18 +10018,32 @@
   ],
   "fallback_summary": {
     "by_authority": {
+      "decision_record": 1,
       "historical_record": 160
     },
     "by_layer": {
-      "experiment": 160
+      "experiment": 160,
+      "governance": 1
     },
     "by_matched_pattern": {
+      "decisions/**": 1,
       "experiments/**": 21,
       "experiments/*/artifacts/**": 139
     },
-    "high_risk_count": 0,
+    "high_risk_count": 1,
     "residual_cluster_views": {
       "risk_first": [
+        {
+          "high_risk_count": 1,
+          "matched_pattern": "decisions/**",
+          "top_basenames": {
+            "p5-validator-scope-boundary.yml": 1
+          },
+          "top_parent_dirs": {
+            "decisions/process": 1
+          },
+          "total": 1
+        },
         {
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
@@ -10073,10 +10153,32 @@
             "experiments/2026-04-23_phase-1-drift-injection/results": 1
           },
           "total": 21
+        },
+        {
+          "high_risk_count": 1,
+          "matched_pattern": "decisions/**",
+          "top_basenames": {
+            "p5-validator-scope-boundary.yml": 1
+          },
+          "top_parent_dirs": {
+            "decisions/process": 1
+          },
+          "total": 1
         }
       ]
     },
     "residual_clusters": [
+      {
+        "high_risk_count": 1,
+        "matched_pattern": "decisions/**",
+        "top_basenames": {
+          "p5-validator-scope-boundary.yml": 1
+        },
+        "top_parent_dirs": {
+          "decisions/process": 1
+        },
+        "total": 1
+      },
       {
         "high_risk_count": 0,
         "matched_pattern": "experiments/*/artifacts/**",
@@ -10236,6 +10338,7 @@
     "agent-policy.yaml",
     "contracts/docmeta.schema.json",
     "contracts/system_decision.schema.json",
+    "decisions/process/p5-validator-scope-boundary.yml",
     "decisions/system/2026-04-23-catalog-staleness-dormant.yml",
     "decisions/system/2026-04-23-metrics-enabled.yml",
     "docs/foundations/repo-plan.md",
@@ -10287,7 +10390,7 @@
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 14,
+      "decision_record": 15,
       "diagnostic_signal": 7,
       "evidence_log": 15,
       "generated_projection": 10,
@@ -10297,8 +10400,8 @@
       "normative_contract": 15,
       "procedure_contract": 84,
       "raw_capture": 20,
-      "result_interpretation": 49,
-      "runtime_observation": 54,
+      "result_interpretation": 50,
+      "runtime_observation": 56,
       "schema_truth": 12,
       "sovereign_source": 3,
       "test_expectation": 127,
@@ -10310,11 +10413,11 @@
       "ci_blocking": 229,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 214,
+      "no_rewrite": 215,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 182
+      "review_required": 186
     },
     "by_layer": {
       "agent": 3,
@@ -10323,26 +10426,26 @@
       "catalog": 12,
       "contract": 19,
       "docs": 20,
-      "experiment": 333,
+      "experiment": 336,
       "export": 15,
       "generated": 8,
-      "governance": 45,
+      "governance": 46,
       "test": 127
     },
     "by_lifecycle": {
-      "append_only": 214,
-      "handcrafted": 341,
+      "append_only": 215,
+      "handcrafted": 343,
       "regenerated": 18,
-      "revision_with_reason": 35,
+      "revision_with_reason": 36,
       "superseded_not_rewritten": 2
     },
-    "classified": 610,
+    "classified": 614,
     "conflict": 0,
-    "fallback_classified": 160,
-    "fallback_share": 0.26229508196721313,
+    "fallback_classified": 161,
+    "fallback_share": 0.26221498371335505,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 610,
+    "total": 614,
     "unknown": 0
   },
   "transition_risk_hints": [],
