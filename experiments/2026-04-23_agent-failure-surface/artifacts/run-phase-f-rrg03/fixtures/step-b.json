@@ -1,5 +1,5 @@
 {
-  "_comment_purpose": "Phase F / RRG-03 diagnosis fixture — step B. References a deliberately drift-prone locator. In fixtures/before.md the substring 'Validate token' occurs three times across two adjacent sections ('## Authentication' and '## Authentication Notes'), so any post-step-A mutation can change which occurrence resolves first.",
+  "_comment_purpose": "Phase F / RRG-03 diagnosis fixture — step B. References a deliberately drift-prone locator. In fixtures/before.md the substring 'Validate token' occurs twice across two adjacent sections ('## Authentication' and '## Authentication Notes'), so any post-step-A mutation can change which occurrence resolves first.",
   "_comment_scope": "Diagnosis-only fixture. Proof status: NOT_PROVEN. Patch-Gate: NOT_TRIGGERED.",
   "step_id": "B",
   "intent": "follow_up_modify_using_ambiguous_locator",

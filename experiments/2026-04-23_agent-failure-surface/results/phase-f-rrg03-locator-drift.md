@@ -121,9 +121,13 @@ dieses PRs.
 4. **C4 — Klassifikation:**
    Das Delta aus C1 → C3 in genau eine der vier Klassen einordnen:
    `stable`, `drifted`, `ambiguous`, `not_found`.
-5. **C5 — Dry-Run-Vergleich:**
+5. **C5 — Dry-Run-Baseline-Abgleich:**
    Den aktuellen Dry-Run-Trace für Step B (ohne Step-A-Anwendung) erzeugen
-   und feststellen, ob er in C4 dieselbe Klasse vorhergesagt hätte.
+   und festhalten, dass der Dry-Run non-mutativ ist und keine Post-Apply-
+   Re-Resolution ausführt — er ist eine non-mutating baseline, kein Orakel,
+   das `stable` für den Post-Apply-Zustand behauptet. Damit kann der
+   Dry-Run die Klassen `drifted`, `ambiguous` oder `not_found` weder
+   bestätigen noch ausschließen.
 
 ## Stop-Kriterium
 
@@ -148,9 +152,10 @@ Aktueller Diagnosezustand: `not_proven` (siehe
 ## Patch-Gate
 
 **Patch nur dann**, wenn ein kontrollierter Fixture-Run zeigt, dass ein
-Folgekommando nach **realer** Mutation anders adressiert als im Dry-Run
-angenommen — d. h. die beobachtete Klasse ist `drifted`, `ambiguous`
-oder `not_found`, während der Dry-Run `stable` angenommen hätte.
+Folgekommando nach **realer** Mutation anders adressiert als in der
+Baseline — d. h. die beobachtete Klasse ist `drifted`, `ambiguous`
+oder `not_found`, während der Dry-Run als non-mutating baseline keine
+Post-Apply-Re-Resolution durchführt und diese Klassen nicht modellieren kann.
 
 Solange dieser Beleg nicht existiert:
 

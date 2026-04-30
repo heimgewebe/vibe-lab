@@ -71,8 +71,9 @@ NEXT STEP (out of scope for this PR)
 A later PR may execute the prepared scenario in a controlled
 temp-workspace and record the observed outcome in
 fixtures/expected.json#expected_possible_outcomes. Only after such a
-real run yields 'drifted' / 'ambiguous' / 'not_found' (against a
-dry-run that asserted 'stable') would the patch-gate be considered.
+real run yields 'drifted' / 'ambiguous' / 'not_found' under current
+dry-run semantics that do not perform post-apply re-resolution would
+the patch-gate be considered.
 The alternative path documented in
 results/phase-f-rrg03-locator-drift.md is to extend command
 contracts so that follow-up commands reference explicit post-apply

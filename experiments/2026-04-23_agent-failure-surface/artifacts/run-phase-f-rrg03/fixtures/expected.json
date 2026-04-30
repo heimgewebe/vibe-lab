@@ -14,7 +14,7 @@
     "ambiguous": "Locator from step B matches more than one location after step A and the runner has no deterministic tie-breaker.",
     "not_found": "Locator from step B no longer matches any location after step A."
   },
-  "patch_gate_condition": "Patch the runner ONLY if a controlled fixture run shows that, after a real partial mutation, a follow-up command resolves to a different location than the dry-run assumed (i.e. observed outcome is 'drifted' or 'ambiguous' or 'not_found' AND the dry-run would have asserted 'stable').",
+  "patch_gate_condition": "Patch the runner ONLY if a controlled fixture run shows that, after a real partial mutation, a follow-up command resolves differently than the current dry-run path can model (observed outcome is 'drifted', 'ambiguous', or 'not_found' while the dry-run remains non-mutating and performs no post-apply re-resolution).",
   "current_proof_status": "NOT_PROVEN",
   "patch_gate_status": "NOT_TRIGGERED"
 }
