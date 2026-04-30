@@ -150,9 +150,15 @@ Phase 4 ergänzt die vorhandene Serienhistorie (Phase 2 + 3), ersetzt sie
 nicht. Sie dokumentiert eine qualitative Kandidateninventur zur Lücke zwischen
 Replay-Dry-Run und realer Ausführungswahrheit:
 
+Priorisierte Kandidaten für Phase F:
+
+- RRG-03 — Locator/Facts Drift unter Moving Target
 - RRG-01 — Disk-State/Opaque Side Effects
 - RRG-02 — Git Index/Working Tree Divergenz
-- RRG-03 — Locator/Facts Drift unter Moving Target
+
+Ergänzend dokumentiert, aber aktuell nicht priorisiert:
+
+- RRG-04 — Post-Mutation-Validation-Semantics
 
 Scope-Entscheidung in Phase 4: **No-Patch** (diagnosis-first). Keine Änderung
 an Validatoren, Schemas, Fixtures oder CI-Härtung; nur Inventur und Evidenz.

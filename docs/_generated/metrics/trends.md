@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-29T13:50:00Z
+Latest Evidence Timestamp: 2026-04-29T13:55:00Z
 
 ## Gate Snapshot
 
-- Total events: **266**
+- Total events: **267**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **14**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-04-29T13:50:00Z
 | --- | ---: |
 | decision | 15 |
 | measurement | 129 |
-| observation | 102 |
+| observation | 103 |
 | run | 20 |
 
 ## Metric Aggregates
@@ -122,6 +122,7 @@ Latest Evidence Timestamp: 2026-04-29T13:50:00Z
 | phase_3_diagnosis_baseline | 1 | 0 | - | - | - |
 | phase_3_outcome | 1 | 0 | - | - | - |
 | phase_3_test_suite_status | 1 | 0 | - | - | - |
+| phase_4_candidate_scope_clarification | 1 | 0 | - | - | - |
 | phase_4_outcome | 1 | 0 | - | - | - |
 | phase_4_replay_gap_inventory | 1 | 0 | - | - | - |
 | phase_result_separation | 1 | 0 | - | - | - |

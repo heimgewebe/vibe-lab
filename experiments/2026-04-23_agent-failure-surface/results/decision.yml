@@ -55,6 +55,7 @@ evidence_summary:
   negative: 1
   neutral: 11
 next_steps:
-  - "Phase-4-Kandidaten (RRG-01..03) in priorisierter Reihenfolge in Phase 5 gegen echte Ausführungs-/Mutationspfade ausspielen."
+  - "Phase 5 als adversarial Agent Simulation auf der bestehenden Validator-/Replay-Welt ausführen."
+  - "Phase F separat mit realer Mutationsausführung zur Prüfung der Replay-Gap-Kandidaten RRG-03, RRG-01 und RRG-02 planen."
   - "Bei v0.2-Lockerung der Chain-Sequenz Phase 3 mit erweitertem Kandidatenraum erneut ausführen."
   - "Whitespace-only exact_*-Snapshots als potenzielle eigene Klasse bei Adoption-Entscheidungen prüfen (aktuell außerhalb Phase-2-Scope)."
