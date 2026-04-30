@@ -341,6 +341,20 @@ Alle `errors[]`-Einträge in Fixtures sind Freitext-Strings (z.B. `"lint: E501 l
 - `test_ref: —`
 - `gap: intentional (v0.2)`
 
+### 5.4 Replay Reality Gap (Diagnoseartefakte vs. reale Mutationen)
+
+Replay-Dry-Run und statische Fixture-/Chain-Validierung bilden reale
+Ausführungseffekte nur begrenzt ab. Besonders betroffen sind side-effect-lastige
+Mutationen (Dateisystem, Git-Index/Working-Tree, bewegte Targets).
+
+Diese Lücke ist für v0.1 bewusst als Diagnose-/Methoden-Thema markiert und
+nicht als Validator- oder Schema-Gate implementiert.
+
+**Audit:**
+- `covered: false`
+- `test_ref: experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
+- `gap: intentional (v0.2)`
+
 ---
 
 ## 6. Mapping-Tabelle

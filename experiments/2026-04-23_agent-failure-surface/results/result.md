@@ -1,5 +1,5 @@
 ---
-title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3)"
+title: "Result: Agent Failure Surface Mapping — Serienbericht (Phase 2 + 3 + 4)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
@@ -18,9 +18,11 @@ relations:
     target: phase3-chain-integrity-stress.md
   - type: references
     target: decision.yml
+  - type: references
+    target: replay-gap-candidates.md
 ---
 
-# result.md — Serienbericht (Phase 2 + 3)
+# result.md — Serienbericht (Phase 2 + 3 + 4)
 
 Dieser Bericht ist der kumulative Ergebnisstand der Reihe
 *Agent Failure Surface Mapping*. Jede Phase hat einen eigenen
@@ -28,6 +30,7 @@ Phasen-Ergebnisbericht unter `results/`:
 
 - Phase 2 — Semantic Contradiction: `results/phase2-semantic-contradiction.md`
 - Phase 3 — Chain Integrity Stress: `results/phase3-chain-integrity-stress.md`
+- Phase 4 — Replay Reality Gap: `results/replay-gap-candidates.md`
 
 Die Entscheidung für die aktuell abgeschlossenen Phasen ist in
 `results/decision.yml` (kumulativ, `verdict: mixed`).
@@ -41,7 +44,7 @@ Die Entscheidung für die aktuell abgeschlossenen Phasen ist in
 | 1 — Drift Injection | Kleine Drifts (Off-by-one, Trailing-Slash) werden nicht erkannt | (in eigenem PR — nicht Gegenstand dieser Artefakte) | — |
 | **2 — Semantic Contradiction** | Formal gültige, semantisch vakuume `exact_*`-Zustände werden toleriert | **confirms** — Klasse SEM-EMPTY-ASSERTED belegt | Validator-Erweiterung, 3 Negativ-Fixtures, 2 Cross-Contract-Fixtures, 6 Tests |
 | **3 — Chain Integrity Stress** | Valide Einzelcommands können in falscher Reihenfolge/Kombination als Chain ungültig sein, ohne dass bestehende Validatoren das melden | **refutes** (im geprüften Kandidatenraum) — alle 7 Kandidaten erkannt, Toleranz-Rate 0/7 | No-Patch — kein Fixture, kein Validator-Eingriff |
-| 4 — Replay Reality Gap | (folgt) | — | — |
+| **4 — Replay Reality Gap** | Replay-Dry-Run kann realen Mutations-/Side-Effect-Status verfehlen | **qualitative_inventory** (no_patch) | Kandidateninventur dokumentiert; bewusst keine Validator-/Schema-/Fixture-Änderung |
 | 5 — Adversarial Agent Simulation | (folgt) | — | — |
 
 ---
@@ -139,8 +142,27 @@ Laufartefakt: `artifacts/run-phase3/run_meta.json`,
 
 ---
 
+## Phase 4 — Replay Reality Gap: qualitative_inventory (no_patch)
+
+**Vollbericht:** `results/replay-gap-candidates.md`
+
+Phase 4 ergänzt die vorhandene Serienhistorie (Phase 2 + 3), ersetzt sie
+nicht. Sie dokumentiert eine qualitative Kandidateninventur zur Lücke zwischen
+Replay-Dry-Run und realer Ausführungswahrheit:
+
+Priorisierte Kandidaten für Phase F:
+
+- RRG-03 — Locator-Drift-After-Partial-Apply
+- RRG-01 — Disk-State-Apply-Delta
+- RRG-02 — Git-Working-Tree-Index-Effects
+
+Ergänzend dokumentiert, aber aktuell nicht priorisiert:
+
+- RRG-04 — Post-Mutation-Validation-Semantics
+
+Scope-Entscheidung in Phase 4: **No-Patch** (diagnosis-first). Keine Änderung
+an Validatoren, Schemas, Fixtures oder CI-Härtung; nur Inventur und Evidenz.
+
 ## Nächste Phase
 
-**Phase 4 — Replay Reality Gap** (gem. `method.md` §"Phase 4") folgt in
-eigenem PR. Methodischer Hinweis: Phase 4 ist qualitativ und erzeugt eine
-Kandidatenliste, keine direkte Validator-Änderung.
+**Phase 5 — Adversarial Agent Simulation** folgt als nächster Serienabschnitt.

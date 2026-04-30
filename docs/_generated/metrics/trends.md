@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-29T11:30:00Z
+Latest Evidence Timestamp: 2026-04-29T13:55:00Z
 
 ## Gate Snapshot
 
-- Total events: **263**
+- Total events: **267**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **14**
 
@@ -15,9 +15,9 @@ Latest Evidence Timestamp: 2026-04-29T11:30:00Z
 
 | event_type | events |
 | --- | ---: |
-| decision | 14 |
-| measurement | 128 |
-| observation | 101 |
+| decision | 15 |
+| measurement | 129 |
+| observation | 103 |
 | run | 20 |
 
 ## Metric Aggregates
@@ -28,6 +28,7 @@ Latest Evidence Timestamp: 2026-04-29T11:30:00Z
 | M0_task_validity_rate_iteration2 | 1 | 1 | 1 | 1 | 1 |
 | abort_rate_control | 1 | 1 | 0 | 0 | 0 |
 | abort_rate_treatment | 1 | 1 | 0 | 0 | 0 |
+| append_only_integrity_check | 1 | 0 | - | - | - |
 | apt_install_python3_yaml | 1 | 0 | - | - | - |
 | architecture-incremental | 1 | 0 | - | - | - |
 | architecture-single-shot | 1 | 0 | - | - | - |
@@ -121,6 +122,9 @@ Latest Evidence Timestamp: 2026-04-29T11:30:00Z
 | phase_3_diagnosis_baseline | 1 | 0 | - | - | - |
 | phase_3_outcome | 1 | 0 | - | - | - |
 | phase_3_test_suite_status | 1 | 0 | - | - | - |
+| phase_4_candidate_scope_clarification | 1 | 0 | - | - | - |
+| phase_4_outcome | 1 | 0 | - | - | - |
+| phase_4_replay_gap_inventory | 1 | 0 | - | - | - |
 | phase_result_separation | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_opened_run_002 | 1 | 0 | - | - | - |

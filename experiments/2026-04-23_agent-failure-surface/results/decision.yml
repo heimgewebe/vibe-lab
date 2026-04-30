@@ -31,7 +31,7 @@ rationale: |
 
   Phase 3 widerlegt nicht Phase 2: es gibt zwei voneinander unabhängige
   Teilhypothesen, die jeweils separat getestet wurden. Das Gesamtexperiment
-  ist weiter offen (Phase 4 und 5 ausstehend).
+  ist weiter offen (Phase 5 ausstehend).
 
   `counter_hypothesis_outcome: found_and_confirming` bezieht sich auf die
   Phase-3-Gegenhypothese (Chain-Validatoren decken Integrity-Stress-Kandidaten
@@ -40,18 +40,22 @@ rationale: |
   Confidence=medium für den aktuellen Serienstand, weil:
   (a) Phase 2 scharfe Signale liefert (Signalwechsel reproduziert),
   (b) Phase 3 scharfe Negativ-Aussage liefert (begrenzt auf geprüfte Kandidaten),
-  (c) Phase 4 und 5 die Gesamtbewertung noch verschieben können.
+  (c) Phase 4 als qualitative Inventur abgeschlossen ist (No-Patch), aber
+      ohne quantitative Repro über reale Incident-Ketten,
+  (d) Phase 5 die Gesamtbewertung noch verschieben kann.
 counter_hypothesis_outcome: found_and_confirming
 counterevidence_checked: true
 evidence_summary:
-  phases_completed: 2
+  phases_completed: 3
   phase2_verdict: confirms
   phase3_verdict: refutes_phase3_hypothesis
-  total_observations: 12
-  positive: 3
+  phase4_verdict: qualitative_inventory_no_patch
+  total_observations: 16
+  positive: 4
   negative: 1
-  neutral: 8
+  neutral: 11
 next_steps:
-  - "Phase 4 (Replay Reality Gap) gem. method.md in eigenem PR ausführen."
+  - "Phase 5 als adversarial Agent Simulation auf der bestehenden Validator-/Replay-Welt ausführen."
+  - "Phase F separat mit realer Mutationsausführung zur Prüfung der Replay-Gap-Kandidaten RRG-03, RRG-01 und RRG-02 planen."
   - "Bei v0.2-Lockerung der Chain-Sequenz Phase 3 mit erweitertem Kandidatenraum erneut ausführen."
   - "Whitespace-only exact_*-Snapshots als potenzielle eigene Klasse bei Adoption-Entscheidungen prüfen (aktuell außerhalb Phase-2-Scope)."

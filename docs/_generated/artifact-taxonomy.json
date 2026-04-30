@@ -6294,6 +6294,22 @@
       "enforcement": [
         "review_required"
       ],
+      "kind": "phase_result",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/replay-gap-candidates.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
       "kind": "result_interpretation",
       "layer": "experiment",
       "lifecycle": "handcrafted",
@@ -10281,7 +10297,7 @@
       "normative_contract": 15,
       "procedure_contract": 84,
       "raw_capture": 20,
-      "result_interpretation": 48,
+      "result_interpretation": 49,
       "runtime_observation": 54,
       "schema_truth": 12,
       "sovereign_source": 3,
@@ -10298,7 +10314,7 @@
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 181
+      "review_required": 182
     },
     "by_layer": {
       "agent": 3,
@@ -10307,7 +10323,7 @@
       "catalog": 12,
       "contract": 19,
       "docs": 20,
-      "experiment": 332,
+      "experiment": 333,
       "export": 15,
       "generated": 8,
       "governance": 45,
@@ -10315,18 +10331,18 @@
     },
     "by_lifecycle": {
       "append_only": 214,
-      "handcrafted": 340,
+      "handcrafted": 341,
       "regenerated": 18,
       "revision_with_reason": 35,
       "superseded_not_rewritten": 2
     },
-    "classified": 609,
+    "classified": 610,
     "conflict": 0,
     "fallback_classified": 160,
-    "fallback_share": 0.2627257799671593,
+    "fallback_share": 0.26229508196721313,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 609,
+    "total": 610,
     "unknown": 0
   },
   "transition_risk_hints": [],
