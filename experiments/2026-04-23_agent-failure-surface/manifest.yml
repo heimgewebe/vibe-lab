@@ -14,10 +14,13 @@ experiment:
     - results/result.md
     - results/decision.yml
     - results/replay-gap-candidates.md
+    - results/phase-f-rrg03-locator-drift.md
     - artifacts/run-phase2/run_meta.json
     - artifacts/run-phase3/run_meta.json
+    - artifacts/run-phase-f-rrg03/observed.json
+    - artifacts/run-phase-f-rrg03/execution-real.txt
   created: "2026-04-23"
-  updated: "2026-04-29"
+  updated: "2026-04-30"
   author: "Claude Opus 4.7"
   iteration: 1
   evidence_level: experimental

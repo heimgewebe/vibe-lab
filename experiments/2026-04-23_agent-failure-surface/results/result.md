@@ -20,9 +20,11 @@ relations:
     target: decision.yml
   - type: references
     target: replay-gap-candidates.md
+  - type: references
+    target: phase-f-rrg03-locator-drift.md
 ---
 
-# result.md — Serienbericht (Phase 2 + 3 + 4)
+## result.md — Serienbericht (Phase 2 + 3 + 4)
 
 Dieser Bericht ist der kumulative Ergebnisstand der Reihe
 *Agent Failure Surface Mapping*. Jede Phase hat einen eigenen
@@ -31,6 +33,7 @@ Phasen-Ergebnisbericht unter `results/`:
 - Phase 2 — Semantic Contradiction: `results/phase2-semantic-contradiction.md`
 - Phase 3 — Chain Integrity Stress: `results/phase3-chain-integrity-stress.md`
 - Phase 4 — Replay Reality Gap: `results/replay-gap-candidates.md`
+- Phase F — RRG-03 Real Execution Evidence: `results/phase-f-rrg03-locator-drift.md`
 
 Die Entscheidung für die aktuell abgeschlossenen Phasen ist in
 `results/decision.yml` (kumulativ, `verdict: mixed`).
