@@ -14,10 +14,12 @@ experiment:
     - results/result.md
     - results/decision.yml
     - results/replay-gap-candidates.md
+    - results/phase5-adversarial-agent-simulation.md
     - artifacts/run-phase2/run_meta.json
     - artifacts/run-phase3/run_meta.json
+    - artifacts/run-phase5/run_meta.json
   created: "2026-04-23"
-  updated: "2026-04-29"
+  updated: "2026-04-30"
   author: "Claude Opus 4.7"
   iteration: 1
   evidence_level: experimental
@@ -43,6 +45,15 @@ experiment:
             - path: results/evidence.jsonl
               section: "phase_3_candidate_uncaught_count"
             - path: artifacts/run-phase3/execution.txt
+      - id: phase5_scope_boundary_is_validator_failure
+        statement: "Die Tatsache, dass epistemisch leere, formal gültige Outputs den Validator-Stack passieren, zeigt eine echte Validator-Schwäche (passed_but_wrong), nicht nur eine Scope-Grenze."
+        assessment:
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: results/evidence.jsonl
+              section: "phase_5_patch_gate"
+            - path: artifacts/run-phase5/execution.txt
 
 context:
   tools: ["LLM-Agent", "make validate", "Python 3.11", "JSON Schema Draft 2020-12"]
