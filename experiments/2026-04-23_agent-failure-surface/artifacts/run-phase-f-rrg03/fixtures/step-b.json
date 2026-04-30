@@ -1,0 +1,10 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": [
+    "before.md"
+  ],
+  "change_type": "modify",
+  "locator": "Validate token",
+  "forbidden_changes": []
+}

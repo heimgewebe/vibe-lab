@@ -1,0 +1,42 @@
+[command] python3 /tmp/rrg03_real_exec.py
+[command] mktemp -d
+[output] tmp_workspace=/tmp/rrg03-real-zq6pmsyn
+[command] cp fixtures/before.md <tmp>/before.md
+[output] fixture copied to temp workspace
+[command] C1 baseline resolution (locator="Validate token")
+[output] {"match_count": 2, "selected_match_index": 0, "line_start": 4, "line_end": 4, "byte_start": 33, "byte_end": 47, "matched_text": "Validate token"}
+[command] C2 apply Step A mutation
+[output] exact_before="Validate token before session creation."
+[output] exact_after="Check token before session creation."
+[output] applied=true
+[output] sha256_before=9b119cd08d7264dcc1502f6ffb66baff702cb07ab1928eb96a76aafc6d5378b6
+[output] sha256_after=f1e86ee51b23213d046669297f8042138e4e05d0c9cb7c4983526a4d20f9ba87
+[command] diff -u before.md before.md(mutated)
+--- before.md
++++ before.md (mutated)
+@@ -1,7 +1,7 @@
+ # Auth Flow Notes
+ 
+ Precondition:
+-Validate token before session creation.
++Check token before session creation.
+ 
+ Fallback:
+ Validate token after session refresh.
+[command] C3 post-apply re-resolution (locator="Validate token")
+[output] {"match_count": 1, "selected_match_index": 0, "line_start": 7, "line_end": 7, "byte_start": 81, "byte_end": 95, "matched_text": "Validate token"}
+[command] C4 classification
+[output] classification=drifted
+[output] patch_gate_triggered=true
+[command] C5 dry-run comparison
+[output] Der aktuelle Dry-Run ist non-mutating.
+[output] Er fuehrt keine Post-Apply-Re-Resolution aus.
+[output] Er ist daher Baseline, kein Orakel fuer den mutierten Zustand.
+[command] make validate
+[output] Validation passed.
+[output] command chain regression tests: Ran 39 tests, OK
+[output] cross-contract regression tests: Ran 16 tests, OK
+[output] replay runner regression tests: Ran 6 tests, OK
+[output] replay trace contract tests: Ran 26 tests, OK
+[output] promotion-readiness regression tests: Ran 99 tests, OK
+[output] ratchet mode: passed (11 frozen not_ready cases tolerated)

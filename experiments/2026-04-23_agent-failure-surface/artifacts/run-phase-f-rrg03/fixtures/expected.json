@@ -1,0 +1,16 @@
+{
+  "proof_target": "RRG-03 Locator Drift After Partial Apply",
+  "step_a": {
+    "exact_before": "Validate token before session creation.",
+    "exact_after": "Check token before session creation."
+  },
+  "step_b": {
+    "locator": "Validate token"
+  },
+  "classification_set": [
+    "stable",
+    "drifted",
+    "ambiguous",
+    "not_found"
+  ]
+}

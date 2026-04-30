@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-phase-f-rrg03-real",
+  "proof_target": "RRG-03 Locator Drift After Partial Apply",
+  "workspace": "temp",
+  "step_a_applied": true,
+  "c1_pre_apply_resolution": {
+    "locator": "Validate token",
+    "match_count": 2,
+    "selected_match_index": 0,
+    "line_start": 4,
+    "line_end": 4,
+    "byte_start": 33,
+    "byte_end": 47,
+    "matched_text": "Validate token",
+    "sha256_before": "9b119cd08d7264dcc1502f6ffb66baff702cb07ab1928eb96a76aafc6d5378b6"
+  },
+  "c2_mutation": {
+    "exact_before": "Validate token before session creation.",
+    "exact_after": "Check token before session creation.",
+    "sha256_after": "f1e86ee51b23213d046669297f8042138e4e05d0c9cb7c4983526a4d20f9ba87",
+    "applied": true
+  },
+  "c3_post_apply_resolution": {
+    "locator": "Validate token",
+    "match_count": 1,
+    "selected_match_index": 0,
+    "line_start": 7,
+    "line_end": 7,
+    "byte_start": 81,
+    "byte_end": 95,
+    "matched_text": "Validate token"
+  },
+  "classification": "drifted",
+  "patch_gate": {
+    "triggered": true,
+    "reason": "Set true only if classification is drifted, ambiguous, or not_found."
+  },
+  "claim_boundary": {
+    "proves": [
+      "Whether this controlled fixture produces locator drift under real mutation and re-resolution."
+    ],
+    "does_not_prove": [
+      "General runner correctness.",
+      "General locator safety.",
+      "Need for immediate runtime patch."
+    ]
+  }
+}
