@@ -1,0 +1,12 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": [
+    "before.md"
+  ],
+  "change_type": "replace",
+  "locator": "Validate token before session creation.",
+  "exact_before": "Validate token before session creation.",
+  "exact_after": "Check token before session creation.",
+  "forbidden_changes": []
+}

@@ -1,0 +1,237 @@
+[command] python3 /tmp/rrg03_real_exec.py
+[command] mktemp -d
+[output] tmp_workspace=/tmp/rrg03-real-zq6pmsyn
+[command] cp fixtures/before.md <tmp>/before.md
+[output] fixture copied to temp workspace
+[command] C1 baseline resolution (locator="Validate token")
+[output] {"match_count": 2, "selected_match_index": 0, "line_start": 4, "line_end": 4, "byte_start": 33, "byte_end": 47, "matched_text": "Validate token"}
+[command] C2 apply Step A mutation
+[output] exact_before="Validate token before session creation."
+[output] exact_after="Check token before session creation."
+[output] applied=true
+[output] sha256_before=9b119cd08d7264dcc1502f6ffb66baff702cb07ab1928eb96a76aafc6d5378b6
+[output] sha256_after=f1e86ee51b23213d046669297f8042138e4e05d0c9cb7c4983526a4d20f9ba87
+[command] diff -u before.md before.md(mutated)
+--- before.md
++++ before.md (mutated)
+@@ -1,7 +1,7 @@
+ # Auth Flow Notes
+ 
+ Precondition:
+-Validate token before session creation.
++Check token before session creation.
+ 
+ Fallback:
+ Validate token after session refresh.
+[command] C3 post-apply re-resolution (locator="Validate token")
+[output] {"match_count": 1, "selected_match_index": 0, "line_start": 7, "line_end": 7, "byte_start": 81, "byte_end": 95, "matched_text": "Validate token"}
+[command] C4 classification
+[output] classification=drifted
+[output] patch_gate_triggered=true
+[command] C5 dry-run comparison
+[output] Der aktuelle Dry-Run ist non-mutating.
+[output] Er fuehrt keine Post-Apply-Re-Resolution aus.
+[output] Er ist daher Baseline, kein Orakel fuer den mutierten Zustand.
+[command] make validate
+[output] Validation passed.
+[output] command chain regression tests: Ran 39 tests, OK
+[output] cross-contract regression tests: Ran 16 tests, OK
+[output] replay runner regression tests: Ran 6 tests, OK
+[output] replay trace contract tests: Ran 26 tests, OK
+[output] promotion-readiness regression tests: Ran 99 tests, OK
+[output] ratchet mode: passed (11 frozen not_ready cases tolerated)
+[command] make validate (final re-run after markdown coherence/lint updates)
+[output] Validation passed.
+[command] make validate (post-sync final run)
+[output] Validation passed.
+
+## Reproduction script content
+
+Exact script used during this run:
+
+import json
+import hashlib
+import difflib
+import tempfile
+import shutil
+import subprocess
+from pathlib import Path
+
+ART = Path('experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real')
+FIXTURE = ART / 'fixtures' / 'before.md'
+WORKDIR = Path(tempfile.mkdtemp(prefix='rrg03-real-'))
+WORK_FILE = WORKDIR / 'before.md'
+shutil.copy2(FIXTURE, WORK_FILE)
+
+locator = 'Validate token'
+exact_before = 'Validate token before session creation.'
+exact_after = 'Check token before session creation.'
+
+text_before = WORK_FILE.read_text(encoding='utf-8')
+sha_before = hashlib.sha256(text_before.encode('utf-8')).hexdigest()
+
+
+def resolve(text: str, needle: str):
+	encoded = text.encode('utf-8')
+	n = needle.encode('utf-8')
+	starts = []
+	i = 0
+	while True:
+		j = encoded.find(n, i)
+		if j == -1:
+			break
+		starts.append(j)
+		i = j + 1
+
+	def line_for_pos(pos: int):
+		return encoded[:pos].count(b'\n') + 1
+
+	if not starts:
+		return {
+			'match_count': 0,
+			'selected_match_index': None,
+			'line_start': None,
+			'line_end': None,
+			'byte_start': None,
+			'byte_end': None,
+			'matched_text': None,
+		}
+
+	idx = 0
+	start = starts[idx]
+	end = start + len(n)
+	return {
+		'match_count': len(starts),
+		'selected_match_index': idx,
+		'line_start': line_for_pos(start),
+		'line_end': line_for_pos(max(start, end - 1)),
+		'byte_start': start,
+		'byte_end': end,
+		'matched_text': needle,
+	}
+
+c1 = resolve(text_before, locator)
+text_after = text_before.replace(exact_before, exact_after, 1)
+applied = text_after != text_before
+WORK_FILE.write_text(text_after, encoding='utf-8')
+sha_after = hashlib.sha256(text_after.encode('utf-8')).hexdigest()
+c3 = resolve(text_after, locator)
+
+diff_text = ''.join(
+	difflib.unified_diff(
+		text_before.splitlines(keepends=True),
+		text_after.splitlines(keepends=True),
+		fromfile='before.md',
+		tofile='before.md (mutated)',
+	)
+)
+
+if c3['match_count'] == 0:
+	classification = 'not_found'
+elif c1['selected_match_index'] is None or c3['selected_match_index'] is None:
+	classification = 'ambiguous'
+else:
+	same_site = (
+		c1['line_start'] == c3['line_start']
+		and c1['line_end'] == c3['line_end']
+		and c1['byte_start'] == c3['byte_start']
+		and c1['byte_end'] == c3['byte_end']
+	)
+	classification = 'stable' if same_site else 'drifted'
+
+observed = {
+	'schema_version': '0.1.0',
+	'run_id': 'run-phase-f-rrg03-real',
+	'proof_target': 'RRG-03 Locator Drift After Partial Apply',
+	'workspace': 'temp',
+	'step_a_applied': bool(applied),
+	'c1_pre_apply_resolution': {
+		'locator': locator,
+		'match_count': c1['match_count'],
+		'selected_match_index': c1['selected_match_index'],
+		'line_start': c1['line_start'],
+		'line_end': c1['line_end'],
+		'byte_start': c1['byte_start'],
+		'byte_end': c1['byte_end'],
+		'matched_text': c1['matched_text'],
+		'sha256_before': sha_before,
+	},
+	'c2_mutation': {
+		'exact_before': exact_before,
+		'exact_after': exact_after,
+		'sha256_after': sha_after,
+		'applied': bool(applied),
+	},
+	'c3_post_apply_resolution': {
+		'locator': locator,
+		'match_count': c3['match_count'],
+		'selected_match_index': c3['selected_match_index'],
+		'line_start': c3['line_start'],
+		'line_end': c3['line_end'],
+		'byte_start': c3['byte_start'],
+		'byte_end': c3['byte_end'],
+		'matched_text': c3['matched_text'],
+	},
+	'classification': classification,
+	'patch_gate': {
+		'triggered': classification in ['drifted', 'ambiguous', 'not_found'],
+		'reason': 'Triggered because classification is drifted: after real Step-A mutation, the Step-B locator resolved to line 7 instead of the C1 baseline at line 4.',
+	},
+	'claim_boundary': {
+		'proves': [
+			'Whether this controlled fixture produces locator drift under real mutation and re-resolution.'
+		],
+		'does_not_prove': [
+			'General runner correctness.',
+			'General locator safety.',
+			'Need for immediate runtime patch.',
+		],
+	},
+}
+
+(ART / 'observed.json').write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+
+execution = []
+execution.append('[command] python3 /tmp/rrg03_real_exec.py')
+execution.append('[command] mktemp -d')
+execution.append(f'[output] tmp_workspace={WORKDIR}')
+execution.append('[command] cp fixtures/before.md <tmp>/before.md')
+execution.append('[output] fixture copied to temp workspace')
+execution.append('[command] C1 baseline resolution (locator="Validate token")')
+execution.append('[output] ' + json.dumps(c1, ensure_ascii=True))
+execution.append('[command] C2 apply Step A mutation')
+execution.append('[output] exact_before="Validate token before session creation."')
+execution.append('[output] exact_after="Check token before session creation."')
+execution.append(f'[output] applied={str(applied).lower()}')
+execution.append(f'[output] sha256_before={sha_before}')
+execution.append(f'[output] sha256_after={sha_after}')
+execution.append('[command] diff -u before.md before.md(mutated)')
+execution.append(diff_text.rstrip('\n'))
+execution.append('[command] C3 post-apply re-resolution (locator="Validate token")')
+execution.append('[output] ' + json.dumps(c3, ensure_ascii=True))
+execution.append('[command] C4 classification')
+execution.append(f'[output] classification={classification}')
+execution.append(f'[output] patch_gate_triggered={str(observed["patch_gate"]["triggered"]).lower()}')
+execution.append('[command] C5 dry-run comparison')
+execution.append('[output] Der aktuelle Dry-Run ist non-mutating.')
+execution.append('[output] Er fuehrt keine Post-Apply-Re-Resolution aus.')
+execution.append('[output] Er ist daher Baseline, kein Orakel fuer den mutierten Zustand.')
+
+(ART / 'execution-real.txt').write_text('\n'.join(execution) + '\n', encoding='utf-8')
+
+print(json.dumps({
+	'tmp_workspace': str(WORKDIR),
+	'classification': classification,
+	'patch_gate_triggered': observed['patch_gate']['triggered'],
+	'sha256_before': sha_before,
+	'sha256_after': sha_after,
+}, indent=2))
+
+[command] make validate (re-run after coherence updates)
+[output] Validation passed.
+[output] command chain regression tests: Ran 39 tests, OK
+[output] cross-contract regression tests: Ran 16 tests, OK
+[output] replay runner regression tests: Ran 6 tests, OK
+[output] replay trace contract tests: Ran 26 tests, OK
+[output] promotion-readiness regression tests: Ran 99 tests, OK
+[output] ratchet mode: passed (11 frozen not_ready cases tolerated)
