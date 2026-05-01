@@ -72,6 +72,24 @@ When refining tasks, also consider:
 
 If a check is violated, prefer task split or STOP over broadening scope.
 
+## Non-Ideal Task Guard
+This guard does not replace the existing Operability Criteria or A1–A3 checks.
+It only defines conditions under which the Critic must not return `PASS`.
+
+A task must not receive `PASS` if any of the following applies:
+- the locator cannot be resolved from the currently read repository state
+- validation cannot distinguish a real change from a no-op
+- the task requires evidence that has not been read
+- exact_before/exact_after is necessary to prevent ambiguity but absent
+- multiple independent changes are silently combined
+- target_files are formally present but too broad for a bounded edit
+
+If any condition applies:
+- return `PARTIAL` or `FAIL`
+- never return `PASS`
+- mark the first blocking condition explicitly with `MISSING`, `UNKNOWN`, or `BLOCKED_BY`
+- prefer task split over scope expansion
+
 ## Output Contract
 Always include a deterministic hand-off block for operator consumption.
 
