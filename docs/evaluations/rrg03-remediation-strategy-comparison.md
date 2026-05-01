@@ -1,5 +1,5 @@
 ---
-title: "RRG-03 Remediation Strategy Comparison"
+title: "RRG-03 Remediation Strategy Comparison with RRG-01/RRG-02 Cross-Check"
 status: draft
 canonicality: operative
 created: "2026-04-30"
@@ -21,7 +21,7 @@ relations:
     target: "../../contracts/command-semantics.md"
 ---
 
-# RRG-03 Remediation Strategy Comparison
+# RRG-03 Remediation Strategy Comparison with RRG-01/RRG-02 Cross-Check
 
 ## These / Antithese / Synthese
 
