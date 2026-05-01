@@ -4,7 +4,7 @@ status: draft
 canonicality: exploratory
 created: "2026-05-01"
 updated: "2026-05-01"
-author: "claude-sonnet-4-6"
+author: "agent"
 relations:
   - type: derived_from
     target: "./blueprint-agent-operability.md"
@@ -56,8 +56,10 @@ Minimale Schicht zur Reduktion von vier beobachteten Fehlklassen:
 
 Diese Blaupause reagiert auf Fehlklassen, die im Repo explizit modelliert sind:
 
-- `experiments/2026-04-15_agent-task-validity/` belegt: Validitätsrate steigt
-  nachweislich, wenn `target_files`, Locator und `change_type` explizit vorhanden sind.
+- `experiments/2026-04-15_agent-task-validity/` unterstützt die Arbeitshypothese,
+  dass explizite `target_files`, Locator und `change_type` die Ausführbarkeit
+  und Reviewbarkeit von Agentenaufgaben verbessern können. Die Evidenz bleibt
+  begrenzt und benötigt Replikation.
 - `docs/concepts/execution-bound-epistemics.md`: epistemologische Basis für
   Claim-Bindung an Evidence.
 - `docs/policies/interpretation-budget.md`: Grenze für Interpretation ohne Beleg.
@@ -289,7 +291,8 @@ mindestens drei vergleichbare PRs gilt:
 - [ ] Trennt Folge-PR-Scope von Blueprint-Status
 - [ ] Führt `Skill` nicht als neue Repo-Artefaktklasse ein
 - [ ] Enthält Falsifikationsgrenzen
-- [ ] Ändert keine Scripts, Schemas, Workflows oder Generated Files
+- [ ] Ändert keine Scripts, Schemas oder Workflows
+- [ ] Ändert Generated Files nur generatorbasiert
 
 ### Für PR-1
 
