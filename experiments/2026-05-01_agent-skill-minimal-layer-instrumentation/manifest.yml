@@ -25,7 +25,7 @@ experiment:
       Die Hypothese gilt als geschwächt, wenn nach mindestens drei vergleichbaren PRs
       die Run-Artefakte unvollständig sind, Metriken nicht konsistent ableitbar sind,
       oder Agent- und Auditor-Nutzung nicht belegbar archiviert werden kann.
-      Kein Wirksamkeitsclaim: Das Kriterium betrifft ausschliesslich die Messbarkeit
+      Kein Wirksamkeitsclaim: Das Kriterium betrifft ausschließlich die Messbarkeit
       des Scaffolds, nicht die Wirkung der Agent/Skill-Schicht.
     counter_hypotheses:
       - id: scaffold_not_comparable_across_prs
