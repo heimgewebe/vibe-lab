@@ -282,7 +282,11 @@ observed = {
     }
 }
 
-(ART / 'observed.json').write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+(ART / 'observed.json').write_text(
+    json.dumps(observed, indent=2) + '\n',
+    encoding='utf-8',
+    newline='\n',
+)
 
 # Cleanup
 shutil.rmtree(WORKDIR)
