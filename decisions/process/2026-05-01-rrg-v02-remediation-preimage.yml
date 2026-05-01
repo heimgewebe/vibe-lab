@@ -62,8 +62,9 @@ evidence_layer:
       Runner-Korrektheit, allgemeine Locator-Sicherheit oder unmittelbaren
       Handlungsbedarf jenseits der kontrollierten Fixtures.
       Der Belegumfang `fixture_only` ist hier als normalisierte Bewertung
-      dieses Preimage zu verstehen. Wo das jeweilige Artefakt kein explizites
-      `proof_scope`-Feld enthält (RRG-01, RRG-02), wird `fixture_only` aus
+      dieses Preimage zu verstehen. Keines der vier referenzierten Artefakte
+      enthält ein explizites `proof_scope`-Feld; `fixture_only` wird für alle
+      Befunde (RRG-01, RRG-02, RRG-03-run-01, RRG-03-run-02) aus
       `claim_boundary.proves` / `claim_boundary.does_not_prove` abgeleitet,
       nicht als Feld aus dem Artefakt gelesen.
     findings:
@@ -96,7 +97,7 @@ evidence_layer:
         classification: drifted
         patch_gate: triggered
         belegumfang: fixture_only
-        belegumfang_quelle: "Artefakt enthält Feld proof_scope mit Wert 'fixture_only'; zusätzlich aus claim_boundary bestätigt"
+        belegumfang_quelle: "abgeleitet aus claim_boundary.proves / does_not_prove (kein proof_scope-Feld im Artefakt)"
         summary: >
           Removal-Drift: Step-A-Mutation entfernt einen Treffer, der Step-B-
           Locator "Validate token" wechselt von C1-Zeile 4 auf C3-Zeile 7
@@ -107,7 +108,7 @@ evidence_layer:
         classification: drifted
         patch_gate: triggered
         belegumfang: fixture_only
-        belegumfang_quelle: "Artefakt enthält Feld proof_scope mit Wert 'fixture_only'; zusätzlich aus claim_boundary bestätigt"
+        belegumfang_quelle: "abgeleitet aus claim_boundary.proves / does_not_prove (kein proof_scope-Feld im Artefakt)"
         summary: >
           Injection-Before-Drift: Step-A-Mutation injiziert oberhalb einen
           neuen Treffer, der Step-B-Locator "Process request" wechselt von
