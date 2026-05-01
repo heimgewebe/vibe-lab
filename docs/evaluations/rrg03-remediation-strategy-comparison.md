@@ -96,9 +96,9 @@ Die aktuelle Boundary bleibt: proposed, kein Patch.
 
 | Kandidat | Ursache? | Maschinell? | Rückwärtskomp. | Falsch-positiv | Scope-Drift | Aufwand | v0.1-Verhältnis | Zusatzbelege |
 |----------|----------|-------------|----------------|----------------|-------------|---------|-----------------|--------------|
-| post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted); RRG-02 fixture_proven (git_state_drifted) |
+| post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted); RRG-02 fixture_proven (orthogonal; nicht adressiert) |
 | byte_range | teilweise | ja (Schema) | niedrig (breaking) | niedrig | niedrig | hoch | bricht | mehrere Fixtures |
-| exact_before hash | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (stärkster Kandidat); RRG-02 fixture_proven (orthogonal) |
+| exact_before hash | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 stärkster Kandidat; RRG-02 orthogonal |
 | re_resolution_required | ja | ja (Schema+Validator) | mittel | niedrig | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (teilweise); RRG-02 fixture_proven (nicht adressiert) |
 | validator multi-match | nein (Symptom) | ja (Validator) | hoch | mittel | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 nicht relevant für diesen Kandidaten |
 | runner hardening | nein (Symptom) | nein | hoch | mittel | hoch | hoch | außerhalb v0.1 | viele Fixtures, allg. Beleg |
@@ -248,19 +248,33 @@ Quelle: `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
   (C1 Zeile 4 → C3 Zeile 7). Fixture-only. Artefakt: `run-phase-f-rrg03-real/observed.json`.
 - RRG-03 (Run 02): Injection-Before-Drift produziert entgegengesetzte Locator-Positionsdrift
   (C1 Zeile 7 → C3 Zeile 4). Fixture-only. Artefakt: `run-phase-f-rrg03-real-02/observed.json`.
-- `exact_before hash/snapshot binding` ist stark für RRG-01 (Content-Normalisierungsdrift
-  direkt durch Hash-Mismatch erkennbar).
-- `post_apply_anchor` und `re_resolution_required` sind stark für RRG-03 (Positionsdrift
-  durch Neuverankerung resp. erzwungene Re-Resolution adressiert).
-- RRG-02 wird NICHT durch reine Locator-Remediation gelöst.
-- Breaking-Change-Grenzen: siehe Abschnitt "Vorläufiges Ergebnis → Breaking-Change-Grenzen".
 
-### Plausibel (nicht durch diese Runs belegt)
+### Abgeleitet / Remediation-Hypothesen
+
+Diese Aussagen folgen logisch aus den Fixture-Belegen, sind aber keine Implementierungsbelege:
+kein Schema-, Validator- oder Runtime-Patch wurde getestet. Sie sind Hypothesen für ein
+späteres Decision Preimage.
+
+- Aus RRG-01 folgt plausibel: `exact_before hash/snapshot binding` ist ein starker Kandidat
+  für Content-/Snapshot-Drift — Hash-Mismatch würde CRLF→LF-Normalisierungseffekte direkt
+  aufdecken.
+- Aus RRG-03 folgt plausibel: `post_apply_anchor` und `re_resolution_required` sind starke
+  Kandidaten für Locator-Positionsdrift — sie würden in beiden belegten Drift-Mustern
+  (Removal, Injection-Before) greifen.
+- Aus RRG-02 folgt plausibel: reine Locator-Remediation reicht nicht; Git-State-Snapshot-Semantik
+  wird als eigenständiger Remediation-Pfad benötigt, der in keinem der sieben Kandidaten
+  explizit enthalten ist.
+- Breaking-Change-Abschätzung (aus Cross-Diagnosis-Scan, nicht runtime-geprüft): additive
+  optionale Felder sind non-breaking; `byte_range` und `re_resolution_required` als Pflichtfelder
+  würden alle bestehenden validen Chains brechen. Siehe Breaking-Change-Grenzen im Abschnitt
+  „Vorläufiges Ergebnis".
+
+### Plausibel (Übertragbarkeit auf ähnliche Runner-Szenarien)
 
 - Andere Normalisierungsarten (trailing whitespace, BOM, encoding conversions) würden
-  ähnlichen Content-Drift wie RRG-01 erzeugen.
+  ähnlichen Content-Drift wie RRG-01 erzeugen — nicht durch diesen Run belegt.
 - Andere Git-Workspace-Szenarien (untracked files, merge states, rebase mid-run) würden
-  ähnlichen Git-State-Drift wie RRG-02 erzeugen.
+  ähnlichen Git-State-Drift wie RRG-02 erzeugen — nicht durch diesen Run belegt.
 - Die RRG-03-Drift-Mechanismen (Removal, Injection-Before) dürften in ähnlichen
   Runner-Szenarien auftreten — nicht durch diese Fixtures allgemein bewiesen.
 
