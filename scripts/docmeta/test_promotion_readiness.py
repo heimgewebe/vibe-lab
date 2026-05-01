@@ -8,7 +8,9 @@ Covers:
   4. adopted + adoption_basis=reconstructed without falsifiability → historical_escape
      (non-blocking, not counted as not_ready)
   5. counterevidence_checked=false → counterevidence_not_checked warning
-  6. designed/prepared experiments → no trigger, counted ready with notes=[]
+  6. designed/prepared experiments without blocking decision signals remain ready with notes=[].
+     prepared + execution_assessment + insufficient_proof is a narrow exception:
+     it is not promotion-ready and carries the prepared_without_measurement signal.
   7. Two runs produce identical output (determinism / write_if_changed).
   8. Falsifiability block loaded from the valid/invalid fixtures shows expected structure.
 """

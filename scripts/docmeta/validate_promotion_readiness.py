@@ -151,7 +151,7 @@ def load_decision_file(exp_dir: Path) -> dict[str, Any] | None:
     if not decision_path.is_file():
         return None
     try:
-        with open(decision_path) as f:
+        with open(decision_path, encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
     except Exception:
         return None
