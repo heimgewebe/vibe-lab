@@ -288,8 +288,8 @@ Geprüfte Pfade:
 | Fixture-Set | Gesamt write_change | mit exact_before | mit target_lines | mit byte_range | ohne alle drei |
 |-------------|--------------------:|---------------:|----------------:|---------------:|--------------:|
 | command_chains (valid) | 3 | 1 | 0 | 0 | 2 |
-| command_chains (invalid) | 15 | 2 | 0 | 0 | 13 |
-| agent_commands/write_change (valid) | 3 | 2 | 1 | 0 | 1 |
+| command_chains (invalid) | 16 | 2 | 0 | 0 | 14 |
+| agent_commands/write_change (valid) | 3 | 2 | 1 | 0 | 0 |
 | experiment/run-phase-f-rrg03-real fixtures | 2 | 1 | 0 | 0 | 1 |
 | experiment/run-phase-f-rrg03-real-02 fixtures | 2 | 1 | 0 | 0 | 1 |
 
