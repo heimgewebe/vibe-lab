@@ -106,7 +106,7 @@ claims:
 
   - id: "claim-013"
     text: "experiment-critic was used for this PR."
-    type: "command_succeeded"
+    type: "agent_usage"
     verdict: "MISSING_EVIDENCE"
     evidence: []
     missing_evidence:
