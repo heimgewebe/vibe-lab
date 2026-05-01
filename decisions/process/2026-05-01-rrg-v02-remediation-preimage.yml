@@ -61,11 +61,17 @@ evidence_layer:
       Alle folgenden Befunde sind fixture-only. Sie beweisen nicht allgemeine
       Runner-Korrektheit, allgemeine Locator-Sicherheit oder unmittelbaren
       Handlungsbedarf jenseits der kontrollierten Fixtures.
+      Der Belegumfang `fixture_only` ist hier als normalisierte Bewertung
+      dieses Preimage zu verstehen. Wo das jeweilige Artefakt kein explizites
+      `proof_scope`-Feld enthält (RRG-01, RRG-02), wird `fixture_only` aus
+      `claim_boundary.proves` / `claim_boundary.does_not_prove` abgeleitet,
+      nicht als Feld aus dem Artefakt gelesen.
     findings:
       - id: RRG-01
         classification: content_drifted
         patch_gate: triggered
-        proof_scope: fixture_only
+        belegumfang: fixture_only
+        belegumfang_quelle: "abgeleitet aus claim_boundary.proves / does_not_prove (kein proof_scope-Feld im Artefakt)"
         summary: >
           CRLF→LF-Normalisierung durch den Apply-Layer konvertiert alle
           Zeilenenden während Step-A-Write. Step-B exact_before (CRLF-Variante)
@@ -76,7 +82,8 @@ evidence_layer:
       - id: RRG-02
         classification: git_state_drifted
         patch_gate: triggered
-        proof_scope: fixture_only
+        belegumfang: fixture_only
+        belegumfang_quelle: "abgeleitet aus claim_boundary.proves / does_not_prove (kein proof_scope-Feld im Artefakt)"
         summary: >
           Nach staged + unstaged Mutation auf derselben Datei divergieren
           HEAD, Index und Working Tree in drei unterscheidbare Snapshots.
@@ -88,7 +95,8 @@ evidence_layer:
       - id: RRG-03-run-01
         classification: drifted
         patch_gate: triggered
-        proof_scope: fixture_only
+        belegumfang: fixture_only
+        belegumfang_quelle: "Artefakt enthält Feld proof_scope mit Wert 'fixture_only'; zusätzlich aus claim_boundary bestätigt"
         summary: >
           Removal-Drift: Step-A-Mutation entfernt einen Treffer, der Step-B-
           Locator "Validate token" wechselt von C1-Zeile 4 auf C3-Zeile 7
@@ -98,7 +106,8 @@ evidence_layer:
       - id: RRG-03-run-02
         classification: drifted
         patch_gate: triggered
-        proof_scope: fixture_only
+        belegumfang: fixture_only
+        belegumfang_quelle: "Artefakt enthält Feld proof_scope mit Wert 'fixture_only'; zusätzlich aus claim_boundary bestätigt"
         summary: >
           Injection-Before-Drift: Step-A-Mutation injiziert oberhalb einen
           neuen Treffer, der Step-B-Locator "Process request" wechselt von
@@ -140,7 +149,7 @@ evidence_layer:
 remediation_hypotheses:
 
   RRG-01:
-    starkster_kandidat:
+    staerkster_kandidat:
       name: "exact_before_hash / snapshot binding"
       rationale: >
         Content-/Snapshot-Drift durch Apply-Layer-Normalisierung (CRLF→LF)
@@ -153,21 +162,26 @@ remediation_hypotheses:
       - "post_apply_anchor oder re_resolution_required (adressieren Positionsdrift, nicht Content-Normalisierung)."
 
   RRG-03:
-    starkste_kandidaten:
+    staerkste_kandidaten:
       - name: "post_apply_anchor"
         rationale: >
-          Nach jedem Apply-Schritt wird ein Anker (z.B. Zeilennummer +
-          Hash-Snapshot) festgeschrieben. Folgekommandos lösen den Locator
-          relativ zum Anker auf. Adressiert Removal-Drift und Injection-Before-
-          Drift (beide belegten Mechanismen), weil die Positionsbestimmung
-          nach Step A neu verankert wird.
+          Nach jedem Apply-Schritt könnte ein Anker (z.B. Zeilennummer +
+          Hash-Snapshot) festgeschrieben werden. Folgekommandos könnten den
+          Anker als Prüf- oder Bindungsreferenz nutzen. Die konkrete
+          Runtime-Semantik bleibt offen und wird in diesem Preimage nicht
+          implementiert. Adressiert als Hypothese Removal-Drift und
+          Injection-Before-Drift (beide belegten Mechanismen), weil die
+          Positionsbestimmung nach Step A neu verankert würde.
         form: "additives optionales Feld (non-breaking als v0.2-Hypothese)"
       - name: "re_resolution_required"
         rationale: >
           Kommandokette deklariert explizit, dass nach jedem Apply eine
-          erneute Resolution für Folgekommandos nötig ist. Verletzung = Fehler.
-          Adressiert dieselbe Ursache (schwache Folgeadressierung) auf
-          Deklarationsebene statt auf Anker-Ebene.
+          erneute Resolution für Folgekommandos nötig ist. Wenn
+          `re_resolution_required` deklariert ist, wird eine fehlende
+          Re-Resolution als Fehler behandelt. Adressiert dieselbe Ursache
+          (schwache Folgeadressierung) auf Deklarationsebene statt auf
+          Anker-Ebene. Das Feld ist als additive Hypothese zu verstehen,
+          nicht als Pflichtfeld.
         form: "additives optionales Feld (non-breaking als v0.2-Hypothese)"
     nicht_adressiert_durch:
       - "runner-side resolver hardening (adressiert Symptom, nicht Ursache; benötigt allgemeineren Beleg)."
@@ -198,7 +212,7 @@ breaking_change_grenzen:
     - "Additive optionale Felder (exact_before_hash, post_apply_anchor, re_resolution_required als opt.) sind non-breaking."
     - "Semantische Klarstellungen in contracts/command-semantics.md ohne Pflichtfeld-Änderung."
 
-vorlaeutige_entscheidung:
+vorlaeufige_entscheidung:
   kein_finaler_gewinner: true
   status: proposed
   accepted: false
@@ -221,7 +235,7 @@ risks:
       Risiko technischer Drift: mittel, falls RRG-01, RRG-02 und RRG-03 in
       einen gemeinsamen Remediation-Pfad zusammengeworfen werden. Die drei
       Drift-Achsen sind strukturell verschieden; eine einheitliche Lösung
-      würde eine Achse underaddress-en.
+      würde eine Achse unzureichend adressieren.
   - id: breaking_change_bei_pflichtfeldern
     level: hoch
     description: >
@@ -235,7 +249,7 @@ risks:
       Risiko Overclaiming: fixture-spezifische Befunde als allgemeine
       Aussagen über Runner- oder Locator-Sicherheit zu interpretieren.
       Alle vier Belege gelten ausschließlich für ihre jeweilige kontrollierte
-      Fixture (proof_scope: fixture_only).
+      Fixture (Belegumfang: fixture_only, normalisiert wie in scope_note beschrieben).
 
 nutzen: >
   Klare Trennung der drei Remediation-Pfade vor jeder Implementierung.
