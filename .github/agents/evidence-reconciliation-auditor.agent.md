@@ -33,7 +33,13 @@ The auditor never closes that gap by interpretation.
 6. `contracts/`, `schemas/`, `.vibe/`
 7. `docs/_generated/*` (diagnostic only, never source of truth)
 
-If contradictions occur: higher-priority file wins.
+If repository authority files contradict each other, use the higher-priority file
+to determine applicable rules, but still report the contradiction explicitly.
+Do not hide claim/evidence contradictions behind source priority.
+
+Generated files may be used as evidence that a generated artifact changed or
+remained unchanged. They must not be used as canonical evidence for the
+underlying source content.
 
 ## Verdicts (fixed)
 The auditor must use exactly one of the following verdicts per claim and an
