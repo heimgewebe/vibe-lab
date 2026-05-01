@@ -10,10 +10,18 @@ canonicality: operative
 
 **Run 1 erfasst.** PR #145 als erster realer Messdatensatz dokumentiert. Kein Wirksamkeitsclaim.
 
+## Canonical Artifacts
+
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output (machine-readable source of truth)
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`** — Run-1-Metriken
+- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion (human-readable view only)
+
 ## Datenlage
 
 - 1 PR-Datensatz erhoben (Run 1: PR #145).
-- Metriken teilweise gemessen; CI/make/critic-Artefakte nicht im Repo vorhanden (MISSING_EVIDENCE: unsupported_claims=3, validation_gaps=3).
+- Auditor-Verdict (YAML-kanonisch): **MISSING_EVIDENCE**.
+- `unsupported_claim_count=3`, `validation_gap_count=3` — abgeleitet aus `auditor-output.yml` (`derived_from_auditor_output`).
+- PR-Metadaten (commits, additions, review_friction, rework, completion_time) nicht als Repo-Artefakt archiviert (`external_unverified`).
 - Kein Wirkungsclaim möglich oder zulässig (einzelner Messpunkt, keine Kontrollgruppe).
 - Keine Aussage, dass Agent- oder Skill-Dateien nützlich sind.
 
@@ -22,8 +30,9 @@ canonicality: operative
 ### Allowed Claims
 
 - Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
-- Run 1 (PR #145) wurde erfasst: scope_drift=0, unsupported_claims=3, validation_gaps=3, review_friction=2, rework=1.
-- Run-Level Auditor Verdict: MISSING_EVIDENCE (CI/make/critic-Artefakte nicht im Repo vorhanden).
+- Run 1 (PR #145) wurde erfasst; kanonischer Auditor-Output in `auditor-output.yml`.
+- Run-Level Auditor Verdict: MISSING_EVIDENCE (CI/make/critic-Artefakte und PR-Metadaten-Artefakt nicht im Repo vorhanden).
+- unsupported_claims=3, validation_gaps=3 (derived_from_auditor_output).
 - Kein Wirksamkeitsclaim.
 
 ### Disallowed Claims
@@ -38,12 +47,13 @@ canonicality: operative
 
 | Kategorie | Stand |
 |---|---|
-| Direkt beobachtet | Experimentgerüst angelegt; Run 1 (PR #145) erfasst |
-| Teilweise beobachtet | scope_drift, unsupported_claims, missing_locators, review_friction, rework, false_blocks, completion_time (Run 1) |
-| MISSING_EVIDENCE | CI-Testprotokoll, make-Ausgaben, experiment-critic-Output (Run 1) |
+| Repo-lokal belegt (PASS) | Validator-Logik, Ratchet-Entry, Regressionstests, generiertes Artefakt (via auditor-output.yml) |
+| derived_from_auditor_output | unsupported_claim_count, validation_gap_count |
+| external_unverified | PR-Metadaten (commits, additions, deletions, review_friction, rework, completion_time, scope_drift) |
+| MISSING_EVIDENCE | CI-Testprotokoll, make-Ausgaben, experiment-critic-Output, archiviertes PR-Metadaten-Artefakt |
 | Nicht getestet | Wirkung, Vergleichbarkeit |
 | Nicht vorhanden | Kontrollgruppe, mindestens 3 vergleichbare PRs für Zwischenauswertung |
 
 ## Nächste Schritte
 
-Mindestens zwei weitere reale PRs mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensätze erfassen. Zwischenauswertung nach drei vergleichbaren PRs.
+Mindestens zwei weitere reale PRs mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensätze erfassen. CI/make-Outputs und PR-Metadaten als Repo-Artefakte archivieren. Zwischenauswertung nach drei vergleichbaren PRs.

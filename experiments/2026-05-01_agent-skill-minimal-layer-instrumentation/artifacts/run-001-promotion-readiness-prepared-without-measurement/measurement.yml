@@ -3,85 +3,90 @@
 # PR: github:heimgewebe/vibe-lab/pull/145
 
 schema_version: "0.1.0"
+contract: "measurement_run"
 run_id: "run-001-promotion-readiness-prepared-without-measurement"
-pr_ref: "github:heimgewebe/vibe-lab/pull/145"
-pr_title: "Fix promotion-readiness semantics for prepared instrumentation experiments"
-pr_merged_at: "2026-05-01T12:37:30Z"
-pr_author: "copilot-agent"
-pr_merged_by: "alexdermohr"
-pr_commits: 3
-pr_changed_files: 4
-pr_additions: 127
-pr_deletions: 10
 
 auditor_verdict: "MISSING_EVIDENCE"
-auditor_ref: "artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md"
+auditor_ref: "artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml"
 
 agent_layer_used:
   experiment_critic: "UNKNOWN"
   evidence_reconciliation_auditor: true
 
+pr_metadata:
+  pr_ref: "github:heimgewebe/vibe-lab/pull/145"
+  pr_title: "Fix promotion-readiness semantics for prepared instrumentation experiments"
+  pr_merged_at: "2026-05-01T12:37:30Z"
+  pr_author: "copilot-agent"
+  pr_merged_by: "alexdermohr"
+  pr_commits: 3
+  pr_changed_files: 4
+  pr_additions: 127
+  pr_deletions: 10
+  evidence_status: "external_unverified"
+  notes: >-
+    PR web metadata. No archived PR metadata artifact in repo. Values sourced
+    from PR web UI / GitHub API; not independently verifiable from repo state.
+
 metrics:
   scope_drift_count:
     value: 0
-    evidence_status: observed
+    evidence_status: "external_unverified"
     notes: >-
-      All 4 changed files (validate_promotion_readiness.py,
-      test_promotion_readiness.py, promotion-readiness.json,
-      promotion-readiness-freeze.yml) lie within the declared task scope.
+      All 4 changed files appear within the declared task scope per PR diff.
+      PR diff is not archived as a repo artifact; scope claim is plausible
+      but not independently verifiable from repo state alone.
 
   unsupported_claim_count:
     value: 3
-    evidence_status: observed
+    evidence_status: "derived_from_auditor_output"
     notes: >-
-      Three PR-body command/validation claims lack repo-local evidence artifacts:
-      (1) "101/101 tests passed", (2) "make generate-blocking unchanged",
-      (3) "make validate passed". Each is CLAIM_NOT_PROVEN per auditor-output.md.
+      Three PR-body command/validation claims are CLAIM_NOT_PROVEN per
+      auditor-output.yml (claims 010–012): "101/101 tests passed",
+      "make generate-blocking unchanged", "make validate passed".
 
   missing_locator_count:
     value: 0
-    evidence_status: observed
+    evidence_status: "external_unverified"
     notes: >-
-      Review comments reference concrete file paths and line numbers.
-      Task had explicit localization information in PR context.
+      Review comments referenced concrete file paths and line numbers.
+      Sourced from PR review web UI; not archived as repo artifact.
 
   validation_gap_count:
     value: 3
-    evidence_status: observed
+    evidence_status: "derived_from_auditor_output"
     notes: >-
-      Three distinct command/validation outputs were claimed but have no
-      repo-local artifact: (1) CI/test log, (2) make generate-blocking output,
-      (3) make validate output. Counted as three separate validation gaps,
-      one per missing output artifact.
+      Three command/validation outputs are absent from repo per
+      auditor-output.yml missing_evidence: CI/test log, make generate-blocking
+      output, make validate output. Counted as three separate gaps.
 
   review_friction_count:
     value: 2
-    evidence_status: observed
+    evidence_status: "external_unverified"
     notes: >-
-      2 automated review comments (Copilot Automated Reviewer):
-      (1) docstring inconsistency in test_promotion_readiness.py (addressed),
-      (2) missing encoding='utf-8' in open() (addressed, outdated).
+      2 automated Copilot review comments observed via PR web UI.
+      Not archived as repo artifact; value is external_unverified.
 
   rework_count:
     value: 1
-    evidence_status: observed
+    evidence_status: "external_unverified"
     notes: >-
-      PR contains 3 commits. Review comments were addressed in follow-up
-      commit(s) within the PR (1 rework round before merge).
+      PR contains 3 commits; review comments addressed in follow-up commit(s).
+      Commit count from PR web metadata (external_unverified).
 
   false_block_count:
     value: 0
-    evidence_status: observed
+    evidence_status: "external_unverified"
     notes: >-
-      No indication of unjustified blocking by auditor or critic.
-      PR was merged without incident.
+      PR was merged without incident per web metadata. No repo artifact
+      confirms absence of blocking; value is external_unverified.
 
   task_completion_time_observed:
     value: "~105 min"
-    evidence_status: observed
+    evidence_status: "external_unverified"
     notes: >-
-      PR created 2026-05-01T10:52:46Z, merged 2026-05-01T12:37:30Z.
-      Descriptive only; no causal value for agent-layer effect.
+      PR created 2026-05-01T10:52:46Z, merged 2026-05-01T12:37:30Z per
+      PR web metadata. Descriptive only; no causal value for agent-layer effect.
 
 missing_evidence:
   - item: "CI/test log artifact"
@@ -98,9 +103,15 @@ missing_evidence:
   - item: "experiment-critic output artifact"
     detail: >-
       No critic output artifact found for this PR in the experiment.
+  - item: "archived PR metadata artifact"
+    detail: >-
+      pr_commits, pr_additions, pr_deletions, review_friction, rework, and
+      completion_time are sourced from PR web UI; no archived PR metadata
+      artifact present in repo for independent verification.
 
 interpretation_limits:
   - "A single data point does not allow generalization."
   - "No usefulness claim about the agent/skill layer can be derived from this data."
   - "Metrics are not yet calibrated — counting definitions may stabilize in early runs."
   - "agent_layer_used.experiment_critic is UNKNOWN: no critic output artifact found."
+  - "Most metrics are external_unverified or derived_from_auditor_output; none are fully repo-local observed."

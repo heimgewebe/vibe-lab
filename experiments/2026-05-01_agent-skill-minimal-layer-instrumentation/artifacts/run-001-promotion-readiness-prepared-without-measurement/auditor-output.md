@@ -1,9 +1,15 @@
 ---
+canonical: false
+derived_from: "./auditor-output.yml"
+role: "human_projection"
+source_of_truth: false
 run_id: "run-001-promotion-readiness-prepared-without-measurement"
 pr_ref: "github:heimgewebe/vibe-lab/pull/145"
 auditor_date: "2026-05-01"
 auditor: "evidence-reconciliation-auditor (copilot-agent)"
 ---
+
+> **Non-canonical projection.** The machine-readable source of truth is [`auditor-output.yml`](./auditor-output.yml). This Markdown file is a human-readable view of that YAML artifact and must not be referenced as authoritative evidence.
 
 ## Verdict
 
