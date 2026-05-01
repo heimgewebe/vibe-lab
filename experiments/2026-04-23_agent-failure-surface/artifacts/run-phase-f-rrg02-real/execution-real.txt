@@ -3,7 +3,7 @@
 [output] tmp_workspace=/tmp/rrg02-real-iqvwiv5_
 [command] cp fixtures/before.md /tmp/rrg02-real-iqvwiv5_/before.md
 [output] fixture written to temp workspace (LF line endings)
-[command] git init .
+[command] git init --initial-branch master .
 [output] Initialized empty Git repository in /tmp/rrg02-real-iqvwiv5_/.git/
 [command] git config user.email agent@vibe-lab.test && git config user.name 'Vibe Lab Agent'
 [output] (no output — config set)
@@ -119,8 +119,8 @@ WORK_FILE.write_text(BEFORE_MD, encoding='utf-8', newline='\n')
 
 # Init git repo
 subprocess.run(['git', 'init', '--initial-branch', 'master', '.'], cwd=WORKDIR, capture_output=True, text=True, check=True)
-subprocess.run(['git', 'config', 'user.email', 'agent@vibe-lab.test'], cwd=WORKDIR, capture_output=True)
-subprocess.run(['git', 'config', 'user.name', 'Vibe Lab Agent'], cwd=WORKDIR, capture_output=True)
+subprocess.run(['git', 'config', 'user.email', 'agent@vibe-lab.test'], cwd=WORKDIR, capture_output=True, check=True)
+subprocess.run(['git', 'config', 'user.name', 'Vibe Lab Agent'], cwd=WORKDIR, capture_output=True, check=True)
 
 git_env = os.environ.copy()
 git_env.update({
@@ -133,17 +133,17 @@ git_env.update({
 })
 
 # Stage and commit baseline
-subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
+subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True, check=True)
 subprocess.run(['git', 'commit', '-m', 'baseline: initial before.md'], cwd=WORKDIR, capture_output=True, env=git_env, check=True)
 
 # Record HEAD sha
 head_sha = subprocess.run(
-    ['git', 'rev-parse', 'HEAD'], cwd=WORKDIR, capture_output=True, text=True
+    ['git', 'rev-parse', 'HEAD'], cwd=WORKDIR, capture_output=True, text=True, check=True
 ).stdout.strip()
 
 # SHA256 of HEAD/index/working-tree before Step A
-head_blob = subprocess.run(['git', 'show', 'HEAD:before.md'], cwd=WORKDIR, capture_output=True).stdout
-index_blob = subprocess.run(['git', 'show', ':before.md'], cwd=WORKDIR, capture_output=True).stdout
+head_blob = subprocess.run(['git', 'show', 'HEAD:before.md'], cwd=WORKDIR, capture_output=True, check=True).stdout
+index_blob = subprocess.run(['git', 'show', ':before.md'], cwd=WORKDIR, capture_output=True, check=True).stdout
 wt_bytes_before = WORK_FILE.read_bytes()
 
 head_sha256_before = hashlib.sha256(head_blob).hexdigest()
@@ -153,7 +153,7 @@ wt_sha256_before = hashlib.sha256(wt_bytes_before).hexdigest()
 
 # git status before any mutation
 gs_before = subprocess.run(
-    ['git', 'status', '--short'], cwd=WORKDIR, capture_output=True, text=True
+    ['git', 'status', '--short'], cwd=WORKDIR, capture_output=True, text=True, check=True
 ).stdout.strip()
 
 # --- STEP A ---
@@ -163,7 +163,7 @@ text_after_m1 = text.replace('Use safe deployment mode.', 'Use staged deployment
 WORK_FILE.write_text(text_after_m1, encoding='utf-8', newline='\n')
 
 # Stage
-subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
+subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True, check=True)
 
 # Mutation 2: unstaged (not staged)
 text_staged = WORK_FILE.read_text(encoding='utf-8')
@@ -172,15 +172,15 @@ WORK_FILE.write_text(text_after_m2, encoding='utf-8', newline='\n')
 
 # git status after Step A — expected: MM before.md
 gs_after = subprocess.run(
-    ['git', 'status', '--short'], cwd=WORKDIR, capture_output=True, text=True
+    ['git', 'status', '--short'], cwd=WORKDIR, capture_output=True, text=True, check=True
 ).stdout.strip()
 
 # Capture all three snapshots after Step A
 head_content_after = subprocess.run(
-    ['git', 'show', 'HEAD:before.md'], cwd=WORKDIR, capture_output=True
+    ['git', 'show', 'HEAD:before.md'], cwd=WORKDIR, capture_output=True, check=True
 ).stdout
 index_content_after = subprocess.run(
-    ['git', 'show', ':before.md'], cwd=WORKDIR, capture_output=True
+    ['git', 'show', ':before.md'], cwd=WORKDIR, capture_output=True, check=True
 ).stdout
 wt_bytes_after = WORK_FILE.read_bytes()
 

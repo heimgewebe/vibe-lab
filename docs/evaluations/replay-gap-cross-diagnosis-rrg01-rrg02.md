@@ -514,11 +514,11 @@ für Git-State-Divergenz: drei unterscheidbare Zustände in einem einzigen Real-
   branches, merge states) würden ähnliche Drei-Wege-Divergenz erzeugen -- nicht durch
   diesen Run belegt
 - **offen:** Konsequenzen für konkrete Runner-Implementierungen -- kein Schema/Validator
-  geaendert, kein Decision Preimage, kein accepted status
+  geändert, kein Decision Preimage, kein accepted status
 
 ### Epistemische Grenze
 
-Beweisumfang: `fixture_only`. Kein allgemeiner Beweis fuer Runner-Korrektheit oder
+Beweisumfang: `fixture_only`. Kein allgemeiner Beweis für Runner-Korrektheit oder
 allgemeine Git-State-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.
 RRG-02 ist nun fixture-proven als eigene Drift-Klasse, strukturell orthogonal zu RRG-01
 (Content-Normalisierung) und RRG-03 (Locator-Positionsdrift).

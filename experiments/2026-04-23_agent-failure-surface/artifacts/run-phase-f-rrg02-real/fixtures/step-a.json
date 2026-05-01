@@ -8,6 +8,6 @@
   "locator": "Use safe deployment mode.",
   "exact_before": "Use safe deployment mode.",
   "exact_after": "Use staged deployment mode.",
-  "note": "Staged mutation: file is mutated then git add before.md is executed. A second unstaged mutation follows (step-a-unstaged) to create three-way Git-state divergence.",
+  "note": "Staged mutation: file is mutated, then git add before.md is executed. A second unstaged mutation follows to create three-way Git-state divergence.",
   "forbidden_changes": []
 }
