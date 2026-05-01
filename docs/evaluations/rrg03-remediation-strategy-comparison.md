@@ -96,10 +96,10 @@ Die aktuelle Boundary bleibt: proposed, kein Patch.
 
 | Kandidat | Ursache? | Maschinell? | Rückwärtskomp. | Falsch-positiv | Scope-Drift | Aufwand | v0.1-Verhältnis | Zusatzbelege |
 |----------|----------|-------------|----------------|----------------|-------------|---------|-----------------|--------------|
-| post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted); RRG-02 fixture_proven (orthogonal; nicht adressiert) |
+| post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted; nicht primär adressiert); RRG-02 fixture_proven (orthogonal; nicht adressiert) |
 | byte_range | teilweise | ja (Schema) | niedrig (breaking) | niedrig | niedrig | hoch | bricht | mehrere Fixtures |
 | exact_before hash | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 stärkster Kandidat; RRG-02 orthogonal |
-| re_resolution_required | ja | ja (Schema+Validator) | mittel | niedrig | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (teilweise); RRG-02 fixture_proven (nicht adressiert) |
+| re_resolution_required | ja | ja (Schema+Validator) | mittel | niedrig | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted; nur indirekt/teilweise adressiert); RRG-02 fixture_proven (nicht adressiert) |
 | validator multi-match | nein (Symptom) | ja (Validator) | hoch | mittel | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 nicht relevant für diesen Kandidaten |
 | runner hardening | nein (Symptom) | nein | hoch | mittel | hoch | hoch | außerhalb v0.1 | viele Fixtures, allg. Beleg |
 | no_patch_observe_more | nein | nein | hoch | keines | keines | keines | neutral | weitere Real-Runs |
