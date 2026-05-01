@@ -38,3 +38,156 @@
 [output] Dry-Run does not perform real Disk-I/O; it cannot observe CRLF->LF normalization.
 [output] Dry-Run would report exact_before match against pre-apply state.
 [output] Real-Run shows: after apply, CRLF exact_before is not found on LF disk state.
+
+## Reproduction script content
+
+Exact script used during this run:
+
+import json
+import hashlib
+import difflib
+import tempfile
+import shutil
+from pathlib import Path
+
+ART = Path('experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real')
+FIXTURE_LF = ART / 'fixtures' / 'before.md'
+
+WORKDIR = Path(tempfile.mkdtemp(prefix='rrg01-real-'))
+WORK_FILE = WORKDIR / 'before.md'
+
+# Setup: write fixture to temp workspace with CRLF line endings.
+# This simulates a real-world disk state where the file has Windows/CRLF endings.
+# The agent prepared Step B's exact_before based on this CRLF disk state.
+lf_content = FIXTURE_LF.read_text(encoding='utf-8')
+crlf_content = lf_content.replace('\n', '\r\n')
+WORK_FILE.write_bytes(crlf_content.encode('utf-8'))
+
+# SHA256 before Step A (CRLF state)
+sha_before = hashlib.sha256(WORK_FILE.read_bytes()).hexdigest()
+
+step_a_locator = 'Load config from file.'
+step_a_exact_before = 'Load config from file.'
+step_a_exact_after = 'Load config from disk.'
+
+# Step B fixture: exact_before captured from CRLF file
+step_b_locator = 'Load config from environment.'
+step_b_exact_before = 'Load config from environment.\r\n'
+step_b_exact_after = 'Load config from cache.'
+
+# Step A: Apply mutation with LF normalization.
+# Python's read_text()/write_text() normalises CRLF -> LF on all platforms when
+# newline=None (the default). This is the apply-layer normalization being tested.
+disk_text_before = WORK_FILE.read_text(encoding='utf-8')  # CRLF -> LF in memory
+assert '\r' not in disk_text_before, "read_text normalised CRLF to LF as expected"
+
+text_after = disk_text_before.replace(step_a_exact_before, step_a_exact_after, 1)
+step_a_applied = text_after != disk_text_before
+WORK_FILE.write_text(text_after, encoding='utf-8')  # writes LF back to disk
+
+# SHA256 after Step A (LF state)
+sha_after = hashlib.sha256(WORK_FILE.read_bytes()).hexdigest()
+
+# Diff
+disk_lines_before = crlf_content.splitlines(keepends=True)
+disk_lines_after = text_after.splitlines(keepends=True)
+diff_text = ''.join(
+    difflib.unified_diff(
+        disk_lines_before,
+        disk_lines_after,
+        fromfile='before.md (CRLF disk state)',
+        tofile='before.md (LF disk state after Step A)',
+    )
+)
+
+# Step B: check exact_before against disk after Step A
+disk_content_after = WORK_FILE.read_bytes()
+step_b_exact_before_bytes = step_b_exact_before.encode('utf-8')  # includes \r\n
+step_b_found_on_disk = step_b_exact_before_bytes in disk_content_after
+
+# Also check LF-only variant (what would be found if \r was normalised)
+step_b_lf_variant = step_b_exact_before.replace('\r\n', '\n')
+step_b_lf_found = step_b_lf_variant.encode('utf-8') in disk_content_after
+
+# Content delta summary
+original_bytes = len(crlf_content.encode('utf-8'))
+after_bytes = len(disk_content_after)
+content_delta_summary = (
+    f"CRLF-to-LF normalization applied by apply layer during Step A write. "
+    f"Original disk state: {original_bytes} bytes (CRLF). "
+    f"Post-apply disk state: {after_bytes} bytes (LF). "
+    f"Step A semantic change: '{step_a_exact_before}' -> '{step_a_exact_after}'. "
+    f"Normalization side-effect: all CRLF converted to LF, "
+    f"including Step B target area."
+)
+
+# Classification
+if not step_b_found_on_disk:
+    classification = 'content_drifted'
+elif sha_before == sha_after:
+    classification = 'stable'
+else:
+    classification = 'ambiguous'
+
+patch_gate_triggered = classification == 'content_drifted'
+
+# Observed
+observed = {
+    'schema_version': '0.1.0',
+    'run_id': 'run-phase-f-rrg01-real',
+    'proof_target': 'RRG-01 Disk-State-Apply-Delta',
+    'workspace': 'temp',
+    'step_a_applied': bool(step_a_applied),
+    'sha256_before': sha_before,
+    'sha256_after': sha_after,
+    'content_delta_summary': content_delta_summary,
+    'step_b_expectation': {
+        'locator': step_b_locator,
+        'exact_before': step_b_exact_before,
+        'exact_before_encoding_note': 'Contains CRLF (carriage-return + linefeed); captured from original CRLF disk state before Step A',
+    },
+    'step_b_observed_state': {
+        'exact_before_found_on_disk': bool(step_b_found_on_disk),
+        'exact_before_lf_variant_found': bool(step_b_lf_found),
+        'disk_line_endings_after_step_a': 'LF only',
+        'explanation': (
+            'Step B exact_before contains CRLF; disk after Step A has LF only. '
+            'Substring search for CRLF variant fails. '
+            'LF variant is still present (locator text unchanged).'
+        ),
+    },
+    'classification': classification,
+    'patch_gate': {
+        'triggered': patch_gate_triggered,
+        'reason': (
+            'content_drifted: Step B exact_before (CRLF) is not present on disk after '
+            'Step A apply layer normalized CRLF to LF. '
+            'An agent that captured exact_before from the original CRLF disk state '
+            'cannot match against the post-apply LF disk state.'
+        ) if patch_gate_triggered else 'not triggered',
+    },
+    'claim_boundary': {
+        'proves': [
+            'Whether this controlled CRLF-to-LF fixture produces content drift under '
+            'real apply-layer normalization, causing Step B exact_before to not match disk state.'
+        ],
+        'does_not_prove': [
+            'General runner correctness.',
+            'General locator safety.',
+            'Best remediation strategy.',
+            'That all apply layers normalize CRLF to LF.',
+        ],
+    },
+}
+
+(ART / 'observed.json').write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+
+print(json.dumps({
+    'tmp_workspace': str(WORKDIR),
+    'sha256_before': sha_before,
+    'sha256_after': sha_after,
+    'step_a_applied': bool(step_a_applied),
+    'step_b_exact_before_found': bool(step_b_found_on_disk),
+    'classification': classification,
+    'patch_gate_triggered': patch_gate_triggered,
+}, indent=2))
