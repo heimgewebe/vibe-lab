@@ -1,0 +1,274 @@
+[command] python3 /tmp/rrg02_real_exec.py
+[command] mktemp -d
+[output] tmp_workspace=/tmp/rrg02-real-iqvwiv5_
+[command] cp fixtures/before.md /tmp/rrg02-real-iqvwiv5_/before.md
+[output] fixture written to temp workspace (LF line endings)
+[command] git init .
+[output] Initialized empty Git repository in /tmp/rrg02-real-iqvwiv5_/.git/
+[command] git config user.email agent@vibe-lab.test && git config user.name 'Vibe Lab Agent'
+[output] (no output — config set)
+[command] git add before.md && git commit -m 'baseline: initial before.md'
+[output] [master (root-commit) 433311c] baseline: initial before.md
+ 1 file changed, 8 insertions(+)
+ create mode 100644 before.md
+[command] git rev-parse HEAD
+[output] 433311cf64fc69eb27eea55985eb8919c2f8ed7d
+[command] sha256sum HEAD:before.md (via git show HEAD:before.md | sha256sum)
+[output] head_sha256_before=751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2
+[command] sha256sum :before.md (via git show :before.md | sha256sum)
+[output] index_sha256_before=751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2
+[command] sha256sum working-tree before.md
+[output] wt_sha256_before=751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2
+[command] git status --short (before Step A)
+[output] (empty — clean state after initial commit)
+[command] Step A (mutation 1): replace 'Use safe deployment mode.' with 'Use staged deployment mode.'
+[output] File mutated on working tree.
+[command] git add before.md
+[output] File staged.
+[command] Step A (mutation 2, no stage): replace 'Validate rollback before release.' with 'Validate rollback after release.'
+[output] File mutated on working tree (unstaged).
+[command] git status --short (after Step A)
+[output] MM before.md
+[command] git show HEAD:before.md
+[output]
+# Deployment Notes
+
+Mode:
+Use safe deployment mode.
+Guard:
+Validate rollback before release.
+Audit:
+Record deployment event.
+
+[output] head_sha256_after_step_a=751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2
+[command] git show :before.md
+[output]
+# Deployment Notes
+
+Mode:
+Use staged deployment mode.
+Guard:
+Validate rollback before release.
+Audit:
+Record deployment event.
+
+[output] index_sha256_after_step_a=1783dc90178f0632dc2f22119ae323becf6f29654146cd9da6a2ae6c55a2d987
+[command] cat before.md
+[output]
+# Deployment Notes
+
+Mode:
+Use staged deployment mode.
+Guard:
+Validate rollback after release.
+Audit:
+Record deployment event.
+
+[output] wt_sha256_after_step_a=a6115469675dd4667dc645b6693666233d535aa39ab726098f9de12d4b4e239a
+[command] Step B lookup: exact_before='Validate rollback before release.'
+[output] found_in_head=True
+[output] found_in_index=True
+[output] found_in_working_tree=False
+[output] snapshots_diverge=True
+[output] step_b_results_differ=True
+[output] classification=git_state_drifted
+[output] patch_gate_triggered=True
+[output] explanation=HEAD contains original file (pre-Step-A). Index contains Step-A first mutation (staged): 'Use staged deployment mode.' but still 'Validate rollback before release.' Working tree contains both mutations (unstaged second mutation applied): 'Validate rollback after release.' replaces original. Step B exact_before 'Validate rollback before release.' is present in HEAD (True) and index (True) but NOT in working tree (False). Three distinguishable states: HEAD=original, index=partial-mutation, working-tree=partial+unstaged. A runner that reads working tree cannot find Step-B exact_before, but HEAD and index still contain it. Snapshot-ambiguity proven: which Git state is authoritative?
+[command] make generate-blocking
+[output] ✅ Generated docs/_generated/doc-index.md (178 documents)
+[output] ✅ Exported 5 instruction-blocks to exports/copilot/
+[output] ✅ Exported 5 instruction-blocks to exports/cursor/
+[output] ✅ Generated tool projections in exports/.
+[output] ✅ Generated blocking artifacts (doc-index, projections).
+[command] make validate
+[output] ✅ Validation passed.
+[output] Ratchet passed: 11 frozen not_ready case(s) tolerated, 11 freeze entries validated.
+
+Note: The [command]/[output] section above is the captured execution transcript. The embedded script is the reproduction script, not a transcript generator.
+
+## Reproduction script content
+
+Exact script used during this run:
+
+import json
+import hashlib
+import subprocess
+import tempfile
+import shutil
+from pathlib import Path
+import os
+
+ART = Path('experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real')
+
+# Fixture content
+BEFORE_MD = """# Deployment Notes
+
+Mode:
+Use safe deployment mode.
+Guard:
+Validate rollback before release.
+Audit:
+Record deployment event.
+"""
+
+WORKDIR = Path(tempfile.mkdtemp(prefix='rrg02-real-'))
+WORK_FILE = WORKDIR / 'before.md'
+
+# Write fixture to temp workspace
+WORK_FILE.write_text(BEFORE_MD, encoding='utf-8')
+
+# Init git repo
+subprocess.run(['git', 'init', '.'], cwd=WORKDIR, capture_output=True, text=True)
+subprocess.run(['git', 'config', 'user.email', 'agent@vibe-lab.test'], cwd=WORKDIR, capture_output=True)
+subprocess.run(['git', 'config', 'user.name', 'Vibe Lab Agent'], cwd=WORKDIR, capture_output=True)
+
+# Stage and commit baseline
+subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
+subprocess.run(['git', 'commit', '-m', 'baseline: initial before.md'], cwd=WORKDIR, capture_output=True)
+
+# Record HEAD sha
+head_sha = subprocess.run(
+    ['git', 'rev-parse', 'HEAD'], cwd=WORKDIR, capture_output=True, text=True
+).stdout.strip()
+
+# SHA256 of HEAD/index/working-tree before Step A
+head_blob = subprocess.run(['git', 'show', 'HEAD:before.md'], cwd=WORKDIR, capture_output=True).stdout
+index_blob = subprocess.run(['git', 'show', ':before.md'], cwd=WORKDIR, capture_output=True).stdout
+wt_bytes_before = WORK_FILE.read_bytes()
+
+head_sha256_before = hashlib.sha256(head_blob).hexdigest()
+index_sha256_before = hashlib.sha256(index_blob).hexdigest()
+wt_sha256_before = hashlib.sha256(wt_bytes_before).hexdigest()
+# All three are equal at this point (clean baseline).
+
+# git status before any mutation
+gs_before = subprocess.run(
+    ['git', 'status', '--short'], cwd=WORKDIR, capture_output=True, text=True
+).stdout.strip()
+
+# --- STEP A ---
+# Mutation 1: staged
+text = WORK_FILE.read_text(encoding='utf-8')
+text_after_m1 = text.replace('Use safe deployment mode.', 'Use staged deployment mode.', 1)
+WORK_FILE.write_text(text_after_m1, encoding='utf-8')
+
+# Stage
+subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
+
+# Mutation 2: unstaged (not staged)
+text_staged = WORK_FILE.read_text(encoding='utf-8')
+text_after_m2 = text_staged.replace('Validate rollback before release.', 'Validate rollback after release.', 1)
+WORK_FILE.write_text(text_after_m2, encoding='utf-8')
+
+# git status after Step A — expected: MM before.md
+gs_after = subprocess.run(
+    ['git', 'status', '--short'], cwd=WORKDIR, capture_output=True, text=True
+).stdout.strip()
+
+# Capture all three snapshots after Step A
+head_content_after = subprocess.run(
+    ['git', 'show', 'HEAD:before.md'], cwd=WORKDIR, capture_output=True
+).stdout
+index_content_after = subprocess.run(
+    ['git', 'show', ':before.md'], cwd=WORKDIR, capture_output=True
+).stdout
+wt_bytes_after = WORK_FILE.read_bytes()
+
+head_sha256_after = hashlib.sha256(head_content_after).hexdigest()
+index_sha256_after = hashlib.sha256(index_content_after).hexdigest()
+wt_sha256_after = hashlib.sha256(wt_bytes_after).hexdigest()
+
+head_text_after = head_content_after.decode('utf-8')
+index_text_after = index_content_after.decode('utf-8')
+wt_text_after = wt_bytes_after.decode('utf-8')
+
+# --- STEP B LOOKUP ---
+step_b_exact_before = "Validate rollback before release."
+found_in_head = step_b_exact_before in head_text_after
+found_in_index = step_b_exact_before in index_text_after
+found_in_wt = step_b_exact_before in wt_text_after
+
+# Classification
+snapshots_diverge = not (head_sha256_after == index_sha256_after == wt_sha256_after)
+step_b_results_differ = not (found_in_head == found_in_index == found_in_wt)
+
+if snapshots_diverge and step_b_results_differ:
+    classification = 'git_state_drifted'
+elif head_sha256_after == index_sha256_after == wt_sha256_after:
+    classification = 'stable'
+elif snapshots_diverge and not step_b_results_differ:
+    classification = 'ambiguous'
+else:
+    classification = 'not_reproduced'
+
+patch_gate_triggered = classification in ('git_state_drifted', 'ambiguous')
+
+# Write observed.json
+observed = {
+    "schema_version": "0.1.0",
+    "run_id": "run-phase-f-rrg02-real",
+    "proof_target": "RRG-02 Git-Working-Tree-Index-Effects",
+    "workspace": "temp_git",
+    "step_a_applied": True,
+    "git_status_before": gs_before or "(clean — empty after initial commit)",
+    "git_status_after_step_a": gs_after,
+    "head_sha_before": head_sha,
+    "head_file_sha256_after_step_a": head_sha256_after,
+    "index_file_sha256_after_step_a": index_sha256_after,
+    "working_tree_file_sha256_after_step_a": wt_sha256_after,
+    "step_b_expectation": {
+        "locator": "Validate rollback before release.",
+        "exact_before": "Validate rollback before release.",
+        "expected_snapshot": "unspecified"
+    },
+    "step_b_observed_state": {
+        "found_in_head": found_in_head,
+        "found_in_index": found_in_index,
+        "found_in_working_tree": found_in_wt,
+        "explanation": (
+            f"HEAD contains original file (pre-Step-A). "
+            f"Index contains Step-A first mutation (staged): 'Use staged deployment mode.' "
+            f"but still 'Validate rollback before release.' "
+            f"Working tree contains both mutations (unstaged second mutation applied): "
+            f"'Validate rollback after release.' replaces original. "
+            f"Step B exact_before '{step_b_exact_before}' is present in HEAD ({found_in_head}) "
+            f"and index ({found_in_index}) but NOT in working tree ({found_in_wt}). "
+            f"Three distinguishable states: HEAD=original, index=partial-mutation, "
+            f"working-tree=partial+unstaged. "
+            f"A runner that reads working tree cannot find Step-B exact_before, "
+            f"but HEAD and index still contain it. "
+            f"Snapshot-ambiguity proven: which Git state is authoritative?"
+        )
+    },
+    "classification": classification,
+    "patch_gate": {
+        "triggered": patch_gate_triggered,
+        "reason": (
+            f"git_state_drifted: HEAD/index/working-tree snapshots diverge after "
+            f"Step-A staged + unstaged mutations. "
+            f"Step-B exact_before '{step_b_exact_before}' is present in HEAD and index "
+            f"but absent in working tree. "
+            f"A runner that resolves against working tree cannot find Step-B target, "
+            f"while a runner that uses HEAD or index snapshot would succeed. "
+            f"Which Git state is authoritative is undefined in the current dry-run contract."
+        ) if patch_gate_triggered else "not triggered"
+    },
+    "claim_boundary": {
+        "proves": [
+            "Whether this controlled fixture produces Git-state divergence across "
+            "HEAD/index/working-tree after a real Step-A mutation."
+        ],
+        "does_not_prove": [
+            "General runner correctness.",
+            "General locator safety.",
+            "Best remediation strategy.",
+            "Need for immediate runtime patch.",
+            "That every real runner creates staged/unstaged divergence."
+        ]
+    }
+}
+
+(ART / 'observed.json').write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+
+# Cleanup
+shutil.rmtree(WORKDIR)

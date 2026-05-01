@@ -20,6 +20,8 @@ relations:
     target: "../../contracts/command-semantics.md"
   - type: references
     target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json"
+  - type: references
+    target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json"
 ---
 
 # Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten
@@ -441,3 +443,78 @@ Mutation über Python `read_text` (Universal-Newline-Read, CRLF → LF im Speich
 
 Beweisumfang: `fixture_only`. Kein allgemeiner Beweis für Runner-Korrektheit oder
 allgemeine Locator-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.
+
+---
+
+## RRG-02 Real-Run Status (2026-05-01)
+
+**Status vor diesem Update:** `intentional_gap` (nicht real-run-belegt)
+**Status nach diesem Update:** `fixture_proven`
+
+### Durchgeführter Real-Run
+
+Artefakt: `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/`
+
+**Szenario:** Git-Working-Tree-Index-Drift durch gestufte + nicht-gestufte Mutation.
+
+Ein echtes Git-Repo wurde in einem Temp-Verzeichnis initialisiert. Das Fixture `before.md`
+("Deployment Notes") wurde committed (sauberer Baseline-Commit). Step A bestand aus zwei Teilen:
+(1) `Use safe deployment mode.` wurde durch `Use staged deployment mode.` ersetzt und mit
+`git add before.md` gestaged. (2) `Validate rollback before release.` wurde durch
+`Validate rollback after release.` ersetzt OHNE Staging. Dadurch entstanden drei
+unterscheidbare Git-Zustände.
+
+**Beobachtetes Ergebnis:**
+
+| Feld | Wert |
+|------|------|
+| `git status --short` nach Step A | `MM before.md` |
+| `head_file_sha256_after_step_a` (HEAD=original) | `751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2` |
+| `index_file_sha256_after_step_a` (Index=staged) | `1783dc90178f0632dc2f22119ae323becf6f29654146cd9da6a2ae6c55a2d987` |
+| `working_tree_file_sha256_after_step_a` (WT=staged+unstaged) | `a6115469675dd4667dc645b6693666233d535aa39ab726098f9de12d4b4e239a` |
+| Step B `found_in_head` | `true` |
+| Step B `found_in_index` | `true` |
+| Step B `found_in_working_tree` | `false` |
+| `classification` | `git_state_drifted` |
+| `patch_gate.triggered` | `true` |
+
+### Bestätigung der Hypothesen
+
+- **H1 bestätigt:** Realer Apply-Schritt mit `git add` erzeugte staged vs. unstaged Divergenz;
+  Dry-Run bildet keinen Git-Zustand ab.
+- **H2 bestätigt:** Step B's `exact_before` (`Validate rollback before release.`) ist in HEAD
+  und Index vorhanden, aber nicht im Working Tree nach der nicht-gestageten zweiten Mutation.
+  Ein Runner der Working Tree liest, kann Step B nicht finden; ein Runner der HEAD oder Index
+  liest, würde Step B für möglich halten.
+- **H3 bestätigt:** Failure-Mode ist Git-State-Drift, nicht Locator-Positionsdrift und nicht
+  Content-Normalisierungsdrift. Die Drift-Achse ist strukturell orthogonal zu RRG-01 und RRG-03.
+
+### Drei-Snapshot-Vergleich (Kern des Beweises)
+
+```
+git show HEAD:before.md   → Use safe deployment mode. / Validate rollback before release.
+git show :before.md       → Use staged deployment mode. / Validate rollback before release.
+cat before.md             → Use staged deployment mode. / Validate rollback after release.
+```
+
+Alle drei Snapshots sind unterschiedlich. `git status --short` zeigt `MM before.md`
+(erster M = staged changes, zweiter M = unstaged changes). Dies ist der Minimal-Beweis
+für Git-State-Divergenz: drei unterscheidbare Zustände in einem einzigen Real-Run.
+
+### Trennung Belegt / Plausibel / Offen (aktualisiert)
+
+- **belegt:** Staged + unstaged Mutation auf derselben Datei in einem echten Git-Repo
+  produziert `git_state_drifted` für `exact_before`-Snapshots die nur in HEAD/Index,
+  nicht im Working Tree vorhanden sind (fixture_only)
+- **plausibel:** Andere Git-Workspace-Szenarien (untracked files, partial apply across
+  branches, merge states) würden ähnliche Drei-Wege-Divergenz erzeugen -- nicht durch
+  diesen Run belegt
+- **offen:** Konsequenzen für konkrete Runner-Implementierungen -- kein Schema/Validator
+  geaendert, kein Decision Preimage, kein accepted status
+
+### Epistemische Grenze
+
+Beweisumfang: `fixture_only`. Kein allgemeiner Beweis fuer Runner-Korrektheit oder
+allgemeine Git-State-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.
+RRG-02 ist nun fixture-proven als eigene Drift-Klasse, strukturell orthogonal zu RRG-01
+(Content-Normalisierung) und RRG-03 (Locator-Positionsdrift).
