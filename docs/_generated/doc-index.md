@@ -156,6 +156,11 @@
 | `experiments/2026-04-23_phase-1-drift-injection/method.md` | Methode: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/results/README.md` | Results: Phase 1 Drift Injection | draft | operative |
 | `experiments/2026-04-23_phase-1-drift-injection/results/result.md` | Phase 1 Ergebnis: Drift Injection (Executed) | draft | operative |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md` | Agent/Skill Minimal Layer v0.1 — Instrumentierungskontext | draft | operative |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md` | Agent/Skill Minimal Layer v0.1 — Initiale Situation | draft | operative |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` | Failure Modes — Agent/Skill Minimal Layer Instrumentation | draft | operative |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` | Agent/Skill Minimal Layer v0.1 — Methode | draft | operative |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` | Agent/Skill Minimal Layer Instrumentation — Ergebnis | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

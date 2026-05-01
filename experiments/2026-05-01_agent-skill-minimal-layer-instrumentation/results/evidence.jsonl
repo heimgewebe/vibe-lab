@@ -1,0 +1,1 @@
+{"event_type":"observation","timestamp":"2026-05-01T00:00:00Z","iteration":1,"metric":"instrumentation_started","value":true,"context":"agent_skill_minimal_layer","notes":"Experiment scaffold only; no PR-level effect claim."}
