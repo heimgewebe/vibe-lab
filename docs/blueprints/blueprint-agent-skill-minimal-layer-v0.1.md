@@ -308,7 +308,9 @@ mindestens drei vergleichbare PRs gilt:
 - [ ] Ändert keine Scripts, Schemas oder Workflows
 - [ ] Ändert Generated Files nur generatorbasiert
 
-### Für PR-1
+### PR-1-Akzeptanzkriterien
+
+Diese Kriterien beschreiben den Umsetzungs- und Review-Maßstab für PR-1. Nach Merge dienen sie als historischer Nachweisrahmen, nicht als offener Arbeitsauftrag.
 
 - [ ] Scope strikt auf die drei PR-1-Dateien begrenzt
 - [ ] Keine unerlaubten Nebenänderungen
@@ -345,8 +347,7 @@ Diese Blaupause ist zu verwerfen oder zu überarbeiten, wenn:
 - Anfängliche Scheinsicherheit ohne CI-Rückbindung
 - Zusätzlicher Audit-Aufwand durch Auditor-Zwischenstufe
 - Mögliche False Blocks bei zu strengem Non-Ideal Task Guard
-- Blueprint altert, sobald PR-1 umgesetzt ist → Status dann auf
-  `implemented`, `superseded` oder `archived` setzen
+- Blueprint kann nach PR-1 altern → nach mindestens drei vergleichbaren PRs entscheiden: fortführen, revidieren oder als `superseded` markieren.
 
 **Minderung:**
 - `status: draft`, `canonicality: exploratory`
@@ -355,12 +356,14 @@ Diese Blaupause ist zu verwerfen oder zu überarbeiten, wenn:
 
 ---
 
-## Geplante Checks nach PR-1
+## PR-1-Validierungsnachweis
 
 ```bash
 make generate-blocking
 make validate
 ```
+
+Diese Checks sind im PR-1-Kontext auszuführen oder mit exaktem Fehleroutput zu dokumentieren.
 
 Regeln:
 - Änderungen aus `make generate-blocking` mitführen
@@ -371,7 +374,7 @@ Regeln:
 
 ## Umsetzungsstand
 
-PR-1 setzt diese drei Zielartefakte um:
+Der PR-1-Stand setzt diese drei Zielartefakte um:
 
 1. `.github/agents/experiment-critic.agent.md` — Non-Ideal Task Guard
 2. `.github/agents/evidence-reconciliation-auditor.agent.md` — neuer read/search-only Auditor
