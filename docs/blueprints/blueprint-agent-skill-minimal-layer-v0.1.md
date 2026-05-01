@@ -369,12 +369,16 @@ Regeln:
 
 ---
 
-## Nächste Aktion
+## Umsetzungsstand
 
-Separater PR-1 mit genau diesen drei Zielartefakten:
+PR-1 setzt diese drei Zielartefakte um:
 
-1. `.github/agents/experiment-critic.agent.md` — Non-Ideal Task Guard ergänzen
-2. `.github/agents/evidence-reconciliation-auditor.agent.md` — neu anlegen
-3. `docs/evaluations/agent-skill-file-fruitfulness.md` — neu anlegen
+1. `.github/agents/experiment-critic.agent.md` — Non-Ideal Task Guard
+2. `.github/agents/evidence-reconciliation-auditor.agent.md` — neuer read/search-only Auditor
+3. `docs/evaluations/agent-skill-file-fruitfulness.md` — Evaluation der Fruchtbarkeit
 
-Dieser Blueprint bleibt bis dahin Planartefakt mit `status: draft`.
+Dieser Blueprint bleibt als Architektur-Notiz aktiv, bis nach mindestens drei vergleichbaren PRs entschieden wird:
+
+- fortführen
+- revidieren
+- oder als `superseded` markieren
