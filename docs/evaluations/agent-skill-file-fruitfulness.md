@@ -1,7 +1,7 @@
 ---
 title: "Agent/Skill File Fruitfulness"
 status: draft
-canonicality: evaluative
+canonicality: diagnosis
 created: "2026-05-01"
 updated: "2026-05-01"
 relations:
@@ -98,7 +98,7 @@ hinreichende Bedingung für eine spätere Verstetigung.
 | Review Friction (Reviewer-Zyklen) | sinkt | unverändert | steigt |
 | Rework pro PR | sinkt | unverändert | steigt |
 | False Blocks (Critic blockt valide Tasks) | konstant oder ↓ | leicht ↑, aber < Fehlerreduktion | ↑ stärker als Fehlerreduktion |
-| Task-Dauer | konstant oder ↓ | ↑ mit erkennbarer Qualitätsverbesserung | ↑ ohne Qualitätsverbesserung |
+| Beobachtete Task-Dauer | konstant oder ↓ | ↑ mit erkennbarer Qualitätsverbesserung | ↑ ohne Qualitätsverbesserung |
 
 Eine Spalte allein entscheidet nicht. Bewertung erfolgt nur über die
 Gesamtmatrix und nur über mindestens drei vergleichbare PRs.
@@ -115,7 +115,7 @@ validation_gap_count
 review_friction_count
 rework_count
 false_block_count
-task_completion_time_delta
+task_completion_time_observed
 ```
 
 Definitionen:
@@ -127,7 +127,7 @@ Definitionen:
 - `review_friction_count` — Reviewer-Runden vor Merge
 - `rework_count` — Folge-Commits, die frühere Aussagen desselben PRs revidieren
 - `false_block_count` — Critic-`FAIL`/`PARTIAL` für Tasks, die später unverändert ausführbar werden
-- `task_completion_time_delta` — Differenz zwischen Task-Dauer mit und ohne diese Schicht über vergleichbare PRs
+- `task_completion_time_observed` — beobachtete Task-Dauer in PRs mit aktivierter Agent-/Skill-Schicht; erlaubt Overhead-Beobachtung, aber keinen Kausalvergleich ohne explizit definierte Kontroll-PRs ohne diese Schicht
 
 Erhebung erfolgt manuell aus PR- und Agent-Output. Diese Evaluation legt
 keine automatisierte Messpipeline an.
@@ -143,7 +143,7 @@ Die Schicht gilt als **nicht nützlich oder überarbeitungsbedürftig**, wenn
 - Scope Drift sinkt nicht
 - Review Friction sinkt nicht
 - False Blocks steigen stärker als Fehler sinken
-- Task-Dauer steigt ohne erkennbare Qualitätsverbesserung
+- Task-Dauer (`task_completion_time_observed`) steigt ohne erkennbare Qualitätsverbesserung
 - spätere Script-/CI-Rückbindung bleibt aus
 
 Trifft mindestens eines dieser Kriterien zu, muss der Blueprint
@@ -165,6 +165,9 @@ zurückgenommen oder als `superseded` markiert werden.
 - Aus reduzierten Metriken folgt nicht, dass die Reduktion durch die
   Agent-Schicht verursacht wurde. Kausalität bleibt unbelegt, solange kein
   Vergleich gegen vergleichbare PRs ohne diese Schicht vorliegt.
+- `task_completion_time_observed` misst nur beobachteten Aufwand innerhalb
+  der aktivierten Schicht. Kausale Zeitvergleiche erfordern explizit
+  definierte Kontroll-PRs ohne diese Schicht.
 - Aus erfüllten Falsifikationskriterien folgt, dass die Schicht in ihrer
   aktuellen Form nicht trägt. Es folgt nicht, dass das gesamte Konzept
   unbrauchbar ist.

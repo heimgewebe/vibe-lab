@@ -30,7 +30,7 @@
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/concepts/experiment-ontology.md` | Konzept: Iteration, Execution Scope und Reconciliation | active | operative |
-| `docs/evaluations/agent-skill-file-fruitfulness.md` | Agent/Skill File Fruitfulness | draft | evaluative |
+| `docs/evaluations/agent-skill-file-fruitfulness.md` | Agent/Skill File Fruitfulness | draft | diagnosis |
 | `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` | Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten | draft | operative |
 | `docs/evaluations/rrg03-remediation-strategy-comparison.md` | RRG-03 Remediation Strategy Comparison | draft | operative |
 | `docs/foundations/repo-plan.md` | Repository-Plan | active | foundational |
