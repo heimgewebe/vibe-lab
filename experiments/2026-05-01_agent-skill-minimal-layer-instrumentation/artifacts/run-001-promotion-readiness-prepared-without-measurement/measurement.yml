@@ -7,7 +7,8 @@ contract: "measurement_run"
 run_id: "run-001-promotion-readiness-prepared-without-measurement"
 
 auditor_verdict: "MISSING_EVIDENCE"
-auditor_ref: "artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml"
+# auditor_ref: run-dir-relativ (zur Datei selbst). Siehe schemas/measurement-run.v1.schema.json.
+auditor_ref: "auditor-output.yml"
 
 agent_layer_used:
   experiment_critic: "UNKNOWN"

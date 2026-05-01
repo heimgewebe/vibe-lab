@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/measurement-run.v1.schema.json",
+  "title": "Measurement Run (v1)",
+  "description": "Schema für artifacts/<run-id>/measurement.yml. Form-Validierung; semantische Kreuzregeln (auditor_verdict-Konsistenz, abgeleitete Zähler) prüft validate_run_bundle.py zusätzlich.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "contract", "run_id", "auditor_verdict", "metrics"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "contract": {
+      "type": "string",
+      "const": "measurement_run"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "auditor_verdict": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "CLAIM_NOT_PROVEN",
+        "CONTRADICTION",
+        "MISSING_EVIDENCE",
+        "OUT_OF_SCOPE",
+        "NOT_REPRODUCIBLE"
+      ]
+    },
+    "auditor_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Run-relativer Pfad zur zugehörigen auditor-output.yml. Genau eine der Felder auditor_ref oder source_artifacts.auditor_output muss gesetzt sein."
+    },
+    "source_artifacts": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "auditor_output": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_drift_count",
+        "unsupported_claim_count",
+        "missing_locator_count",
+        "validation_gap_count",
+        "review_friction_count",
+        "rework_count",
+        "false_block_count",
+        "task_completion_time_observed"
+      ],
+      "properties": {
+        "scope_drift_count": { "$ref": "#/$defs/metric" },
+        "unsupported_claim_count": { "$ref": "#/$defs/metric" },
+        "missing_locator_count": { "$ref": "#/$defs/metric" },
+        "validation_gap_count": { "$ref": "#/$defs/metric" },
+        "review_friction_count": { "$ref": "#/$defs/metric" },
+        "rework_count": { "$ref": "#/$defs/metric" },
+        "false_block_count": { "$ref": "#/$defs/metric" },
+        "task_completion_time_observed": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "agent_layer_used": { "type": "object", "additionalProperties": true },
+    "pr_metadata": { "type": "object", "additionalProperties": true },
+    "missing_evidence": { "type": "array" },
+    "interpretation_limits": { "type": "array" }
+  },
+  "anyOf": [
+    { "required": ["auditor_ref"] },
+    {
+      "required": ["source_artifacts"],
+      "properties": {
+        "source_artifacts": { "required": ["auditor_output"] }
+      }
+    }
+  ],
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["value", "evidence_status"],
+      "properties": {
+        "value": {
+          "description": "Numerischer oder beobachteter Wert. Strings sind nur für deskriptive Felder wie task_completion_time_observed zulässig.",
+          "anyOf": [
+            { "type": "number" },
+            { "type": "integer" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "evidence_status": {
+          "type": "string",
+          "enum": [
+            "repo_local",
+            "ci_artifact",
+            "derived_from_auditor_output",
+            "external_verified",
+            "external_unverified",
+            "self_reported",
+            "missing_evidence",
+            "unknown"
+          ]
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

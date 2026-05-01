@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment-run-bundle.v1.schema.json",
+  "title": "Experiment Run Bundle (v1)",
+  "description": "Schema für artifacts/<run-id>/run.yml. Atomarer Run-Envelope, der die Bestandteile eines Experiment-Runs (Auditor-Output, Measurement, run_meta, Markdown-Projektion) und das Verdict zu einer geprüften Einheit verklammert. Pfade in artifacts.* sind relativ zum Verzeichnis von run.yml; experiment_path ist repo-root-relativ.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "run", "provenance", "artifacts", "verdict"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "contract": {
+      "type": "string",
+      "const": "experiment_run_bundle"
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "experiment_path", "created_at"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Run-Identifier; muss mit dem Verzeichnisnamen artifacts/<run-id>/ übereinstimmen."
+        },
+        "experiment_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Repo-root-relativer Pfad zum Experiment-Verzeichnis."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Optionale fortlaufende Run-Nummer im Experiment."
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "repo_local",
+            "ci_artifact",
+            "external_verified",
+            "external_unverified",
+            "self_reported",
+            "missing_evidence",
+            "unknown"
+          ]
+        },
+        "executor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_status": {
+          "type": "string",
+          "enum": [
+            "repo_local",
+            "ci_artifact",
+            "external_verified",
+            "external_unverified",
+            "self_reported",
+            "missing_evidence",
+            "unknown"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "description": "Bestandteile des Run-Bundles. Mindestens auditor_output ODER measurement muss vorhanden sein.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/artifact_ref"
+      },
+      "properties": {
+        "auditor_output": { "$ref": "#/$defs/artifact_ref" },
+        "measurement": { "$ref": "#/$defs/artifact_ref" },
+        "run_meta": { "$ref": "#/$defs/artifact_ref" },
+        "markdown_projection": { "$ref": "#/$defs/artifact_ref" }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "effect_claim_allowed"],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "CLAIM_NOT_PROVEN",
+            "CONTRADICTION",
+            "MISSING_EVIDENCE",
+            "OUT_OF_SCOPE",
+            "NOT_REPRODUCIBLE"
+          ]
+        },
+        "effect_claim_allowed": { "type": "boolean" },
+        "promotion_claim_allowed": { "type": "boolean" }
+      }
+    },
+    "interpretation_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_comparable_runs_required": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "current_comparable_runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "causal_claim_allowed": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Pfad zum Artefakt, relativ zum Verzeichnis von run.yml. Darf nicht aus dem Experiment-Root austreten."
+        },
+        "contract": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Erwarteter Contract-Identifier (z. B. auditor_output, measurement_run, run_meta)."
+        },
+        "canonical": {
+          "type": "boolean",
+          "description": "true: maschinell autoritative Wahrheit. false: nur Projektion / Lesefläche."
+        },
+        "compatibility": {
+          "type": "boolean",
+          "description": "true: existiert aus Kompatibilitätsgründen, kein eigener Wahrheitsanspruch."
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
