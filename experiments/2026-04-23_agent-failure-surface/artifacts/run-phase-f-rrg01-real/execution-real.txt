@@ -38,8 +38,15 @@
 [output] Dry-Run does not perform real Disk-I/O; it cannot observe CRLF->LF normalization.
 [output] Dry-Run would report exact_before match against pre-apply state.
 [output] Real-Run shows: after apply, CRLF exact_before is not found on LF disk state.
+[command] make validate
+[output] Validation passed.
+[output] Ratchet passed: 11 frozen not_ready case(s) tolerated, 11 freeze entries validated.
 
 ## Reproduction script content
+
+Note: The [command]/[output] section above is the captured execution transcript for this run.
+The embedded Python below is the reproduction script for the file-mutation experiment and
+observed.json generation; it is not itself a transcript generator.
 
 Exact script used during this run:
 
@@ -75,15 +82,17 @@ step_b_locator = 'Load config from environment.'
 step_b_exact_before = 'Load config from environment.\r\n'
 step_b_exact_after = 'Load config from cache.'
 
-# Step A: Apply mutation with LF normalization.
-# Python's read_text()/write_text() normalises CRLF -> LF on all platforms when
-# newline=None (the default). This is the apply-layer normalization being tested.
-disk_text_before = WORK_FILE.read_text(encoding='utf-8')  # CRLF -> LF in memory
+# Step A: Apply mutation with deterministic LF normalization.
+# This reproduction reads CRLF input with universal-newline handling and
+# explicitly writes LF back to disk. This pins the tested apply-layer
+# normalization instead of relying on host platform defaults.
+disk_text_before = WORK_FILE.read_text(encoding='utf-8')  # CRLF -> LF in memory via universal newline
 assert '\r' not in disk_text_before, "read_text normalised CRLF to LF as expected"
 
 text_after = disk_text_before.replace(step_a_exact_before, step_a_exact_after, 1)
 step_a_applied = text_after != disk_text_before
-WORK_FILE.write_text(text_after, encoding='utf-8')  # writes LF back to disk
+with WORK_FILE.open("w", encoding="utf-8", newline="\n") as f:
+    f.write(text_after)  # explicit LF write, platform-independent
 
 # SHA256 after Step A (LF state)
 sha_after = hashlib.sha256(WORK_FILE.read_bytes()).hexdigest()

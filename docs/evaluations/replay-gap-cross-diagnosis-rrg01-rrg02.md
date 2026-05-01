@@ -32,6 +32,8 @@ Dasselbe Kandidatenset sollte auch für RRG-01 und RRG-02 gelten.
 
 **Antithese:** RRG-01 und RRG-02 sind bisher nur als qualitative Inventur
 (Phase 4) dokumentiert — kein realer Ausführungsbeleg.
+(Hinweis: RRG-01 erhielt am 2026-05-01 einen Real-Run-Beleg; dieser Abschnitt
+beschreibt den Ausgangszustand der Cross-Diagnosis.)
 Die Übertragung von RRG-03-Befunden auf RRG-01/RRG-02 ohne eigene Beweise
 wäre epistemischer Größenwahn.
 
@@ -66,7 +68,7 @@ Anker ist — keine stabile Identität.
 
 ---
 
-### RRG-01: Disk-State-Apply-Delta (nicht real-run-belegt)
+### RRG-01: Disk-State-Apply-Delta (Real-Run-Beleg vorhanden seit 2026-05-01)
 
 Quelle:
 `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
@@ -75,9 +77,9 @@ Spalte: `RRG-01 Disk-State-Apply-Delta`
 | Feld | Wert |
 |------|------|
 | Betroffene Achse | Disk-State, Idempotenz vs. Nicht-Idempotenz, Validierung nach Mutation |
-| Status in replay-gap-candidates.md | `candidate_for_phase_f` |
+| Status in replay-gap-candidates.md | `fixture_proven (was candidate_for_phase_f)` |
 | Priorität | Phase F: nach RRG-03 |
-| Real-Run-Beleg | **nicht vorhanden** |
+| Real-Run-Beleg | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json` |
 
 **Beschreibung (aus replay-gap-candidates.md):**
 Reale `write_change`-Anwendung kann Disk-Inhalt verändern (z.B. line endings,
@@ -92,10 +94,11 @@ Nebeneffekte (z.B. Trailing-Newlines, BOM-Stripping). Ein Folge-Step, der
 weil der Locator an eine andere Stelle zeigt, sondern weil der erwartete
 Vorher-Zustand schlicht nicht mehr dem Ist-Zustand auf Disk entspricht.
 
-**Trennung belegt / plausibel / offen:**
+**Trennung belegt / plausibel / offen (Ausgangszustand dieser Cross-Diagnosis):**
 - belegt: Dry-Run simuliert kein echtes Datei-I/O (Code-Beleg in replay-gap-candidates.md)
 - plausibel: Reale Apply-Layer können Normalisierungseffekte produzieren
-- offen: Kein realer Ausführungsbeleg; keine kontrollierte Fixture geprüft
+- offen (historisch): Kein realer Ausführungsbeleg vorhanden gewesen; keine kontrollierte Fixture geprüft
+- **aktuell (nach 2026-05-01):** Real-Run erbracht — siehe Artefakt `run-phase-f-rrg01-real/observed.json`
 
 ---
 
@@ -164,7 +167,7 @@ einer realen Step-A-Mutation verschiebt sich seine Position (anderer Match-Index
 andere Zeile). Ursache: Text-basierte Locator-Auflösung ohne erneute
 Positionsverifizierung.
 
-**RRG-01** (hypothetisch): Nicht die Locator-Position driftet, sondern der
+**RRG-01** (fixture_proven seit 2026-05-01): Nicht die Locator-Position driftet, sondern der
 Dateiinhalt selbst ändert sich durch Apply-Nebeneffekte (Normalisierungen,
 line endings). Ein stabiler `exact_before`-Hash würde scheitern, aber der
 Locator könnte auf die korrekte Zeile zeigen.
@@ -268,10 +271,11 @@ arbeiten.
 
 ### no_patch_observe_more
 
-- **Für RRG-01**: Korrekt — kein Real-Run-Beleg vorhanden.
+- **Für RRG-01**: Historisch korrekt — kein Real-Run-Beleg war vorhanden.
+  **Aktuell überholt:** Real-Run vom 2026-05-01 erbracht; `content_drifted` bestätigt.
 - **Für RRG-02**: Korrekt — kein Real-Run-Beleg vorhanden; RRG-02 hat in
   replay-gap-candidates.md Status `intentional_gap`.
-- **Fazit**: Für RRG-01 und RRG-02 aktuell die epistemisch sauberste Position.
+- **Fazit**: Für RRG-02 weiterhin die epistemisch sauberste Position.
 
 ---
 
@@ -359,9 +363,10 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
 
 ## Empfehlung für nächste Schritte
 
-1. **RRG-01 Real-Run**: Kontrollierte Fixture mit realem Write und Normalisierungseffekt
-   (z.B. trailing-newline-Varianz). Beobachten, ob `exact_before`-Binding bricht während
-   Locator-Position stabil bleibt.
+1. **RRG-01 Real-Run (abgeschlossen):** Fixture-spezifischer Beleg erbracht (2026-05-01):
+   CRLF→LF-Normalisierung durch Apply-Layer produziert `content_drifted`.
+   Optionaler Folge-Run: weitere Normalisierungsarten (trailing whitespace, BOM)
+   oder Hash-Binding-Probe — kein unmittelbarer Handlungsbedarf.
 
 2. **RRG-02 Real-Run**: Kontrollierter Workspace mit Git-State-Assertions nach Step A.
    Beobachten, ob Git-Index-Zustand Folge-Steps beeinflusst.
