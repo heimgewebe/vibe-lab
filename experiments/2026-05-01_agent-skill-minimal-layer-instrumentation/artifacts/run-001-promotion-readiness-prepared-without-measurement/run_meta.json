@@ -3,7 +3,7 @@
   "run_id": "run-001-promotion-readiness-prepared-without-measurement",
   "generated_at": "2026-05-01T12:37:30Z",
   "executor": "local:copilot-agent",
-  "command": "evidence-reconciliation-auditor on PR #145 (promotion-readiness: prepared without measurement)",
+  "command": "evidence-reconciliation-auditor on PR #145",
   "exit_code": 0,
   "test_output_file": "artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml",
   "provenance_level": "self_reported",
