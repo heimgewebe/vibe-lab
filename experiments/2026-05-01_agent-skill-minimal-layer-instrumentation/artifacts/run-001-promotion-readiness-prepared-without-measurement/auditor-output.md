@@ -25,14 +25,14 @@ MISSING_EVIDENCE
 - Freeze entry allows exactly `prepared_without_measurement` for this experiment — evidence: `.vibe/promotion-readiness-freeze.yml:95–103`
 - Regression tests cover trigger case (`test_prepared_insufficient_proof_not_ready`) and non-trigger case (`test_prepared_without_decision_file_still_ready`) — evidence: `scripts/docmeta/test_promotion_readiness.py:320–388`
 - Signal `prepared_without_measurement` added to ratchet allowlist `VALID_ALLOWED_MISSING` — evidence: `scripts/docmeta/validate_promotion_readiness.py:570`
-- All 4 changed files lie within the declared task scope — evidence: PR diff (validate_promotion_readiness.py, test_promotion_readiness.py, promotion-readiness.json, promotion-readiness-freeze.yml)
 
-## Unproven Claims
+## Missing Evidence / Unproven Claims
 
-- 101/101 tests passed — verdict: CLAIM_NOT_PROVEN — reason: no CI/test log artifact in repo
-- `make generate-blocking` unchanged — verdict: CLAIM_NOT_PROVEN — reason: no command output artifact in repo
-- `make validate` passed — verdict: CLAIM_NOT_PROVEN — reason: no command output artifact in repo
-- experiment-critic was used — verdict: CLAIM_NOT_PROVEN — reason: no critic output artifact found
+- All 4 changed files lie within the declared task scope — verdict: MISSING_EVIDENCE — reason: archived PR diff / changed-files artifact not present in repo (claim-009)
+- 101/101 tests passed — verdict: MISSING_EVIDENCE — reason: no CI/test log artifact in repo (claim-010)
+- `make generate-blocking` unchanged — verdict: MISSING_EVIDENCE — reason: no command output artifact in repo (claim-011)
+- `make validate` passed — verdict: MISSING_EVIDENCE — reason: no command output artifact in repo (claim-012)
+- experiment-critic was used — verdict: MISSING_EVIDENCE — reason: no critic output artifact found (claim-013)
 
 ## Out-of-Scope Claims
 
@@ -44,6 +44,7 @@ none
 
 ## Missing Evidence
 
+- archived PR diff / changed-files artifact — verdict: MISSING_EVIDENCE — expected source: `artifacts/run-001-promotion-readiness-prepared-without-measurement/pr-changed-files.txt` or similar
 - CI/test log artifact — verdict: MISSING_EVIDENCE — expected source: CI run artifact or `artifacts/run-001-promotion-readiness-prepared-without-measurement/test-output.txt`
 - `make generate-blocking` output artifact — verdict: MISSING_EVIDENCE — expected source: CI run artifact or `artifacts/run-001-promotion-readiness-prepared-without-measurement/generate-blocking-output.txt`
 - `make validate` output artifact — verdict: MISSING_EVIDENCE — expected source: CI run artifact or `artifacts/run-001-promotion-readiness-prepared-without-measurement/validate-output.txt`

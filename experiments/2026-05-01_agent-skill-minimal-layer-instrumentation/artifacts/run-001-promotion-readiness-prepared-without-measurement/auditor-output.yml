@@ -74,22 +74,16 @@ claims:
   - id: "claim-009"
     text: "All 4 changed files lie within the declared task scope."
     type: "scope_adhered_to"
-    verdict: "PASS"
-    notes: "Based on PR diff; PR diff is not archived as a repo artifact — scope claim is plausible but not independently verifiable from repo state alone."
-    evidence:
-      - path: "scripts/docmeta/validate_promotion_readiness.py"
-        locator: "file present in declared scope"
-      - path: "scripts/docmeta/test_promotion_readiness.py"
-        locator: "file present in declared scope"
-      - path: "docs/_generated/promotion-readiness.json"
-        locator: "file present in declared scope"
-      - path: ".vibe/promotion-readiness-freeze.yml"
-        locator: "file present in declared scope"
+    verdict: "MISSING_EVIDENCE"
+    notes: "PR diff is not archived as a repo artifact; scope claim is plausible but cannot be independently verified from repo state."
+    evidence: []
+    missing_evidence:
+      - "archived PR diff / changed-files artifact not present in repo"
 
   - id: "claim-010"
     text: "101/101 tests passed."
     type: "validator_succeeded"
-    verdict: "CLAIM_NOT_PROVEN"
+    verdict: "MISSING_EVIDENCE"
     evidence: []
     missing_evidence:
       - "CI/test log artifact not present in repo"
@@ -97,7 +91,7 @@ claims:
   - id: "claim-011"
     text: "make generate-blocking unchanged."
     type: "command_succeeded"
-    verdict: "CLAIM_NOT_PROVEN"
+    verdict: "MISSING_EVIDENCE"
     evidence: []
     missing_evidence:
       - "make generate-blocking output artifact not present in repo"
@@ -105,7 +99,7 @@ claims:
   - id: "claim-012"
     text: "make validate passed."
     type: "command_succeeded"
-    verdict: "CLAIM_NOT_PROVEN"
+    verdict: "MISSING_EVIDENCE"
     evidence: []
     missing_evidence:
       - "make validate output artifact not present in repo"
@@ -113,7 +107,7 @@ claims:
   - id: "claim-013"
     text: "experiment-critic was used for this PR."
     type: "command_succeeded"
-    verdict: "CLAIM_NOT_PROVEN"
+    verdict: "MISSING_EVIDENCE"
     evidence: []
     missing_evidence:
       - "experiment-critic output artifact not found in experiment directory"
@@ -123,11 +117,12 @@ out_of_scope_claims: []
 contradictions: []
 
 missing_evidence:
+  - "archived PR diff / changed-files artifact (scope adherence not independently verifiable)"
   - "CI/test log artifact"
   - "make generate-blocking output artifact"
   - "make validate output artifact"
   - "experiment-critic output artifact"
-  - "archived PR metadata / changed-files artifact (pr_commits, pr_additions, pr_deletions, review_friction, rework not independently verifiable from repo state)"
+  - "archived PR metadata artifact (pr_commits, pr_additions, pr_deletions, review_friction, rework not independently verifiable from repo state)"
 
 required_next_proof:
   - "Archive CI/make output as repo artifact for future runs."
