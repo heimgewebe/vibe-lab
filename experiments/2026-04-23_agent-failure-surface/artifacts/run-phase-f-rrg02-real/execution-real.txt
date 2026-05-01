@@ -1,8 +1,8 @@
 [command] python3 /tmp/rrg02_real_exec.py
 [command] mktemp -d
 [output] tmp_workspace=/tmp/rrg02-real-iqvwiv5_
-[command] cp fixtures/before.md /tmp/rrg02-real-iqvwiv5_/before.md
-[output] fixture written to temp workspace (LF line endings)
+[command] write fixture content to /tmp/rrg02-real-iqvwiv5_/before.md via reproduction script
+[output] fixture written to temp workspace as literal string (LF line endings, sha256: 751ebb67)
 [command] git init --initial-branch master .
 [output] Initialized empty Git repository in /tmp/rrg02-real-iqvwiv5_/.git/
 [command] git config user.email agent@vibe-lab.test && git config user.name 'Vibe Lab Agent'
