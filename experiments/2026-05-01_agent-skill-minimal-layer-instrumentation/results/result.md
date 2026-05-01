@@ -20,7 +20,7 @@ canonicality: operative
 
 - 1 PR-Datensatz erhoben (Run 1: PR #145).
 - Auditor-Verdict (YAML-kanonisch): **MISSING_EVIDENCE**.
-- `unsupported_claim_count=5`, `validation_gap_count=3` — abgeleitet aus `auditor-output.yml` (`derived_from_auditor_output`). unsupported_claims zählt alle non-PASS-Claims (claim-009 bis 013); validation_gaps zählt nur fehlende CI/make/validate-Outputs.
+- `unsupported_claim_count=5`, `validation_gap_count=3` — abgeleitet aus `auditor-output.yml` (`derived_from_auditor_output`). unsupported_claim_count zählt alle non-PASS-Claims (claim-009 bis 013); validation_gap_count zählt nur fehlende CI/make/validate-Outputs.
 - PR-Metadaten (commits, additions, review_friction, rework, completion_time) nicht als Repo-Artefakt archiviert (`external_unverified`).
 - Kein Wirkungsclaim möglich oder zulässig (einzelner Messpunkt, keine Kontrollgruppe).
 - Keine Aussage, dass Agent- oder Skill-Dateien nützlich sind.
@@ -32,7 +32,7 @@ canonicality: operative
 - Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
 - Run 1 (PR #145) wurde erfasst; kanonischer Auditor-Output in `auditor-output.yml`.
 - Run-Level Auditor Verdict: MISSING_EVIDENCE (CI/make/critic-Artefakte und PR-Metadaten-Artefakt nicht im Repo vorhanden).
-- unsupported_claims=5, validation_gaps=3 (derived_from_auditor_output).
+- unsupported_claim_count=5, validation_gap_count=3 (derived_from_auditor_output).
 - Kein Wirksamkeitsclaim.
 
 ### Disallowed Claims
