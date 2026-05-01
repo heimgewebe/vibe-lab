@@ -1,0 +1,122 @@
+# Run-001 Measurement
+# Experiment: 2026-05-01_agent-skill-minimal-layer-instrumentation
+# PR: github:heimgewebe/vibe-lab/pull/145
+
+schema_version: "0.1.0"
+contract: "measurement_run"
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+
+auditor_verdict: "MISSING_EVIDENCE"
+auditor_ref: "artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml"
+
+agent_layer_used:
+  experiment_critic: "UNKNOWN"
+  evidence_reconciliation_auditor: true
+
+pr_metadata:
+  pr_ref: "github:heimgewebe/vibe-lab/pull/145"
+  pr_title: "Fix promotion-readiness semantics for prepared instrumentation experiments"
+  pr_merged_at: "2026-05-01T12:37:30Z"
+  pr_author: "copilot-agent"
+  pr_merged_by: "alexdermohr"
+  pr_commits: 3
+  pr_changed_files: 4
+  pr_additions: 127
+  pr_deletions: 10
+  evidence_status: "external_unverified"
+  notes: >-
+    PR web metadata. No archived PR metadata artifact in repo. Values sourced
+    from PR web UI / GitHub API; not independently verifiable from repo state.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "external_unverified"
+    notes: >-
+      All 4 changed files appear within the declared task scope per PR diff.
+      PR diff is not archived as a repo artifact; scope claim is plausible
+      but not independently verifiable from repo state alone.
+
+  unsupported_claim_count:
+    value: 5
+    evidence_status: "derived_from_auditor_output"
+    notes: >-
+      Five auditor claims are non-PASS due to missing repo-local evidence:
+      claim-009 (archived PR diff / changed-files artifact missing),
+      claim-010 (CI/test log missing), claim-011 (make generate-blocking
+      output missing), claim-012 (make validate output missing),
+      claim-013 (experiment-critic output missing).
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "external_unverified"
+    notes: >-
+      Review comments referenced concrete file paths and line numbers.
+      Sourced from PR review web UI; not archived as repo artifact.
+
+  validation_gap_count:
+    value: 3
+    evidence_status: "derived_from_auditor_output"
+    notes: >-
+      Three command/validation outputs are absent from repo per
+      auditor-output.yml missing_evidence: CI/test log, make generate-blocking
+      output, make validate output. Counted as three separate gaps.
+      validation_gap_count counts only missing command/validator outputs
+      (CI/test log, make generate-blocking, make validate), not missing
+      PR diff or critic-output (those are in unsupported_claim_count).
+
+  review_friction_count:
+    value: 2
+    evidence_status: "external_unverified"
+    notes: >-
+      2 automated Copilot review comments observed via PR web UI.
+      Not archived as repo artifact; value is external_unverified.
+
+  rework_count:
+    value: 1
+    evidence_status: "external_unverified"
+    notes: >-
+      PR contains 3 commits; review comments addressed in follow-up commit(s).
+      Commit count from PR web metadata (external_unverified).
+
+  false_block_count:
+    value: 0
+    evidence_status: "external_unverified"
+    notes: >-
+      PR was merged without incident per web metadata. No repo artifact
+      confirms absence of blocking; value is external_unverified.
+
+  task_completion_time_observed:
+    value: "~105 min"
+    evidence_status: "external_unverified"
+    notes: >-
+      PR created 2026-05-01T10:52:46Z, merged 2026-05-01T12:37:30Z per
+      PR web metadata. Descriptive only; no causal value for agent-layer effect.
+
+missing_evidence:
+  - item: "CI/test log artifact"
+    detail: >-
+      "101/101 tests pass" claimed in PR body; no test log artifact in repo.
+  - item: "make generate-blocking output artifact"
+    detail: >-
+      "make generate-blocking unchanged" claimed in PR body;
+      no command output artifact in repo.
+  - item: "make validate output artifact"
+    detail: >-
+      "make validate passed" claimed in PR body;
+      no command output artifact in repo.
+  - item: "experiment-critic output artifact"
+    detail: >-
+      No critic output artifact found for this PR in the experiment.
+  - item: "archived PR metadata artifact"
+    detail: >-
+      pr_commits, pr_additions, pr_deletions, review_friction, rework, and
+      completion_time are sourced from PR web UI; no archived PR metadata
+      artifact present in repo for independent verification.
+
+interpretation_limits:
+  - "A single data point does not allow generalization."
+  - "No usefulness claim about the agent/skill layer can be derived from this data."
+  - "Metrics are not yet calibrated — counting definitions may stabilize in early runs."
+  - "agent_layer_used.experiment_critic is UNKNOWN: no critic output artifact found."
+  - "Most metrics are external_unverified or derived_from_auditor_output; none are fully repo-local observed."

@@ -477,6 +477,22 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
             missing.append("prepared_without_measurement")
             notes.append("prepared_without_measurement")
 
+    # Allgemeine Regel: execution_assessment + insufficient_proof bei executed/replicated
+    # → Messwerte vorhanden, aber Bewertung ergibt unzureichende Evidenz.
+    # Gilt unabhängig von execution_status=prepared (orthogonale Prüfung).
+    if (
+        not historical
+        and state["execution_status"] in {"executed", "replicated"}
+    ):
+        decision = load_decision_file(exp_dir)
+        if (
+            decision is not None
+            and decision.get("decision_type") == "execution_assessment"
+            and decision.get("verdict") == "insufficient_proof"
+        ):
+            missing.append("insufficient_proof_assessment")
+            notes.append("insufficient_proof_assessment")
+
     promotion_ready = (len(missing) == 0)
     # Historischer Escape ist definitorisch nicht "ready" im neuen Sinn,
     # aber auch nicht "not_ready" — er wird gesondert markiert.
@@ -568,6 +584,7 @@ VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
     "falsifiability.assessment_counterhypothesis_supported",
     "falsifiability.assessment_blocked",
     "prepared_without_measurement",
+    "insufficient_proof_assessment",
 })
 
 _ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")

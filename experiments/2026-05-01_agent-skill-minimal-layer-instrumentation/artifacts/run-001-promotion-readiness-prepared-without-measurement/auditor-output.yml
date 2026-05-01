@@ -1,0 +1,130 @@
+schema_version: "0.1.0"
+contract: "auditor_output"
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+pr_ref: "github:heimgewebe/vibe-lab/pull/145"
+auditor_date: "2026-05-01"
+auditor: "evidence-reconciliation-auditor"
+overall_verdict: "MISSING_EVIDENCE"
+
+claims:
+  - id: "claim-001"
+    text: "Docstring update in test_promotion_readiness.py (Item 6 updated to reflect prepared-exception)."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/test_promotion_readiness.py"
+        locator: "module docstring, item 6 (lines 6–14)"
+
+  - id: "claim-002"
+    text: "encoding='utf-8' added to open(decision_path) in load_decision_file()."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_promotion_readiness.py"
+        locator: "load_decision_file() — line 156"
+
+  - id: "claim-003"
+    text: "Validator loads results/decision.yml via new load_decision_file() function."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_promotion_readiness.py"
+        locator: "load_decision_file()"
+
+  - id: "claim-004"
+    text: "Validator marks prepared + execution_assessment + insufficient_proof as prepared_without_measurement."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_promotion_readiness.py"
+        locator: "evaluate_experiment() lines 462–478"
+
+  - id: "claim-005"
+    text: "Generated promotion-readiness report marks the instrumentation experiment as promotion_ready=false."
+    type: "generated_artifact_updated"
+    verdict: "PASS"
+    evidence:
+      - path: "docs/_generated/promotion-readiness.json"
+        locator: "lines 203–216"
+
+  - id: "claim-006"
+    text: "Freeze entry allows insufficient_proof_assessment for this experiment."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: ".vibe/promotion-readiness-freeze.yml"
+        locator: "entry for experiments/2026-05-01_agent-skill-minimal-layer-instrumentation"
+
+  - id: "claim-007"
+    text: "Regression tests cover trigger case (test_prepared_insufficient_proof_not_ready) and non-trigger case (test_prepared_without_decision_file_still_ready)."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/test_promotion_readiness.py"
+        locator: "lines 320–388"
+
+  - id: "claim-008"
+    text: "Signal prepared_without_measurement added to ratchet allowlist VALID_ALLOWED_MISSING."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_promotion_readiness.py"
+        locator: "line 570"
+
+  - id: "claim-009"
+    text: "All 4 changed files lie within the declared task scope."
+    type: "scope_adhered_to"
+    verdict: "MISSING_EVIDENCE"
+    notes: "PR diff is not archived as a repo artifact; scope claim is plausible but cannot be independently verified from repo state."
+    evidence: []
+    missing_evidence:
+      - "archived PR diff / changed-files artifact not present in repo"
+
+  - id: "claim-010"
+    text: "101/101 tests passed."
+    type: "validator_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence: []
+    missing_evidence:
+      - "CI/test log artifact not present in repo"
+
+  - id: "claim-011"
+    text: "make generate-blocking unchanged."
+    type: "command_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence: []
+    missing_evidence:
+      - "make generate-blocking output artifact not present in repo"
+
+  - id: "claim-012"
+    text: "make validate passed."
+    type: "command_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence: []
+    missing_evidence:
+      - "make validate output artifact not present in repo"
+
+  - id: "claim-013"
+    text: "experiment-critic was used for this PR."
+    type: "agent_usage"
+    verdict: "MISSING_EVIDENCE"
+    evidence: []
+    missing_evidence:
+      - "experiment-critic output artifact not found in experiment directory"
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence:
+  - "archived PR diff / changed-files artifact (scope adherence not independently verifiable)"
+  - "CI/test log artifact"
+  - "make generate-blocking output artifact"
+  - "make validate output artifact"
+  - "experiment-critic output artifact"
+  - "archived PR metadata artifact (pr_commits, pr_additions, pr_deletions, review_friction, rework not independently verifiable from repo state)"
+
+required_next_proof:
+  - "Archive CI/make output as repo artifact for future runs."
+  - "Archive experiment-critic output for future runs if critic usage is claimed."
+  - "Archive PR metadata summary (changed files, commit count, additions/deletions) as repo artifact for future runs."

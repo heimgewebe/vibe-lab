@@ -8,13 +8,37 @@ experiment:
   hypothesis: "The measurement scaffold can capture comparable PR-level data for the Agent/Skill Minimal Layer without making an effect claim."
   status: testing
   category: workflow
-  execution_status: prepared
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - results/evidence.jsonl
+    - artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
+    - artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml
+    - artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
   created: "2026-05-01"
   updated: "2026-05-01"
   author: "copilot-agent"
-  iteration: 1
+  iteration: 2
   evidence_level: anecdotal
+  falsifiability:
+    version: 1
+    falsification_criterion: >-
+      Die Hypothese gilt als geschwächt, wenn nach mindestens drei vergleichbaren PRs
+      die Run-Artefakte unvollständig sind, Metriken nicht konsistent ableitbar sind,
+      oder Agent- und Auditor-Nutzung nicht belegbar archiviert werden kann.
+      Kein Wirksamkeitsclaim: Das Kriterium betrifft ausschließlich die Messbarkeit
+      des Scaffolds, nicht die Wirkung der Agent/Skill-Schicht.
+    counter_hypotheses:
+      - id: scaffold_not_comparable_across_prs
+        statement: >-
+          Das Messgerüst erfasst keine vergleichbaren PR-Daten, weil
+          PR-Kontext, Metriken oder Run-Bundles zwischen PRs zu stark variieren,
+          um epistemisch sinnvolle Vergleiche zu ermöglichen.
+        assessment:
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
+              section: "Run 1 — single PR measurement"
 
 context:
   tools: ["experiment-critic", "evidence-reconciliation-auditor"]

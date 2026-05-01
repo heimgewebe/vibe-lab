@@ -1,0 +1,57 @@
+---
+canonical: false
+derived_from: "./auditor-output.yml"
+role: "human_projection"
+source_of_truth: false
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+pr_ref: "github:heimgewebe/vibe-lab/pull/145"
+auditor_date: "2026-05-01"
+auditor: "evidence-reconciliation-auditor (copilot-agent)"
+---
+
+> **Non-canonical projection.** The machine-readable source of truth is [`auditor-output.yml`](./auditor-output.yml). This Markdown file is a human-readable view of that YAML artifact and must not be referenced as authoritative evidence.
+
+## Verdict
+
+MISSING_EVIDENCE
+
+## Proven Claims
+
+- Docstring update in `test_promotion_readiness.py` (Item 6 updated to reflect prepared-exception) — evidence: `scripts/docmeta/test_promotion_readiness.py:6–14`
+- `encoding="utf-8"` added to `open(decision_path)` in `load_decision_file()` — evidence: `scripts/docmeta/validate_promotion_readiness.py::load_decision_file`
+- Validator loads `results/decision.yml` via new `load_decision_file()` function — evidence: `scripts/docmeta/validate_promotion_readiness.py::load_decision_file`
+- Validator marks `prepared + execution_assessment + insufficient_proof` as `prepared_without_measurement` — evidence: `scripts/docmeta/validate_promotion_readiness.py::evaluate_experiment` (lines 462–478)
+- Generated promotion-readiness report marks the instrumentation experiment as `promotion_ready=false` — evidence: `docs/_generated/promotion-readiness.json:203–216`
+- Freeze entry allows `insufficient_proof_assessment` for this experiment — evidence: `.vibe/promotion-readiness-freeze.yml` entry for `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation`
+- Regression tests cover trigger case (`test_prepared_insufficient_proof_not_ready`) and non-trigger case (`test_prepared_without_decision_file_still_ready`) — evidence: `scripts/docmeta/test_promotion_readiness.py:320–388`
+- Signal `prepared_without_measurement` added to ratchet allowlist `VALID_ALLOWED_MISSING` — evidence: `scripts/docmeta/validate_promotion_readiness.py:570`
+
+## Missing Evidence / Unproven Claims
+
+- All 4 changed files lie within the declared task scope — verdict: MISSING_EVIDENCE — reason: archived PR diff / changed-files artifact not present in repo (claim-009)
+- 101/101 tests passed — verdict: MISSING_EVIDENCE — reason: no CI/test log artifact in repo (claim-010)
+- `make generate-blocking` unchanged — verdict: MISSING_EVIDENCE — reason: no command output artifact in repo (claim-011)
+- `make validate` passed — verdict: MISSING_EVIDENCE — reason: no command output artifact in repo (claim-012)
+- experiment-critic was used — verdict: MISSING_EVIDENCE — reason: no critic output artifact found (claim-013)
+
+## Out-of-Scope Claims
+
+none
+
+## Contradictions
+
+none
+
+## Missing Evidence
+
+- archived PR diff / changed-files artifact — verdict: MISSING_EVIDENCE — expected source: `artifacts/run-001-promotion-readiness-prepared-without-measurement/pr-changed-files.txt` or similar
+- CI/test log artifact — verdict: MISSING_EVIDENCE — expected source: CI run artifact or `artifacts/run-001-promotion-readiness-prepared-without-measurement/test-output.txt`
+- `make generate-blocking` output artifact — verdict: MISSING_EVIDENCE — expected source: CI run artifact or `artifacts/run-001-promotion-readiness-prepared-without-measurement/generate-blocking-output.txt`
+- `make validate` output artifact — verdict: MISSING_EVIDENCE — expected source: CI run artifact or `artifacts/run-001-promotion-readiness-prepared-without-measurement/validate-output.txt`
+- experiment-critic output artifact — verdict: MISSING_EVIDENCE — expected source: `artifacts/run-001-promotion-readiness-prepared-without-measurement/critic-output.md`
+
+## Required Next Proof
+
+- Archive CI/test log output as repo artifact for future runs.
+- Archive `make generate-blocking` and `make validate` command output as repo artifact for future runs.
+- Archive experiment-critic output as repo artifact for future runs if experiment-critic usage is claimed.

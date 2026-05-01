@@ -8,13 +8,21 @@ canonicality: operative
 
 ## Status
 
-**Instrumentierung gestartet.** Experimentgerüst angelegt. Kein realer PR-Datensatz vorhanden.
+**Run 1 erfasst.** PR #145 als erster realer Messdatensatz dokumentiert. Kein Wirksamkeitsclaim.
+
+## Canonical Artifacts
+
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output (machine-readable source of truth)
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`** — Run-1-Metriken
+- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion (human-readable view only)
 
 ## Datenlage
 
-- Keine PR-Daten erhoben.
-- Keine Metriken gemessen.
-- Kein Wirkungsclaim möglich oder zulässig.
+- 1 PR-Datensatz erhoben (Run 1: PR #145).
+- Auditor-Verdict (YAML-kanonisch): **MISSING_EVIDENCE**.
+- `unsupported_claim_count=5`, `validation_gap_count=3` — abgeleitet aus `auditor-output.yml` (`derived_from_auditor_output`). unsupported_claim_count zählt alle non-PASS-Claims (claim-009 bis 013); validation_gap_count zählt nur fehlende CI/make/validate-Outputs.
+- PR-Metadaten (commits, additions, review_friction, rework, completion_time) nicht als Repo-Artefakt archiviert (`external_unverified`).
+- Kein Wirkungsclaim möglich oder zulässig (einzelner Messpunkt, keine Kontrollgruppe).
 - Keine Aussage, dass Agent- oder Skill-Dateien nützlich sind.
 
 ## Interpretation Budget
@@ -22,7 +30,10 @@ canonicality: operative
 ### Allowed Claims
 
 - Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
-- Noch kein Effekt wurde gemessen.
+- Run 1 (PR #145) wurde erfasst; kanonischer Auditor-Output in `auditor-output.yml`.
+- Run-Level Auditor Verdict: MISSING_EVIDENCE (CI/make/critic-Artefakte und PR-Metadaten-Artefakt nicht im Repo vorhanden).
+- unsupported_claim_count=5, validation_gap_count=3 (derived_from_auditor_output).
+- Kein Wirksamkeitsclaim.
 
 ### Disallowed Claims
 
@@ -30,15 +41,19 @@ canonicality: operative
 - Die Agent-Schicht ist nützlich.
 - Skill-Dateien sind bewertet.
 - CI-/Script-Rückbindung ist gerechtfertigt.
+- Aus einem einzelnen Messpunkt folgt irgendeine Wirkungsaussage.
 
 ## Evidence Basis
 
 | Kategorie | Stand |
 |---|---|
-| Direkt beobachtet | Experimentgerüst angelegt |
-| Nicht getestet | Wirkung, Vergleichbarkeit, False Blocks, Review Friction, Task-Dauer |
-| Nicht vorhanden | PR-Datensätze, Metriken, Kontrollgruppe |
+| Repo-lokal belegt (PASS) | Validator-Logik, Ratchet-Entry, Regressionstests, generiertes Artefakt (via auditor-output.yml) |
+| derived_from_auditor_output | unsupported_claim_count, validation_gap_count |
+| external_unverified | PR-Metadaten (commits, additions, deletions, review_friction, rework, completion_time, scope_drift) |
+| MISSING_EVIDENCE | CI-Testprotokoll, make-Ausgaben, experiment-critic-Output, archiviertes PR-Metadaten-Artefakt |
+| Nicht getestet | Wirkung, Vergleichbarkeit |
+| Nicht vorhanden | Kontrollgruppe, mindestens 3 vergleichbare PRs für Zwischenauswertung |
 
 ## Nächste Schritte
 
-Den ersten realen PR mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensatz erfassen und in `results/evidence.jsonl` eintragen.
+Mindestens zwei weitere reale PRs mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensätze erfassen. CI/make-Outputs und PR-Metadaten als Repo-Artefakte archivieren. Zwischenauswertung nach drei vergleichbaren PRs.

@@ -94,10 +94,11 @@ promotion_readiness_freeze:
 
     - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation
       allowed_missing:
-        - prepared_without_measurement
+        - insufficient_proof_assessment
       reason: >-
-        Prepared instrumentation scaffold without real measurement data.
-        decision.yml carries verdict=insufficient_proof (execution_assessment),
-        which correctly blocks promotion_ready via the prepared_without_measurement
-        rule. Remove once real measurement evidence is collected and decision.yml
-        is updated.
+        Run 1 (PR #145) captured with execution_status=executed. decision.yml
+        carries verdict=insufficient_proof (execution_assessment, single measurement,
+        no comparison group). Falsifiability block present with partially_checked/
+        inconclusive assessment (one PR, not yet sufficient evidence for confirmation).
+        Remove insufficient_proof_assessment once decision.yml verdict reflects
+        sufficient evidence after at least three comparable PRs.
