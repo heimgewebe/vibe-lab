@@ -118,7 +118,7 @@ Phase 4 wird als `qualitative_inventory` mit `no_patch` abgeschlossen. Ergebnis 
 **Szenario:** CRLF-to-LF-Normalisierung durch den Apply-Layer.
 Das Fixture (`before.md`) wurde mit CRLF-Zeilenenden im Temp-Workspace initialisiert.
 Step A (`Load config from file.` → `Load config from disk.`) wurde real über
-`read_text`/`write_text` (Python-Standardverhalten: CRLF → LF) angewendet.
+`read_text` (Universal-Newline-Read, CRLF → LF im Speicher) + expliziter LF-Write (`open(..., newline="\n")`) angewendet.
 
 **Ergebnis Real-Run:**
 

@@ -405,7 +405,7 @@ Artefakt: `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rr
 
 Das Fixture repräsentiert eine Datei mit CRLF-Zeilenenden (Windows-Originalzustand
 oder Editor-Artefakt). Step A wurde real auf einem Temp-Workspace ausgeführt —
-Mutation über Python `read_text`/`write_text` (Standard: CRLF → LF auf Linux).
+Mutation über Python `read_text` (Universal-Newline-Read, CRLF → LF im Speicher) + expliziter LF-Write (`open(..., newline="\n")`). Belegt durch den eingebetteten Reproduktionsschritt in `execution-real.txt`.
 
 **Beobachtetes Ergebnis:**
 
