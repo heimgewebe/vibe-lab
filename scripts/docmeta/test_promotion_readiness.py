@@ -11,6 +11,7 @@ Covers:
   6. designed/prepared experiments without blocking decision signals remain ready with notes=[].
      prepared + execution_assessment + insufficient_proof is a narrow exception:
      it is not promotion-ready and carries the prepared_without_measurement signal.
+     executed + execution_assessment + insufficient_proof carries insufficient_proof_assessment.
   7. Two runs produce identical output (determinism / write_if_changed).
   8. Falsifiability block loaded from the valid/invalid fixtures shows expected structure.
 """
@@ -383,6 +384,57 @@ class IsolatedRepoScenarios(unittest.TestCase):
             entry = by_name["exp-prepared-no-decision"]
 
             self.assertTrue(entry["promotion_ready"])
+            self.assertNotIn("prepared_without_measurement", entry["notes"])
+
+    def test_executed_insufficient_proof_not_ready(self) -> None:
+        """executed + decision_type=execution_assessment + verdict=insufficient_proof
+        → promotion_ready must be False with signal 'insufficient_proof_assessment'.
+
+        Regression: execution_status=executed must not bypass the insufficient_proof
+        gate. The rule is orthogonal to prepared_without_measurement and fires
+        independently for executed/replicated experiments.
+        """
+        import yaml as _yaml
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            exp_dir = root / "exp-executed-insufficient-proof"
+
+            # Write manifest with execution_status=executed
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="testing", execution_status="executed"),
+            )
+
+            # Write results/decision.yml with the triggering combination
+            decision_path = exp_dir / "results" / "decision.yml"
+            decision_path.parent.mkdir(parents=True, exist_ok=True)
+            decision_path.write_text(
+                _yaml.safe_dump(
+                    {
+                        "decision_type": "execution_assessment",
+                        "verdict": "insufficient_proof",
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entries = self._evaluate_dir(root)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            by_name = {Path(e["path"]).name: e for e in entries}
+            entry = by_name["exp-executed-insufficient-proof"]
+
+            self.assertFalse(entry["promotion_ready"])
+            self.assertIn("insufficient_proof_assessment", entry["missing"])
+            self.assertIn("insufficient_proof_assessment", entry["notes"])
+            # prepared_without_measurement must NOT fire for executed
+            self.assertNotIn("prepared_without_measurement", entry["missing"])
             self.assertNotIn("prepared_without_measurement", entry["notes"])
 
 

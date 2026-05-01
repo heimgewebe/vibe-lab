@@ -8,11 +8,12 @@ experiment:
   hypothesis: "The measurement scaffold can capture comparable PR-level data for the Agent/Skill Minimal Layer without making an effect claim."
   status: testing
   category: workflow
-  execution_status: prepared  # TODO: update to executed once run_meta.json added and .vibe/promotion-readiness-freeze.yml freeze entry updated
+  execution_status: executed
   execution_refs:
     - results/evidence.jsonl
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml
+    - artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
   created: "2026-05-01"
   updated: "2026-05-01"
   author: "copilot-agent"
