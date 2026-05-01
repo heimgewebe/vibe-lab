@@ -134,6 +134,7 @@
 | `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md` | Experiment-Ergebnis: Generated Artifact Contract Validation | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` | Kontext: Agent Failure Surface Mapping | draft | operative |
 | `experiments/2026-04-23_agent-failure-surface/INITIAL.md` | Initiale Situation: Agent Failure Surface Mapping | draft | operative |
+| `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/before.md` | before | — | — |
 | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md` | before | — | — |
 | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/before.md` | before | — | — |
 | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/before.md` | before | — | — |

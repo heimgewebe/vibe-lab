@@ -3,7 +3,7 @@ title: "Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten"
 status: draft
 canonicality: operative
 created: "2026-04-30"
-updated: "2026-04-30"
+updated: "2026-05-01"
 author: "Copilot Agent"
 relations:
   - type: references
@@ -18,6 +18,8 @@ relations:
     target: "../../decisions/process/2026-04-30-rrg03-remediation-boundary.yml"
   - type: references
     target: "../../contracts/command-semantics.md"
+  - type: references
+    target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json"
 ---
 
 # Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten
@@ -382,3 +384,54 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
 - Keine v0.2-Implementierung.
 - Kein neuer CI-Gate.
 - Keine historischen Artifact-Rewrites.
+
+---
+
+## RRG-01 Real-Run Status (2026-05-01)
+
+**Status vor diesem Update:** `nicht real-run-belegt`
+**Status nach diesem Update:** `fixture_proven`
+
+### Durchgeführter Real-Run
+
+Artefakt: `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/`
+
+**Szenario:** CRLF-to-LF-Normalisierung durch den Apply-Layer.
+
+Das Fixture repräsentiert eine Datei mit CRLF-Zeilenenden (Windows-Originalzustand
+oder Editor-Artefakt). Step A wurde real auf einem Temp-Workspace ausgeführt —
+Mutation über Python `read_text`/`write_text` (Standard: CRLF → LF auf Linux).
+
+**Beobachtetes Ergebnis:**
+
+| Feld | Wert |
+|------|------|
+| `sha256_before` (CRLF) | `35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269` |
+| `sha256_after` (LF) | `42cccfcc322444cbd34b43b0dda050b6d312e5e120bf509e17e6fe3f7b34c92d` |
+| Step B `exact_before` gefunden | `false` |
+| `classification` | `content_drifted` |
+| `patch_gate.triggered` | `true` |
+
+### Bestätigung der Hypothesen
+
+- **H1 bestätigt:** Realer Apply-Schritt änderte Disk-Inhalt über den CRLF→LF-Kanal;
+  Dry-Run hätte keine Disk-Mutation abgebildet.
+- **H2 bestätigt:** Step B's `exact_before` (mit `\r\n`) ist nach Apply nicht mehr auf
+  Disk vorhanden (nur noch `\n`); ein Folgekommando mit CRLF-Snapshot würde scheitern.
+- **H3 bestätigt:** Failure-Mode ist Content-/Snapshot-Drift,
+  kein Locator-Positionsdrift (Locator-Text `"Load config from environment."` ist
+  inhaltlich noch vorhanden, aber als falsches Encoding).
+
+### Trennung Belegt / Plausibel / Offen (aktualisiert)
+
+- **belegt:** CRLF→LF-Normalisierung durch `read_text`/`write_text` produziert
+  content_drifted für CRLF-basierte `exact_before`-Snapshots (fixture_only)
+- **plausibel:** Andere Normalisierungsarten (trailing whitespace, BOM) würden
+  ähnlichen Effekt zeigen — nicht durch diesen Run belegt
+- **offen:** Auswirkung auf Hash-basiertes `exact_before`-Binding in v0.2 —
+  kein Schema/Validator geändert, kein Decision Preimage
+
+### Epistemische Grenze
+
+Beweisumfang: `fixture_only`. Kein allgemeiner Beweis für Runner-Korrektheit oder
+allgemeine Locator-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.

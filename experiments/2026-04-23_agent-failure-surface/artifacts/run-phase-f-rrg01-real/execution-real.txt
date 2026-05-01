@@ -1,0 +1,40 @@
+[command] python3 /tmp/rrg01_real_exec.py
+[command] mktemp -d
+[output] tmp_workspace=/tmp/rrg01-real-6qe7xzrm
+[command] cp fixtures/before.md <tmp>/before.md (CRLF conversion)
+[output] fixture written to temp workspace with CRLF line endings
+[output] sha256_before=35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269
+[command] Step A — apply mutation with read_text/write_text (CRLF->LF normalization)
+[output] step_a_locator="Load config from file."
+[output] step_a_exact_before="Load config from file."
+[output] step_a_exact_after="Load config from disk."
+[output] step_a_applied=true
+[output] sha256_after=42cccfcc322444cbd34b43b0dda050b6d312e5e120bf509e17e6fe3f7b34c92d
+[command] diff -u before.md(CRLF) before.md(LF-after-Step-A)
+--- before.md (CRLF disk state)
++++ before.md (LF disk state after Step A)
+@@ -1,7 +1,7 @@
+-# Config Loader Notes
+-
+-Default:
+-Load config from file.
+-
+-Fallback:
+-Load config from environment.
++# Config Loader Notes
++
++Default:
++Load config from disk.
++
++Fallback:
++Load config from environment.
+[command] Step B — check exact_before against disk state after Step A
+[output] step_b_exact_before="'Load config from environment.\r\n'"
+[output] step_b_exact_before_found_on_disk=false
+[output] step_b_lf_variant_found=true
+[output] classification=content_drifted
+[output] patch_gate_triggered=true
+[command] dry-run comparison note
+[output] Dry-Run does not perform real Disk-I/O; it cannot observe CRLF->LF normalization.
+[output] Dry-Run would report exact_before match against pre-apply state.
+[output] Real-Run shows: after apply, CRLF exact_before is not found on LF disk state.

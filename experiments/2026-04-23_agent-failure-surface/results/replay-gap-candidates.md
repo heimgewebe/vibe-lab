@@ -3,7 +3,7 @@ title: "Phase 4 - Replay Reality Gap (Kandidateninventur)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
-updated: "2026-04-29"
+updated: "2026-05-01"
 author: "Copilot Agent"
 relations:
   - type: references
@@ -108,3 +108,31 @@ Ableitung für Phase 4: Der aktuelle Replay-Mechanismus beweist Dry-Run-Konsiste
 ## Entscheidung
 
 Phase 4 wird als `qualitative_inventory` mit `no_patch` abgeschlossen. Ergebnis ist eine kartierte Blindstellenliste für spätere reale Replay-Runner-Prüfung.
+
+## RRG-01 Real-Run
+
+**Status:** `fixture_proven` (2026-05-01)
+
+**Artefakt:** `artifacts/run-phase-f-rrg01-real/`
+
+**Szenario:** CRLF-to-LF-Normalisierung durch den Apply-Layer.
+Das Fixture (`before.md`) wurde mit CRLF-Zeilenenden im Temp-Workspace initialisiert.
+Step A (`Load config from file.` → `Load config from disk.`) wurde real über
+`read_text`/`write_text` (Python-Standardverhalten: CRLF → LF) angewendet.
+
+**Ergebnis Real-Run:**
+
+| Feld | Wert |
+|------|------|
+| `sha256_before` (CRLF) | `35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269` |
+| `sha256_after` (LF) | `42cccfcc322444cbd34b43b0dda050b6d312e5e120bf509e17e6fe3f7b34c92d` |
+| `step_b_exact_before_found` | `false` |
+| `classification` | `content_drifted` |
+| `patch_gate.triggered` | `true` |
+
+**Failure-Mode bestätigt:** Content-/Snapshot-Drift, nicht Locator-Positionsdrift.
+Step B's `exact_before` enthielt `\r\n`; nach Step A ist nur noch `\n` auf Disk.
+Der Dry-Run würde diesen Drift nicht erkennen (non-mutating, kein echtes Disk-I/O).
+
+**Epistemische Grenze:** Beweis gilt ausschließlich für diese Fixture (fixture_only).
+Keine allgemeine Aussage über Runner-Korrektheit oder beste Remediation-Strategie.
