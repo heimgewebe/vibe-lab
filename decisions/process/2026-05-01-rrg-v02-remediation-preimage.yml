@@ -236,10 +236,11 @@ risks:
       Aussagen über Runner- oder Locator-Sicherheit zu interpretieren.
       Alle vier Belege gelten ausschließlich für ihre jeweilige kontrollierte
       Fixture (proof_scope: fixture_only).
-  nutzen: >
-    Klare Trennung der drei Remediation-Pfade vor jeder Implementierung.
-    Verhindert premature Runtime-/Schema-/Validator-Patch ohne belegten
-    Strategie-Entscheid. Hält Drift-Klassen sichtbar und getrennt.
+
+nutzen: >
+  Klare Trennung der drei Remediation-Pfade vor jeder Implementierung.
+  Verhindert premature Runtime-/Schema-/Validator-Patch ohne belegten
+  Strategie-Entscheid. Hält Drift-Klassen sichtbar und getrennt.
 
 follow_up:
   - >
