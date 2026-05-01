@@ -8,11 +8,11 @@
 [command] git config user.email agent@vibe-lab.test && git config user.name 'Vibe Lab Agent'
 [output] (no output — config set)
 [command] git add before.md && git commit -m 'baseline: initial before.md'
-[output] [master (root-commit) 433311c] baseline: initial before.md
+[output] [master (root-commit) 62aada7] baseline: initial before.md
  1 file changed, 8 insertions(+)
  create mode 100644 before.md
 [command] git rev-parse HEAD
-[output] 433311cf64fc69eb27eea55985eb8919c2f8ed7d
+[output] 62aada7decbd95f048f7158e7f5dc90019ece638
 [command] sha256sum HEAD:before.md (via git show HEAD:before.md | sha256sum)
 [output] head_sha256_before=751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2
 [command] sha256sum :before.md (via git show :before.md | sha256sum)
@@ -118,13 +118,23 @@ WORK_FILE = WORKDIR / 'before.md'
 WORK_FILE.write_text(BEFORE_MD, encoding='utf-8')
 
 # Init git repo
-subprocess.run(['git', 'init', '.'], cwd=WORKDIR, capture_output=True, text=True)
+subprocess.run(['git', 'init', '--initial-branch', 'master', '.'], cwd=WORKDIR, capture_output=True, text=True, check=True)
 subprocess.run(['git', 'config', 'user.email', 'agent@vibe-lab.test'], cwd=WORKDIR, capture_output=True)
 subprocess.run(['git', 'config', 'user.name', 'Vibe Lab Agent'], cwd=WORKDIR, capture_output=True)
 
+git_env = os.environ.copy()
+git_env.update({
+    "GIT_AUTHOR_DATE": "2026-05-01T06:47:00+00:00",
+    "GIT_COMMITTER_DATE": "2026-05-01T06:47:00+00:00",
+    "GIT_AUTHOR_NAME": "Vibe Lab Agent",
+    "GIT_AUTHOR_EMAIL": "agent@vibe-lab.test",
+    "GIT_COMMITTER_NAME": "Vibe Lab Agent",
+    "GIT_COMMITTER_EMAIL": "agent@vibe-lab.test",
+})
+
 # Stage and commit baseline
 subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
-subprocess.run(['git', 'commit', '-m', 'baseline: initial before.md'], cwd=WORKDIR, capture_output=True)
+subprocess.run(['git', 'commit', '-m', 'baseline: initial before.md'], cwd=WORKDIR, capture_output=True, env=git_env, check=True)
 
 # Record HEAD sha
 head_sha = subprocess.run(
