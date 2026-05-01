@@ -115,7 +115,7 @@ WORKDIR = Path(tempfile.mkdtemp(prefix='rrg02-real-'))
 WORK_FILE = WORKDIR / 'before.md'
 
 # Write fixture to temp workspace
-WORK_FILE.write_text(BEFORE_MD, encoding='utf-8')
+WORK_FILE.write_text(BEFORE_MD, encoding='utf-8', newline='\n')
 
 # Init git repo
 subprocess.run(['git', 'init', '--initial-branch', 'master', '.'], cwd=WORKDIR, capture_output=True, text=True, check=True)
@@ -160,7 +160,7 @@ gs_before = subprocess.run(
 # Mutation 1: staged
 text = WORK_FILE.read_text(encoding='utf-8')
 text_after_m1 = text.replace('Use safe deployment mode.', 'Use staged deployment mode.', 1)
-WORK_FILE.write_text(text_after_m1, encoding='utf-8')
+WORK_FILE.write_text(text_after_m1, encoding='utf-8', newline='\n')
 
 # Stage
 subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
@@ -168,7 +168,7 @@ subprocess.run(['git', 'add', 'before.md'], cwd=WORKDIR, capture_output=True)
 # Mutation 2: unstaged (not staged)
 text_staged = WORK_FILE.read_text(encoding='utf-8')
 text_after_m2 = text_staged.replace('Validate rollback before release.', 'Validate rollback after release.', 1)
-WORK_FILE.write_text(text_after_m2, encoding='utf-8')
+WORK_FILE.write_text(text_after_m2, encoding='utf-8', newline='\n')
 
 # git status after Step A — expected: MM before.md
 gs_after = subprocess.run(
@@ -282,7 +282,11 @@ observed = {
     }
 }
 
-(ART / 'observed.json').write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+(ART / 'observed.json').write_text(
+    json.dumps(observed, indent=2) + '\n',
+    encoding='utf-8',
+    newline='\n',
+)
 
 # Cleanup
 shutil.rmtree(WORKDIR)
