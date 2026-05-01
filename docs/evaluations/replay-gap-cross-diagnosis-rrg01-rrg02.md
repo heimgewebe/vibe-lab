@@ -342,7 +342,7 @@ würden sie invalide werden.
 ## Ergebnisstatus
 
 ```
-RRG-01/RRG-02 partially overlap but need separate fixture proof
+RRG-01/RRG-02 partially overlap and are now separately fixture-proven
 ```
 
 **Begründung:**
@@ -351,15 +351,16 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
    aber der Failure-Mode ist verschieden: Content-Normalisierung (RRG-01) vs.
    Locator-Positionsdrift (RRG-03). `exact_before hash/snapshot binding` ist der stärkste
    Kandidat für RRG-01, während für RRG-03 `post_apply_anchor` und `re_resolution_required`
-   stärker sind.
+   stärker sind. **Beleg: `run-phase-f-rrg01-real/observed.json`, `content_drifted`, 2026-05-01.**
 
 2. RRG-02 (Git-Working-Tree-Index-Effects) ist strukturell orthogonal zu RRG-03.
    Die Git-Index-Drift-Achse wird durch keinen der RRG-03-orientierten Remediation-Kandidaten
    primär adressiert. RRG-02 bildet eine eigene Drift-Klasse.
+   **Beleg: `run-phase-f-rrg02-real/observed.json`, `git_state_drifted`, 2026-05-01.**
 
 3. Keiner der RRG-03-Remediation-Kandidaten ist ohne eigenen Fixture-Beleg für RRG-01 oder
-   RRG-02 als hinreichend einzustufen. `no_patch_observe_more` ist für beide die aktuell
-   epistemisch sauberste Position.
+   RRG-02 als hinreichend einzustufen. Beide Belege wurden 2026-05-01 erbracht;
+   `no_patch_observe_more` bleibt die aktuell epistemisch sauberste Position für Remediation.
 
 **Kein finaler Gewinner. Kein accepted decision. Kein Patch.**
 
