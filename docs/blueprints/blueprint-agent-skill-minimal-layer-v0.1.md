@@ -144,25 +144,25 @@ Operability-Check-Logik.
 
 ```markdown
 ## Non-Ideal Task Guard
-
-A task is not execution-ready if any of the following applies:
-
-- target files are missing or too broad to localize a change
-- locator is not uniquely resolvable (line range, anchor, or section)
-- change_type is unclear or ambiguous
-- validation cannot distinguish success from a no-op
-- the task requires repo state that has not been read
-- exact_before/exact_after is required but absent
-- the task silently combines independent changes
-
+This guard does not replace the existing Operability Criteria or A1–A3 checks.
+It only defines conditions under which the Critic must not return `PASS`.
+A task must not receive `PASS` if any of the following applies:
+- the locator cannot be resolved from the currently read repository state
+- validation cannot distinguish a real change from a no-op
+- the task requires evidence that has not been read
+- exact_before/exact_after is necessary to prevent ambiguity but absent
+- multiple independent changes are silently combined
+- target_files are formally present but too broad for a bounded edit
 If any condition applies:
-- return `PARTIAL` or `FAIL` — never `PASS`
-- mark gaps explicitly: `MISSING`, `UNKNOWN`, or `BLOCKED_BY`
+- return `PARTIAL` or `FAIL`
+- never return `PASS`
+- mark the first blocking condition explicitly with `MISSING`, `UNKNOWN`, or `BLOCKED_BY`
 - prefer task split over scope expansion
 ```
 
-Dieses Muster ist konsistent mit den bestehenden Critic-Regeln (A1–A3) und
-ergänzt sie um einen expliziten Blocking-Guard vor der Handoff-Erzeugung.
+Dieses Muster ist keine zweite Operability-Liste. Es ist eine No-PASS-Schranke:
+Der Guard wird nur aktiv, wenn der Critic andernfalls `PASS` zurückgeben würde,
+obwohl eine der genannten Blocking-Bedingungen erfüllt ist.
 
 ---
 
@@ -227,6 +227,20 @@ user-invocable: true
 **Grenze:** Der Auditor ist transitional. Endgültige Autorität soll in
 Scripts, Schemas oder CI liegen. Er verlängert die bestehende
 Critic/Operator-Kette um eine nachgelagerte Claim-Prüfstufe.
+
+**Boundary:**
+
+```markdown
+## Boundary
+This auditor does not judge whether the change was a good idea.
+It only checks whether claims are supported by repository evidence.
+The auditor must not:
+- repair claims
+- edit files
+- infer missing evidence
+- upgrade plausible claims into proven claims
+- validate semantic usefulness beyond available evidence
+```
 
 ---
 
