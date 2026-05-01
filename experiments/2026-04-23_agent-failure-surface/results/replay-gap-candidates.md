@@ -3,7 +3,7 @@ title: "Phase 4 - Replay Reality Gap (Kandidateninventur)"
 status: draft
 canonicality: operative
 created: "2026-04-29"
-updated: "2026-04-29"
+updated: "2026-05-01"
 author: "Copilot Agent"
 relations:
   - type: references
@@ -82,7 +82,7 @@ Ableitung für Phase 4: Der aktuelle Replay-Mechanismus beweist Dry-Run-Konsiste
 
 | Name | Beschreibung | Betroffene Achse | Konkreter Bezug zu Replay-Code/Test/Schema | Warum Dry-Run das nicht beweisen kann | Risiko | Empfohlene spätere Prüfform | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| RRG-01 Disk-State-Apply-Delta | Reale `write_change`-Anwendung kann Disk-Inhalt verändern (z. B. line endings, normalization, conflict markers), Dry-Run meldet weiter `would_mutate: false`. | Disk-State, Idempotenz vs. Nicht-Idempotenz, Validierung nach Mutation | `replay_minimal.py` setzt für `write_change` immer `would_mutate=False`; Schema erzwingt `would_mutate=false`; Tests prüfen nur diese Konstante. | Es gibt keine echte Datei-I/O auf `target_files`; nur Projektion/Simulation. | Mittel bis hoch: falsches Sicherheitsgefühl bei realem Apply-Layer. | Phase F Runner-Probe mit realem Temp-Workspace: apply -> validate -> diff -> replay-compare. | candidate_for_phase_f |
+| RRG-01 Disk-State-Apply-Delta | Reale `write_change`-Anwendung kann Disk-Inhalt verändern (z. B. line endings, normalization, conflict markers), Dry-Run meldet weiter `would_mutate: false`. | Disk-State, Idempotenz vs. Nicht-Idempotenz, Validierung nach Mutation | `replay_minimal.py` setzt für `write_change` immer `would_mutate=False`; Schema erzwingt `would_mutate=false`; Tests prüfen nur diese Konstante. | Es gibt keine echte Datei-I/O auf `target_files`; nur Projektion/Simulation. | Mittel bis hoch: falsches Sicherheitsgefühl bei realem Apply-Layer. | Phase F Runner-Probe mit realem Temp-Workspace: apply -> validate -> diff -> replay-compare. | fixture_proven (was candidate_for_phase_f) |
 | RRG-02 Git-Working-Tree-Index-Effects | Reale Mutationen können untracked/modified/indexed Nebenwirkungen haben; Dry-Run bildet Git-Zustand nicht ab. | Git-Index / Working Tree, Reihenfolge realer Mutationen | `replay_minimal.py` kennt keine `git`-Operationen; vorhandene Replay-Tests validieren JSON-Vertrag, nicht `git status`; `make validate-replay-mutation-guard` prüft nur dieses Tool auf Nicht-Mutation in sauberem Tree. | Replay erzeugt Trace-Objekt, aber kein Modell für staged/unstaged oder Folgeeffekte mehrerer realer Writes. | Mittel: Integrationsrisiko bei realen Runner-Ketten. | Phase F Integrationslauf mit kontrolliertem Repo-Snapshot und Git-State-Assertions pro Step. | intentional_gap |
 | RRG-03 Locator-Drift-After-Partial-Apply | Nach partieller Mutation kann derselbe Locator auf andere Stelle zeigen; Dry-Run nutzt Locator nur deklarativ. | Locator-Drift, partielle Anwendung, Reihenfolge realer Mutationen | In v0.2-Step wird `locator` nur übernommen/redacted; keine Auflösung gegen realen Dateistand. Tests prüfen Redaction und Schema, nicht Re-Resolution. | Ohne echte Mutation und Re-Read gibt es keinen Drift-Nachweis über mehrere Schritte. | Hoch: Folgekommandos können semantisch falsch adressieren. | Phase F Szenario: apply step A, dann locator-resolve für step B gegen mutierten Stand, mit erwarteter Drift-Klassifikation. | candidate_for_phase_f |
 | RRG-04 Post-Mutation-Validation-Semantics | `validate_change` im Dry-Run bleibt struktur-/contract-nah; reale post-mutation Checks (lint/test/docs) können divergieren. | Validierung nach Mutation, Reihenfolge realer Mutationen | `replay_minimal.py` führt keine realen Checks aus; Schema erlaubt `checks`/`errors` nur als deklarative Trace-Daten; Tests sichern Form, nicht reale Toolausführung. | Kein echter Tool-Run nach Mutation, daher keine Evidenz über reale Semantikdelta. | Mittel: Phase-5-Adversarialfälle können falsch eingeordnet werden. | Phase 5 oder Phase F: kontrollierter End-to-End-Run mit echter Check-Ausführung gegen mutierten Zustand. | outside_scope |
@@ -108,3 +108,31 @@ Ableitung für Phase 4: Der aktuelle Replay-Mechanismus beweist Dry-Run-Konsiste
 ## Entscheidung
 
 Phase 4 wird als `qualitative_inventory` mit `no_patch` abgeschlossen. Ergebnis ist eine kartierte Blindstellenliste für spätere reale Replay-Runner-Prüfung.
+
+## RRG-01 Real-Run
+
+**Status:** `fixture_proven` (2026-05-01)
+
+**Artefakt:** `artifacts/run-phase-f-rrg01-real/`
+
+**Szenario:** CRLF-to-LF-Normalisierung durch den Apply-Layer.
+Das Fixture (`before.md`) wurde mit CRLF-Zeilenenden im Temp-Workspace initialisiert.
+Step A (`Load config from file.` → `Load config from disk.`) wurde real über
+`read_text` (Universal-Newline-Read, CRLF → LF im Speicher) + expliziter LF-Write (`open(..., newline="\n")`) angewendet.
+
+**Ergebnis Real-Run:**
+
+| Feld | Wert |
+|------|------|
+| `sha256_before` (CRLF) | `35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269` |
+| `sha256_after` (LF) | `42cccfcc322444cbd34b43b0dda050b6d312e5e120bf509e17e6fe3f7b34c92d` |
+| `step_b_exact_before_found` | `false` |
+| `classification` | `content_drifted` |
+| `patch_gate.triggered` | `true` |
+
+**Failure-Mode bestätigt:** Content-/Snapshot-Drift, nicht Locator-Positionsdrift.
+Step B's `exact_before` enthielt `\r\n`; nach Step A ist nur noch `\n` auf Disk.
+Der Dry-Run würde diesen Drift nicht erkennen (non-mutating, kein echtes Disk-I/O).
+
+**Epistemische Grenze:** Beweis gilt ausschließlich für diese Fixture (fixture_only).
+Keine allgemeine Aussage über Runner-Korrektheit oder beste Remediation-Strategie.

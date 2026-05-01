@@ -3,7 +3,7 @@ title: "Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten"
 status: draft
 canonicality: operative
 created: "2026-04-30"
-updated: "2026-04-30"
+updated: "2026-05-01"
 author: "Copilot Agent"
 relations:
   - type: references
@@ -18,6 +18,8 @@ relations:
     target: "../../decisions/process/2026-04-30-rrg03-remediation-boundary.yml"
   - type: references
     target: "../../contracts/command-semantics.md"
+  - type: references
+    target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json"
 ---
 
 # Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten
@@ -30,6 +32,8 @@ Dasselbe Kandidatenset sollte auch für RRG-01 und RRG-02 gelten.
 
 **Antithese:** RRG-01 und RRG-02 sind bisher nur als qualitative Inventur
 (Phase 4) dokumentiert — kein realer Ausführungsbeleg.
+(Hinweis: RRG-01 erhielt am 2026-05-01 einen Real-Run-Beleg; dieser Abschnitt
+beschreibt den Ausgangszustand der Cross-Diagnosis.)
 Die Übertragung von RRG-03-Befunden auf RRG-01/RRG-02 ohne eigene Beweise
 wäre epistemischer Größenwahn.
 
@@ -64,7 +68,7 @@ Anker ist — keine stabile Identität.
 
 ---
 
-### RRG-01: Disk-State-Apply-Delta (nicht real-run-belegt)
+### RRG-01: Disk-State-Apply-Delta (Real-Run-Beleg vorhanden seit 2026-05-01)
 
 Quelle:
 `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
@@ -73,9 +77,9 @@ Spalte: `RRG-01 Disk-State-Apply-Delta`
 | Feld | Wert |
 |------|------|
 | Betroffene Achse | Disk-State, Idempotenz vs. Nicht-Idempotenz, Validierung nach Mutation |
-| Status in replay-gap-candidates.md | `candidate_for_phase_f` |
+| Status in replay-gap-candidates.md | `fixture_proven (was candidate_for_phase_f)` |
 | Priorität | Phase F: nach RRG-03 |
-| Real-Run-Beleg | **nicht vorhanden** |
+| Real-Run-Beleg | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json` |
 
 **Beschreibung (aus replay-gap-candidates.md):**
 Reale `write_change`-Anwendung kann Disk-Inhalt verändern (z.B. line endings,
@@ -90,10 +94,11 @@ Nebeneffekte (z.B. Trailing-Newlines, BOM-Stripping). Ein Folge-Step, der
 weil der Locator an eine andere Stelle zeigt, sondern weil der erwartete
 Vorher-Zustand schlicht nicht mehr dem Ist-Zustand auf Disk entspricht.
 
-**Trennung belegt / plausibel / offen:**
+**Trennung belegt / plausibel / offen (Ausgangszustand dieser Cross-Diagnosis):**
 - belegt: Dry-Run simuliert kein echtes Datei-I/O (Code-Beleg in replay-gap-candidates.md)
 - plausibel: Reale Apply-Layer können Normalisierungseffekte produzieren
-- offen: Kein realer Ausführungsbeleg; keine kontrollierte Fixture geprüft
+- offen (historisch): Kein realer Ausführungsbeleg vorhanden gewesen; keine kontrollierte Fixture geprüft
+- **aktuell (nach 2026-05-01):** Real-Run erbracht — siehe Artefakt `run-phase-f-rrg01-real/observed.json`
 
 ---
 
@@ -162,7 +167,7 @@ einer realen Step-A-Mutation verschiebt sich seine Position (anderer Match-Index
 andere Zeile). Ursache: Text-basierte Locator-Auflösung ohne erneute
 Positionsverifizierung.
 
-**RRG-01** (hypothetisch): Nicht die Locator-Position driftet, sondern der
+**RRG-01** (fixture_proven seit 2026-05-01): Nicht die Locator-Position driftet, sondern der
 Dateiinhalt selbst ändert sich durch Apply-Nebeneffekte (Normalisierungen,
 line endings). Ein stabiler `exact_before`-Hash würde scheitern, aber der
 Locator könnte auf die korrekte Zeile zeigen.
@@ -266,10 +271,11 @@ arbeiten.
 
 ### no_patch_observe_more
 
-- **Für RRG-01**: Korrekt — kein Real-Run-Beleg vorhanden.
+- **Für RRG-01**: Historisch korrekt — kein Real-Run-Beleg war vorhanden.
+  **Aktuell überholt:** Real-Run vom 2026-05-01 erbracht; `content_drifted` bestätigt.
 - **Für RRG-02**: Korrekt — kein Real-Run-Beleg vorhanden; RRG-02 hat in
   replay-gap-candidates.md Status `intentional_gap`.
-- **Fazit**: Für RRG-01 und RRG-02 aktuell die epistemisch sauberste Position.
+- **Fazit**: Für RRG-02 weiterhin die epistemisch sauberste Position.
 
 ---
 
@@ -357,9 +363,10 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
 
 ## Empfehlung für nächste Schritte
 
-1. **RRG-01 Real-Run**: Kontrollierte Fixture mit realem Write und Normalisierungseffekt
-   (z.B. trailing-newline-Varianz). Beobachten, ob `exact_before`-Binding bricht während
-   Locator-Position stabil bleibt.
+1. **RRG-01 Real-Run (abgeschlossen):** Fixture-spezifischer Beleg erbracht (2026-05-01):
+   CRLF→LF-Normalisierung durch Apply-Layer produziert `content_drifted`.
+   Optionaler Folge-Run: weitere Normalisierungsarten (trailing whitespace, BOM)
+   oder Hash-Binding-Probe — kein unmittelbarer Handlungsbedarf.
 
 2. **RRG-02 Real-Run**: Kontrollierter Workspace mit Git-State-Assertions nach Step A.
    Beobachten, ob Git-Index-Zustand Folge-Steps beeinflusst.
@@ -382,3 +389,55 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
 - Keine v0.2-Implementierung.
 - Kein neuer CI-Gate.
 - Keine historischen Artifact-Rewrites.
+
+---
+
+## RRG-01 Real-Run Status (2026-05-01)
+
+**Status vor diesem Update:** `nicht real-run-belegt`
+**Status nach diesem Update:** `fixture_proven`
+
+### Durchgeführter Real-Run
+
+Artefakt: `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/`
+
+**Szenario:** CRLF-to-LF-Normalisierung durch den Apply-Layer.
+
+Das Fixture repräsentiert eine Datei mit CRLF-Zeilenenden (Windows-Originalzustand
+oder Editor-Artefakt). Step A wurde real auf einem Temp-Workspace ausgeführt —
+Mutation über Python `read_text` (Universal-Newline-Read, CRLF → LF im Speicher) + expliziter LF-Write (`open(..., newline="\n")`). Belegt durch den eingebetteten Reproduktionsschritt in `execution-real.txt`.
+
+**Beobachtetes Ergebnis:**
+
+| Feld | Wert |
+|------|------|
+| `sha256_before` (CRLF) | `35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269` |
+| `sha256_after` (LF) | `42cccfcc322444cbd34b43b0dda050b6d312e5e120bf509e17e6fe3f7b34c92d` |
+| Step B `exact_before` gefunden | `false` |
+| `classification` | `content_drifted` |
+| `patch_gate.triggered` | `true` |
+
+### Bestätigung der Hypothesen
+
+- **H1 bestätigt:** Realer Apply-Schritt änderte Disk-Inhalt über den CRLF→LF-Kanal;
+  Dry-Run hätte keine Disk-Mutation abgebildet.
+- **H2 bestätigt:** Step B's `exact_before` (mit `\r\n`) ist nach Apply nicht mehr auf
+  Disk vorhanden (nur noch `\n`); ein Folgekommando mit CRLF-Snapshot würde scheitern.
+- **H3 bestätigt:** Failure-Mode ist Content-/Snapshot-Drift,
+  kein Locator-Positionsdrift (Locator-Text `"Load config from environment."` ist
+  inhaltlich noch vorhanden, aber als falsches Encoding).
+
+### Trennung Belegt / Plausibel / Offen (aktualisiert)
+
+- **belegt:** CRLF→LF-Normalisierung durch Universal-Newline-Read und expliziten
+  LF-Write im Reproduktionsskript produziert `content_drifted` für CRLF-basierte
+  `exact_before`-Snapshots (fixture_only)
+- **plausibel:** Andere Normalisierungsarten (trailing whitespace, BOM) würden
+  ähnlichen Effekt zeigen — nicht durch diesen Run belegt
+- **offen:** Auswirkung auf Hash-basiertes `exact_before`-Binding in v0.2 —
+  kein Schema/Validator geändert, kein Decision Preimage
+
+### Epistemische Grenze
+
+Beweisumfang: `fixture_only`. Kein allgemeiner Beweis für Runner-Korrektheit oder
+allgemeine Locator-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.

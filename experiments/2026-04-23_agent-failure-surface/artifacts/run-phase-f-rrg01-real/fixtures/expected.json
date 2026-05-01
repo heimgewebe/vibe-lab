@@ -1,0 +1,8 @@
+{
+  "description": "Expected outcome if Step A apply causes NO content drift (stable baseline expectation)",
+  "scenario": "CRLF-to-LF normalization by apply layer",
+  "step_b_exact_before_found_on_disk": true,
+  "disk_state_matches_step_b_expectation": true,
+  "classification": "stable",
+  "note": "This is the Dry-Run expectation. Real-Run outcome is recorded in observed.json."
+}
