@@ -1,0 +1,27 @@
+# Experiment Manifest
+# Validiert gegen: schemas/experiment.manifest.schema.json
+
+schema_version: "0.1.0"
+
+experiment:
+  name: "agent-skill-minimal-layer-instrumentation"
+  hypothesis: "The measurement scaffold can capture comparable PR-level data for the Agent/Skill Minimal Layer without making an effect claim."
+  status: testing
+  category: workflow
+  execution_status: prepared
+  execution_refs: []
+  created: "2026-05-01"
+  updated: "2026-05-01"
+  author: "copilot-agent"
+  iteration: 1
+  evidence_level: anecdotal
+
+context:
+  tools: ["experiment-critic", "evidence-reconciliation-auditor"]
+  language: "Mixed (Markdown, YAML, JSONL)"
+  environment: "vibe-lab"
+  triggered_by: "user-request-2026-05-01-agent-skill-minimal-layer-instrumentation"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
