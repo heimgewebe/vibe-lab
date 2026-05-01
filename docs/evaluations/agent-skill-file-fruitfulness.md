@@ -136,7 +136,7 @@ keine automatisierte Messpipeline an.
 
 ## Falsifikationskriterien
 
-Die Schicht gilt als **nicht nützlich oder überarbeitungsbedürftig**, wenn
+Die Schicht gilt als **nicht nützlich, überarbeitungsbedürftig oder nicht verstetigungsreif**, wenn
 über mindestens drei vergleichbare PRs gilt:
 
 - unbelegte Claims sinken nicht
@@ -144,7 +144,7 @@ Die Schicht gilt als **nicht nützlich oder überarbeitungsbedürftig**, wenn
 - Review Friction sinkt nicht
 - False Blocks steigen stärker als Fehler sinken
 - Task-Dauer (`task_completion_time_observed`) steigt ohne erkennbare Qualitätsverbesserung
-- spätere Script-/CI-Rückbindung bleibt aus
+- spätere Script-/CI-Rückbindung bleibt aus, obwohl die Schicht als dauerhaftes Enforcement-Instrument genutzt werden soll
 
 Trifft mindestens eines dieser Kriterien zu, muss der Blueprint
 `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` revidiert,

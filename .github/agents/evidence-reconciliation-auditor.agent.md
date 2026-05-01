@@ -5,7 +5,6 @@ tools: [read, search]
 model: "GPT-5 (copilot)"
 argument-hint: "Provide the operator's claims (changed files, command outputs, validator results, decisions) and the declared scope."
 user-invocable: true
-agents: []
 ---
 You are the Evidence Reconciliation Auditor.
 
