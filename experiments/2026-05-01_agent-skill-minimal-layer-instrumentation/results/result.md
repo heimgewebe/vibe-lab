@@ -13,7 +13,7 @@ canonicality: operative
 ## Datenlage
 
 - 1 PR-Datensatz erhoben (Run 1: PR #145).
-- Metriken teilweise gemessen; CI-Artefakte nicht im Repo vorhanden (MISSING_EVIDENCE für validation_gap_count).
+- Metriken teilweise gemessen; CI/make/critic-Artefakte nicht im Repo vorhanden (MISSING_EVIDENCE: unsupported_claims=3, validation_gaps=3).
 - Kein Wirkungsclaim möglich oder zulässig (einzelner Messpunkt, keine Kontrollgruppe).
 - Keine Aussage, dass Agent- oder Skill-Dateien nützlich sind.
 
@@ -22,8 +22,9 @@ canonicality: operative
 ### Allowed Claims
 
 - Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
-- Run 1 (PR #145) wurde erfasst: scope_drift=0, unsupported_claims=0, validation_gaps=1, review_friction=2, rework=1.
-- CI-Artefakte sind für Run 1 nicht im Repo vorhanden (MISSING_EVIDENCE).
+- Run 1 (PR #145) wurde erfasst: scope_drift=0, unsupported_claims=3, validation_gaps=3, review_friction=2, rework=1.
+- Run-Level Auditor Verdict: MISSING_EVIDENCE (CI/make/critic-Artefakte nicht im Repo vorhanden).
+- Kein Wirksamkeitsclaim.
 
 ### Disallowed Claims
 
