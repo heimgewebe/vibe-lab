@@ -68,10 +68,15 @@
 
 ## `contracts/command-semantics.md`
 
+- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
+
+## `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
+
+- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
@@ -199,6 +204,32 @@
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
 
+## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/execution-real.txt`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json`
+
+- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/run_meta.json`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/execution-real.txt`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json`
+
+- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
+
+## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/run_meta.json`
+
+- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
+
 ## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/execution.txt`
 
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
@@ -235,6 +266,7 @@
 
 ## `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md`
 
+- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md`

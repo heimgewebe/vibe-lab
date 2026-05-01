@@ -3,9 +3,11 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (113 found):
+Documents not referenced by any other document via frontmatter relations (117 found):
 
 - `.vibe/intent.md`
+- `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md`
+- `docs/evaluations/rrg03-remediation-strategy-comparison.md`
 - `docs/playbooks/plan-execution-checklist.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
@@ -91,6 +93,8 @@ Documents not referenced by any other document via frontmatter relations (113 fo
 - `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
 - `experiments/2026-04-23_agent-failure-surface/CONTEXT.md`
 - `experiments/2026-04-23_agent-failure-surface/INITIAL.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/before.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/failure_modes.md`
 - `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md`
