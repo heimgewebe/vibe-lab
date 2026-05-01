@@ -390,20 +390,53 @@ class IsolatedRepoScenarios(unittest.TestCase):
         """executed + decision_type=execution_assessment + verdict=insufficient_proof
         → promotion_ready must be False with signal 'insufficient_proof_assessment'.
 
+        The test includes a valid structured-v1 falsifiability block with
+        partially_checked/inconclusive so the signal is ISOLATED: promotion_ready=false
+        is caused only by insufficient_proof_assessment, not by a missing
+        falsifiability block.
+
         Regression: execution_status=executed must not bypass the insufficient_proof
         gate. The rule is orthogonal to prepared_without_measurement and fires
         independently for executed/replicated experiments.
         """
         import yaml as _yaml
 
+        # Minimal valid structured-v1 falsifiability block (non-blocking outcome).
+        # partially_checked + inconclusive without pending_checks → warning only,
+        # no missing signal.
+        valid_falsifiability = {
+            "version": 1,
+            "falsification_criterion": (
+                "Hypothese gilt als geschwächt, wenn nach drei vergleichbaren "
+                "Runs keine konsistenten Messwerte ableitbar sind."
+            ),
+            "counter_hypotheses": [
+                {
+                    "id": "scaffold_not_comparable",
+                    "statement": (
+                        "Das Messgerüst erfasst keine vergleichbaren Daten, "
+                        "weil Kontext oder Metriken zu stark variieren."
+                    ),
+                    "assessment": {
+                        "status": "partially_checked",
+                        "outcome": "inconclusive",
+                    },
+                }
+            ],
+        }
+
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             exp_dir = root / "exp-executed-insufficient-proof"
 
-            # Write manifest with execution_status=executed
+            # Write manifest with execution_status=executed AND valid falsifiability.
             self._write_manifest(
                 exp_dir / "manifest.yml",
-                make_manifest(status="testing", execution_status="executed"),
+                make_manifest(
+                    status="testing",
+                    execution_status="executed",
+                    falsifiability=valid_falsifiability,
+                ),
             )
 
             # Write results/decision.yml with the triggering combination
@@ -436,6 +469,15 @@ class IsolatedRepoScenarios(unittest.TestCase):
             # prepared_without_measurement must NOT fire for executed
             self.assertNotIn("prepared_without_measurement", entry["missing"])
             self.assertNotIn("prepared_without_measurement", entry["notes"])
+            # falsifiability must NOT appear in missing (block is present and non-blocking)
+            falsifiability_missing = [
+                s for s in entry["missing"] if s.startswith("falsifiability")
+            ]
+            self.assertEqual(
+                falsifiability_missing,
+                [],
+                f"Unexpected falsifiability signals in missing: {falsifiability_missing}",
+            )
 
 
 class DeterminismTests(unittest.TestCase):

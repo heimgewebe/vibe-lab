@@ -204,7 +204,6 @@
       "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "falsifiability",
         "insufficient_proof_assessment"
       ],
       "notes": [
@@ -213,7 +212,9 @@
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation",
       "promotion_ready": false,
       "status": "testing",
-      "warnings": []
+      "warnings": [
+        "falsifiability_assessment_inconclusive"
+      ]
     }
   ],
   "mode": "dry_run",
@@ -223,7 +224,7 @@
     "historical_escape": 1,
     "not_ready": 12,
     "ready": 2,
-    "warnings": 1
+    "warnings": 2
   },
   "trigger": "need_for_reproducibility"
 }

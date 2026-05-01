@@ -22,7 +22,7 @@ MISSING_EVIDENCE
 - Validator loads `results/decision.yml` via new `load_decision_file()` function — evidence: `scripts/docmeta/validate_promotion_readiness.py::load_decision_file`
 - Validator marks `prepared + execution_assessment + insufficient_proof` as `prepared_without_measurement` — evidence: `scripts/docmeta/validate_promotion_readiness.py::evaluate_experiment` (lines 462–478)
 - Generated promotion-readiness report marks the instrumentation experiment as `promotion_ready=false` — evidence: `docs/_generated/promotion-readiness.json:203–216`
-- Freeze entry allows exactly `prepared_without_measurement` for this experiment — evidence: `.vibe/promotion-readiness-freeze.yml:95–103`
+- Freeze entry allows `insufficient_proof_assessment` for this experiment — evidence: `.vibe/promotion-readiness-freeze.yml` entry for `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation`
 - Regression tests cover trigger case (`test_prepared_insufficient_proof_not_ready`) and non-trigger case (`test_prepared_without_decision_file_still_ready`) — evidence: `scripts/docmeta/test_promotion_readiness.py:320–388`
 - Signal `prepared_without_measurement` added to ratchet allowlist `VALID_ALLOWED_MISSING` — evidence: `scripts/docmeta/validate_promotion_readiness.py:570`
 

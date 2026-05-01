@@ -94,13 +94,11 @@ promotion_readiness_freeze:
 
     - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation
       allowed_missing:
-        - falsifiability
         - insufficient_proof_assessment
       reason: >-
-        Run 1 (PR #145) captured with execution_status=executed. Evidence is
-        insufficient_proof (single measurement, no comparison group).
-        Falsifiability block not yet added (experiment still in testing phase,
-        single data point). Both signals are expected at this stage. Remove
-        falsifiability once a falsifiability block is added; remove
-        insufficient_proof_assessment once decision.yml verdict reflects
-        sufficient evidence after multiple comparable PRs.
+        Run 1 (PR #145) captured with execution_status=executed. decision.yml
+        carries verdict=insufficient_proof (execution_assessment, single measurement,
+        no comparison group). Falsifiability block present with partially_checked/
+        inconclusive assessment (one PR, not yet sufficient evidence for confirmation).
+        Remove insufficient_proof_assessment once decision.yml verdict reflects
+        sufficient evidence after at least three comparable PRs.

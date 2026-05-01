@@ -48,12 +48,12 @@ claims:
         locator: "lines 203–216"
 
   - id: "claim-006"
-    text: "Freeze entry allows exactly prepared_without_measurement for this experiment."
+    text: "Freeze entry allows insufficient_proof_assessment for this experiment."
     type: "file_changed"
     verdict: "PASS"
     evidence:
       - path: ".vibe/promotion-readiness-freeze.yml"
-        locator: "lines 95–103"
+        locator: "entry for experiments/2026-05-01_agent-skill-minimal-layer-instrumentation"
 
   - id: "claim-007"
     text: "Regression tests cover trigger case (test_prepared_insufficient_proof_not_ready) and non-trigger case (test_prepared_without_decision_file_still_ready)."
