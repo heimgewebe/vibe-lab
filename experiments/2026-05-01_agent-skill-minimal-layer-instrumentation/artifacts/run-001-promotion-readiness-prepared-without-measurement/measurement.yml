@@ -1,0 +1,93 @@
+# Run-001 Measurement
+# Experiment: 2026-05-01_agent-skill-minimal-layer-instrumentation
+# PR: github:heimgewebe/vibe-lab/pull/145
+
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+pr_ref: "github:heimgewebe/vibe-lab/pull/145"
+pr_title: "Fix promotion-readiness semantics for prepared instrumentation experiments"
+pr_merged_at: "2026-05-01T12:37:30Z"
+pr_author: "copilot-agent"
+pr_merged_by: "alexdermohr"
+pr_commits: 3
+pr_changed_files: 4
+pr_additions: 127
+pr_deletions: 10
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: observed
+    notes: >-
+      Alle 4 geänderten Dateien (validate_promotion_readiness.py,
+      test_promotion_readiness.py, promotion-readiness.json,
+      promotion-readiness-freeze.yml) liegen innerhalb des deklarierten
+      Aufgabenbereichs.
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: observed
+    notes: >-
+      PR-Body-Claims (Docstring-Update, encoding-Fix, Testabdeckung) sind
+      im Diff verifizierbar. Keine unbelegten Wirksamkeitsbehauptungen
+      identifiziert.
+
+  missing_locator_count:
+    value: 0
+    evidence_status: observed
+    notes: >-
+      Review-Kommentare referenzieren konkrete Dateipfade und Zeilennummern.
+      Aufgabe hatte explizite Lokalisierungsangaben im PR-Kontext.
+
+  validation_gap_count:
+    value: 1
+    evidence_status: partial
+    notes: >-
+      CI-Testausgabe ("101/101 tests pass", "make validate — Ratchet passed")
+      im PR-Body behauptet, aber kein Testprotokoll als Repo-Artefakt erhalten.
+      Gezählt als eine Validierungslücke (fehlender Testprotokoll-Verweis).
+
+  review_friction_count:
+    value: 2
+    evidence_status: observed
+    notes: >-
+      2 automatisierte Review-Kommentare (Copilot Automated Reviewer):
+      (1) Docstring-Inkonsistenz in test_promotion_readiness.py (adressiert),
+      (2) fehlendes encoding='utf-8' in open() (adressiert, outdated).
+
+  rework_count:
+    value: 1
+    evidence_status: observed
+    notes: >-
+      PR umfasst 3 Commits. Review-Kommentare wurden in Folge-Commit(s)
+      innerhalb des PR adressiert (1 Rework-Runde vor Merge).
+
+  false_block_count:
+    value: 0
+    evidence_status: observed
+    notes: >-
+      Kein Hinweis auf ungerechtfertigte Blockierung durch Auditor oder
+      Critic. PR wurde ohne Incident gemergt.
+
+  task_completion_time_observed:
+    value: "~105 min"
+    evidence_status: observed
+    notes: >-
+      PR erstellt 2026-05-01T10:52:46Z, gemergt 2026-05-01T12:37:30Z.
+      Deskriptiv; kein Kausalwert für Wirkung der Agent-Schicht.
+
+missing_evidence:
+  - item: "CI-Testprotokoll"
+    detail: >-
+      Testanzahl (101/101) und Ratchet-Ausgabe im PR-Body genannt, aber
+      kein Protokoll als Repo-Artefakt vorhanden.
+  - item: "experiment-critic-Output"
+    detail: >-
+      Kein Critic-Output-Artefakt für diesen PR im Experiment gefunden.
+  - item: "evidence-reconciliation-auditor-Vorläufer"
+    detail: >-
+      Erster Auditor-Lauf; kein Vergleichsartefakt vorhanden.
+
+interpretation_limits:
+  - "Ein einzelner Messpunkt erlaubt keine Verallgemeinerung."
+  - "Kein Wirksamkeitsclaim über die Agent/Skill-Schicht aus diesen Daten ableitbar."
+  - "Metriken sind noch nicht geeicht — Definitionen können sich in frühen Läufen stabilisieren."

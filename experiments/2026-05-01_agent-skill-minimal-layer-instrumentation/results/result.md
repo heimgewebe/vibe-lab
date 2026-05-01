@@ -8,13 +8,13 @@ canonicality: operative
 
 ## Status
 
-**Instrumentierung gestartet.** Experimentgerüst angelegt. Kein realer PR-Datensatz vorhanden.
+**Run 1 erfasst.** PR #145 als erster realer Messdatensatz dokumentiert. Kein Wirksamkeitsclaim.
 
 ## Datenlage
 
-- Keine PR-Daten erhoben.
-- Keine Metriken gemessen.
-- Kein Wirkungsclaim möglich oder zulässig.
+- 1 PR-Datensatz erhoben (Run 1: PR #145).
+- Metriken teilweise gemessen; CI-Artefakte nicht im Repo vorhanden (MISSING_EVIDENCE für validation_gap_count).
+- Kein Wirkungsclaim möglich oder zulässig (einzelner Messpunkt, keine Kontrollgruppe).
 - Keine Aussage, dass Agent- oder Skill-Dateien nützlich sind.
 
 ## Interpretation Budget
@@ -22,7 +22,8 @@ canonicality: operative
 ### Allowed Claims
 
 - Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
-- Noch kein Effekt wurde gemessen.
+- Run 1 (PR #145) wurde erfasst: scope_drift=0, unsupported_claims=0, validation_gaps=1, review_friction=2, rework=1.
+- CI-Artefakte sind für Run 1 nicht im Repo vorhanden (MISSING_EVIDENCE).
 
 ### Disallowed Claims
 
@@ -30,15 +31,18 @@ canonicality: operative
 - Die Agent-Schicht ist nützlich.
 - Skill-Dateien sind bewertet.
 - CI-/Script-Rückbindung ist gerechtfertigt.
+- Aus einem einzelnen Messpunkt folgt irgendeine Wirkungsaussage.
 
 ## Evidence Basis
 
 | Kategorie | Stand |
 |---|---|
-| Direkt beobachtet | Experimentgerüst angelegt |
-| Nicht getestet | Wirkung, Vergleichbarkeit, False Blocks, Review Friction, Task-Dauer |
-| Nicht vorhanden | PR-Datensätze, Metriken, Kontrollgruppe |
+| Direkt beobachtet | Experimentgerüst angelegt; Run 1 (PR #145) erfasst |
+| Teilweise beobachtet | scope_drift, unsupported_claims, missing_locators, review_friction, rework, false_blocks, completion_time (Run 1) |
+| MISSING_EVIDENCE | CI-Testprotokoll, make-Ausgaben, experiment-critic-Output (Run 1) |
+| Nicht getestet | Wirkung, Vergleichbarkeit |
+| Nicht vorhanden | Kontrollgruppe, mindestens 3 vergleichbare PRs für Zwischenauswertung |
 
 ## Nächste Schritte
 
-Den ersten realen PR mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensatz erfassen und in `results/evidence.jsonl` eintragen.
+Mindestens zwei weitere reale PRs mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensätze erfassen. Zwischenauswertung nach drei vergleichbaren PRs.
