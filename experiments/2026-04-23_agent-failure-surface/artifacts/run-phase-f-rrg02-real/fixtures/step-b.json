@@ -1,0 +1,13 @@
+{
+  "command": "write_change",
+  "version": "v0.1",
+  "target_files": [
+    "before.md"
+  ],
+  "change_type": "replace",
+  "locator": "Validate rollback before release.",
+  "exact_before": "Validate rollback before release.",
+  "exact_after": "Validate rollback after release.",
+  "note": "Step B: exact_before is 'Validate rollback before release.', the pre-mutation text being searched for. The unstaged second mutation result is exact_after, 'Validate rollback after release.'. The pre-mutation text is present in HEAD and index, but absent in the working tree after that unstaged mutation replaced it. This is the probe to demonstrate Git-state snapshot-ambiguity.",
+  "forbidden_changes": []
+}

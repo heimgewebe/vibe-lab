@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-phase-f-rrg02-real",
+  "generated_at": "2026-05-01T06:47:00Z",
+  "executor": "local:claude-sonnet-4-5",
+  "cwd": "repo_root",
+  "command": "python3 /tmp/rrg02_real_exec.py && make generate-blocking && make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-phase-f-rrg02-real/execution-real.txt",
+  "provenance_level": "self_reported",
+  "outcome": "git_state_drifted",
+  "patch_gate_triggered": true
+}

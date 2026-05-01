@@ -29,6 +29,9 @@ experiment:
     - artifacts/run-phase-f-rrg01-real/run_meta.json
     - artifacts/run-phase-f-rrg01-real/observed.json
     - artifacts/run-phase-f-rrg01-real/execution-real.txt
+    - artifacts/run-phase-f-rrg02-real/run_meta.json
+    - artifacts/run-phase-f-rrg02-real/observed.json
+    - artifacts/run-phase-f-rrg02-real/execution-real.txt
   created: "2026-04-23"
   updated: "2026-05-01"
   author: "Claude Opus 4.7"

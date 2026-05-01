@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-phase-f-rrg02-real",
+  "proof_target": "RRG-02 Git-Working-Tree-Index-Effects",
+  "workspace": "temp_git",
+  "step_a_applied": true,
+  "git_status_before": "(clean — empty after initial commit)",
+  "git_status_after_step_a": "MM before.md",
+  "head_sha_before": "62aada7decbd95f048f7158e7f5dc90019ece638",
+  "head_commit_before": "62aada7decbd95f048f7158e7f5dc90019ece638",
+  "head_file_sha256_before_step_a": "751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2",
+  "index_file_sha256_before_step_a": "751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2",
+  "working_tree_file_sha256_before_step_a": "751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2",
+  "head_file_sha256_after_step_a": "751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2",
+  "index_file_sha256_after_step_a": "1783dc90178f0632dc2f22119ae323becf6f29654146cd9da6a2ae6c55a2d987",
+  "working_tree_file_sha256_after_step_a": "a6115469675dd4667dc645b6693666233d535aa39ab726098f9de12d4b4e239a",
+  "step_b_expectation": {
+    "locator": "Validate rollback before release.",
+    "exact_before": "Validate rollback before release.",
+    "expected_snapshot": "unspecified"
+  },
+  "step_b_observed_state": {
+    "found_in_head": true,
+    "found_in_index": true,
+    "found_in_working_tree": false,
+    "explanation": "HEAD contains original file (pre-Step-A). Index contains Step-A first mutation (staged): 'Use staged deployment mode.' but still 'Validate rollback before release.' Working tree contains both mutations (unstaged second mutation applied): 'Validate rollback after release.' replaces original. Step B exact_before 'Validate rollback before release.' is present in HEAD (True) and index (True) but NOT in working tree (False). Three distinguishable states: HEAD=original, index=partial-mutation, working-tree=partial+unstaged. A runner that reads working tree cannot find Step-B exact_before, but HEAD and index still contain it. Snapshot-ambiguity proven: which Git state is authoritative?"
+  },
+  "classification": "git_state_drifted",
+  "patch_gate": {
+    "triggered": true,
+    "reason": "git_state_drifted: HEAD/index/working-tree snapshots diverge after Step-A staged + unstaged mutations. Step-B exact_before 'Validate rollback before release.' is present in HEAD and index but absent in working tree. A runner that resolves against working tree cannot find Step-B target, while a runner that uses HEAD or index snapshot would succeed. Which Git state is authoritative is undefined in the current dry-run contract."
+  },
+  "claim_boundary": {
+    "proves": [
+      "Whether this controlled fixture produces Git-state divergence across HEAD/index/working-tree after a real Step-A mutation."
+    ],
+    "does_not_prove": [
+      "General runner correctness.",
+      "General locator safety.",
+      "Best remediation strategy.",
+      "Need for immediate runtime patch.",
+      "That every real runner creates staged/unstaged divergence."
+    ]
+  }
+}

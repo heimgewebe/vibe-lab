@@ -1,0 +1,9 @@
+{
+  "description": "Expected outcome if Git-state does NOT diverge (dry-run / stable baseline expectation)",
+  "scenario": "Step A staged + unstaged mutation on same file in a real Git repo",
+  "step_b_exact_before_found_in_head": true,
+  "step_b_exact_before_found_in_index": true,
+  "step_b_exact_before_found_in_working_tree": true,
+  "classification": "stable",
+  "note": "This is the dry-run expectation: no real Git I/O, all snapshots assumed identical. Real-run outcome is recorded in observed.json."
+}

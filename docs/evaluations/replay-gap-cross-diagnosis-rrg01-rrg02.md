@@ -20,6 +20,8 @@ relations:
     target: "../../contracts/command-semantics.md"
   - type: references
     target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json"
+  - type: references
+    target: "../../experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json"
 ---
 
 # Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten
@@ -32,8 +34,8 @@ Dasselbe Kandidatenset sollte auch für RRG-01 und RRG-02 gelten.
 
 **Antithese:** RRG-01 und RRG-02 sind bisher nur als qualitative Inventur
 (Phase 4) dokumentiert — kein realer Ausführungsbeleg.
-(Hinweis: RRG-01 erhielt am 2026-05-01 einen Real-Run-Beleg; dieser Abschnitt
-beschreibt den Ausgangszustand der Cross-Diagnosis.)
+(Hinweis: RRG-01 und RRG-02 erhielten am 2026-05-01 je einen Real-Run-Beleg;
+dieser Abschnitt beschreibt den Ausgangszustand der Cross-Diagnosis.)
 Die Übertragung von RRG-03-Befunden auf RRG-01/RRG-02 ohne eigene Beweise
 wäre epistemischer Größenwahn.
 
@@ -102,7 +104,7 @@ Vorher-Zustand schlicht nicht mehr dem Ist-Zustand auf Disk entspricht.
 
 ---
 
-### RRG-02: Git-Working-Tree-Index-Effects (nicht real-run-belegt)
+### RRG-02: Git-Working-Tree-Index-Effects (fixture_proven seit 2026-05-01)
 
 Quelle:
 `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
@@ -111,9 +113,9 @@ Spalte: `RRG-02 Git-Working-Tree-Index-Effects`
 | Feld | Wert |
 |------|------|
 | Betroffene Achse | Git-Index / Working Tree, Reihenfolge realer Mutationen |
-| Status in replay-gap-candidates.md | `intentional_gap` |
+| Status in replay-gap-candidates.md | `fixture_proven` (war: `intentional_gap`) |
 | Priorität | Phase F: nach RRG-01 |
-| Real-Run-Beleg | **nicht vorhanden** |
+| Real-Run-Beleg | `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json` |
 
 **Beschreibung (aus replay-gap-candidates.md):**
 Reale Mutationen können untracked/modified/indexed Nebenwirkungen haben.
@@ -128,10 +130,11 @@ Locator-Text, sondern in der Git-Sicht auf den Dateiinhalt. Kein Locator
 driftet — der Locator könnte korrekt auflösen, aber auf den falschen
 Datei-Snapshot zeigen.
 
-**Trennung belegt / plausibel / offen:**
+**Trennung belegt / plausibel / offen (Ausgangszustand dieser Cross-Diagnosis):**
 - belegt: Dry-Run hat kein Git-Modell (Code-Beleg in replay-gap-candidates.md)
 - plausibel: Reale Runner mit Git-State-Aware-Umgebung können abweichen
-- offen: Kein realer Ausführungsbeleg; keine kontrollierte Fixture geprüft
+- offen (historisch): Kein realer Ausführungsbeleg; keine kontrollierte Fixture geprüft
+- **aktuell (nach 2026-05-01):** Real-Run erbracht — siehe Artefakt `run-phase-f-rrg02-real/observed.json`
 
 ---
 
@@ -185,7 +188,7 @@ Locator könnte auf die korrekte Zeile zeigen.
 
 **RRG-03** (belegt): Locator-Drift auf Text-Ebene nach realer Mutation.
 
-**RRG-02** (hypothetisch): Git-Working-Tree-Effekte. Nicht der Locator-Text
+**RRG-02** (fixture_proven seit 2026-05-01): Git-Working-Tree-Effekte. Nicht der Locator-Text
 driftet, sondern die Git-Sicht auf die Datei. Ein Kommando könnte korrekt
 auflösen, aber gegen einen gestaged oder falsch-eingestuften Datei-Snapshot
 arbeiten.
@@ -273,9 +276,10 @@ arbeiten.
 
 - **Für RRG-01**: Historisch korrekt — kein Real-Run-Beleg war vorhanden.
   **Aktuell überholt:** Real-Run vom 2026-05-01 erbracht; `content_drifted` bestätigt.
-- **Für RRG-02**: Korrekt — kein Real-Run-Beleg vorhanden; RRG-02 hat in
-  replay-gap-candidates.md Status `intentional_gap`.
-- **Fazit**: Für RRG-02 weiterhin die epistemisch sauberste Position.
+- **Für RRG-02**: Historisch korrekt — kein Real-Run-Beleg war vorhanden.
+  **Aktuell überholt:** Real-Run vom 2026-05-01 erbracht; `git_state_drifted` bestätigt.
+  RRG-02 hat in replay-gap-candidates.md jetzt Status `fixture_proven`.
+- **Fazit**: Für RRG-02 überholt; `no_patch_observe_more` war die richtige Haltung — Real-Run bestätigt die Git-State-Drift-Hypothese.
 
 ---
 
@@ -338,7 +342,7 @@ würden sie invalide werden.
 ## Ergebnisstatus
 
 ```
-RRG-01/RRG-02 partially overlap but need separate fixture proof
+RRG-01/RRG-02 partially overlap and are now separately fixture-proven
 ```
 
 **Begründung:**
@@ -347,15 +351,16 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
    aber der Failure-Mode ist verschieden: Content-Normalisierung (RRG-01) vs.
    Locator-Positionsdrift (RRG-03). `exact_before hash/snapshot binding` ist der stärkste
    Kandidat für RRG-01, während für RRG-03 `post_apply_anchor` und `re_resolution_required`
-   stärker sind.
+   stärker sind. **Beleg: `run-phase-f-rrg01-real/observed.json`, `content_drifted`, 2026-05-01.**
 
 2. RRG-02 (Git-Working-Tree-Index-Effects) ist strukturell orthogonal zu RRG-03.
    Die Git-Index-Drift-Achse wird durch keinen der RRG-03-orientierten Remediation-Kandidaten
    primär adressiert. RRG-02 bildet eine eigene Drift-Klasse.
+   **Beleg: `run-phase-f-rrg02-real/observed.json`, `git_state_drifted`, 2026-05-01.**
 
 3. Keiner der RRG-03-Remediation-Kandidaten ist ohne eigenen Fixture-Beleg für RRG-01 oder
-   RRG-02 als hinreichend einzustufen. `no_patch_observe_more` ist für beide die aktuell
-   epistemisch sauberste Position.
+   RRG-02 als hinreichend einzustufen. Beide Belege wurden 2026-05-01 erbracht;
+   `no_patch_observe_more` bleibt die aktuell epistemisch sauberste Position für Remediation.
 
 **Kein finaler Gewinner. Kein accepted decision. Kein Patch.**
 
@@ -368,8 +373,9 @@ RRG-01/RRG-02 partially overlap but need separate fixture proof
    Optionaler Folge-Run: weitere Normalisierungsarten (trailing whitespace, BOM)
    oder Hash-Binding-Probe — kein unmittelbarer Handlungsbedarf.
 
-2. **RRG-02 Real-Run**: Kontrollierter Workspace mit Git-State-Assertions nach Step A.
-   Beobachten, ob Git-Index-Zustand Folge-Steps beeinflusst.
+2. **RRG-02 Real-Run (abgeschlossen):** Fixture-spezifischer Beleg erbracht (2026-05-01):
+   staged + unstaged Mutation auf `before.md` produziert `git_state_drifted` (`MM before.md`).
+   Optionaler Folge-Run: andere Git-Workspace-Szenarien (untracked, merge states) — kein unmittelbarer Handlungsbedarf.
 
 3. **Breaking-Change-Entscheidung**: Vor jeder v0.2-Implementierung mit `byte_range`,
    `re_resolution_required` (as required) oder `exact_before`-Hash-Format-Änderung
@@ -441,3 +447,78 @@ Mutation über Python `read_text` (Universal-Newline-Read, CRLF → LF im Speich
 
 Beweisumfang: `fixture_only`. Kein allgemeiner Beweis für Runner-Korrektheit oder
 allgemeine Locator-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.
+
+---
+
+## RRG-02 Real-Run Status (2026-05-01)
+
+**Status vor diesem Update:** `intentional_gap` (nicht real-run-belegt)
+**Status nach diesem Update:** `fixture_proven`
+
+### Durchgeführter Real-Run
+
+Artefakt: `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/`
+
+**Szenario:** Git-Working-Tree-Index-Drift durch gestufte + nicht-gestufte Mutation.
+
+Ein echtes Git-Repo wurde in einem Temp-Verzeichnis initialisiert. Das Fixture `before.md`
+("Deployment Notes") wurde committed (sauberer Baseline-Commit). Step A bestand aus zwei Teilen:
+(1) `Use safe deployment mode.` wurde durch `Use staged deployment mode.` ersetzt und mit
+`git add before.md` gestaged. (2) `Validate rollback before release.` wurde durch
+`Validate rollback after release.` ersetzt OHNE Staging. Dadurch entstanden drei
+unterscheidbare Git-Zustände.
+
+**Beobachtetes Ergebnis:**
+
+| Feld | Wert |
+|------|------|
+| `git status --short` nach Step A | `MM before.md` |
+| `head_file_sha256_after_step_a` (HEAD=original) | `751ebb6758a0dff93bbfee4410eb946a2e65c16274266cda55ad1da23c7bb1a2` |
+| `index_file_sha256_after_step_a` (Index=staged) | `1783dc90178f0632dc2f22119ae323becf6f29654146cd9da6a2ae6c55a2d987` |
+| `working_tree_file_sha256_after_step_a` (WT=staged+unstaged) | `a6115469675dd4667dc645b6693666233d535aa39ab726098f9de12d4b4e239a` |
+| Step B `found_in_head` | `true` |
+| Step B `found_in_index` | `true` |
+| Step B `found_in_working_tree` | `false` |
+| `classification` | `git_state_drifted` |
+| `patch_gate.triggered` | `true` |
+
+### Bestätigung der Hypothesen
+
+- **H1 bestätigt:** Realer Apply-Schritt mit `git add` erzeugte staged vs. unstaged Divergenz;
+  Dry-Run bildet keinen Git-Zustand ab.
+- **H2 bestätigt:** Step B's `exact_before` (`Validate rollback before release.`) ist in HEAD
+  und Index vorhanden, aber nicht im Working Tree nach der nicht-gestageten zweiten Mutation.
+  Ein Runner der Working Tree liest, kann Step B nicht finden; ein Runner der HEAD oder Index
+  liest, würde Step B für möglich halten.
+- **H3 bestätigt:** Failure-Mode ist Git-State-Drift, nicht Locator-Positionsdrift und nicht
+  Content-Normalisierungsdrift. Die Drift-Achse ist strukturell orthogonal zu RRG-01 und RRG-03.
+
+### Drei-Snapshot-Vergleich (Kern des Beweises)
+
+```
+git show HEAD:before.md   → Use safe deployment mode. / Validate rollback before release.
+git show :before.md       → Use staged deployment mode. / Validate rollback before release.
+cat before.md             → Use staged deployment mode. / Validate rollback after release.
+```
+
+Alle drei Snapshots sind unterschiedlich. `git status --short` zeigt `MM before.md`
+(erster M = staged changes, zweiter M = unstaged changes). Dies ist der Minimal-Beweis
+für Git-State-Divergenz: drei unterscheidbare Zustände in einem einzigen Real-Run.
+
+### Trennung Belegt / Plausibel / Offen (aktualisiert)
+
+- **belegt:** Staged + unstaged Mutation auf derselben Datei in einem echten Git-Repo
+  produziert `git_state_drifted` für `exact_before`-Snapshots die nur in HEAD/Index,
+  nicht im Working Tree vorhanden sind (fixture_only)
+- **plausibel:** Andere Git-Workspace-Szenarien (untracked files, partial apply across
+  branches, merge states) würden ähnliche Drei-Wege-Divergenz erzeugen -- nicht durch
+  diesen Run belegt
+- **offen:** Konsequenzen für konkrete Runner-Implementierungen -- kein Schema/Validator
+  geändert, kein Decision Preimage, kein accepted status
+
+### Epistemische Grenze
+
+Beweisumfang: `fixture_only`. Kein allgemeiner Beweis für Runner-Korrektheit oder
+allgemeine Git-State-Sicherheit. Kein Patch, kein Decision Preimage, kein accepted status.
+RRG-02 ist nun fixture-proven als eigene Drift-Klasse, strukturell orthogonal zu RRG-01
+(Content-Normalisierung) und RRG-03 (Locator-Positionsdrift).
