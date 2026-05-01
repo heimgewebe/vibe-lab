@@ -47,15 +47,17 @@ Alle drei RRGs sind seit 2026-05-01 fixture-proven. Quellen:
 - `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md`
 - `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
 
-| RRG | classification | patch_gate.triggered | proof_scope | Drift-Achse |
-|-----|----------------|----------------------|-------------|-------------|
+| RRG | classification | patch_gate.triggered | Belegumfang (abgeleitet) | Drift-Achse |
+|-----|----------------|----------------------|--------------------------|-------------|
 | RRG-01 | `content_drifted` | true | fixture_only | Content-/Snapshot-Drift durch Apply-Layer-Normalisierung (CRLF→LF) |
 | RRG-02 | `git_state_drifted` | true | fixture_only | Git-State-Drift: HEAD / Index / Working Tree divergieren nach staged + unstaged Mutation |
 | RRG-03 (Run 01) | `drifted` | true | fixture_only | Locator-Positionsdrift: Removal-Drift, Index-0 rückt nach unten |
 | RRG-03 (Run 02) | `drifted` | true | fixture_only | Locator-Positionsdrift: Injection-Before-Drift, neuer Treffer verdrängt Index-0 |
 
 Allgemeine Runner-Sicherheitsaussagen sind aus keinem dieser Fixture-Belege ableitbar.
-Jeder Beleg gilt ausschließlich für die jeweilige kontrollierte Fixture (proof_scope=fixture_only).
+Jeder Beleg gilt ausschließlich für die jeweilige kontrollierte Fixture.
+Bei RRG-01/RRG-02 ist `fixture_only` aus `claim_boundary.proves` / `claim_boundary.does_not_prove`
+abgeleitet, nicht als Feld `proof_scope` aus dem Artefakt gelesen.
 Die aktuelle Boundary bleibt: proposed, kein Patch.
 
 **RRG-03 Detail:** Nach realer Step-A-Mutation (C2) driftet der Step-B-Locator
@@ -130,10 +132,11 @@ die in keinem der sieben Kandidaten explizit enthalten ist.
 
 **Breaking-Change-Grenzen:**
 - `byte_range` als required-Feld bleibt breaking (kein einziges bestehendes Fixture enthält es).
-- Additive optionale Felder (`post_apply_anchor`, `re_resolution_required`, `exact_before hash`
-  als neues Feld) bleiben non-breaking.
-- `exact_before` als Hash-Format-Wechsel (statt String) bricht Fixtures, die bereits
-  `exact_before` als String haben.
+- **Alternative A (non-breaking):** Additive optionale Felder (`post_apply_anchor`,
+  `re_resolution_required`, `exact_before_hash` als neues Feld) bleiben non-breaking.
+- **Alternative B (breaking):** `exact_before` selbst von String auf Hash-Format umzustellen,
+  bricht bestehende Fixtures, die `exact_before` als String haben. Für diesen breaking Pfad
+  ist in diesem Dokument kein Migrationsplan definiert.
 
 `runner-side resolver hardening` und `validator warning for multi-match locator`
 bleiben deferred: Sie adressieren Symptome, nicht die Ursache, und benötigen
@@ -195,7 +198,7 @@ Drift-Mustern greifen), während `runner-side resolver hardening` und
 
 **Kein finaler Gewinner.** Zwei Messpunkte sind stärker als einer, aber kein
 Beweis für allgemeine Locator-Unsicherheit jenseits kontrollierter Fixtures.
-Scope-Boundary: `proof_scope=fixture_only` gilt für beide Runs.
+Scope-Boundary: `fixture_only` (abgeleitet aus `claim_boundary`) gilt für beide Runs.
 
 ---
 
