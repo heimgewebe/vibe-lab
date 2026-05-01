@@ -1,0 +1,257 @@
+schema_version: "0.1.0"
+decision_type: process_boundary
+verdict: preimage_proposed
+confidence: medium
+date: "2026-05-01"
+reviewer: "Copilot Agent"
+triggered_by: >
+  experiments/2026-04-23_agent-failure-surface Phase F (RRG-01, RRG-02, RRG-03 real executions)
+  + docs/evaluations/rrg03-remediation-strategy-comparison.md
+  + docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md
+
+decision_id: rrg-v02-remediation-preimage
+status: proposed
+canonicality: operative
+scope: process
+created: "2026-05-01"
+updated: "2026-05-01"
+
+title: "RRG-v0.2 Remediation Preimage — Getrennte Drift-Klassen und Hypothesen (Diagnose-only)"
+
+rationale: |
+  Alle drei RRG-Klassen sind seit 2026-05-01 fixture-proven:
+  - RRG-01: content_drifted durch CRLF→LF-Normalisierung im Apply-Layer.
+  - RRG-02: git_state_drifted durch HEAD/Index/Working-Tree-Divergenz nach
+    staged + unstaged Mutation.
+  - RRG-03: locator drifted durch Removal-Drift (Run 01) und
+    Injection-Before-Drift (Run 02).
+
+  Die Strategie-Diagnose (rrg03-remediation-strategy-comparison.md) und
+  die Cross-Diagnosis (replay-gap-cross-diagnosis-rrg01-rrg02.md) haben
+  gezeigt, dass die drei Drift-Klassen strukturell getrennt sind und
+  unterschiedliche Remediation-Pfade benötigen.
+
+  Dieses Decision Preimage hält die belegten Drift-Klassen, die daraus
+  abgeleiteten Remediation-Hypothesen und die Breaking-Change-Grenzen
+  fest — ohne Schema-, Validator-, Runtime- oder CI-Änderung. Es ist
+  Entscheidungsvorstufe, kein Entscheid, kein Patch, kein accepted-Status.
+
+references:
+  - path: "docs/evaluations/rrg03-remediation-strategy-comparison.md"
+    role: "Strategie-Vergleich der v0.2-Kandidaten gegen alle drei Drift-Klassen"
+  - path: "docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md"
+    role: "Cross-Diagnosis RRG-01/RRG-02 gegen RRG-03-Kandidaten; Breaking-Change-Scan"
+  - path: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json"
+    role: "Fixture-Beleg RRG-01: content_drifted (CRLF→LF-Normalisierung)"
+  - path: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json"
+    role: "Fixture-Beleg RRG-02: git_state_drifted (HEAD/Index/WT-Divergenz)"
+  - path: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json"
+    role: "Fixture-Beleg RRG-03 Run 01: drifted (Removal-Drift)"
+  - path: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json"
+    role: "Fixture-Beleg RRG-03 Run 02: drifted (Injection-Before-Drift)"
+  - path: "contracts/command-semantics.md"
+    role: "Vertraglicher Ist-Zustand v0.1; Ausgangspunkt für v0.2-Hypothesen"
+  - path: "decisions/process/2026-04-30-rrg03-remediation-boundary.yml"
+    role: "Vorgänger-Boundary-Entscheidung RRG-03 (proposed, kein Patch)"
+
+evidence_layer:
+
+  belegt:
+    scope_note: >
+      Alle folgenden Befunde sind fixture-only. Sie beweisen nicht allgemeine
+      Runner-Korrektheit, allgemeine Locator-Sicherheit oder unmittelbaren
+      Handlungsbedarf jenseits der kontrollierten Fixtures.
+    findings:
+      - id: RRG-01
+        classification: content_drifted
+        patch_gate: triggered
+        proof_scope: fixture_only
+        summary: >
+          CRLF→LF-Normalisierung durch den Apply-Layer konvertiert alle
+          Zeilenenden während Step-A-Write. Step-B exact_before (CRLF-Variante)
+          findet nach dem Write keinen Match auf Disk. LF-Variante ist noch
+          vorhanden; der Locator-Text ist unverändert.
+        source: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json"
+        drift_axis: "Content-/Snapshot-Drift durch Apply-Layer-Normalisierung"
+      - id: RRG-02
+        classification: git_state_drifted
+        patch_gate: triggered
+        proof_scope: fixture_only
+        summary: >
+          Nach staged + unstaged Mutation auf derselben Datei divergieren
+          HEAD, Index und Working Tree in drei unterscheidbare Snapshots.
+          Step-B exact_before ist in HEAD und Index vorhanden, aber nicht
+          im Working Tree. Welcher Git-State autoritativ ist, bleibt im
+          Dry-Run-Contract undefiniert.
+        source: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json"
+        drift_axis: "Git-State-Drift: HEAD / Index / Working-Tree-Divergenz"
+      - id: RRG-03-run-01
+        classification: drifted
+        patch_gate: triggered
+        proof_scope: fixture_only
+        summary: >
+          Removal-Drift: Step-A-Mutation entfernt einen Treffer, der Step-B-
+          Locator "Validate token" wechselt von C1-Zeile 4 auf C3-Zeile 7
+          (match_count 2→1, Index-0 rückt nach unten).
+        source: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json"
+        drift_axis: "Locator-Positionsdrift: Removal-Drift"
+      - id: RRG-03-run-02
+        classification: drifted
+        patch_gate: triggered
+        proof_scope: fixture_only
+        summary: >
+          Injection-Before-Drift: Step-A-Mutation injiziert oberhalb einen
+          neuen Treffer, der Step-B-Locator "Process request" wechselt von
+          C1-Zeile 7 auf C3-Zeile 4 (match_count 3→4, Index-0 verschoben).
+        source: "experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json"
+        drift_axis: "Locator-Positionsdrift: Injection-Before-Drift"
+
+  plausibel_abgeleitet:
+    scope_note: >
+      Diese Aussagen folgen logisch aus den Fixture-Befunden, sind aber keine
+      Implementierungsbelege. Kein Schema-, Validator- oder Runtime-Patch wurde
+      getestet. Sie sind Hypothesen für das vorliegende Preimage.
+    inferences:
+      - >
+        Aus RRG-01 folgt plausibel: exact_before_hash / snapshot binding ist ein
+        starker Kandidat — Hash-Mismatch würde CRLF→LF-Normalisierungseffekte
+        direkt aufdecken, unabhängig vom Locator-Text.
+      - >
+        Aus RRG-03 folgt plausibel: post_apply_anchor und re_resolution_required
+        sind starke Kandidaten für Locator-Positionsdrift — beide greifen bei
+        Removal-Drift und Injection-Before-Drift (zwei belegte Mechanismen).
+      - >
+        Aus RRG-02 folgt plausibel: reine Locator-Remediation reicht nicht für
+        Git-State-Drift. Git-State-Snapshot-Semantik ist ein eigenständiger
+        Remediation-Pfad, der in keinem der sieben dokumentierten Kandidaten
+        explizit enthalten ist.
+      - >
+        Breaking-Change-Abschätzung (aus Cross-Diagnosis-Scan, nicht
+        runtime-geprüft): additive optionale Felder sind non-breaking; required
+        Pflichtfelder würden alle bestehenden validen Chains brechen.
+
+  offen:
+    - "Konkrete Runtime-Implementierung einer Remediation (kein Patch in diesem Preimage)."
+    - "Finale Contract-Änderung für v0.2 (kein Patch in diesem Preimage)."
+    - "Wahl des autoritativen Git-Snapshots für Implementierungen (HEAD / Index / WT)."
+    - "Hash-Format-Migration für bestehende exact_before-Fixtures (breaking, kein Plan)."
+    - "Ob post_apply_anchor und re_resolution_required komplementär oder alternativ zu verwenden sind."
+
+remediation_hypotheses:
+
+  RRG-01:
+    starkster_kandidat:
+      name: "exact_before_hash / snapshot binding"
+      rationale: >
+        Content-/Snapshot-Drift durch Apply-Layer-Normalisierung (CRLF→LF)
+        wird durch Hash-Mismatch direkt erkannt: Step-B prüft den SHA256-Hash
+        des Zielbereichs vor Apply; Normalisierungseffekte erzeugen zwingend
+        einen Hash-Mismatch und blockieren Step B frühzeitig.
+      form: "additives optionales Feld exact_before_hash (non-breaking)"
+    nicht_adressiert_durch:
+      - "Umstellen des bestehenden exact_before-Felds von String auf Hash-Format (breaking)."
+      - "post_apply_anchor oder re_resolution_required (adressieren Positionsdrift, nicht Content-Normalisierung)."
+
+  RRG-03:
+    starkste_kandidaten:
+      - name: "post_apply_anchor"
+        rationale: >
+          Nach jedem Apply-Schritt wird ein Anker (z.B. Zeilennummer +
+          Hash-Snapshot) festgeschrieben. Folgekommandos lösen den Locator
+          relativ zum Anker auf. Adressiert Removal-Drift und Injection-Before-
+          Drift (beide belegten Mechanismen), weil die Positionsbestimmung
+          nach Step A neu verankert wird.
+        form: "additives optionales Feld (non-breaking als v0.2-Hypothese)"
+      - name: "re_resolution_required"
+        rationale: >
+          Kommandokette deklariert explizit, dass nach jedem Apply eine
+          erneute Resolution für Folgekommandos nötig ist. Verletzung = Fehler.
+          Adressiert dieselbe Ursache (schwache Folgeadressierung) auf
+          Deklarationsebene statt auf Anker-Ebene.
+        form: "additives optionales Feld (non-breaking als v0.2-Hypothese)"
+    nicht_adressiert_durch:
+      - "runner-side resolver hardening (adressiert Symptom, nicht Ursache; benötigt allgemeineren Beleg)."
+      - "validator warning for multi-match locator (adressiert Symptom, nicht Ursache)."
+
+  RRG-02:
+    eigener_pfad:
+      name: "Git-State-Snapshot-Semantik"
+      rationale: >
+        RRG-02 ist strukturell orthogonal zu RRG-01 und RRG-03: Die
+        Drift-Achse ist Workspace-Management (HEAD / Index / Working Tree),
+        nicht Text-Resolving oder Content-Normalisierung. Keiner der sieben
+        dokumentierten Kandidaten adressiert diesen Pfad explizit. Ein
+        eigenständiges Konzept ist erforderlich, das den autoritativen
+        Git-Snapshot für Dry-Run-Operationen definiert.
+      form: "Konzept-Hypothese; keine Implementierung in diesem Preimage"
+    nicht_loesbar_durch:
+      - "Reine Locator-Remediation (post_apply_anchor, re_resolution_required, exact_before_hash)."
+      - "Validator-Warnung oder runner-side resolver hardening."
+      - "byte_range als Pflichtfeld."
+
+breaking_change_grenzen:
+  breaking:
+    - "byte_range als required-Feld: bricht alle bestehenden validen Chains."
+    - "re_resolution_required als required-Feld: bricht alle bestehenden validen Chains."
+    - "exact_before von String auf Hash-Format umstellen: bricht alle Fixtures mit exact_before als String."
+  non_breaking:
+    - "Additive optionale Felder (exact_before_hash, post_apply_anchor, re_resolution_required als opt.) sind non-breaking."
+    - "Semantische Klarstellungen in contracts/command-semantics.md ohne Pflichtfeld-Änderung."
+
+vorlaeutige_entscheidung:
+  kein_finaler_gewinner: true
+  status: proposed
+  accepted: false
+  patch: false
+  next_direction: >
+    Zulässige nächste Implementierungsrichtung: additive, non-breaking v0.2-Probe
+    auf Basis der Hypothesen (exact_before_hash für RRG-01; post_apply_anchor
+    oder re_resolution_required für RRG-03; Git-State-Snapshot-Konzept für RRG-02).
+    Reihenfolge und Form sind noch nicht festgelegt.
+  nicht_zulaessig:
+    - "Runtime-Patch ohne Contract-/Decision-Preimage."
+    - "Schema-Patch ohne vorherigen Strategie-Entscheid."
+    - "Aufwertung dieser Datei von proposed auf accepted ohne belegten Strategie-Vergleich."
+    - "Zusammenwerfen von RRG-01, RRG-02, RRG-03 in einen einzigen Remediation-Pfad."
+
+risks:
+  - id: technischer_drift_durch_zusammenwurf
+    level: mittel
+    description: >
+      Risiko technischer Drift: mittel, falls RRG-01, RRG-02 und RRG-03 in
+      einen gemeinsamen Remediation-Pfad zusammengeworfen werden. Die drei
+      Drift-Achsen sind strukturell verschieden; eine einheitliche Lösung
+      würde eine Achse underaddress-en.
+  - id: breaking_change_bei_pflichtfeldern
+    level: hoch
+    description: >
+      Risiko Breaking Change: hoch bei Einführung von Pflichtfeldern oder
+      Feldformatwechsel (byte_range required, re_resolution_required required,
+      exact_before als Hash statt String). Alle bestehenden validen Chains
+      würden brechen.
+  - id: overclaiming_fixture_scope
+    level: mittel
+    description: >
+      Risiko Overclaiming: fixture-spezifische Befunde als allgemeine
+      Aussagen über Runner- oder Locator-Sicherheit zu interpretieren.
+      Alle vier Belege gelten ausschließlich für ihre jeweilige kontrollierte
+      Fixture (proof_scope: fixture_only).
+  nutzen: >
+    Klare Trennung der drei Remediation-Pfade vor jeder Implementierung.
+    Verhindert premature Runtime-/Schema-/Validator-Patch ohne belegten
+    Strategie-Entscheid. Hält Drift-Klassen sichtbar und getrennt.
+
+follow_up:
+  - >
+    Für jede Drift-Klasse einen separaten v0.2-Probe-Entscheid vorbereiten,
+    sobald die Hypothesen für den jeweiligen Pfad weiter eingegrenzt sind.
+  - >
+    Für RRG-02: Konzeptarbeit zu Git-State-Snapshot-Semantik (welcher
+    Snapshot ist autoritativ?) separat vom Locator-Remediation-Pfad führen.
+  - >
+    Keine Aufwertung von proposed auf accepted ohne (a) belegte
+    Probe-Implementierung oder (b) expliziten Entscheid-Ersatz.
+  - >
+    Keine Änderung historischer Artefakte (observed.json, execution-real.txt,
+    decisions/process/2026-04-30-rrg03-remediation-boundary.yml) durch
+    dieses Preimage.
