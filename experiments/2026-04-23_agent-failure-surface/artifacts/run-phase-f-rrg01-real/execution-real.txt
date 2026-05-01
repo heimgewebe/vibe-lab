@@ -4,7 +4,7 @@
 [command] cp fixtures/before.md <tmp>/before.md (CRLF conversion)
 [output] fixture written to temp workspace with CRLF line endings
 [output] sha256_before=35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269
-[command] Step A — apply mutation with read_text/write_text (CRLF->LF normalization)
+[command] Step A — apply mutation with universal-newline read + explicit LF write (CRLF->LF normalization)
 [output] step_a_locator="Load config from file."
 [output] step_a_exact_before="Load config from file."
 [output] step_a_exact_after="Load config from disk."

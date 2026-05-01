@@ -429,8 +429,9 @@ Mutation über Python `read_text` (Universal-Newline-Read, CRLF → LF im Speich
 
 ### Trennung Belegt / Plausibel / Offen (aktualisiert)
 
-- **belegt:** CRLF→LF-Normalisierung durch `read_text`/`write_text` produziert
-  content_drifted für CRLF-basierte `exact_before`-Snapshots (fixture_only)
+- **belegt:** CRLF→LF-Normalisierung durch Universal-Newline-Read und expliziten
+  LF-Write im Reproduktionsskript produziert `content_drifted` für CRLF-basierte
+  `exact_before`-Snapshots (fixture_only)
 - **plausibel:** Andere Normalisierungsarten (trailing whitespace, BOM) würden
   ähnlichen Effekt zeigen — nicht durch diesen Run belegt
 - **offen:** Auswirkung auf Hash-basiertes `exact_before`-Binding in v0.2 —
