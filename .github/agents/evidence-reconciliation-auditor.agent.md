@@ -90,6 +90,9 @@ Mark empty sections explicitly with `none` rather than omitting them.
 ## Unproven Claims
 - <claim> — verdict: <CLAIM_NOT_PROVEN | NOT_REPRODUCIBLE> — reason: <why>
 
+## Out-of-Scope Claims
+- <claim> — verdict: OUT_OF_SCOPE — reason: <why claim falls outside declared scope>
+
 ## Contradictions
 - <claim> — verdict: CONTRADICTION — evidence: <pointer> — conflict: <what differs>
 
@@ -100,7 +103,7 @@ Mark empty sections explicitly with `none` rather than omitting them.
 - <what must be produced or located before this claim can be reconsidered>
 ```
 
-If information is missing, keep all six sections and mark gaps explicitly with:
+If information is missing, keep all seven sections and mark gaps explicitly with:
 - `MISSING: <required element>`
 - `UNKNOWN: <reason>`
 - `BLOCKED_BY: <constraint or dependency>`
