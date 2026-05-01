@@ -6,17 +6,17 @@
   "step_a_applied": true,
   "sha256_before": "35265e7307dad1afe98c9514f59189db58a80de782fd653878bbbaec9f58e269",
   "sha256_after": "42cccfcc322444cbd34b43b0dda050b6d312e5e120bf509e17e6fe3f7b34c92d",
-  "content_delta_summary": "CRLF-to-LF normalization applied by apply layer during Step A write. Original disk state: 103 bytes (CRLF). Post-apply disk state: 96 bytes (LF). Step A semantic change: 'Load config from file.' -> 'Load config from disk.'. Normalization side-effect: all \\r\\n converted to \\n, including Step B target area.",
+  "content_delta_summary": "CRLF-to-LF normalization applied by apply layer during Step A write. Original disk state: 103 bytes (CRLF). Post-apply disk state: 96 bytes (LF). Step A semantic change: 'Load config from file.' -> 'Load config from disk.'. Normalization side-effect: all CRLF converted to LF, including Step B target area.",
   "step_b_expectation": {
     "locator": "Load config from environment.",
     "exact_before": "Load config from environment.\r\n",
-    "exact_before_encoding_note": "Contains CRLF (\\r\\n); captured from original CRLF disk state before Step A"
+    "exact_before_encoding_note": "Contains CRLF (carriage-return + linefeed); captured from original CRLF disk state before Step A"
   },
   "step_b_observed_state": {
     "exact_before_found_on_disk": false,
     "exact_before_lf_variant_found": true,
     "disk_line_endings_after_step_a": "LF only",
-    "explanation": "Step B exact_before contains \\r\\n; disk after Step A has LF only. Substring search for CRLF variant fails. LF variant is still present (locator text unchanged)."
+    "explanation": "Step B exact_before contains CRLF; disk after Step A has LF only. Substring search for CRLF variant fails. LF variant is still present (locator text unchanged)."
   },
   "classification": "content_drifted",
   "patch_gate": {
