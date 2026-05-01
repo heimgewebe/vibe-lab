@@ -16,7 +16,7 @@ canonicality: operative
 - [ ] **False Blocks nicht erfassen** — Wenn der Auditor oder Critic einen PR ungerechtfertigt blockiert und dieser Vorfall nicht als `false_block_count` dokumentiert wird, entsteht ein verzerrtes Bild der Schicht-Performance.
 - [ ] **Zeitmetrik kausal fehlinterpretieren** — `task_completion_time_observed` ist eine deskriptive Beobachtung. Sie darf nicht als Beweis für Beschleunigung oder Verlangsamung durch die Agent-Schicht interpretiert werden.
 - [ ] **Skill-Dateien bewerten, obwohl keine dedizierten Skill-Dateien existieren** — Es wurden keine Skill-Dateien als eigenständiger Repo-Artefakttyp eingeführt. Jede Aussage über die Wirkung von Skill-Dateien ist ohne Grundlage.
-- [ ] **Auditor-Verdicts ohne Evidence-Pointer archivieren** — Jeder Auditor-Befund muss auf einen konkreten Artefakt-Rückverweis zeigen. Verdicts ohne `artifact_ref` oder nachvollziehbaren Belegerefund sind epistemisch wertlos.
+- [ ] **Auditor-Verdicts ohne Evidence-Pointer archivieren** — Jeder Auditor-Befund muss auf einen konkreten Artefakt-Rückverweis zeigen. Verdicts ohne `artifact_ref` oder nachvollziehbaren Beleg sind epistemisch wertlos.
 
 ## Bekannte Fehlannahmen
 
