@@ -89,3 +89,13 @@ promotion_readiness_freeze:
         0/7). This is a legitimate bounded finding, not a flaw. Frozen at this
         specific signal to allow series completion; must be resolved before
         adoption_assessment.
+
+    - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation
+      allowed_missing:
+        - prepared_without_measurement
+      reason: >-
+        Prepared instrumentation scaffold without real measurement data.
+        decision.yml carries verdict=insufficient_proof (execution_assessment),
+        which correctly blocks promotion_ready via the prepared_without_measurement
+        rule. Remove once real measurement evidence is collected and decision.yml
+        is updated.

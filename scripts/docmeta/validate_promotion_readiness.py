@@ -145,6 +145,21 @@ def load_manifest(path: Path) -> dict[str, Any] | None:
     return data
 
 
+def load_decision_file(exp_dir: Path) -> dict[str, Any] | None:
+    """Lädt results/decision.yml eines Experiments oder gibt None zurück."""
+    decision_path = exp_dir / "results" / "decision.yml"
+    if not decision_path.is_file():
+        return None
+    try:
+        with open(decision_path) as f:
+            data = yaml.safe_load(f) or {}
+    except Exception:
+        return None
+    if not isinstance(data, dict):
+        return None
+    return data
+
+
 def classify_experiment(manifest: dict[str, Any]) -> dict[str, Any]:
     """Bestimmt Zustandsmerkmale für ein Experiment aus dem Manifest."""
     exp = manifest.get("experiment", {}) or {}
@@ -447,6 +462,21 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         warnings.extend(w)
         notes.append("falsifiability_voluntary")
 
+    # Enge Sonderregel: prepared + execution_assessment + insufficient_proof
+    # → kein Messwert vorhanden, daher nicht promotion-ready.
+    if (
+        not historical
+        and state["execution_status"] == "prepared"
+    ):
+        decision = load_decision_file(exp_dir)
+        if (
+            decision is not None
+            and decision.get("decision_type") == "execution_assessment"
+            and decision.get("verdict") == "insufficient_proof"
+        ):
+            missing.append("prepared_without_measurement")
+            notes.append("prepared_without_measurement")
+
     promotion_ready = (len(missing) == 0)
     # Historischer Escape ist definitorisch nicht "ready" im neuen Sinn,
     # aber auch nicht "not_ready" — er wird gesondert markiert.
@@ -537,6 +567,7 @@ VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
     "falsifiability.assessment_pending_blocking",
     "falsifiability.assessment_counterhypothesis_supported",
     "falsifiability.assessment_blocked",
+    "prepared_without_measurement",
 })
 
 _ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")

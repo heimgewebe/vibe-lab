@@ -203,10 +203,14 @@
       "execution_status": "prepared",
       "falsifiability_triggered": false,
       "historical_escape": false,
-      "missing": [],
-      "notes": [],
+      "missing": [
+        "prepared_without_measurement"
+      ],
+      "notes": [
+        "prepared_without_measurement"
+      ],
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation",
-      "promotion_ready": true,
+      "promotion_ready": false,
       "status": "testing",
       "warnings": []
     }
@@ -216,8 +220,8 @@
   "summary": {
     "experiments_checked": 15,
     "historical_escape": 1,
-    "not_ready": 11,
-    "ready": 3,
+    "not_ready": 12,
+    "ready": 2,
     "warnings": 1
   },
   "trigger": "need_for_reproducibility"

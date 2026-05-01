@@ -315,6 +315,74 @@ class IsolatedRepoScenarios(unittest.TestCase):
             self.assertTrue(by_name["exp-designed"]["promotion_ready"])
             self.assertFalse(by_name["exp-designed"]["falsifiability_triggered"])
 
+    def test_prepared_insufficient_proof_not_ready(self) -> None:
+        """prepared + decision_type=execution_assessment + verdict=insufficient_proof
+        → promotion_ready must be False with note 'prepared_without_measurement'.
+        """
+        import yaml as _yaml
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            exp_dir = root / "exp-prepared-insufficient-proof"
+
+            # Write manifest
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="testing", execution_status="prepared"),
+            )
+
+            # Write results/decision.yml with the triggering combination
+            decision_path = exp_dir / "results" / "decision.yml"
+            decision_path.parent.mkdir(parents=True, exist_ok=True)
+            decision_path.write_text(
+                _yaml.safe_dump(
+                    {
+                        "decision_type": "execution_assessment",
+                        "verdict": "insufficient_proof",
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entries = self._evaluate_dir(root)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            by_name = {Path(e["path"]).name: e for e in entries}
+            entry = by_name["exp-prepared-insufficient-proof"]
+
+            self.assertFalse(entry["promotion_ready"])
+            self.assertIn("prepared_without_measurement", entry["missing"])
+            self.assertIn("prepared_without_measurement", entry["notes"])
+            self.assertFalse(entry["falsifiability_triggered"])
+            self.assertFalse(entry["historical_escape"])
+
+    def test_prepared_without_decision_file_still_ready(self) -> None:
+        """prepared without decision.yml → promotion_ready remains True (no change)."""
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._write_manifest(
+                root / "exp-prepared-no-decision" / "manifest.yml",
+                make_manifest(status="testing", execution_status="prepared"),
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entries = self._evaluate_dir(root)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            by_name = {Path(e["path"]).name: e for e in entries}
+            entry = by_name["exp-prepared-no-decision"]
+
+            self.assertTrue(entry["promotion_ready"])
+            self.assertNotIn("prepared_without_measurement", entry["notes"])
+
 
 class DeterminismTests(unittest.TestCase):
     def test_report_rendering_is_deterministic(self) -> None:
