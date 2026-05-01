@@ -73,7 +73,7 @@ Die aktuelle Boundary bleibt: proposed, kein Patch.
 |---|----------|--------------|
 | 1 | **post_apply_anchor** | Nach jedem Apply-Schritt wird ein Anker (z.B. Zeilennummer + Hash-Snapshot) festgeschrieben, der als Ausgangspunkt für die nächste Resolution dient. |
 | 2 | **byte_range** | Das Kommando enthält neben dem lesbaren Locator auch einen byte_start/byte_end-Anker, der nach Step A neu ausgewertet wird. |
-| 3 | **exact_before hash / snapshot binding** | `exact_before` wird durch einen SHA256-Hash des Kontexts gebunden; Mismatch blockiert Step B sofort. |
+| 3 | **exact_before_hash / snapshot binding** | `exact_before_hash` als additives Feld bindet den Kontext per SHA256-Hash; Mismatch blockiert Step B sofort. |
 | 4 | **explicit re_resolution_required** | Kommandokette deklariert explizit, dass nach jedem Apply eine erneute Resolution für Folgekommandos nötig ist. Verletzung = Fehler. |
 | 5 | **validator warning for multi-match locator** | Validator warnt, wenn ein Locator innerhalb einer Chain mehr als einmal matcht und kein post_apply_anchor gesetzt ist. |
 | 6 | **runner-side resolver hardening** | Runtime-Patch in `tools/vibe-cli/replay_minimal.py`: nach jedem Apply wird der Locator erneut aufgelöst und ein Drift-Check durchgeführt. |
@@ -100,7 +100,7 @@ Die aktuelle Boundary bleibt: proposed, kein Patch.
 |----------|----------|-------------|----------------|----------------|-------------|---------|-----------------|--------------|
 | post_apply_anchor | ja | ja (Schema) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted; nicht primär adressiert); RRG-02 fixture_proven (orthogonal; nicht adressiert) |
 | byte_range | teilweise | ja (Schema) | niedrig (breaking) | niedrig | niedrig | hoch | bricht | mehrere Fixtures |
-| exact_before hash | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 stärkster Kandidat; RRG-02 orthogonal |
+| exact_before_hash / snapshot binding | teilweise | ja (Validator) | mittel | niedrig | niedrig | mittel | schärft | RRG-03 Run 01+02 erledigt; RRG-01 stärkster Kandidat; RRG-02 orthogonal |
 | re_resolution_required | ja | ja (Schema+Validator) | mittel | niedrig | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01 fixture_proven (content_drifted; nur indirekt/teilweise adressiert); RRG-02 fixture_proven (nicht adressiert) |
 | validator multi-match | nein (Symptom) | ja (Validator) | hoch | mittel | niedrig | niedrig | schärft | RRG-03 Run 01+02 erledigt; RRG-01/RRG-02 nicht relevant für diesen Kandidaten |
 | runner hardening | nein (Symptom) | nein | hoch | mittel | hoch | hoch | außerhalb v0.1 | viele Fixtures, allg. Beleg |
@@ -118,7 +118,7 @@ die Ursache (schwache Folgeadressierung) semantisch und sind maschinell
 prüfbar, ohne den Patch-Scope über den belegten Fixture-Befund hinaus
 auszuweiten.
 
-**RRG-01-spezifisch:** `exact_before hash/snapshot binding` ist der stärkste
+**RRG-01-spezifisch:** `exact_before_hash / snapshot binding` ist der stärkste
 Kandidat — Content-/Snapshot-Drift durch Apply-Layer-Normalisierung (CRLF→LF)
 wird direkt durch Hash-Mismatch erkannt. `post_apply_anchor` und
 `re_resolution_required` adressieren RRG-01 nur teilweise (sie decken
@@ -219,7 +219,7 @@ Quelle: `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
 
 - RRG-01 teilt mit RRG-03 die Achse "post-apply state divergence", hat aber
   einen anderen Failure-Mode (Content-Normalisierung statt Locator-Positionsdrift).
-  Stärkster Kandidat für RRG-01: `exact_before hash/snapshot binding`.
+  Stärkster Kandidat für RRG-01: `exact_before_hash / snapshot binding`.
   Beleg: `run-phase-f-rrg01-real/observed.json`, classification=content_drifted.
 - RRG-02 ist strukturell orthogonal zu RRG-03 (Git-Index-Drift vs. Text-Locator-Drift).
   Keiner der aktuellen Kandidaten adressiert RRG-02 primär; RRG-02 wird NICHT durch
@@ -258,7 +258,7 @@ Diese Aussagen folgen logisch aus den Fixture-Belegen, sind aber keine Implement
 kein Schema-, Validator- oder Runtime-Patch wurde getestet. Sie sind Hypothesen für ein
 späteres Decision Preimage.
 
-- Aus RRG-01 folgt plausibel: `exact_before hash/snapshot binding` ist ein starker Kandidat
+- Aus RRG-01 folgt plausibel: `exact_before_hash / snapshot binding` ist ein starker Kandidat
   für Content-/Snapshot-Drift — Hash-Mismatch würde CRLF→LF-Normalisierungseffekte direkt
   aufdecken.
 - Aus RRG-03 folgt plausibel: `post_apply_anchor` und `re_resolution_required` sind starke
