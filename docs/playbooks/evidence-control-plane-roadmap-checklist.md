@@ -1,0 +1,107 @@
+---
+title: "Evidence-Control-Plane v1 — Roadmap-Checkliste"
+status: draft
+canonicality: exploratory
+relations:
+  - type: derived_from
+    target: ../blueprints/blueprint-evidence-control-plane-v1.md
+  - type: references
+    target: reconciliation.md
+  - type: references
+    target: ../policies/interpretation-budget.md
+  - type: references
+    target: ../blueprints/blueprint-agent-operability.md
+  - type: references
+    target: ../blueprints/blueprint-agent-skill-minimal-layer-v0.1.md
+---
+
+# Evidence-Control-Plane v1 — Roadmap-Checkliste
+
+## Status dieser Roadmap
+Diese Datei ist eine operative **Planungscheckliste**, keine implementierte Control-Plane.
+
+Diese Datei:
+
+- erzeugt keine neue Enforcement-Regel.
+- ersetzt keinen Blueprint und keine Policy.
+- trifft keinen Wirksamkeitsclaim zur Agent/Skill-Schicht.
+- gilt erst durch separate validierte PRs als umgesetzt.
+- verwendet Checkboxen als geplante Umsetzungsschritte, nicht als Beleg bereits aktiver Enforcement-Regeln.
+
+## PR 1 — Blueprint + Roadmap + Navigation Scaffold
+- [ ] `docs/blueprints/blueprint-evidence-control-plane-v1.md` finalisiert.
+- [ ] Nicht-Ziele explizit: kein Agent/Skill-Wirksamkeitsclaim.
+- [ ] Architektur- und Falsifikationskriterien dokumentiert.
+- [ ] Diese Roadmap gegen Blueprint gespiegelt.
+- [ ] `docs/index.md` auf neue Blueprint/Playbook-Dokumente verlinkt.
+
+## PR 2 — Policy-only
+- [ ] `docs/policies/pr-run-evidence-policy.md` erstellt.
+- [ ] `docs/policies/artifact-boundary-policy.md` erstellt.
+- [ ] Policies deklarieren: keine aktive Enforcement-Regel ohne Schema/Script/Make/CI-Integration.
+
+## PR 3 — Playbook pr-run-evidence-pack
+- [ ] `docs/playbooks/pr-run-evidence-pack.md` erstellt.
+
+## PR 4 — Evidence-Pack-Schema + Fixtures
+- [ ] `schemas/run-evidence-pack.v1.schema.json` erstellt.
+- [ ] Fixtures angelegt (`tests/fixtures/claim_evidence/*`).
+- [ ] Schema validiert (inkl. invalid status, fehlende `run_id`, path escape, leere Pfade).
+- [ ] Keine rot eingebundenen Mainline-Tests.
+
+## PR 5 — Claim-Evidence-Validator
+- [ ] `scripts/docmeta/validate_claim_evidence.py` implementiert.
+- [ ] `scripts/docmeta/test_validate_claim_evidence.py` grün.
+- [ ] Make-Targets ergänzt (`validate-claim-evidence`, `validate-claim-evidence-tests`).
+- [ ] CI-Step ergänzt (`.github/workflows/validate.yml`).
+- [ ] Regeln aktiv:
+  - [ ] No PASS without archived evidence.
+  - [ ] `*.MISSING_EVIDENCE.*` dokumentiert Abwesenheit, beweist keinen Erfolg.
+  - [ ] Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
+  - [ ] Kein CI-success-Claim ohne archivierte CI-Evidence.
+  - [ ] Kein `make validate`-Claim ohne Command-Output-Artefakt.
+  - [ ] `external_unverified` darf keinen PASS-Prozessclaim begründen.
+
+## PR 6 — Run-Bundle-Kopplung
+- [ ] `schemas/experiment-run-bundle.v1.schema.json` erweitert.
+- [ ] `scripts/docmeta/validate_run_bundle.py` erweitert.
+- [ ] `scripts/docmeta/test_validate_run_bundle.py` erweitert.
+- [ ] `run.yml` referenziert Evidence-Pack (`path`, `contract`, `canonical`).
+- [ ] Legacy-Bundles nur im Warn-/Ratchet-Modus.
+
+## PR 7 — PR-Scope-Guard
+- [ ] `.vibe/pr-scope-policy.yml` erstellt.
+- [ ] `scripts/docmeta/validate_pr_scope.py` + Tests erstellt.
+- [ ] Make/CI integriert.
+- [ ] Guards blockieren Full-Diffs, übergroße Artefakte und unzulässige Self-Observation.
+
+## PR 8 — PR-Template-Härtung
+- [ ] `.github/pull_request_template.md` ergänzt.
+- [ ] Claims-Sektion fordert Evidence-Artefakte für Testcount/CI/make/critic-Claims.
+- [ ] Missing-Evidence muss als fehlend markiert sein, nie als Erfolg.
+
+## PR 9 — Ersten kontrollierten Agent/Skill-Run erfassen
+- [ ] Neuer Run mit vollständigem Evidence-Pack erfasst.
+- [ ] Kein Reuse des alten nicht-gemergten Run-2-Forensik-Diffs.
+- [ ] Nur Measurement-System-Readiness, kein Wirksamkeitsclaim.
+
+## PR 10 — Weitere vergleichbare Runs erfassen
+- [ ] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
+- [ ] Claim-/Evidence-Metriken pro Run konsistent erhoben.
+
+## PR 11 — Cross-Run-Assessment
+- [ ] `cross-run-assessment.md` erstellt.
+- [ ] Bewertet Messsystem-Reife vor Nutzenaussagen.
+- [ ] Verdict gesetzt: `not_ready` | `partially_ready` | `ready_for_effect_evaluation`.
+
+## Durchgehende Qualitätsgates
+- [ ] `claim_to_evidence_binding_rate` steigt.
+- [ ] `unsupported_claim_count` sinkt.
+- [ ] `validation_gap_count` sinkt.
+- [ ] `contradiction_count` wird vor Merge abgefangen.
+- [ ] `external_unverified_ratio` bleibt kontrolliert.
+
+## Definition of Done
+- [ ] Evidence-Control-Plane ist über Policy + Schema + Validator + Make + CI verbindlich verankert.
+- [ ] Unbelegte PASS-Claims können nicht durchrutschen.
+- [ ] Self-Observation und Artefakt-Grenzen sind technisch abgesichert.

@@ -8,11 +8,15 @@ relations:
   - type: references
     target: blueprints/blueprint-agent-operability-phase-1c.md
   - type: references
+    target: blueprints/blueprint-evidence-control-plane-v1.md
+  - type: references
     target: policies/interpretation-budget.md
   - type: references
     target: playbooks/reconciliation.md
   - type: references
     target: playbooks/build-reliable-prompt.md
+  - type: references
+    target: playbooks/evidence-control-plane-roadmap-checklist.md
   - type: references
     target: ../catalog/combos/spec-first-constraint-control.md
   - type: references
@@ -135,6 +139,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 
 - [Minimaler Agent-Operability-Kern](blueprints/blueprint-agent-operability.md)
 - [Phase 1c: Systemverankerung des Agent-Operability-Kerns](blueprints/blueprint-agent-operability-phase-1c.md)
+- [Evidence-Control-Plane v1](blueprints/blueprint-evidence-control-plane-v1.md)
 
 ## Konzepte (latent)
 
@@ -145,6 +150,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 
 - [Reconciliation](playbooks/reconciliation.md)
 - [Build a Reliable Prompt](playbooks/build-reliable-prompt.md)
+- [Evidence-Control-Plane v1 — Roadmap](playbooks/evidence-control-plane-roadmap-checklist.md)
 
 ## Bibliothek
 
