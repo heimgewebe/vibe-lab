@@ -473,7 +473,7 @@ class RepoLevelTests(unittest.TestCase):
         )
         errs = validate_repo(self.base)
         self.assertTrue(
-            any("does-not-exist.yml" in e and "existiert nicht" in e for e in errs),
+            any("does-not-exist.yml" in e and ("existiert nicht" in e or "Datei" in e) for e in errs),
             errs,
         )
 
@@ -1466,6 +1466,65 @@ class RepoLevelTests(unittest.TestCase):
         )
         errs = validate_repo(self.base)
         self.assertEqual(errs, [], errs)
+
+    def test_execution_ref_pointing_to_directory_fails(self) -> None:
+        """R3: execution_ref that resolves to a directory must be rejected."""
+        exp = _build_valid_bundle(self.base)
+        dir_ref = exp / "artifacts" / "run-001" / "dir-ref"
+        dir_ref.mkdir(parents=True, exist_ok=True)
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "fixture"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - results/evidence.jsonl
+                - artifacts/run-001/run.yml
+                - artifacts/run-001/dir-ref
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("dir-ref" in e and ("Datei" in e or "existiert" in e) for e in errs),
+            errs,
+        )
+
+    def test_non_string_execution_ref_does_not_crash(self) -> None:
+        """R8: a list value inside execution_refs must not cause a TypeError."""
+        exp = _build_valid_bundle(self.base)
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "fixture"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - results/evidence.jsonl
+                - artifacts/run-001/run.yml
+                - []
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Nicht-String" in e for e in errs), errs)
 
 if __name__ == "__main__":
     unittest.main()

@@ -247,9 +247,9 @@ def validate_repo(repo_root: Path) -> list[str]:
                             f"  ❌ {rel_exp}: execution_ref '{ref}' verlässt das Experiment-Root."
                         )
                         continue
-                    if not target.exists():
+                    if not target.is_file():
                         errors.append(
-                            f"  ❌ {rel_exp}: execution_ref '{ref}' existiert nicht."
+                            f"  ❌ {rel_exp}: execution_ref '{ref}' ist keine existierende Datei."
                         )
                         continue
                     normalized_ref = ref[2:] if ref.startswith("./") else ref
@@ -340,8 +340,9 @@ def _validate_run_dir(
         if execution_status in {"executed", "replicated"}:
             run_yml_ref = str(run_yml.relative_to(exp_dir))
             normalized_execution_refs = {
-                ref[2:] if isinstance(ref, str) and ref.startswith("./") else ref
+                ref[2:] if ref.startswith("./") else ref
                 for ref in execution_refs
+                if isinstance(ref, str)
             }
             if run_yml_ref not in normalized_execution_refs:
                 errors.append(
