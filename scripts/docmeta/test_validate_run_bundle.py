@@ -1299,6 +1299,139 @@ class RepoLevelTests(unittest.TestCase):
 
     # --- Real Run 1 integrity ---
 
+    # --- Fix 1: all-PASS auditor semantics ---
+
+    def test_auditor_all_claims_pass_but_overall_non_pass_fails(self) -> None:
+        """_check_auditor_semantics must reject overall_verdict != PASS when all claims are PASS."""
+        auditor = {
+            "overall_verdict": "MISSING_EVIDENCE",
+            "claims": [
+                {"verdict": "PASS"},
+                {"verdict": "PASS"},
+            ],
+        }
+        errs = _check_auditor_semantics(auditor)
+        self.assertTrue(
+            any("overall_verdict" in e and "PASS" in e for e in errs),
+            errs,
+        )
+
+    # --- Fix 2: legacy run_dir without run.yml is ignored ---
+
+    def test_legacy_run_dir_without_run_yml_ignores_auditor_and_measurement_yml(self) -> None:
+        """_validate_run_dir must ignore a directory that has no run.yml,
+        even if auditor-output.yml and measurement.yml are present and invalid."""
+        exp = _exp_dir(self.base, "exp-legacy-gate")
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "legacy-gate"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - results/evidence.jsonl
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        _write(
+            exp / "results" / "evidence.jsonl",
+            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
+            '"metric":"x","value":true,"context":"c",'
+            '"artifact_ref":"artifacts/legacy-run/measurement.yml"}\n',
+        )
+        legacy_run = exp / "artifacts" / "legacy-run"
+        legacy_run.mkdir(parents=True, exist_ok=True)
+        # Intentionally invalid YAML to prove these files are NOT validated.
+        (legacy_run / "auditor-output.yml").write_text(
+            "THIS IS INTENTIONALLY INVALID YAML: }{", encoding="utf-8"
+        )
+        (legacy_run / "measurement.yml").write_text("!!invalid", encoding="utf-8")
+        # No run.yml in legacy_run → legacy directory, must be skipped entirely.
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # --- Fix 3: execution_ref exact match for results/evidence.jsonl ---
+
+    def test_execution_ref_nested_results_evidence_jsonl_does_not_satisfy_required_ref(
+        self,
+    ) -> None:
+        """foo/results/evidence.jsonl must NOT satisfy the required evidence.jsonl ref."""
+        exp = _exp_dir(self.base, "exp-nested-ref")
+        # Create the canonical evidence file so the validator triggers the check.
+        _write(
+            exp / "results" / "evidence.jsonl",
+            '{"event_type":"observation","timestamp":"2026-05-01T00:00:00Z",'
+            '"metric":"x","value":true,"context":"c"}\n',
+        )
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "nested-ref"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - foo/results/evidence.jsonl
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        # Create foo/results/evidence.jsonl so the ref resolves as existing.
+        nested = exp / "foo" / "results"
+        nested.mkdir(parents=True, exist_ok=True)
+        (nested / "evidence.jsonl").write_text(
+            '{"event_type":"observation","timestamp":"2026-05-01T00:00:00Z",'
+            '"metric":"x","value":true,"context":"c"}\n',
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        # foo/results/evidence.jsonl must NOT satisfy canonical results/evidence.jsonl.
+        self.assertTrue(
+            any("results/evidence.jsonl" in e for e in errs),
+            errs,
+        )
+
+    def test_execution_ref_dot_slash_results_evidence_jsonl_is_accepted(self) -> None:
+        """./results/evidence.jsonl must be accepted as equivalent to results/evidence.jsonl."""
+        exp = _build_valid_bundle(self.base)
+        # Replace manifest with a dot-slash prefixed evidence ref.
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "fixture"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - ./results/evidence.jsonl
+                - artifacts/run-001/run.yml
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
     def test_real_run1_remains_structurally_valid(self) -> None:
         """Run 1 of the agent-skill experiment must pass all bundle checks."""
         errs = validate_repo(REPO_ROOT)

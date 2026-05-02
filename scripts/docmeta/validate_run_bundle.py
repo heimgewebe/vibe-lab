@@ -31,7 +31,7 @@ R7  Wenn artifacts/<run-id>/measurement.yml existiert: gegen
     validation_gap_count müssen aus den Auditor-Claims abgeleitet
     konsistent sein.
 R8  Wenn ein Experiment execution_status ∈ {executed, replicated} hat und
-    artifacts/**/run.yml existiert, muss jedes solche run.yml in
+    artifacts/ ein run.yml enthält, muss jedes solche run.yml in
     manifest.execution_refs aufgeführt sein.
 
 Legacy-Politik:
@@ -252,7 +252,8 @@ def validate_repo(repo_root: Path) -> list[str]:
                             f"  ❌ {rel_exp}: execution_ref '{ref}' existiert nicht."
                         )
                         continue
-                    if ref.endswith("results/evidence.jsonl") or ref == "results/evidence.jsonl":
+                    normalized_ref = ref[2:] if ref.startswith("./") else ref
+                    if normalized_ref == "results/evidence.jsonl":
                         evidence_ref_present = True
                 if not evidence_ref_present and evidence_file.is_file():
                     errors.append(
@@ -326,6 +327,10 @@ def _validate_run_dir(
     run_yml = run_dir / "run.yml"
     auditor_yml = run_dir / "auditor-output.yml"
     measurement_yml = run_dir / "measurement.yml"
+
+    # Legacy-Politik: kein run.yml → kein Bundle-Contract → nichts prüfen.
+    if not run_yml.is_file():
+        return
 
     bundle: dict | None = None
 
@@ -531,6 +536,13 @@ def _check_auditor_semantics(auditor: dict) -> list[str]:
         out.append(
             f"overall_verdict=PASS, aber {len(non_pass)} Claim(s) sind non-PASS "
             f"(verdicts: {sorted(set(non_pass))}). PASS verlangt, dass jeder Claim PASS ist."
+        )
+        return out
+
+    if not non_pass and overall != PASS:
+        out.append(
+            f"overall_verdict='{overall}', aber alle Auditor-Claims sind PASS. "
+            f"overall_verdict muss PASS sein, wenn alle Claims PASS sind."
         )
         return out
 
