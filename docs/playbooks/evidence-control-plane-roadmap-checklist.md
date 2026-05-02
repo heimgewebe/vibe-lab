@@ -29,11 +29,27 @@ Diese Datei:
 - verwendet Checkboxen als geplante Umsetzungsschritte, nicht als Beleg bereits aktiver Enforcement-Regeln.
 
 ## PR 1 — Blueprint + Roadmap + Navigation Scaffold
-- [ ] `docs/blueprints/blueprint-evidence-control-plane-v1.md` finalisiert.
-- [ ] Nicht-Ziele explizit: kein Agent/Skill-Wirksamkeitsclaim.
-- [ ] Architektur- und Falsifikationskriterien dokumentiert.
-- [ ] Diese Roadmap gegen Blueprint gespiegelt.
-- [ ] `docs/index.md` auf neue Blueprint/Playbook-Dokumente verlinkt.
+
+> **Scope:** Reine Dokumentations- und Navigationsstruktur. Kein Code, keine Policy,
+> kein Schema, kein Validator, keine Experiment-Runs.
+>
+> Die folgenden Haken bedeuten: Scaffold-Dokumente sind angelegt und verlinkt.
+> Sie bedeuten **nicht**: Evidence-Control-Plane ist aktiv, Claims werden technisch blockiert,
+> Policy/Schema/Validator/CI existieren.
+
+- [x] `docs/blueprints/blueprint-evidence-control-plane-v1.md` finalisiert.
+- [x] Nicht-Ziele explizit: kein Agent/Skill-Wirksamkeitsclaim.
+- [x] Architektur- und Falsifikationskriterien dokumentiert.
+- [x] Diese Roadmap gegen Blueprint gespiegelt.
+- [x] `docs/index.md` auf neue Blueprint/Playbook-Dokumente verlinkt.
+
+**Was PR 1 ausdrücklich NICHT leistet:**
+- Kein aktives Enforcement
+- Keine Policy-Implementierung
+- Kein Schema
+- Kein Validator
+- Keine CI-Erweiterung
+- Kein Experiment-Run
 
 ## PR 2 — Policy-only
 - [ ] `docs/policies/pr-run-evidence-policy.md` erstellt.
