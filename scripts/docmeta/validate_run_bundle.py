@@ -31,7 +31,7 @@ R7  Wenn artifacts/<run-id>/measurement.yml existiert: gegen
     validation_gap_count müssen aus den Auditor-Claims abgeleitet
     konsistent sein.
 R8  Wenn ein Experiment execution_status ∈ {executed, replicated} hat und
-    artifacts/ existiert und ein run.yml enthält, muss jedes solche run.yml
+    artifacts/<run-id>/run.yml existiert, muss jedes solche run.yml
     in manifest.execution_refs aufgeführt sein.
 
 Legacy-Politik:
@@ -56,7 +56,7 @@ from typing import Iterable
 
 try:
     import yaml
-    from jsonschema import Draft202012Validator, ValidationError, SchemaError
+    from jsonschema import Draft202012Validator, ValidationError
     from jsonschema.validators import validator_for
 except ImportError:
     print(

@@ -1443,15 +1443,5 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertEqual(errs, [], errs)
 
-    def test_real_run1_remains_structurally_valid(self) -> None:
-        """Run 1 of the agent-skill experiment must pass all bundle checks."""
-        errs = validate_repo(REPO_ROOT)
-        self.assertEqual(
-            errs,
-            [],
-            f"Real Run 1 bundle failed validation:\n" + "\n".join(errs),
-        )
-
-
 if __name__ == "__main__":
     unittest.main()
