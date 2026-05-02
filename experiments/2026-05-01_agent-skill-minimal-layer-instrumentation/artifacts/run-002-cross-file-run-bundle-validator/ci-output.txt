@@ -1,0 +1,10 @@
+# CI Output — PR #148
+# Status: MISSING_EVIDENCE
+# Reason: gh API returned 403 Forbidden in this execution environment.
+#         GitHub Actions check_runs: 0 returned (previously confirmed by auditor).
+#
+# Command attempted: gh pr checks 148
+# Error: HTTP 403: 403 Forbidden (https://api.github.com/graphql)
+#
+# No CI log artifact can be archived for this run.
+# CI claim (claim-011) remains MISSING_EVIDENCE.

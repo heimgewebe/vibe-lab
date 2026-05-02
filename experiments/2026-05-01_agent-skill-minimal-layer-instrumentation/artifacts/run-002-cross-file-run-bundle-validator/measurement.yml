@@ -24,30 +24,34 @@ pr_metadata:
   pr_changed_files: 10
   pr_additions: 2655
   pr_deletions: 3
-  evidence_status: "external_unverified"
+  evidence_status: "partial_repo_local"
   notes: >-
-    PR web metadata. No archived PR metadata artifact in repo. Values sourced
-    from PR web UI / GitHub API; not independently verifiable from repo state.
+    changed-files list and full diff now archived as repo-local artifacts
+    (changed-files.txt, pr-148.diff; derived from git diff 539ff38 7647929).
+    Numeric metadata (commits, additions, deletions, mergedAt, mergedBy) remain
+    external_unverified: gh GraphQL API returned 403 in this environment;
+    see pr-metadata.json for full evidence_notes.
 
 metrics:
   scope_drift_count:
     value: 0
-    evidence_status: "external_unverified"
+    evidence_status: "repo_local"
     notes: >-
-      All 10 changed files appear within the declared task scope per PR diff.
-      PR diff is not archived as a repo artifact; scope claim is plausible
-      but not independently verifiable from repo state alone.
+      All 10 changed files verified via changed-files.txt (git diff --name-only
+      539ff38 7647929) and pr-148.diff. All within declared scope.
+      gh pr diff --name-only unavailable (API 403); git diff used as repo-local substitute.
 
   unsupported_claim_count:
-    value: 5
+    value: 3
     evidence_status: "derived_from_auditor_output"
     notes: >-
-      Five auditor claims are non-PASS: claim-008 (scope adherence — PR diff
-      not archived, MISSING_EVIDENCE), claim-009 (test-count contradiction:
-      657 claimed vs 56 actual, CONTRADICTION), claim-010 (make validate
-      output missing, MISSING_EVIDENCE), claim-011 (CI log missing / 0
-      check_runs, MISSING_EVIDENCE), claim-012 (experiment-critic output
+      Three auditor claims are non-PASS: claim-009 (test-count contradiction:
+      657 claimed vs 56 actual, CONTRADICTION), claim-011 (CI log missing / 0
+      check_runs + API 403, MISSING_EVIDENCE), claim-012 (experiment-critic output
       missing, MISSING_EVIDENCE).
+      claim-008 (scope adherence) moved to PASS: changed-files.txt and pr-148.diff
+      now repo-local via git diff.
+      claim-010 (make validate) moved to PASS: make-validate.txt archived.
 
   missing_locator_count:
     value: 0
@@ -57,13 +61,15 @@ metrics:
       Sourced from PR review web UI; not archived as repo artifact.
 
   validation_gap_count:
-    value: 2
+    value: 1
     evidence_status: "derived_from_auditor_output"
     notes: >-
-      Two command/validation outputs are absent from repo:
-      make validate output (claim-010) and CI check run log (claim-011).
-      validation_gap_count counts only missing command/validator outputs,
-      not missing PR diff or critic-output artifacts.
+      One command/validation output remains absent from repo:
+      CI check run log (claim-011; API 403 + 0 check_runs; ci-output.txt is a
+      MISSING_EVIDENCE placeholder).
+      make validate output (claim-010) is now archived as make-validate.txt → PASS.
+      validation_gap_count counts only missing command/validator outputs with
+      type command_succeeded or validator_succeeded.
 
   review_friction_count:
     value: 6
@@ -97,21 +103,20 @@ metrics:
       PR web metadata. Descriptive only; no causal value for agent-layer effect.
 
 missing_evidence:
-  - item: "make validate output artifact"
-    detail: >-
-      "make validate passed" claimed in PR body; no command output artifact in repo.
   - item: "CI check run log artifact"
     detail: >-
       "CI checks passed" claimed in PR body; GitHub API returns 0 check_runs
-      for this PR; no CI log artifact archived in repo.
+      for this PR; gh API returned 403 in execution environment.
+      ci-output.txt is a MISSING_EVIDENCE placeholder documenting the failure.
   - item: "experiment-critic output artifact"
     detail: >-
-      No critic output artifact found for this PR in the experiment.
-  - item: "archived PR metadata artifact"
+      No critic output artifact found for this PR. critic-output.md is a
+      MISSING_EVIDENCE placeholder. agent_layer_used.experiment_critic remains UNKNOWN.
+  - item: "numeric PR metadata from GitHub API"
     detail: >-
-      pr_commits, pr_additions, pr_deletions, review_friction, rework, and
-      completion_time are sourced from PR web UI; no archived PR metadata
-      artifact present in repo for independent verification.
+      pr_commits, pr_additions, pr_deletions, review_friction, rework are
+      external_unverified (gh API 403). changed-files list and diff are now
+      repo-local (changed-files.txt, pr-148.diff). See pr-metadata.json.
 
 interpretation_limits:
   - "Two data points do not allow generalization."

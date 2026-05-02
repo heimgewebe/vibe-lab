@@ -1,0 +1,21 @@
+{
+  "number": 148,
+  "title": "Add cross-file validator for experiment run bundles",
+  "author": "alexdermohr",
+  "headRefName": "claude/evidence-os-run-bundle-SLhJH",
+  "baseRefName": "main",
+  "mergedAt": "2026-05-02T06:54:16Z",
+  "mergedBy": "alexdermohr",
+  "commits": 10,
+  "changedFiles": 10,
+  "additions": 2655,
+  "deletions": 3,
+  "evidence_status": "partial_repo_local",
+  "evidence_notes": {
+    "changedFiles_list": "repo_local — derived from git diff --name-only 539ff38 7647929; see changed-files.txt",
+    "diff": "repo_local — derived from git diff 539ff38 7647929; see pr-148.diff",
+    "number_title_author_mergedAt_mergedBy_commits_additions_deletions": "external_unverified — sourced from PR web UI; gh GraphQL API returned 403 for this environment",
+    "gh_command_attempted": "gh pr view 148 --json number,title,author,mergedAt,mergedBy,commits,changedFiles,additions,deletions",
+    "gh_error": "HTTP 403: 403 Forbidden (https://api.github.com/graphql)"
+  }
+}

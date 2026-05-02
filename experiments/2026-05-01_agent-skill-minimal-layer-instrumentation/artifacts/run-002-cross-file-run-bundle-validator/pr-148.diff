@@ -1,0 +1,2754 @@
+diff --git a/.github/workflows/validate.yml b/.github/workflows/validate.yml
+index b772280..c860099 100644
+--- a/.github/workflows/validate.yml
++++ b/.github/workflows/validate.yml
+@@ -32,6 +32,12 @@ jobs:
+       - name: Validate execution proof
+         run: python3 scripts/docmeta/validate_execution_proof.py
+ 
++      - name: Test run-bundle validator
++        run: python3 scripts/docmeta/test_validate_run_bundle.py
++
++      - name: Validate experiment run bundles
++        run: python3 scripts/docmeta/validate_run_bundle.py
++
+       - name: Validate relations
+         run: python3 scripts/docmeta/validate_relations.py
+ 
+diff --git a/Makefile b/Makefile
+index 6b1be21..39c33a3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,10 +1,10 @@
+ # Makefile — Schlanke Routine-Frontdoor
+ # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
+ 
+-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-promotion-readiness-ratchet validate-ratchet validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
++.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-run-bundle validate-run-bundle-tests validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-promotion-readiness-ratchet validate-ratchet validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
+ 
+ # Minimaler Guard-Stack
+-validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-export-parity validate-exports-tests validate-export-parity-tests validate-promotion-readiness-tests
++validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-run-bundle-tests validate-run-bundle validate-relations validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-export-parity validate-exports-tests validate-export-parity-tests validate-promotion-readiness-tests
+ 	@# Promotion-Readiness als Dry-Run (Phase 1): inhaltliche not_ready-Befunde
+ 	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
+ 	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
+@@ -27,6 +27,14 @@ validate-execution-proof:
+ 	@echo "🔍 Validating execution proof..."
+ 	@python3 scripts/docmeta/validate_execution_proof.py
+ 
++validate-run-bundle:
++	@echo "🧷 Validating experiment run bundles..."
++	@python3 scripts/docmeta/validate_run_bundle.py
++
++validate-run-bundle-tests:
++	@echo "🧪 Running run-bundle validator regression tests..."
++	@python3 scripts/docmeta/test_validate_run_bundle.py
++
+ validate-relations:
+ 	@echo "🔗 Validating relations..."
+ 	@python3 scripts/docmeta/validate_relations.py
+@@ -267,6 +275,8 @@ help:
+ 	@echo "  make validate-schemas                  — Validate artifacts against JSON schemas"
+ 	@echo "  make validate-schemas-counterevidence-tests — Run P2 counterevidence rule regression tests"
+ 	@echo "  make validate-execution-proof  — Validate run_meta.json and adoption_basis coupling"
++	@echo "  make validate-run-bundle       — Cross-validate experiment run bundles (run.yml, auditor-output.yml, measurement.yml)"
++	@echo "  make validate-run-bundle-tests — Run run-bundle validator regression tests"
+ 	@echo "  make validate-relations        — Validate frontmatter relations"
+ 	@echo "  make validate-epistemics       — Validate interpretation_budget for adopted experiments"
+ 	@echo "  make validate-epistemics-tests — Run interpretation_budget unit regression tests"
+diff --git a/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml b/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
+index bc6bf2e..0ad2b18 100644
+--- a/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
++++ b/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
+@@ -7,7 +7,8 @@ contract: "measurement_run"
+ run_id: "run-001-promotion-readiness-prepared-without-measurement"
+ 
+ auditor_verdict: "MISSING_EVIDENCE"
+-auditor_ref: "artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml"
++# auditor_ref: run-dir-relativ (zur Datei selbst). Siehe schemas/measurement-run.v1.schema.json.
++auditor_ref: "auditor-output.yml"
+ 
+ agent_layer_used:
+   experiment_critic: "UNKNOWN"
+diff --git a/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml b/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml
+new file mode 100644
+index 0000000..75b53af
+--- /dev/null
++++ b/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml
+@@ -0,0 +1,48 @@
++# Run-001 Bundle Envelope
++# Schema: schemas/experiment-run-bundle.v1.schema.json
++# Pfade in artifacts.* sind relativ zu diesem Verzeichnis (artifacts/<run-id>/).
++# experiment_path ist repo-root-relativ.
++
++schema_version: "1.0.0"
++contract: "experiment_run_bundle"
++
++run:
++  id: "run-001-promotion-readiness-prepared-without-measurement"
++  experiment_path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation"
++  created_at: "2026-05-01T12:37:30Z"
++  sequence: 1
++
++provenance:
++  level: "self_reported"
++  executor: "local:copilot-agent"
++  source_status: "external_unverified"
++  notes: "PR-Metadaten und CI-/make-Outputs sind nicht repo-lokal archiviert."
++
++artifacts:
++  auditor_output:
++    path: "auditor-output.yml"
++    contract: "auditor_output"
++    canonical: true
++  measurement:
++    path: "measurement.yml"
++    contract: "measurement_run"
++    canonical: true
++  run_meta:
++    path: "run_meta.json"
++    contract: "run_meta"
++    canonical: false
++    compatibility: true
++  markdown_projection:
++    path: "auditor-output.md"
++    canonical: false
++    role: "human_projection"
++
++verdict:
++  outcome: "MISSING_EVIDENCE"
++  effect_claim_allowed: false
++  promotion_claim_allowed: false
++
++interpretation_limits:
++  min_comparable_runs_required: 3
++  current_comparable_runs: 1
++  causal_claim_allowed: false
+diff --git a/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml b/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+index e1bb277..fe01789 100644
+--- a/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
++++ b/experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+@@ -11,6 +11,7 @@ experiment:
+   execution_status: executed
+   execution_refs:
+     - results/evidence.jsonl
++    - artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml
+     - artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
+     - artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml
+     - artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
+diff --git a/schemas/auditor-output.v1.schema.json b/schemas/auditor-output.v1.schema.json
+new file mode 100644
+index 0000000..97e6fd7
+--- /dev/null
++++ b/schemas/auditor-output.v1.schema.json
+@@ -0,0 +1,118 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/auditor-output.v1.schema.json",
++  "title": "Auditor Output (v1)",
++  "description": "Schema für artifacts/<run-id>/auditor-output.yml. Maschinell autoritative Claim-Prüfung. Form wird hier validiert; semantische Konsistenz (Severity-Precedence, PASS-Konsistenz, run_id-Sync) prüft validate_run_bundle.py zusätzlich.",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["schema_version", "contract", "run_id", "auditor", "overall_verdict", "claims"],
++  "properties": {
++    "schema_version": {
++      "type": "string",
++      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
++    },
++    "contract": {
++      "type": "string",
++      "const": "auditor_output"
++    },
++    "run_id": {
++      "type": "string",
++      "minLength": 1
++    },
++    "pr_ref": {
++      "type": "string",
++      "minLength": 1
++    },
++    "auditor": {
++      "oneOf": [
++        { "type": "string", "minLength": 1 },
++        {
++          "type": "object",
++          "additionalProperties": false,
++          "required": ["name"],
++          "properties": {
++            "name": { "type": "string", "minLength": 1 },
++            "executor": { "type": "string" },
++            "date": { "type": "string" }
++          }
++        }
++      ]
++    },
++    "auditor_date": {
++      "type": "string"
++    },
++    "overall_verdict": {
++      "type": "string",
++      "enum": [
++        "PASS",
++        "CLAIM_NOT_PROVEN",
++        "CONTRADICTION",
++        "MISSING_EVIDENCE",
++        "OUT_OF_SCOPE",
++        "NOT_REPRODUCIBLE"
++      ]
++    },
++    "claims": {
++      "type": "array",
++      "minItems": 1,
++      "items": { "$ref": "#/$defs/claim" }
++    },
++    "out_of_scope_claims": {
++      "type": "array",
++      "items": { "$ref": "#/$defs/claim" }
++    },
++    "contradictions": {
++      "type": "array"
++    },
++    "missing_evidence": {
++      "type": "array"
++    },
++    "required_next_proof": {
++      "type": "array",
++      "items": { "type": "string" }
++    },
++    "extensions": {
++      "type": "object",
++      "additionalProperties": true,
++      "description": "Kontrollierter Auslass für experimentelle oder versionsspezifische Zusatzfelder. Kein freies Top-Level-Drift."
++    }
++  },
++  "$defs": {
++    "claim": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["id", "text", "type", "verdict"],
++      "properties": {
++        "id": { "type": "string", "minLength": 1 },
++        "text": { "type": "string", "minLength": 1 },
++        "type": {
++          "type": "string",
++          "minLength": 1,
++          "description": "Claim-Typ. Empfohlene Werte: file_changed, command_succeeded, validator_succeeded, generated_artifact_updated, scope_adhered_to, agent_usage."
++        },
++        "verdict": {
++          "type": "string",
++          "enum": [
++            "PASS",
++            "CLAIM_NOT_PROVEN",
++            "CONTRADICTION",
++            "MISSING_EVIDENCE",
++            "OUT_OF_SCOPE",
++            "NOT_REPRODUCIBLE"
++          ]
++        },
++        "evidence": {
++          "type": "array"
++        },
++        "missing_evidence": {
++          "type": "array"
++        },
++        "notes": { "type": "string" },
++        "extensions": {
++          "type": "object",
++          "additionalProperties": true
++        }
++      }
++    }
++  }
++}
+diff --git a/schemas/experiment-run-bundle.v1.schema.json b/schemas/experiment-run-bundle.v1.schema.json
+new file mode 100644
+index 0000000..b83b9be
+--- /dev/null
++++ b/schemas/experiment-run-bundle.v1.schema.json
+@@ -0,0 +1,186 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment-run-bundle.v1.schema.json",
++  "title": "Experiment Run Bundle (v1)",
++  "description": "Schema für artifacts/<run-id>/run.yml. Atomarer Run-Envelope, der die Bestandteile eines Experiment-Runs (Auditor-Output, Measurement, run_meta, Markdown-Projektion) und das Verdict zu einer geprüften Einheit verklammert. Pfade in artifacts.* sind relativ zum Verzeichnis von run.yml; experiment_path ist repo-root-relativ.",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["schema_version", "contract", "run", "provenance", "artifacts", "verdict"],
++  "properties": {
++    "schema_version": {
++      "type": "string",
++      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
++    },
++    "contract": {
++      "type": "string",
++      "const": "experiment_run_bundle"
++    },
++    "run": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["id", "experiment_path", "created_at"],
++      "properties": {
++        "id": {
++          "type": "string",
++          "minLength": 1,
++          "description": "Run-Identifier; muss mit dem Verzeichnisnamen artifacts/<run-id>/ übereinstimmen."
++        },
++        "experiment_path": {
++          "type": "string",
++          "minLength": 1,
++          "description": "Repo-root-relativer Pfad zum Experiment-Verzeichnis."
++        },
++        "created_at": {
++          "type": "string",
++          "format": "date-time"
++        },
++        "sequence": {
++          "type": "integer",
++          "minimum": 1,
++          "description": "Optionale fortlaufende Run-Nummer im Experiment."
++        }
++      }
++    },
++    "provenance": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["level"],
++      "properties": {
++        "level": {
++          "type": "string",
++          "enum": [
++            "repo_local",
++            "ci_artifact",
++            "external_verified",
++            "external_unverified",
++            "self_reported",
++            "missing_evidence",
++            "unknown"
++          ]
++        },
++        "executor": {
++          "type": "string",
++          "minLength": 1
++        },
++        "source_status": {
++          "type": "string",
++          "enum": [
++            "repo_local",
++            "ci_artifact",
++            "external_verified",
++            "external_unverified",
++            "self_reported",
++            "missing_evidence",
++            "unknown"
++          ]
++        },
++        "notes": {
++          "type": "string"
++        }
++      }
++    },
++    "artifacts": {
++      "type": "object",
++      "description": "Pflichtbestandteile des Run-Bundles: auditor_output, measurement, run_meta. markdown_projection ist optional. Keine weiteren Schlüssel erlaubt (additionalProperties:false).",
++      "required": ["auditor_output", "measurement", "run_meta"],
++      "additionalProperties": false,
++      "properties": {
++        "auditor_output": {
++          "type": "object",
++          "additionalProperties": false,
++          "required": ["path", "contract", "canonical"],
++          "properties": {
++            "path": {
++              "const": "auditor-output.yml",
++              "description": "Deterministischer Dateiname für v1 Bundles."
++            },
++            "contract": { "const": "auditor_output" },
++            "canonical": { "const": true }
++          }
++        },
++        "measurement": {
++          "type": "object",
++          "additionalProperties": false,
++          "required": ["path", "contract", "canonical"],
++          "properties": {
++            "path": {
++              "const": "measurement.yml",
++              "description": "Deterministischer Dateiname für v1 Bundles."
++            },
++            "contract": { "const": "measurement_run" },
++            "canonical": { "const": true }
++          }
++        },
++        "run_meta": {
++          "type": "object",
++          "additionalProperties": false,
++          "required": ["path", "contract", "canonical", "compatibility"],
++          "properties": {
++            "path": {
++              "const": "run_meta.json",
++              "description": "Deterministischer Dateiname für v1 Bundles."
++            },
++            "contract": { "const": "run_meta" },
++            "canonical": { "const": false },
++            "compatibility": { "const": true }
++          }
++        },
++        "markdown_projection": {
++          "type": "object",
++          "additionalProperties": false,
++          "required": ["path", "canonical", "role"],
++          "properties": {
++            "path": {
++              "type": "string",
++              "pattern": ".*\\.md$",
++              "description": "Pfad zur Markdown-Projektion (relativ zum run-Verzeichnis). Darf nicht aus dem Run-Verzeichnis austreten."
++            },
++            "canonical": {
++              "const": false,
++              "description": "Markdown-Projektionen sind niemals canonical."
++            },
++            "role": {
++              "const": "human_projection",
++              "description": "Nur human_projection ist in v1 erlaubt."
++            }
++          }
++        }
++      }
++    },
++    "verdict": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["outcome", "effect_claim_allowed"],
++      "properties": {
++        "outcome": {
++          "type": "string",
++          "enum": [
++            "PASS",
++            "CLAIM_NOT_PROVEN",
++            "CONTRADICTION",
++            "MISSING_EVIDENCE",
++            "OUT_OF_SCOPE",
++            "NOT_REPRODUCIBLE"
++          ]
++        },
++        "effect_claim_allowed": { "type": "boolean" },
++        "promotion_claim_allowed": { "type": "boolean" }
++      }
++    },
++    "interpretation_limits": {
++      "type": "object",
++      "additionalProperties": false,
++      "properties": {
++        "min_comparable_runs_required": {
++          "type": "integer",
++          "minimum": 1
++        },
++        "current_comparable_runs": {
++          "type": "integer",
++          "minimum": 0
++        },
++        "causal_claim_allowed": { "type": "boolean" }
++      }
++    }
++  }
++}
+diff --git a/schemas/measurement-run.v1.schema.json b/schemas/measurement-run.v1.schema.json
+new file mode 100644
+index 0000000..4040bbb
+--- /dev/null
++++ b/schemas/measurement-run.v1.schema.json
+@@ -0,0 +1,121 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/measurement-run.v1.schema.json",
++  "title": "Measurement Run (v1)",
++  "description": "Schema für artifacts/<run-id>/measurement.yml. Form-Validierung; semantische Kreuzregeln (auditor_verdict-Konsistenz, abgeleitete Zähler, run_id-Sync) prüft validate_run_bundle.py zusätzlich.",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["schema_version", "contract", "run_id", "auditor_verdict", "auditor_ref", "metrics"],
++  "properties": {
++    "schema_version": {
++      "type": "string",
++      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
++    },
++    "contract": {
++      "type": "string",
++      "const": "measurement_run"
++    },
++    "run_id": {
++      "type": "string",
++      "minLength": 1
++    },
++    "auditor_verdict": {
++      "type": "string",
++      "enum": [
++        "PASS",
++        "CLAIM_NOT_PROVEN",
++        "CONTRADICTION",
++        "MISSING_EVIDENCE",
++        "OUT_OF_SCOPE",
++        "NOT_REPRODUCIBLE"
++      ]
++    },
++    "auditor_ref": {
++      "type": "string",
++      "const": "auditor-output.yml",
++      "description": "Run-dir-relativer Pfad zum Auditor-Output. Muss immer 'auditor-output.yml' sein (deterministischer v1-Dateiname)."
++    },
++    "metrics": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": [
++        "scope_drift_count",
++        "unsupported_claim_count",
++        "missing_locator_count",
++        "validation_gap_count",
++        "review_friction_count",
++        "rework_count",
++        "false_block_count",
++        "task_completion_time_observed"
++      ],
++      "properties": {
++        "scope_drift_count": { "$ref": "#/$defs/metric" },
++        "unsupported_claim_count": { "$ref": "#/$defs/metric" },
++        "missing_locator_count": { "$ref": "#/$defs/metric" },
++        "validation_gap_count": { "$ref": "#/$defs/metric" },
++        "review_friction_count": { "$ref": "#/$defs/metric" },
++        "rework_count": { "$ref": "#/$defs/metric" },
++        "false_block_count": { "$ref": "#/$defs/metric" },
++        "task_completion_time_observed": { "$ref": "#/$defs/metric" }
++      }
++    },
++    "agent_layer_used": {
++      "type": "object",
++      "additionalProperties": true,
++      "description": "Verwendete Agent-/Skill-Schichten. Freiformat; Konsistenz wird nicht schema-seitig erzwungen."
++    },
++    "pr_metadata": {
++      "type": "object",
++      "additionalProperties": true,
++      "description": "PR-Metadaten (externe Quelle). evidence_status gibt Herkunftsniveau an."
++    },
++    "missing_evidence": {
++      "type": "array"
++    },
++    "interpretation_limits": {
++      "type": "array"
++    },
++    "extensions": {
++      "type": "object",
++      "additionalProperties": true,
++      "description": "Kontrollierter Auslass für experimentelle oder versionsspezifische Zusatzfelder."
++    }
++  },
++  "$defs": {
++    "metric": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["value", "evidence_status"],
++      "properties": {
++        "value": {
++          "description": "Numerischer oder beobachteter Wert.",
++          "anyOf": [
++            { "type": "number" },
++            { "type": "integer" },
++            { "type": "string" },
++            { "type": "boolean" },
++            { "type": "null" }
++          ]
++        },
++        "evidence_status": {
++          "type": "string",
++          "enum": [
++            "repo_local",
++            "ci_artifact",
++            "derived_from_auditor_output",
++            "external_verified",
++            "external_unverified",
++            "self_reported",
++            "missing_evidence",
++            "unknown"
++          ]
++        },
++        "notes": { "type": "string" },
++        "extensions": {
++          "type": "object",
++          "additionalProperties": true
++        }
++      }
++    }
++  }
++}
+diff --git a/scripts/docmeta/test_validate_run_bundle.py b/scripts/docmeta/test_validate_run_bundle.py
+new file mode 100644
+index 0000000..3859a31
+--- /dev/null
++++ b/scripts/docmeta/test_validate_run_bundle.py
+@@ -0,0 +1,1530 @@
++#!/usr/bin/env python3
++"""Regression tests for validate_run_bundle.py.
++
++Each test builds a tiny experiment fixture under a temporary directory and
++runs validate_repo() against it. Schemas are copied from the real project
++into the tempdir so that validate_repo() is fully isolated — it must not
++depend on the real REPO_ROOT.
++
++Run:
++    python3 scripts/docmeta/test_validate_run_bundle.py
++"""
++
++from __future__ import annotations
++
++import json
++import shutil
++import sys
++import tempfile
++import textwrap
++import unittest
++from pathlib import Path
++
++THIS_DIR = Path(__file__).resolve().parent
++sys.path.insert(0, str(THIS_DIR))
++
++from validate_run_bundle import (  # noqa: E402
++    _check_auditor_semantics,
++    _check_measurement_semantics,
++    _compute_max_severity,
++    validate_repo,
++)
++
++
++REPO_ROOT = THIS_DIR.parent.parent
++PROJECT_SCHEMAS = REPO_ROOT / "schemas"
++
++# Schema filenames expected under <tempdir>/schemas/
++_BUNDLE_SCHEMA = "experiment-run-bundle.v1.schema.json"
++_AUDITOR_SCHEMA = "auditor-output.v1.schema.json"
++_MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
++
++
++# ---------------------------------------------------------------------------
++# Helpers
++# ---------------------------------------------------------------------------
++
++def _make_repo_skeleton(base: Path) -> Path:
++    """Creates base/schemas/ with all three bundle schemas, and base/experiments/.
++
++    Tests run validate_repo(base) — schemas are loaded from base/schemas/, NOT
++    from the real REPO_ROOT. This proves schema-path isolation.
++    """
++    schemas = base / "schemas"
++    schemas.mkdir(parents=True, exist_ok=True)
++    for name in (_BUNDLE_SCHEMA, _AUDITOR_SCHEMA, _MEASUREMENT_SCHEMA):
++        shutil.copy(PROJECT_SCHEMAS / name, schemas / name)
++    (base / "experiments").mkdir(exist_ok=True)
++    return base
++
++
++def _exp_dir(base: Path, name: str = "exp-fixture") -> Path:
++    d = base / "experiments" / name
++    (d / "results").mkdir(parents=True, exist_ok=True)
++    (d / "artifacts").mkdir(parents=True, exist_ok=True)
++    return d
++
++
++def _write(path: Path, content: str) -> None:
++    path.parent.mkdir(parents=True, exist_ok=True)
++    path.write_text(textwrap.dedent(content).lstrip("\n"), encoding="utf-8")
++
++
++def _valid_manifest(execution_status: str = "executed", extra_refs: list[str] | None = None) -> str:
++    base_refs = [
++        "results/evidence.jsonl",
++        "artifacts/run-001/run.yml",
++    ]
++    refs = base_refs + (extra_refs or [])
++    ref_lines = "\n".join(f"        - {r}" for r in refs)
++    return f"""
++    schema_version: "0.1.0"
++    experiment:
++      name: "fixture"
++      hypothesis: "h"
++      status: testing
++      category: workflow
++      execution_status: {execution_status}
++      execution_refs:
++{ref_lines}
++      created: "2026-05-01"
++      updated: "2026-05-01"
++      author: "test"
++      iteration: 1
++      evidence_level: anecdotal
++    """
++
++
++def _valid_evidence_run(artifact_ref: str = "artifacts/run-001/measurement.yml") -> str:
++    return (
++        '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
++        f'"metric":"x","value":true,"context":"c",'
++        f'"artifact_ref":"{artifact_ref}"}}\n'
++    )
++
++
++def _valid_run_yml(run_id: str = "run-001") -> str:
++    return f"""
++    schema_version: "1.0.0"
++    contract: "experiment_run_bundle"
++    run:
++      id: "{run_id}"
++      experiment_path: "experiments/exp-fixture"
++      created_at: "2026-05-01T12:00:00Z"
++      sequence: 1
++    provenance:
++      level: "self_reported"
++      executor: "local:test"
++    artifacts:
++      auditor_output:
++        path: "auditor-output.yml"
++        contract: "auditor_output"
++        canonical: true
++      measurement:
++        path: "measurement.yml"
++        contract: "measurement_run"
++        canonical: true
++      run_meta:
++        path: "run_meta.json"
++        contract: "run_meta"
++        canonical: false
++        compatibility: true
++    verdict:
++      outcome: "MISSING_EVIDENCE"
++      effect_claim_allowed: false
++    """
++
++
++def _valid_run_meta_json(run_id: str = "run-001") -> str:
++    return json.dumps({
++        "schema_version": "0.1.0",
++        "run_id": run_id,
++        "generated_at": "2026-05-01T12:00:00Z",
++        "executor": "local:test",
++        "outcome": "MISSING_EVIDENCE",
++    })
++
++
++def _valid_auditor_yml() -> str:
++    return """
++    schema_version: "1.0.0"
++    contract: "auditor_output"
++    run_id: "run-001"
++    pr_ref: "github:test/test/pull/1"
++    auditor: "test-auditor"
++    overall_verdict: "MISSING_EVIDENCE"
++    claims:
++      - id: "c-1"
++        text: "passing claim"
++        type: "file_changed"
++        verdict: "PASS"
++        evidence: []
++      - id: "c-2"
++        text: "missing test log"
++        type: "validator_succeeded"
++        verdict: "MISSING_EVIDENCE"
++        evidence: []
++      - id: "c-3"
++        text: "missing make output"
++        type: "command_succeeded"
++        verdict: "MISSING_EVIDENCE"
++        evidence: []
++    """
++
++
++def _valid_measurement_yml(
++    *,
++    auditor_verdict: str = "MISSING_EVIDENCE",
++    unsupported: int = 2,
++    val_gap: int = 2,
++) -> str:
++    return f"""
++    schema_version: "1.0.0"
++    contract: "measurement_run"
++    run_id: "run-001"
++    auditor_verdict: "{auditor_verdict}"
++    auditor_ref: "auditor-output.yml"
++    metrics:
++      scope_drift_count:
++        value: 0
++        evidence_status: "external_unverified"
++      unsupported_claim_count:
++        value: {unsupported}
++        evidence_status: "derived_from_auditor_output"
++      missing_locator_count:
++        value: 0
++        evidence_status: "external_unverified"
++      validation_gap_count:
++        value: {val_gap}
++        evidence_status: "derived_from_auditor_output"
++      review_friction_count:
++        value: 0
++        evidence_status: "external_unverified"
++      rework_count:
++        value: 0
++        evidence_status: "external_unverified"
++      false_block_count:
++        value: 0
++        evidence_status: "external_unverified"
++      task_completion_time_observed:
++        value: "n/a"
++        evidence_status: "external_unverified"
++    """
++
++
++def _build_valid_bundle(base: Path) -> Path:
++    """Writes a fully valid bundle; returns the experiment directory."""
++    exp = _exp_dir(base)
++    _write(exp / "manifest.yml", _valid_manifest())
++    _write(exp / "results" / "evidence.jsonl", _valid_evidence_run())
++    run_dir = exp / "artifacts" / "run-001"
++    run_dir.mkdir(parents=True, exist_ok=True)
++    _write(run_dir / "run.yml", _valid_run_yml())
++    _write(run_dir / "auditor-output.yml", _valid_auditor_yml())
++    _write(run_dir / "measurement.yml", _valid_measurement_yml())
++    (run_dir / "run_meta.json").write_text(_valid_run_meta_json(), encoding="utf-8")
++    return exp
++
++
++# ---------------------------------------------------------------------------
++# Pure-function tests
++# ---------------------------------------------------------------------------
++
++class SeverityPrecedenceTests(unittest.TestCase):
++    def test_pass_only(self) -> None:
++        self.assertEqual(_compute_max_severity(["PASS", "PASS"]), "PASS")
++
++    def test_missing_evidence_dominates_claim_not_proven(self) -> None:
++        self.assertEqual(
++            _compute_max_severity(["CLAIM_NOT_PROVEN", "MISSING_EVIDENCE"]),
++            "MISSING_EVIDENCE",
++        )
++
++    def test_contradiction_dominates_all(self) -> None:
++        self.assertEqual(
++            _compute_max_severity(
++                ["MISSING_EVIDENCE", "OUT_OF_SCOPE", "CONTRADICTION", "NOT_REPRODUCIBLE"]
++            ),
++            "CONTRADICTION",
++        )
++
++    def test_empty_is_pass(self) -> None:
++        self.assertEqual(_compute_max_severity([]), "PASS")
++
++
++class AuditorSemanticsTests(unittest.TestCase):
++    def test_pass_with_non_pass_claim_rejected(self) -> None:
++        auditor = {
++            "overall_verdict": "PASS",
++            "claims": [
++                {"verdict": "PASS"},
++                {"verdict": "MISSING_EVIDENCE"},
++            ],
++        }
++        errs = _check_auditor_semantics(auditor)
++        self.assertTrue(any("PASS verlangt" in e for e in errs), errs)
++
++    def test_severity_mismatch_rejected(self) -> None:
++        auditor = {
++            "overall_verdict": "MISSING_EVIDENCE",
++            "claims": [{"verdict": "CONTRADICTION"}],
++        }
++        errs = _check_auditor_semantics(auditor)
++        self.assertTrue(any("Severity-Precedence" in e for e in errs), errs)
++
++    def test_consistent_passes(self) -> None:
++        auditor = {
++            "overall_verdict": "MISSING_EVIDENCE",
++            "claims": [
++                {"verdict": "PASS"},
++                {"verdict": "MISSING_EVIDENCE"},
++            ],
++        }
++        self.assertEqual(_check_auditor_semantics(auditor), [])
++
++
++class MeasurementSemanticsTests(unittest.TestCase):
++    def test_verdict_mismatch_rejected(self) -> None:
++        auditor = {"overall_verdict": "MISSING_EVIDENCE", "claims": []}
++        meas = {"auditor_verdict": "PASS", "metrics": {}}
++        errs = _check_measurement_semantics(meas, auditor)
++        self.assertTrue(any("auditor_verdict" in e for e in errs), errs)
++
++    def test_unsupported_count_mismatch_rejected(self) -> None:
++        auditor = {
++            "overall_verdict": "MISSING_EVIDENCE",
++            "claims": [
++                {"verdict": "PASS"},
++                {"verdict": "MISSING_EVIDENCE", "type": "validator_succeeded"},
++            ],
++        }
++        meas = {
++            "auditor_verdict": "MISSING_EVIDENCE",
++            "metrics": {
++                "unsupported_claim_count": {"value": 0, "evidence_status": "self_reported"},
++                "validation_gap_count": {"value": 1, "evidence_status": "self_reported"},
++            },
++        }
++        errs = _check_measurement_semantics(meas, auditor)
++        self.assertTrue(any("unsupported_claim_count" in e for e in errs), errs)
++
++    def test_validation_gap_count_mismatch_rejected(self) -> None:
++        auditor = {
++            "overall_verdict": "MISSING_EVIDENCE",
++            "claims": [
++                {"verdict": "MISSING_EVIDENCE", "type": "validator_succeeded"},
++                {"verdict": "MISSING_EVIDENCE", "type": "agent_usage"},
++            ],
++        }
++        meas = {
++            "auditor_verdict": "MISSING_EVIDENCE",
++            "metrics": {
++                "unsupported_claim_count": {"value": 2, "evidence_status": "self_reported"},
++                "validation_gap_count": {"value": 2, "evidence_status": "self_reported"},
++            },
++        }
++        errs = _check_measurement_semantics(meas, auditor)
++        self.assertTrue(any("validation_gap_count" in e for e in errs), errs)
++
++
++# ---------------------------------------------------------------------------
++# End-to-end fixture tests
++# ---------------------------------------------------------------------------
++
++class RepoLevelTests(unittest.TestCase):
++    def setUp(self) -> None:
++        self._tmp = tempfile.TemporaryDirectory()
++        self.base = Path(self._tmp.name)
++        _make_repo_skeleton(self.base)
++
++    def tearDown(self) -> None:
++        self._tmp.cleanup()
++
++    # --- Passing cases ---
++
++    def test_valid_executed_bundle_with_run_yml_in_refs_passes(self) -> None:
++        """R2+R3+R8: valid executed run with run.yml listed in execution_refs."""
++        _build_valid_bundle(self.base)
++        self.assertEqual(validate_repo(self.base), [])
++
++    def test_canonical_false_md_present_but_unreferenced_passes(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "auditor-output.md",
++            "---\ncanonical: false\nsource_of_truth: false\n---\nprojection.\n",
++        )
++        self.assertEqual(validate_repo(self.base), [])
++
++    def test_experiment_without_run_yml_legacy_md_ref_passes(self) -> None:
++        """Legacy: experiments without run.yml may still reference .md artifact_refs.
++        R4 Markdown block applies only to experiments with at least one run.yml."""
++        exp = _exp_dir(self.base, "legacy-exp")
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "legacy"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++              created: "2026-04-01"
++              updated: "2026-04-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        # Create a .md artifact so the ref resolves.
++        _write(exp / "artifacts" / "run-001-control.md", "# legacy artifact\n")
++        _write(
++            exp / "results" / "evidence.jsonl",
++            '{"event_type":"run","timestamp":"2026-04-01T00:00:00Z","iteration":1,'
++            '"metric":"x","value":true,"context":"c",'
++            '"artifact_ref":"artifacts/run-001-control.md"}\n',
++        )
++        errs = validate_repo(self.base)
++        # No run.yml in artifacts → R4 Markdown check not triggered → legacy OK.
++        self.assertEqual(errs, [])
++
++    # --- Schema isolation ---
++
++    def test_schema_isolation_missing_bundle_schema_raises(self) -> None:
++        """validate_repo() must load schemas from repo_root/schemas/, not REPO_ROOT.
++        Deleting the bundle schema from the tempdir must cause FileNotFoundError."""
++        _build_valid_bundle(self.base)
++        (self.base / "schemas" / _BUNDLE_SCHEMA).unlink()
++        with self.assertRaises(FileNotFoundError):
++            validate_repo(self.base)
++
++    def test_schema_isolation_missing_auditor_schema_raises(self) -> None:
++        """Same as above for the auditor schema."""
++        _build_valid_bundle(self.base)
++        (self.base / "schemas" / _AUDITOR_SCHEMA).unlink()
++        with self.assertRaises(FileNotFoundError):
++            validate_repo(self.base)
++
++    def test_schema_isolation_missing_measurement_schema_raises(self) -> None:
++        """Same as above for the measurement schema."""
++        _build_valid_bundle(self.base)
++        (self.base / "schemas" / _MEASUREMENT_SCHEMA).unlink()
++        with self.assertRaises(FileNotFoundError):
++            validate_repo(self.base)
++
++    # --- Drift 1 (R1): run event + prepared ---
++
++    def test_run_event_with_prepared_status_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        _write(exp / "manifest.yml", _valid_manifest(execution_status="prepared"))
++        errs = validate_repo(self.base)
++        self.assertTrue(any("prepared" in e for e in errs), errs)
++
++    # --- Drift 2 (R2/R3): execution_refs ---
++
++    def test_executed_with_empty_execution_refs_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs: []
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("execution_refs ist leer" in e for e in errs), errs)
++
++    def test_missing_execution_ref_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++                - artifacts/run-001/run.yml
++                - artifacts/run-001/does-not-exist.yml
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("does-not-exist.yml" in e and ("existiert nicht" in e or "Datei" in e) for e in errs),
++            errs,
++        )
++
++    # --- R8: run.yml in execution_refs ---
++
++    def test_executed_experiment_with_run_yml_not_in_refs_fails(self) -> None:
++        """R8: run.yml must appear in execution_refs."""
++        exp = _build_valid_bundle(self.base)
++        # Manifest without run.yml in execution_refs.
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("run.yml" in e and "execution_refs" in e for e in errs),
++            errs,
++        )
++
++    # --- R4 (Markdown artifact_ref) ---
++
++    def test_evidence_artifact_ref_to_md_without_frontmatter_fails(self) -> None:
++        """R4: any .md artifact_ref in evidence.jsonl must fail, even without frontmatter."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "plain.md", "# no frontmatter\n")
++        _write(
++            exp / "results" / "evidence.jsonl",
++            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
++            '"metric":"x","value":true,"context":"c",'
++            '"artifact_ref":"artifacts/run-001/plain.md"}\n',
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("Markdown-Projektion" in e for e in errs),
++            errs,
++        )
++
++    def test_evidence_artifact_ref_to_canonical_false_md_fails(self) -> None:
++        """R4: .md with canonical:false must also fail (suffix check, not frontmatter check)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "auditor-output.md",
++            "---\ncanonical: false\nsource_of_truth: false\n---\nprojection.\n",
++        )
++        _write(
++            exp / "results" / "evidence.jsonl",
++            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
++            '"metric":"x","value":true,"context":"c",'
++            '"artifact_ref":"artifacts/run-001/auditor-output.md"}\n',
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("Markdown-Projektion" in e for e in errs), errs)
++
++    def test_evidence_artifact_ref_missing_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        _write(
++            exp / "results" / "evidence.jsonl",
++            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
++            '"metric":"x","value":true,"context":"c",'
++            '"artifact_ref":"artifacts/run-001/ghost.yml"}\n',
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("ghost.yml" in e for e in errs), errs)
++
++    # --- R5: run.yml schema (deterministic artifact paths) ---
++
++    def test_run_yml_wrong_auditor_output_path_fails(self) -> None:
++        """R5: auditor_output.path must be exactly 'auditor-output.yml'."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "custom-auditor.yml", "schema_version: '1.0.0'\ncontract: auditor_output\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "custom-auditor.yml"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                canonical: true
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_run_yml_wrong_measurement_path_fails(self) -> None:
++        """R5: measurement.path must be exactly 'measurement.yml'."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "my-measurement.yml", "schema_version: '1.0.0'\ncontract: measurement_run\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                canonical: true
++              measurement:
++                path: "my-measurement.yml"
++                canonical: true
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_run_yml_markdown_projection_without_canonical_false_fails(self) -> None:
++        """R5: markdown_projection must have canonical:false (schema-enforced)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "auditor-output.md", "---\n---\nprojection.\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                canonical: true
++              markdown_projection:
++                path: "auditor-output.md"
++                role: "human_projection"
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        # schema-invalid because markdown_projection.canonical is required and must be false.
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_run_yml_canonical_md_artifact_rejected(self) -> None:
++        """R5: canonical:true on a Markdown file is rejected by the validator."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "auditor-output.md", "---\ncanonical: false\n---\nprojection\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                canonical: true
++              markdown_projection:
++                path: "auditor-output.md"
++                canonical: true
++                role: "human_projection"
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        # Schema rejects markdown_projection.canonical=true (must be false).
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_run_yml_id_mismatch_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-002"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("run.id" in e for e in errs), errs)
++
++    def test_run_yml_artifact_path_missing_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        # Delete run_meta.json so the artifact ref in run.yml points to a missing file.
++        (run_dir / "run_meta.json").unlink()
++        errs = validate_repo(self.base)
++        self.assertTrue(any("run_meta.json" in e and "existiert nicht" in e for e in errs), errs)
++
++    # --- R6: auditor semantics ---
++
++    def test_auditor_pass_with_non_pass_claim_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "auditor-output.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "auditor_output"
++            run_id: "run-001"
++            pr_ref: "github:test/test/pull/1"
++            auditor: "x"
++            overall_verdict: "PASS"
++            claims:
++              - id: c-1
++                text: "x"
++                type: "file_changed"
++                verdict: "PASS"
++                evidence: []
++              - id: c-2
++                text: "y"
++                type: "validator_succeeded"
++                verdict: "MISSING_EVIDENCE"
++                evidence: []
++            """,
++        )
++        _write(
++            run_dir / "measurement.yml",
++            _valid_measurement_yml(auditor_verdict="PASS", unsupported=1, val_gap=1),
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("PASS verlangt" in e for e in errs), errs)
++
++    def test_auditor_severity_precedence_fail(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "auditor-output.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "auditor_output"
++            run_id: "run-001"
++            pr_ref: "github:test/test/pull/1"
++            auditor: "x"
++            overall_verdict: "MISSING_EVIDENCE"
++            claims:
++              - id: c-1
++                text: "x"
++                type: "file_changed"
++                verdict: "CONTRADICTION"
++                evidence: []
++            """,
++        )
++        _write(
++            run_dir / "measurement.yml",
++            _valid_measurement_yml(auditor_verdict="MISSING_EVIDENCE", unsupported=1, val_gap=0),
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("Severity-Precedence" in e for e in errs), errs)
++
++    # --- R7: measurement semantics ---
++
++    def test_measurement_unsupported_count_mismatch_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        # Auditor has 2 non-PASS; measurement claims 5.
++        _write(run_dir / "measurement.yml", _valid_measurement_yml(unsupported=5, val_gap=2))
++        errs = validate_repo(self.base)
++        self.assertTrue(any("unsupported_claim_count" in e for e in errs), errs)
++
++    def test_measurement_validation_gap_mismatch_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        # Auditor has 2 command/validator gaps; measurement claims 0.
++        _write(run_dir / "measurement.yml", _valid_measurement_yml(unsupported=2, val_gap=0))
++        errs = validate_repo(self.base)
++        self.assertTrue(any("validation_gap_count" in e for e in errs), errs)
++
++    def test_measurement_auditor_ref_missing_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "measurement.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "measurement_run"
++            run_id: "run-001"
++            auditor_verdict: "MISSING_EVIDENCE"
++            auditor_ref: "ghost.yml"
++            metrics:
++              scope_drift_count: { value: 0, evidence_status: "external_unverified" }
++              unsupported_claim_count: { value: 2, evidence_status: "derived_from_auditor_output" }
++              missing_locator_count: { value: 0, evidence_status: "external_unverified" }
++              validation_gap_count: { value: 2, evidence_status: "derived_from_auditor_output" }
++              review_friction_count: { value: 0, evidence_status: "external_unverified" }
++              rework_count: { value: 0, evidence_status: "external_unverified" }
++              false_block_count: { value: 0, evidence_status: "external_unverified" }
++              task_completion_time_observed: { value: "n/a", evidence_status: "external_unverified" }
++            """,
++        )
++        errs = validate_repo(self.base)
++        # Schema const enforces auditor_ref="auditor-output.yml"; any other value is schema-invalid.
++        self.assertTrue(any("measurement.yml" in e for e in errs), errs)
++
++    def test_measurement_verdict_disagrees_with_auditor_fails(self) -> None:
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "measurement.yml",
++            _valid_measurement_yml(auditor_verdict="PASS", unsupported=2, val_gap=2),
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("auditor_verdict" in e and "weicht" in e for e in errs),
++            errs,
++        )
++
++    # --- Phase 3: required bundle members (schema-enforced) ---
++
++    def test_run_yml_missing_required_run_meta_artifact_fails(self) -> None:
++        """run.yml without run_meta in artifacts is schema-invalid (required: [auditor_output, measurement, run_meta])."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                canonical: true
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    # --- Phase 3: run_id cross-checks ---
++
++    def test_auditor_run_id_mismatch_fails(self) -> None:
++        """auditor-output.yml run_id must match run.yml run.id."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "auditor-output.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "auditor_output"
++            run_id: "wrong-run-id"
++            auditor: "test-auditor"
++            overall_verdict: "MISSING_EVIDENCE"
++            claims:
++              - id: "c-1"
++                text: "claim"
++                type: "file_changed"
++                verdict: "MISSING_EVIDENCE"
++                evidence: []
++            """,
++        )
++        _write(run_dir / "measurement.yml", _valid_measurement_yml(unsupported=1, val_gap=0))
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("auditor-output.yml" in e and "run_id" in e and "wrong-run-id" in e for e in errs),
++            errs,
++        )
++
++    def test_measurement_run_id_mismatch_fails(self) -> None:
++        """measurement.yml run_id must match run.yml run.id."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "measurement.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "measurement_run"
++            run_id: "wrong-run-id"
++            auditor_verdict: "MISSING_EVIDENCE"
++            auditor_ref: "auditor-output.yml"
++            metrics:
++              scope_drift_count: { value: 0, evidence_status: "external_unverified" }
++              unsupported_claim_count: { value: 2, evidence_status: "derived_from_auditor_output" }
++              missing_locator_count: { value: 0, evidence_status: "external_unverified" }
++              validation_gap_count: { value: 2, evidence_status: "derived_from_auditor_output" }
++              review_friction_count: { value: 0, evidence_status: "external_unverified" }
++              rework_count: { value: 0, evidence_status: "external_unverified" }
++              false_block_count: { value: 0, evidence_status: "external_unverified" }
++              task_completion_time_observed: { value: "n/a", evidence_status: "external_unverified" }
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("measurement.yml" in e and "run_id" in e and "wrong-run-id" in e for e in errs),
++            errs,
++        )
++
++    def test_run_meta_run_id_mismatch_fails(self) -> None:
++        """run_meta.json run_id must match run.yml run.id."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        (run_dir / "run_meta.json").write_text(
++            json.dumps({"schema_version": "0.1.0", "run_id": "wrong-run-id"}),
++            encoding="utf-8",
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("run_meta.json" in e and "run_id" in e and "wrong-run-id" in e for e in errs),
++            errs,
++        )
++
++    # --- Phase 3: verdict cross-check ---
++
++    def test_bundle_verdict_mismatch_with_auditor_fails(self) -> None:
++        """run.yml verdict.outcome must match auditor-output.yml overall_verdict."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++            verdict:
++              outcome: "PASS"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("verdict.outcome" in e and "PASS" in e for e in errs),
++            errs,
++        )
++
++    # --- Phase 3: additionalProperties:false (schema-enforced) ---
++
++    def test_unknown_field_in_auditor_output_fails(self) -> None:
++        """Unknown top-level field in auditor-output.yml is rejected (additionalProperties:false)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "auditor-output.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "auditor_output"
++            run_id: "run-001"
++            auditor: "test-auditor"
++            overall_verdict: "MISSING_EVIDENCE"
++            unknown_drift_field: "should be rejected"
++            claims:
++              - id: "c-1"
++                text: "claim"
++                type: "file_changed"
++                verdict: "MISSING_EVIDENCE"
++                evidence: []
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_unknown_field_in_measurement_fails(self) -> None:
++        """Unknown top-level field in measurement.yml is rejected (additionalProperties:false)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "measurement.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "measurement_run"
++            run_id: "run-001"
++            auditor_verdict: "MISSING_EVIDENCE"
++            auditor_ref: "auditor-output.yml"
++            unknown_drift_field: "should be rejected"
++            metrics:
++              scope_drift_count: { value: 0, evidence_status: "external_unverified" }
++              unsupported_claim_count: { value: 2, evidence_status: "derived_from_auditor_output" }
++              missing_locator_count: { value: 0, evidence_status: "external_unverified" }
++              validation_gap_count: { value: 2, evidence_status: "derived_from_auditor_output" }
++              review_friction_count: { value: 0, evidence_status: "external_unverified" }
++              rework_count: { value: 0, evidence_status: "external_unverified" }
++              false_block_count: { value: 0, evidence_status: "external_unverified" }
++              task_completion_time_observed: { value: "n/a", evidence_status: "external_unverified" }
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    # --- Hardening v1: missing mandatory artifacts ---
++
++    def test_run_yml_missing_required_auditor_output_artifact_fails(self) -> None:
++        """run.yml without auditor_output is schema-invalid (required field)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_run_yml_missing_required_measurement_artifact_fails(self) -> None:
++        """run.yml without measurement is schema-invalid (required field)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    # --- Hardening v1: no unknown artifact keys allowed ---
++
++    def test_run_yml_extra_artifact_key_fails(self) -> None:
++        """additionalProperties:false on artifacts rejects any unknown artifact key."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "extra.yml", "schema_version: '1.0.0'\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++              extra_artifact:
++                path: "extra.yml"
++                canonical: false
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    # --- Hardening v1: markdown_projection role + path constraints ---
++
++    def test_run_yml_markdown_projection_wrong_role_fails(self) -> None:
++        """markdown_projection.role must be 'human_projection' (const-enforced)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "projection.md", "# projection\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++              markdown_projection:
++                path: "projection.md"
++                canonical: false
++                role: "summary"
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    def test_run_yml_markdown_projection_non_md_path_fails(self) -> None:
++        """markdown_projection.path must match .*\\.md$ pattern (schema-enforced)."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        _write(run_dir / "projection.html", "<p>projection</p>\n")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++              markdown_projection:
++                path: "projection.html"
++                canonical: false
++                role: "human_projection"
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
++
++    # --- Hardening v1: artifact path run_dir containment ---
++
++    def test_run_yml_markdown_projection_path_escaping_run_dir_fails(self) -> None:
++        """markdown_projection.path cannot reference files outside the run directory."""
++        exp = _build_valid_bundle(self.base)
++        run_dir = exp / "artifacts" / "run-001"
++        # Create a .md target outside run_dir (still within artifacts/) so path resolves.
++        outside_md = exp / "artifacts" / "outside.md"
++        outside_md.write_text("# outside run dir\n", encoding="utf-8")
++        _write(
++            run_dir / "run.yml",
++            """
++            schema_version: "1.0.0"
++            contract: "experiment_run_bundle"
++            run:
++              id: "run-001"
++              experiment_path: "experiments/exp-fixture"
++              created_at: "2026-05-01T12:00:00Z"
++            provenance:
++              level: "self_reported"
++            artifacts:
++              auditor_output:
++                path: "auditor-output.yml"
++                contract: "auditor_output"
++                canonical: true
++              measurement:
++                path: "measurement.yml"
++                contract: "measurement_run"
++                canonical: true
++              run_meta:
++                path: "run_meta.json"
++                contract: "run_meta"
++                canonical: false
++                compatibility: true
++              markdown_projection:
++                path: "../outside.md"
++                canonical: false
++                role: "human_projection"
++            verdict:
++              outcome: "MISSING_EVIDENCE"
++              effect_claim_allowed: false
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("verlässt das Run-Verzeichnis" in e for e in errs),
++            errs,
++        )
++
++    # --- Fix 1: all-PASS auditor semantics ---
++
++    def test_auditor_all_claims_pass_but_overall_non_pass_fails(self) -> None:
++        """_check_auditor_semantics must reject overall_verdict != PASS when all claims are PASS."""
++        auditor = {
++            "overall_verdict": "MISSING_EVIDENCE",
++            "claims": [
++                {"verdict": "PASS"},
++                {"verdict": "PASS"},
++            ],
++        }
++        errs = _check_auditor_semantics(auditor)
++        self.assertTrue(
++            any("overall_verdict" in e and "PASS" in e for e in errs),
++            errs,
++        )
++
++    def test_auditor_all_claims_pass_and_overall_pass_accepted(self) -> None:
++        """_check_auditor_semantics must accept overall_verdict=PASS when all claims are PASS."""
++        auditor = {
++            "overall_verdict": "PASS",
++            "claims": [
++                {"verdict": "PASS"},
++                {"verdict": "PASS"},
++            ],
++        }
++        self.assertEqual(_check_auditor_semantics(auditor), [])
++
++    # --- Fix 2: legacy run_dir without run.yml is ignored ---
++
++    def test_legacy_run_dir_without_run_yml_ignores_auditor_and_measurement_yml(self) -> None:
++        """_validate_run_dir must ignore a directory that has no run.yml,
++        even if auditor-output.yml and measurement.yml are present and invalid."""
++        exp = _exp_dir(self.base, "exp-legacy-gate")
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "legacy-gate"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        _write(
++            exp / "results" / "evidence.jsonl",
++            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
++            '"metric":"x","value":true,"context":"c",'
++            '"artifact_ref":"artifacts/legacy-run/measurement.yml"}\n',
++        )
++        legacy_run = exp / "artifacts" / "legacy-run"
++        legacy_run.mkdir(parents=True, exist_ok=True)
++        # Intentionally invalid YAML to prove these files are NOT validated.
++        (legacy_run / "auditor-output.yml").write_text(
++            "THIS IS INTENTIONALLY INVALID YAML: }{", encoding="utf-8"
++        )
++        (legacy_run / "measurement.yml").write_text("!!invalid", encoding="utf-8")
++        # No run.yml in legacy_run → legacy directory, must be skipped entirely.
++        errs = validate_repo(self.base)
++        self.assertEqual(errs, [], errs)
++
++    # --- Fix 3: execution_ref exact match for results/evidence.jsonl ---
++
++    def test_execution_ref_nested_results_evidence_jsonl_does_not_satisfy_required_ref(
++        self,
++    ) -> None:
++        """foo/results/evidence.jsonl must NOT satisfy the required evidence.jsonl ref."""
++        exp = _exp_dir(self.base, "exp-nested-ref")
++        # Create the canonical evidence file so the validator triggers the check.
++        _write(
++            exp / "results" / "evidence.jsonl",
++            '{"event_type":"observation","timestamp":"2026-05-01T00:00:00Z",'
++            '"metric":"x","value":true,"context":"c"}\n',
++        )
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "nested-ref"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - foo/results/evidence.jsonl
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        # Create foo/results/evidence.jsonl so the ref resolves as existing.
++        nested = exp / "foo" / "results"
++        nested.mkdir(parents=True, exist_ok=True)
++        (nested / "evidence.jsonl").write_text(
++            '{"event_type":"observation","timestamp":"2026-05-01T00:00:00Z",'
++            '"metric":"x","value":true,"context":"c"}\n',
++            encoding="utf-8",
++        )
++        errs = validate_repo(self.base)
++        # foo/results/evidence.jsonl must NOT satisfy canonical results/evidence.jsonl.
++        self.assertTrue(
++            any("results/evidence.jsonl" in e for e in errs),
++            errs,
++        )
++
++    def test_execution_ref_dot_slash_results_evidence_jsonl_is_accepted(self) -> None:
++        """./results/evidence.jsonl must be accepted as equivalent to results/evidence.jsonl."""
++        exp = _build_valid_bundle(self.base)
++        # Replace manifest with a dot-slash prefixed evidence ref.
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - ./results/evidence.jsonl
++                - artifacts/run-001/run.yml
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertEqual(errs, [], errs)
++
++    def test_execution_ref_dot_slash_run_yml_is_accepted(self) -> None:
++        """./artifacts/run-001/run.yml must be accepted as equivalent to artifacts/run-001/run.yml."""
++        exp = _build_valid_bundle(self.base)
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++                - ./artifacts/run-001/run.yml
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertEqual(errs, [], errs)
++
++    def test_execution_ref_pointing_to_directory_fails(self) -> None:
++        """R3: execution_ref that resolves to a directory must be rejected."""
++        exp = _build_valid_bundle(self.base)
++        dir_ref = exp / "artifacts" / "run-001" / "dir-ref"
++        dir_ref.mkdir(parents=True, exist_ok=True)
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++                - artifacts/run-001/run.yml
++                - artifacts/run-001/dir-ref
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(
++            any("dir-ref" in e and ("Datei" in e or "existiert" in e) for e in errs),
++            errs,
++        )
++
++    def test_non_string_execution_ref_does_not_crash(self) -> None:
++        """R8: a list value inside execution_refs must not cause a TypeError."""
++        exp = _build_valid_bundle(self.base)
++        _write(
++            exp / "manifest.yml",
++            """
++            schema_version: "0.1.0"
++            experiment:
++              name: "fixture"
++              hypothesis: "h"
++              status: testing
++              category: workflow
++              execution_status: executed
++              execution_refs:
++                - results/evidence.jsonl
++                - artifacts/run-001/run.yml
++                - []
++              created: "2026-05-01"
++              updated: "2026-05-01"
++              author: "test"
++              iteration: 1
++              evidence_level: anecdotal
++            """,
++        )
++        errs = validate_repo(self.base)
++        self.assertTrue(any("Nicht-String" in e for e in errs), errs)
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/scripts/docmeta/validate_run_bundle.py b/scripts/docmeta/validate_run_bundle.py
+new file mode 100644
+index 0000000..4c54b3e
+--- /dev/null
++++ b/scripts/docmeta/validate_run_bundle.py
+@@ -0,0 +1,631 @@
++#!/usr/bin/env python3
++"""validate_run_bundle.py — Cross-File Validator für Experiment-Run-Bundles.
++
++Verklammert die Bestandteile eines Experiment-Runs zu einer geprüften Einheit:
++
++  manifest.yml ↔ results/evidence.jsonl ↔ artifacts/<run-id>/{run.yml,
++                  auditor-output.yml, measurement.yml, run_meta.json}
++
++Was hier geprüft wird (über die Form-Schemas hinaus):
++
++R1  Wenn results/evidence.jsonl einen event_type=run enthält, darf
++    manifest.experiment.execution_status nicht "prepared" sein.
++R2  Bei execution_status ∈ {executed, replicated} muss execution_refs
++    nicht leer sein und mindestens auf results/evidence.jsonl zeigen.
++R3  Jeder Eintrag in execution_refs muss als Datei existieren.
++R4  In evidence.jsonl referenzierte artifact_refs müssen existieren
++    und innerhalb des Experiment-Roots liegen (zusätzlich zu der bereits
++    in validate_schema.py durchgesetzten Regel — hier als Defense-in-Depth).
++    Jede artifact_ref mit Dateiendung .md ist verboten — run events dürfen
++    nur auf maschinell autorative YAML/JSON/JSONL-Artefakte verweisen.
++R5  Wenn artifacts/<run-id>/run.yml existiert: gegen
++    schemas/experiment-run-bundle.v1.schema.json validieren, jede
++    artifacts.*-Pfadangabe muss existieren, canonical:true ist auf
++    Markdown-Projektionen verboten.
++R6  Wenn artifacts/<run-id>/auditor-output.yml existiert: gegen
++    schemas/auditor-output.v1.schema.json validieren; PASS-Konsistenz
++    und Severity-Precedence prüfen.
++R7  Wenn artifacts/<run-id>/measurement.yml existiert: gegen
++    schemas/measurement-run.v1.schema.json validieren; auditor_verdict
++    muss zum Auditor-Output passen; unsupported_claim_count und
++    validation_gap_count müssen aus den Auditor-Claims abgeleitet
++    konsistent sein.
++R8  Wenn ein Experiment execution_status ∈ {executed, replicated} hat und
++    artifacts/<run-id>/run.yml existiert, muss jedes solche run.yml
++    in manifest.execution_refs aufgeführt sein.
++
++Legacy-Politik:
++  Bestandsläufe ohne run.yml werden NICHT erzwungen. Der Validator
++  arbeitet additiv: Er fasst nur die Bundles an, deren run.yml existiert,
++  und die auditor-/measurement-YAMLs, die tatsächlich vorliegen. Bestehende
++  Verträge (run_meta.json via validate_execution_proof.py, evidence.jsonl
++  via validate_schema.py) bleiben unverändert.
++
++Severity-Precedence (höher → strenger):
++  CONTRADICTION > OUT_OF_SCOPE > MISSING_EVIDENCE > NOT_REPRODUCIBLE > CLAIM_NOT_PROVEN
++
++Benötigt: python3 -m pip install pyyaml jsonschema rfc3339-validator
++"""
++
++from __future__ import annotations
++
++import json
++import sys
++from pathlib import Path
++from typing import Iterable
++
++try:
++    import yaml
++    from jsonschema import Draft202012Validator, ValidationError
++    from jsonschema.validators import validator_for
++except ImportError:
++    print(
++        "ERROR: Missing dependencies. Run: "
++        "python3 -m pip install pyyaml jsonschema rfc3339-validator"
++    )
++    sys.exit(1)
++
++
++# Global constant used only by the CLI entry-point (main).
++# validate_repo() receives repo_root as a parameter and loads schemas from
++# repo_root/schemas/ — never from this module-level constant.
++REPO_ROOT = Path(__file__).resolve().parent.parent.parent
++
++PASS = "PASS"
++
++# Höher = strenger.
++SEVERITY: dict[str, int] = {
++    "PASS": 0,
++    "CLAIM_NOT_PROVEN": 1,
++    "NOT_REPRODUCIBLE": 2,
++    "MISSING_EVIDENCE": 3,
++    "OUT_OF_SCOPE": 4,
++    "CONTRADICTION": 5,
++}
++
++# Claim-Types, deren MISSING_EVIDENCE als validation_gap zählt.
++VALIDATION_GAP_TYPES: frozenset[str] = frozenset({"command_succeeded", "validator_succeeded"})
++
++# Schema-Dateinamen (relativ zu repo_root/schemas/).
++_BUNDLE_SCHEMA_NAME = "experiment-run-bundle.v1.schema.json"
++_AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
++_MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
++
++
++# ---------------------------------------------------------------------------
++# Hilfsfunktionen
++# ---------------------------------------------------------------------------
++
++def _load_yaml(path: Path) -> dict:
++    with path.open("r", encoding="utf-8") as f:
++        return yaml.safe_load(f) or {}
++
++
++def _load_json(path: Path) -> dict:
++    with path.open("r", encoding="utf-8") as f:
++        return json.load(f)
++
++
++def _build_validator(schema_path: Path) -> Draft202012Validator:
++    schema = _load_json(schema_path)
++    cls = validator_for(schema, default=Draft202012Validator)
++    cls.check_schema(schema)
++    return cls(schema, format_checker=cls.FORMAT_CHECKER)
++
++
++def _read_evidence_run_artifacts(evidence_file: Path) -> list[tuple[int, str]]:
++    """Liest event_type=run-Einträge aus evidence.jsonl.
++
++    Gibt eine Liste von (lineno, artifact_ref) zurück. Defekte Zeilen
++    werden hier nicht gemeldet — das ist Aufgabe von validate_schema.py.
++    """
++    out: list[tuple[int, str]] = []
++    if not evidence_file.is_file():
++        return out
++    for lineno, line in enumerate(evidence_file.read_text(encoding="utf-8").splitlines(), 1):
++        line = line.strip()
++        if not line:
++            continue
++        try:
++            entry = json.loads(line)
++        except json.JSONDecodeError:
++            continue
++        if not isinstance(entry, dict):
++            continue
++        if entry.get("event_type") == "run":
++            ref = entry.get("artifact_ref")
++            if isinstance(ref, str):
++                out.append((lineno, ref))
++    return out
++
++
++def _resolve_within_run_dir(run_dir: Path, ref: str) -> Path | None:
++    """Resolved ref relativ zu run_dir; gibt None zurück, wenn das Ergebnis
++    run_dir verlässt (Path-Escape-Schutz für Run-lokale Artefaktpfade)."""
++    try:
++        candidate = (run_dir / ref).resolve()
++        candidate.relative_to(run_dir.resolve())
++    except (ValueError, OSError):
++        return None
++    return candidate
++
++
++def _resolve_within(base: Path, ref: str) -> Path | None:
++    """Resolved ref relativ zu base; gibt None zurück, wenn das Ergebnis
++    base verlässt (Path-Escape-Schutz)."""
++    try:
++        candidate = (base / ref).resolve()
++        candidate.relative_to(base.resolve())
++    except (ValueError, OSError):
++        return None
++    return candidate
++
++
++def _compute_max_severity(verdicts: Iterable[str]) -> str:
++    """Gibt das Verdict mit der höchsten Severity aus verdicts zurück;
++    bei leerer Liste 'PASS'."""
++    best = "PASS"
++    best_score = SEVERITY["PASS"]
++    for v in verdicts:
++        score = SEVERITY.get(v, -1)
++        if score > best_score:
++            best_score = score
++            best = v
++    return best
++
++
++# ---------------------------------------------------------------------------
++# Kern-Validierung als pure Funktion (für Tests einfach aufrufbar)
++# ---------------------------------------------------------------------------
++
++def validate_repo(repo_root: Path) -> list[str]:
++    """Validiert alle Experiment-Run-Bundles unter repo_root/experiments.
++
++    Schemas werden aus repo_root/schemas/ geladen — nie aus dem globalen
++    REPO_ROOT-Constant. Das erlaubt Tests mit Tempdir-Fixtures ohne
++    Abhängigkeit auf das echte Repo.
++
++    Gibt eine Liste menschlich lesbarer Fehlermeldungen zurück. Eine leere
++    Liste bedeutet: alle Cross-File-Regeln passen.
++    """
++    errors: list[str] = []
++    experiments_dir = repo_root / "experiments"
++    if not experiments_dir.is_dir():
++        return errors
++
++    # Schemas immer aus dem übergebenen repo_root laden.
++    schemas_dir = repo_root / "schemas"
++    bundle_validator = _build_validator(schemas_dir / _BUNDLE_SCHEMA_NAME)
++    auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
++    measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
++
++    for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
++        exp_dir = manifest_path.parent
++        if exp_dir.name.startswith("_"):
++            continue  # _archive, _template
++
++        rel_exp = exp_dir.relative_to(repo_root)
++        try:
++            manifest = _load_yaml(manifest_path)
++        except Exception as e:
++            errors.append(f"  ❌ {rel_exp}/manifest.yml: YAML-Fehler — {e}")
++            continue
++
++        experiment = manifest.get("experiment", {}) or {}
++        execution_status = experiment.get("execution_status")
++        execution_refs = experiment.get("execution_refs") or []
++
++        evidence_file = exp_dir / "results" / "evidence.jsonl"
++        run_events = _read_evidence_run_artifacts(evidence_file)
++
++        # R1: Run-Event vs. prepared
++        if run_events and execution_status == "prepared":
++            errors.append(
++                f"  ❌ {rel_exp}: results/evidence.jsonl enthält event_type=run "
++                f"(Zeile {run_events[0][0]}), aber manifest.execution_status=prepared. "
++                f"Setze execution_status auf executed/replicated oder entferne den Run-Event."
++            )
++
++        # R2 + R3: execution_refs bei executed/replicated
++        if execution_status in {"executed", "replicated"}:
++            if not execution_refs:
++                errors.append(
++                    f"  ❌ {rel_exp}: execution_status={execution_status}, "
++                    f"aber execution_refs ist leer."
++                )
++            else:
++                evidence_ref_present = False
++                for ref in execution_refs:
++                    if not isinstance(ref, str):
++                        errors.append(
++                            f"  ❌ {rel_exp}: execution_refs enthält Nicht-String-Eintrag {ref!r}."
++                        )
++                        continue
++                    target = _resolve_within(exp_dir, ref)
++                    if target is None:
++                        errors.append(
++                            f"  ❌ {rel_exp}: execution_ref '{ref}' verlässt das Experiment-Root."
++                        )
++                        continue
++                    if not target.is_file():
++                        errors.append(
++                            f"  ❌ {rel_exp}: execution_ref '{ref}' ist keine existierende Datei."
++                        )
++                        continue
++                    normalized_ref = ref[2:] if ref.startswith("./") else ref
++                    if normalized_ref == "results/evidence.jsonl":
++                        evidence_ref_present = True
++                if not evidence_ref_present and evidence_file.is_file():
++                    errors.append(
++                        f"  ❌ {rel_exp}: execution_refs verweist nicht auf "
++                        f"results/evidence.jsonl, obwohl die Datei existiert."
++                    )
++
++        # R4: artifact_refs aus evidence.jsonl.
++        # Die strikte .md-Sperre gilt nur für Experimente, die ins Run-Bundle-
++        # Contract opted haben (d. h. mindestens ein direktes artifacts/<run-id>/run.yml existiert).
++        # Legacy-Experimente ohne run.yml bleiben unberührt.
++        artifacts_dir_for_r4 = exp_dir / "artifacts"
++        experiment_has_run_yml = (
++            artifacts_dir_for_r4.is_dir()
++            and any(artifacts_dir_for_r4.glob("*/run.yml"))
++        )
++        for lineno, ref in run_events:
++            if experiment_has_run_yml and Path(ref).suffix.lower() == ".md":
++                errors.append(
++                    f"  ❌ {rel_exp}/results/evidence.jsonl:{lineno}: "
++                    f"artifact_ref '{ref}' zeigt auf Markdown-Projektion. "
++                    f"Verwende einen kanonischen YAML/JSON/JSONL-Artefakt."
++                )
++                continue
++            target = _resolve_within(exp_dir, ref)
++            if target is None:
++                errors.append(
++                    f"  ❌ {rel_exp}/results/evidence.jsonl:{lineno}: "
++                    f"artifact_ref '{ref}' verlässt das Experiment-Root."
++                )
++                continue
++            if not target.is_file():
++                errors.append(
++                    f"  ❌ {rel_exp}/results/evidence.jsonl:{lineno}: "
++                    f"artifact_ref '{ref}' existiert nicht."
++                )
++
++        # R5–R8: Run-Bundles unter artifacts/run-*/
++        artifacts_dir = exp_dir / "artifacts"
++        if artifacts_dir.is_dir():
++            for run_dir in sorted(p for p in artifacts_dir.iterdir() if p.is_dir()):
++                _validate_run_dir(
++                    repo_root=repo_root,
++                    exp_dir=exp_dir,
++                    run_dir=run_dir,
++                    execution_status=execution_status,
++                    execution_refs=execution_refs,
++                    bundle_validator=bundle_validator,
++                    auditor_validator=auditor_validator,
++                    measurement_validator=measurement_validator,
++                    errors=errors,
++                )
++
++    return errors
++
++
++def _validate_run_dir(
++    *,
++    repo_root: Path,
++    exp_dir: Path,
++    run_dir: Path,
++    execution_status: str | None,
++    execution_refs: list,
++    bundle_validator: Draft202012Validator,
++    auditor_validator: Draft202012Validator,
++    measurement_validator: Draft202012Validator,
++    errors: list[str],
++) -> None:
++    """Validiert ein einzelnes artifacts/<run-id>/-Verzeichnis."""
++    rel_run = run_dir.relative_to(repo_root)
++    run_yml = run_dir / "run.yml"
++    auditor_yml = run_dir / "auditor-output.yml"
++    measurement_yml = run_dir / "measurement.yml"
++
++    # Legacy-Politik: kein run.yml → kein Bundle-Contract → nichts prüfen.
++    if not run_yml.is_file():
++        return
++
++    bundle: dict | None = None
++
++    # R5: run.yml
++    if run_yml.is_file():
++        # R8: run.yml muss in execution_refs stehen (bei executed/replicated)
++        if execution_status in {"executed", "replicated"}:
++            run_yml_ref = str(run_yml.relative_to(exp_dir))
++            normalized_execution_refs = {
++                ref[2:] if ref.startswith("./") else ref
++                for ref in execution_refs
++                if isinstance(ref, str)
++            }
++            if run_yml_ref not in normalized_execution_refs:
++                errors.append(
++                    f"  ❌ {rel_run}/run.yml: execution_status={execution_status}, "
++                    f"aber '{run_yml_ref}' fehlt in manifest.execution_refs. "
++                    f"Jedes run.yml muss in execution_refs aufgeführt sein."
++                )
++
++        try:
++            bundle = _load_yaml(run_yml)
++        except Exception as e:
++            errors.append(f"  ❌ {rel_run}/run.yml: YAML-Fehler — {e}")
++            bundle = None
++        if bundle is not None:
++            try:
++                bundle_validator.validate(bundle)
++            except ValidationError as e:
++                errors.append(
++                    f"  ❌ {rel_run}/run.yml: schema-invalid — {e.message} "
++                    f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
++                )
++                bundle = None
++        if bundle is not None:
++            run_block = bundle.get("run", {}) or {}
++            if run_block.get("id") != run_dir.name:
++                errors.append(
++                    f"  ❌ {rel_run}/run.yml: run.id='{run_block.get('id')}' "
++                    f"stimmt nicht mit Verzeichnisnamen '{run_dir.name}' überein."
++                )
++            exp_path = run_block.get("experiment_path")
++            if exp_path and (repo_root / exp_path).resolve() != exp_dir.resolve():
++                errors.append(
++                    f"  ❌ {rel_run}/run.yml: run.experiment_path='{exp_path}' "
++                    f"zeigt nicht auf {exp_dir.relative_to(repo_root)}."
++                )
++            artifacts = bundle.get("artifacts", {}) or {}
++            for key, artifact in artifacts.items():
++                if not isinstance(artifact, dict):
++                    continue
++                path_str = artifact.get("path")
++                if not isinstance(path_str, str) or not path_str:
++                    errors.append(
++                        f"  ❌ {rel_run}/run.yml: artifacts.{key}.path fehlt."
++                    )
++                    continue
++                target = _resolve_within_run_dir(run_dir, path_str)
++                if target is None:
++                    errors.append(
++                        f"  ❌ {rel_run}/run.yml: artifacts.{key}.path '{path_str}' "
++                        f"verlässt das Run-Verzeichnis."
++                    )
++                    continue
++                if not target.is_file():
++                    errors.append(
++                        f"  ❌ {rel_run}/run.yml: artifacts.{key}.path '{path_str}' "
++                        f"existiert nicht (erwartet unter {target.relative_to(repo_root)})."
++                    )
++                    continue
++                # canonical:true auf Markdown-Projektion ist verboten.
++                canonical = artifact.get("canonical")
++                if canonical is True and target.suffix.lower() == ".md":
++                    errors.append(
++                        f"  ❌ {rel_run}/run.yml: artifacts.{key} markiert eine Markdown-"
++                        f"Projektion ('{path_str}') als canonical=true. Markdown ist "
++                        f"Projektion, nicht maschinelle Wahrheit."
++                    )
++
++    # R6: auditor-output.yml
++    auditor_data: dict | None = None
++    if auditor_yml.is_file():
++        try:
++            auditor_data = _load_yaml(auditor_yml)
++        except Exception as e:
++            errors.append(f"  ❌ {rel_run}/auditor-output.yml: YAML-Fehler — {e}")
++            auditor_data = None
++        if auditor_data is not None:
++            try:
++                auditor_validator.validate(auditor_data)
++            except ValidationError as e:
++                errors.append(
++                    f"  ❌ {rel_run}/auditor-output.yml: schema-invalid — {e.message} "
++                    f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
++                )
++                auditor_data = None
++        if auditor_data is not None:
++            for sem_err in _check_auditor_semantics(auditor_data):
++                errors.append(f"  ❌ {rel_run}/auditor-output.yml: {sem_err}")
++
++    # Cross-checks zwischen run.yml und auditor-output.yml
++    if bundle is not None and auditor_data is not None:
++        run_id_expected = (bundle.get("run") or {}).get("id")
++        auditor_run_id = auditor_data.get("run_id")
++        if run_id_expected and auditor_run_id and auditor_run_id != run_id_expected:
++            errors.append(
++                f"  ❌ {rel_run}/auditor-output.yml: run_id='{auditor_run_id}' "
++                f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
++            )
++        bundle_outcome = (bundle.get("verdict") or {}).get("outcome")
++        auditor_overall = auditor_data.get("overall_verdict")
++        if bundle_outcome and auditor_overall and bundle_outcome != auditor_overall:
++            errors.append(
++                f"  ❌ {rel_run}/run.yml: verdict.outcome='{bundle_outcome}' "
++                f"stimmt nicht mit auditor-output.yml overall_verdict='{auditor_overall}' überein."
++            )
++
++    # run_meta.json run_id cross-check (unabhängig von measurement.yml)
++    run_meta_json = run_dir / "run_meta.json"
++    if run_meta_json.is_file() and bundle is not None:
++        try:
++            run_meta = _load_json(run_meta_json)
++        except Exception as e:
++            errors.append(f"  ❌ {rel_run}/run_meta.json: JSON-Fehler — {e}")
++        else:
++            run_id_expected = (bundle.get("run") or {}).get("id")
++            meta_run_id = run_meta.get("run_id")
++            if run_id_expected and meta_run_id and meta_run_id != run_id_expected:
++                errors.append(
++                    f"  ❌ {rel_run}/run_meta.json: run_id='{meta_run_id}' "
++                    f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
++                )
++
++    # R7: measurement.yml
++    if measurement_yml.is_file():
++        try:
++            measurement = _load_yaml(measurement_yml)
++        except Exception as e:
++            errors.append(f"  ❌ {rel_run}/measurement.yml: YAML-Fehler — {e}")
++            return
++        try:
++            measurement_validator.validate(measurement)
++        except ValidationError as e:
++            errors.append(
++                f"  ❌ {rel_run}/measurement.yml: schema-invalid — {e.message} "
++                f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
++            )
++            return
++
++        # run_id cross-check
++        if bundle is not None:
++            run_id_expected = (bundle.get("run") or {}).get("id")
++            meas_run_id = measurement.get("run_id")
++            if run_id_expected and meas_run_id and meas_run_id != run_id_expected:
++                errors.append(
++                    f"  ❌ {rel_run}/measurement.yml: run_id='{meas_run_id}' "
++                    f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
++                )
++
++        # auditor_ref auflösen (const "auditor-output.yml" ist schema-erzwungen)
++        ref = measurement.get("auditor_ref")
++        if not ref:
++            errors.append(
++                f"  ❌ {rel_run}/measurement.yml: auditor_ref ist nicht gesetzt."
++            )
++            return
++
++        ref_target = _resolve_within_run_dir(run_dir, ref)
++        if ref_target is None:
++            errors.append(
++                f"  ❌ {rel_run}/measurement.yml: auditor-Referenz '{ref}' "
++                f"verlässt das Run-Verzeichnis."
++            )
++            return
++        if not ref_target.is_file():
++            errors.append(
++                f"  ❌ {rel_run}/measurement.yml: auditor-Referenz '{ref}' "
++                f"zeigt auf nicht existierende Datei."
++            )
++            return
++
++        # Bypass-Schutz: auditor_ref muss auf run_dir/auditor-output.yml zeigen.
++        if ref_target.resolve() != auditor_yml.resolve():
++            errors.append(
++                f"  ❌ {rel_run}/measurement.yml: auditor_ref '{ref}' zeigt nicht auf "
++                f"auditor-output.yml in diesem Run-Verzeichnis."
++            )
++            return
++
++        # Semantik-Konsistenz mit dem Auditor
++        if auditor_data is not None:
++            for sem_err in _check_measurement_semantics(measurement, auditor_data):
++                errors.append(f"  ❌ {rel_run}/measurement.yml: {sem_err}")
++
++
++def _check_auditor_semantics(auditor: dict) -> list[str]:
++    """Severity-Precedence + PASS-Konsistenz."""
++    out: list[str] = []
++    overall = auditor.get("overall_verdict")
++    claims = auditor.get("claims") or []
++    if not isinstance(claims, list):
++        return out  # Schema-Fehler — bereits gemeldet.
++
++    claim_verdicts = [c.get("verdict") for c in claims if isinstance(c, dict)]
++    non_pass = [v for v in claim_verdicts if v != PASS]
++
++    if overall == PASS and non_pass:
++        out.append(
++            f"overall_verdict=PASS, aber {len(non_pass)} Claim(s) sind non-PASS "
++            f"(verdicts: {sorted(set(non_pass))}). PASS verlangt, dass jeder Claim PASS ist."
++        )
++        return out
++
++    if not non_pass and overall != PASS:
++        out.append(
++            f"overall_verdict='{overall}', aber alle Auditor-Claims sind PASS. "
++            f"overall_verdict muss PASS sein, wenn alle Claims PASS sind."
++        )
++        return out
++
++    if non_pass:
++        expected = _compute_max_severity(non_pass)
++        if overall != expected:
++            out.append(
++                f"overall_verdict='{overall}' verletzt Severity-Precedence: "
++                f"höchste Claim-Severity ist '{expected}' (aus {sorted(set(non_pass))}). "
++                f"Severity-Reihenfolge: CONTRADICTION > OUT_OF_SCOPE > MISSING_EVIDENCE > "
++                f"NOT_REPRODUCIBLE > CLAIM_NOT_PROVEN."
++            )
++
++    return out
++
++
++def _check_measurement_semantics(measurement: dict, auditor: dict) -> list[str]:
++    """auditor_verdict-Konsistenz + abgeleitete Zähler."""
++    out: list[str] = []
++
++    aud_overall = auditor.get("overall_verdict")
++    meas_verdict = measurement.get("auditor_verdict")
++    if aud_overall and meas_verdict and aud_overall != meas_verdict:
++        out.append(
++            f"auditor_verdict='{meas_verdict}' weicht von auditor.overall_verdict="
++            f"'{aud_overall}' ab."
++        )
++
++    claims = auditor.get("claims") or []
++    if not isinstance(claims, list):
++        return out
++
++    non_pass_count = sum(
++        1 for c in claims if isinstance(c, dict) and c.get("verdict") != PASS
++    )
++    validation_gap_count = sum(
++        1
++        for c in claims
++        if isinstance(c, dict)
++        and c.get("verdict") == "MISSING_EVIDENCE"
++        and c.get("type") in VALIDATION_GAP_TYPES
++    )
++
++    metrics = measurement.get("metrics") or {}
++    unsupported = (metrics.get("unsupported_claim_count") or {}).get("value")
++    val_gap = (metrics.get("validation_gap_count") or {}).get("value")
++
++    if unsupported is not None and unsupported != non_pass_count:
++        out.append(
++            f"unsupported_claim_count.value={unsupported} ≠ Anzahl non-PASS-Claims "
++            f"im Auditor ({non_pass_count}). Diese Metrik wird aus dem Auditor-Output "
++            f"abgeleitet."
++        )
++    if val_gap is not None and val_gap != validation_gap_count:
++        out.append(
++            f"validation_gap_count.value={val_gap} ≠ Anzahl MISSING_EVIDENCE-Claims "
++            f"mit type ∈ {{command_succeeded, validator_succeeded}} im Auditor "
++            f"({validation_gap_count})."
++        )
++
++    return out
++
++
++# ---------------------------------------------------------------------------
++# CLI
++# ---------------------------------------------------------------------------
++
++def main() -> int:
++    print("🧷 Validating experiment run bundles...")
++    errors = validate_repo(REPO_ROOT)
++    if errors:
++        print("❌ Run-Bundle validation FAILED:")
++        for err in errors:
++            print(err)
++        return 1
++    print("✅ All run bundles consistent.")
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())

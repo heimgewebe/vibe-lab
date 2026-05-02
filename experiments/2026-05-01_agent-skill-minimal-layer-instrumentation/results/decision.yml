@@ -27,6 +27,15 @@ evidence_summary:
   negative: 0
   neutral: 2
 
+effect_signal:
+  positive: 0
+  negative: 0
+  neutral: 2
+
+evidence_quality:
+  missing_evidence_runs: 1
+  contradiction_runs: 1
+
 next_steps: |
   Mindestens einen weiteren realen PR als Datensatz erfassen. Zwischenauswertung
   nach drei vergleichbaren PRs; Verdict erst dann neu bewerten.

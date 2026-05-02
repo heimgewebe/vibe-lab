@@ -1,0 +1,15 @@
+.github/workflows/validate.yml
+Makefile
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+schemas/auditor-output.v1.schema.json
+schemas/experiment-run-bundle.v1.schema.json
+schemas/measurement-run.v1.schema.json
+scripts/docmeta/test_validate_run_bundle.py
+scripts/docmeta/validate_run_bundle.py
+
+# Source: git diff --name-only 539ff38 7647929
+# Base: 539ff38 (post-PR#146 merge)
+# Head: 7647929 (PR#148 merge commit)
+# gh pr diff --name-only: MISSING_EVIDENCE (gh API 403 Forbidden)

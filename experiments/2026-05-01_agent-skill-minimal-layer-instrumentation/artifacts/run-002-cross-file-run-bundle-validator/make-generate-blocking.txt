@@ -1,0 +1,5 @@
+✔️ (unchanged) Generated docs/_generated/doc-index.md (185 documents)
+✅ Exported 5 instruction-blocks to exports/copilot/
+✅ Exported 5 instruction-blocks to exports/cursor/
+✅ Generated tool projections in exports/.
+✅ Generated blocking artifacts (doc-index, projections).

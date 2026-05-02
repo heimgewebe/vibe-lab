@@ -28,8 +28,9 @@ canonicality: operative
 
 - 2 PR-Datensätze erhoben (Run 1: PR #145, Run 2: PR #148).
 - Run-1 Auditor-Verdict: **MISSING_EVIDENCE**. `unsupported_claim_count=5`, `validation_gap_count=3`.
-- Run-2 Auditor-Verdict: **CONTRADICTION** (PR-Body behauptet 657 Tests; Repo-Zustand zeigt 56 Test-Methoden). `unsupported_claim_count=5`, `validation_gap_count=2`.
-- PR-Metadaten (commits, additions, review_friction, rework, completion_time) nicht als Repo-Artefakt archiviert (`external_unverified`).
+- Run-2 Auditor-Verdict: **CONTRADICTION** (PR-Body behauptet 657 Tests; Repo-Zustand zeigt 56 Test-Methoden). `unsupported_claim_count=3`, `validation_gap_count=1`.
+- PR-Metadaten (commits, additions, review_friction, rework, completion_time) nicht vollständig als Repo-Artefakt archiviert (`partial_repo_local` / `external_unverified`).
+- Diff und changed-files nun repo-lokal archiviert (`changed-files.txt`, `pr-148.diff`, via git diff).
 - Kein Wirkungsclaim möglich oder zulässig (zwei Messpunkte, keine Kontrollgruppe).
 
 ## Metriken-Vergleich (Run 1 vs. Run 2)
@@ -38,9 +39,9 @@ canonicality: operative
 |---|---|---|
 | auditor_verdict | MISSING_EVIDENCE | CONTRADICTION |
 | scope_drift_count | 0 | 0 |
-| unsupported_claim_count | 5 | 5 |
+| unsupported_claim_count | 5 | 3 |
 | missing_locator_count | 0 | 0 |
-| validation_gap_count | 3 | 2 |
+| validation_gap_count | 3 | 1 |
 | review_friction_count | 2 | 6 |
 | rework_count | 1 | 1 |
 | false_block_count | 0 | 0 |

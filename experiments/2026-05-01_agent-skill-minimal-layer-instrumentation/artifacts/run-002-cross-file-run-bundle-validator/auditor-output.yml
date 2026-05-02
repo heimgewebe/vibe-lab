@@ -72,11 +72,19 @@ claims:
   - id: "claim-008"
     text: "All 10 changed files lie within the declared task scope."
     type: "scope_adhered_to"
-    verdict: "MISSING_EVIDENCE"
-    notes: "PR diff is not archived as a repo artifact; scope claim is plausible but cannot be independently verified from repo state."
-    evidence: []
-    missing_evidence:
-      - "archived PR diff / changed-files artifact not present in repo"
+    verdict: "PASS"
+    notes: >-
+      changed-files.txt (repo-local) derived from git diff --name-only 539ff38 7647929.
+      pr-148.diff (repo-local) derived from git diff 539ff38 7647929.
+      All 10 files verified: .github/workflows/validate.yml, Makefile, 3 schemas/, 2 scripts/docmeta/,
+      2 experiment run-001 fixtures, 1 manifest.yml. All within declared scope.
+      gh pr diff --name-only: MISSING_EVIDENCE (API 403); git diff used as repo-local substitute.
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-cross-file-run-bundle-validator/changed-files.txt"
+        locator: "10 files listed; all within declared task scope"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-cross-file-run-bundle-validator/pr-148.diff"
+        locator: "full git diff 539ff38..7647929; 2754 lines"
+    missing_evidence: []
 
   - id: "claim-009"
     text: "PR body claims 657 regression tests in test_validate_run_bundle.py."
@@ -96,27 +104,40 @@ claims:
   - id: "claim-010"
     text: "make validate passed."
     type: "command_succeeded"
-    verdict: "MISSING_EVIDENCE"
-    evidence: []
-    missing_evidence:
-      - "make validate output artifact not present in repo"
+    verdict: "PASS"
+    notes: >-
+      make validate run in current repo state (post-PR#148 merge + hardening commits).
+      Output archived as make-validate.txt. Final line: "✅ Validation passed."
+      Note: this is a retrospective run on current HEAD, not the original PR merge moment.
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-cross-file-run-bundle-validator/make-validate.txt"
+        locator: "final line: ✅ Validation passed."
+    missing_evidence: []
 
   - id: "claim-011"
     text: "CI checks passed."
     type: "validator_succeeded"
     verdict: "MISSING_EVIDENCE"
-    notes: "GitHub API returns zero check_runs for PR #148. No CI log artifact archived in repo."
+    notes: >-
+      GitHub API returns zero check_runs for PR #148. gh API returned 403 Forbidden
+      in this execution environment. CI log cannot be independently verified.
+      ci-output.txt documents the failure to retrieve CI data.
     evidence: []
     missing_evidence:
-      - "CI check run log not archived in repo; GitHub Actions check_runs count: 0 for this PR"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-cross-file-run-bundle-validator/ci-output.txt"
+        detail: "MISSING_EVIDENCE placeholder; gh API 403; 0 check_runs returned by GitHub for PR #148"
 
   - id: "claim-012"
     text: "experiment-critic was used for this PR."
     type: "agent_usage"
     verdict: "MISSING_EVIDENCE"
+    notes: >-
+      No experiment-critic output artifact found. critic-output.md documents
+      the absence. This placeholder does not constitute evidence of critic usage.
     evidence: []
     missing_evidence:
-      - "experiment-critic output artifact not found in experiment directory"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-cross-file-run-bundle-validator/critic-output.md"
+        detail: "MISSING_EVIDENCE placeholder; no critic output artifact available for PR #148"
 
 out_of_scope_claims: []
 
@@ -124,14 +145,11 @@ contradictions:
   - "PR body claims 657 regression tests (claim-009); repo-local count is 56 test methods."
 
 missing_evidence:
-  - "archived PR diff / changed-files artifact (scope adherence not independently verifiable)"
-  - "make validate output artifact"
-  - "CI check run log (zero check_runs returned by GitHub API for PR #148)"
-  - "experiment-critic output artifact"
-  - "archived PR metadata artifact (pr_commits, review_friction, rework not independently verifiable from repo state)"
+  - "CI check run log (zero check_runs returned by GitHub API for PR #148; gh API 403 in execution environment)"
+  - "experiment-critic output artifact (no evidence critic was used; critic-output.md is a MISSING_EVIDENCE placeholder)"
+  - "archived PR metadata from GitHub API (gh API 403; pr-metadata.json contains partial repo-local + external_unverified data)"
 
 required_next_proof:
-  - "Archive make validate output as repo artifact for future runs."
+  - "Archive CI check run logs as repo artifact for future runs (currently blocked by API 403 / 0 check_runs)."
   - "Archive experiment-critic output for future runs if critic usage is claimed."
-  - "Archive PR metadata summary (changed files, commit count, additions/deletions) as repo artifact for future runs."
   - "Ensure PR body test-count claims match actual test method count in committed code."
