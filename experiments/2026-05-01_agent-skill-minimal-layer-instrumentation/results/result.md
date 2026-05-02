@@ -13,14 +13,16 @@ canonicality: operative
 ## Canonical Artifacts
 
 ### Run 1 (PR #145)
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml`** — kanonischer Run-Bundle-Envelope
 - **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output
 - **`artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`** — Run-1-Metriken
-- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion
+- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion (human-readable only)
 
 ### Run 2 (PR #148)
+- **`artifacts/run-002-cross-file-run-bundle-validator/run.yml`** — kanonischer Run-Bundle-Envelope
 - **`artifacts/run-002-cross-file-run-bundle-validator/auditor-output.yml`** — kanonischer YAML-Auditor-Output
 - **`artifacts/run-002-cross-file-run-bundle-validator/measurement.yml`** — Run-2-Metriken
-- `artifacts/run-002-cross-file-run-bundle-validator/auditor-output.md` — nicht-kanonische Projektion
+- `artifacts/run-002-cross-file-run-bundle-validator/auditor-output.md` — nicht-kanonische Projektion (human-readable only)
 
 ## Datenlage
 

@@ -6,6 +6,7 @@
   "command": "evidence-reconciliation-auditor on PR #148",
   "exit_code": 0,
   "test_output_file": "artifacts/run-002-cross-file-run-bundle-validator/auditor-output.yml",
+  "test_output_file_base": "experiment_path_relative",
   "provenance_level": "self_reported",
   "outcome": "CONTRADICTION",
   "notes": "Run 2: single PR-level measurement. No effect claim. Auditor verdict: CONTRADICTION (test-count claim in PR body contradicted by repo state: 657 claimed vs 56 actual)."
