@@ -410,6 +410,39 @@ def _validate_run_dir(
             for sem_err in _check_auditor_semantics(auditor_data):
                 errors.append(f"  ❌ {rel_run}/auditor-output.yml: {sem_err}")
 
+    # Cross-checks zwischen run.yml und auditor-output.yml
+    if bundle is not None and auditor_data is not None:
+        run_id_expected = (bundle.get("run") or {}).get("id")
+        auditor_run_id = auditor_data.get("run_id")
+        if run_id_expected and auditor_run_id and auditor_run_id != run_id_expected:
+            errors.append(
+                f"  ❌ {rel_run}/auditor-output.yml: run_id='{auditor_run_id}' "
+                f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
+            )
+        bundle_outcome = (bundle.get("verdict") or {}).get("outcome")
+        auditor_overall = auditor_data.get("overall_verdict")
+        if bundle_outcome and auditor_overall and bundle_outcome != auditor_overall:
+            errors.append(
+                f"  ❌ {rel_run}/run.yml: verdict.outcome='{bundle_outcome}' "
+                f"stimmt nicht mit auditor-output.yml overall_verdict='{auditor_overall}' überein."
+            )
+
+    # run_meta.json run_id cross-check (unabhängig von measurement.yml)
+    run_meta_json = run_dir / "run_meta.json"
+    if run_meta_json.is_file() and bundle is not None:
+        try:
+            run_meta = _load_json(run_meta_json)
+        except Exception as e:
+            errors.append(f"  ❌ {rel_run}/run_meta.json: JSON-Fehler — {e}")
+        else:
+            run_id_expected = (bundle.get("run") or {}).get("id")
+            meta_run_id = run_meta.get("run_id")
+            if run_id_expected and meta_run_id and meta_run_id != run_id_expected:
+                errors.append(
+                    f"  ❌ {rel_run}/run_meta.json: run_id='{meta_run_id}' "
+                    f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
+                )
+
     # R7: measurement.yml
     if measurement_yml.is_file():
         try:
@@ -426,14 +459,21 @@ def _validate_run_dir(
             )
             return
 
-        # auditor_output-Referenz auflösen
-        ref = (measurement.get("source_artifacts") or {}).get("auditor_output")
-        if not ref:
-            ref = measurement.get("auditor_ref")
+        # run_id cross-check
+        if bundle is not None:
+            run_id_expected = (bundle.get("run") or {}).get("id")
+            meas_run_id = measurement.get("run_id")
+            if run_id_expected and meas_run_id and meas_run_id != run_id_expected:
+                errors.append(
+                    f"  ❌ {rel_run}/measurement.yml: run_id='{meas_run_id}' "
+                    f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
+                )
+
+        # auditor_ref auflösen (const "auditor-output.yml" ist schema-erzwungen)
+        ref = measurement.get("auditor_ref")
         if not ref:
             errors.append(
-                f"  ❌ {rel_run}/measurement.yml: weder source_artifacts.auditor_output "
-                f"noch auditor_ref ist gesetzt."
+                f"  ❌ {rel_run}/measurement.yml: auditor_ref ist nicht gesetzt."
             )
             return
 
@@ -451,8 +491,16 @@ def _validate_run_dir(
             )
             return
 
-        # Wenn die Referenz auf den passenden Auditor zeigt, Konsistenz prüfen.
-        if auditor_data is not None and ref_target.resolve() == auditor_yml.resolve():
+        # Bypass-Schutz: auditor_ref muss auf run_dir/auditor-output.yml zeigen.
+        if ref_target.resolve() != auditor_yml.resolve():
+            errors.append(
+                f"  ❌ {rel_run}/measurement.yml: auditor_ref '{ref}' zeigt nicht auf "
+                f"auditor-output.yml in diesem Run-Verzeichnis."
+            )
+            return
+
+        # Semantik-Konsistenz mit dem Auditor
+        if auditor_data is not None:
             for sem_err in _check_measurement_semantics(measurement, auditor_data):
                 errors.append(f"  ❌ {rel_run}/measurement.yml: {sem_err}")
 

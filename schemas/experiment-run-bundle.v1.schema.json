@@ -81,8 +81,8 @@
     },
     "artifacts": {
       "type": "object",
-      "description": "Bestandteile des Run-Bundles. Mindestens auditor_output ODER measurement muss vorhanden sein.",
-      "minProperties": 1,
+      "description": "Pflichtbestandteile des Run-Bundles: auditor_output, measurement, run_meta. markdown_projection ist optional.",
+      "required": ["auditor_output", "measurement", "run_meta"],
       "additionalProperties": {
         "$ref": "#/$defs/artifact_ref"
       },

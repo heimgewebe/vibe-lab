@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/auditor-output.v1.schema.json",
   "title": "Auditor Output (v1)",
-  "description": "Schema für artifacts/<run-id>/auditor-output.yml. Maschinell autoritative Claim-Prüfung. Form wird hier validiert; semantische Konsistenz (Severity-Precedence, PASS-Konsistenz) prüft validate_run_bundle.py zusätzlich.",
+  "description": "Schema für artifacts/<run-id>/auditor-output.yml. Maschinell autoritative Claim-Prüfung. Form wird hier validiert; semantische Konsistenz (Severity-Precedence, PASS-Konsistenz, run_id-Sync) prüft validate_run_bundle.py zusätzlich.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": ["schema_version", "contract", "run_id", "auditor", "overall_verdict", "claims"],
   "properties": {
     "schema_version": {
@@ -28,6 +28,7 @@
         { "type": "string", "minLength": 1 },
         {
           "type": "object",
+          "additionalProperties": false,
           "required": ["name"],
           "properties": {
             "name": { "type": "string", "minLength": 1 },
@@ -69,12 +70,17 @@
     "required_next_proof": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Kontrollierter Auslass für experimentelle oder versionsspezifische Zusatzfelder. Kein freies Top-Level-Drift."
     }
   },
   "$defs": {
     "claim": {
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "required": ["id", "text", "type", "verdict"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
@@ -101,7 +107,11 @@
         "missing_evidence": {
           "type": "array"
         },
-        "notes": { "type": "string" }
+        "notes": { "type": "string" },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
       }
     }
   }

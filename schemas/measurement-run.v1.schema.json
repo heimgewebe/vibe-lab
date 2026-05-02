@@ -2,10 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/measurement-run.v1.schema.json",
   "title": "Measurement Run (v1)",
-  "description": "Schema für artifacts/<run-id>/measurement.yml. Form-Validierung; semantische Kreuzregeln (auditor_verdict-Konsistenz, abgeleitete Zähler) prüft validate_run_bundle.py zusätzlich.",
+  "description": "Schema für artifacts/<run-id>/measurement.yml. Form-Validierung; semantische Kreuzregeln (auditor_verdict-Konsistenz, abgeleitete Zähler, run_id-Sync) prüft validate_run_bundle.py zusätzlich.",
   "type": "object",
-  "additionalProperties": true,
-  "required": ["schema_version", "contract", "run_id", "auditor_verdict", "metrics"],
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "run_id", "auditor_verdict", "auditor_ref", "metrics"],
   "properties": {
     "schema_version": {
       "type": "string",
@@ -32,18 +32,8 @@
     },
     "auditor_ref": {
       "type": "string",
-      "minLength": 1,
-      "description": "Run-relativer Pfad zur zugehörigen auditor-output.yml. Genau eine der Felder auditor_ref oder source_artifacts.auditor_output muss gesetzt sein."
-    },
-    "source_artifacts": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "auditor_output": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
+      "const": "auditor-output.yml",
+      "description": "Run-dir-relativer Pfad zum Auditor-Output. Muss immer 'auditor-output.yml' sein (deterministischer v1-Dateiname)."
     },
     "metrics": {
       "type": "object",
@@ -69,28 +59,36 @@
         "task_completion_time_observed": { "$ref": "#/$defs/metric" }
       }
     },
-    "agent_layer_used": { "type": "object", "additionalProperties": true },
-    "pr_metadata": { "type": "object", "additionalProperties": true },
-    "missing_evidence": { "type": "array" },
-    "interpretation_limits": { "type": "array" }
-  },
-  "anyOf": [
-    { "required": ["auditor_ref"] },
-    {
-      "required": ["source_artifacts"],
-      "properties": {
-        "source_artifacts": { "required": ["auditor_output"] }
-      }
+    "agent_layer_used": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Verwendete Agent-/Skill-Schichten. Freiformat; Konsistenz wird nicht schema-seitig erzwungen."
+    },
+    "pr_metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "PR-Metadaten (externe Quelle). evidence_status gibt Herkunftsniveau an."
+    },
+    "missing_evidence": {
+      "type": "array"
+    },
+    "interpretation_limits": {
+      "type": "array"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Kontrollierter Auslass für experimentelle oder versionsspezifische Zusatzfelder."
     }
-  ],
+  },
   "$defs": {
     "metric": {
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "required": ["value", "evidence_status"],
       "properties": {
         "value": {
-          "description": "Numerischer oder beobachteter Wert. Strings sind nur für deskriptive Felder wie task_completion_time_observed zulässig.",
+          "description": "Numerischer oder beobachteter Wert.",
           "anyOf": [
             { "type": "number" },
             { "type": "integer" },
@@ -112,7 +110,11 @@
             "unknown"
           ]
         },
-        "notes": { "type": "string" }
+        "notes": { "type": "string" },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
       }
     }
   }

@@ -124,10 +124,25 @@ def _valid_run_yml(run_id: str = "run-001") -> str:
         path: "measurement.yml"
         contract: "measurement_run"
         canonical: true
+      run_meta:
+        path: "run_meta.json"
+        contract: "run_meta"
+        canonical: false
+        compatibility: true
     verdict:
       outcome: "MISSING_EVIDENCE"
       effect_claim_allowed: false
     """
+
+
+def _valid_run_meta_json(run_id: str = "run-001") -> str:
+    return json.dumps({
+        "schema_version": "0.1.0",
+        "run_id": run_id,
+        "generated_at": "2026-05-01T12:00:00Z",
+        "executor": "local:test",
+        "outcome": "MISSING_EVIDENCE",
+    })
 
 
 def _valid_auditor_yml() -> str:
@@ -207,6 +222,7 @@ def _build_valid_bundle(base: Path) -> Path:
     _write(run_dir / "run.yml", _valid_run_yml())
     _write(run_dir / "auditor-output.yml", _valid_auditor_yml())
     _write(run_dir / "measurement.yml", _valid_measurement_yml())
+    (run_dir / "run_meta.json").write_text(_valid_run_meta_json(), encoding="utf-8")
     return exp
 
 
@@ -695,6 +711,10 @@ class RepoLevelTests(unittest.TestCase):
               measurement:
                 path: "measurement.yml"
                 canonical: true
+              run_meta:
+                path: "run_meta.json"
+                canonical: false
+                compatibility: true
             verdict:
               outcome: "MISSING_EVIDENCE"
               effect_claim_allowed: false
@@ -706,37 +726,8 @@ class RepoLevelTests(unittest.TestCase):
     def test_run_yml_artifact_path_missing_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
-        # Overwrite with measurement pointing to a non-existent file.
-        # We need to use run_meta since measurement.path is now const-enforced to measurement.yml
-        # and that file exists. Use a custom key.
-        _write(
-            run_dir / "run.yml",
-            """
-            schema_version: "1.0.0"
-            contract: "experiment_run_bundle"
-            run:
-              id: "run-001"
-              experiment_path: "experiments/exp-fixture"
-              created_at: "2026-05-01T12:00:00Z"
-            provenance:
-              level: "self_reported"
-            artifacts:
-              auditor_output:
-                path: "auditor-output.yml"
-                canonical: true
-              measurement:
-                path: "measurement.yml"
-                canonical: true
-              run_meta:
-                path: "run_meta.json"
-                canonical: false
-                compatibility: true
-            verdict:
-              outcome: "MISSING_EVIDENCE"
-              effect_claim_allowed: false
-            """,
-        )
-        # run_meta.json does NOT exist in the run dir.
+        # Delete run_meta.json so the artifact ref in run.yml points to a missing file.
+        (run_dir / "run_meta.json").unlink()
         errs = validate_repo(self.base)
         self.assertTrue(any("run_meta.json" in e and "existiert nicht" in e for e in errs), errs)
 
@@ -842,7 +833,8 @@ class RepoLevelTests(unittest.TestCase):
             """,
         )
         errs = validate_repo(self.base)
-        self.assertTrue(any("ghost.yml" in e for e in errs), errs)
+        # Schema const enforces auditor_ref="auditor-output.yml"; any other value is schema-invalid.
+        self.assertTrue(any("measurement.yml" in e for e in errs), errs)
 
     def test_measurement_verdict_disagrees_with_auditor_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
@@ -856,6 +848,202 @@ class RepoLevelTests(unittest.TestCase):
             any("auditor_verdict" in e and "weicht" in e for e in errs),
             errs,
         )
+
+    # --- Phase 3: required bundle members (schema-enforced) ---
+
+    def test_run_yml_missing_required_run_meta_artifact_fails(self) -> None:
+        """run.yml without run_meta in artifacts is schema-invalid (required: [auditor_output, measurement, run_meta])."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    # --- Phase 3: run_id cross-checks ---
+
+    def test_auditor_run_id_mismatch_fails(self) -> None:
+        """auditor-output.yml run_id must match run.yml run.id."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "auditor-output.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "auditor_output"
+            run_id: "wrong-run-id"
+            auditor: "test-auditor"
+            overall_verdict: "MISSING_EVIDENCE"
+            claims:
+              - id: "c-1"
+                text: "claim"
+                type: "file_changed"
+                verdict: "MISSING_EVIDENCE"
+                evidence: []
+            """,
+        )
+        _write(run_dir / "measurement.yml", _valid_measurement_yml(unsupported=1, val_gap=0))
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("auditor-output.yml" in e and "run_id" in e and "wrong-run-id" in e for e in errs),
+            errs,
+        )
+
+    def test_measurement_run_id_mismatch_fails(self) -> None:
+        """measurement.yml run_id must match run.yml run.id."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "measurement.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "measurement_run"
+            run_id: "wrong-run-id"
+            auditor_verdict: "MISSING_EVIDENCE"
+            auditor_ref: "auditor-output.yml"
+            metrics:
+              scope_drift_count: { value: 0, evidence_status: "external_unverified" }
+              unsupported_claim_count: { value: 2, evidence_status: "derived_from_auditor_output" }
+              missing_locator_count: { value: 0, evidence_status: "external_unverified" }
+              validation_gap_count: { value: 2, evidence_status: "derived_from_auditor_output" }
+              review_friction_count: { value: 0, evidence_status: "external_unverified" }
+              rework_count: { value: 0, evidence_status: "external_unverified" }
+              false_block_count: { value: 0, evidence_status: "external_unverified" }
+              task_completion_time_observed: { value: "n/a", evidence_status: "external_unverified" }
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("measurement.yml" in e and "run_id" in e and "wrong-run-id" in e for e in errs),
+            errs,
+        )
+
+    def test_run_meta_run_id_mismatch_fails(self) -> None:
+        """run_meta.json run_id must match run.yml run.id."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        (run_dir / "run_meta.json").write_text(
+            json.dumps({"schema_version": "0.1.0", "run_id": "wrong-run-id"}),
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("run_meta.json" in e and "run_id" in e and "wrong-run-id" in e for e in errs),
+            errs,
+        )
+
+    # --- Phase 3: verdict cross-check ---
+
+    def test_bundle_verdict_mismatch_with_auditor_fails(self) -> None:
+        """run.yml verdict.outcome must match auditor-output.yml overall_verdict."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                canonical: false
+                compatibility: true
+            verdict:
+              outcome: "PASS"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("verdict.outcome" in e and "PASS" in e for e in errs),
+            errs,
+        )
+
+    # --- Phase 3: additionalProperties:false (schema-enforced) ---
+
+    def test_unknown_field_in_auditor_output_fails(self) -> None:
+        """Unknown top-level field in auditor-output.yml is rejected (additionalProperties:false)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "auditor-output.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "auditor_output"
+            run_id: "run-001"
+            auditor: "test-auditor"
+            overall_verdict: "MISSING_EVIDENCE"
+            unknown_drift_field: "should be rejected"
+            claims:
+              - id: "c-1"
+                text: "claim"
+                type: "file_changed"
+                verdict: "MISSING_EVIDENCE"
+                evidence: []
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_unknown_field_in_measurement_fails(self) -> None:
+        """Unknown top-level field in measurement.yml is rejected (additionalProperties:false)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "measurement.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "measurement_run"
+            run_id: "run-001"
+            auditor_verdict: "MISSING_EVIDENCE"
+            auditor_ref: "auditor-output.yml"
+            unknown_drift_field: "should be rejected"
+            metrics:
+              scope_drift_count: { value: 0, evidence_status: "external_unverified" }
+              unsupported_claim_count: { value: 2, evidence_status: "derived_from_auditor_output" }
+              missing_locator_count: { value: 0, evidence_status: "external_unverified" }
+              validation_gap_count: { value: 2, evidence_status: "derived_from_auditor_output" }
+              review_friction_count: { value: 0, evidence_status: "external_unverified" }
+              rework_count: { value: 0, evidence_status: "external_unverified" }
+              false_block_count: { value: 0, evidence_status: "external_unverified" }
+              task_completion_time_observed: { value: "n/a", evidence_status: "external_unverified" }
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
 
     # --- Real Run 1 integrity ---
 
