@@ -16,6 +16,8 @@ R3  Jeder Eintrag in execution_refs muss als Datei existieren.
 R4  In evidence.jsonl referenzierte artifact_refs müssen existieren
     und innerhalb des Experiment-Roots liegen (zusätzlich zu der bereits
     in validate_schema.py durchgesetzten Regel — hier als Defense-in-Depth).
+    Jede artifact_ref mit Dateiendung .md ist verboten — run events dürfen
+    nur auf maschinell autorative YAML/JSON/JSONL-Artefakte verweisen.
 R5  Wenn artifacts/<run-id>/run.yml existiert: gegen
     schemas/experiment-run-bundle.v1.schema.json validieren, jede
     artifacts.*-Pfadangabe muss existieren, canonical:true ist auf
@@ -28,6 +30,9 @@ R7  Wenn artifacts/<run-id>/measurement.yml existiert: gegen
     muss zum Auditor-Output passen; unsupported_claim_count und
     validation_gap_count müssen aus den Auditor-Claims abgeleitet
     konsistent sein.
+R8  Wenn ein Experiment execution_status ∈ {executed, replicated} hat und
+    artifacts/**/run.yml existiert, muss jedes solche run.yml in
+    manifest.execution_refs aufgeführt sein.
 
 Legacy-Politik:
   Bestandsläufe ohne run.yml werden NICHT erzwungen. Der Validator
@@ -61,20 +66,14 @@ except ImportError:
     sys.exit(1)
 
 
+# Global constant used only by the CLI entry-point (main).
+# validate_repo() receives repo_root as a parameter and loads schemas from
+# repo_root/schemas/ — never from this module-level constant.
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-
-SCHEMAS_DIR = REPO_ROOT / "schemas"
-RUN_BUNDLE_SCHEMA = SCHEMAS_DIR / "experiment-run-bundle.v1.schema.json"
-AUDITOR_OUTPUT_SCHEMA = SCHEMAS_DIR / "auditor-output.v1.schema.json"
-MEASUREMENT_SCHEMA = SCHEMAS_DIR / "measurement-run.v1.schema.json"
-
-EXPERIMENTS_DIR = REPO_ROOT / "experiments"
 
 PASS = "PASS"
 
-# Höher = strenger. Werte mit gleicher Stufe sind in dieser Tabelle nicht erlaubt;
-# das Validator-Pattern wählt das Maximum. Werte, die nicht im Mapping stehen,
-# zählen als 0 (also gleich PASS) und blockieren entsprechende PASS-Regel.
+# Höher = strenger.
 SEVERITY: dict[str, int] = {
     "PASS": 0,
     "CLAIM_NOT_PROVEN": 1,
@@ -86,6 +85,11 @@ SEVERITY: dict[str, int] = {
 
 # Claim-Types, deren MISSING_EVIDENCE als validation_gap zählt.
 VALIDATION_GAP_TYPES: frozenset[str] = frozenset({"command_succeeded", "validator_succeeded"})
+
+# Schema-Dateinamen (relativ zu repo_root/schemas/).
+_BUNDLE_SCHEMA_NAME = "experiment-run-bundle.v1.schema.json"
+_AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
+_MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
 
 
 # ---------------------------------------------------------------------------
@@ -135,37 +139,6 @@ def _read_evidence_run_artifacts(evidence_file: Path) -> list[tuple[int, str]]:
     return out
 
 
-def _has_run_event(evidence_file: Path) -> bool:
-    return bool(_read_evidence_run_artifacts(evidence_file))
-
-
-def _is_canonical_false_markdown(path: Path) -> bool:
-    """True, wenn die Markdown-Datei explizit canonical:false oder
-    source_of_truth:false im YAML-Frontmatter trägt."""
-    if not path.is_file() or path.suffix.lower() != ".md":
-        return False
-    try:
-        text = path.read_text(encoding="utf-8")
-    except Exception:
-        return False
-    if not text.startswith("---"):
-        return False
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return False
-    try:
-        fm = yaml.safe_load(parts[1]) or {}
-    except Exception:
-        return False
-    if not isinstance(fm, dict):
-        return False
-    if fm.get("canonical") is False:
-        return True
-    if fm.get("source_of_truth") is False:
-        return True
-    return False
-
-
 def _resolve_within(base: Path, ref: str) -> Path | None:
     """Resolved ref relativ zu base; gibt None zurück, wenn das Ergebnis
     base verlässt (Path-Escape-Schutz)."""
@@ -197,6 +170,10 @@ def _compute_max_severity(verdicts: Iterable[str]) -> str:
 def validate_repo(repo_root: Path) -> list[str]:
     """Validiert alle Experiment-Run-Bundles unter repo_root/experiments.
 
+    Schemas werden aus repo_root/schemas/ geladen — nie aus dem globalen
+    REPO_ROOT-Constant. Das erlaubt Tests mit Tempdir-Fixtures ohne
+    Abhängigkeit auf das echte Repo.
+
     Gibt eine Liste menschlich lesbarer Fehlermeldungen zurück. Eine leere
     Liste bedeutet: alle Cross-File-Regeln passen.
     """
@@ -205,9 +182,11 @@ def validate_repo(repo_root: Path) -> list[str]:
     if not experiments_dir.is_dir():
         return errors
 
-    bundle_validator = _build_validator(RUN_BUNDLE_SCHEMA)
-    auditor_validator = _build_validator(AUDITOR_OUTPUT_SCHEMA)
-    measurement_validator = _build_validator(MEASUREMENT_SCHEMA)
+    # Schemas immer aus dem übergebenen repo_root laden.
+    schemas_dir = repo_root / "schemas"
+    bundle_validator = _build_validator(schemas_dir / _BUNDLE_SCHEMA_NAME)
+    auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
+    measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
 
     for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
         exp_dir = manifest_path.parent
@@ -265,14 +244,28 @@ def validate_repo(repo_root: Path) -> list[str]:
                     if ref.endswith("results/evidence.jsonl") or ref == "results/evidence.jsonl":
                         evidence_ref_present = True
                 if not evidence_ref_present and evidence_file.is_file():
-                    # Soft-Hinweis: Falls evidence.jsonl da ist, sollte sie auch verlinkt sein.
                     errors.append(
                         f"  ❌ {rel_exp}: execution_refs verweist nicht auf "
                         f"results/evidence.jsonl, obwohl die Datei existiert."
                     )
 
-        # R4: artifact_refs aus evidence.jsonl
+        # R4: artifact_refs aus evidence.jsonl.
+        # Die strikte .md-Sperre gilt nur für Experimente, die ins Run-Bundle-
+        # Contract opted haben (d. h. mindestens ein artifacts/**/run.yml existiert).
+        # Legacy-Experimente ohne run.yml bleiben unberührt.
+        artifacts_dir_for_r4 = exp_dir / "artifacts"
+        experiment_has_run_yml = (
+            artifacts_dir_for_r4.is_dir()
+            and any(artifacts_dir_for_r4.rglob("run.yml"))
+        )
         for lineno, ref in run_events:
+            if experiment_has_run_yml and Path(ref).suffix.lower() == ".md":
+                errors.append(
+                    f"  ❌ {rel_exp}/results/evidence.jsonl:{lineno}: "
+                    f"artifact_ref '{ref}' zeigt auf Markdown-Projektion. "
+                    f"Verwende einen kanonischen YAML/JSON/JSONL-Artefakt."
+                )
+                continue
             target = _resolve_within(exp_dir, ref)
             if target is None:
                 errors.append(
@@ -285,16 +278,8 @@ def validate_repo(repo_root: Path) -> list[str]:
                     f"  ❌ {rel_exp}/results/evidence.jsonl:{lineno}: "
                     f"artifact_ref '{ref}' existiert nicht."
                 )
-                continue
-            if _is_canonical_false_markdown(target):
-                errors.append(
-                    f"  ❌ {rel_exp}/results/evidence.jsonl:{lineno}: "
-                    f"artifact_ref '{ref}' zeigt auf eine non-canonical Markdown-Projektion. "
-                    f"Verweise auf maschinelle Wahrheitsquellen (YAML/JSONL/JSON) statt auf "
-                    f"Lesefläche."
-                )
 
-        # R5–R7: Run-Bundles unter artifacts/run-*/
+        # R5–R8: Run-Bundles unter artifacts/run-*/
         artifacts_dir = exp_dir / "artifacts"
         if artifacts_dir.is_dir():
             for run_dir in sorted(p for p in artifacts_dir.iterdir() if p.is_dir()):
@@ -302,6 +287,8 @@ def validate_repo(repo_root: Path) -> list[str]:
                     repo_root=repo_root,
                     exp_dir=exp_dir,
                     run_dir=run_dir,
+                    execution_status=execution_status,
+                    execution_refs=execution_refs,
                     bundle_validator=bundle_validator,
                     auditor_validator=auditor_validator,
                     measurement_validator=measurement_validator,
@@ -316,6 +303,8 @@ def _validate_run_dir(
     repo_root: Path,
     exp_dir: Path,
     run_dir: Path,
+    execution_status: str | None,
+    execution_refs: list,
     bundle_validator: Draft202012Validator,
     auditor_validator: Draft202012Validator,
     measurement_validator: Draft202012Validator,
@@ -331,6 +320,16 @@ def _validate_run_dir(
 
     # R5: run.yml
     if run_yml.is_file():
+        # R8: run.yml muss in execution_refs stehen (bei executed/replicated)
+        if execution_status in {"executed", "replicated"}:
+            run_yml_ref = str(run_yml.relative_to(exp_dir))
+            if run_yml_ref not in execution_refs:
+                errors.append(
+                    f"  ❌ {rel_run}/run.yml: execution_status={execution_status}, "
+                    f"aber '{run_yml_ref}' fehlt in manifest.execution_refs. "
+                    f"Jedes run.yml muss in execution_refs aufgeführt sein."
+                )
+
         try:
             bundle = _load_yaml(run_yml)
         except Exception as e:

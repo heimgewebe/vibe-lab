@@ -87,10 +87,59 @@
         "$ref": "#/$defs/artifact_ref"
       },
       "properties": {
-        "auditor_output": { "$ref": "#/$defs/artifact_ref" },
-        "measurement": { "$ref": "#/$defs/artifact_ref" },
-        "run_meta": { "$ref": "#/$defs/artifact_ref" },
-        "markdown_projection": { "$ref": "#/$defs/artifact_ref" }
+        "auditor_output": {
+          "allOf": [
+            { "$ref": "#/$defs/artifact_ref" },
+            {
+              "properties": {
+                "path": {
+                  "const": "auditor-output.yml",
+                  "description": "Muss immer 'auditor-output.yml' sein (deterministischer Dateiname für v1 Bundles)."
+                }
+              }
+            }
+          ]
+        },
+        "measurement": {
+          "allOf": [
+            { "$ref": "#/$defs/artifact_ref" },
+            {
+              "properties": {
+                "path": {
+                  "const": "measurement.yml",
+                  "description": "Muss immer 'measurement.yml' sein."
+                }
+              }
+            }
+          ]
+        },
+        "run_meta": {
+          "allOf": [
+            { "$ref": "#/$defs/artifact_ref" },
+            {
+              "properties": {
+                "path": {
+                  "const": "run_meta.json",
+                  "description": "Muss immer 'run_meta.json' sein."
+                }
+              }
+            }
+          ]
+        },
+        "markdown_projection": {
+          "allOf": [
+            { "$ref": "#/$defs/artifact_ref" },
+            {
+              "required": ["canonical"],
+              "properties": {
+                "canonical": {
+                  "const": false,
+                  "description": "Markdown-Projektionen müssen immer canonical:false tragen."
+                }
+              }
+            }
+          ]
+        }
       }
     },
     "verdict": {

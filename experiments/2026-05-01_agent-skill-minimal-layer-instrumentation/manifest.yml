@@ -11,6 +11,7 @@ experiment:
   execution_status: executed
   execution_refs:
     - results/evidence.jsonl
+    - artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json

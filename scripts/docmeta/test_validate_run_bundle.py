@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Regression tests for validate_run_bundle.py.
 
-Each test builds a tiny experiment fixture under a temporary directory that
-mimics the real repo layout (with real schema files copied/symlinked from
-the project) and runs validate_repo() against it.
+Each test builds a tiny experiment fixture under a temporary directory and
+runs validate_repo() against it. Schemas are copied from the real project
+into the tempdir so that validate_repo() is fully isolated — it must not
+depend on the real REPO_ROOT.
 
 Run:
     python3 scripts/docmeta/test_validate_run_bundle.py
@@ -33,21 +34,25 @@ from validate_run_bundle import (  # noqa: E402
 REPO_ROOT = THIS_DIR.parent.parent
 PROJECT_SCHEMAS = REPO_ROOT / "schemas"
 
+# Schema filenames expected under <tempdir>/schemas/
+_BUNDLE_SCHEMA = "experiment-run-bundle.v1.schema.json"
+_AUDITOR_SCHEMA = "auditor-output.v1.schema.json"
+_MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
+
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
 def _make_repo_skeleton(base: Path) -> Path:
-    """Erzeugt unter base/ ein minimales Repo-Skelett mit den drei
-    Bundle-Schemas, sodass validate_repo(base) ohne echtes Repo läuft."""
+    """Creates base/schemas/ with all three bundle schemas, and base/experiments/.
+
+    Tests run validate_repo(base) — schemas are loaded from base/schemas/, NOT
+    from the real REPO_ROOT. This proves schema-path isolation.
+    """
     schemas = base / "schemas"
     schemas.mkdir(parents=True, exist_ok=True)
-    for name in (
-        "experiment-run-bundle.v1.schema.json",
-        "auditor-output.v1.schema.json",
-        "measurement-run.v1.schema.json",
-    ):
+    for name in (_BUNDLE_SCHEMA, _AUDITOR_SCHEMA, _MEASUREMENT_SCHEMA):
         shutil.copy(PROJECT_SCHEMAS / name, schemas / name)
     (base / "experiments").mkdir(exist_ok=True)
     return base
@@ -65,7 +70,13 @@ def _write(path: Path, content: str) -> None:
     path.write_text(textwrap.dedent(content).lstrip("\n"), encoding="utf-8")
 
 
-def _valid_manifest(execution_status: str = "executed") -> str:
+def _valid_manifest(execution_status: str = "executed", extra_refs: list[str] | None = None) -> str:
+    base_refs = [
+        "results/evidence.jsonl",
+        "artifacts/run-001/run.yml",
+    ]
+    refs = base_refs + (extra_refs or [])
+    ref_lines = "\n".join(f"        - {r}" for r in refs)
     return f"""
     schema_version: "0.1.0"
     experiment:
@@ -75,8 +86,7 @@ def _valid_manifest(execution_status: str = "executed") -> str:
       category: workflow
       execution_status: {execution_status}
       execution_refs:
-        - results/evidence.jsonl
-        - artifacts/run-001/run.yml
+{ref_lines}
       created: "2026-05-01"
       updated: "2026-05-01"
       author: "test"
@@ -85,20 +95,20 @@ def _valid_manifest(execution_status: str = "executed") -> str:
     """
 
 
-def _valid_evidence_run() -> str:
+def _valid_evidence_run(artifact_ref: str = "artifacts/run-001/measurement.yml") -> str:
     return (
         '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
-        '"metric":"x","value":true,"context":"c",'
-        '"artifact_ref":"artifacts/run-001/measurement.yml"}\n'
+        f'"metric":"x","value":true,"context":"c",'
+        f'"artifact_ref":"{artifact_ref}"}}\n'
     )
 
 
-def _valid_run_yml() -> str:
-    return """
+def _valid_run_yml(run_id: str = "run-001") -> str:
+    return f"""
     schema_version: "1.0.0"
     contract: "experiment_run_bundle"
     run:
-      id: "run-001"
+      id: "{run_id}"
       experiment_path: "experiments/exp-fixture"
       created_at: "2026-05-01T12:00:00Z"
       sequence: 1
@@ -188,7 +198,7 @@ def _valid_measurement_yml(
 
 
 def _build_valid_bundle(base: Path) -> Path:
-    """Schreibt ein vollständig valides Bundle und gibt das Experiment-Verzeichnis zurück."""
+    """Writes a fully valid bundle; returns the experiment directory."""
     exp = _exp_dir(base)
     _write(exp / "manifest.yml", _valid_manifest())
     _write(exp / "results" / "evidence.jsonl", _valid_evidence_run())
@@ -222,6 +232,9 @@ class SeverityPrecedenceTests(unittest.TestCase):
             "CONTRADICTION",
         )
 
+    def test_empty_is_pass(self) -> None:
+        self.assertEqual(_compute_max_severity([]), "PASS")
+
 
 class AuditorSemanticsTests(unittest.TestCase):
     def test_pass_with_non_pass_claim_rejected(self) -> None:
@@ -233,7 +246,7 @@ class AuditorSemanticsTests(unittest.TestCase):
             ],
         }
         errs = _check_auditor_semantics(auditor)
-        self.assertTrue(any("PASS" in e and "non-PASS" in e for e in errs), errs)
+        self.assertTrue(any("PASS verlangt" in e for e in errs), errs)
 
     def test_severity_mismatch_rejected(self) -> None:
         auditor = {
@@ -257,10 +270,7 @@ class AuditorSemanticsTests(unittest.TestCase):
 class MeasurementSemanticsTests(unittest.TestCase):
     def test_verdict_mismatch_rejected(self) -> None:
         auditor = {"overall_verdict": "MISSING_EVIDENCE", "claims": []}
-        meas = {
-            "auditor_verdict": "PASS",
-            "metrics": {},
-        }
+        meas = {"auditor_verdict": "PASS", "metrics": {}}
         errs = _check_measurement_semantics(meas, auditor)
         self.assertTrue(any("auditor_verdict" in e for e in errs), errs)
 
@@ -314,17 +324,90 @@ class RepoLevelTests(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp.cleanup()
 
-    def test_valid_executed_bundle_passes(self) -> None:
+    # --- Passing cases ---
+
+    def test_valid_executed_bundle_with_run_yml_in_refs_passes(self) -> None:
+        """R2+R3+R8: valid executed run with run.yml listed in execution_refs."""
         _build_valid_bundle(self.base)
         self.assertEqual(validate_repo(self.base), [])
 
+    def test_canonical_false_md_present_but_unreferenced_passes(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "auditor-output.md",
+            "---\ncanonical: false\nsource_of_truth: false\n---\nprojection.\n",
+        )
+        self.assertEqual(validate_repo(self.base), [])
+
+    def test_experiment_without_run_yml_legacy_md_ref_passes(self) -> None:
+        """Legacy: experiments without run.yml may still reference .md artifact_refs.
+        R4 Markdown block applies only to experiments with at least one run.yml."""
+        exp = _exp_dir(self.base, "legacy-exp")
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "legacy"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - results/evidence.jsonl
+              created: "2026-04-01"
+              updated: "2026-04-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        # Create a .md artifact so the ref resolves.
+        _write(exp / "artifacts" / "run-001-control.md", "# legacy artifact\n")
+        _write(
+            exp / "results" / "evidence.jsonl",
+            '{"event_type":"run","timestamp":"2026-04-01T00:00:00Z","iteration":1,'
+            '"metric":"x","value":true,"context":"c",'
+            '"artifact_ref":"artifacts/run-001-control.md"}\n',
+        )
+        errs = validate_repo(self.base)
+        # No run.yml in artifacts → R4 Markdown check not triggered → legacy OK.
+        self.assertEqual(errs, [])
+
+    # --- Schema isolation ---
+
+    def test_schema_isolation_missing_bundle_schema_raises(self) -> None:
+        """validate_repo() must load schemas from repo_root/schemas/, not REPO_ROOT.
+        Deleting the bundle schema from the tempdir must cause FileNotFoundError."""
+        _build_valid_bundle(self.base)
+        (self.base / "schemas" / _BUNDLE_SCHEMA).unlink()
+        with self.assertRaises(FileNotFoundError):
+            validate_repo(self.base)
+
+    def test_schema_isolation_missing_auditor_schema_raises(self) -> None:
+        """Same as above for the auditor schema."""
+        _build_valid_bundle(self.base)
+        (self.base / "schemas" / _AUDITOR_SCHEMA).unlink()
+        with self.assertRaises(FileNotFoundError):
+            validate_repo(self.base)
+
+    def test_schema_isolation_missing_measurement_schema_raises(self) -> None:
+        """Same as above for the measurement schema."""
+        _build_valid_bundle(self.base)
+        (self.base / "schemas" / _MEASUREMENT_SCHEMA).unlink()
+        with self.assertRaises(FileNotFoundError):
+            validate_repo(self.base)
+
+    # --- Drift 1 (R1): run event + prepared ---
+
     def test_run_event_with_prepared_status_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
-        # Manifest auf prepared zurücksetzen
         _write(exp / "manifest.yml", _valid_manifest(execution_status="prepared"))
-        # execution_refs ist bei prepared optional → Schema bleibt gültig.
         errs = validate_repo(self.base)
         self.assertTrue(any("prepared" in e for e in errs), errs)
+
+    # --- Drift 2 (R2/R3): execution_refs ---
 
     def test_executed_with_empty_execution_refs_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
@@ -347,7 +430,7 @@ class RepoLevelTests(unittest.TestCase):
             """,
         )
         errs = validate_repo(self.base)
-        self.assertTrue(any("execution_refs" in e for e in errs), errs)
+        self.assertTrue(any("execution_refs ist leer" in e for e in errs), errs)
 
     def test_missing_execution_ref_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
@@ -363,6 +446,7 @@ class RepoLevelTests(unittest.TestCase):
               execution_status: executed
               execution_refs:
                 - results/evidence.jsonl
+                - artifacts/run-001/run.yml
                 - artifacts/run-001/does-not-exist.yml
               created: "2026-05-01"
               updated: "2026-05-01"
@@ -377,6 +461,73 @@ class RepoLevelTests(unittest.TestCase):
             errs,
         )
 
+    # --- R8: run.yml in execution_refs ---
+
+    def test_executed_experiment_with_run_yml_not_in_refs_fails(self) -> None:
+        """R8: run.yml must appear in execution_refs."""
+        exp = _build_valid_bundle(self.base)
+        # Manifest without run.yml in execution_refs.
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "fixture"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - results/evidence.jsonl
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("run.yml" in e and "execution_refs" in e for e in errs),
+            errs,
+        )
+
+    # --- R4 (Markdown artifact_ref) ---
+
+    def test_evidence_artifact_ref_to_md_without_frontmatter_fails(self) -> None:
+        """R4: any .md artifact_ref in evidence.jsonl must fail, even without frontmatter."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "plain.md", "# no frontmatter\n")
+        _write(
+            exp / "results" / "evidence.jsonl",
+            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
+            '"metric":"x","value":true,"context":"c",'
+            '"artifact_ref":"artifacts/run-001/plain.md"}\n',
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("Markdown-Projektion" in e for e in errs),
+            errs,
+        )
+
+    def test_evidence_artifact_ref_to_canonical_false_md_fails(self) -> None:
+        """R4: .md with canonical:false must also fail (suffix check, not frontmatter check)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "auditor-output.md",
+            "---\ncanonical: false\nsource_of_truth: false\n---\nprojection.\n",
+        )
+        _write(
+            exp / "results" / "evidence.jsonl",
+            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
+            '"metric":"x","value":true,"context":"c",'
+            '"artifact_ref":"artifacts/run-001/auditor-output.md"}\n',
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Markdown-Projektion" in e for e in errs), errs)
+
     def test_evidence_artifact_ref_missing_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
         _write(
@@ -388,59 +539,110 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("ghost.yml" in e for e in errs), errs)
 
-    def test_evidence_artifact_ref_to_canonical_false_md_fails(self) -> None:
+    # --- R5: run.yml schema (deterministic artifact paths) ---
+
+    def test_run_yml_wrong_auditor_output_path_fails(self) -> None:
+        """R5: auditor_output.path must be exactly 'auditor-output.yml'."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "custom-auditor.yml", "schema_version: '1.0.0'\ncontract: auditor_output\n")
         _write(
-            run_dir / "auditor-output.md",
+            run_dir / "run.yml",
             """
-            ---
-            canonical: false
-            source_of_truth: false
-            ---
-
-            non-canonical projection.
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "custom-auditor.yml"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
             """,
-        )
-        _write(
-            exp / "results" / "evidence.jsonl",
-            '{"event_type":"run","timestamp":"2026-05-01T00:00:00Z","iteration":1,'
-            '"metric":"x","value":true,"context":"c",'
-            '"artifact_ref":"artifacts/run-001/auditor-output.md"}\n',
         )
         errs = validate_repo(self.base)
-        self.assertTrue(any("non-canonical Markdown-Projektion" in e for e in errs), errs)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
 
-    def test_canonical_false_md_present_but_unreferenced_passes(self) -> None:
+    def test_run_yml_wrong_measurement_path_fails(self) -> None:
+        """R5: measurement.path must be exactly 'measurement.yml'."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "my-measurement.yml", "schema_version: '1.0.0'\ncontract: measurement_run\n")
         _write(
-            run_dir / "auditor-output.md",
+            run_dir / "run.yml",
             """
-            ---
-            canonical: false
-            source_of_truth: false
-            ---
-
-            non-canonical projection.
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                canonical: true
+              measurement:
+                path: "my-measurement.yml"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
             """,
         )
-        # evidence.jsonl bleibt unverändert, referenziert measurement.yml.
-        self.assertEqual(validate_repo(self.base), [])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_run_yml_markdown_projection_without_canonical_false_fails(self) -> None:
+        """R5: markdown_projection must have canonical:false (schema-enforced)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "auditor-output.md", "---\n---\nprojection.\n")
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                canonical: true
+              markdown_projection:
+                path: "auditor-output.md"
+                role: "human_projection"
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        # schema-invalid because markdown_projection.canonical is required and must be false.
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
 
     def test_run_yml_canonical_md_artifact_rejected(self) -> None:
+        """R5: canonical:true on a Markdown file is rejected by the validator."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
-        _write(
-            run_dir / "auditor-output.md",
-            """
-            ---
-            canonical: false
-            ---
-            projection
-            """,
-        )
-        # run.yml deklariert die Markdown-Projektion fälschlich als canonical=true
+        _write(run_dir / "auditor-output.md", "---\ncanonical: false\n---\nprojection\n")
         _write(
             run_dir / "run.yml",
             """
@@ -469,10 +671,76 @@ class RepoLevelTests(unittest.TestCase):
             """,
         )
         errs = validate_repo(self.base)
-        self.assertTrue(
-            any("Markdown-Projektion" in e and "canonical" in e for e in errs),
-            errs,
+        # Schema rejects markdown_projection.canonical=true (must be false).
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_run_yml_id_mismatch_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-002"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
         )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("run.id" in e for e in errs), errs)
+
+    def test_run_yml_artifact_path_missing_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        # Overwrite with measurement pointing to a non-existent file.
+        # We need to use run_meta since measurement.path is now const-enforced to measurement.yml
+        # and that file exists. Use a custom key.
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                canonical: false
+                compatibility: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        # run_meta.json does NOT exist in the run dir.
+        errs = validate_repo(self.base)
+        self.assertTrue(any("run_meta.json" in e and "existiert nicht" in e for e in errs), errs)
+
+    # --- R6: auditor semantics ---
 
     def test_auditor_pass_with_non_pass_claim_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
@@ -499,7 +767,6 @@ class RepoLevelTests(unittest.TestCase):
                 evidence: []
             """,
         )
-        # measurement zur Konsistenz halten, sonst mehrere Sekundärfehler.
         _write(
             run_dir / "measurement.yml",
             _valid_measurement_yml(auditor_verdict="PASS", unsupported=1, val_gap=1),
@@ -534,25 +801,21 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("Severity-Precedence" in e for e in errs), errs)
 
+    # --- R7: measurement semantics ---
+
     def test_measurement_unsupported_count_mismatch_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
-        # Auditor hat 2 non-PASS-Claims, measurement behauptet 5.
-        _write(
-            run_dir / "measurement.yml",
-            _valid_measurement_yml(unsupported=5, val_gap=2),
-        )
+        # Auditor has 2 non-PASS; measurement claims 5.
+        _write(run_dir / "measurement.yml", _valid_measurement_yml(unsupported=5, val_gap=2))
         errs = validate_repo(self.base)
         self.assertTrue(any("unsupported_claim_count" in e for e in errs), errs)
 
     def test_measurement_validation_gap_mismatch_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
-        # Auditor hat 2 validation gaps, measurement behauptet 0.
-        _write(
-            run_dir / "measurement.yml",
-            _valid_measurement_yml(unsupported=2, val_gap=0),
-        )
+        # Auditor has 2 command/validator gaps; measurement claims 0.
+        _write(run_dir / "measurement.yml", _valid_measurement_yml(unsupported=2, val_gap=0))
         errs = validate_repo(self.base)
         self.assertTrue(any("validation_gap_count" in e for e in errs), errs)
 
@@ -594,63 +857,16 @@ class RepoLevelTests(unittest.TestCase):
             errs,
         )
 
-    def test_run_yml_id_mismatch_fails(self) -> None:
-        exp = _build_valid_bundle(self.base)
-        run_dir = exp / "artifacts" / "run-001"
-        _write(
-            run_dir / "run.yml",
-            """
-            schema_version: "1.0.0"
-            contract: "experiment_run_bundle"
-            run:
-              id: "run-002"
-              experiment_path: "experiments/exp-fixture"
-              created_at: "2026-05-01T12:00:00Z"
-            provenance:
-              level: "self_reported"
-            artifacts:
-              auditor_output:
-                path: "auditor-output.yml"
-                canonical: true
-              measurement:
-                path: "measurement.yml"
-                canonical: true
-            verdict:
-              outcome: "MISSING_EVIDENCE"
-              effect_claim_allowed: false
-            """,
-        )
-        errs = validate_repo(self.base)
-        self.assertTrue(any("run.id" in e for e in errs), errs)
+    # --- Real Run 1 integrity ---
 
-    def test_run_yml_artifact_path_missing_fails(self) -> None:
-        exp = _build_valid_bundle(self.base)
-        run_dir = exp / "artifacts" / "run-001"
-        _write(
-            run_dir / "run.yml",
-            """
-            schema_version: "1.0.0"
-            contract: "experiment_run_bundle"
-            run:
-              id: "run-001"
-              experiment_path: "experiments/exp-fixture"
-              created_at: "2026-05-01T12:00:00Z"
-            provenance:
-              level: "self_reported"
-            artifacts:
-              auditor_output:
-                path: "auditor-output.yml"
-                canonical: true
-              measurement:
-                path: "ghost-measurement.yml"
-                canonical: true
-            verdict:
-              outcome: "MISSING_EVIDENCE"
-              effect_claim_allowed: false
-            """,
+    def test_real_run1_remains_structurally_valid(self) -> None:
+        """Run 1 of the agent-skill experiment must pass all bundle checks."""
+        errs = validate_repo(REPO_ROOT)
+        self.assertEqual(
+            errs,
+            [],
+            f"Real Run 1 bundle failed validation:\n" + "\n".join(errs),
         )
-        errs = validate_repo(self.base)
-        self.assertTrue(any("ghost-measurement.yml" in e for e in errs), errs)
 
 
 if __name__ == "__main__":
