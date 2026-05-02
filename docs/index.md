@@ -39,6 +39,10 @@ relations:
     target: reference/agent-operability-fixture-matrix.md
   - type: references
     target: reference/replay-trace-redaction.md
+  - type: references
+    target: blueprints/blueprint-evidence-control-plane-v1.md
+  - type: references
+    target: playbooks/evidence-control-plane-roadmap-checklist.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -135,6 +139,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 
 - [Minimaler Agent-Operability-Kern](blueprints/blueprint-agent-operability.md)
 - [Phase 1c: Systemverankerung des Agent-Operability-Kerns](blueprints/blueprint-agent-operability-phase-1c.md)
+- [Evidence-Control-Plane v1 (draft)](blueprints/blueprint-evidence-control-plane-v1.md)
 
 ## Konzepte (latent)
 
@@ -145,6 +150,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 
 - [Reconciliation](playbooks/reconciliation.md)
 - [Build a Reliable Prompt](playbooks/build-reliable-prompt.md)
+- [Evidence-Control-Plane — Roadmap & Checklist (draft)](playbooks/evidence-control-plane-roadmap-checklist.md)
 
 ## Bibliothek
 

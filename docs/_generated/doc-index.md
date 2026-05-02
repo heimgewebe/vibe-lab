@@ -25,6 +25,7 @@
 | `contracts/command-semantics.md` | Command Semantics (v0.1) | active | canonical |
 | `docs/blueprints/blueprint-agent-operability-phase-1c.md` | Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns | active | exploratory |
 | `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | active | exploratory |
+| `docs/blueprints/blueprint-evidence-control-plane-v1.md` | Blueprint — Evidence-Control-Plane v1 | draft | exploratory |
 | `docs/blueprints/blueprint-v2-roadmap.md` | Blueprint v2 — Roadmap / offene Punkte | active | navigation |
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
@@ -34,6 +35,7 @@
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
+| `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Playbook: Evidence-Control-Plane — Roadmap & Checklist | draft | exploratory |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
