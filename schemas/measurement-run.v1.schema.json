@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/measurement-run.v1.schema.json",
+  "title": "Measurement Run (v1)",
+  "description": "Schema für artifacts/<run-id>/measurement.yml. Form-Validierung; semantische Kreuzregeln (auditor_verdict-Konsistenz, abgeleitete Zähler, run_id-Sync) prüft validate_run_bundle.py zusätzlich.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "run_id", "auditor_verdict", "auditor_ref", "metrics"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "contract": {
+      "type": "string",
+      "const": "measurement_run"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "auditor_verdict": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "CLAIM_NOT_PROVEN",
+        "CONTRADICTION",
+        "MISSING_EVIDENCE",
+        "OUT_OF_SCOPE",
+        "NOT_REPRODUCIBLE"
+      ]
+    },
+    "auditor_ref": {
+      "type": "string",
+      "const": "auditor-output.yml",
+      "description": "Run-dir-relativer Pfad zum Auditor-Output. Muss immer 'auditor-output.yml' sein (deterministischer v1-Dateiname)."
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_drift_count",
+        "unsupported_claim_count",
+        "missing_locator_count",
+        "validation_gap_count",
+        "review_friction_count",
+        "rework_count",
+        "false_block_count",
+        "task_completion_time_observed"
+      ],
+      "properties": {
+        "scope_drift_count": { "$ref": "#/$defs/metric" },
+        "unsupported_claim_count": { "$ref": "#/$defs/metric" },
+        "missing_locator_count": { "$ref": "#/$defs/metric" },
+        "validation_gap_count": { "$ref": "#/$defs/metric" },
+        "review_friction_count": { "$ref": "#/$defs/metric" },
+        "rework_count": { "$ref": "#/$defs/metric" },
+        "false_block_count": { "$ref": "#/$defs/metric" },
+        "task_completion_time_observed": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "agent_layer_used": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Verwendete Agent-/Skill-Schichten. Freiformat; Konsistenz wird nicht schema-seitig erzwungen."
+    },
+    "pr_metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "PR-Metadaten (externe Quelle). evidence_status gibt Herkunftsniveau an."
+    },
+    "missing_evidence": {
+      "type": "array"
+    },
+    "interpretation_limits": {
+      "type": "array"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Kontrollierter Auslass für experimentelle oder versionsspezifische Zusatzfelder."
+    }
+  },
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "evidence_status"],
+      "properties": {
+        "value": {
+          "description": "Numerischer oder beobachteter Wert.",
+          "anyOf": [
+            { "type": "number" },
+            { "type": "integer" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "evidence_status": {
+          "type": "string",
+          "enum": [
+            "repo_local",
+            "ci_artifact",
+            "derived_from_auditor_output",
+            "external_verified",
+            "external_unverified",
+            "self_reported",
+            "missing_evidence",
+            "unknown"
+          ]
+        },
+        "notes": { "type": "string" },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

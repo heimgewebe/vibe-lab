@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment-run-bundle.v1.schema.json",
+  "title": "Experiment Run Bundle (v1)",
+  "description": "Schema für artifacts/<run-id>/run.yml. Atomarer Run-Envelope, der die Bestandteile eines Experiment-Runs (Auditor-Output, Measurement, run_meta, Markdown-Projektion) und das Verdict zu einer geprüften Einheit verklammert. Pfade in artifacts.* sind relativ zum Verzeichnis von run.yml; experiment_path ist repo-root-relativ.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "run", "provenance", "artifacts", "verdict"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "contract": {
+      "type": "string",
+      "const": "experiment_run_bundle"
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "experiment_path", "created_at"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Run-Identifier; muss mit dem Verzeichnisnamen artifacts/<run-id>/ übereinstimmen."
+        },
+        "experiment_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Repo-root-relativer Pfad zum Experiment-Verzeichnis."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Optionale fortlaufende Run-Nummer im Experiment."
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "repo_local",
+            "ci_artifact",
+            "external_verified",
+            "external_unverified",
+            "self_reported",
+            "missing_evidence",
+            "unknown"
+          ]
+        },
+        "executor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_status": {
+          "type": "string",
+          "enum": [
+            "repo_local",
+            "ci_artifact",
+            "external_verified",
+            "external_unverified",
+            "self_reported",
+            "missing_evidence",
+            "unknown"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "description": "Pflichtbestandteile des Run-Bundles: auditor_output, measurement, run_meta. markdown_projection ist optional. Keine weiteren Schlüssel erlaubt (additionalProperties:false).",
+      "required": ["auditor_output", "measurement", "run_meta"],
+      "additionalProperties": false,
+      "properties": {
+        "auditor_output": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical"],
+          "properties": {
+            "path": {
+              "const": "auditor-output.yml",
+              "description": "Deterministischer Dateiname für v1 Bundles."
+            },
+            "contract": { "const": "auditor_output" },
+            "canonical": { "const": true }
+          }
+        },
+        "measurement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical"],
+          "properties": {
+            "path": {
+              "const": "measurement.yml",
+              "description": "Deterministischer Dateiname für v1 Bundles."
+            },
+            "contract": { "const": "measurement_run" },
+            "canonical": { "const": true }
+          }
+        },
+        "run_meta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical", "compatibility"],
+          "properties": {
+            "path": {
+              "const": "run_meta.json",
+              "description": "Deterministischer Dateiname für v1 Bundles."
+            },
+            "contract": { "const": "run_meta" },
+            "canonical": { "const": false },
+            "compatibility": { "const": true }
+          }
+        },
+        "markdown_projection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "canonical", "role"],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": ".*\\.md$",
+              "description": "Pfad zur Markdown-Projektion (relativ zum run-Verzeichnis). Darf nicht aus dem Run-Verzeichnis austreten."
+            },
+            "canonical": {
+              "const": false,
+              "description": "Markdown-Projektionen sind niemals canonical."
+            },
+            "role": {
+              "const": "human_projection",
+              "description": "Nur human_projection ist in v1 erlaubt."
+            }
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "effect_claim_allowed"],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "CLAIM_NOT_PROVEN",
+            "CONTRADICTION",
+            "MISSING_EVIDENCE",
+            "OUT_OF_SCOPE",
+            "NOT_REPRODUCIBLE"
+          ]
+        },
+        "effect_claim_allowed": { "type": "boolean" },
+        "promotion_claim_allowed": { "type": "boolean" }
+      }
+    },
+    "interpretation_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_comparable_runs_required": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "current_comparable_runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "causal_claim_allowed": { "type": "boolean" }
+      }
+    }
+  }
+}

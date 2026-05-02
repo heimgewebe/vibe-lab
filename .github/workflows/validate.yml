@@ -32,6 +32,12 @@ jobs:
       - name: Validate execution proof
         run: python3 scripts/docmeta/validate_execution_proof.py
 
+      - name: Test run-bundle validator
+        run: python3 scripts/docmeta/test_validate_run_bundle.py
+
+      - name: Validate experiment run bundles
+        run: python3 scripts/docmeta/validate_run_bundle.py
+
       - name: Validate relations
         run: python3 scripts/docmeta/validate_relations.py
 
