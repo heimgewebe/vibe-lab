@@ -263,7 +263,7 @@ def validate_repo(repo_root: Path) -> list[str]:
 
         # R4: artifact_refs aus evidence.jsonl.
         # Die strikte .md-Sperre gilt nur für Experimente, die ins Run-Bundle-
-        # Contract opted haben (d. h. mindestens ein artifacts/*/run.yml existiert).
+        # Contract opted haben (d. h. mindestens ein direktes artifacts/<run-id>/run.yml existiert).
         # Legacy-Experimente ohne run.yml bleiben unberührt.
         artifacts_dir_for_r4 = exp_dir / "artifacts"
         experiment_has_run_yml = (
@@ -339,7 +339,11 @@ def _validate_run_dir(
         # R8: run.yml muss in execution_refs stehen (bei executed/replicated)
         if execution_status in {"executed", "replicated"}:
             run_yml_ref = str(run_yml.relative_to(exp_dir))
-            if run_yml_ref not in execution_refs:
+            normalized_execution_refs = {
+                ref[2:] if isinstance(ref, str) and ref.startswith("./") else ref
+                for ref in execution_refs
+            }
+            if run_yml_ref not in normalized_execution_refs:
                 errors.append(
                     f"  ❌ {rel_run}/run.yml: execution_status={execution_status}, "
                     f"aber '{run_yml_ref}' fehlt in manifest.execution_refs. "

@@ -1297,8 +1297,6 @@ class RepoLevelTests(unittest.TestCase):
             errs,
         )
 
-    # --- Real Run 1 integrity ---
-
     # --- Fix 1: all-PASS auditor semantics ---
 
     def test_auditor_all_claims_pass_but_overall_non_pass_fails(self) -> None:
@@ -1433,6 +1431,32 @@ class RepoLevelTests(unittest.TestCase):
               execution_refs:
                 - ./results/evidence.jsonl
                 - artifacts/run-001/run.yml
+              created: "2026-05-01"
+              updated: "2026-05-01"
+              author: "test"
+              iteration: 1
+              evidence_level: anecdotal
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    def test_execution_ref_dot_slash_run_yml_is_accepted(self) -> None:
+        """./artifacts/run-001/run.yml must be accepted as equivalent to artifacts/run-001/run.yml."""
+        exp = _build_valid_bundle(self.base)
+        _write(
+            exp / "manifest.yml",
+            """
+            schema_version: "0.1.0"
+            experiment:
+              name: "fixture"
+              hypothesis: "h"
+              status: testing
+              category: workflow
+              execution_status: executed
+              execution_refs:
+                - results/evidence.jsonl
+                - ./artifacts/run-001/run.yml
               created: "2026-05-01"
               updated: "2026-05-01"
               author: "test"
