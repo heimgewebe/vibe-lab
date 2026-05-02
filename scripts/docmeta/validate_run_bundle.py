@@ -263,12 +263,12 @@ def validate_repo(repo_root: Path) -> list[str]:
 
         # R4: artifact_refs aus evidence.jsonl.
         # Die strikte .md-Sperre gilt nur für Experimente, die ins Run-Bundle-
-        # Contract opted haben (d. h. mindestens ein artifacts/**/run.yml existiert).
+        # Contract opted haben (d. h. mindestens ein artifacts/*/run.yml existiert).
         # Legacy-Experimente ohne run.yml bleiben unberührt.
         artifacts_dir_for_r4 = exp_dir / "artifacts"
         experiment_has_run_yml = (
             artifacts_dir_for_r4.is_dir()
-            and any(artifacts_dir_for_r4.rglob("run.yml"))
+            and any(artifacts_dir_for_r4.glob("*/run.yml"))
         )
         for lineno, ref in run_events:
             if experiment_has_run_yml and Path(ref).suffix.lower() == ".md":
