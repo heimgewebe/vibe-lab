@@ -1316,6 +1316,17 @@ class RepoLevelTests(unittest.TestCase):
             errs,
         )
 
+    def test_auditor_all_claims_pass_and_overall_pass_accepted(self) -> None:
+        """_check_auditor_semantics must accept overall_verdict=PASS when all claims are PASS."""
+        auditor = {
+            "overall_verdict": "PASS",
+            "claims": [
+                {"verdict": "PASS"},
+                {"verdict": "PASS"},
+            ],
+        }
+        self.assertEqual(_check_auditor_semantics(auditor), [])
+
     # --- Fix 2: legacy run_dir without run.yml is ignored ---
 
     def test_legacy_run_dir_without_run_yml_ignores_auditor_and_measurement_yml(self) -> None:
