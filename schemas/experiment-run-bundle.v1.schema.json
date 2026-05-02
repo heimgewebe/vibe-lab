@@ -81,64 +81,69 @@
     },
     "artifacts": {
       "type": "object",
-      "description": "Pflichtbestandteile des Run-Bundles: auditor_output, measurement, run_meta. markdown_projection ist optional.",
+      "description": "Pflichtbestandteile des Run-Bundles: auditor_output, measurement, run_meta. markdown_projection ist optional. Keine weiteren Schlüssel erlaubt (additionalProperties:false).",
       "required": ["auditor_output", "measurement", "run_meta"],
-      "additionalProperties": {
-        "$ref": "#/$defs/artifact_ref"
-      },
+      "additionalProperties": false,
       "properties": {
         "auditor_output": {
-          "allOf": [
-            { "$ref": "#/$defs/artifact_ref" },
-            {
-              "properties": {
-                "path": {
-                  "const": "auditor-output.yml",
-                  "description": "Muss immer 'auditor-output.yml' sein (deterministischer Dateiname für v1 Bundles)."
-                }
-              }
-            }
-          ]
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical"],
+          "properties": {
+            "path": {
+              "const": "auditor-output.yml",
+              "description": "Deterministischer Dateiname für v1 Bundles."
+            },
+            "contract": { "const": "auditor_output" },
+            "canonical": { "const": true }
+          }
         },
         "measurement": {
-          "allOf": [
-            { "$ref": "#/$defs/artifact_ref" },
-            {
-              "properties": {
-                "path": {
-                  "const": "measurement.yml",
-                  "description": "Muss immer 'measurement.yml' sein."
-                }
-              }
-            }
-          ]
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical"],
+          "properties": {
+            "path": {
+              "const": "measurement.yml",
+              "description": "Deterministischer Dateiname für v1 Bundles."
+            },
+            "contract": { "const": "measurement_run" },
+            "canonical": { "const": true }
+          }
         },
         "run_meta": {
-          "allOf": [
-            { "$ref": "#/$defs/artifact_ref" },
-            {
-              "properties": {
-                "path": {
-                  "const": "run_meta.json",
-                  "description": "Muss immer 'run_meta.json' sein."
-                }
-              }
-            }
-          ]
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical", "compatibility"],
+          "properties": {
+            "path": {
+              "const": "run_meta.json",
+              "description": "Deterministischer Dateiname für v1 Bundles."
+            },
+            "contract": { "const": "run_meta" },
+            "canonical": { "const": false },
+            "compatibility": { "const": true }
+          }
         },
         "markdown_projection": {
-          "allOf": [
-            { "$ref": "#/$defs/artifact_ref" },
-            {
-              "required": ["canonical"],
-              "properties": {
-                "canonical": {
-                  "const": false,
-                  "description": "Markdown-Projektionen müssen immer canonical:false tragen."
-                }
-              }
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "canonical", "role"],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": ".*\\.md$",
+              "description": "Pfad zur Markdown-Projektion (relativ zum run-Verzeichnis). Darf nicht aus dem Run-Verzeichnis austreten."
+            },
+            "canonical": {
+              "const": false,
+              "description": "Markdown-Projektionen sind niemals canonical."
+            },
+            "role": {
+              "const": "human_projection",
+              "description": "Nur human_projection ist in v1 erlaubt."
             }
-          ]
+          }
         }
       }
     },
@@ -175,37 +180,6 @@
           "minimum": 0
         },
         "causal_claim_allowed": { "type": "boolean" }
-      }
-    }
-  },
-  "$defs": {
-    "artifact_ref": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["path"],
-      "properties": {
-        "path": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Pfad zum Artefakt, relativ zum Verzeichnis von run.yml. Darf nicht aus dem Experiment-Root austreten."
-        },
-        "contract": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Erwarteter Contract-Identifier (z. B. auditor_output, measurement_run, run_meta)."
-        },
-        "canonical": {
-          "type": "boolean",
-          "description": "true: maschinell autoritative Wahrheit. false: nur Projektion / Lesefläche."
-        },
-        "compatibility": {
-          "type": "boolean",
-          "description": "true: existiert aus Kompatibilitätsgründen, kein eigener Wahrheitsanspruch."
-        },
-        "role": {
-          "type": "string",
-          "minLength": 1
-        }
       }
     }
   }

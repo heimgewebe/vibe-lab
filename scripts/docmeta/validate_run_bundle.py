@@ -139,6 +139,17 @@ def _read_evidence_run_artifacts(evidence_file: Path) -> list[tuple[int, str]]:
     return out
 
 
+def _resolve_within_run_dir(run_dir: Path, ref: str) -> Path | None:
+    """Resolved ref relativ zu run_dir; gibt None zurück, wenn das Ergebnis
+    run_dir verlässt (Path-Escape-Schutz für Run-lokale Artefaktpfade)."""
+    try:
+        candidate = (run_dir / ref).resolve()
+        candidate.relative_to(run_dir.resolve())
+    except (ValueError, OSError):
+        return None
+    return candidate
+
+
 def _resolve_within(base: Path, ref: str) -> Path | None:
     """Resolved ref relativ zu base; gibt None zurück, wenn das Ergebnis
     base verlässt (Path-Escape-Schutz)."""
@@ -367,11 +378,11 @@ def _validate_run_dir(
                         f"  ❌ {rel_run}/run.yml: artifacts.{key}.path fehlt."
                     )
                     continue
-                target = _resolve_within(exp_dir, str((run_dir.relative_to(exp_dir) / path_str)))
+                target = _resolve_within_run_dir(run_dir, path_str)
                 if target is None:
                     errors.append(
                         f"  ❌ {rel_run}/run.yml: artifacts.{key}.path '{path_str}' "
-                        f"verlässt das Experiment-Root."
+                        f"verlässt das Run-Verzeichnis."
                     )
                     continue
                 if not target.is_file():
@@ -477,11 +488,11 @@ def _validate_run_dir(
             )
             return
 
-        ref_target = _resolve_within(exp_dir, str((run_dir.relative_to(exp_dir) / ref)))
+        ref_target = _resolve_within_run_dir(run_dir, ref)
         if ref_target is None:
             errors.append(
                 f"  ❌ {rel_run}/measurement.yml: auditor-Referenz '{ref}' "
-                f"verlässt das Experiment-Root."
+                f"verlässt das Run-Verzeichnis."
             )
             return
         if not ref_target.is_file():

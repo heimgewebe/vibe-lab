@@ -707,12 +707,15 @@ class RepoLevelTests(unittest.TestCase):
             artifacts:
               auditor_output:
                 path: "auditor-output.yml"
+                contract: "auditor_output"
                 canonical: true
               measurement:
                 path: "measurement.yml"
+                contract: "measurement_run"
                 canonical: true
               run_meta:
                 path: "run_meta.json"
+                contract: "run_meta"
                 canonical: false
                 compatibility: true
             verdict:
@@ -973,12 +976,15 @@ class RepoLevelTests(unittest.TestCase):
             artifacts:
               auditor_output:
                 path: "auditor-output.yml"
+                contract: "auditor_output"
                 canonical: true
               measurement:
                 path: "measurement.yml"
+                contract: "measurement_run"
                 canonical: true
               run_meta:
                 path: "run_meta.json"
+                contract: "run_meta"
                 canonical: false
                 compatibility: true
             verdict:
@@ -1044,6 +1050,252 @@ class RepoLevelTests(unittest.TestCase):
         )
         errs = validate_repo(self.base)
         self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    # --- Hardening v1: missing mandatory artifacts ---
+
+    def test_run_yml_missing_required_auditor_output_artifact_fails(self) -> None:
+        """run.yml without auditor_output is schema-invalid (required field)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_run_yml_missing_required_measurement_artifact_fails(self) -> None:
+        """run.yml without measurement is schema-invalid (required field)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    # --- Hardening v1: no unknown artifact keys allowed ---
+
+    def test_run_yml_extra_artifact_key_fails(self) -> None:
+        """additionalProperties:false on artifacts rejects any unknown artifact key."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "extra.yml", "schema_version: '1.0.0'\n")
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              extra_artifact:
+                path: "extra.yml"
+                canonical: false
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    # --- Hardening v1: markdown_projection role + path constraints ---
+
+    def test_run_yml_markdown_projection_wrong_role_fails(self) -> None:
+        """markdown_projection.role must be 'human_projection' (const-enforced)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "projection.md", "# projection\n")
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              markdown_projection:
+                path: "projection.md"
+                canonical: false
+                role: "summary"
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_run_yml_markdown_projection_non_md_path_fails(self) -> None:
+        """markdown_projection.path must match .*\\.md$ pattern (schema-enforced)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "projection.html", "<p>projection</p>\n")
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              markdown_projection:
+                path: "projection.html"
+                canonical: false
+                role: "human_projection"
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    # --- Hardening v1: artifact path run_dir containment ---
+
+    def test_run_yml_markdown_projection_path_escaping_run_dir_fails(self) -> None:
+        """markdown_projection.path cannot reference files outside the run directory."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        # Create a .md target outside run_dir (still within artifacts/) so path resolves.
+        outside_md = exp / "artifacts" / "outside.md"
+        outside_md.write_text("# outside run dir\n", encoding="utf-8")
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              markdown_projection:
+                path: "../outside.md"
+                canonical: false
+                role: "human_projection"
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("verlässt das Run-Verzeichnis" in e for e in errs),
+            errs,
+        )
 
     # --- Real Run 1 integrity ---
 
