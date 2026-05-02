@@ -15,10 +15,14 @@ experiment:
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
+    - artifacts/run-002-cross-file-run-bundle-validator/run.yml
+    - artifacts/run-002-cross-file-run-bundle-validator/measurement.yml
+    - artifacts/run-002-cross-file-run-bundle-validator/auditor-output.yml
+    - artifacts/run-002-cross-file-run-bundle-validator/run_meta.json
   created: "2026-05-01"
-  updated: "2026-05-01"
+  updated: "2026-05-02"
   author: "copilot-agent"
-  iteration: 2
+  iteration: 3
   evidence_level: anecdotal
   falsifiability:
     version: 1
@@ -40,6 +44,8 @@ experiment:
           evidence_refs:
             - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
               section: "Run 1 — single PR measurement"
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-cross-file-run-bundle-validator/measurement.yml
+              section: "Run 2 — single PR measurement"
 
 context:
   tools: ["experiment-critic", "evidence-reconciliation-auditor"]

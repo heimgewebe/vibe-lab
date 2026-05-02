@@ -10,22 +10,22 @@ date: "2026-05-01"
 reviewer: "copilot-agent"
 
 rationale: |
-  Run 1 (PR #145) erfasst. Ein einzelner Messpunkt ist unzureichend für eine
+  Run 1 (PR #145) und Run 2 (PR #148) erfasst. Zwei Messpunkte sind unzureichend für eine
   Wirksamkeitsbewertung der Agent/Skill-Schicht. Kein Vergleichsdatensatz,
-  keine Kontrollgruppe. Run-1-Auditor-Verdict ist MISSING_EVIDENCE wegen
-  fehlender CI/make/critic-Artefakte und fehlendem archivierten
-  PR-Metadaten-Artefakt. Kanonischer Auditor-Output liegt als
-  auditor-output.yml vor.
+  keine Kontrollgruppe. Run-1-Auditor-Verdict: MISSING_EVIDENCE (fehlende
+  CI/make/critic-Artefakte). Run-2-Auditor-Verdict: CONTRADICTION (PR-Body
+  behauptet 657 Regressionstests; Repo-Zustand zeigt 56 Test-Methoden).
+  Kanonische Auditor-Outputs liegen als auditor-output.yml vor.
   Externe PR-Metadaten (commits, review_friction, rework, completion_time)
   sind external_unverified. Verdict bleibt insufficient_proof bis mindestens
   drei vergleichbare PRs vorliegen und eine Zwischenauswertung möglich ist.
 
 evidence_summary:
-  observations: 2
+  observations: 3
   positive: 0
   negative: 0
-  neutral: 2
+  neutral: 3
 
 next_steps: |
-  Mindestens zwei weitere reale PRs als Datensätze erfassen. Zwischenauswertung
+  Mindestens einen weiteren realen PR als Datensatz erfassen. Zwischenauswertung
   nach drei vergleichbaren PRs; Verdict erst dann neu bewerten.

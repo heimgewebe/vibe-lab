@@ -8,32 +8,52 @@ canonicality: operative
 
 ## Status
 
-**Run 1 erfasst.** PR #145 als erster realer Messdatensatz dokumentiert. Kein Wirksamkeitsclaim.
+**Run 2 erfasst.** PR #148 als zweiter realer Messdatensatz dokumentiert. Kein Wirksamkeitsclaim.
 
 ## Canonical Artifacts
 
-- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output (machine-readable source of truth)
+### Run 1 (PR #145)
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output
 - **`artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`** — Run-1-Metriken
-- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion (human-readable view only)
+- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion
+
+### Run 2 (PR #148)
+- **`artifacts/run-002-cross-file-run-bundle-validator/auditor-output.yml`** — kanonischer YAML-Auditor-Output
+- **`artifacts/run-002-cross-file-run-bundle-validator/measurement.yml`** — Run-2-Metriken
+- `artifacts/run-002-cross-file-run-bundle-validator/auditor-output.md` — nicht-kanonische Projektion
 
 ## Datenlage
 
-- 1 PR-Datensatz erhoben (Run 1: PR #145).
-- Auditor-Verdict (YAML-kanonisch): **MISSING_EVIDENCE**.
-- `unsupported_claim_count=5`, `validation_gap_count=3` — abgeleitet aus `auditor-output.yml` (`derived_from_auditor_output`). unsupported_claim_count zählt alle non-PASS-Claims (claim-009 bis 013); validation_gap_count zählt nur fehlende CI/make/validate-Outputs.
+- 2 PR-Datensätze erhoben (Run 1: PR #145, Run 2: PR #148).
+- Run-1 Auditor-Verdict: **MISSING_EVIDENCE**. `unsupported_claim_count=5`, `validation_gap_count=3`.
+- Run-2 Auditor-Verdict: **CONTRADICTION** (PR-Body behauptet 657 Tests; Repo-Zustand zeigt 56 Test-Methoden). `unsupported_claim_count=5`, `validation_gap_count=2`.
 - PR-Metadaten (commits, additions, review_friction, rework, completion_time) nicht als Repo-Artefakt archiviert (`external_unverified`).
-- Kein Wirkungsclaim möglich oder zulässig (einzelner Messpunkt, keine Kontrollgruppe).
-- Keine Aussage, dass Agent- oder Skill-Dateien nützlich sind.
+- Kein Wirkungsclaim möglich oder zulässig (zwei Messpunkte, keine Kontrollgruppe).
+
+## Metriken-Vergleich (Run 1 vs. Run 2)
+
+| Metrik | Run 1 (PR #145) | Run 2 (PR #148) |
+|---|---|---|
+| auditor_verdict | MISSING_EVIDENCE | CONTRADICTION |
+| scope_drift_count | 0 | 0 |
+| unsupported_claim_count | 5 | 5 |
+| missing_locator_count | 0 | 0 |
+| validation_gap_count | 3 | 2 |
+| review_friction_count | 2 | 6 |
+| rework_count | 1 | 1 |
+| false_block_count | 0 | 0 |
+| task_completion_time_observed | ~105 min | ~98 min |
+
+Alle Metriken sind `external_unverified` oder `derived_from_auditor_output`; keine sind repo-lokal vollständig beobachtet.
 
 ## Interpretation Budget
 
 ### Allowed Claims
 
 - Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
-- Run 1 (PR #145) wurde erfasst; kanonischer Auditor-Output in `auditor-output.yml`.
-- Run-Level Auditor Verdict: MISSING_EVIDENCE (CI/make/critic-Artefakte und PR-Metadaten-Artefakt nicht im Repo vorhanden).
-- unsupported_claim_count=5, validation_gap_count=3 (derived_from_auditor_output).
-- Kein Wirksamkeitsclaim.
+- Run 1 (PR #145) und Run 2 (PR #148) wurden erfasst; kanonische Auditor-Outputs in `auditor-output.yml`.
+- Run-1-Verdict: MISSING_EVIDENCE; Run-2-Verdict: CONTRADICTION.
+- Keine Wirksamkeitsclaims; zwei Messpunkte sind keine Grundlage für Generalisierung.
 
 ### Disallowed Claims
 
@@ -41,19 +61,20 @@ canonicality: operative
 - Die Agent-Schicht ist nützlich.
 - Skill-Dateien sind bewertet.
 - CI-/Script-Rückbindung ist gerechtfertigt.
-- Aus einem einzelnen Messpunkt folgt irgendeine Wirkungsaussage.
+- Aus zwei Messpunkten folgt irgendeine Wirkungsaussage.
 
 ## Evidence Basis
 
 | Kategorie | Stand |
 |---|---|
-| Repo-lokal belegt (PASS) | Validator-Logik, Ratchet-Entry, Regressionstests, generiertes Artefakt (via auditor-output.yml) |
+| Repo-lokal belegt (PASS) | Validator-Logik, Schemata, Regressionstests, generierte Artefakte (via auditor-output.yml) |
 | derived_from_auditor_output | unsupported_claim_count, validation_gap_count |
 | external_unverified | PR-Metadaten (commits, additions, deletions, review_friction, rework, completion_time, scope_drift) |
-| MISSING_EVIDENCE | CI-Testprotokoll, make-Ausgaben, experiment-critic-Output, archiviertes PR-Metadaten-Artefakt |
+| MISSING_EVIDENCE | CI-Logs, make-Ausgaben, experiment-critic-Outputs, archivierte PR-Metadaten-Artefakte |
+| CONTRADICTION | Run-2: PR-Body Testanzahl-Claim (657 vs. 56 tatsächliche Test-Methoden) |
 | Nicht getestet | Wirkung, Vergleichbarkeit |
 | Nicht vorhanden | Kontrollgruppe, mindestens 3 vergleichbare PRs für Zwischenauswertung |
 
 ## Nächste Schritte
 
-Mindestens zwei weitere reale PRs mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensätze erfassen. CI/make-Outputs und PR-Metadaten als Repo-Artefakte archivieren. Zwischenauswertung nach drei vergleichbaren PRs.
+Mindestens ein weiterer realer PR mit `experiment-critic` und `evidence-reconciliation-auditor`-Beteiligung als Datensatz erfassen. CI/make-Outputs und PR-Metadaten als Repo-Artefakte archivieren. Zwischenauswertung nach drei vergleichbaren PRs.

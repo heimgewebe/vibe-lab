@@ -1,0 +1,137 @@
+schema_version: "0.1.0"
+contract: "auditor_output"
+run_id: "run-002-cross-file-run-bundle-validator"
+pr_ref: "github:heimgewebe/vibe-lab/pull/148"
+auditor_date: "2026-05-02"
+auditor: "evidence-reconciliation-auditor"
+overall_verdict: "CONTRADICTION"
+
+claims:
+  - id: "claim-001"
+    text: "validate_run_bundle.py added (new, 631 lines)."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_run_bundle.py"
+        locator: "new file, 631 lines"
+
+  - id: "claim-002"
+    text: "test_validate_run_bundle.py added (new, 1530 lines)."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/test_validate_run_bundle.py"
+        locator: "new file, 1530 lines"
+
+  - id: "claim-003"
+    text: "Three new JSON schemas added: experiment-run-bundle.v1, auditor-output.v1, measurement-run.v1."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "schemas/experiment-run-bundle.v1.schema.json"
+        locator: "new file"
+      - path: "schemas/auditor-output.v1.schema.json"
+        locator: "new file"
+      - path: "schemas/measurement-run.v1.schema.json"
+        locator: "new file"
+
+  - id: "claim-004"
+    text: "Makefile updated: validate-run-bundle and validate-run-bundle-tests targets added, included in validate target."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "Makefile"
+        locator: "validate-run-bundle and validate-run-bundle-tests targets"
+
+  - id: "claim-005"
+    text: ".github/workflows/validate.yml updated: run-bundle test step and validator step added."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: ".github/workflows/validate.yml"
+        locator: "Test run-bundle validator and Validate experiment run bundles steps"
+
+  - id: "claim-006"
+    text: "Experiment fixture updated: artifacts/run-001-*/measurement.yml auditor_ref made run-dir-relative; run.yml (v1 bundle envelope) added for run-001."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml"
+        locator: "new file"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml"
+        locator: "auditor_ref updated to run-dir-relative path"
+
+  - id: "claim-007"
+    text: "manifest.yml updated: execution_ref for artifacts/run-001-.../run.yml added."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml"
+        locator: "execution_refs list"
+
+  - id: "claim-008"
+    text: "All 10 changed files lie within the declared task scope."
+    type: "scope_adhered_to"
+    verdict: "MISSING_EVIDENCE"
+    notes: "PR diff is not archived as a repo artifact; scope claim is plausible but cannot be independently verified from repo state."
+    evidence: []
+    missing_evidence:
+      - "archived PR diff / changed-files artifact not present in repo"
+
+  - id: "claim-009"
+    text: "PR body claims 657 regression tests in test_validate_run_bundle.py."
+    type: "validator_succeeded"
+    verdict: "CONTRADICTION"
+    notes: >-
+      PR body and PR description state '657 regression tests' and '657 tests pass'.
+      Repo-local verification: python3 scripts/docmeta/test_validate_run_bundle.py
+      reports 'Ran 56 tests in ~1.24s OK'. File contains 56 test methods (def test_*).
+      Claim of 657 is contradicted by observable repo state. Tests do pass (56/56),
+      but the stated count is factually incorrect.
+    evidence:
+      - path: "scripts/docmeta/test_validate_run_bundle.py"
+        locator: "56 def test_* methods; python3 run: Ran 56 tests OK"
+    missing_evidence: []
+
+  - id: "claim-010"
+    text: "make validate passed."
+    type: "command_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence: []
+    missing_evidence:
+      - "make validate output artifact not present in repo"
+
+  - id: "claim-011"
+    text: "CI checks passed."
+    type: "validator_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    notes: "GitHub API returns zero check_runs for PR #148. No CI log artifact archived in repo."
+    evidence: []
+    missing_evidence:
+      - "CI check run log not archived in repo; GitHub Actions check_runs count: 0 for this PR"
+
+  - id: "claim-012"
+    text: "experiment-critic was used for this PR."
+    type: "agent_usage"
+    verdict: "MISSING_EVIDENCE"
+    evidence: []
+    missing_evidence:
+      - "experiment-critic output artifact not found in experiment directory"
+
+out_of_scope_claims: []
+
+contradictions:
+  - "PR body claims 657 regression tests (claim-009); repo-local count is 56 test methods."
+
+missing_evidence:
+  - "archived PR diff / changed-files artifact (scope adherence not independently verifiable)"
+  - "make validate output artifact"
+  - "CI check run log (zero check_runs returned by GitHub API for PR #148)"
+  - "experiment-critic output artifact"
+  - "archived PR metadata artifact (pr_commits, review_friction, rework not independently verifiable from repo state)"
+
+required_next_proof:
+  - "Archive make validate output as repo artifact for future runs."
+  - "Archive experiment-critic output for future runs if critic usage is claimed."
+  - "Archive PR metadata summary (changed files, commit count, additions/deletions) as repo artifact for future runs."
+  - "Ensure PR body test-count claims match actual test method count in committed code."

@@ -1,0 +1,122 @@
+# Run-002 Measurement
+# Experiment: 2026-05-01_agent-skill-minimal-layer-instrumentation
+# PR: github:heimgewebe/vibe-lab/pull/148
+
+schema_version: "0.1.0"
+contract: "measurement_run"
+run_id: "run-002-cross-file-run-bundle-validator"
+
+auditor_verdict: "CONTRADICTION"
+# auditor_ref: run-dir-relativ (zur Datei selbst). Siehe schemas/measurement-run.v1.schema.json.
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  experiment_critic: "UNKNOWN"
+  evidence_reconciliation_auditor: true
+
+pr_metadata:
+  pr_ref: "github:heimgewebe/vibe-lab/pull/148"
+  pr_title: "Add cross-file validator for experiment run bundles"
+  pr_merged_at: "2026-05-02T06:54:16Z"
+  pr_author: "alexdermohr"
+  pr_merged_by: "alexdermohr"
+  pr_commits: 10
+  pr_changed_files: 10
+  pr_additions: 2655
+  pr_deletions: 3
+  evidence_status: "external_unverified"
+  notes: >-
+    PR web metadata. No archived PR metadata artifact in repo. Values sourced
+    from PR web UI / GitHub API; not independently verifiable from repo state.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "external_unverified"
+    notes: >-
+      All 10 changed files appear within the declared task scope per PR diff.
+      PR diff is not archived as a repo artifact; scope claim is plausible
+      but not independently verifiable from repo state alone.
+
+  unsupported_claim_count:
+    value: 5
+    evidence_status: "derived_from_auditor_output"
+    notes: >-
+      Five auditor claims are non-PASS: claim-008 (scope adherence — PR diff
+      not archived, MISSING_EVIDENCE), claim-009 (test-count contradiction:
+      657 claimed vs 56 actual, CONTRADICTION), claim-010 (make validate
+      output missing, MISSING_EVIDENCE), claim-011 (CI log missing / 0
+      check_runs, MISSING_EVIDENCE), claim-012 (experiment-critic output
+      missing, MISSING_EVIDENCE).
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "external_unverified"
+    notes: >-
+      PR review comments referenced concrete file paths and line numbers.
+      Sourced from PR review web UI; not archived as repo artifact.
+
+  validation_gap_count:
+    value: 2
+    evidence_status: "derived_from_auditor_output"
+    notes: >-
+      Two command/validation outputs are absent from repo:
+      make validate output (claim-010) and CI check run log (claim-011).
+      validation_gap_count counts only missing command/validator outputs,
+      not missing PR diff or critic-output artifacts.
+
+  review_friction_count:
+    value: 6
+    evidence_status: "external_unverified"
+    notes: >-
+      6 automated inline review comments observed via PR web UI / GitHub API:
+      2 from chatgpt-codex-connector[bot] (non-outdated), 4 from
+      copilot-pull-request-reviewer[bot] (outdated). Total = 6.
+      Not archived as repo artifact; value is external_unverified.
+
+  rework_count:
+    value: 1
+    evidence_status: "external_unverified"
+    notes: >-
+      PR contains 10 commits; review comments addressed in follow-up commit(s).
+      At least 1 rework cycle implied. Commit count from PR web metadata
+      (external_unverified).
+
+  false_block_count:
+    value: 0
+    evidence_status: "external_unverified"
+    notes: >-
+      PR was merged without incident per web metadata. No repo artifact
+      confirms absence of blocking; value is external_unverified.
+
+  task_completion_time_observed:
+    value: "~98 min"
+    evidence_status: "external_unverified"
+    notes: >-
+      PR created 2026-05-02T05:16:27Z, merged 2026-05-02T06:54:16Z per
+      PR web metadata. Descriptive only; no causal value for agent-layer effect.
+
+missing_evidence:
+  - item: "make validate output artifact"
+    detail: >-
+      "make validate passed" claimed in PR body; no command output artifact in repo.
+  - item: "CI check run log artifact"
+    detail: >-
+      "CI checks passed" claimed in PR body; GitHub API returns 0 check_runs
+      for this PR; no CI log artifact archived in repo.
+  - item: "experiment-critic output artifact"
+    detail: >-
+      No critic output artifact found for this PR in the experiment.
+  - item: "archived PR metadata artifact"
+    detail: >-
+      pr_commits, pr_additions, pr_deletions, review_friction, rework, and
+      completion_time are sourced from PR web UI; no archived PR metadata
+      artifact present in repo for independent verification.
+
+interpretation_limits:
+  - "Two data points do not allow generalization."
+  - "No usefulness claim about the agent/skill layer can be derived from this data."
+  - "Metrics definitions may still be calibrating across early runs."
+  - "agent_layer_used.experiment_critic is UNKNOWN: no critic output artifact found."
+  - "Most metrics are external_unverified or derived_from_auditor_output."
+  - "Run-2 overall verdict is CONTRADICTION due to test-count discrepancy in PR body."
