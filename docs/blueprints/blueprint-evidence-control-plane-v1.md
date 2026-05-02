@@ -25,7 +25,7 @@ Ein Repo-Zustand, in dem Claims nicht geglaubt, sondern gegen Evidence geprüft 
 4. Fehlende oder widersprüchliche Evidence führt zu MISSING_EVIDENCE bzw. CONTRADICTION.
 
 ## Nicht-Ziele
-- Keine Aussage, dass Agenten/Skill-Schicht bereits wirksam oder „nützlich" ist.
+- Keine Aussage, dass Agenten/Skill-Schicht bereits wirksam oder „nützlich“ ist.
 - Kein Ersatz der kanonischen Steuerungsquellen.
 - Keine implizite Aktivierung von Enforcement nur durch Blueprint- oder Playbook-Text.
 
@@ -58,5 +58,5 @@ Die Blaupause gilt nach mindestens drei neuen PRs unter dieser Roadmap als unzur
 - `artifact_boundary_violation_count`
 
 ## Umsetzungsmodus
-Die konkrete Reihenfolge erfolgt ausschließlich über das gekoppelte Playbook:
+Die konkrete Reihenfolge ist in der operativen Roadmap beschrieben:
 `docs/playbooks/evidence-control-plane-roadmap-checklist.md`.

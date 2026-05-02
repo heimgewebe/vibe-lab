@@ -26,6 +26,7 @@ Diese Datei:
 - ersetzt keinen Blueprint und keine Policy.
 - trifft keinen Wirksamkeitsclaim zur Agent/Skill-Schicht.
 - gilt erst durch separate validierte PRs als umgesetzt.
+- verwendet Checkboxen als geplante Umsetzungsschritte, nicht als Beleg bereits aktiver Enforcement-Regeln.
 
 ## PR 1 — Blueprint + Roadmap + Navigation Scaffold
 - [ ] `docs/blueprints/blueprint-evidence-control-plane-v1.md` finalisiert.
