@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://vibe-lab.local/schemas/run-evidence-pack.v1.schema.json",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/run-evidence-pack.v1.schema.json",
   "title": "Run Evidence Pack v1",
   "type": "object",
   "additionalProperties": false,
@@ -12,7 +12,8 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "minLength": 1
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version (SemVer format: major.minor.patch)"
     },
     "run_id": {
       "type": "string",
@@ -53,11 +54,11 @@
         "verdict": {
           "type": "string",
           "enum": [
-            "PASS",
-            "FAIL",
-            "MISSING_EVIDENCE",
             "CLAIM_NOT_PROVEN",
-            "UNKNOWN"
+            "NOT_REPRODUCIBLE",
+            "MISSING_EVIDENCE",
+            "OUT_OF_SCOPE",
+            "CONTRADICTION"
           ]
         },
         "evidence": {
@@ -86,11 +87,10 @@
           "type": "string",
           "enum": [
             "repo_local",
-            "archived_external",
+            "external_unverified",
             "ci_artifact",
             "derived_from_auditor_output",
             "missing_evidence",
-            "external_unverified",
             "self_reported",
             "unknown"
           ]

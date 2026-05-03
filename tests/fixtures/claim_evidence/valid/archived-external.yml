@@ -7,7 +7,7 @@ claims:
     verdict: "CLAIM_NOT_PROVEN"
     evidence:
       - path: "evidence-pack/make-validate.txt"
-        status: "archived_external"
+        status: "external_unverified"
         source: "https://ci.example.invalid/runs/123"
         captured_at: "2026-05-03T10:30:00Z"
         command: "make validate"
