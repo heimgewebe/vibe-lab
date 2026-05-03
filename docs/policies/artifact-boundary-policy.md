@@ -13,10 +13,8 @@ relations:
 
 # Policy — Artifact Boundary
 
-> Status: `draft` / `exploratory`
->
 > Diese Policy ist noch nicht technisch enforced.
-> Sie definiert Grenzen fuer Artefaktablage, aktiviert aber kein technisches Enforcement.
+> Sie definiert Grenzen für Artefaktablage, aktiviert aber kein technisches Enforcement.
 
 ## Repo-lokal erlaubt
 
@@ -25,19 +23,19 @@ relations:
 - Evidence-Pack-Manifeste
 - Hashes, Herkunft, Retention-Hinweise
 
-## Repo-lokal problematisch (spaeter zu blockieren)
+## Repo-lokal problematisch (später zu blockieren)
 
-- vollstaendige PR-Diffs
-- grosse CI-Logs
+- vollständige PR-Diffs
+- große CI-Logs
 - API-Dumps
 - Screenshots
 - lange Transkripte
-- grosse rohe Runtime-Ausgaben
+- große rohe Runtime-Ausgaben
 
-## Regeln fuer fehlende und externe Evidenz
+## Regeln für fehlende und externe Evidenz
 
 - Missing-Evidence-Dateien sind Abwesenheitsnachweise, keine Erfolgsbeweise.
-- Grosse Artefakte sollen spaeter extern referenziert werden mit:
+- Große Artefakte sollen später extern referenziert werden mit:
   - summary
   - sha256
   - source/ref
@@ -46,5 +44,5 @@ relations:
 
 ## Nicht-Ziele dieser Policy
 
-- Noch keine harte Groessenregel aktivieren.
-- Keine rueckwirkende Umbewertung historischer Artefakte in diesem PR.
+- Noch keine harte Größenregel aktivieren.
+- Keine rückwirkende Umbewertung historischer Artefakte in diesem PR.

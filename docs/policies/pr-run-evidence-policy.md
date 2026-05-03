@@ -13,8 +13,6 @@ relations:
 
 # Policy — PR Run Evidence
 
-> Status: `draft` / `exploratory`
->
 > Diese Policy ist noch nicht technisch enforced.
 > Sie definiert normative Grenzen, aktiviert aber kein technisches Enforcement.
 
@@ -24,13 +22,13 @@ relations:
 - Kein Wirksamkeitsclaim zur Agent/Skill-Schicht.
 - No PASS without archived evidence.
 - Ein PASS-Claim braucht ein existierendes, referenziertes Evidenzartefakt.
-- `missing_evidence`, `external_unverified`, `self_reported`, `unknown` duerfen keinen PASS-Prozessclaim tragen.
+- `missing_evidence`, `external_unverified`, `self_reported`, `unknown` dürfen keinen PASS-Prozessclaim tragen.
 - Missing-Evidence-Placeholder dokumentieren Abwesenheit, beweisen aber keinen Erfolg.
 - Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
 - Kein CI-success-Claim ohne archivierte CI-Evidence.
 - Kein `make validate`-Claim ohne Command-Output-Artefakt.
 - Kein Critic-/Auditor-Usage-Claim ohne archiviertes Agent-Output-Artefakt.
-- PR-Body-Claims muessen auf Evidence-Artefakte verweisen oder ausdruecklich als nicht belegt markiert werden.
+- PR-Body-Claims müssen auf Evidence-Artefakte verweisen oder ausdrücklich als nicht belegt markiert werden.
 
 ## Nicht-Ziel dieser Policy
 

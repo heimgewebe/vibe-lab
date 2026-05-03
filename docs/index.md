@@ -99,8 +99,8 @@ relations:
 | -------- | ----- |
 | [policies/privacy-and-ethics.md](policies/privacy-and-ethics.md) | Datenschutz- und Ethikvorgaben |
 | [policies/interpretation-budget.md](policies/interpretation-budget.md) | Guard gegen Overclaiming bei Promotion |
-| [policies/pr-run-evidence-policy.md](policies/pr-run-evidence-policy.md) | Normative Claim/Evidence-Grenzen fuer PR-Runs (policy-only, nicht enforced) |
-| [policies/artifact-boundary-policy.md](policies/artifact-boundary-policy.md) | Artefaktgrenzen fuer repo-lokale Evidence (policy-only, nicht enforced) |
+| [policies/pr-run-evidence-policy.md](policies/pr-run-evidence-policy.md) | Normative Claim/Evidence-Grenzen für PR-Runs (policy-only, nicht enforced) |
+| [policies/artifact-boundary-policy.md](policies/artifact-boundary-policy.md) | Artefaktgrenzen für repo-lokale Evidence (policy-only, nicht enforced) |
 
 ## Diagnose (Generiert)
 
