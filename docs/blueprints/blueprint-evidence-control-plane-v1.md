@@ -13,6 +13,15 @@ relations:
 
 # Blueprint — Evidence-Control-Plane v1
 
+> Diese Blaupause beschreibt ein geplantes Kontrollsystem, das noch nicht existiert.
+> Die Evidence-Control-Plane ist **nicht aktiv**. Es existieren derzeit weder Policy,
+> Schema, Validator noch CI-Erweiterung. Dieser Blueprint ist Entwurfsgrundlage,
+> keine operative Aussage.
+>
+> Kein Wirksamkeitsclaim zur Agenten- oder Skill-Schicht.
+
+---
+
 ## Problem
 Claims zu PASS/Erfolg sind heute teilweise als Prosa formulierbar, ohne zwingende, archivierte, maschinenlesbare Evidenzbindung.
 
@@ -58,5 +67,15 @@ Die Blaupause gilt nach mindestens drei neuen PRs unter dieser Roadmap als unzur
 - `artifact_boundary_violation_count`
 
 ## Umsetzungsmodus
+
 Die konkrete Reihenfolge ist in der operativen Roadmap beschrieben:
-`docs/playbooks/evidence-control-plane-roadmap-checklist.md`.
+
+→ [`docs/playbooks/evidence-control-plane-roadmap-checklist.md`](../playbooks/evidence-control-plane-roadmap-checklist.md)
+
+**PR 1** (dieser Scaffold) deckt ausschließlich:
+- Blueprint-Dokument (dieses Dokument)
+- Roadmap-Checklist
+- Navigation in `docs/index.md`
+
+Enforcement, Schemas, Validator-Code, Policy-Implementierung und neue
+Experiment-Runs sind nicht Bestandteil von PR 1 und bleiben in späteren PRs.
