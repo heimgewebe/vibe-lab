@@ -54,6 +54,7 @@
         "verdict": {
           "type": "string",
           "enum": [
+            "PASS",
             "CLAIM_NOT_PROVEN",
             "NOT_REPRODUCIBLE",
             "MISSING_EVIDENCE",

@@ -3,7 +3,7 @@ claims:
   - claim_id: "c-101"
     text: "Missing run id must fail"
     type: "test_result"
-    verdict: "PASS"
+    verdict: "CLAIM_NOT_PROVEN"
     evidence:
       - path: "artifacts/run-001/test-output.txt"
         status: "repo_local"

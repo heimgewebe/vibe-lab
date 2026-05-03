@@ -4,7 +4,7 @@ claims:
   - claim_id: "c-103"
     text: "Path traversal must fail"
     type: "test_result"
-    verdict: "UNKNOWN"
+    verdict: "CLAIM_NOT_PROVEN"
     evidence:
       - path: "../outside.txt"
         status: "external_unverified"

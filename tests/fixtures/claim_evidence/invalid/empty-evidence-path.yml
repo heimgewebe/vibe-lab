@@ -4,7 +4,7 @@ claims:
   - claim_id: "c-102"
     text: "Empty evidence path must fail"
     type: "test_result"
-    verdict: "FAIL"
+    verdict: "CLAIM_NOT_PROVEN"
     evidence:
       - path: ""
         status: "repo_local"

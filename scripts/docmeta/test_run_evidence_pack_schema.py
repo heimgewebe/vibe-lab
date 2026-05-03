@@ -24,7 +24,7 @@ FIXTURE_ROOT = REPO_ROOT / "tests" / "fixtures" / "claim_evidence"
 VALID_FIXTURES = [
     "valid/minimal-pass-repo-local.yml",
     "valid/missing-evidence-verdict.yml",
-    "valid/archived-external.yml",
+    "valid/external-unverified.yml",
 ]
 
 INVALID_FIXTURES = [
