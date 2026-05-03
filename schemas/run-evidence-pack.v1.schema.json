@@ -53,6 +53,7 @@
         },
         "verdict": {
           "type": "string",
+          "$comment": "PR 4 validates verdict vocabulary only. Semantic claim/evidence compatibility is enforced later by the PR 5 validator.",
           "enum": [
             "PASS",
             "CLAIM_NOT_PROVEN",
@@ -86,6 +87,7 @@
         },
         "status": {
           "type": "string",
+          "$comment": "PR 4 validates evidence status vocabulary only. PASS eligibility per status is intentionally out of scope.",
           "enum": [
             "repo_local",
             "external_verified",
