@@ -52,9 +52,13 @@ Diese Datei:
 - Kein Experiment-Run
 
 ## PR 2 — Policy-only
-- [ ] `docs/policies/pr-run-evidence-policy.md` erstellt.
-- [ ] `docs/policies/artifact-boundary-policy.md` erstellt.
-- [ ] Policies deklarieren: keine aktive Enforcement-Regel ohne Schema/Script/Make/CI-Integration.
+
+> **Scope:** Normative Policy-Grenzen. Kein Code, kein Schema, kein Validator,
+> keine Make/CI-Aktivierung. PR 2 aktiviert kein technisches Enforcement.
+
+- [x] `docs/policies/pr-run-evidence-policy.md` erstellt.
+- [x] `docs/policies/artifact-boundary-policy.md` erstellt.
+- [x] Policies deklarieren: keine aktive Enforcement-Regel ohne Schema/Script/Make/CI-Integration.
 
 ## PR 3 — Playbook pr-run-evidence-pack
 - [ ] `docs/playbooks/pr-run-evidence-pack.md` erstellt.
