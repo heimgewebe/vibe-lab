@@ -38,6 +38,7 @@ PROJECT_SCHEMAS = REPO_ROOT / "schemas"
 _BUNDLE_SCHEMA = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
+_RUN_EVIDENCE_PACK_SCHEMA = "run-evidence-pack.v1.schema.json"
 
 
 # ---------------------------------------------------------------------------
@@ -52,7 +53,12 @@ def _make_repo_skeleton(base: Path) -> Path:
     """
     schemas = base / "schemas"
     schemas.mkdir(parents=True, exist_ok=True)
-    for name in (_BUNDLE_SCHEMA, _AUDITOR_SCHEMA, _MEASUREMENT_SCHEMA):
+    for name in (
+      _BUNDLE_SCHEMA,
+      _AUDITOR_SCHEMA,
+      _MEASUREMENT_SCHEMA,
+      _RUN_EVIDENCE_PACK_SCHEMA,
+    ):
         shutil.copy(PROJECT_SCHEMAS / name, schemas / name)
     (base / "experiments").mkdir(exist_ok=True)
     return base
@@ -103,7 +109,24 @@ def _valid_evidence_run(artifact_ref: str = "artifacts/run-001/measurement.yml")
     )
 
 
-def _valid_run_yml(run_id: str = "run-001") -> str:
+def _valid_run_yml(
+    run_id: str = "run-001",
+    *,
+    include_evidence_pack: bool = False,
+    evidence_pack_path: str = "evidence-pack.yml",
+    evidence_pack_contract: str = "run-evidence-pack.v1",
+    evidence_pack_canonical: bool = True,
+) -> str:
+    evidence_pack_block = ""
+    if include_evidence_pack:
+        canonical_value = "true" if evidence_pack_canonical else "false"
+        evidence_pack_block = f"""
+      evidence_pack:
+        path: "{evidence_pack_path}"
+        contract: "{evidence_pack_contract}"
+        canonical: {canonical_value}
+"""
+
     return f"""
     schema_version: "1.0.0"
     contract: "experiment_run_bundle"
@@ -129,9 +152,40 @@ def _valid_run_yml(run_id: str = "run-001") -> str:
         contract: "run_meta"
         canonical: false
         compatibility: true
+{evidence_pack_block}
     verdict:
       outcome: "MISSING_EVIDENCE"
       effect_claim_allowed: false
+    """
+
+
+def _valid_evidence_pack_yml(run_id: str = "run-001") -> str:
+    return f"""
+    schema_version: "1.0.0"
+    run_id: "{run_id}"
+    claims:
+      - claim_id: "c-1"
+        text: "Run bundle references repo-local evidence."
+        type: "file_changed"
+        verdict: "PASS"
+        evidence:
+          - path: "schemas/experiment-run-bundle.v1.schema.json"
+            status: "repo_local"
+    """
+
+
+def _semantic_invalid_evidence_pack_yml(run_id: str = "run-001") -> str:
+    return f"""
+    schema_version: "1.0.0"
+    run_id: "{run_id}"
+    claims:
+      - claim_id: "c-1"
+        text: "Invalid PASS on missing evidence."
+        type: "command_succeeded"
+        verdict: "PASS"
+        evidence:
+          - path: "artifacts/run-001/output.MISSING_EVIDENCE.txt"
+            status: "missing_evidence"
     """
 
 
@@ -1525,6 +1579,196 @@ class RepoLevelTests(unittest.TestCase):
         )
         errs = validate_repo(self.base)
         self.assertTrue(any("Nicht-String" in e for e in errs), errs)
+
+    # --- PR 6: run bundle ↔ evidence-pack coupling ---
+
+    def test_valid_run_bundle_with_evidence_pack_passes(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            _valid_run_yml(
+                include_evidence_pack=True,
+                evidence_pack_path="evidence-pack.yml",
+            ),
+        )
+        _write(run_dir / "evidence-pack.yml", _valid_evidence_pack_yml())
+
+        errs = validate_repo(self.base)
+        warnings = getattr(validate_repo, "last_warnings", [])
+
+        self.assertEqual(errs, [], errs)
+        self.assertFalse(any("run_bundle_without_evidence_pack" in w for w in warnings), warnings)
+
+    def test_evidence_pack_wrong_contract_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            _valid_run_yml(
+                include_evidence_pack=True,
+                evidence_pack_contract="run-evidence-pack.v2",
+            ),
+        )
+        _write(run_dir / "evidence-pack.yml", _valid_evidence_pack_yml())
+
+        errs = validate_repo(self.base)
+        self.assertTrue(
+          any(
+            "artifacts/evidence_pack/contract" in e
+            or "artifacts.evidence_pack.contract" in e
+            for e in errs
+          ),
+          errs,
+        )
+
+    def test_evidence_pack_path_escape_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            _valid_run_yml(
+                include_evidence_pack=True,
+                evidence_pack_path="../evidence-pack.yml",
+            ),
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(
+          any(
+            "artifacts/evidence_pack/path" in e
+            or "artifacts.evidence_pack.path" in e
+            for e in errs
+          ),
+          errs,
+        )
+
+    def test_evidence_pack_canonical_false_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "run.yml",
+            _valid_run_yml(
+                include_evidence_pack=True,
+                evidence_pack_canonical=False,
+            ),
+        )
+        _write(run_dir / "evidence-pack.yml", _valid_evidence_pack_yml())
+
+        errs = validate_repo(self.base)
+        self.assertTrue(
+          any(
+            "artifacts/evidence_pack/canonical" in e
+            or "artifacts.evidence_pack.canonical" in e
+            for e in errs
+          ),
+          errs,
+        )
+
+    def test_evidence_pack_missing_file_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("evidence_pack.path" in e and "existiert nicht" in e for e in errs), errs)
+
+    def test_evidence_pack_schema_invalid_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("evidence_pack" in e and "instance_path" in e for e in errs), errs)
+
+    def test_evidence_pack_semantic_invalid_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+        _write(run_dir / "evidence-pack.yml", _semantic_invalid_evidence_pack_yml())
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("PASS_WITH_MISSING_EVIDENCE" in e for e in errs), errs)
+
+    def test_evidence_pack_run_id_mismatch_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+        _write(run_dir / "evidence-pack.yml", _valid_evidence_pack_yml(run_id="run-xyz"))
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("evidence_pack" in e and "run_id" in e for e in errs), errs)
+
+    def test_evidence_pack_repo_local_missing_path_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+        _write(
+            run_dir / "evidence-pack.yml",
+            _valid_evidence_pack_yml().replace(
+              "schemas/experiment-run-bundle.v1.schema.json",
+                "scripts/docmeta/does-not-exist.py",
+            ),
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("fehlenden repo_local Pfad" in e for e in errs), errs)
+
+    def test_missing_evidence_pack_is_warning_not_error(self) -> None:
+        _build_valid_bundle(self.base)
+
+        errs = validate_repo(self.base)
+        warnings = getattr(validate_repo, "last_warnings", [])
+
+        self.assertEqual(errs, [], errs)
+        self.assertTrue(any("run_bundle_without_evidence_pack" in w for w in warnings), warnings)
+
+    def test_no_experiments_dir_last_warnings_is_empty(self) -> None:
+        """last_warnings must be reset to [] when experiments/ is absent.
+
+        Regression: before the fix, last_warnings retained stale values from a
+        prior validate_repo() call when the function returned early.
+        """
+        # Pre-condition: populate last_warnings via a run that generates a warning.
+        _build_valid_bundle(self.base)
+        validate_repo(self.base)
+        prior_warnings = list(getattr(validate_repo, "last_warnings", []))
+        self.assertTrue(
+            any("run_bundle_without_evidence_pack" in w for w in prior_warnings),
+            f"pre-condition: prior run should have stale warnings, got {prior_warnings}",
+        )
+
+        # Call validate_repo on a root without experiments/ — must clear last_warnings.
+        with tempfile.TemporaryDirectory() as tmp:
+            no_exp_root = Path(tmp)
+            errs = validate_repo(no_exp_root)
+            cleared_warnings = getattr(validate_repo, "last_warnings", [])
+        self.assertEqual(errs, [], errs)
+        self.assertEqual(cleared_warnings, [], cleared_warnings)
+
+    def test_evidence_pack_path_escape_no_duplicate_error(self) -> None:
+        """evidence_pack missing-file error must appear exactly once, not twice.
+
+        Regression: before excluding evidence_pack from the generic artifact loop
+        the file-existence check ran in both the generic loop and the dedicated block,
+        emitting two distinct error messages for the same condition.
+        """
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        # Include evidence_pack in run.yml but do NOT create the file.
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+        # evidence-pack.yml intentionally absent.
+        errs = validate_repo(self.base)
+        missing_errs = [e for e in errs if "evidence_pack" in e and "existiert nicht" in e]
+        self.assertEqual(len(missing_errs), 1, missing_errs)
+
 
 if __name__ == "__main__":
     unittest.main()

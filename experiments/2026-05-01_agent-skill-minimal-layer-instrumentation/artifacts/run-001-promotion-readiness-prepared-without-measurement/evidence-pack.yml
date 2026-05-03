@@ -1,0 +1,12 @@
+schema_version: "1.0.0"
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+claims:
+  - claim_id: "pack-001"
+    text: "Run bundle references this run evidence pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml"
+        status: "repo_local"

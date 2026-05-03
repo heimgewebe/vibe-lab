@@ -27,6 +27,10 @@ artifacts:
     path: "measurement.yml"
     contract: "measurement_run"
     canonical: true
+  evidence_pack:
+    path: "evidence-pack.yml"
+    contract: "run-evidence-pack.v1"
+    canonical: true
   run_meta:
     path: "run_meta.json"
     contract: "run_meta"
