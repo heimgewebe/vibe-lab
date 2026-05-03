@@ -1,0 +1,9 @@
+schema_version: "1.0.0"
+claims:
+  - claim_id: "c-101"
+    text: "Missing run id must fail"
+    type: "test_result"
+    verdict: "PASS"
+    evidence:
+      - path: "artifacts/run-001/test-output.txt"
+        status: "repo_local"

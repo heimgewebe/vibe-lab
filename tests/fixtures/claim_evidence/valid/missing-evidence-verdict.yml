@@ -1,0 +1,11 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-002"
+claims:
+  - claim_id: "c-002"
+    text: "CI output archived"
+    type: "ci_result"
+    verdict: "MISSING_EVIDENCE"
+    evidence:
+      - path: "evidence-pack/ci-output.MISSING_EVIDENCE.txt"
+        status: "missing_evidence"
+        reason: "CI logs were not retained"
