@@ -17,7 +17,7 @@ relations:
 
 > Dieses Playbook ist nicht technisch enforced.
 > Es aktiviert kein Schema, keinen Validator, kein Make-/CI-Gate.
-> Sie beschreibt nur die operative Zielstruktur für spätere Evidence-Packs in experimentellen PRs.
+> Es beschreibt nur die operative Zielstruktur für spätere Evidence-Packs in experimentellen PRs.
 
 ## Zweck
 
@@ -114,27 +114,27 @@ PR 3 dokumentiert sie operativ.
 
 ### 1. Kein Testcount-Claim ohne test-output.txt
 
-**Claim:** „101/101 Tests bestanden"  
+**Claim:** „101/101 Tests bestanden"
 **Erforderliche Evidence:** `evidence-pack/test-output.txt`  
 **Zulässiger Status:** `repo_local`  
 **Verboten:** `self_reported`
 
 ### 2. Kein CI-success-Claim ohne archivierte CI-Evidence
 
-**Claim:** „CI workflow passed"  
+**Claim:** „CI workflow passed"
 **Erforderlich:** `evidence-pack/ci-output.txt` oder `MISSING_EVIDENCE`  
 **Wenn MISSING_EVIDENCE:** Nur mit explizitem Missing-Evidence-Marker erlaubt  
 **Verdict für MISSING:** nicht PASS, sondern `MISSING_EVIDENCE`
 
 ### 3. Kein „make validate" Claim ohne Command-Output-Artefakt
 
-**Claim:** „make validate bestanden"  
+**Claim:** „make validate bestanden"
 **Erforderlich:** `evidence-pack/make-validate.txt`  
 **Status:** `repo_local`
 
 ### 4. Kein Critic-/Auditor-Usage-Claim ohne archiviertes Agent-Output-Artefakt
 
-**Claim:** „Experiment mit Critic-Agent durchlaufen"  
+**Claim:** „Experiment mit Critic-Agent durchlaufen"
 **Erforderlich:** `evidence-pack/agent-critic-output.md` oder strukturierte Auditor-Ausgabe  
 **Status:** `derived_from_auditor_output` oder `repo_local`
 
@@ -147,10 +147,11 @@ PR 3 dokumentiert sie operativ.
 
 **Verboten:** Unkommentiertes Fehlen jeglicher Evidence-Dokumentation
 
-### 6. Status `self_reported` darf keinen PASS-Prozessclaim begründen
+### 6. Status `self_reported` ist kein Verdict, sondern Evidence-Status
 
 **Claim:** „Testlauf erfolgreich" (nur im PR-Body, keine weitere Evidenz)  
-**Verdict:** `self_reported`, nicht PASS  
+**Evidence-Status:** `self_reported`  
+**Korrekt setzender Verdict:** `MISSING_EVIDENCE` oder `CLAIM_NOT_PROVEN`, nicht PASS  
 **Konsequenz:** Blockierend für Merge bei PR 5+
 
 ---
@@ -225,9 +226,9 @@ evidence:
 ---
 
 ## Große Artefakte: Externe Referenzierung (geplant für PR 7)
+ls geplante Richtlinie für spätere Guards: Große Artefakte sollen nicht vollständig repo-lokal committet werden. Eine konkrete Größenregel wird erst in PR 7 oder einer späteren Artifact-Boundary-Policy technisch festgelegt.
 
-Artefakte, die größer als **1 MB** sind, werden nicht vollständig repo-lokal committet.
-
+Perspektivisch l
 Lokal bleiben nur:
 
 ```yaml
@@ -256,10 +257,10 @@ large_artifact:
 
 ### Scope und Grenzen dieses Playbooks
 
-- **Gültig für:** Experimentelle PRs ab PR 3 der Evidence-Control-Plane-Roadmap
+- **Orientierend für:** Künftige experimentelle PRs ab dieser Playbook-Einführung
 - **Noch nicht gültig für:** Historische Runs vor dieser Playbook-Einführung
 - **Keine rückwirkende Umbewertung:** Historische Runs müssen nicht retrofittet werden
-- **Keine harten Regeln (noch):** Enforcement erfolgt erst ab PR 5+
+- **Technisch verbindlich erst:** nach Schema-/Validator-/CI-Integration in späteren PRs (PR 5+)
 
 ### Was dieses Playbook NICHT leistet
 
@@ -272,13 +273,13 @@ large_artifact:
 
 ### Übergänge zu zukünftigen PRs
 
-| PR | Artifact | Enforcement |
+| PR | Artefakt | Enforcement |
 |---|---|---|
-| PR 3 (dieses Playbook) | Operational guide | Keine |
-| PR 4 | JSON-Schema | Keine CI-Integration |
-| PR 5 | Python Validator | First CI-Gate |
-| PR 6 | Run-Bundle-Schema | Warn-Modus |
-| PR 7 | PR-Scope-Guard | Blockierend |
+| PR 3 (dieses Playbook) | Operativer Leitfaden | Keine |
+| PR 4 | JSON-Schema + Fixtures | Schema-Vorbereitung, noch kein Claim-Gate |
+| PR 5 | Claim-Evidence-Validator | Claim-Evidence-Gate in Make/CI |
+| PR 6 | Run-Bundle-Kopplung | Evidence-Pack-Verweis im Run-Bundle, zunächst Warn-/Ratchet-Modus |
+| PR 7 | PR-Scope-/Artifact-Guard | Blockierende Scope-/Artifact-Regeln |
 
 ---
 
