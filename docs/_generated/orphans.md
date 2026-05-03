@@ -3,11 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (125 found):
+Documents not referenced by any other document via frontmatter relations (113 found):
 
 - `.vibe/intent.md`
-- `docs/evaluations/agent-skill-file-fruitfulness.md`
-- `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
 - `docs/playbooks/plan-execution-checklist.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
@@ -93,10 +91,6 @@ Documents not referenced by any other document via frontmatter relations (125 fo
 - `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
 - `experiments/2026-04-23_agent-failure-surface/CONTEXT.md`
 - `experiments/2026-04-23_agent-failure-surface/INITIAL.md`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/before.md`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/fixtures/before.md`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/before.md`
-- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/failure_modes.md`
 - `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md`
@@ -104,12 +98,6 @@ Documents not referenced by any other document via frontmatter relations (125 fo
 - `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md`
 - `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md`
 - `experiments/2026-04-23_phase-1-drift-injection/results/result.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md`
 - `exports/copilot/constraint-before-code.md`
 - `exports/copilot/edge-case-enumeration.md`
 - `exports/copilot/no-vague-prompts.md`

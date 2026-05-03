@@ -50,10 +50,10 @@ artifacts/<run-id>/
 | `changed-files.txt` | Repo-lokale Kurzliste geänderter Dateien (nicht vollständiger Diff) |
 | `pr-body.md` | PR-Body zum Zeitpunkt der Erfassung |
 | `pr-metadata.json` | PR-Nummern, Autor, Labels, Reviews, Refs |
-| `test-output.txt` | `make test` oder `pytest` STDOUT/STDERR (gekürzt auf <1MB) |
-| `make-validate.txt` | Vollständige oder gekürzte `make validate` Ausgabe |
-| `ci-output.txt` | Workflow-Zusammenfassung oder gekürzte CI-Logs |
-| `agent-critic-output.md` | Auditor-/Critic-Agent-Ausgabe oder Zusammenfassung |
+| `test-output.txt` | Vollständige `make test`-/`pytest`-STDOUT/STDERR; nicht kürzen, wenn die Datei als Evidence für exakte Testanzahl-Claims dient. Bei großen Outputs muss zusätzlich eine maschinenlesbare Summary mit Testcount, Exit-Code, Command und Hash vorhanden sein. |
+| `make-validate.txt` | Vollständige `make validate`-Ausgabe oder CI-/Tool-generierte Summary mit Exit-Code, Command, Zeitstempel und Hash; keine manuelle Erfolgserzählung als Ersatz. |
+| `ci-output.txt` | Archivierte CI-Evidenz, z. B. Workflow-/Job-Logs oder CI-generierte Summary mit Run-ID, Status, URL/Ref und Hash. Manuell verfasste Zusammenfassung reicht nicht als PASS-Evidence. |
+| `agent-critic-output.md` | Archivierte originale Auditor-/Critic-Agent-Ausgabe; Summary nur zusätzlich, nicht als Ersatz. |
 
 ---
 
@@ -122,13 +122,13 @@ PR 3 dokumentiert sie operativ.
 ### 2. Kein CI-success-Claim ohne archivierte CI-Evidence
 
 **Claim:** „CI workflow passed“
-**Erforderlich:** `evidence-pack/ci-output.txt` oder `MISSING_EVIDENCE`  
-**Wenn MISSING_EVIDENCE:** Nur mit explizitem Missing-Evidence-Marker erlaubt  
+**Erforderlich:** `evidence-pack/ci-output.txt` oder `evidence-pack/ci-output.MISSING_EVIDENCE.txt`  
+**Wenn Missing-Evidence-Datei vorhanden:** Claim darf nicht PASS sein, sondern muss `MISSING_EVIDENCE` oder `CLAIM_NOT_PROVEN` bleiben.  
 **Verdict für MISSING:** nicht PASS, sondern `MISSING_EVIDENCE`
 
 ### 3. Kein „make validate“ Claim ohne Command-Output-Artefakt
 
-**Claim:** „make validate bestanden"
+**Claim:** „make validate bestanden“
 **Erforderlich:** `evidence-pack/make-validate.txt`  
 **Status:** `repo_local`
 
@@ -203,6 +203,21 @@ evidence:
 ---
 
 ### Beispiel 3 — Verbotener PASS-Claim
+
+**Verbotener Fall:**
+
+```yaml
+claim_id: "test-result-self-reported"
+text: "101/101 Tests bestanden"
+type: "test_result"
+verdict: "PASS"
+evidence:
+  - status: "self_reported"
+    note: "Nur im PR-Body behauptet; kein archiviertes Test-Output-Artefakt."
+    captured_at: "2026-05-03T14:22:00Z"
+```
+
+**Korrigierte Form:**
 
 ```yaml
 claim_id: "test-result-self-reported"

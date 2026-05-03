@@ -3,20 +3,6 @@
 
 # Backlinks
 
-## `.github/agents/evidence-reconciliation-auditor.agent.md`
-
-- ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
-
-## `.github/agents/experiment-critic.agent.md`
-
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (informs)
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (references)
-- ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
-
-## `.github/agents/experiment-operator.agent.md`
-
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (references)
-
 ## `CONTRIBUTING.md`
 
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
@@ -82,17 +68,10 @@
 
 ## `contracts/command-semantics.md`
 
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
-
-## `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
-
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
@@ -104,24 +83,7 @@
 ## `docs/blueprints/blueprint-agent-operability.md`
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (derived_from)
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (derived_from)
-- ← `docs/blueprints/blueprint-evidence-control-plane-v1.md` (references)
 - ← `docs/index.md` (references)
-- ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
-
-## `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md`
-
-- ← `docs/blueprints/blueprint-evidence-control-plane-v1.md` (references)
-- ← `docs/evaluations/agent-skill-file-fruitfulness.md` (derived_from)
-- ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
-
-## `docs/blueprints/blueprint-evidence-control-plane-v1.md`
-
-- ← `docs/index.md` (references)
-- ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (derived_from)
-- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
-- ← `docs/policies/artifact-boundary-policy.md` (references)
-- ← `docs/policies/pr-run-evidence-policy.md` (references)
 
 ## `docs/blueprints/blueprint-v2-roadmap.md`
 
@@ -129,14 +91,12 @@
 
 ## `docs/blueprints/blueprint-v2.md`
 
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (derived_from)
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (derived_from)
 
 ## `docs/concepts/execution-bound-epistemics.md`
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (references)
 - ← `docs/blueprints/blueprint-agent-operability.md` (references)
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (references)
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (derived_from)
 - ← `docs/concepts/experiment-ontology.md` (references)
@@ -146,10 +106,6 @@
 
 - ← `docs/playbooks/reconciliation.md` (informed_by)
 - ← `docs/reference/manifest-schema.md` (informed_by)
-
-## `docs/evaluations/rrg03-remediation-strategy-comparison.md`
-
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
 
 ## `docs/foundations/repo-plan.md`
 
@@ -169,42 +125,14 @@
 
 - ← `docs/index.md` (references)
 
-## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
-
-- ← `docs/index.md` (references)
-- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
-- ← `docs/policies/artifact-boundary-policy.md` (references)
-- ← `docs/policies/pr-run-evidence-policy.md` (references)
-
-## `docs/playbooks/pr-run-evidence-pack.md`
-
-- ← `docs/index.md` (references)
-
 ## `docs/playbooks/reconciliation.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
 - ← `docs/index.md` (references)
-- ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
-
-## `docs/policies/artifact-boundary-policy.md`
-
-- ← `docs/index.md` (references)
-- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `docs/policies/interpretation-budget.md`
 
-- ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (references)
-- ← `docs/blueprints/blueprint-evidence-control-plane-v1.md` (references)
-- ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
 - ← `docs/index.md` (references)
-- ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
-- ← `docs/policies/pr-run-evidence-policy.md` (references)
-
-## `docs/policies/pr-run-evidence-policy.md`
-
-- ← `docs/index.md` (references)
-- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
-- ← `docs/policies/artifact-boundary-policy.md` (references)
 
 ## `docs/reference/agent-operability-fixture-matrix.md`
 
@@ -271,42 +199,6 @@
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
 
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json`
-
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json`
-
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/execution-real.txt`
-
-- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json`
-
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
-- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/run_meta.json`
-
-- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/execution-real.txt`
-
-- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json`
-
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
-- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
-
-## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/run_meta.json`
-
-- ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
-
 ## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/execution.txt`
 
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
@@ -338,14 +230,11 @@
 
 ## `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md` (references)
 
 ## `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md`
 
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
-- ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
 ## `experiments/2026-04-23_agent-failure-surface/results/phase2-semantic-contradiction.md`
@@ -362,7 +251,6 @@
 
 ## `experiments/2026-04-23_agent-failure-surface/results/replay-gap-candidates.md`
 
-- ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase-f-rrg03-locator-drift.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
