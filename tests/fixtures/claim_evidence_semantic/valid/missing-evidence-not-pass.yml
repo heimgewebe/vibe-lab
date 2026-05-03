@@ -1,0 +1,11 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-002"
+claims:
+  - claim_id: "c-semantic-002"
+    text: "CI logs were not retained"
+    type: "ci_result"
+    verdict: "MISSING_EVIDENCE"
+    evidence:
+      - path: "evidence-pack/ci-output.MISSING_EVIDENCE.txt"
+        status: "missing_evidence"
+        reason: "CI logs expired before archival"

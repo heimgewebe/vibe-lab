@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-101"
+claims:
+  - claim_id: "c-semantic-101"
+    text: "Validation passed according to manual summary"
+    type: "process_result"
+    verdict: "PASS"
+    evidence:
+      - path: "artifacts/manual-summary.md"
+        status: "self_reported"

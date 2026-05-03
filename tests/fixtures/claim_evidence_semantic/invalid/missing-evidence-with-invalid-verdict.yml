@@ -1,0 +1,11 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-108"
+claims:
+  - claim_id: "c-semantic-108"
+    text: "CI status could not be proven"
+    type: "ci_result"
+    verdict: "CONTRADICTION"
+    evidence:
+      - path: "evidence-pack/ci-output.MISSING_EVIDENCE.txt"
+        status: "missing_evidence"
+        reason: "CI logs were not retained"

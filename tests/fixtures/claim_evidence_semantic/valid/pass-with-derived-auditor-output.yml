@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-005"
+claims:
+  - claim_id: "c-semantic-005"
+    text: "Auditor-confirmed reconciliation passed"
+    type: "auditor_result"
+    verdict: "PASS"
+    evidence:
+      - path: "artifacts/auditor-output.json"
+        status: "derived_from_auditor_output"
