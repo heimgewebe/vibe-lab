@@ -9,9 +9,16 @@ import re
 import sys
 from pathlib import Path
 
-import yaml
-from jsonschema import Draft202012Validator
-from jsonschema.exceptions import SchemaError
+try:
+    import yaml
+    from jsonschema import Draft202012Validator
+    from jsonschema.exceptions import SchemaError
+except ImportError as exc:
+    print(
+        "ERROR: Missing dependencies for claim-evidence validation. Install PyYAML and jsonschema.",
+        file=sys.stderr,
+    )
+    raise SystemExit(2) from exc
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -98,7 +105,7 @@ def validate_schema(validator: Draft202012Validator, data: dict, path: Path) -> 
     for error in sorted(validator.iter_errors(data), key=lambda item: list(item.absolute_path)):
         location = ".".join(str(part) for part in error.absolute_path) or "$"
         errors.append(
-            f"ERROR path={display_path(path)} schema_path={location}: {error.message}"
+            f"ERROR path={display_path(path)} instance_path={location}: {error.message}"
         )
     return errors
 
@@ -133,6 +140,18 @@ def format_error(rule_id: str, claim_id: str, path: Path, message: str) -> str:
     return f"ERROR claim_id={claim_id} rule={rule_id} path={display_path(path)}: {message}"
 
 
+def has_non_empty_source(entry: dict) -> bool:
+    if "source" not in entry:
+        return False
+
+    source = entry["source"]
+    if isinstance(source, str):
+        return bool(source.strip())
+    if isinstance(source, dict):
+        return bool(source)
+    return False
+
+
 def external_verified_errors(claim: dict, path: Path) -> list[str]:
     claim_id = str(claim.get("claim_id", "<missing>"))
     errors: list[str] = []
@@ -141,7 +160,7 @@ def external_verified_errors(claim: dict, path: Path) -> list[str]:
         if entry.get("status") != "external_verified":
             continue
 
-        if not entry.get("source") or not entry.get("sha256"):
+        if not has_non_empty_source(entry) or not entry.get("sha256"):
             errors.append(
                 format_error(
                     "EXTERNAL_VERIFIED_WITHOUT_SOURCE_OR_SHA256",
@@ -236,7 +255,7 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
         elif commands and not has_make_validate_command:
             errors.append(
                 format_error(
-                    "MAKE_VALIDATE_WITHOUT_COMMAND_OUTPUT",
+                    "MAKE_VALIDATE_WITH_COMMAND_MISMATCH",
                     claim_id,
                     path,
                     "Evidence command metadata is present but does not contain 'make validate'.",

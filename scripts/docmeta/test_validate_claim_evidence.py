@@ -31,7 +31,7 @@ INVALID_FIXTURES = {
     "invalid/testcount-pass-without-test-output.yml": "TESTCOUNT_WITHOUT_TEST_OUTPUT",
     "invalid/ci-pass-without-ci-evidence.yml": "CI_PASS_WITHOUT_CI_EVIDENCE",
     "invalid/make-validate-pass-without-exit-zero.yml": "MAKE_VALIDATE_PASS_WITHOUT_EXIT_ZERO",
-    "invalid/make-validate-pass-without-command-output.yml": "MAKE_VALIDATE_WITHOUT_COMMAND_OUTPUT",
+    "invalid/make-validate-pass-without-command-output.yml": "MAKE_VALIDATE_WITH_COMMAND_MISMATCH",
 }
 
 

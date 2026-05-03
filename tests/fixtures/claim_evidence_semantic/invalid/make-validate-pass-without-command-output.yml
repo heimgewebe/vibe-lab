@@ -6,7 +6,7 @@ claims:
     type: "make_validate_result"
     verdict: "PASS"
     evidence:
-      - path: "artifacts/summary.txt"
+      - path: "artifacts/make-validate-output.txt"
         status: "repo_local"
         command: "manual validation"
         exit_code: 0

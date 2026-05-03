@@ -74,13 +74,16 @@ Diese Datei:
 - [x] `scripts/docmeta/test_validate_claim_evidence.py` grün.
 - [x] Make-Targets ergänzt (`validate-claim-evidence`, `validate-claim-evidence-tests`).
 - [x] CI-Step ergänzt (`.github/workflows/validate.yml`).
-- [x] Semantische Claim-Evidence-Regeln als Validator und Regressionstests aktiv:
+- [x] Semantische Claim-Evidence-Regeln als Validator + Mainline-Gate aktiv.
+- [x] Gate prüft reale `evidence-pack.yml`/`evidence-pack.yaml`-Dateien; bei Abwesenheit erfolgt ein sauberer Skip-Hinweis.
+- [x] Semantische Claim-Evidence-Regeln aktiv:
   - [x] No PASS without strong evidence status.
   - [ ] No PASS without existing/archived evidence file.
   - [x] `*.MISSING_EVIDENCE.*` dokumentiert Abwesenheit, beweist keinen Erfolg.
   - [x] Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
   - [x] Kein CI-success-Claim ohne archivierte CI-Evidence.
   - [x] Kein `make validate`-Claim ohne Command-Output-Artefakt.
+  - [x] Eigene Rule-ID für Command-Mismatch bei `make validate`-Claims (`MAKE_VALIDATE_WITH_COMMAND_MISMATCH`).
   - [x] `external_verified` ist nur mit `source` + `sha256` zulässig.
   - [x] `external_unverified` darf keinen PASS-Prozessclaim begründen.
 
