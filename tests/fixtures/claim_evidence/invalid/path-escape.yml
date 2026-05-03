@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-102"
+claims:
+  - claim_id: "c-103"
+    text: "Path traversal must fail"
+    type: "test_result"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "../outside.txt"
+        status: "external_unverified"

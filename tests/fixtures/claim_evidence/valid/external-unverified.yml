@@ -1,0 +1,15 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-003"
+claims:
+  - claim_id: "c-003"
+    text: "Validation command executed in external CI"
+    type: "command_result"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "evidence-pack/make-validate.txt"
+        status: "external_unverified"
+        source: "https://ci.example.invalid/runs/123"
+        captured_at: "2026-05-03T10:30:00Z"
+        command: "make validate"
+        exit_code: 0
+        sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"

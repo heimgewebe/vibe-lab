@@ -1,0 +1,10 @@
+schema_version: "foo"
+run_id: "run-2026-05-03-104"
+claims:
+  - claim_id: "c-105"
+    text: "Bad schema version must fail"
+    type: "test_result"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "evidence-pack/test-output.txt"
+        status: "repo_local"
