@@ -166,8 +166,15 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
             )
         )
 
-    if has_missing_evidence and verdict not in MISSING_EVIDENCE_ALLOWED_VERDICTS and verdict != "PASS":
-        pass
+    if has_missing_evidence and verdict not in MISSING_EVIDENCE_ALLOWED_VERDICTS:
+        errors.append(
+            format_error(
+                "MISSING_EVIDENCE_WITH_INVALID_VERDICT",
+                claim_id,
+                path,
+                "Missing-evidence entries require verdict MISSING_EVIDENCE or CLAIM_NOT_PROVEN.",
+            )
+        )
 
     if verdict == "PASS" and statuses and set(statuses) == {"external_unverified"}:
         errors.append(
