@@ -23,7 +23,7 @@ relations:
 
 Experimentelle PR-Runs sollen ihre Claims an nachvollziehbare, archivierte Evidenz binden.
 
-Das Ziel ist nicht „bessere Agenten", sondern **weniger unbelegte PASS-Claims**.
+Das Ziel ist nicht „bessere Agenten“, sondern **weniger unbelegte PASS-Claims**.
 
 ## Zielstruktur für Evidence-Packs
 
@@ -114,19 +114,19 @@ PR 3 dokumentiert sie operativ.
 
 ### 1. Kein Testcount-Claim ohne test-output.txt
 
-**Claim:** „101/101 Tests bestanden"
+**Claim:** „101/101 Tests bestanden“
 **Erforderliche Evidence:** `evidence-pack/test-output.txt`  
 **Zulässiger Status:** `repo_local`  
 **Verboten:** `self_reported`
 
 ### 2. Kein CI-success-Claim ohne archivierte CI-Evidence
 
-**Claim:** „CI workflow passed"
+**Claim:** „CI workflow passed“
 **Erforderlich:** `evidence-pack/ci-output.txt` oder `MISSING_EVIDENCE`  
 **Wenn MISSING_EVIDENCE:** Nur mit explizitem Missing-Evidence-Marker erlaubt  
 **Verdict für MISSING:** nicht PASS, sondern `MISSING_EVIDENCE`
 
-### 3. Kein „make validate" Claim ohne Command-Output-Artefakt
+### 3. Kein „make validate“ Claim ohne Command-Output-Artefakt
 
 **Claim:** „make validate bestanden"
 **Erforderlich:** `evidence-pack/make-validate.txt`  
@@ -134,7 +134,7 @@ PR 3 dokumentiert sie operativ.
 
 ### 4. Kein Critic-/Auditor-Usage-Claim ohne archiviertes Agent-Output-Artefakt
 
-**Claim:** „Experiment mit Critic-Agent durchlaufen"
+**Claim:** „Experiment mit Critic-Agent durchlaufen“
 **Erforderlich:** `evidence-pack/agent-critic-output.md` oder strukturierte Auditor-Ausgabe  
 **Status:** `derived_from_auditor_output` oder `repo_local`
 
@@ -149,7 +149,7 @@ PR 3 dokumentiert sie operativ.
 
 ### 6. Status `self_reported` ist kein Verdict, sondern Evidence-Status
 
-**Claim:** „Testlauf erfolgreich" (nur im PR-Body, keine weitere Evidenz)  
+**Claim:** „Testlauf erfolgreich“ (nur im PR-Body, keine weitere Evidenz)  
 **Evidence-Status:** `self_reported`  
 **Korrekt setzender Verdict:** `MISSING_EVIDENCE` oder `CLAIM_NOT_PROVEN`, nicht PASS  
 **Konsequenz:** Blockierend für Merge bei PR 5+
@@ -226,10 +226,9 @@ evidence:
 ---
 
 ## Große Artefakte: Externe Referenzierung (geplant für PR 7)
-ls geplante Richtlinie für spätere Guards: Große Artefakte sollen nicht vollständig repo-lokal committet werden. Eine konkrete Größenregel wird erst in PR 7 oder einer späteren Artifact-Boundary-Policy technisch festgelegt.
+Als geplante Richtlinie für spätere Guards: Große Artefakte sollen nicht vollständig repo-lokal committet werden. Eine konkrete Größenregel wird erst in PR 7 oder einer späteren Artifact-Boundary-Policy technisch festgelegt.
 
-Perspektivisch l
-Lokal bleiben nur:
+Perspektivisch sollen lokal nur bleiben:
 
 ```yaml
 large_artifact:
