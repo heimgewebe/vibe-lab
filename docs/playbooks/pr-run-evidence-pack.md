@@ -15,8 +15,8 @@ relations:
 
 # Playbook — PR Run Evidence Pack
 
-> Diese Playbook ist nicht technisch enforced.
-> Sie aktiviert kein Schema, keinen Validator, keine Make/CI-Gate.
+> Dieses Playbook ist nicht technisch enforced.
+> Es aktiviert kein Schema, keinen Validator, kein Make-/CI-Gate.
 > Sie beschreibt nur die operative Zielstruktur für spätere Evidence-Packs in experimentellen PRs.
 
 ## Zweck
@@ -27,7 +27,7 @@ Das Ziel ist nicht „bessere Agenten", sondern **weniger unbelegte PASS-Claims*
 
 ## Zielstruktur für Evidence-Packs
 
-Pro experimenteller PR (mind. PR 3 der Evidence-Control-Plane aufwärts) wird eine Evidence-Pack-Struktur angelegt:
+Für künftige kontrollierte experimentelle PR-Runs nach Einführung der geplanten Schema-/Validator-Schicht ist folgende Zielstruktur vorgesehen:
 
 ```text
 artifacts/<run-id>/
@@ -79,7 +79,7 @@ evidence-pack/
 
 ## Evidence-Status-Vokabular (geplant für PR 4)
 
-Das folgende Vokabular ist **geplant** und wird als Schema/Validator in PR 4 implementiert.  
+Das folgende Vokabular ist **geplant**. PR 4 soll es schema-seitig vorbereiten; PR 5 soll die semantische Durchsetzung im Claim-Evidence-Validator übernehmen.  
 PR 3 dokumentiert es nur operativ.
 
 ```yaml
@@ -207,17 +207,20 @@ evidence:
 claim_id: "test-result-self-reported"
 text: "101/101 Tests bestanden"
 type: "test_result"
-status: "self_reported"
-# Kein evidence-Feld, keine Dateiablage, keine externe Bestätigung
-verdict: "SELF_REPORTED"
+verdict: "MISSING_EVIDENCE"
+evidence:
+  - status: "self_reported"
+    note: "Nur im PR-Body behauptet; kein archiviertes Test-Output-Artefakt."
+    captured_at: "2026-05-03T14:22:00Z"
 ```
 
 **Begründung:**
 
-- Evidence-Status `self_reported`
+- Evidence-Status `self_reported` (unbelegte Aussage)
 - Keine archivierte Quelle
-- Kein PASS erlaubt (blockiert ab PR 5)
-- Muss entweder in `repo_local` umgewandelt oder als `MISSING_EVIDENCE` explizit gemacht werden
+- Kein PASS erlaubt; Verdict ist `MISSING_EVIDENCE`
+- Blockiert ab PR 5 als Merge-Hindernis
+- Muss entweder in `repo_local` mit echtem Artefakt umgewandelt oder dokumentiert bleiben
 
 ---
 
