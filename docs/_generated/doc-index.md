@@ -42,7 +42,9 @@
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
+| `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | draft | exploratory |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
+| `docs/policies/pr-run-evidence-policy.md` | Policy — PR Run Evidence | draft | exploratory |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
 | `docs/reference/agent-operability-fixture-matrix.md` | Agent Operability — Fixture-Matrix (v0.1) | active | derived |
 | `docs/reference/manifest-schema.md` | Referenz: Manifest-Schema-Semantik | active | operative |
