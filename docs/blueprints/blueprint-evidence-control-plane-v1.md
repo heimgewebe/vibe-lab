@@ -13,8 +13,6 @@ relations:
 
 # Blueprint — Evidence-Control-Plane v1
 
-> **Status:** `draft` — `canonicality: exploratory`
->
 > Diese Blaupause beschreibt ein geplantes Kontrollsystem, das noch nicht existiert.
 > Die Evidence-Control-Plane ist **nicht aktiv**. Es existieren derzeit weder Policy,
 > Schema, Validator noch CI-Erweiterung. Dieser Blueprint ist Entwurfsgrundlage,

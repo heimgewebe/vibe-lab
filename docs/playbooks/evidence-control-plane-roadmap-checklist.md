@@ -37,7 +37,7 @@ Diese Datei:
 > Sie bedeuten **nicht**: Evidence-Control-Plane ist aktiv, Claims werden technisch blockiert,
 > Policy/Schema/Validator/CI existieren.
 
-- [x] `docs/blueprints/blueprint-evidence-control-plane-v1.md` finalisiert.
+- [x] `docs/blueprints/blueprint-evidence-control-plane-v1.md` angelegt und verlinkt.
 - [x] Nicht-Ziele explizit: kein Agent/Skill-Wirksamkeitsclaim.
 - [x] Architektur- und Falsifikationskriterien dokumentiert.
 - [x] Diese Roadmap gegen Blueprint gespiegelt.
