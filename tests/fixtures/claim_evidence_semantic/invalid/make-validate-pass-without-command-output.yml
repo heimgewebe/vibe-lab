@@ -1,0 +1,12 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-107"
+claims:
+  - claim_id: "c-semantic-107"
+    text: "make validate passed"
+    type: "make_validate_result"
+    verdict: "PASS"
+    evidence:
+      - path: "artifacts/summary.txt"
+        status: "repo_local"
+        command: "manual validation"
+        exit_code: 0

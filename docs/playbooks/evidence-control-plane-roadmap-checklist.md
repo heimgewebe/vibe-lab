@@ -70,17 +70,17 @@ Diese Datei:
 - [ ] Keine rot eingebundenen Mainline-Tests.
 
 ## PR 5 — Claim-Evidence-Validator
-- [ ] `scripts/docmeta/validate_claim_evidence.py` implementiert.
-- [ ] `scripts/docmeta/test_validate_claim_evidence.py` grün.
-- [ ] Make-Targets ergänzt (`validate-claim-evidence`, `validate-claim-evidence-tests`).
-- [ ] CI-Step ergänzt (`.github/workflows/validate.yml`).
-- [ ] Regeln aktiv:
-  - [ ] No PASS without archived evidence.
-  - [ ] `*.MISSING_EVIDENCE.*` dokumentiert Abwesenheit, beweist keinen Erfolg.
-  - [ ] Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
-  - [ ] Kein CI-success-Claim ohne archivierte CI-Evidence.
-  - [ ] Kein `make validate`-Claim ohne Command-Output-Artefakt.
-  - [ ] `external_unverified` darf keinen PASS-Prozessclaim begründen.
+- [x] `scripts/docmeta/validate_claim_evidence.py` implementiert.
+- [x] `scripts/docmeta/test_validate_claim_evidence.py` grün.
+- [x] Make-Targets ergänzt (`validate-claim-evidence`, `validate-claim-evidence-tests`).
+- [x] CI-Step ergänzt (`.github/workflows/validate.yml`).
+- [x] Regeln aktiv:
+  - [x] No PASS without archived evidence.
+  - [x] `*.MISSING_EVIDENCE.*` dokumentiert Abwesenheit, beweist keinen Erfolg.
+  - [x] Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
+  - [x] Kein CI-success-Claim ohne archivierte CI-Evidence.
+  - [x] Kein `make validate`-Claim ohne Command-Output-Artefakt.
+  - [x] `external_unverified` darf keinen PASS-Prozessclaim begründen.
 
 ## PR 6 — Run-Bundle-Kopplung
 - [ ] `schemas/experiment-run-bundle.v1.schema.json` erweitert.

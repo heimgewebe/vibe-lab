@@ -1,0 +1,12 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-106"
+claims:
+  - claim_id: "c-semantic-106"
+    text: "make validate passed"
+    type: "make_validate_result"
+    verdict: "PASS"
+    evidence:
+      - path: "artifacts/make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 1
