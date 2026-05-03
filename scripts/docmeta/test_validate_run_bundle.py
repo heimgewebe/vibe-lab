@@ -1749,9 +1749,9 @@ class RepoLevelTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             no_exp_root = Path(tmp)
             errs = validate_repo(no_exp_root)
-            warnings_after = getattr(validate_repo, "last_warnings", [])
+            cleared_warnings = getattr(validate_repo, "last_warnings", [])
         self.assertEqual(errs, [], errs)
-        self.assertEqual(warnings_after, [], warnings_after)
+        self.assertEqual(cleared_warnings, [], cleared_warnings)
 
     def test_evidence_pack_path_escape_no_duplicate_error(self) -> None:
         """evidence_pack missing-file error must appear exactly once, not twice.
