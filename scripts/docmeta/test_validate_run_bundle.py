@@ -1730,5 +1730,45 @@ class RepoLevelTests(unittest.TestCase):
         self.assertEqual(errs, [], errs)
         self.assertTrue(any("run_bundle_without_evidence_pack" in w for w in warnings), warnings)
 
+    def test_no_experiments_dir_last_warnings_is_empty(self) -> None:
+        """last_warnings must be reset to [] when experiments/ is absent.
+
+        Regression: before the fix, last_warnings retained stale values from a
+        prior validate_repo() call when the function returned early.
+        """
+        # Pre-condition: populate last_warnings via a run that generates a warning.
+        _build_valid_bundle(self.base)
+        validate_repo(self.base)
+        prior_warnings = list(getattr(validate_repo, "last_warnings", []))
+        self.assertTrue(
+            any("run_bundle_without_evidence_pack" in w for w in prior_warnings),
+            f"pre-condition: prior run should have stale warnings, got {prior_warnings}",
+        )
+
+        # Call validate_repo on a root without experiments/ — must clear last_warnings.
+        with tempfile.TemporaryDirectory() as tmp:
+            no_exp_root = Path(tmp)
+            errs = validate_repo(no_exp_root)
+            warnings_after = getattr(validate_repo, "last_warnings", [])
+        self.assertEqual(errs, [], errs)
+        self.assertEqual(warnings_after, [], warnings_after)
+
+    def test_evidence_pack_path_escape_no_duplicate_error(self) -> None:
+        """evidence_pack missing-file error must appear exactly once, not twice.
+
+        Regression: before excluding evidence_pack from the generic artifact loop
+        the file-existence check ran in both the generic loop and the dedicated block,
+        emitting two distinct error messages for the same condition.
+        """
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        # Include evidence_pack in run.yml but do NOT create the file.
+        _write(run_dir / "run.yml", _valid_run_yml(include_evidence_pack=True))
+        # evidence-pack.yml intentionally absent.
+        errs = validate_repo(self.base)
+        missing_errs = [e for e in errs if "evidence_pack" in e and "existiert nicht" in e]
+        self.assertEqual(len(missing_errs), 1, missing_errs)
+
+
 if __name__ == "__main__":
     unittest.main()

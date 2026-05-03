@@ -192,6 +192,8 @@ def validate_repo(repo_root: Path) -> list[str]:
     Liste bedeutet: alle Cross-File-Regeln passen.
     """
     errors: list[str] = []
+    warnings: list[str] = []
+    setattr(validate_repo, "last_warnings", warnings)
     experiments_dir = repo_root / "experiments"
     if not experiments_dir.is_dir():
         return errors
@@ -202,7 +204,6 @@ def validate_repo(repo_root: Path) -> list[str]:
     auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
     measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
     run_evidence_pack_validator = _build_validator(schemas_dir / _RUN_EVIDENCE_PACK_SCHEMA_NAME)
-    warnings: list[str] = []
 
     for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
         exp_dir = manifest_path.parent
@@ -390,6 +391,8 @@ def _validate_run_dir(
                 )
             artifacts = bundle.get("artifacts", {}) or {}
             for key, artifact in artifacts.items():
+                if key == "evidence_pack":
+                    continue
                 if not isinstance(artifact, dict):
                     continue
                 path_str = artifact.get("path")
