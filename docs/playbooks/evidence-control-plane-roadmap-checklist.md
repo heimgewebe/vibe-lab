@@ -74,12 +74,14 @@ Diese Datei:
 - [x] `scripts/docmeta/test_validate_claim_evidence.py` grün.
 - [x] Make-Targets ergänzt (`validate-claim-evidence`, `validate-claim-evidence-tests`).
 - [x] CI-Step ergänzt (`.github/workflows/validate.yml`).
-- [x] Regeln aktiv:
-  - [x] No PASS without archived evidence.
+- [x] Semantische Claim-Evidence-Regeln als Validator und Regressionstests aktiv:
+  - [x] No PASS without strong evidence status.
+  - [ ] No PASS without existing/archived evidence file.
   - [x] `*.MISSING_EVIDENCE.*` dokumentiert Abwesenheit, beweist keinen Erfolg.
   - [x] Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
   - [x] Kein CI-success-Claim ohne archivierte CI-Evidence.
   - [x] Kein `make validate`-Claim ohne Command-Output-Artefakt.
+  - [x] `external_verified` ist nur mit `source` + `sha256` zulässig.
   - [x] `external_unverified` darf keinen PASS-Prozessclaim begründen.
 
 ## PR 6 — Run-Bundle-Kopplung
@@ -88,6 +90,7 @@ Diese Datei:
 - [ ] `scripts/docmeta/test_validate_run_bundle.py` erweitert.
 - [ ] `run.yml` referenziert Evidence-Pack (`path`, `contract`, `canonical`).
 - [ ] Legacy-Bundles nur im Warn-/Ratchet-Modus.
+- [ ] Echte repo-lokale Evidence-Pfade gegen Dateiexistenz prüfen.
 
 ## PR 7 — PR-Scope-Guard
 - [ ] `.vibe/pr-scope-policy.yml` erstellt.

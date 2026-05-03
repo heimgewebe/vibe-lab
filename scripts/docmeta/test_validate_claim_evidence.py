@@ -26,6 +26,7 @@ INVALID_FIXTURES = {
     "invalid/pass-with-self-reported-only.yml": "PASS_WITHOUT_STRONG_EVIDENCE",
     "invalid/pass-with-missing-evidence.yml": "PASS_WITH_MISSING_EVIDENCE",
     "invalid/missing-evidence-with-invalid-verdict.yml": "MISSING_EVIDENCE_WITH_INVALID_VERDICT",
+    "invalid/external-verified-without-sha.yml": "EXTERNAL_VERIFIED_WITHOUT_SOURCE_OR_SHA256",
     "invalid/pass-with-external-unverified-only.yml": "PASS_WITH_EXTERNAL_UNVERIFIED_ONLY",
     "invalid/testcount-pass-without-test-output.yml": "TESTCOUNT_WITHOUT_TEST_OUTPUT",
     "invalid/ci-pass-without-ci-evidence.yml": "CI_PASS_WITHOUT_CI_EVIDENCE",

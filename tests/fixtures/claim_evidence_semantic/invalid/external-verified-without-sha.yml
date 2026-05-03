@@ -1,7 +1,7 @@
 schema_version: "1.0.0"
-run_id: "run-2026-05-03-semantic-004"
+run_id: "run-2026-05-03-semantic-109"
 claims:
-  - claim_id: "c-semantic-004"
+  - claim_id: "c-semantic-109"
     text: "CI workflow passed"
     type: "ci_result"
     verdict: "PASS"
@@ -9,4 +9,3 @@ claims:
       - path: "artifacts/workflow-summary.txt"
         status: "external_verified"
         source: "github-actions"
-        sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"

@@ -133,6 +133,27 @@ def format_error(rule_id: str, claim_id: str, path: Path, message: str) -> str:
     return f"ERROR claim_id={claim_id} rule={rule_id} path={display_path(path)}: {message}"
 
 
+def external_verified_errors(claim: dict, path: Path) -> list[str]:
+    claim_id = str(claim.get("claim_id", "<missing>"))
+    errors: list[str] = []
+
+    for entry in claim.get("evidence", []):
+        if entry.get("status") != "external_verified":
+            continue
+
+        if not entry.get("source") or not entry.get("sha256"):
+            errors.append(
+                format_error(
+                    "EXTERNAL_VERIFIED_WITHOUT_SOURCE_OR_SHA256",
+                    claim_id,
+                    path,
+                    "external_verified evidence requires source and sha256.",
+                )
+            )
+
+    return errors
+
+
 def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
     claim_id = str(claim.get("claim_id", "<missing>"))
     verdict = str(claim.get("verdict", ""))
@@ -146,7 +167,7 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
     )
     has_strong_evidence = any(status in STRONG_EVIDENCE_STATUSES for status in statuses)
 
-    if verdict == "PASS" and not has_strong_evidence:
+    if verdict == "PASS" and not has_strong_evidence and not has_missing_evidence:
         errors.append(
             format_error(
                 "PASS_WITHOUT_STRONG_EVIDENCE",
@@ -166,7 +187,7 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
             )
         )
 
-    if has_missing_evidence and verdict not in MISSING_EVIDENCE_ALLOWED_VERDICTS:
+    elif has_missing_evidence and verdict not in MISSING_EVIDENCE_ALLOWED_VERDICTS:
         errors.append(
             format_error(
                 "MISSING_EVIDENCE_WITH_INVALID_VERDICT",
@@ -175,6 +196,8 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
                 "Missing-evidence entries require verdict MISSING_EVIDENCE or CLAIM_NOT_PROVEN.",
             )
         )
+
+    errors.extend(external_verified_errors(claim, path))
 
     if verdict == "PASS" and statuses and set(statuses) == {"external_unverified"}:
         errors.append(
