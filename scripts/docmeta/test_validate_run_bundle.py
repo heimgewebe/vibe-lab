@@ -1613,7 +1613,14 @@ class RepoLevelTests(unittest.TestCase):
         _write(run_dir / "evidence-pack.yml", _valid_evidence_pack_yml())
 
         errs = validate_repo(self.base)
-        self.assertTrue(any("artifacts/evidence_pack/contract" in e for e in errs), errs)
+        self.assertTrue(
+          any(
+            "artifacts/evidence_pack/contract" in e
+            or "artifacts.evidence_pack.contract" in e
+            for e in errs
+          ),
+          errs,
+        )
 
     def test_evidence_pack_path_escape_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
@@ -1627,7 +1634,14 @@ class RepoLevelTests(unittest.TestCase):
         )
 
         errs = validate_repo(self.base)
-        self.assertTrue(any("artifacts/evidence_pack/path" in e for e in errs), errs)
+        self.assertTrue(
+          any(
+            "artifacts/evidence_pack/path" in e
+            or "artifacts.evidence_pack.path" in e
+            for e in errs
+          ),
+          errs,
+        )
 
     def test_evidence_pack_canonical_false_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
@@ -1642,7 +1656,14 @@ class RepoLevelTests(unittest.TestCase):
         _write(run_dir / "evidence-pack.yml", _valid_evidence_pack_yml())
 
         errs = validate_repo(self.base)
-        self.assertTrue(any("artifacts/evidence_pack/canonical" in e for e in errs), errs)
+        self.assertTrue(
+          any(
+            "artifacts/evidence_pack/canonical" in e
+            or "artifacts.evidence_pack.canonical" in e
+            for e in errs
+          ),
+          errs,
+        )
 
     def test_evidence_pack_missing_file_fails(self) -> None:
         exp = _build_valid_bundle(self.base)
