@@ -58,6 +58,8 @@ try:
     import yaml
     from jsonschema import Draft202012Validator, ValidationError
     from jsonschema.validators import validator_for
+    from validate_claim_evidence import load_yaml as load_claim_yaml
+    from validate_claim_evidence import validate_file as validate_claim_evidence_file
 except ImportError:
     print(
         "ERROR: Missing dependencies. Run: "
@@ -90,6 +92,7 @@ VALIDATION_GAP_TYPES: frozenset[str] = frozenset({"command_succeeded", "validato
 _BUNDLE_SCHEMA_NAME = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
+_RUN_EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
 
 
 # ---------------------------------------------------------------------------
@@ -198,6 +201,8 @@ def validate_repo(repo_root: Path) -> list[str]:
     bundle_validator = _build_validator(schemas_dir / _BUNDLE_SCHEMA_NAME)
     auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
     measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
+    run_evidence_pack_validator = _build_validator(schemas_dir / _RUN_EVIDENCE_PACK_SCHEMA_NAME)
+    warnings: list[str] = []
 
     for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
         exp_dir = manifest_path.parent
@@ -304,9 +309,11 @@ def validate_repo(repo_root: Path) -> list[str]:
                     bundle_validator=bundle_validator,
                     auditor_validator=auditor_validator,
                     measurement_validator=measurement_validator,
+                    run_evidence_pack_validator=run_evidence_pack_validator,
+                    warnings=warnings,
                     errors=errors,
                 )
-
+    setattr(validate_repo, "last_warnings", warnings)
     return errors
 
 
@@ -320,6 +327,8 @@ def _validate_run_dir(
     bundle_validator: Draft202012Validator,
     auditor_validator: Draft202012Validator,
     measurement_validator: Draft202012Validator,
+    run_evidence_pack_validator: Draft202012Validator,
+    warnings: list[str],
     errors: list[str],
 ) -> None:
     """Validiert ein einzelnes artifacts/<run-id>/-Verzeichnis."""
@@ -367,7 +376,8 @@ def _validate_run_dir(
                 bundle = None
         if bundle is not None:
             run_block = bundle.get("run", {}) or {}
-            if run_block.get("id") != run_dir.name:
+            run_id_expected = run_block.get("id")
+            if run_id_expected != run_dir.name:
                 errors.append(
                     f"  ❌ {rel_run}/run.yml: run.id='{run_block.get('id')}' "
                     f"stimmt nicht mit Verzeichnisnamen '{run_dir.name}' überein."
@@ -409,6 +419,99 @@ def _validate_run_dir(
                         f"Projektion ('{path_str}') als canonical=true. Markdown ist "
                         f"Projektion, nicht maschinelle Wahrheit."
                     )
+
+            evidence_pack = artifacts.get("evidence_pack")
+            if evidence_pack is None:
+                warnings.append(
+                    f"WARNING run_bundle_without_evidence_pack path={rel_run}/run.yml"
+                )
+            elif not isinstance(evidence_pack, dict):
+                errors.append(
+                    f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack muss ein Objekt sein."
+                )
+            else:
+                evidence_pack_path = evidence_pack.get("path")
+                contract = evidence_pack.get("contract")
+                canonical = evidence_pack.get("canonical")
+
+                if contract != "run-evidence-pack.v1":
+                    errors.append(
+                        f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.contract="
+                        f"'{contract}' ist ungültig; erwartet 'run-evidence-pack.v1'."
+                    )
+                if canonical is not True:
+                    errors.append(
+                        f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.canonical muss true sein."
+                    )
+
+                if not isinstance(evidence_pack_path, str) or not evidence_pack_path:
+                    errors.append(
+                        f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path fehlt."
+                    )
+                else:
+                    resolved_evidence_pack = _resolve_within_run_dir(run_dir, evidence_pack_path)
+                    if resolved_evidence_pack is None:
+                        errors.append(
+                            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path "
+                            f"'{evidence_pack_path}' verlässt das Run-Verzeichnis."
+                        )
+                    elif not resolved_evidence_pack.is_file():
+                        errors.append(
+                            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path "
+                            f"'{evidence_pack_path}' existiert nicht."
+                        )
+                    else:
+                        claim_exit_code, claim_errors = validate_claim_evidence_file(
+                            resolved_evidence_pack,
+                            run_evidence_pack_validator,
+                        )
+                        if claim_exit_code != 0:
+                            for claim_error in claim_errors:
+                                errors.append(
+                                    f"  ❌ {rel_run}/run.yml: evidence_pack '{evidence_pack_path}' "
+                                    f"ungültig — {claim_error}"
+                                )
+                        else:
+                            evidence_pack_data = load_claim_yaml(resolved_evidence_pack)
+                            evidence_pack_run_id = evidence_pack_data.get("run_id")
+                            if evidence_pack_run_id != run_id_expected:
+                                errors.append(
+                                    f"  ❌ {rel_run}/run.yml: evidence_pack '{evidence_pack_path}' "
+                                    f"run_id='{evidence_pack_run_id}' stimmt nicht mit run.id="
+                                    f"'{run_id_expected}' überein."
+                                )
+
+                            for claim in evidence_pack_data.get("claims", []):
+                                if not isinstance(claim, dict):
+                                    continue
+                                claim_id = str(claim.get("claim_id", "?"))
+                                for evidence in claim.get("evidence", []):
+                                    if not isinstance(evidence, dict):
+                                        continue
+                                    status = str(evidence.get("status", "")).strip().lower()
+                                    rel_evidence_path = evidence.get("path")
+                                    if status != "repo_local":
+                                        continue
+                                    if not isinstance(rel_evidence_path, str) or not rel_evidence_path:
+                                        continue
+
+                                    try:
+                                        resolved_repo_path = (repo_root / rel_evidence_path).resolve()
+                                        resolved_repo_path.relative_to(repo_root.resolve())
+                                    except ValueError:
+                                        errors.append(
+                                            f"  ❌ {rel_run}/run.yml: evidence_pack '{evidence_pack_path}' "
+                                            f"claim '{claim_id}' referenziert repo_local Pfad "
+                                            f"außerhalb des Repos: '{rel_evidence_path}'."
+                                        )
+                                        continue
+
+                                    if not resolved_repo_path.is_file():
+                                        errors.append(
+                                            f"  ❌ {rel_run}/run.yml: evidence_pack '{evidence_pack_path}' "
+                                            f"claim '{claim_id}' referenziert fehlenden repo_local "
+                                            f"Pfad: '{rel_evidence_path}'."
+                                        )
 
     # R6: auditor-output.yml
     auditor_data: dict | None = None
@@ -618,6 +721,9 @@ def _check_measurement_semantics(measurement: dict, auditor: dict) -> list[str]:
 def main() -> int:
     print("🧷 Validating experiment run bundles...")
     errors = validate_repo(REPO_ROOT)
+    warnings = getattr(validate_repo, "last_warnings", [])
+    for warning in warnings:
+        print(warning)
     if errors:
         print("❌ Run-Bundle validation FAILED:")
         for err in errors:

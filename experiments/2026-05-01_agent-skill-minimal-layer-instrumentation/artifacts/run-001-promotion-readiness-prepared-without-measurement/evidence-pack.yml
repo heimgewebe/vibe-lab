@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+claims:
+  - claim_id: "pack-001"
+    text: "Run bundle references a repo-local validation artifact."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_run_bundle.py"
+        status: "repo_local"

@@ -88,12 +88,12 @@ Diese Datei:
   - [x] `external_unverified` darf keinen PASS-Prozessclaim begründen.
 
 ## PR 6 — Run-Bundle-Kopplung
-- [ ] `schemas/experiment-run-bundle.v1.schema.json` erweitert.
-- [ ] `scripts/docmeta/validate_run_bundle.py` erweitert.
-- [ ] `scripts/docmeta/test_validate_run_bundle.py` erweitert.
-- [ ] `run.yml` referenziert Evidence-Pack (`path`, `contract`, `canonical`).
-- [ ] Legacy-Bundles nur im Warn-/Ratchet-Modus.
-- [ ] Echte repo-lokale Evidence-Pfade gegen Dateiexistenz prüfen.
+- [x] `schemas/experiment-run-bundle.v1.schema.json` erweitert.
+- [x] `scripts/docmeta/validate_run_bundle.py` erweitert.
+- [x] `scripts/docmeta/test_validate_run_bundle.py` erweitert.
+- [x] `run.yml` referenziert Evidence-Pack (`path`, `contract`, `canonical`).
+- [x] Legacy-Bundles nur im Warn-/Ratchet-Modus.
+- [x] Echte repo-lokale Evidence-Pfade gegen Dateiexistenz prüfen.
 
 ## PR 7 — PR-Scope-Guard
 - [ ] `.vibe/pr-scope-policy.yml` erstellt.
