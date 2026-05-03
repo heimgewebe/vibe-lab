@@ -61,7 +61,14 @@ Diese Datei:
 - [x] Policies deklarieren: keine aktive Enforcement-Regel ohne Schema/Script/Make/CI-Integration.
 
 ## PR 3 — Playbook pr-run-evidence-pack
-- [ ] `docs/playbooks/pr-run-evidence-pack.md` erstellt.
+
+> **Scope:** Playbook-only. Kein Schema, kein Validator, keine Make/CI-Aktivierung, keine neuen Runs.
+> PR 3 aktiviert kein technisches Enforcement.
+
+- [x] `docs/playbooks/pr-run-evidence-pack.md` erstellt und verlinkt.
+- [x] Operative Zielstruktur dokumentiert (Ablageform, Status-Vokabular, Claim-Regeln).
+- [x] Beispiele für zulässige, Missing-Evidence und verbotene Claims dokumentiert.
+- [x] Abgrenzung zu PR 4-7: Kein Schema, kein Validator, keine Blockierung.
 
 ## PR 4 — Evidence-Pack-Schema + Fixtures
 - [ ] `schemas/run-evidence-pack.v1.schema.json` erstellt.
