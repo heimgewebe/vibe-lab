@@ -88,6 +88,7 @@
           "type": "string",
           "enum": [
             "repo_local",
+            "external_verified",
             "external_unverified",
             "ci_artifact",
             "derived_from_auditor_output",

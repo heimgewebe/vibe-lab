@@ -25,6 +25,7 @@ VALID_FIXTURES = [
     "valid/minimal-pass-repo-local.yml",
     "valid/missing-evidence-verdict.yml",
     "valid/external-unverified.yml",
+    "valid/external-verified.yml",
 ]
 
 INVALID_FIXTURES = [
@@ -32,6 +33,7 @@ INVALID_FIXTURES = [
     "invalid/empty-evidence-path.yml",
     "invalid/path-escape.yml",
     "invalid/unknown-evidence-status.yml",
+    "invalid/bad-schema-version.yml",
 ]
 
 
