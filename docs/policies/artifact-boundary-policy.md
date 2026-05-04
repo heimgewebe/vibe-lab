@@ -1,6 +1,6 @@
 ---
 title: "Policy — Artifact Boundary"
-status: draft
+status: active
 canonicality: exploratory
 relations:
   - type: references
@@ -9,12 +9,16 @@ relations:
     target: ../playbooks/evidence-control-plane-roadmap-checklist.md
   - type: references
     target: pr-run-evidence-policy.md
+  - type: references
+    target: ../../.vibe/pr-scope-policy.yml
 ---
 
 # Policy — Artifact Boundary
 
-> Diese Policy ist noch nicht technisch enforced.
-> Sie definiert Grenzen für Artefaktablage, aktiviert aber kein technisches Enforcement.
+> **Boundary Guard aktiv (PR 7).**
+> `.vibe/pr-scope-policy.yml` ist die maschinenlesbare Quelle dieser Policy.
+> `scripts/docmeta/validate_pr_scope.py` enforced die untenstehenden Regeln in Make/CI.
+> Historische Artefakte außerhalb der konfigurierten `artifact_roots` werden im Repo-Scan-Modus nicht retroaktiv blockiert.
 
 ## Repo-lokal erlaubt
 
@@ -23,19 +27,22 @@ relations:
 - Evidence-Pack-Manifeste
 - Hashes, Herkunft, Retention-Hinweise
 
-## Repo-lokal problematisch (später zu blockieren)
+## Repo-lokal blockiert (Boundary Guard aktiv)
 
-- vollständige PR-Diffs
-- große CI-Logs
-- API-Dumps
-- Screenshots
-- lange Transkripte
-- große rohe Runtime-Ausgaben
+Unter `experiments/**/` und `artifacts/**/` werden folgende Dateitypen blockiert:
+
+- vollständige PR-Diffs (`*.patch`, `*.diff`, `*full*diff*`, `*pr*diff*`)
+- große CI-Logs (`*ci*full*log*`, `*workflow*full*log*`)
+- API-Dumps (`*api*dump*`, `*raw*response*`)
+- Screenshots (`*screenshot*`)
+- Transkripte (`*transcript*`)
+- Artefakte > 262.144 Bytes — Dateinamen wie `evidence-pack.yml`, `test-output.txt`, `ci-output.txt`, `make-validate.txt` oder `summary.md` befreien nicht vom Größenlimit
+- Evidence-Packs mit PASS-Verdict, die ausschließlich sich selbst als `repo_local`-Evidence referenzieren
 
 ## Regeln für fehlende und externe Evidenz
 
 - Missing-Evidence-Dateien sind Abwesenheitsnachweise, keine Erfolgsbeweise.
-- Große Artefakte sollen später extern referenziert werden mit:
+- Große Artefakte sollen extern referenziert werden mit:
   - summary
   - sha256
   - source/ref
@@ -44,5 +51,5 @@ relations:
 
 ## Nicht-Ziele dieser Policy
 
-- Noch keine harte Größenregel aktivieren.
-- Keine rückwirkende Umbewertung historischer Artefakte in diesem PR.
+- Keine rückwirkende Umbewertung historischer Artefakte außerhalb der artifact_roots.
+- Keine Aussage über Agentenwirksamkeit.

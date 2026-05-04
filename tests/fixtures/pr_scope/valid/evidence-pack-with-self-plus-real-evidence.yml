@@ -1,0 +1,12 @@
+schema_version: "1.0.0"
+run_id: "fixture-run-self-plus-real"
+claims:
+  - claim_id: "self-plus-real"
+    text: "Test suite passed; evidence includes test output and this pack"
+    type: "process_result"
+    verdict: "PASS"
+    evidence:
+      - path: "tests/fixtures/pr_scope/valid/evidence-pack-with-self-plus-real-evidence.yml"
+        status: "repo_local"
+      - path: "tests/fixtures/pr_scope/valid/test-output.txt"
+        status: "repo_local"

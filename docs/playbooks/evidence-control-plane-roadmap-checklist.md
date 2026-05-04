@@ -96,10 +96,10 @@ Diese Datei:
 - [ ] Echte repo-lokale Evidence-Pfade gegen Dateiexistenz prüfen.
 
 ## PR 7 — PR-Scope-Guard
-- [ ] `.vibe/pr-scope-policy.yml` erstellt.
-- [ ] `scripts/docmeta/validate_pr_scope.py` + Tests erstellt.
-- [ ] Make/CI integriert.
-- [ ] Guards blockieren Full-Diffs, übergroße Artefakte und unzulässige Self-Observation.
+- [x] `.vibe/pr-scope-policy.yml` erstellt.
+- [x] `scripts/docmeta/validate_pr_scope.py` + Tests erstellt.
+- [x] Make/CI integriert.
+- [x] Guards blockieren Full-Diffs, übergroße Artefakte und unzulässige Self-Observation.
 
 ## PR 8 — PR-Template-Härtung
 - [ ] `.github/pull_request_template.md` ergänzt.

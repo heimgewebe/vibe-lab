@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "fixture-run-valid-001"
+claims:
+  - claim_id: "test-suite-passed"
+    text: "Test suite completed without failures"
+    type: "process_result"
+    verdict: "PASS"
+    evidence:
+      - path: "tests/fixtures/pr_scope/valid/test-output.txt"
+        status: "repo_local"

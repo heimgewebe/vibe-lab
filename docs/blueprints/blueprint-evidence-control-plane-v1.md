@@ -79,3 +79,7 @@ Die konkrete Reihenfolge ist in der operativen Roadmap beschrieben:
 
 Enforcement, Schemas, Validator-Code, Policy-Implementierung und neue
 Experiment-Runs sind nicht Bestandteil von PR 1 und bleiben in späteren PRs.
+
+**PR 3–6** (teilweise umgesetzt): Schema-Validierung, Execution-Proof, Run-Bundle-Validierung, Claim-Evidence-Semantic-Guard aktiv in Make/CI.
+
+**PR 7** (Boundary Guard aktiv): `.vibe/pr-scope-policy.yml` definiert Artefaktgrenzen maschinenlesbar. `scripts/docmeta/validate_pr_scope.py` blockiert Full-Diffs, Raw-Dumps, übergroße Artefakte und Self-Observation-Missbrauch. Make-Targets `validate-pr-scope` und `validate-pr-scope-tests` in `validate` integriert; CI-Steps ergänzt. Boundary Guard aktiv — keine Aussage über Agentenwirksamkeit.
