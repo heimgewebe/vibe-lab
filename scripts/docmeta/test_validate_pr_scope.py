@@ -15,7 +15,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 VALIDATOR = REPO_ROOT / "scripts" / "docmeta" / "validate_pr_scope.py"
 FIXTURE_ROOT = REPO_ROOT / "tests" / "fixtures" / "pr_scope"
-POLICY_PATH = REPO_ROOT / ".vibe" / "pr-scope-policy.yml"
 
 # Fixtures that should produce exit 0 when passed via --changed-files
 VALID_FIXTURES = [
@@ -49,7 +48,6 @@ def _changed_files_arg(paths: list[Path]) -> list[str]:
     """Write paths to a temp file, return [--changed-files, tmppath]."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         for p in paths:
-            # Write repo-relative paths so the validator resolves them from REPO_ROOT
             try:
                 f.write(str(p.relative_to(REPO_ROOT)) + "\n")
             except ValueError:
@@ -83,7 +81,6 @@ class ValidFixtureTests(unittest.TestCase):
         )
 
     def test_changed_files_mode_no_forbidden_paths_exit_zero(self) -> None:
-        # A changed-files list that contains only safe files
         safe_paths = [FIXTURE_ROOT / "valid" / "test-output.txt"]
         cf_args = _changed_files_arg(safe_paths)
         result = _run(cf_args)
@@ -110,12 +107,26 @@ class InvalidFixtureTests(unittest.TestCase):
 
 
 class OversizedArtifactTest(unittest.TestCase):
-    def test_oversized_artifact_exits_one(self) -> None:
+    def test_oversized_generic_artifact_exits_one(self) -> None:
         with tempfile.NamedTemporaryFile(
             mode="wb", suffix="-oversized.bin", delete=False
         ) as f:
-            # Write 300 KB — above the 262144-byte limit
             f.write(b"x" * (300 * 1024))
+            big_path = Path(f.name)
+        try:
+            cf_args = _changed_files_arg([big_path])
+            result = _run(cf_args)
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn("ARTIFACT_TOO_LARGE", result.stdout)
+        finally:
+            big_path.unlink(missing_ok=True)
+
+    def test_oversized_allowed_name_still_blocked(self) -> None:
+        # A file named "test-output.txt" must not bypass the size limit.
+        with tempfile.NamedTemporaryFile(
+            mode="wb", suffix="-test-output.txt", delete=False
+        ) as f:
+            f.write(b"y" * (300 * 1024))
             big_path = Path(f.name)
         try:
             cf_args = _changed_files_arg([big_path])
@@ -123,12 +134,11 @@ class OversizedArtifactTest(unittest.TestCase):
             self.assertEqual(
                 result.returncode,
                 1,
-                f"Expected exit 1 for oversized artifact:\n{result.stdout}{result.stderr}",
+                f"Oversized test-output.txt must be blocked:\n{result.stdout}{result.stderr}",
             )
             self.assertIn("ARTIFACT_TOO_LARGE", result.stdout)
         finally:
             big_path.unlink(missing_ok=True)
-            # Clean up temp changed-files file too (already done via _changed_files_arg temp file)
 
 
 class BrokenPolicyTest(unittest.TestCase):
@@ -140,11 +150,7 @@ class BrokenPolicyTest(unittest.TestCase):
             broken_policy = f.name
         try:
             result = _run(["--policy", broken_policy])
-            self.assertEqual(
-                result.returncode,
-                2,
-                f"Expected exit 2 for broken policy:\n{result.stdout}{result.stderr}",
-            )
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
             self.assertIn("POLICY_PARSE_ERROR", result.stderr)
         finally:
             Path(broken_policy).unlink(missing_ok=True)
@@ -157,7 +163,6 @@ class BrokenPolicyTest(unittest.TestCase):
 
 class RepoScanCleanTest(unittest.TestCase):
     def test_repo_scan_default_exits_zero(self) -> None:
-        # Repo scan of current repo should find no violations (confirmed by diagnosis)
         result = _run([])
         self.assertEqual(
             result.returncode,

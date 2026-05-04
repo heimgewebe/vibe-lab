@@ -107,15 +107,8 @@ def check_forbidden(
     return []
 
 
-def check_size(
-    path: Path,
-    max_bytes: int,
-    compiled_allowed_small: list[tuple[re.Pattern, str]],
-) -> list[tuple[str, str]]:
-    path_str = _norm(path)
-    for pattern, _ in compiled_allowed_small:
-        if pattern.search(path_str):
-            return []
+def check_size(path: Path, max_bytes: int) -> list[tuple[str, str]]:
+    # File name does not exempt from the size limit; only the limit matters.
     try:
         size = path.stat().st_size
     except OSError:
@@ -219,14 +212,12 @@ def _collect_changed_files(changed_files_path: Path) -> list[Path]:
 
 def validate(paths: list[Path], policy: dict) -> list[tuple[str, str]]:
     forbidden_raw = policy.get("forbidden_path_patterns", [])
-    allowed_small_raw = policy.get("allowed_small_evidence_patterns", [])
     limits = policy.get("limits", {})
     max_bytes = int(limits.get("max_repo_local_evidence_bytes", 262144))
     self_obs_cfg = policy.get("self_observation", {})
     forbid_self_obs = self_obs_cfg.get("forbid_pass_claim_referencing_same_evidence_pack", True)
 
     compiled_forbidden = _compile_patterns(forbidden_raw)
-    compiled_allowed_small = _compile_patterns(allowed_small_raw)
 
     violations: list[tuple[str, str]] = []
     seen: set[Path] = set()
@@ -238,7 +229,7 @@ def validate(paths: list[Path], policy: dict) -> list[tuple[str, str]]:
         seen.add(abs_path)
 
         violations.extend(check_forbidden(path, compiled_forbidden))
-        violations.extend(check_size(path, max_bytes, compiled_allowed_small))
+        violations.extend(check_size(path, max_bytes))
 
         if forbid_self_obs and path.name in EVIDENCE_PACK_NAMES:
             violations.extend(check_self_observation(path))

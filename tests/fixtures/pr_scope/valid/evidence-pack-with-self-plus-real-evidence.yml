@@ -8,7 +8,5 @@ claims:
     evidence:
       - path: "tests/fixtures/pr_scope/valid/evidence-pack-with-self-plus-real-evidence.yml"
         status: "repo_local"
-        description: "Self-reference present but not sole evidence — allowed"
       - path: "tests/fixtures/pr_scope/valid/test-output.txt"
         status: "repo_local"
-        description: "Real test output confirming the claim"
