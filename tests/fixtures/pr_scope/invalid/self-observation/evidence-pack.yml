@@ -1,0 +1,6 @@
+run_id: "fixture-run-self-obs"
+verdict: "PASS"
+evidence:
+  - path: "tests/fixtures/pr_scope/invalid/self-observation/evidence-pack.yml"
+    status: "repo_local"
+    description: "This pack references only itself — self-observation violation"

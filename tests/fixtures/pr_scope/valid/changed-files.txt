@@ -1,0 +1,3 @@
+tests/fixtures/pr_scope/valid/evidence-pack.yml
+tests/fixtures/pr_scope/valid/summary.md
+tests/fixtures/pr_scope/valid/test-output.txt

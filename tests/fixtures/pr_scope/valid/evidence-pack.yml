@@ -1,0 +1,6 @@
+run_id: "fixture-run-valid-001"
+verdict: "PASS"
+evidence:
+  - path: "tests/fixtures/pr_scope/valid/test-output.txt"
+    status: "repo_local"
+    description: "Test suite output captured during run"

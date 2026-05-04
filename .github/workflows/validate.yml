@@ -44,6 +44,12 @@ jobs:
       - name: Validate claim-evidence packs
         run: make validate-claim-evidence
 
+      - name: Test PR scope validator
+        run: python3 scripts/docmeta/test_validate_pr_scope.py
+
+      - name: Validate PR scope / artifact boundary
+        run: make validate-pr-scope
+
       - name: Validate relations
         run: python3 scripts/docmeta/validate_relations.py
 

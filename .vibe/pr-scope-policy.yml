@@ -1,0 +1,38 @@
+schema_version: "1.0.0"
+
+scope:
+  artifact_roots:
+    - experiments
+    - artifacts
+
+modes:
+  default: repo_scan
+  changed_files_supported: true
+
+limits:
+  max_repo_local_evidence_bytes: 262144
+  max_artifact_bytes_warning: 1048576
+
+forbidden_path_patterns:
+  - "(^|/).*full.*diff.*"
+  - "(^|/).*pr.*diff.*"
+  - "(^|/).*\\.patch$"
+  - "(^|/).*\\.diff$"
+  - "(^|/).*api.*dump.*"
+  - "(^|/).*raw.*response.*"
+  - "(^|/).*ci.*full.*log.*"
+  - "(^|/).*workflow.*full.*log.*"
+  - "(^|/).*transcript.*"
+  - "(^|/).*screenshot.*"
+
+allowed_small_evidence_patterns:
+  - "(^|/)evidence-pack\\.ya?ml$"
+  - "(^|/)changed-files\\.txt$"
+  - "(^|/)pr-body\\.md$"
+  - "(^|/)summary\\.(md|json|txt)$"
+  - "(^|/)make-validate\\.txt$"
+  - "(^|/)test-output\\.txt$"
+  - "(^|/)ci-output\\.txt$"
+
+self_observation:
+  forbid_pass_claim_referencing_same_evidence_pack: true
