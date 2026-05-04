@@ -127,42 +127,55 @@ def check_size(
 
 
 def check_self_observation(pack_path: Path) -> list[tuple[str, str]]:
-    """Block PASS evidence pack that references only itself as repo_local evidence."""
+    """Block any PASS claim in an evidence pack that references only itself as repo_local evidence.
+
+    Checks the canonical run-evidence-pack.v1 structure: claims[].verdict + claims[].evidence.
+    A claim is a violation when verdict==PASS and every evidence entry with status repo_local
+    resolves to the same file as the pack itself, with no other evidence entries present.
+    """
     try:
         data = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
     except Exception:
         return []
-    if not isinstance(data, dict) or data.get("verdict") != "PASS":
+    if not isinstance(data, dict):
         return []
-    evidence_list = data.get("evidence", [])
-    if not isinstance(evidence_list, list) or not evidence_list:
+    claims = data.get("claims", [])
+    if not isinstance(claims, list):
         return []
     pack_abs = pack_path.resolve()
-    self_refs: list[str] = []
-    other_refs: list[str] = []
-    for item in evidence_list:
-        if not isinstance(item, dict):
+    violations: list[tuple[str, str]] = []
+    for claim in claims:
+        if not isinstance(claim, dict) or claim.get("verdict") != "PASS":
             continue
-        raw_path = item.get("path", "")
-        status = item.get("status", "")
-        if not raw_path:
+        evidence_list = claim.get("evidence", [])
+        if not isinstance(evidence_list, list) or not evidence_list:
             continue
-        candidate = Path(raw_path)
-        if not candidate.is_absolute():
-            candidate = REPO_ROOT / candidate
-        if candidate.resolve() == pack_abs and status == "repo_local":
-            self_refs.append(raw_path)
-        else:
-            other_refs.append(raw_path)
-    if self_refs and not other_refs:
-        return [
-            (
-                "EVIDENCE_SELF_OBSERVATION",
-                f"EVIDENCE_SELF_OBSERVATION: {_display(pack_path)} "
-                f"has PASS verdict with only self-referencing repo_local evidence",
+        self_refs: list[str] = []
+        other_refs: list[str] = []
+        for item in evidence_list:
+            if not isinstance(item, dict):
+                continue
+            raw_path = item.get("path", "")
+            status = item.get("status", "")
+            if not raw_path:
+                continue
+            candidate = Path(raw_path)
+            if not candidate.is_absolute():
+                candidate = REPO_ROOT / candidate
+            if candidate.resolve() == pack_abs and status == "repo_local":
+                self_refs.append(raw_path)
+            else:
+                other_refs.append(raw_path)
+        if self_refs and not other_refs:
+            claim_id = claim.get("claim_id", "<unknown>")
+            violations.append(
+                (
+                    "EVIDENCE_SELF_OBSERVATION",
+                    f"EVIDENCE_SELF_OBSERVATION: {_display(pack_path)} "
+                    f"claim '{claim_id}' has PASS verdict with only self-referencing repo_local evidence",
+                )
             )
-        ]
-    return []
+    return violations
 
 
 # ---------------------------------------------------------------------------

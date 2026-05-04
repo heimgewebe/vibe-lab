@@ -22,6 +22,8 @@ VALID_FIXTURES = [
     "valid/evidence-pack.yml",
     "valid/summary.md",
     "valid/test-output.txt",
+    # PASS claim referencing itself + real other evidence — must be allowed
+    "valid/evidence-pack-with-self-plus-real-evidence.yml",
 ]
 
 # Fixtures with their expected rule IDs (all should produce exit 1)

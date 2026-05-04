@@ -1,6 +1,11 @@
+schema_version: "1.0.0"
 run_id: "fixture-run-self-obs"
-verdict: "PASS"
-evidence:
-  - path: "tests/fixtures/pr_scope/invalid/self-observation/evidence-pack.yml"
-    status: "repo_local"
-    description: "This pack references only itself — self-observation violation"
+claims:
+  - claim_id: "self-obs"
+    text: "Evidence pack proves itself passed"
+    type: "process_result"
+    verdict: "PASS"
+    evidence:
+      - path: "tests/fixtures/pr_scope/invalid/self-observation/evidence-pack.yml"
+        status: "repo_local"
+        description: "This pack references only itself — self-observation violation"
