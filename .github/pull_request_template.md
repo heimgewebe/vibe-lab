@@ -13,13 +13,13 @@
 
 ## Validation
 - [ ] `make validate`
-	- Evidence:
+  - Evidence:
 - [ ] Relevant targeted tests
-	- Evidence:
+  - Evidence:
 - [ ] CI result
-	- Evidence:
+  - Evidence:
 - [ ] Critic/auditor/agent review, if claimed
-	- Evidence:
+  - Evidence:
 
 Checks run:
 <!-- e.g. make validate, make generate-stable -->
@@ -32,7 +32,11 @@ List every process or result claim made by this PR.
 
 | Claim | Claim Type | Evidence Artifact | Evidence Status | Verdict |
 | --- | --- | --- | --- | --- |
-| <!-- e.g. make validate passed --> | <!-- command_succeeded / tests_passed / ci_passed / critic_used / auditor_used / agent_reviewed --> | <!-- repo-local path or external reference --> | <!-- repo_local / external_verified / external_unverified / missing_evidence --> | <!-- PASS / MISSING_EVIDENCE / CLAIM_NOT_PROVEN --> |
+| <!-- e.g. make validate passed --> | <!-- command_result / test_result / ci_result / critic_usage / auditor_usage / agent_usage --> | <!-- repo-local path or external reference --> | <!-- repo_local / ci_artifact / external_verified / external_unverified / derived_from_auditor_output / missing_evidence / self_reported --> | <!-- PASS / MISSING_EVIDENCE / CLAIM_NOT_PROVEN --> |
+
+Field semantics:
+- `Evidence Status` uses lowercase evidence-state values, e.g. `repo_local`, `ci_artifact`, `missing_evidence`.
+- `Verdict` uses uppercase claim verdicts, e.g. `PASS`, `MISSING_EVIDENCE`, `CLAIM_NOT_PROVEN`.
 
 Rules:
 - No test-count claim without test-output evidence.
