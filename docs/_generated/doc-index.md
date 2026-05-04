@@ -42,7 +42,7 @@
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
-| `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | draft | exploratory |
+| `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | active | exploratory |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
 | `docs/policies/pr-run-evidence-policy.md` | Policy — PR Run Evidence | draft | exploratory |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
@@ -193,3 +193,4 @@
 | `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md` | CONTEXT | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md` | INITIAL | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | Phase-1c Valid Fixture | draft | operative |
+| `tests/fixtures/pr_scope/valid/summary.md` | summary | — | — |
