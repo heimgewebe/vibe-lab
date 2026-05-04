@@ -36,7 +36,7 @@ Unter `experiments/**/` und `artifacts/**/` werden folgende Dateitypen blockiert
 - API-Dumps (`*api*dump*`, `*raw*response*`)
 - Screenshots (`*screenshot*`)
 - Transkripte (`*transcript*`)
-- Artefakte > 262.144 Bytes (außer explizit erlaubten kleinen Evidence-Typen)
+- Artefakte > 262.144 Bytes — Dateinamen wie `evidence-pack.yml`, `test-output.txt`, `ci-output.txt`, `make-validate.txt` oder `summary.md` befreien nicht vom Größenlimit
 - Evidence-Packs mit PASS-Verdict, die ausschließlich sich selbst als `repo_local`-Evidence referenzieren
 
 ## Regeln für fehlende und externe Evidenz

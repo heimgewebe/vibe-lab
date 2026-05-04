@@ -122,13 +122,10 @@ class OversizedArtifactTest(unittest.TestCase):
             big_path.unlink(missing_ok=True)
 
     def test_oversized_allowed_name_still_blocked(self) -> None:
-        # A file named "test-output.txt" must not bypass the size limit.
-        with tempfile.NamedTemporaryFile(
-            mode="wb", suffix="-test-output.txt", delete=False
-        ) as f:
-            f.write(b"y" * (300 * 1024))
-            big_path = Path(f.name)
-        try:
+        # A file named exactly "test-output.txt" must not bypass the size limit.
+        with tempfile.TemporaryDirectory() as tmp:
+            big_path = Path(tmp) / "test-output.txt"
+            big_path.write_bytes(b"y" * (300 * 1024))
             cf_args = _changed_files_arg([big_path])
             result = _run(cf_args)
             self.assertEqual(
@@ -137,8 +134,6 @@ class OversizedArtifactTest(unittest.TestCase):
                 f"Oversized test-output.txt must be blocked:\n{result.stdout}{result.stderr}",
             )
             self.assertIn("ARTIFACT_TOO_LARGE", result.stdout)
-        finally:
-            big_path.unlink(missing_ok=True)
 
 
 class BrokenPolicyTest(unittest.TestCase):
