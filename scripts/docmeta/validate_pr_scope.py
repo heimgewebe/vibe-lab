@@ -52,9 +52,22 @@ def _display(path: Path) -> str:
         return str(path)
 
 
+def _is_under(path: Path, root: Path) -> bool:
+    try:
+        path.resolve().relative_to(root.resolve())
+        return True
+    except ValueError:
+        return False
+
+
 # ---------------------------------------------------------------------------
-# Policy loading
+# Policy loading and validation
 # ---------------------------------------------------------------------------
+
+def _policy_err(msg: str, policy_path: Path) -> None:
+    print(f"POLICY_PARSE_ERROR: {msg} in {policy_path}", file=sys.stderr)
+    raise SystemExit(2)
+
 
 def load_policy(policy_path: Path) -> dict:
     try:
@@ -73,7 +86,52 @@ def load_policy(policy_path: Path) -> dict:
             file=sys.stderr,
         )
         raise SystemExit(2)
+    _validate_policy_types(policy, policy_path)
     return policy
+
+
+def _validate_policy_types(policy: dict, policy_path: Path) -> None:
+    scope = policy.get("scope", {})
+    if not isinstance(scope, dict):
+        _policy_err(f"scope must be a mapping, got {type(scope).__name__}", policy_path)
+
+    artifact_roots = scope.get("artifact_roots", [])
+    if not isinstance(artifact_roots, list):
+        _policy_err(
+            f"scope.artifact_roots must be a list, got {type(artifact_roots).__name__}",
+            policy_path,
+        )
+    for i, root in enumerate(artifact_roots):
+        if not isinstance(root, str):
+            _policy_err(
+                f"scope.artifact_roots[{i}] must be a string, got {type(root).__name__}",
+                policy_path,
+            )
+
+    patterns = policy.get("forbidden_path_patterns", [])
+    if not isinstance(patterns, list):
+        _policy_err(
+            f"forbidden_path_patterns must be a list, got {type(patterns).__name__}",
+            policy_path,
+        )
+    for i, pat in enumerate(patterns):
+        if not isinstance(pat, str):
+            _policy_err(
+                f"forbidden_path_patterns[{i}] must be a string, got {type(pat).__name__}",
+                policy_path,
+            )
+
+    limits = policy.get("limits", {})
+    if not isinstance(limits, dict):
+        _policy_err(f"limits must be a mapping, got {type(limits).__name__}", policy_path)
+    raw_limit = limits.get("max_repo_local_evidence_bytes", 262144)
+    try:
+        int(raw_limit)
+    except (ValueError, TypeError):
+        _policy_err(
+            f"limits.max_repo_local_evidence_bytes must be an integer, got {raw_limit!r}",
+            policy_path,
+        )
 
 
 def _compile_patterns(patterns: list) -> list[tuple[re.Pattern, str]]:
@@ -123,8 +181,8 @@ def check_self_observation(pack_path: Path) -> list[tuple[str, str]]:
     """Block any PASS claim in an evidence pack that references only itself as repo_local evidence.
 
     Checks the canonical run-evidence-pack.v1 structure: claims[].verdict + claims[].evidence.
-    A claim is a violation when verdict==PASS and every evidence entry with status repo_local
-    resolves to the same file as the pack itself, with no other evidence entries present.
+    Relative evidence paths are resolved against pack_path.parent first, then REPO_ROOT,
+    so evidence-pack.yml and ./evidence-pack.yml are correctly identified as self-references.
     """
     try:
         data = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
@@ -152,10 +210,8 @@ def check_self_observation(pack_path: Path) -> list[tuple[str, str]]:
             status = item.get("status", "")
             if not raw_path:
                 continue
-            candidate = Path(raw_path)
-            if not candidate.is_absolute():
-                candidate = REPO_ROOT / candidate
-            if candidate.resolve() == pack_abs and status == "repo_local":
+            is_self = _resolves_to(raw_path, pack_path, pack_abs)
+            if is_self and status == "repo_local":
                 self_refs.append(raw_path)
             else:
                 other_refs.append(raw_path)
@@ -171,23 +227,43 @@ def check_self_observation(pack_path: Path) -> list[tuple[str, str]]:
     return violations
 
 
+def _resolves_to(raw_path: str, pack_path: Path, pack_abs: Path) -> bool:
+    """Return True if raw_path resolves to the same file as pack_abs.
+
+    Tries pack_path.parent first (handles evidence-pack.yml, ./evidence-pack.yml),
+    then REPO_ROOT (handles repo-relative paths like experiments/.../evidence-pack.yml).
+    """
+    candidate = Path(raw_path)
+    if candidate.is_absolute():
+        return candidate.resolve() == pack_abs
+    # Relative: try parent directory of the pack first
+    if (pack_path.parent / candidate).resolve() == pack_abs:
+        return True
+    # Fallback: repo-root-relative
+    return (REPO_ROOT / candidate).resolve() == pack_abs
+
+
 # ---------------------------------------------------------------------------
 # Path collection
 # ---------------------------------------------------------------------------
 
+def _artifact_root_dirs(policy: dict) -> list[Path]:
+    roots = policy.get("scope", {}).get("artifact_roots", [])
+    return [REPO_ROOT / r for r in roots if isinstance(r, str)]
+
+
 def _collect_repo_scan(policy: dict) -> list[Path]:
-    artifact_roots = policy.get("scope", {}).get("artifact_roots", [])
     paths: list[Path] = []
-    for root_name in artifact_roots:
-        root_dir = REPO_ROOT / root_name
+    for root_dir in _artifact_root_dirs(policy):
         if root_dir.is_dir():
             for p in root_dir.rglob("*"):
                 if p.is_file():
                     paths.append(p)
-    return paths
+    return sorted(paths)
 
 
-def _collect_changed_files(changed_files_path: Path) -> list[Path]:
+def _collect_changed_files(changed_files_path: Path, artifact_root_dirs: list[Path]) -> list[Path]:
+    """Return changed files that exist and fall under one of the artifact_roots."""
     try:
         text = changed_files_path.read_text(encoding="utf-8")
     except OSError as exc:
@@ -201,8 +277,11 @@ def _collect_changed_files(changed_files_path: Path) -> list[Path]:
         p = Path(line)
         if not p.is_absolute():
             p = REPO_ROOT / p
-        if p.is_file():
-            paths.append(p)
+        if not p.is_file():
+            continue
+        if artifact_root_dirs and not any(_is_under(p, root) for root in artifact_root_dirs):
+            continue
+        paths.append(p)
     return paths
 
 
@@ -259,14 +338,14 @@ def main() -> None:
         default=None,
         dest="changed_files",
         metavar="PATH",
-        help="File with newline-separated paths to check (changed-files mode)",
+        help="File with newline-separated paths to check (changed-files mode; only artifact_roots are scanned)",
     )
     args = parser.parse_args()
 
     policy = load_policy(args.policy)
 
     if args.changed_files is not None:
-        paths = _collect_changed_files(args.changed_files)
+        paths = _collect_changed_files(args.changed_files, _artifact_root_dirs(policy))
     else:
         paths = _collect_repo_scan(policy)
 
