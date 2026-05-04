@@ -24,7 +24,7 @@
 Checks run:
 <!-- e.g. make validate, make generate-stable -->
 
-If a check was not run or evidence was not archived, mark it explicitly as `MISSING_EVIDENCE`.
+If a check was not run or evidence was not archived, use `Evidence Status: missing_evidence` and `Verdict: MISSING_EVIDENCE`.
 Do not write success claims without evidence.
 
 ## Claims and Evidence
