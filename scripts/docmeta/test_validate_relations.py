@@ -214,6 +214,18 @@ class ValidateRelationsTests(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("must not be empty", errors[0])
 
+    def test_blank_string_type_is_reported_as_empty(self) -> None:
+        """Whitespace-only ``type`` must be rejected as empty."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: '   '\n    target: target.md\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("must not be empty", errors[0])
+
     def test_target_with_leading_trailing_whitespace_is_rejected(self) -> None:
         """``target: " target.md "`` must fail even if the underlying file exists."""
         _write(
