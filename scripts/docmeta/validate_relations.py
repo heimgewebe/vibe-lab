@@ -21,10 +21,14 @@ def resolve_target(source_file: Path, target: str, repo_root: Path = REPO_ROOT) 
     """Resolve a relation target relative to the source file's directory.
 
     Returns None if the target resolves outside ``repo_root`` (path-escape guard).
+    Fragment-suffixes (e.g. ``file.md#section``) are stripped before resolution
+    so that the underlying file is validated, not a non-existent fragment path.
     """
     if target.startswith("#"):
         return source_file  # Issue reference, skip
-    resolved = (source_file.parent / target).resolve()
+    # Strip optional #fragment suffix before path resolution
+    path_part = target.split("#", 1)[0] if "#" in target else target
+    resolved = (source_file.parent / path_part).resolve()
     try:
         resolved.relative_to(repo_root)
     except ValueError:
@@ -61,11 +65,37 @@ def validate_file_relations(
             errors.append(f"  ❌ {rel_path}: relation entry must be an object")
             continue
 
-        rel_type = rel.get("type")
-        target = rel.get("target")
-
-        if not rel_type or not target:
+        # 1. Key presence check (key absent vs. key present but wrong type are distinct faults)
+        if "type" not in rel or "target" not in rel:
             errors.append(f"  ❌ {rel_path}: relation missing 'type' or 'target'")
+            continue
+
+        rel_type = rel["type"]
+        target = rel["target"]
+
+        # 2. Type checks (must precede emptiness checks so the diagnostic is accurate)
+        if not isinstance(rel_type, str):
+            errors.append(
+                f"  ❌ {rel_path}: relation 'type' must be a string, got {type(rel_type).__name__}"
+            )
+            continue
+        if not isinstance(target, str):
+            errors.append(
+                f"  ❌ {rel_path}: relation 'target' must be a string, got {type(target).__name__}"
+            )
+            continue
+
+        # 3. Emptiness check (whitespace-only values are treated as empty)
+        if not rel_type.strip() or not target.strip():
+            errors.append(f"  ❌ {rel_path}: relation 'type' and 'target' must not be empty")
+            continue
+
+        # 4. Leading/trailing whitespace check (non-empty but padded values are a distinct fault)
+        if rel_type != rel_type.strip() or target != target.strip():
+            errors.append(
+                f"  ❌ {rel_path}: relation 'type' and 'target' must not have"
+                " leading or trailing whitespace"
+            )
             continue
 
         # Skip issue references
