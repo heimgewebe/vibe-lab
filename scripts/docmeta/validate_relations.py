@@ -85,11 +85,17 @@ def validate_file_relations(
             )
             continue
 
-        # 3. Emptiness check (strip whitespace so "   " is treated the same as "")
-        rel_type = rel_type.strip()
-        target = target.strip()
-        if not rel_type or not target:
+        # 3. Emptiness check (whitespace-only values are treated as empty)
+        if not rel_type.strip() or not target.strip():
             errors.append(f"  ❌ {rel_path}: relation 'type' and 'target' must not be empty")
+            continue
+
+        # 4. Leading/trailing whitespace check (non-empty but padded values are a distinct fault)
+        if rel_type != rel_type.strip() or target != target.strip():
+            errors.append(
+                f"  ❌ {rel_path}: relation 'type' and 'target' must not have"
+                " leading or trailing whitespace"
+            )
             continue
 
         # Skip issue references

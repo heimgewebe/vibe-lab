@@ -10,7 +10,8 @@ Covers:
 - ``#issue`` references are skipped
 - missing type/target key is rejected
 - present but non-string type or target gets a precise type-error message
-- blank/whitespace-only type or target is rejected
+- whitespace-only type or target is rejected as empty
+- leading/trailing whitespace in type or target is a distinct, diagnosable fault
 - module call leaves no global state behind (re-run isolation)
 - fragment-style targets (``file.md#section``) are handled correctly
 """
@@ -212,6 +213,40 @@ class ValidateRelationsTests(unittest.TestCase):
         errors = self.mod.collect_errors(self.repo, quiet=True)
         self.assertEqual(len(errors), 1)
         self.assertIn("must not be empty", errors[0])
+
+    def test_target_with_leading_trailing_whitespace_is_rejected(self) -> None:
+        """``target: " target.md "`` must fail even if the underlying file exists."""
+        _write(
+            self.repo,
+            "docs/target.md",
+            "---\ntitle: Target\nstatus: active\n---\n# t\n",
+        )
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: ' target.md '\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("leading or trailing whitespace", errors[0])
+
+    def test_type_with_leading_trailing_whitespace_is_rejected(self) -> None:
+        """``type: " references "`` must fail as a distinct whitespace fault."""
+        _write(
+            self.repo,
+            "docs/target.md",
+            "---\ntitle: Target\nstatus: active\n---\n# t\n",
+        )
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: ' references '\n    target: target.md\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("leading or trailing whitespace", errors[0])
 
     def test_fragment_target_resolves_against_file(self) -> None:
         """``file.md#anchor`` should validate the underlying file, not a non-existent path."""
