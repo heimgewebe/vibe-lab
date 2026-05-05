@@ -102,9 +102,9 @@ Diese Datei:
 - [x] Guards blockieren Full-Diffs, übergroße Artefakte und unzulässige Self-Observation.
 
 ## PR 8 — PR-Template-Härtung
-- [ ] `.github/pull_request_template.md` ergänzt.
-- [ ] Claims-Sektion fordert Evidence-Artefakte für Testcount/CI/make/critic-Claims.
-- [ ] Missing-Evidence muss als fehlend markiert sein, nie als Erfolg.
+- [x] `.github/pull_request_template.md` ergänzt.
+- [x] Claims-Sektion fordert Evidence-Artefakte für Testcount/CI/make/critic-Claims.
+- [x] Missing-Evidence muss als fehlend markiert sein, nie als Erfolg.
 
 ## PR 9 — Ersten kontrollierten Agent/Skill-Run erfassen
 - [ ] Neuer Run mit vollständigem Evidence-Pack erfasst.
