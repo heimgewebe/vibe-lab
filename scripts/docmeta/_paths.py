@@ -62,6 +62,27 @@ def write_if_changed(output_path: Path, content: str) -> bool:
     return True
 
 
+def resolve_relation_target(source_file: Path, target: str, repo_root: Path) -> Path | None:
+    """Resolve a relation target to an absolute Path within repo_root.
+
+    Pure fragment targets (e.g. ``#issue``) map back to source_file.
+    Fragment-suffixes on file targets (e.g. ``file.md#section``) are stripped
+    so that the underlying file path is used for resolution; anchor existence is
+    *not* checked.
+    Returns None when the resolved path escapes repo_root (path-escape guard).
+    No URL grammar is introduced.
+    """
+    if target.startswith("#"):
+        return source_file  # pure fragment / issue reference
+    path_part = target.split("#", 1)[0] if "#" in target else target
+    resolved = (source_file.parent / path_part).resolve()
+    try:
+        resolved.relative_to(repo_root)
+    except ValueError:
+        return None  # target escapes repository root
+    return resolved
+
+
 def extract_frontmatter(path: Path) -> dict | None:
     """Liest YAML-Frontmatter aus einer Markdown-Datei.
 

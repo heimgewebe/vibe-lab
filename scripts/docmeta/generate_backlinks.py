@@ -13,39 +13,47 @@ from pathlib import Path
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
-from _paths import should_skip, write_if_changed, extract_frontmatter  # noqa: E402
+from _paths import should_skip, write_if_changed, extract_frontmatter, resolve_relation_target  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = REPO_ROOT / "docs" / "_generated" / "backlinks.md"
 
 
-def main():
-    # backlinks[target] = [(source, relation_type)]
+def collect_backlinks(repo_root: Path) -> dict[str, list[tuple[str, str]]]:
+    """Return a mapping from repo-relative target path → [(source, rel_type)].
+
+    Fragment-suffixes in targets (e.g. ``file.md#section``) are stripped before
+    path resolution so that the backlink is recorded under the file, not the
+    non-existent fragment path.
+    """
     backlinks: dict[str, list[tuple[str, str]]] = defaultdict(list)
-
-    for md_file in sorted(REPO_ROOT.rglob("*.md")):
-        if should_skip(md_file, REPO_ROOT, skip_generated=True):
+    for md_file in sorted(repo_root.rglob("*.md")):
+        if should_skip(md_file, repo_root, skip_generated=True):
             continue
-
         fm = extract_frontmatter(md_file)
         if fm is None or "relations" not in fm:
             continue
-
-        source = str(md_file.relative_to(REPO_ROOT))
+        source = str(md_file.relative_to(repo_root))
         for rel in fm.get("relations", []):
             if not isinstance(rel, dict):
                 continue
             target = rel.get("target", "")
             rel_type = rel.get("type", "unknown")
-            if target.startswith("#"):
+            if not isinstance(target, str) or target.startswith("#"):
                 continue
-            # Resolve to repo-relative path
-            resolved = (md_file.parent / target).resolve()
+            resolved = resolve_relation_target(md_file, target, repo_root)
+            if resolved is None:
+                continue
             try:
-                rel_target = str(resolved.relative_to(REPO_ROOT))
+                rel_target = str(resolved.relative_to(repo_root))
             except ValueError:
                 rel_target = target
             backlinks[rel_target].append((source, rel_type))
+    return backlinks
+
+
+def main():
+    backlinks = collect_backlinks(REPO_ROOT)
 
     lines = [
         "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->",

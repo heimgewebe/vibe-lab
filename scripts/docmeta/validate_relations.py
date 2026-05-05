@@ -12,28 +12,9 @@ from pathlib import Path
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
-from _paths import should_skip, extract_frontmatter  # noqa: E402
+from _paths import should_skip, extract_frontmatter, resolve_relation_target  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-
-
-def resolve_target(source_file: Path, target: str, repo_root: Path = REPO_ROOT) -> Path | None:
-    """Resolve a relation target relative to the source file's directory.
-
-    Returns None if the target resolves outside ``repo_root`` (path-escape guard).
-    Fragment-suffixes (e.g. ``file.md#section``) are stripped before resolution
-    so that the underlying file is validated, not a non-existent fragment path.
-    """
-    if target.startswith("#"):
-        return source_file  # Issue reference, skip
-    # Strip optional #fragment suffix before path resolution
-    path_part = target.split("#", 1)[0] if "#" in target else target
-    resolved = (source_file.parent / path_part).resolve()
-    try:
-        resolved.relative_to(repo_root)
-    except ValueError:
-        return None  # target escapes repository root
-    return resolved
 
 
 def validate_file_relations(
@@ -102,7 +83,7 @@ def validate_file_relations(
         if target.startswith("#"):
             continue
 
-        resolved = resolve_target(md_file, target, repo_root=repo_root)
+        resolved = resolve_relation_target(md_file, target, repo_root)
         if resolved is None:
             errors.append(
                 f"  ❌ {rel_path}: "

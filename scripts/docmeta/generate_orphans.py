@@ -12,7 +12,7 @@ from pathlib import Path
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
-from _paths import should_skip, write_if_changed, extract_frontmatter  # noqa: E402
+from _paths import should_skip, write_if_changed, extract_frontmatter, resolve_relation_target  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = REPO_ROOT / "docs" / "_generated" / "orphans.md"
@@ -33,17 +33,24 @@ ROOT_FILES = {
 }
 
 
-def main():
+def collect_unreferenced(repo_root: Path) -> set[str]:
+    """Return repo-relative paths of markdown files not referenced by any other file.
+
+    Fragment-suffixes in targets (e.g. ``file.md#section``) are stripped before
+    path resolution so that ``target.md`` is counted as referenced, not
+    ``target.md#section`` (a non-existent path).
+    Root files (README etc.) are excluded from the result.
+    """
     all_docs: set[str] = set()
     referenced: set[str] = set()
 
-    for md_file in sorted(REPO_ROOT.rglob("*.md")):
-        if should_skip(md_file, REPO_ROOT, skip_generated=True):
+    for md_file in sorted(repo_root.rglob("*.md")):
+        if should_skip(md_file, repo_root, skip_generated=True):
             continue
-        if "_template" in md_file.relative_to(REPO_ROOT).parts:
+        if "_template" in md_file.relative_to(repo_root).parts:
             continue
 
-        rel_path = str(md_file.relative_to(REPO_ROOT))
+        rel_path = str(md_file.relative_to(repo_root))
         all_docs.add(rel_path)
 
         fm = extract_frontmatter(md_file)
@@ -54,16 +61,22 @@ def main():
             if not isinstance(rel, dict):
                 continue
             target = rel.get("target", "")
-            if target.startswith("#"):
+            if not isinstance(target, str) or target.startswith("#"):
                 continue
-            resolved = (md_file.parent / target).resolve()
+            resolved = resolve_relation_target(md_file, target, repo_root)
+            if resolved is None:
+                continue
             try:
-                ref_path = str(resolved.relative_to(REPO_ROOT))
+                ref_path = str(resolved.relative_to(repo_root))
                 referenced.add(ref_path)
             except ValueError:
                 pass
 
-    orphans = sorted(all_docs - referenced - ROOT_FILES)
+    return all_docs - referenced - ROOT_FILES
+
+
+def main():
+    orphans = sorted(collect_unreferenced(REPO_ROOT))
 
     lines = [
         "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->",
