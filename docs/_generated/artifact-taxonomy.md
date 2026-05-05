@@ -11,14 +11,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 629
-- classified: 629
-  - of which fallback_classified (catch-all rule): 172
-  - fallback_share: 27.3% (172 / 629)
+- total: 726
+- classified: 725
+  - of which fallback_classified (catch-all rule): 235
+  - fallback_share: 32.4% (235 / 725)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 0
+- unknown: 1
 - ambiguous: 0
 - conflict: 0
 
@@ -26,47 +26,49 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
-| agent | 3 |
-| archive | 23 |
+| <none> | 1 |
+| agent | 4 |
+| archive | 24 |
 | capture | 5 |
 | catalog | 12 |
-| contract | 19 |
-| docs | 20 |
-| experiment | 351 |
+| contract | 23 |
+| docs | 28 |
+| experiment | 392 |
 | export | 15 |
 | generated | 8 |
-| governance | 46 |
-| test | 127 |
+| governance | 51 |
+| test | 163 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 15 |
+| decision_record | 18 |
 | diagnostic_signal | 7 |
-| evidence_log | 15 |
+| evidence_log | 16 |
 | generated_projection | 10 |
-| historical_record | 172 |
+| historical_record | 200 |
 | implementation_behavior | 9 |
-| navigation_surface | 8 |
-| normative_contract | 15 |
-| procedure_contract | 84 |
-| raw_capture | 20 |
-| result_interpretation | 51 |
-| runtime_observation | 58 |
-| schema_truth | 12 |
+| navigation_surface | 11 |
+| normative_contract | 16 |
+| procedure_contract | 93 |
+| raw_capture | 21 |
+| result_interpretation | 55 |
+| runtime_observation | 63 |
+| schema_truth | 16 |
 | sovereign_source | 3 |
-| test_expectation | 127 |
-| unknown | 23 |
+| test_expectation | 163 |
+| unknown | 25 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 228 |
-| handcrafted | 344 |
+| <none> | 1 |
+| append_only | 257 |
+| handcrafted | 405 |
 | regenerated | 18 |
-| revision_with_reason | 37 |
+| revision_with_reason | 43 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -75,18 +77,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 229 |
+| ci_blocking | 275 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 228 |
+| no_rewrite | 257 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 189 |
+| review_required | 210 |
 
 ## Unknown artifacts
 
-_none_
+- `.vibe/pr-scope-policy.yml`
 
 ## Ambiguous artifacts
 
@@ -98,6 +100,9 @@ _none_
 
 ## Fallback classified artifacts (catch-all rule, low confidence)
 
+- `docs/evaluations/agent-skill-file-fruitfulness.md`
+- `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
+- `docs/evaluations/rrg03-remediation-strategy-comparison.md`
 - `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/test_processor.py`
@@ -247,6 +252,30 @@ _none_
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/execution-real.txt`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/before.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/expected.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/step-a.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/step-b.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/execution-real.txt`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/fixtures/before.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/fixtures/expected.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/fixtures/step-a.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/fixtures/step-b.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/observed.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/execution-real.txt`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/before.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/expected.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/step-a.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/step-b.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/observed.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/execution-real.txt`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/before.md`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/expected.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/step-a.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/step-b.json`
+- `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/observed.json`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/expected.json`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/step-a.json`
@@ -269,10 +298,47 @@ _none_
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff/phase-1-drift-D1.json`
 - `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md`
 - `experiments/2026-04-23_phase-1-drift-injection/results/README.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml`
 - `experiments/_template/artifacts/README.md`
+- `tests/fixtures/claim_evidence/invalid/bad-schema-version.yml`
+- `tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml`
+- `tests/fixtures/claim_evidence/invalid/missing-run-id.yml`
+- `tests/fixtures/claim_evidence/invalid/path-escape.yml`
+- `tests/fixtures/claim_evidence/invalid/unknown-evidence-status.yml`
+- `tests/fixtures/claim_evidence/valid/external-unverified.yml`
+- `tests/fixtures/claim_evidence/valid/external-verified.yml`
+- `tests/fixtures/claim_evidence/valid/minimal-pass-repo-local.yml`
+- `tests/fixtures/claim_evidence/valid/missing-evidence-verdict.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/ci-pass-without-ci-evidence.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/external-verified-without-sha.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/make-validate-pass-without-command-output.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/make-validate-pass-without-exit-zero.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/missing-evidence-with-invalid-verdict.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/pass-with-external-unverified-only.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/pass-with-missing-evidence.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/testcount-pass-without-test-output.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/missing-evidence-not-pass.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/pass-with-ci-artifact.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/pass-with-derived-auditor-output.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/pass-with-external-verified.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml`
+- `tests/fixtures/pr_scope/invalid/api-dump.json`
+- `tests/fixtures/pr_scope/invalid/full-pr-diff.patch`
+- `tests/fixtures/pr_scope/invalid/self-observation/evidence-pack.yml`
+- `tests/fixtures/pr_scope/invalid/workflow-full-log.txt`
+- `tests/fixtures/pr_scope/valid/changed-files.txt`
+- `tests/fixtures/pr_scope/valid/evidence-pack-with-self-plus-real-evidence.yml`
+- `tests/fixtures/pr_scope/valid/evidence-pack.yml`
+- `tests/fixtures/pr_scope/valid/summary.md`
+- `tests/fixtures/pr_scope/valid/test-output.txt`
 
 ## High-risk artifacts
 
+- `.github/agents/evidence-reconciliation-auditor.agent.md`
 - `.github/agents/experiment-critic-structure-phase1c.agent.md`
 - `.github/agents/experiment-critic.agent.md`
 - `.github/agents/experiment-operator.agent.md`
@@ -285,6 +351,8 @@ _none_
 - `agent-policy.yaml`
 - `contracts/docmeta.schema.json`
 - `contracts/system_decision.schema.json`
+- `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
+- `decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml`
 - `decisions/process/p5-validator-scope-boundary.yml`
 - `decisions/system/2026-04-23-catalog-staleness-dormant.yml`
 - `decisions/system/2026-04-23-metrics-enabled.yml`
@@ -315,6 +383,8 @@ _none_
 - `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 - `experiments/2026-04-23_phase-1-drift-injection/results/decision.yml`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
 - `experiments/_template/results/decision.yml`
 - `experiments/_template/results/evidence.jsonl`
 - `instruction-blocks/constraint-before-code.md`
@@ -324,14 +394,18 @@ _none_
 - `instruction-blocks/validate-against-spec.md`
 - `repo.meta.yaml`
 - `schemas/agent.handoff.schema.json`
+- `schemas/auditor-output.v1.schema.json`
 - `schemas/catalog.entry.schema.json`
 - `schemas/combo.schema.json`
 - `schemas/command.read_context.schema.json`
 - `schemas/command.validate_change.schema.json`
 - `schemas/command.write_change.schema.json`
 - `schemas/decision.schema.json`
+- `schemas/experiment-run-bundle.v1.schema.json`
 - `schemas/experiment.manifest.schema.json`
+- `schemas/measurement-run.v1.schema.json`
 - `schemas/replay.trace.schema.json`
+- `schemas/run-evidence-pack.v1.schema.json`
 - `schemas/run_meta.schema.json`
 
 ## Fallback classified: by matched pattern
@@ -340,8 +414,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 151 | 87.8% |
-| `experiments/**` | 21 | 12.2% |
+| `experiments/*/artifacts/**` | 179 | 76.2% |
+| `tests/fixtures/**` | 32 | 13.6% |
+| `experiments/**` | 21 | 8.9% |
+| `docs/**` | 3 | 1.3% |
 
 ## Residual fallback clusters
 
@@ -355,8 +431,10 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 151 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
+| `experiments/*/artifacts/**` | 179 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
+| `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |
 
 ### Volume-first clusters
 
@@ -364,8 +442,10 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 151 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `premortem.md`=5, `test_injection.py`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 179 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
+| `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |
 
 ## Fallback classified artifacts requiring review
 
@@ -373,26 +453,26 @@ Fallback classifications come from broad catch-all rules (low confidence). High-
 
 | Path | Layer | Kind | Authority | Risk | Matched pattern |
 | ---- | ----- | ---- | --------- | ---- | --------------- |
-| `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py` | experiment | experiment_artifact | historical_record | low | `experiments/**` |
-| `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py` | experiment | experiment_artifact | historical_record | low | `experiments/**` |
-| `experiments/2026-04-12_spec-first-legacy/src/test_processor.py` | experiment | experiment_artifact | historical_record | low | `experiments/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input1.csv` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input2.csv` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input3.csv` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input4.csv` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/inputs/input5.csv` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/cli.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/errors.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/filters.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/index.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/package.json` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/parser.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/transformer.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/tsconfig.json` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental/types.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/index.ts` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/package.json` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
-| `experiments/2026-04-14_incremental-debuggability/artifacts/task2-single-shot/tsconfig.json` | experiment | experiment_artifact | historical_record | low | `experiments/*/artifacts/**` |
+| `tests/fixtures/claim_evidence/invalid/bad-schema-version.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/invalid/missing-run-id.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/invalid/path-escape.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/invalid/unknown-evidence-status.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/valid/external-unverified.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/valid/external-verified.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/valid/minimal-pass-repo-local.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence/valid/missing-evidence-verdict.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/ci-pass-without-ci-evidence.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/external-verified-without-sha.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/make-validate-pass-without-command-output.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/make-validate-pass-without-exit-zero.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/missing-evidence-with-invalid-verdict.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/pass-with-external-unverified-only.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/pass-with-missing-evidence.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/testcount-pass-without-test-output.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/valid/missing-evidence-not-pass.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/valid/pass-with-ci-artifact.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 
 ## Generated artifacts cross-check
 
