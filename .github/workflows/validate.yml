@@ -56,6 +56,12 @@ jobs:
       - name: Test relations validator
         run: python3 scripts/docmeta/test_validate_relations.py
 
+      - name: Test backlinks generator
+        run: python3 scripts/docmeta/test_generate_backlinks.py
+
+      - name: Test orphans generator
+        run: python3 scripts/docmeta/test_generate_orphans.py
+
       - name: Validate interpretation budget
         run: python3 scripts/docmeta/validate_interpretation_budget.py
 
