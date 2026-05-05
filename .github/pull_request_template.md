@@ -14,11 +14,11 @@
 ## Validation
 
 For each check below, provide an Evidence Artifact pointing to a repo-local
-artifact, CI artifact, or externally verified reference. External verified
-evidence must include a stable `source`/`ref` and `sha256` where applicable.
-Do not push large logs or raw artifacts into the repo. If a check did not run
-or evidence was not archived, mark Evidence Status: `missing_evidence` and
-Verdict: `MISSING_EVIDENCE`. Never mark a check PASS without archived evidence.
+artifact, CI artifact, or externally verified reference. `external_verified`
+evidence must include a stable `source`/`ref` and `sha256`. Do not push large
+logs or raw artifacts into the repo. If a check did not run or evidence was not
+archived, mark Evidence Status: `missing_evidence` and Verdict: `MISSING_EVIDENCE`.
+Never mark a check PASS without archived evidence.
 
 - [ ] `make validate`
   - Evidence:
