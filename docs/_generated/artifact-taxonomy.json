@@ -291,16 +291,20 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
+      "authority": "procedure_contract",
       "catchall_match": false,
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "pr_scope_policy",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".vibe/pr-scope-policy.yml"
+      ],
+      "origin": "handcrafted",
       "path": ".vibe/pr-scope-policy.yml",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "procedure_contract",
@@ -8261,6 +8265,22 @@
         "raw-vibes/*.md"
       ],
       "origin": "handcrafted",
+      "path": "raw-vibes/2026-05-05_repo-improvement-audit.md",
+      "status": "classified"
+    },
+    {
+      "authority": "raw_capture",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "raw_capture",
+      "layer": "capture",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "raw-vibes/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "raw-vibes/README.md",
       "status": "classified"
     },
@@ -9031,6 +9051,22 @@
       ],
       "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_pr_scope.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_relations.py",
       "status": "classified"
     },
     {
@@ -12356,60 +12392,56 @@
       "implementation_behavior": 9,
       "navigation_surface": 11,
       "normative_contract": 16,
-      "procedure_contract": 93,
-      "raw_capture": 21,
+      "procedure_contract": 94,
+      "raw_capture": 22,
       "result_interpretation": 55,
       "runtime_observation": 63,
       "schema_truth": 16,
       "sovereign_source": 3,
-      "test_expectation": 163,
-      "unknown": 25
+      "test_expectation": 164,
+      "unknown": 24
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 275,
+      "ci_blocking": 277,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 257,
+      "no_rewrite": 258,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
       "review_required": 210
     },
     "by_layer": {
-      "<none>": 1,
       "agent": 4,
       "archive": 24,
-      "capture": 5,
+      "capture": 6,
       "catalog": 12,
-      "contract": 23,
+      "contract": 24,
       "docs": 28,
       "experiment": 392,
       "export": 15,
       "generated": 8,
       "governance": 51,
-      "test": 163
+      "test": 164
     },
     "by_lifecycle": {
-      "<none>": 1,
-      "append_only": 257,
-      "handcrafted": 405,
+      "append_only": 258,
+      "handcrafted": 407,
       "regenerated": 18,
       "revision_with_reason": 43,
       "superseded_not_rewritten": 2
     },
-    "classified": 725,
+    "classified": 728,
     "conflict": 0,
     "fallback_classified": 235,
-    "fallback_share": 0.32413793103448274,
+    "fallback_share": 0.3228021978021978,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 726,
-    "unknown": 1
+    "total": 728,
+    "unknown": 0
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": [
-    ".vibe/pr-scope-policy.yml"
-  ]
+  "unknown_artifacts": []
 }

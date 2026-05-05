@@ -11,14 +11,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 726
-- classified: 725
+- total: 728
+- classified: 728
   - of which fallback_classified (catch-all rule): 235
-  - fallback_share: 32.4% (235 / 725)
+  - fallback_share: 32.3% (235 / 728)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 1
+- unknown: 0
 - ambiguous: 0
 - conflict: 0
 
@@ -26,18 +26,17 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
-| <none> | 1 |
 | agent | 4 |
 | archive | 24 |
-| capture | 5 |
+| capture | 6 |
 | catalog | 12 |
-| contract | 23 |
+| contract | 24 |
 | docs | 28 |
 | experiment | 392 |
 | export | 15 |
 | generated | 8 |
 | governance | 51 |
-| test | 163 |
+| test | 164 |
 
 ### By authority
 
@@ -51,22 +50,21 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | implementation_behavior | 9 |
 | navigation_surface | 11 |
 | normative_contract | 16 |
-| procedure_contract | 93 |
-| raw_capture | 21 |
+| procedure_contract | 94 |
+| raw_capture | 22 |
 | result_interpretation | 55 |
 | runtime_observation | 63 |
 | schema_truth | 16 |
 | sovereign_source | 3 |
-| test_expectation | 163 |
-| unknown | 25 |
+| test_expectation | 164 |
+| unknown | 24 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| <none> | 1 |
-| append_only | 257 |
-| handcrafted | 405 |
+| append_only | 258 |
+| handcrafted | 407 |
 | regenerated | 18 |
 | revision_with_reason | 43 |
 | superseded_not_rewritten | 2 |
@@ -77,10 +75,10 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 275 |
+| ci_blocking | 277 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 257 |
+| no_rewrite | 258 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
@@ -88,7 +86,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 ## Unknown artifacts
 
-- `.vibe/pr-scope-policy.yml`
+_none_
 
 ## Ambiguous artifacts
 

@@ -144,6 +144,48 @@ class ValidateRelationsTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(first), 1)
 
+    # --- edge cases -----------------------------------------------------
+
+    def test_non_string_target_is_reported(self) -> None:
+        """Non-string target (e.g. integer 42) must not crash the validator."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: 42\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("must be a string", errors[0])
+
+    def test_fragment_target_resolves_against_file(self) -> None:
+        """``file.md#anchor`` should validate the underlying file, not a non-existent path."""
+        _write(
+            self.repo,
+            "docs/target.md",
+            "---\ntitle: Target\nstatus: active\n---\n# Section\n",
+        )
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: target.md#section\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(errors, [])
+
+    def test_fragment_target_with_missing_file_is_reported(self) -> None:
+        """``missing.md#anchor`` should report the file as missing, not silently pass."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: missing.md#section\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("does not exist", errors[0])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
