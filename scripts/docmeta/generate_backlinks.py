@@ -39,7 +39,7 @@ def collect_backlinks(repo_root: Path) -> dict[str, list[tuple[str, str]]]:
                 continue
             target = rel.get("target", "")
             rel_type = rel.get("type", "unknown")
-            if not isinstance(target, str) or target.startswith("#"):
+            if not isinstance(target, str) or target.startswith("#"):  # guard non-string YAML values
                 continue
             resolved = resolve_relation_target(md_file, target, repo_root)
             if resolved is None:

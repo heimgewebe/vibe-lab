@@ -61,7 +61,7 @@ def collect_unreferenced(repo_root: Path) -> set[str]:
             if not isinstance(rel, dict):
                 continue
             target = rel.get("target", "")
-            if not isinstance(target, str) or target.startswith("#"):
+            if not isinstance(target, str) or target.startswith("#"):  # guard non-string YAML values
                 continue
             resolved = resolve_relation_target(md_file, target, repo_root)
             if resolved is None:
