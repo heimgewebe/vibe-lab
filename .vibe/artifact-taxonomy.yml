@@ -117,6 +117,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: .vibe/pr-scope-policy.yml
+    layer: contract
+    kind: pr_scope_policy
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: .vibe/generated-artifacts.yml
     layer: contract
     kind: generated_artifact_contract

@@ -7,6 +7,10 @@ promotion_readiness_freeze:
     covered by an exact allowed_missing signal. Entries must not be broadened;
     remove an entry once the experiment has achieved promotion_ready=true or the
     missing signal no longer applies.
+    Optional pro Eintrag: 'review_date: YYYY-MM-DD' als menschlicher Hinweis, wann der
+    Eintrag spätestens erneut zu prüfen ist. Reine Konvention für menschliche Reviewer —
+    kein Mechanismus, kein CI-Gate. Der Validator ignoriert das Feld bewusst.
+    Zweck: Erinnerungshilfe gegen Silent-Rot, nicht Governance-Erzwingung.
   frozen_at: "2026-04-27"
   experiments:
     - path: experiments/2026-04-12_spec-first-legacy

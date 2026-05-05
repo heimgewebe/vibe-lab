@@ -57,6 +57,7 @@ Die folgenden Dokumente sind kanonisch und werden ausschließlich von Menschen g
 - `repo.meta.yaml`
 - `AGENTS.md`
 - `agent-policy.yaml`
+- `.vibe/pr-scope-policy.yml` (operative Quelle für PR-Scope/Artifact-Boundary; vom Validator `validate_pr_scope.py` gelesen)
 
 ## Verhaltensregeln
 

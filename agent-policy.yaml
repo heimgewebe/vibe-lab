@@ -12,7 +12,7 @@ read_order:
   - docs/index.md
   - "contracts/*"
   - "schemas/*"
-  - ".vibe/*"
+  - ".vibe/*"  # Enthält u. a. pr-scope-policy.yml, generated-artifacts.yml, quality-gates.yml — explizit benannt als kanonische PR-Scope/Artifact-Boundary-Policy
   - "docs/_generated/*"
 
 zones:

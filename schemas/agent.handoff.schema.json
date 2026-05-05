@@ -5,6 +5,11 @@
   "description": "Schema for Critic -> Operator HANDOFF_BLOCK used by experiment-critic and experiment-operator.",
   "type": "object",
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Vorbereitendes Kompatibilitätsfeld (SemVer). Optional und noch ohne Dispatch-Logik oder const-Erzwingung — dient der Versionssichtbarkeit, nicht der Schema-Versionskontrolle. Erst wenn ein const oder Migrationslogik ergänzt wird, wird dieses Feld zu einem echten Governance-Mechanismus."
+    },
     "status": {
       "type": "string",
       "enum": ["PASS", "PARTIAL", "FAIL"]

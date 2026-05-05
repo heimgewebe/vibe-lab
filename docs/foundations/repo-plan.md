@@ -77,8 +77,8 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 
 **Umsetzungs-Checkliste Phase C:**
 - [x] **Instruction Blocks (IR) & Exports:** `instruction-blocks/` ist etabliert, und ein CI-Schritt generiert `exports/`.
-- [ ] **Export-Konflikt-Gate & Orphan-Check:** Der Build-Prozess schlägt bei Export-Kollisionen hart fehl; ungenutzte Exporte werden erkannt.
-- [ ] **Export-Herkunft:** Generierte Exporte dokumentieren maschinenlesbar ihre deterministische Herkunft (`source`, `generator`, `source_hash`; kein Timestamp).
+- [x] **Export-Konflikt-Gate & Orphan-Check:** `scripts/exports/validate_export_parity.py` blockiert Kollisionen, Orphans und Missing-Targets im CI (`make validate-export-parity`).
+- [x] **Export-Herkunft:** Generierte Exporte dokumentieren `source`, `generator` und `source-hash` (siehe `exports/copilot/*.md` Header und `scripts/exports/generate_exports.py:_build_header`); kein Timestamp.
 - [ ] **Wissensverfall (Staleness):** Katalogeinträge nutzen `last_validated`, `review_cycle`, und `next_review_due`. Der Generator `generate_stale_entries.py` läuft.
 - [x] **Leichtgewichtiges Metrik-Dashboard:** Trends aus `evidence.jsonl` werden decision-gated nach `docs/_generated/metrics/` exportiert.
 - [ ] **Frühe Diagnose-Kopplung:** Generatoren wie `generate_weak_links.py` laufen und koppeln an das Staleness-Signal zur automatischen Ticketgenerierung.
@@ -90,7 +90,7 @@ Um nicht an vorzeitiger Komplexität zu scheitern, gliedert sich der Aufbau stru
 - [x] Änderungen in der IR (`instruction-blocks/`) lösen automatisiert Exporte aus.
 - [ ] Veraltete Katalogeinträge werden durch `stale-entries.md` oder Issues sichtbar gemacht.
 - [x] Ein Metrik-Trend aus `evidence.jsonl` ist in `docs/_generated/metrics/` ablesbar.
-- [ ] Export-Konflikte führen verlässlich zu einem abbrechenden Build.
+- [x] Export-Konflikte führen verlässlich zu einem abbrechenden Build (`validate_export_parity.py` als blocking CI-Step).
 
 ### D. Spätphase / Optionale Schicht
 *Erstrebenswert für Distribution und Skalierung im Ökosystem.*
