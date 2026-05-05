@@ -12,7 +12,7 @@ read_order:
   - docs/index.md
   - "contracts/*"
   - "schemas/*"
-  - ".vibe/*"
+  - ".vibe/*"  # inkl. pr-scope-policy.yml, generated-artifacts.yml, quality-gates.yml u. a.
   - "docs/_generated/*"
 
 zones:

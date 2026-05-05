@@ -34,9 +34,12 @@ except ImportError:
     print("ERROR: Missing dependency. Run: pip install pyyaml")
     sys.exit(1)
 
-# Pfade auf _paths.py-Konventionen (write_if_changed etc.) verzichten —
-# dieser Validator schreibt nichts, er liest und meldet nur.
+# Gemeinsame Pfad-Logik (Frontmatter-Extraktion) aus scripts/docmeta/_paths.py.
+# Vermeidet Drift zwischen lokalem Re-Implementat und kanonischem Helper.
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(REPO_ROOT / "scripts" / "docmeta"))
+from _paths import extract_frontmatter as _extract_frontmatter  # noqa: E402
+
 EXPERIMENTS_DIR = REPO_ROOT / "experiments"
 CATALOG_DIR = REPO_ROOT / "catalog"
 PROMPTS_DIR = REPO_ROOT / "prompts" / "adopted"
@@ -53,23 +56,6 @@ def _load_manifest(path: Path) -> dict:
     if not isinstance(data, dict):
         raise ValueError(f"manifest root must be a mapping, got {type(data).__name__}")
     return data
-
-
-def _extract_frontmatter(path: Path) -> dict | None:
-    """Liest YAML-Frontmatter aus Markdown-Datei."""
-    try:
-        text = path.read_text(encoding="utf-8")
-    except Exception:
-        return None
-    if not text.startswith("---"):
-        return None
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return None
-    try:
-        return yaml.safe_load(parts[1]) or {}
-    except yaml.YAMLError:
-        return None
 
 
 def _matches_experiment(value: str, base_dir: Path, exp_dir: Path) -> bool:

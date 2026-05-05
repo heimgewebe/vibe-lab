@@ -53,6 +53,9 @@ jobs:
       - name: Validate relations
         run: python3 scripts/docmeta/validate_relations.py
 
+      - name: Test relations validator
+        run: python3 scripts/docmeta/test_validate_relations.py
+
       - name: Validate interpretation budget
         run: python3 scripts/docmeta/validate_interpretation_budget.py
 

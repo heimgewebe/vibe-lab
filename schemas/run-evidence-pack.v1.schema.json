@@ -53,14 +53,14 @@
         },
         "verdict": {
           "type": "string",
-          "$comment": "PR 4 validates verdict vocabulary only. Semantic claim/evidence compatibility is enforced later by the PR 5 validator.",
+          "$comment": "PR 4 validates verdict vocabulary only. Semantic claim/evidence compatibility is enforced later by the PR 5 validator. Order matches auditor-output.v1, measurement-run.v1, experiment-run-bundle.v1.",
           "enum": [
             "PASS",
             "CLAIM_NOT_PROVEN",
-            "NOT_REPRODUCIBLE",
+            "CONTRADICTION",
             "MISSING_EVIDENCE",
             "OUT_OF_SCOPE",
-            "CONTRADICTION"
+            "NOT_REPRODUCIBLE"
           ]
         },
         "evidence": {

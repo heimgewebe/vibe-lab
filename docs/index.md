@@ -22,6 +22,8 @@ relations:
   - type: references
     target: playbooks/evidence-control-plane-roadmap-checklist.md
   - type: references
+    target: playbooks/plan-execution-checklist.md
+  - type: references
     target: ../catalog/combos/spec-first-constraint-control.md
   - type: references
     target: ../catalog/combos/spec-first-anti-pattern-awareness.md
@@ -157,6 +159,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 - [Reconciliation](playbooks/reconciliation.md)
 - [Build a Reliable Prompt](playbooks/build-reliable-prompt.md)
 - [Evidence-Control-Plane v1 — Roadmap](playbooks/evidence-control-plane-roadmap-checklist.md)
+- [Plan-Execution Checklist](playbooks/plan-execution-checklist.md)
 
 ## Bibliothek
 
