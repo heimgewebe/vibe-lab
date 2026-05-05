@@ -65,17 +65,31 @@ def validate_file_relations(
             errors.append(f"  ❌ {rel_path}: relation entry must be an object")
             continue
 
-        rel_type = rel.get("type")
-        target = rel.get("target")
-
-        if not rel_type or not target:
+        # 1. Key presence check (key absent vs. key present but wrong type are distinct faults)
+        if "type" not in rel or "target" not in rel:
             errors.append(f"  ❌ {rel_path}: relation missing 'type' or 'target'")
             continue
 
+        rel_type = rel["type"]
+        target = rel["target"]
+
+        # 2. Type checks (must precede emptiness checks so the diagnostic is accurate)
+        if not isinstance(rel_type, str):
+            errors.append(
+                f"  ❌ {rel_path}: relation 'type' must be a string, got {type(rel_type).__name__}"
+            )
+            continue
         if not isinstance(target, str):
             errors.append(
                 f"  ❌ {rel_path}: relation 'target' must be a string, got {type(target).__name__}"
             )
+            continue
+
+        # 3. Emptiness check (strip whitespace so "   " is treated the same as "")
+        rel_type = rel_type.strip()
+        target = target.strip()
+        if not rel_type or not target:
+            errors.append(f"  ❌ {rel_path}: relation 'type' and 'target' must not be empty")
             continue
 
         # Skip issue references

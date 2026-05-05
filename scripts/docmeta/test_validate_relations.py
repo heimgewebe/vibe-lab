@@ -8,8 +8,11 @@ Covers:
 - non-list ``relations`` field is rejected
 - non-mapping relation entries are rejected
 - ``#issue`` references are skipped
-- missing type/target is rejected
+- missing type/target key is rejected
+- present but non-string type or target gets a precise type-error message
+- blank/whitespace-only type or target is rejected
 - module call leaves no global state behind (re-run isolation)
+- fragment-style targets (``file.md#section``) are handled correctly
 """
 
 from __future__ import annotations
@@ -147,7 +150,7 @@ class ValidateRelationsTests(unittest.TestCase):
     # --- edge cases -----------------------------------------------------
 
     def test_non_string_target_is_reported(self) -> None:
-        """Non-string target (e.g. integer 42) must not crash the validator."""
+        """Non-string target (e.g. integer 42) must produce a type-error, not a crash."""
         _write(
             self.repo,
             "docs/source.md",
@@ -157,6 +160,58 @@ class ValidateRelationsTests(unittest.TestCase):
         errors = self.mod.collect_errors(self.repo, quiet=True)
         self.assertEqual(len(errors), 1)
         self.assertIn("must be a string", errors[0])
+        self.assertIn("'target'", errors[0])
+
+    def test_false_target_is_reported_as_type_error(self) -> None:
+        """``target: false`` must produce a type-error, not a 'missing' diagnostic."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: false\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("must be a string", errors[0])
+        self.assertIn("'target'", errors[0])
+
+    def test_zero_target_is_reported_as_type_error(self) -> None:
+        """``target: 0`` must produce a type-error, not a 'missing' diagnostic."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: 0\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("must be a string", errors[0])
+        self.assertIn("'target'", errors[0])
+
+    def test_non_string_type_is_reported(self) -> None:
+        """``type: false`` must produce a type-error for 'type', not a 'missing' diagnostic."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: false\n    target: target.md\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("must be a string", errors[0])
+        self.assertIn("'type'", errors[0])
+
+    def test_blank_string_target_is_reported_as_empty(self) -> None:
+        """Whitespace-only ``target`` must be rejected as empty, not resolved as a directory."""
+        _write(
+            self.repo,
+            "docs/source.md",
+            "---\ntitle: Source\nstatus: active\nrelations:\n"
+            "  - type: references\n    target: '   '\n---\n",
+        )
+        errors = self.mod.collect_errors(self.repo, quiet=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("must not be empty", errors[0])
 
     def test_fragment_target_resolves_against_file(self) -> None:
         """``file.md#anchor`` should validate the underlying file, not a non-existent path."""
