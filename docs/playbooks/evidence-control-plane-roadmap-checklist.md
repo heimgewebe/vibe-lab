@@ -61,7 +61,7 @@ Diese Datei:
 - [x] Policies deklarieren: keine aktive Enforcement-Regel ohne Schema/Script/Make/CI-Integration.
 
 ## PR 3 — Playbook pr-run-evidence-pack
-- [ ] `docs/playbooks/pr-run-evidence-pack.md` erstellt.
+- [x] `docs/playbooks/pr-run-evidence-pack.md` erstellt.
 
 ## PR 4 — Evidence-Pack-Schema + Fixtures
 - [ ] `schemas/run-evidence-pack.v1.schema.json` erstellt.

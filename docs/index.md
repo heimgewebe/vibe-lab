@@ -18,6 +18,8 @@ relations:
   - type: references
     target: playbooks/reconciliation.md
   - type: references
+    target: playbooks/pr-run-evidence-pack.md
+  - type: references
     target: playbooks/build-reliable-prompt.md
   - type: references
     target: playbooks/evidence-control-plane-roadmap-checklist.md
@@ -155,6 +157,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 ## Playbooks
 
 - [Reconciliation](playbooks/reconciliation.md)
+- [PR Run Evidence Pack](playbooks/pr-run-evidence-pack.md)
 - [Build a Reliable Prompt](playbooks/build-reliable-prompt.md)
 - [Evidence-Control-Plane v1 — Roadmap](playbooks/evidence-control-plane-roadmap-checklist.md)
 
