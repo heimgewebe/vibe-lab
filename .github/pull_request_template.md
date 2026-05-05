@@ -15,22 +15,25 @@
 
 For each check below, provide an Evidence path pointing to a repo-local artifact
 (e.g. a captured output file). If a check did not run or the evidence was not
-archived, mark it `Evidence Status: missing_evidence` and set Verdict:
-`MISSING_EVIDENCE`. Never mark a check PASS without archived evidence.
+archived, mark Evidence Status: `missing_evidence` and Verdict: `MISSING_EVIDENCE`.
+Never mark a check PASS without archived evidence.
 
-- [ ] Ran relevant checks locally (list below)
-- [ ] CI checks passed or expected deltas explained
-
-Checks run:
-
-- make validate
+- [ ] `make validate`
   - Evidence:
-- Relevant targeted tests
+  - Evidence Status:
+  - Verdict:
+- [ ] Relevant targeted tests
   - Evidence:
-- CI result
+  - Evidence Status:
+  - Verdict:
+- [ ] CI result
   - Evidence:
-- Critic/auditor/agent review, if claimed
+  - Evidence Status:
+  - Verdict:
+- [ ] Critic/auditor/agent review, if claimed
   - Evidence:
+  - Evidence Status:
+  - Verdict:
 
 ## Claims and Evidence
 
@@ -44,6 +47,9 @@ Checks run:
 
 **Verdict values** (uppercase): `PASS`, `MISSING_EVIDENCE`, `CLAIM_NOT_PROVEN`.
 
+**Claim Type values**: `command_result`, `test_result`, `ci_result`, `critic_usage`,
+`auditor_usage`, `agent_usage`.
+
 **Rules:**
 - No test-count claim without a test-output evidence artifact.
 - No CI-success claim without CI evidence.
@@ -54,7 +60,9 @@ Checks run:
 - Claims without evidence must be `MISSING_EVIDENCE` or `CLAIM_NOT_PROVEN`.
 
 ## Agents and Evidence
-<!-- If an agent report exists, link it and keep this section brief. -->
+<!-- If an agent, critic, or auditor was used, record the claim in the Claims and
+Evidence table above. Use this section only for a short pointer to the archived
+artifact. -->
 
 ## Risks / Not Done
 <!-- Known limits, follow-ups, or intentionally deferred work -->
