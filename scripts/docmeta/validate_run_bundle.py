@@ -90,6 +90,35 @@ VALIDATION_GAP_TYPES: frozenset[str] = frozenset({"command_succeeded", "validato
 _BUNDLE_SCHEMA_NAME = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
+_EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
+_LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
+
+# Modul-level Warnliste — wird zu Beginn jedes validate_repo()-Aufrufs zurückgesetzt.
+# Allows tests to inspect warnings without modifying the return type of validate_repo().
+last_warnings: list[str] = []
+
+_DEFAULT_STRONG_EVIDENCE_STATUSES = frozenset(
+    {"repo_local", "ci_artifact", "external_verified", "derived_from_auditor_output"}
+)
+
+try:
+    import validate_claim_evidence as _claim_evidence  # type: ignore
+except ImportError as _semantic_import_error:
+    validate_claim_evidence_file = None  # type: ignore[assignment]
+    STRONG_EVIDENCE_STATUSES = _DEFAULT_STRONG_EVIDENCE_STATUSES
+    _SEMANTIC_IMPORT_ERROR = _semantic_import_error
+else:
+    validate_claim_evidence_file = getattr(_claim_evidence, "validate_file", None)
+    strong_statuses = getattr(
+        _claim_evidence,
+        "STRONG_EVIDENCE_STATUSES",
+        _DEFAULT_STRONG_EVIDENCE_STATUSES,
+    )
+    if isinstance(strong_statuses, (set, frozenset, list, tuple)):
+        STRONG_EVIDENCE_STATUSES = frozenset(str(s) for s in strong_statuses)
+    else:
+        STRONG_EVIDENCE_STATUSES = _DEFAULT_STRONG_EVIDENCE_STATUSES
+    _SEMANTIC_IMPORT_ERROR = None
 
 
 # ---------------------------------------------------------------------------
@@ -174,6 +203,123 @@ def _compute_max_severity(verdicts: Iterable[str]) -> str:
     return best
 
 
+def _load_missing_evidence_pack_allowlist(repo_root: Path) -> tuple[set[str], list[str]]:
+    """Lädt und validiert die Legacy-Allowlist für fehlende evidence_pack-Referenzen.
+
+    Rückgabe:
+      - erlaubte run.yml Pfade (repo-root-relativ)
+      - Validierungsfehler der Allowlist (duplikate, stale, missing targets, ...)
+    """
+    path = repo_root / ".vibe" / _LEGACY_EVIDENCE_PACK_BASELINE
+    if not path.is_file():
+        return set(), []
+
+    try:
+        data = _load_yaml(path)
+    except Exception as e:
+        return set(), [f"  ❌ {path.relative_to(repo_root)}: YAML-Fehler — {e}"]
+
+    errors: list[str] = []
+    if not isinstance(data, dict):
+        return set(), [
+            f"  ❌ {path.relative_to(repo_root)}: Datei muss ein YAML-Objekt sein."
+        ]
+
+    top_level_keys = set(data.keys())
+    allowed_top_level_keys = {"schema_version", "allowed_missing_evidence_pack"}
+    unexpected_top_level = sorted(top_level_keys - allowed_top_level_keys)
+    if unexpected_top_level:
+        return set(), [
+            f"  ❌ {path.relative_to(repo_root)}: Unbekannte Top-Level-Felder: {', '.join(unexpected_top_level)}."
+        ]
+
+    schema_version = data.get("schema_version")
+    if schema_version != "1.0.0":
+        return set(), [
+            f"  ❌ {path.relative_to(repo_root)}: schema_version muss exakt '1.0.0' sein."
+        ]
+
+    entries = data.get("allowed_missing_evidence_pack", [])
+    if not isinstance(entries, list):
+        return set(), [
+            f"  ❌ {path.relative_to(repo_root)}: allowed_missing_evidence_pack muss eine Liste sein."
+        ]
+
+    allowed: set[str] = set()
+    for idx, entry in enumerate(entries, 1):
+        if not isinstance(entry, dict):
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} muss ein Objekt sein."
+            )
+            continue
+
+        entry_keys = set(entry.keys())
+        allowed_entry_keys = {"path", "reason"}
+        unexpected_entry = sorted(entry_keys - allowed_entry_keys)
+        if unexpected_entry:
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} enthält unbekannte Felder: {', '.join(unexpected_entry)}."
+            )
+            continue
+
+        raw_ref = entry.get("path")
+        if not isinstance(raw_ref, str) or not raw_ref.strip():
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} hat ungültiges 'path'."
+            )
+            continue
+
+        reason = entry.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} hat ungültiges 'reason'."
+            )
+            continue
+
+        target = _resolve_within(repo_root, raw_ref)
+        if target is None:
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} path='{raw_ref}' verlässt das Repo."
+            )
+            continue
+        if not target.is_file():
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} path='{raw_ref}' zeigt nicht auf eine existierende Datei."
+            )
+            continue
+        if target.name != "run.yml":
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} path='{raw_ref}' muss auf run.yml zeigen."
+            )
+            continue
+
+        rel_target = str(target.relative_to(repo_root))
+        if rel_target in allowed:
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Duplikat-Eintrag für '{rel_target}'."
+            )
+            continue
+
+        # Ratchet: stale Allowlist-Einträge sind nicht erlaubt.
+        try:
+            run_data = _load_yaml(target)
+        except Exception as e:
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag '{rel_target}' ist nicht lesbar — {e}."
+            )
+            continue
+        artifacts = run_data.get("artifacts", {}) if isinstance(run_data, dict) else {}
+        if isinstance(artifacts, dict) and "evidence_pack" in artifacts:
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Stale Allowlist-Eintrag '{rel_target}' — run.yml enthält bereits artifacts.evidence_pack."
+            )
+            continue
+
+        allowed.add(rel_target)
+
+    return allowed, errors
+
+
 # ---------------------------------------------------------------------------
 # Kern-Validierung als pure Funktion (für Tests einfach aufrufbar)
 # ---------------------------------------------------------------------------
@@ -187,7 +333,14 @@ def validate_repo(repo_root: Path) -> list[str]:
 
     Gibt eine Liste menschlich lesbarer Fehlermeldungen zurück. Eine leere
     Liste bedeutet: alle Cross-File-Regeln passen.
+
+    Warnungen (kein Fehler) werden zusätzlich in das Modul-Attribut
+    last_warnings geschrieben. Dieses wird zu Beginn jedes Aufrufs
+    zurückgesetzt — auch beim Early Return.
     """
+    global last_warnings
+    last_warnings = []
+
     errors: list[str] = []
     experiments_dir = repo_root / "experiments"
     if not experiments_dir.is_dir():
@@ -198,6 +351,9 @@ def validate_repo(repo_root: Path) -> list[str]:
     bundle_validator = _build_validator(schemas_dir / _BUNDLE_SCHEMA_NAME)
     auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
     measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
+    evidence_pack_validator = _build_validator(schemas_dir / _EVIDENCE_PACK_SCHEMA_NAME)
+    missing_ep_allowlist, allowlist_errors = _load_missing_evidence_pack_allowlist(repo_root)
+    errors.extend(allowlist_errors)
 
     for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
         exp_dir = manifest_path.parent
@@ -304,10 +460,214 @@ def validate_repo(repo_root: Path) -> list[str]:
                     bundle_validator=bundle_validator,
                     auditor_validator=auditor_validator,
                     measurement_validator=measurement_validator,
+                    evidence_pack_validator=evidence_pack_validator,
+                    missing_ep_allowlist=missing_ep_allowlist,
                     errors=errors,
                 )
 
     return errors
+
+
+def _validate_evidence_pack(
+    *,
+    repo_root: Path,
+    run_dir: Path,
+    run_id: str | None,
+    ep_artifact: dict | None,
+    evidence_pack_validator: Draft202012Validator,
+    missing_ep_allowlist: set[str],
+    errors: list[str],
+    rel_run: Path,
+) -> None:
+    """Evidence-Pack-Kopplung: PR-6-Regel.
+
+        Wenn artifacts.evidence_pack fehlt:
+            - warnen, falls run.yml in der Legacy-Allowlist steht
+            - Fehler, falls run.yml nicht allowlisted ist
+    Wenn vorhanden → vollständige Validierung:
+    - Pflichtfelder (contract, canonical) strukturell
+    - path-Escape-Schutz
+    - Datei-Existenz
+    - Schema-Validierung gegen run-evidence-pack.v1.schema.json
+    - run_id-Übereinstimmung
+    - repo_local Evidence-Pfade existieren und verlassen nicht das Repo
+    - PASS nicht mit missing_evidence/external_unverified/self_reported
+    - Kein Self-Observation-PASS (EP beweist nur sich selbst)
+    """
+    global last_warnings
+
+    if ep_artifact is None:
+        run_yml_rel = str((run_dir / "run.yml").relative_to(repo_root))
+        if run_yml_rel in missing_ep_allowlist:
+            last_warnings.append(
+                f"  ⚠️  {rel_run}/run.yml: artifacts.evidence_pack fehlt "
+                f"(run_bundle_without_evidence_pack). Legacy-Allowlist greift."
+            )
+        else:
+            errors.append(
+                f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack fehlt "
+                f"(run_bundle_missing_evidence_pack_not_allowlisted)."
+            )
+        return
+
+    if not isinstance(ep_artifact, dict):
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack muss ein Objekt sein."
+        )
+        return
+
+    # Pflichtfelder prüfen (strukturell, vor Datei-Zugriff)
+    contract = ep_artifact.get("contract")
+    canonical = ep_artifact.get("canonical")
+    path_str = ep_artifact.get("path")
+
+    if contract != "run-evidence-pack.v1":
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.contract='{contract}' "
+            f"muss exakt 'run-evidence-pack.v1' sein."
+        )
+        return
+
+    if canonical is not True:
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.canonical={canonical!r} "
+            f"muss exakt true sein."
+        )
+        return
+
+    if not isinstance(path_str, str) or not path_str:
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path fehlt."
+        )
+        return
+
+    # Pfad-Escape-Schutz: kein absoluter Pfad, kein .., kein Backslash
+    import re as _re
+    _BAD_PATH_PATTERN = _re.compile(
+        r"^(?:/|[A-Za-z]:)|(?:(?:^|/)\.\.(?:/|$))|\\",
+        _re.MULTILINE,
+    )
+    if _BAD_PATH_PATTERN.search(path_str):
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path '{path_str}' "
+            f"ist unzulässig (absoluter Pfad, ..-Escape oder Backslash)."
+        )
+        return
+
+    ep_path = _resolve_within_run_dir(run_dir, path_str)
+    if ep_path is None:
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path '{path_str}' "
+            f"verlässt das Run-Verzeichnis."
+        )
+        return
+
+    if not ep_path.is_file():
+        errors.append(
+            f"  ❌ {rel_run}/run.yml: artifacts.evidence_pack.path '{path_str}' "
+            f"existiert nicht (erwartet unter {ep_path.relative_to(repo_root)})."
+        )
+        return
+
+    # Evidence-Pack laden und gegen Schema validieren.
+    try:
+        ep_data = _load_yaml(ep_path)
+    except Exception as e:
+        errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: YAML-Fehler — {e}")
+        return
+
+    try:
+        evidence_pack_validator.validate(ep_data)
+    except ValidationError as e:
+        errors.append(
+            f"  ❌ {ep_path.relative_to(repo_root)}: schema-invalid — {e.message} "
+            f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
+        )
+        return
+
+    # run_id-Übereinstimmung
+    ep_run_id = ep_data.get("run_id")
+    if run_id and ep_run_id and ep_run_id != run_id:
+        errors.append(
+            f"  ❌ {ep_path.relative_to(repo_root)}: run_id='{ep_run_id}' "
+            f"stimmt nicht mit run.yml run.id='{run_id}' überein."
+        )
+        return
+
+    # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
+    for claim in ep_data.get("claims", []):
+        claim_id = claim.get("claim_id", "<missing>")
+        for ev_entry in claim.get("evidence", []):
+            if not isinstance(ev_entry, dict):
+                continue
+            if ev_entry.get("status") != "repo_local":
+                continue
+            ev_path_str = ev_entry.get("path", "")
+            if not ev_path_str:
+                continue
+            # Escape-Check (repo_local Pfade sind repo-root-relativ)
+            ev_target = _resolve_within(repo_root, ev_path_str)
+            if ev_target is None:
+                errors.append(
+                    f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim_id}' "
+                    f"repo_local Evidence-Pfad '{ev_path_str}' verlässt das Repo."
+                )
+                continue
+            if not ev_target.is_file():
+                errors.append(
+                    f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim_id}' "
+                    f"repo_local Evidence-Pfad '{ev_path_str}' existiert nicht."
+                )
+
+    # Self-Observation-Check: PASS-Claim darf nicht ausschließlich auf das
+    # Evidence-Pack selbst verweisen. Auch run_bundle_evidence_pack_reference
+    # benötigt mindestens ein weiteres, von ep_path verschiedenes Artefakt.
+    ep_resolved = ep_path.resolve()
+    for claim in ep_data.get("claims", []):
+        if str(claim.get("verdict", "")) != "PASS":
+            continue
+        claim_type = str(claim.get("type", ""))
+        ev_entries = [ev for ev in claim.get("evidence", []) if isinstance(ev, dict)]
+        ev_paths_in_claim = [str(ev.get("path", "")) for ev in ev_entries]
+        if not ev_paths_in_claim:
+            continue
+
+        has_strong_non_self_reference = False
+        for ev in ev_entries:
+            status = str(ev.get("status", ""))
+            if status not in STRONG_EVIDENCE_STATUSES:
+                continue
+            p = str(ev.get("path", ""))
+            if not p:
+                continue
+            try:
+                resolved_ev = (repo_root / p).resolve()
+            except (ValueError, OSError):
+                continue
+            if resolved_ev != ep_resolved:
+                has_strong_non_self_reference = True
+                break
+
+        if not has_strong_non_self_reference:
+            errors.append(
+                f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim.get('claim_id')}' "
+                f"PASS-Claim vom Typ '{claim_type}' basiert ausschließlich auf dem "
+                f"Evidence-Pack selbst oder auf schwacher non-self Evidence (Self-Observation)."
+            )
+
+    # Semantische Claim-Evidence-Prüfung via vollständiger Validator-Delegation.
+    # Dadurch folgen file-level und claim-level Regeln konsistent validate_claim_evidence.py.
+    if validate_claim_evidence_file is None:
+        errors.append(
+            f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "
+            f"nicht verfügbar (ImportError: {_SEMANTIC_IMPORT_ERROR})."
+        )
+        return
+    sem_exit_code, sem_errors = validate_claim_evidence_file(ep_path, evidence_pack_validator)
+    if sem_exit_code != 0:
+        for sem_err in sem_errors:
+            errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
+        return
 
 
 def _validate_run_dir(
@@ -320,6 +680,8 @@ def _validate_run_dir(
     bundle_validator: Draft202012Validator,
     auditor_validator: Draft202012Validator,
     measurement_validator: Draft202012Validator,
+    evidence_pack_validator: Draft202012Validator,
+    missing_ep_allowlist: set[str],
     errors: list[str],
 ) -> None:
     """Validiert ein einzelnes artifacts/<run-id>/-Verzeichnis."""
@@ -380,6 +742,9 @@ def _validate_run_dir(
                 )
             artifacts = bundle.get("artifacts", {}) or {}
             for key, artifact in artifacts.items():
+                # evidence_pack wird separat nach diesem Loop behandelt — kein Doppelfehler.
+                if key == "evidence_pack":
+                    continue
                 if not isinstance(artifact, dict):
                     continue
                 path_str = artifact.get("path")
@@ -409,6 +774,20 @@ def _validate_run_dir(
                         f"Projektion ('{path_str}') als canonical=true. Markdown ist "
                         f"Projektion, nicht maschinelle Wahrheit."
                     )
+
+            # Evidence-Pack-Kopplung (PR 6)
+            ep_artifact = artifacts.get("evidence_pack")
+            run_id_for_ep = (bundle.get("run", {}) or {}).get("id")
+            _validate_evidence_pack(
+                repo_root=repo_root,
+                run_dir=run_dir,
+                run_id=run_id_for_ep,
+                ep_artifact=ep_artifact,
+                evidence_pack_validator=evidence_pack_validator,
+                missing_ep_allowlist=missing_ep_allowlist,
+                errors=errors,
+                rel_run=rel_run,
+            )
 
     # R6: auditor-output.yml
     auditor_data: dict | None = None
@@ -618,6 +997,9 @@ def _check_measurement_semantics(measurement: dict, auditor: dict) -> list[str]:
 def main() -> int:
     print("🧷 Validating experiment run bundles...")
     errors = validate_repo(REPO_ROOT)
+    if last_warnings:
+        for warning in last_warnings:
+            print(warning)
     if errors:
         print("❌ Run-Bundle validation FAILED:")
         for err in errors:

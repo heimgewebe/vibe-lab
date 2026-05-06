@@ -41,6 +41,7 @@
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
+| `docs/playbooks/pr-run-evidence-pack.md` | Playbook: PR Run Evidence Pack | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
 | `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | active | exploratory |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |

@@ -1,0 +1,16 @@
+# Evidence Pack for Run-001 — PR-6-Recovery Coupling
+# Schema: schemas/run-evidence-pack.v1.schema.json
+# Minimal claim: this evidence pack exists and is coupled via run.yml.
+
+schema_version: "1.0.0"
+run_id: "run-001-promotion-readiness-prepared-without-measurement"
+claims:
+  - claim_id: "pack-001"
+    text: "Evidence pack is structurally present and coupled to run bundle"
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml"
+        status: "repo_local"
