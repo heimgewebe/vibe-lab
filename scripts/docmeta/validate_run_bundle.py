@@ -108,7 +108,7 @@ except ImportError as _semantic_import_error:
     STRONG_EVIDENCE_STATUSES = _DEFAULT_STRONG_EVIDENCE_STATUSES
     _SEMANTIC_IMPORT_ERROR = _semantic_import_error
 else:
-    validate_claim_evidence_file = _claim_evidence.validate_file
+    validate_claim_evidence_file = getattr(_claim_evidence, "validate_file", None)
     strong_statuses = getattr(
         _claim_evidence,
         "STRONG_EVIDENCE_STATUSES",
