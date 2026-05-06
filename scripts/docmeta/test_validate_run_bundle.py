@@ -244,7 +244,6 @@ def _build_valid_bundle(base: Path) -> Path:
     _write(run_dir / "auditor-output.yml", _valid_auditor_yml())
     _write(run_dir / "measurement.yml", _valid_measurement_yml())
     (run_dir / "run_meta.json").write_text(_valid_run_meta_json(), encoding="utf-8")
-    _write_legacy_allowlist(base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
     return exp
 
 
@@ -367,10 +366,12 @@ class RepoLevelTests(unittest.TestCase):
     def test_valid_executed_bundle_with_run_yml_in_refs_passes(self) -> None:
         """R2+R3+R8: valid executed run with run.yml listed in execution_refs."""
         _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
         self.assertEqual(validate_repo(self.base), [])
 
     def test_canonical_false_md_present_but_unreferenced_passes(self) -> None:
         exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
         run_dir = exp / "artifacts" / "run-001"
         _write(
             run_dir / "auditor-output.md",
@@ -1439,6 +1440,7 @@ class RepoLevelTests(unittest.TestCase):
     def test_execution_ref_dot_slash_results_evidence_jsonl_is_accepted(self) -> None:
         """./results/evidence.jsonl must be accepted as equivalent to results/evidence.jsonl."""
         exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
         # Replace manifest with a dot-slash prefixed evidence ref.
         _write(
             exp / "manifest.yml",
@@ -1466,6 +1468,7 @@ class RepoLevelTests(unittest.TestCase):
     def test_execution_ref_dot_slash_run_yml_is_accepted(self) -> None:
         """./artifacts/run-001/run.yml must be accepted as equivalent to artifacts/run-001/run.yml."""
         exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
         _write(
             exp / "manifest.yml",
             """
@@ -1619,7 +1622,8 @@ class RepoLevelTests(unittest.TestCase):
 
     def test_missing_evidence_pack_generates_warning_no_error(self) -> None:
         """Missing artifacts.evidence_pack → warning, but no error (legacy)."""
-        exp = _build_valid_bundle(self.base)
+        _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
         # Valid bundle without evidence_pack — should warn, not error.
         errs = validate_repo(self.base)
         self.assertEqual(errs, [])
@@ -1649,6 +1653,7 @@ class RepoLevelTests(unittest.TestCase):
     def test_stale_allowlist_entry_for_run_with_evidence_pack_fails(self) -> None:
         """Allowlist entries become stale when run.yml already contains artifacts.evidence_pack."""
         exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
         run_dir = exp / "artifacts" / "run-001"
 
         _write(
@@ -2298,7 +2303,7 @@ class RepoLevelTests(unittest.TestCase):
         self.assertTrue(any("Self-Observation" in e for e in errs), errs)
 
     def test_self_observation_not_bypassed_by_missing_evidence(self) -> None:
-        """Weak non-self evidence (self_reported) must not bypass self-observation checks."""
+        """Weak non-self evidence (missing_evidence) must not bypass self-observation checks."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
 
@@ -2350,8 +2355,8 @@ class RepoLevelTests(unittest.TestCase):
                 evidence:
                   - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
                     status: "repo_local"
-                  - path: "experiments/exp-fixture/results/notes.txt"
-                    status: "self_reported"
+                  - path: "experiments/exp-fixture/results/missing-cmd.log"
+                    status: "missing_evidence"
             """,
         )
 

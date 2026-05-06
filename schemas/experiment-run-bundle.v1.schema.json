@@ -149,7 +149,7 @@
           "type": "object",
           "additionalProperties": false,
           "required": ["path", "contract", "canonical"],
-          "description": "Optionaler Verweis auf ein Run Evidence Pack (run-evidence-pack.v1). Fehlt dieser Schlüssel, erzeugt der Validator eine Warnung, keinen Fehler (Legacy-Bundles bleiben kompatibel).",
+          "description": "Optionaler Verweis auf ein Run Evidence Pack (run-evidence-pack.v1). Fehlt dieser Schlüssel, entscheidet der Validator per Legacy-Allowlist: allowlisted Legacy-Bundles erzeugen eine Warnung; nicht allowlisted Bundles erzeugen einen Fehler.",
           "properties": {
             "path": {
               "type": "string",

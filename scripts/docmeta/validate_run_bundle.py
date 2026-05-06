@@ -97,18 +97,27 @@ _LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
 # Allows tests to inspect warnings without modifying the return type of validate_repo().
 last_warnings: list[str] = []
 
+_DEFAULT_STRONG_EVIDENCE_STATUSES = frozenset(
+    {"repo_local", "ci_artifact", "external_verified", "derived_from_auditor_output"}
+)
+
 try:
-    from validate_claim_evidence import (  # type: ignore
-        STRONG_EVIDENCE_STATUSES,
-        validate_file as validate_claim_evidence_file,
-    )
+    import validate_claim_evidence as _claim_evidence  # type: ignore
 except ImportError as _semantic_import_error:
     validate_claim_evidence_file = None  # type: ignore[assignment]
-    STRONG_EVIDENCE_STATUSES = frozenset(
-        {"repo_local", "ci_artifact", "external_verified", "derived_from_auditor_output"}
-    )
+    STRONG_EVIDENCE_STATUSES = _DEFAULT_STRONG_EVIDENCE_STATUSES
     _SEMANTIC_IMPORT_ERROR = _semantic_import_error
 else:
+    validate_claim_evidence_file = _claim_evidence.validate_file
+    strong_statuses = getattr(
+        _claim_evidence,
+        "STRONG_EVIDENCE_STATUSES",
+        _DEFAULT_STRONG_EVIDENCE_STATUSES,
+    )
+    if isinstance(strong_statuses, (set, frozenset, list, tuple)):
+        STRONG_EVIDENCE_STATUSES = frozenset(str(s) for s in strong_statuses)
+    else:
+        STRONG_EVIDENCE_STATUSES = _DEFAULT_STRONG_EVIDENCE_STATUSES
     _SEMANTIC_IMPORT_ERROR = None
 
 
@@ -216,6 +225,20 @@ def _load_missing_evidence_pack_allowlist(repo_root: Path) -> tuple[set[str], li
             f"  ❌ {path.relative_to(repo_root)}: Datei muss ein YAML-Objekt sein."
         ]
 
+    top_level_keys = set(data.keys())
+    allowed_top_level_keys = {"schema_version", "allowed_missing_evidence_pack"}
+    unexpected_top_level = sorted(top_level_keys - allowed_top_level_keys)
+    if unexpected_top_level:
+        return set(), [
+            f"  ❌ {path.relative_to(repo_root)}: Unbekannte Top-Level-Felder: {', '.join(unexpected_top_level)}."
+        ]
+
+    schema_version = data.get("schema_version")
+    if schema_version != "1.0.0":
+        return set(), [
+            f"  ❌ {path.relative_to(repo_root)}: schema_version muss exakt '1.0.0' sein."
+        ]
+
     entries = data.get("allowed_missing_evidence_pack", [])
     if not isinstance(entries, list):
         return set(), [
@@ -230,10 +253,26 @@ def _load_missing_evidence_pack_allowlist(repo_root: Path) -> tuple[set[str], li
             )
             continue
 
+        entry_keys = set(entry.keys())
+        allowed_entry_keys = {"path", "reason"}
+        unexpected_entry = sorted(entry_keys - allowed_entry_keys)
+        if unexpected_entry:
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} enthält unbekannte Felder: {', '.join(unexpected_entry)}."
+            )
+            continue
+
         raw_ref = entry.get("path")
         if not isinstance(raw_ref, str) or not raw_ref.strip():
             errors.append(
                 f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} hat ungültiges 'path'."
+            )
+            continue
+
+        reason = entry.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            errors.append(
+                f"  ❌ {path.relative_to(repo_root)}: Eintrag #{idx} hat ungültiges 'reason'."
             )
             continue
 
@@ -555,20 +594,6 @@ def _validate_evidence_pack(
         )
         return
 
-    # Semantische Claim-Evidence-Prüfung via vollständiger Validator-Delegation.
-    # Dadurch folgen file-level und claim-level Regeln konsistent validate_claim_evidence.py.
-    if validate_claim_evidence_file is None:
-        errors.append(
-            f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "
-            f"nicht verfügbar (ImportError: {_SEMANTIC_IMPORT_ERROR})."
-        )
-        return
-    sem_exit_code, sem_errors = validate_claim_evidence_file(ep_path, evidence_pack_validator)
-    if sem_exit_code != 0:
-        for sem_err in sem_errors:
-            errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
-        return
-
     # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
     for claim in ep_data.get("claims", []):
         claim_id = claim.get("claim_id", "<missing>")
@@ -629,6 +654,20 @@ def _validate_evidence_pack(
                 f"PASS-Claim vom Typ '{claim_type}' basiert ausschließlich auf dem "
                 f"Evidence-Pack selbst oder auf schwacher non-self Evidence (Self-Observation)."
             )
+
+    # Semantische Claim-Evidence-Prüfung via vollständiger Validator-Delegation.
+    # Dadurch folgen file-level und claim-level Regeln konsistent validate_claim_evidence.py.
+    if validate_claim_evidence_file is None:
+        errors.append(
+            f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "
+            f"nicht verfügbar (ImportError: {_SEMANTIC_IMPORT_ERROR})."
+        )
+        return
+    sem_exit_code, sem_errors = validate_claim_evidence_file(ep_path, evidence_pack_validator)
+    if sem_exit_code != 0:
+        for sem_err in sem_errors:
+            errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
+        return
 
 
 def _validate_run_dir(
