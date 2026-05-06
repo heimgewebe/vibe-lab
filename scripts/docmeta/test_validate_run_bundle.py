@@ -40,6 +40,7 @@ _BUNDLE_SCHEMA = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
 _EVIDENCE_PACK_SCHEMA = "run-evidence-pack.v1.schema.json"
+_LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
 
 
 # ---------------------------------------------------------------------------
@@ -70,6 +71,24 @@ def _exp_dir(base: Path, name: str = "exp-fixture") -> Path:
 def _write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(textwrap.dedent(content).lstrip("\n"), encoding="utf-8")
+
+
+def _write_legacy_allowlist(base: Path, paths: list[str]) -> None:
+    lines = [
+        'schema_version: "1.0.0"',
+        "allowed_missing_evidence_pack:",
+    ]
+    if paths:
+        for p in paths:
+            lines.append(f'  - path: "{p}"')
+            lines.append('    reason: "legacy bundle predates PR-6 evidence-pack coupling"')
+    else:
+        lines[-1] = "allowed_missing_evidence_pack: []"
+
+    _write(
+        base / ".vibe" / _LEGACY_EVIDENCE_PACK_BASELINE,
+        "\n".join(lines) + "\n",
+    )
 
 
 def _valid_manifest(execution_status: str = "executed", extra_refs: list[str] | None = None) -> str:
@@ -225,6 +244,7 @@ def _build_valid_bundle(base: Path) -> Path:
     _write(run_dir / "auditor-output.yml", _valid_auditor_yml())
     _write(run_dir / "measurement.yml", _valid_measurement_yml())
     (run_dir / "run_meta.json").write_text(_valid_run_meta_json(), encoding="utf-8")
+    _write_legacy_allowlist(base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
     return exp
 
 
@@ -1591,7 +1611,9 @@ class RepoLevelTests(unittest.TestCase):
                     status: "repo_local"
             """,
         )
-        
+
+        _write_legacy_allowlist(self.base, [])
+
         errs = validate_repo(self.base)
         self.assertEqual(errs, [], errs)
 
@@ -1603,6 +1625,87 @@ class RepoLevelTests(unittest.TestCase):
         self.assertEqual(errs, [])
         # Check warnings
         self.assertTrue(any("run_bundle_without_evidence_pack" in w for w in _vrb.last_warnings), _vrb.last_warnings)
+
+    def test_missing_evidence_pack_without_allowlist_fails(self) -> None:
+        """Missing artifacts.evidence_pack must fail for non-allowlisted runs."""
+        _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, [])
+
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("run_bundle_missing_evidence_pack_not_allowlisted" in e for e in errs),
+            errs,
+        )
+
+    def test_allowlist_entry_pointing_to_missing_run_yml_fails(self) -> None:
+        """Allowlist entries must point to existing run.yml files."""
+        _write_legacy_allowlist(
+            self.base,
+            ["experiments/ghost-exp/artifacts/run-999/run.yml"],
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(any("zeigt nicht auf eine existierende Datei" in e for e in errs), errs)
+
+    def test_stale_allowlist_entry_for_run_with_evidence_pack_fails(self) -> None:
+        """Allowlist entries become stale when run.yml already contains artifacts.evidence_pack."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-001"
+                text: "coupled"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/run.yml"
+                    status: "repo_local"
+                  - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Stale Allowlist-Eintrag" in e for e in errs), errs)
 
     def test_evidence_pack_wrong_contract_fails(self) -> None:
         """evidence_pack.contract must be exactly 'run-evidence-pack.v1' (schema-enforced)."""
@@ -2127,6 +2230,132 @@ class RepoLevelTests(unittest.TestCase):
                     status: "repo_local"
             """,
         )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Self-Observation" in e for e in errs), errs)
+
+    def test_self_observation_not_bypassed_by_external_unverified(self) -> None:
+        """Weak non-self evidence (external_unverified) must not bypass self-observation checks."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-weak-001"
+                text: "Weak non-self must not pass"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+                  - path: "https://example.invalid/proof"
+                    status: "external_unverified"
+            """,
+        )
+
+        _write_legacy_allowlist(self.base, [])
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Self-Observation" in e for e in errs), errs)
+
+    def test_self_observation_not_bypassed_by_missing_evidence(self) -> None:
+        """Weak non-self evidence (self_reported) must not bypass self-observation checks."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-weak-002"
+                text: "Missing evidence must not pass"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+                  - path: "experiments/exp-fixture/results/notes.txt"
+                    status: "self_reported"
+            """,
+        )
+
+        _write_legacy_allowlist(self.base, [])
 
         errs = validate_repo(self.base)
         self.assertTrue(any("Self-Observation" in e for e in errs), errs)
