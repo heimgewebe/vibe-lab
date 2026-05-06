@@ -97,9 +97,9 @@ _EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
 last_warnings: list[str] = []
 
 try:
-    from validate_claim_evidence import semantic_errors_for_claim  # type: ignore
+    from validate_claim_evidence import validate_file as validate_claim_evidence_file  # type: ignore
 except ImportError as _semantic_import_error:
-    semantic_errors_for_claim = None  # type: ignore[assignment]
+    validate_claim_evidence_file = None  # type: ignore[assignment]
     _SEMANTIC_IMPORT_ERROR = _semantic_import_error
 else:
     _SEMANTIC_IMPORT_ERROR = None
@@ -449,16 +449,19 @@ def _validate_evidence_pack(
         )
         return
 
-    # Semantische Claim-Evidence-Prüfung (wiederverwendet validate_claim_evidence Logik)
-    if semantic_errors_for_claim is None:
+    # Semantische Claim-Evidence-Prüfung via vollständiger Validator-Delegation.
+    # Dadurch folgen file-level und claim-level Regeln konsistent validate_claim_evidence.py.
+    if validate_claim_evidence_file is None:
         errors.append(
             f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "
             f"nicht verfügbar (ImportError: {_SEMANTIC_IMPORT_ERROR})."
         )
         return
-    for claim in ep_data.get("claims", []):
-        for sem_err in semantic_errors_for_claim(claim, ep_path):
+    sem_exit_code, sem_errors = validate_claim_evidence_file(ep_path, evidence_pack_validator)
+    if sem_exit_code != 0:
+        for sem_err in sem_errors:
             errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
+        return
 
     # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
     for claim in ep_data.get("claims", []):
