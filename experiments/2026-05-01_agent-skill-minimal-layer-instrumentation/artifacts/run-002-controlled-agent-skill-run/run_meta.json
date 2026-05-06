@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-002-controlled-agent-skill-run",
+  "generated_at": "2026-05-06T12:00:00Z",
+  "executor": "local:claude-sonnet-4-6",
+  "command": "evidence-reconciliation-auditor on PR 9 (controlled agent/skill run)",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt",
+  "provenance_level": "self_reported",
+  "outcome": "PASS",
+  "notes": "Run 2: controlled agent/skill run for measurement-system-readiness (PR 9). No effect claim. All claims PASS with repo-local evidence."
+}

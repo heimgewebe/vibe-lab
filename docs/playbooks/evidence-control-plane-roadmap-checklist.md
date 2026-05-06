@@ -107,9 +107,13 @@ Diese Datei:
 - [x] Missing-Evidence muss als fehlend markiert sein, nie als Erfolg.
 
 ## PR 9 — Ersten kontrollierten Agent/Skill-Run erfassen
-- [ ] Neuer Run mit vollständigem Evidence-Pack erfasst.
-- [ ] Kein Reuse des alten nicht-gemergten Run-2-Forensik-Diffs.
-- [ ] Nur Measurement-System-Readiness, kein Wirksamkeitsclaim.
+- [x] Neuer Run mit vollständigem Evidence-Pack erfasst.
+  - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/`
+  - run.yml, evidence-pack.yml, auditor-output.yml, measurement.yml, run_meta.json, agent-output.md, targeted-tests.txt, make-validate.txt
+- [x] Kein Reuse des alten nicht-gemergten Run-2-Forensik-Diffs.
+- [x] Nur Measurement-System-Readiness, kein Wirksamkeitsclaim.
+  - verdict.effect_claim_allowed: false; verdict.promotion_claim_allowed: false
+  - interpretation_limits.causal_claim_allowed: false
 
 ## PR 10 — Weitere vergleichbare Runs erfassen
 - [ ] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
