@@ -1,6 +1,9 @@
 command: python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && python3 scripts/docmeta/test_validate_pr_scope.py
 exit_code: 0
 captured_at: 2026-05-06T12:00:00Z
+capture_mode: summarized_stdout
+claim_scope: command_exit_and_test_summary_only
+full_log_archived: false
 
 --- test_validate_run_bundle.py ---
 .........................................................................

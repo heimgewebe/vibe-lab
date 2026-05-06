@@ -7,6 +7,9 @@ auditor:
   executor: "claude-sonnet-4-6"
   date: "2026-05-06"
 overall_verdict: "PASS"
+extensions:
+  canonical_claim_source: "evidence-pack.yml"
+  auditor_role: "projection and assessment; evidence-pack.yml is the canonical evidence contract"
 
 claims:
   - id: "claim-001"
@@ -28,7 +31,7 @@ claims:
         status: "repo_local"
 
   - id: "claim-003"
-    text: "Targeted validators (test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py) ran and exited 0."
+    text: "Archived command summary records exit_code 0 for targeted validators (test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py). Summary only; full log not archived."
     type: "command_result"
     verdict: "PASS"
     evidence:
@@ -36,7 +39,7 @@ claims:
         status: "repo_local"
 
   - id: "claim-004"
-    text: "make validate ran and exited 0."
+    text: "Archived command summary records exit_code 0 for make validate. Summary only; full log not archived."
     type: "command_result"
     verdict: "PASS"
     evidence:

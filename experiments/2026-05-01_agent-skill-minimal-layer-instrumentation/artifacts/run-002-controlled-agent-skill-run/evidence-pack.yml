@@ -20,7 +20,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-003"
-    text: "Targeted validator tests ran and exited 0 (test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py)."
+    text: "Archived command summary records exit_code 0 for targeted validators (test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py). Summary only; full log not archived."
     type: "command_result"
     verdict: "PASS"
     evidence:
@@ -30,7 +30,7 @@ claims:
         exit_code: 0
 
   - claim_id: "pack-004"
-    text: "make validate ran and exited 0."
+    text: "Archived command summary records exit_code 0 for make validate. Summary only; full log not archived."
     type: "command_result"
     verdict: "PASS"
     evidence:
