@@ -447,9 +447,10 @@ def _validate_evidence_pack(
         for claim in ep_data.get("claims", []):
             for sem_err in semantic_errors_for_claim(claim, ep_path):
                 errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
-    except ImportError:
-        # validate_claim_evidence nicht im Pfad — überspringen (nicht blockend)
-        pass
+    except ImportError as ie:
+        # validate_claim_evidence nicht im Pfad — Warnung abgeben (nicht blockend, aber sichtbar)
+        msg = f"⚠️  WARNING: Semantic evidence validation skipped: {ie}"
+        last_warnings.append(msg)
 
     # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
     for claim in ep_data.get("claims", []):
@@ -479,6 +480,7 @@ def _validate_evidence_pack(
     # Self-Observation-Check: PASS-Claim darf nicht nur auf evidence-pack.yml selbst zeigen,
     # AUSSER es ist ein Claim vom Typ run_bundle_evidence_pack_reference (strukturelle Koppelung).
     ep_rel_str = str(ep_path.relative_to(repo_root))
+    ep_resolved = ep_path.resolve()
     for claim in ep_data.get("claims", []):
         if str(claim.get("verdict", "")) != "PASS":
             continue
@@ -489,10 +491,24 @@ def _validate_evidence_pack(
         ev_paths_in_claim = [
             str(ev.get("path", "")) for ev in claim.get("evidence", []) if isinstance(ev, dict)
         ]
-        if ev_paths_in_claim and all(
-            p == ep_rel_str or p.endswith("evidence-pack.yml") or p.endswith("evidence-pack.yaml")
-            for p in ev_paths_in_claim
-        ):
+        # Check if all evidence paths resolve to the evidence-pack itself or are repo-local refs to it
+        self_referential = True
+        for p in ev_paths_in_claim:
+            if not p:
+                self_referential = False
+                break
+            # Try repo_local resolution
+            try:
+                resolved_ev = (repo_root / p).resolve()
+                if resolved_ev != ep_resolved:
+                    self_referential = False
+                    break
+            except (ValueError, OSError):
+                # If resolution fails, assume it's external/different
+                self_referential = False
+                break
+        
+        if ev_paths_in_claim and self_referential:
             errors.append(
                 f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim.get('claim_id')}' "
                 f"PASS-Claim vom Typ '{claim_type}' basiert ausschließlich auf dem "
@@ -830,6 +846,10 @@ def main() -> int:
         for err in errors:
             print(err)
         return 1
+    # Output any warnings that were collected during validation
+    if last_warnings:
+        for warning in last_warnings:
+            print(warning)
     print("✅ All run bundles consistent.")
     return 0
 

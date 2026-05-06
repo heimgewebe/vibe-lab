@@ -67,7 +67,7 @@ Dieses Beispiel ist eine Orientierung und **kein verbindliches Schema**:
 - Run-Kontext: `run_id`, PR-Bezug, Zeitpunkt.
 - Claim-Liste: pro Claim eine klare, enge Formulierung.
 - Evidence-Refs: pro Claim ein oder mehrere Belegverweise mit Statusklasse.
-- Bewertungsfeld: PASS/FAIL/INCONCLUSIVE nur entlang der vorhandenen Evidence.
+- Bewertungsfeld: Verdict nach kanonischem Vokabular (`PASS`, `MISSING_EVIDENCE`, `CLAIM_NOT_PROVEN`, `CONTRADICTION`, `OUT_OF_SCOPE`, `NOT_REPRODUCIBLE`).
 - Gap-Hinweise: explizite Liste fehlender oder unzureichender Belege.
 
 ## E. Claim-Grenzen
