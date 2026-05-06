@@ -96,6 +96,14 @@ _EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
 # Allows tests to inspect warnings without modifying the return type of validate_repo().
 last_warnings: list[str] = []
 
+try:
+    from validate_claim_evidence import semantic_errors_for_claim  # type: ignore
+except ImportError as _semantic_import_error:
+    semantic_errors_for_claim = None  # type: ignore[assignment]
+    _SEMANTIC_IMPORT_ERROR = _semantic_import_error
+else:
+    _SEMANTIC_IMPORT_ERROR = None
+
 
 # ---------------------------------------------------------------------------
 # Hilfsfunktionen
@@ -442,15 +450,15 @@ def _validate_evidence_pack(
         return
 
     # Semantische Claim-Evidence-Prüfung (wiederverwendet validate_claim_evidence Logik)
-    try:
-        from validate_claim_evidence import semantic_errors_for_claim  # type: ignore
-        for claim in ep_data.get("claims", []):
-            for sem_err in semantic_errors_for_claim(claim, ep_path):
-                errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
-    except ImportError as ie:
-        # validate_claim_evidence nicht im Pfad — Warnung abgeben (nicht blockend, aber sichtbar)
-        msg = f"⚠️  WARNING: Semantic evidence validation skipped: {ie}"
-        last_warnings.append(msg)
+    if semantic_errors_for_claim is None:
+        errors.append(
+            f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "
+            f"nicht verfügbar (ImportError: {_SEMANTIC_IMPORT_ERROR})."
+        )
+        return
+    for claim in ep_data.get("claims", []):
+        for sem_err in semantic_errors_for_claim(claim, ep_path):
+            errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")
 
     # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
     for claim in ep_data.get("claims", []):
@@ -477,38 +485,34 @@ def _validate_evidence_pack(
                     f"repo_local Evidence-Pfad '{ev_path_str}' existiert nicht."
                 )
 
-    # Self-Observation-Check: PASS-Claim darf nicht nur auf evidence-pack.yml selbst zeigen,
-    # AUSSER es ist ein Claim vom Typ run_bundle_evidence_pack_reference (strukturelle Koppelung).
-    ep_rel_str = str(ep_path.relative_to(repo_root))
+    # Self-Observation-Check: PASS-Claim darf nicht ausschließlich auf das
+    # Evidence-Pack selbst verweisen. Auch run_bundle_evidence_pack_reference
+    # benötigt mindestens ein weiteres, von ep_path verschiedenes Artefakt.
     ep_resolved = ep_path.resolve()
     for claim in ep_data.get("claims", []):
         if str(claim.get("verdict", "")) != "PASS":
             continue
         claim_type = str(claim.get("type", ""))
-        # run_bundle_evidence_pack_reference darf auf sich selbst verweisen.
-        if claim_type == "run_bundle_evidence_pack_reference":
+        ev_entries = [ev for ev in claim.get("evidence", []) if isinstance(ev, dict)]
+        ev_paths_in_claim = [str(ev.get("path", "")) for ev in ev_entries]
+        if not ev_paths_in_claim:
             continue
-        ev_paths_in_claim = [
-            str(ev.get("path", "")) for ev in claim.get("evidence", []) if isinstance(ev, dict)
-        ]
-        # Check if all evidence paths resolve to the evidence-pack itself or are repo-local refs to it
-        self_referential = True
-        for p in ev_paths_in_claim:
+
+        has_non_self_reference = False
+        for ev in ev_entries:
+            p = str(ev.get("path", ""))
             if not p:
-                self_referential = False
-                break
-            # Try repo_local resolution
+                continue
             try:
                 resolved_ev = (repo_root / p).resolve()
-                if resolved_ev != ep_resolved:
-                    self_referential = False
-                    break
             except (ValueError, OSError):
-                # If resolution fails, assume it's external/different
-                self_referential = False
+                has_non_self_reference = True
                 break
-        
-        if ev_paths_in_claim and self_referential:
+            if resolved_ev != ep_resolved:
+                has_non_self_reference = True
+                break
+
+        if not has_non_self_reference:
             errors.append(
                 f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim.get('claim_id')}' "
                 f"PASS-Claim vom Typ '{claim_type}' basiert ausschließlich auf dem "

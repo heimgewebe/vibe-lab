@@ -1,6 +1,6 @@
 # Evidence Pack for Run-001 — PR-6-Recovery Coupling
 # Schema: schemas/run-evidence-pack.v1.schema.json
-# Minimal claim: this evidence pack exists and is structurally valid.
+# Minimal claim: this evidence pack exists and is coupled via run.yml.
 
 schema_version: "1.0.0"
 run_id: "run-001-promotion-readiness-prepared-without-measurement"

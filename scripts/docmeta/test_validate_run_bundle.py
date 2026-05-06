@@ -28,7 +28,6 @@ from validate_run_bundle import (  # noqa: E402
     _check_measurement_semantics,
     _compute_max_severity,
     validate_repo,
-    last_warnings,
 )
 import validate_run_bundle as _vrb  # noqa: E402  (for last_warnings access after reload)
 
@@ -1572,8 +1571,9 @@ class RepoLevelTests(unittest.TestCase):
             """,
         )
         
-        # Create valid evidence-pack.yml
+        # Create valid evidence-pack.yml.
         # repo_local evidence paths must be repo-root-relative, not run-local.
+        # run_bundle_evidence_pack_reference must not be self-only.
         _write(
             run_dir / "evidence-pack.yml",
             """
@@ -1585,6 +1585,8 @@ class RepoLevelTests(unittest.TestCase):
                 type: "run_bundle_evidence_pack_reference"
                 verdict: "PASS"
                 evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/run.yml"
+                    status: "repo_local"
                   - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
                     status: "repo_local"
             """,
@@ -2008,7 +2010,7 @@ class RepoLevelTests(unittest.TestCase):
         self.assertTrue(any("schema-invalid" in e for e in errs), errs)
 
     def test_evidence_pack_self_observation_pass_fails(self) -> None:
-        """PASS claims that only reference the evidence-pack itself are rejected (if not run_bundle_evidence_pack_reference type)."""
+        """PASS claims that only reference the evidence-pack itself are rejected."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
         
@@ -2069,6 +2071,65 @@ class RepoLevelTests(unittest.TestCase):
             any("Self-Observation" in e for e in errs),
             f"Expected Self-Observation error, got: {errs}",
         )
+
+    def test_evidence_pack_reference_type_self_only_fails(self) -> None:
+        """run_bundle_evidence_pack_reference PASS must include non-self evidence (e.g. run.yml)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-self-only"
+                text: "Pack references itself only"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Self-Observation" in e for e in errs), errs)
 
 if __name__ == "__main__":
     unittest.main()
