@@ -12,7 +12,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-002"
-    text: "An agent (claude-sonnet-4-6) was used in this run and produced an archived output artifact."
+    text: "A repo-local agent-output artifact records the claimed agent usage for this run. This claim covers the archived artifact, not an independently verified execution transcript."
     type: "agent_usage"
     verdict: "PASS"
     evidence:
@@ -20,7 +20,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-003"
-    text: "Archived command summary records exit_code 0 for targeted validators (test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py). Summary only; full log not archived."
+    text: "Archived command summary records exit_code 0; this claim covers the archived summary, not full raw stdout. Targeted validators: test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py."
     type: "command_result"
     verdict: "PASS"
     evidence:
@@ -30,7 +30,7 @@ claims:
         exit_code: 0
 
   - claim_id: "pack-004"
-    text: "Archived command summary records exit_code 0 for make validate. Summary only; full log not archived."
+    text: "Archived command summary records exit_code 0; this claim covers the archived summary, not full raw stdout. Command: make validate."
     type: "command_result"
     verdict: "PASS"
     evidence:

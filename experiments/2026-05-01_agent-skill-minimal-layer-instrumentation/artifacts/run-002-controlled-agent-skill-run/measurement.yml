@@ -60,7 +60,8 @@ missing_evidence:
     detail: "Self-reported approximation only. Not independently verifiable. Not a comparable measurement."
 
 interpretation_limits:
-  - "This is the second data point. No generalization is possible from two runs."
+  - "This is the first controlled agent/skill run with full Evidence-Pack coupling. Run-001 was a different instrumentation type (promotion-readiness-prepared-without-measurement); it is not a comparable data point."
+  - "current_comparable_runs: 1 — only this run qualifies as a controlled agent/skill run."
   - "No usefulness claim about the agent/skill layer can be derived from this data."
   - "Metrics definitions may still change in early runs."
   - "review_friction_count and rework_count are not repo-locally observed in this run."

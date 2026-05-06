@@ -4,6 +4,12 @@ run_id: run-002-controlled-agent-skill-run
 agent: claude-sonnet-4-6 (claude-code)
 run_purpose: Measurement-system-readiness check (PR 9). Not an effectiveness evaluation.
 produced_at: 2026-05-06T12:00:00Z
+artifact_type: repo_local_run_record
+epistemics: >
+  This artifact is a repo-local run record, not an independently verified execution
+  transcript. It documents what the agent reported doing; it does not constitute
+  machine-verified proof of execution. The agent_usage claim covers this archived
+  artifact, not an independent audit of execution.
 
 ## Scope of this Agent Run
 
