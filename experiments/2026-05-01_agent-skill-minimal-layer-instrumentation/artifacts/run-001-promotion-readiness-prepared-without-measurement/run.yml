@@ -36,6 +36,10 @@ artifacts:
     path: "auditor-output.md"
     canonical: false
     role: "human_projection"
+  evidence_pack:
+    path: "evidence-pack.yml"
+    contract: "run-evidence-pack.v1"
+    canonical: true
 
 verdict:
   outcome: "MISSING_EVIDENCE"

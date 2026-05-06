@@ -28,7 +28,9 @@ from validate_run_bundle import (  # noqa: E402
     _check_measurement_semantics,
     _compute_max_severity,
     validate_repo,
+    last_warnings,
 )
+import validate_run_bundle as _vrb  # noqa: E402  (for last_warnings access after reload)
 
 
 REPO_ROOT = THIS_DIR.parent.parent
@@ -38,6 +40,7 @@ PROJECT_SCHEMAS = REPO_ROOT / "schemas"
 _BUNDLE_SCHEMA = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
+_EVIDENCE_PACK_SCHEMA = "run-evidence-pack.v1.schema.json"
 
 
 # ---------------------------------------------------------------------------
@@ -45,14 +48,14 @@ _MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
 # ---------------------------------------------------------------------------
 
 def _make_repo_skeleton(base: Path) -> Path:
-    """Creates base/schemas/ with all three bundle schemas, and base/experiments/.
+    """Creates base/schemas/ with all four bundle schemas, and base/experiments/.
 
     Tests run validate_repo(base) — schemas are loaded from base/schemas/, NOT
     from the real REPO_ROOT. This proves schema-path isolation.
     """
     schemas = base / "schemas"
     schemas.mkdir(parents=True, exist_ok=True)
-    for name in (_BUNDLE_SCHEMA, _AUDITOR_SCHEMA, _MEASUREMENT_SCHEMA):
+    for name in (_BUNDLE_SCHEMA, _AUDITOR_SCHEMA, _MEASUREMENT_SCHEMA, _EVIDENCE_PACK_SCHEMA):
         shutil.copy(PROJECT_SCHEMAS / name, schemas / name)
     (base / "experiments").mkdir(exist_ok=True)
     return base
@@ -1525,6 +1528,547 @@ class RepoLevelTests(unittest.TestCase):
         )
         errs = validate_repo(self.base)
         self.assertTrue(any("Nicht-String" in e for e in errs), errs)
+
+    # --- PR 6: Evidence-Pack Coupling ---
+
+    def test_valid_run_with_evidence_pack_passes(self) -> None:
+        """Valid run.yml with valid artifacts.evidence_pack → no errors."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        # Add evidence_pack to run.yml
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        # Create valid evidence-pack.yml
+        # repo_local evidence paths must be repo-root-relative, not run-local.
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-001"
+                text: "Evidence pack exists"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    def test_missing_evidence_pack_generates_warning_no_error(self) -> None:
+        """Missing artifacts.evidence_pack → warning, but no error (legacy)."""
+        exp = _build_valid_bundle(self.base)
+        # Valid bundle without evidence_pack — should warn, not error.
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [])
+        # Check warnings
+        self.assertTrue(any("run_bundle_without_evidence_pack" in w for w in _vrb.last_warnings), _vrb.last_warnings)
+
+    def test_evidence_pack_wrong_contract_fails(self) -> None:
+        """evidence_pack.contract must be exactly 'run-evidence-pack.v1' (schema-enforced)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "wrong-contract"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        # Schema rejects const violation, so error is schema-invalid
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_evidence_pack_canonical_false_fails(self) -> None:
+        """evidence_pack.canonical must be exactly true (schema-enforced)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: false
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        # Schema rejects const violation
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_evidence_pack_path_escape_fails(self) -> None:
+        """evidence_pack.path with .. must be rejected (schema regex + path validation)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "../evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        # Schema regex rejects .. in path pattern
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_evidence_pack_file_missing_fails(self) -> None:
+        """evidence_pack.path pointing to non-existent file → error."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "ghost-evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        self.assertTrue(any("ghost-evidence-pack" in e and "existiert nicht" in e for e in errs), errs)
+
+    def test_evidence_pack_schema_invalid_fails(self) -> None:
+        """evidence-pack.yml with invalid schema → error."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        # Invalid: missing required 'claims' field
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_evidence_pack_run_id_mismatch_fails(self) -> None:
+        """evidence-pack.yml run_id must match run.yml run.id."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "wrong-run-id"
+            claims:
+              - claim_id: "ep-001"
+                text: "Evidence pack exists"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        self.assertTrue(any("run_id" in e and "wrong-run-id" in e for e in errs), errs)
+
+    def test_evidence_pack_repo_local_evidence_missing_fails(self) -> None:
+        """evidence-pack claims with repo_local evidence must point to existing files."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-001"
+                text: "Evidence pack exists"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "ghost-file.txt"
+                    status: "repo_local"
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        self.assertTrue(any("repo_local" in e and "existiert nicht" in e for e in errs), errs)
+
+    def test_evidence_pack_repo_local_evidence_escape_fails(self) -> None:
+        """evidence-pack repo_local evidence paths with .. are rejected (schema regex)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-001"
+                text: "Evidence pack exists"
+                type: "run_bundle_evidence_pack_reference"
+                verdict: "PASS"
+                evidence:
+                  - path: "../../../../etc/passwd"
+                    status: "repo_local"
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        # Schema regex rejects .. pattern in evidence paths
+        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+
+    def test_evidence_pack_self_observation_pass_fails(self) -> None:
+        """PASS claims that only reference the evidence-pack itself are rejected (if not run_bundle_evidence_pack_reference type)."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        
+        _write(
+            run_dir / "run.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "experiment_run_bundle"
+            run:
+              id: "run-001"
+              experiment_path: "experiments/exp-fixture"
+              created_at: "2026-05-01T12:00:00Z"
+            provenance:
+              level: "self_reported"
+            artifacts:
+              auditor_output:
+                path: "auditor-output.yml"
+                contract: "auditor_output"
+                canonical: true
+              measurement:
+                path: "measurement.yml"
+                contract: "measurement_run"
+                canonical: true
+              run_meta:
+                path: "run_meta.json"
+                contract: "run_meta"
+                canonical: false
+                compatibility: true
+              evidence_pack:
+                path: "evidence-pack.yml"
+                contract: "run-evidence-pack.v1"
+                canonical: true
+            verdict:
+              outcome: "MISSING_EVIDENCE"
+              effect_claim_allowed: false
+            """,
+        )
+        
+        # PASS claim of type "agent_effectiveness" that only references evidence-pack.yml itself
+        _write(
+            run_dir / "evidence-pack.yml",
+            """
+            schema_version: "1.0.0"
+            run_id: "run-001"
+            claims:
+              - claim_id: "ep-self"
+                text: "Agent works"
+                type: "agent_effectiveness"
+                verdict: "PASS"
+                evidence:
+                  - path: "experiments/exp-fixture/artifacts/run-001/evidence-pack.yml"
+                    status: "repo_local"
+            """,
+        )
+        
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("Self-Observation" in e for e in errs),
+            f"Expected Self-Observation error, got: {errs}",
+        )
 
 if __name__ == "__main__":
     unittest.main()

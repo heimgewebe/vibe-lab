@@ -144,6 +144,27 @@
               "description": "Nur human_projection ist in v1 erlaubt."
             }
           }
+        },
+        "evidence_pack": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "contract", "canonical"],
+          "description": "Optionaler Verweis auf ein Run Evidence Pack (run-evidence-pack.v1). Fehlt dieser Schlüssel, erzeugt der Validator eine Warnung, keinen Fehler (Legacy-Bundles bleiben kompatibel).",
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$",
+              "description": "Relativ zum Run-Verzeichnis. Kein absoluter Pfad, kein .., kein Windows-Backslash."
+            },
+            "contract": {
+              "const": "run-evidence-pack.v1",
+              "description": "Muss exakt 'run-evidence-pack.v1' sein."
+            },
+            "canonical": {
+              "const": true,
+              "description": "Evidence-Packs sind kanonisch."
+            }
+          }
         }
       }
     },
