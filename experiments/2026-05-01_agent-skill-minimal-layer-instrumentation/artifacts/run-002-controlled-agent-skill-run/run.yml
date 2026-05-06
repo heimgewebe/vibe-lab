@@ -8,10 +8,10 @@ run:
   sequence: 2
 
 provenance:
-  level: "repo_local"
+  level: "self_reported"
   executor: "local:claude-sonnet-4-6"
   source_status: "repo_local"
-  notes: "Evidence artifacts are archived in the run directory. Command outputs captured as small repo-local text files."
+  notes: "Execution provenance is self-reported; evidence artifacts are archived repo-locally. Command-output claims are limited to archived summaries, not full raw transcripts."
 
 artifacts:
   auditor_output:

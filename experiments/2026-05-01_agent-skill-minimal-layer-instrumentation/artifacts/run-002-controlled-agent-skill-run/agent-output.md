@@ -35,6 +35,11 @@ of this controlled run:
 - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
 - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
 
+## Validation Evidence Scope
+
+Archived validation evidence for this run is limited to targeted-tests.txt and make-validate.txt summaries.
+No independently verified pre-artifact baseline transcript is archived.
+
 ## Preflight Findings (Diagnosis, Not Effectiveness Claims)
 
 PR 6 visible: Yes.
