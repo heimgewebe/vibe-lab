@@ -49,13 +49,13 @@ PR 6 visible: Yes.
 
 PR 7 visible: Yes.
 - .vibe/pr-scope-policy.yml exists with forbidden_path_patterns and self_observation rules.
-- scripts/docmeta/validate_pr_scope.py exists and exits 0.
+- scripts/docmeta/validate_pr_scope.py exists. PR-scope validation coverage for this run is only claimed through archived validation summaries, not through an independent preflight transcript.
 
 PR 8 visible: Yes.
 - .github/pull_request_template.md contains Claims and Evidence section.
 - Template rules: no PASS without archived evidence.
 
-All validators passed before new artifacts were created (baseline confirmed).
+The agent reported consulting validators during preflight. Archived validation evidence for this run is documented in targeted-tests.txt and make-validate.txt summaries.
 
 ## What This Run Does NOT Claim
 

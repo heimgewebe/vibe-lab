@@ -110,6 +110,7 @@ Diese Datei:
 - [x] Neuer Run mit vollständigem Evidence-Pack erfasst.
   - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/`
   - run.yml, evidence-pack.yml, auditor-output.yml, measurement.yml, run_meta.json, agent-output.md, targeted-tests.txt, make-validate.txt
+  - Vollständig für die kanonischen PR-9-Claims; metric-level gaps bleiben in measurement.yml explizit markiert (review_friction_count, rework_count, task_completion_time_observed = null/missing_evidence).
 - [x] Kein Reuse des alten nicht-gemergten Run-2-Forensik-Diffs.
 - [x] Nur Measurement-System-Readiness, kein Wirksamkeitsclaim.
   - verdict.effect_claim_allowed: false; verdict.promotion_claim_allowed: false
