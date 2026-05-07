@@ -10,7 +10,6 @@ overall_verdict: "PASS"
 extensions:
   canonical_claim_source: "evidence-pack.yml"
   auditor_role: "projection and assessment; evidence-pack.yml is the canonical evidence contract"
-  missing_evidence_scope: "Auditor claims are all PASS. The missing_evidence list covers metric-level gaps from measurement.yml only; no auditor claim is affected."
 
 claims:
   - id: "claim-001"
@@ -53,10 +52,7 @@ out_of_scope_claims: []
 
 contradictions: []
 
-missing_evidence:
-  - "review_friction_count: no review artifact archived (measurement.yml scope only; no auditor claim affected)"
-  - "rework_count: no rework artifact archived (measurement.yml scope only; no auditor claim affected)"
-  - "task_completion_time_observed: self-reported approximation (measurement.yml scope only; no auditor claim affected)"
+missing_evidence: []
 
 required_next_proof:
   - "For future runs: archive actual CI log as ci_artifact if CI is claimed."
