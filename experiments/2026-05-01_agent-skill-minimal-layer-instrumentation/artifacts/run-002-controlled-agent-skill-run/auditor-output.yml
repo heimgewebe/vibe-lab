@@ -1,0 +1,51 @@
+schema_version: "0.1.0"
+contract: "auditor_output"
+run_id: "run-002-controlled-agent-skill-run"
+pr_ref: "github:heimgewebe/vibe-lab/pull/TBD"
+auditor_date: "2026-05-07"
+auditor: "evidence-reconciliation-auditor"
+overall_verdict: "PASS"
+
+claims:
+  - id: "claim-001"
+    text: "Run bundle exists and references canonical run artifacts including evidence-pack.yml."
+    type: "run_bundle_coupling"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run.yml"
+        locator: "artifacts.auditor_output/artifacts.measurement/artifacts.run_meta/artifacts.evidence_pack"
+
+  - id: "claim-002"
+    text: "Measurement file exists for run-002 and records metric-level missing_evidence explicitly."
+    type: "measurement_present"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml"
+        locator: "metrics.review_friction_count + metrics.rework_count + interpretation_limits"
+
+  - id: "claim-003"
+    text: "run_meta.json links the targeted-tests command chain to targeted-tests.txt."
+    type: "execution_trace_binding"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json"
+        locator: "command + test_output_file + auditor_output_file"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt"
+        locator: "command_summary"
+
+  - id: "claim-004"
+    text: "Run verdict forbids effect, promotion, and causal claims."
+    type: "interpretation_boundary"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run.yml"
+        locator: "verdict.effect_claim_allowed=false; verdict.promotion_claim_allowed=false; interpretation_limits.causal_claim_allowed=false"
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence: []
+
+required_next_proof:
+  - "Capture at least two additional comparable controlled runs before cross-run assessment (PR 10 scope)."

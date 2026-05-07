@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-002-controlled-agent-skill-run",
+  "generated_at": "2026-05-07T19:11:36Z",
+  "executor": "local:copilot-agent",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && python3 scripts/docmeta/test_validate_pr_scope.py",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt",
+  "auditor_output_file": "artifacts/run-002-controlled-agent-skill-run/auditor-output.yml",
+  "provenance_level": "self_reported",
+  "outcome": "PASS",
+  "notes": "Run 002: first controlled Agent/Skill run with complete evidence-pack coupling; no effect, promotion, or causal claim."
+}

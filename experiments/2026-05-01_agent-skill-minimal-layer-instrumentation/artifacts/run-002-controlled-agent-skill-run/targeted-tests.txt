@@ -1,0 +1,15 @@
+# Targeted Validation Summary (Run-002)
+
+command_summary: python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && python3 scripts/docmeta/test_validate_pr_scope.py
+scope: command exit + summary only (no full raw log archived)
+status: completed
+exit_code: 0
+
+results:
+- test_validate_run_bundle.py: PASS (73 tests)
+- test_validate_claim_evidence.py: PASS (3 tests)
+- test_validate_pr_scope.py: PASS (15 tests)
+
+notes:
+- This artifact intentionally stores only a compact summary.
+- Full CI/workflow logs are not archived in this run artifact.

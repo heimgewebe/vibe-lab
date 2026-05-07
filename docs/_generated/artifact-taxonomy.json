@@ -339,6 +339,18 @@
       "status": "classified"
     },
     {
+      "authority": "unknown",
+      "catchall_match": false,
+      "enforcement": [],
+      "kind": null,
+      "layer": null,
+      "lifecycle": null,
+      "matched_patterns": [],
+      "origin": null,
+      "path": ".vibe/run-bundle-evidence-pack-legacy.yml",
+      "status": "unknown"
+    },
+    {
       "authority": "sovereign_source",
       "catchall_match": false,
       "enforcement": [
@@ -1346,6 +1358,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/playbooks/plan-execution-checklist.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/playbooks/pr-run-evidence-pack.md",
       "status": "classified"
     },
     {
@@ -7663,6 +7691,22 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml",
       "status": "classified"
     },
@@ -8874,7 +8918,39 @@
         "scripts/docmeta/test_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/test_generate_backlinks.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_generate_epistemic_state.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_generate_orphans.py",
       "status": "classified"
     },
     {
@@ -11878,6 +11954,7 @@
     "experiments/2026-04-23_phase-1-drift-injection/results/README.md",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml",
     "experiments/_template/artifacts/README.md",
@@ -11916,19 +11993,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 200,
+      "historical_record": 201,
       "navigation_surface": 3,
       "test_expectation": 32
     },
     "by_layer": {
       "docs": 3,
-      "experiment": 200,
+      "experiment": 201,
       "test": 32
     },
     "by_matched_pattern": {
       "docs/**": 3,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 179,
+      "experiments/*/artifacts/**": 180,
       "tests/fixtures/**": 32
     },
     "high_risk_count": 32,
@@ -11987,7 +12064,7 @@
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
             "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
           },
-          "total": 179
+          "total": 180
         },
         {
           "high_risk_count": 0,
@@ -12056,7 +12133,7 @@
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
             "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
           },
-          "total": 179
+          "total": 180
         },
         {
           "high_risk_count": 32,
@@ -12178,7 +12255,7 @@
           "experiments/2026-04-15_agent-task-validity/artifacts": 7,
           "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
         },
-        "total": 179
+        "total": 180
       },
       {
         "high_risk_count": 0,
@@ -12388,60 +12465,64 @@
       "diagnostic_signal": 7,
       "evidence_log": 16,
       "generated_projection": 10,
-      "historical_record": 200,
+      "historical_record": 201,
       "implementation_behavior": 9,
       "navigation_surface": 11,
       "normative_contract": 16,
-      "procedure_contract": 94,
+      "procedure_contract": 95,
       "raw_capture": 22,
       "result_interpretation": 55,
       "runtime_observation": 63,
       "schema_truth": 16,
       "sovereign_source": 3,
-      "test_expectation": 164,
-      "unknown": 24
+      "test_expectation": 166,
+      "unknown": 25
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 277,
+      "ci_blocking": 279,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 258,
+      "no_rewrite": 259,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 210
+      "review_required": 211
     },
     "by_layer": {
+      "<none>": 1,
       "agent": 4,
       "archive": 24,
       "capture": 6,
       "catalog": 12,
       "contract": 24,
-      "docs": 28,
-      "experiment": 392,
+      "docs": 29,
+      "experiment": 393,
       "export": 15,
       "generated": 8,
       "governance": 51,
-      "test": 164
+      "test": 166
     },
     "by_lifecycle": {
-      "append_only": 258,
-      "handcrafted": 407,
+      "<none>": 1,
+      "append_only": 259,
+      "handcrafted": 410,
       "regenerated": 18,
       "revision_with_reason": 43,
       "superseded_not_rewritten": 2
     },
-    "classified": 728,
+    "classified": 732,
     "conflict": 0,
-    "fallback_classified": 235,
-    "fallback_share": 0.3228021978021978,
+    "fallback_classified": 236,
+    "fallback_share": 0.3224043715846995,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 728,
-    "unknown": 0
+    "total": 733,
+    "unknown": 1
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": []
+  "unknown_artifacts": [
+    ".vibe/run-bundle-evidence-pack-legacy.yml"
+  ]
 }

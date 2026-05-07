@@ -107,9 +107,12 @@ Diese Datei:
 - [x] Missing-Evidence muss als fehlend markiert sein, nie als Erfolg.
 
 ## PR 9 — Ersten kontrollierten Agent/Skill-Run erfassen
-- [ ] Neuer Run mit vollständigem Evidence-Pack erfasst.
-- [ ] Kein Reuse des alten nicht-gemergten Run-2-Forensik-Diffs.
-- [ ] Nur Measurement-System-Readiness, kein Wirksamkeitsclaim.
+- [x] Neuer Run mit vollständigem Evidence-Pack erfasst (`run-002-controlled-agent-skill-run`).
+- [x] Kein Reuse des alten nicht-gemergten Run-2-Forensik-Diffs.
+- [x] Nur Measurement-System-Readiness, kein Wirksamkeitsclaim.
+- [x] `review_friction_count` und `rework_count` in Run-002-Measurement sind `null` mit `evidence_status: missing_evidence`.
+- [x] `task_completion_time_observed` in Run-002-Measurement ist `"~60 min"` mit `evidence_status: self_reported` und ausdrücklich nicht vergleichbar.
+- [x] Keine Wirksamkeits-, Promotion- oder Kausalclaims aus PR 9.
 
 ## PR 10 — Weitere vergleichbare Runs erfassen
 - [ ] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.

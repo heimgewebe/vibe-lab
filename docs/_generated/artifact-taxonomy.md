@@ -11,14 +11,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 728
-- classified: 728
-  - of which fallback_classified (catch-all rule): 235
-  - fallback_share: 32.3% (235 / 728)
+- total: 733
+- classified: 732
+  - of which fallback_classified (catch-all rule): 236
+  - fallback_share: 32.2% (236 / 732)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 0
+- unknown: 1
 - ambiguous: 0
 - conflict: 0
 
@@ -26,17 +26,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
+| <none> | 1 |
 | agent | 4 |
 | archive | 24 |
 | capture | 6 |
 | catalog | 12 |
 | contract | 24 |
-| docs | 28 |
-| experiment | 392 |
+| docs | 29 |
+| experiment | 393 |
 | export | 15 |
 | generated | 8 |
 | governance | 51 |
-| test | 164 |
+| test | 166 |
 
 ### By authority
 
@@ -46,25 +47,26 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | diagnostic_signal | 7 |
 | evidence_log | 16 |
 | generated_projection | 10 |
-| historical_record | 200 |
+| historical_record | 201 |
 | implementation_behavior | 9 |
 | navigation_surface | 11 |
 | normative_contract | 16 |
-| procedure_contract | 94 |
+| procedure_contract | 95 |
 | raw_capture | 22 |
 | result_interpretation | 55 |
 | runtime_observation | 63 |
 | schema_truth | 16 |
 | sovereign_source | 3 |
-| test_expectation | 164 |
-| unknown | 24 |
+| test_expectation | 166 |
+| unknown | 25 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 258 |
-| handcrafted | 407 |
+| <none> | 1 |
+| append_only | 259 |
+| handcrafted | 410 |
 | regenerated | 18 |
 | revision_with_reason | 43 |
 | superseded_not_rewritten | 2 |
@@ -75,18 +77,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 277 |
+| ci_blocking | 279 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 258 |
+| no_rewrite | 259 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 210 |
+| review_required | 211 |
 
 ## Unknown artifacts
 
-_none_
+- `.vibe/run-bundle-evidence-pack-legacy.yml`
 
 ## Ambiguous artifacts
 
@@ -298,6 +300,7 @@ _none_
 - `experiments/2026-04-23_phase-1-drift-injection/results/README.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml`
 - `experiments/_template/artifacts/README.md`
@@ -412,7 +415,7 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 179 | 76.2% |
+| `experiments/*/artifacts/**` | 180 | 76.3% |
 | `tests/fixtures/**` | 32 | 13.6% |
 | `experiments/**` | 21 | 8.9% |
 | `docs/**` | 3 | 1.3% |
@@ -430,7 +433,7 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
 | `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
-| `experiments/*/artifacts/**` | 179 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 180 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |
 
@@ -440,7 +443,7 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 179 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 180 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
 | `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |

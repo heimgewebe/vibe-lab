@@ -175,10 +175,15 @@
 ## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 
 ## `docs/playbooks/plan-execution-checklist.md`
+
+- ← `docs/index.md` (references)
+
+## `docs/playbooks/pr-run-evidence-pack.md`
 
 - ← `docs/index.md` (references)
 
@@ -187,10 +192,12 @@
 - ← `docs/concepts/experiment-ontology.md` (informs)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `docs/policies/artifact-boundary-policy.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `docs/policies/interpretation-budget.md`
 
@@ -199,11 +206,13 @@
 - ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 
 ## `docs/policies/pr-run-evidence-policy.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 
 ## `docs/reference/agent-operability-fixture-matrix.md`
