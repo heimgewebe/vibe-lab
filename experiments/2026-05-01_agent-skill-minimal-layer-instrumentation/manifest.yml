@@ -15,8 +15,16 @@ experiment:
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml
     - artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
+    - artifacts/run-002-controlled-agent-skill-run/run.yml
+    - artifacts/run-002-controlled-agent-skill-run/measurement.yml
+    - artifacts/run-002-controlled-agent-skill-run/auditor-output.yml
+    - artifacts/run-002-controlled-agent-skill-run/run_meta.json
+    - artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml
+    - artifacts/run-002-controlled-agent-skill-run/agent-output.md
+    - artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt
+    - artifacts/run-002-controlled-agent-skill-run/make-validate.txt
   created: "2026-05-01"
-  updated: "2026-05-01"
+  updated: "2026-05-06"
   author: "copilot-agent"
   iteration: 2
   evidence_level: anecdotal
