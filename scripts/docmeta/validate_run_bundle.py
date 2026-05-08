@@ -1115,11 +1115,13 @@ def _validate_run_dir(
                 # comparability.yml. New bundles are guarded via
                 # _requires_changed_files_comparability().
                 if scope_evidence_status == "repo_local":
-                    if comparability is None:
+                    if not comparability_present:
                         errors.append(
                             f"  ❌ {rel_run}/measurement.yml: scope_drift_count.evidence_status=repo_local "
                             f"erfordert comparability.yml mit gültigem changed_files_artifact."
                         )
+                    elif comparability is None:
+                        pass
                     elif not changed_files_artifact_valid:
                         errors.append(
                             f"  ❌ {rel_run}/measurement.yml: scope_drift_count.evidence_status=repo_local "
