@@ -17,6 +17,10 @@
 
 - ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (references)
 
+## `.vibe/changed-files-artifact.contract.md`
+
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
+
 ## `.vibe/pr-scope-policy.yml`
 
 - ← `docs/policies/artifact-boundary-policy.md` (references)

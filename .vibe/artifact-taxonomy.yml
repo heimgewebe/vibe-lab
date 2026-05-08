@@ -173,6 +173,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  - pattern: .vibe/changed-files-artifact.contract.md
+    layer: contract
+    kind: evidence_primitive_contract
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: schemas/*.json
     layer: contract
     kind: json_schema

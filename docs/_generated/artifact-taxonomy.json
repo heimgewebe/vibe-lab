@@ -243,6 +243,22 @@
       "status": "classified"
     },
     {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "evidence_primitive_contract",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".vibe/changed-files-artifact.contract.md"
+      ],
+      "origin": "handcrafted",
+      "path": ".vibe/changed-files-artifact.contract.md",
+      "status": "classified"
+    },
+    {
       "authority": "normative_contract",
       "catchall_match": false,
       "enforcement": [
@@ -12930,7 +12946,7 @@
       "implementation_behavior": 9,
       "navigation_surface": 11,
       "normative_contract": 16,
-      "procedure_contract": 96,
+      "procedure_contract": 97,
       "raw_capture": 22,
       "result_interpretation": 55,
       "runtime_observation": 66,
@@ -12949,14 +12965,14 @@
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 215
+      "review_required": 216
     },
     "by_layer": {
       "agent": 4,
       "archive": 24,
       "capture": 6,
       "catalog": 12,
-      "contract": 25,
+      "contract": 26,
       "docs": 29,
       "experiment": 420,
       "export": 15,
@@ -12966,18 +12982,18 @@
     },
     "by_lifecycle": {
       "append_only": 283,
-      "handcrafted": 411,
+      "handcrafted": 412,
       "regenerated": 18,
       "revision_with_reason": 46,
       "superseded_not_rewritten": 2
     },
-    "classified": 760,
+    "classified": 761,
     "conflict": 0,
     "fallback_classified": 260,
-    "fallback_share": 0.34210526315789475,
+    "fallback_share": 0.3416557161629435,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 760,
+    "total": 761,
     "unknown": 0
   },
   "transition_risk_hints": [],
