@@ -977,6 +977,11 @@ def _validate_run_dir(
             )
     else:
         verdict = comparability.get("verdict")
+        grandfathered_reference_only_without_changed_files = (
+            grandfathered_changed_files_run
+            and verdict == "reference_only"
+            and changed_files_artifact_missing
+        )
         if verdict == "not_comparable":
             if changed_files_artifact_missing:
                 missing_reason = comparability.get("missing_changed_files_reason")
@@ -985,7 +990,7 @@ def _validate_run_dir(
                         f"  ❌ {rel_run}/comparability.yml: verdict=not_comparable mit "
                         f"changed_files_artifact=null erfordert missing_changed_files_reason."
                     )
-        elif not grandfathered_changed_files_run and changed_files_artifact_missing:
+        elif changed_files_artifact_missing and not grandfathered_reference_only_without_changed_files:
             errors.append(
                 f"  ❌ {rel_run}/comparability.yml: verdict='{verdict}' erfordert ein "
                 f"gültiges changed_files_artifact."
