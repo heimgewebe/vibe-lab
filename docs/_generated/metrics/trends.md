@@ -38,6 +38,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | branch_setup_completed | 4 | 0 | - | - | - |
 | bug-task2-incremental-cli-parser | 1 | 0 | - | - | - |
 | candidate_probe_uncaught_count | 1 | 1 | 6 | 6 | 6 |
+| candidate_rehearsal_run_recorded | 2 | 0 | - | - | - |
 | canonical_contract_fix_committed | 1 | 0 | - | - | - |
 | canonical_doc_change_committed | 4 | 0 | - | - | - |
 | canonical_generator_nondeterminism | 2 | 0 | - | - | - |
@@ -62,7 +63,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | completeness | 4 | 0 | - | - | - |
 | consistency | 2 | 0 | - | - | - |
 | control_tasks_executed | 1 | 1 | 3 | 3 | 3 |
-| controlled_run_recorded | 3 | 0 | - | - | - |
+| controlled_run_recorded | 1 | 0 | - | - | - |
 | controlled_schema_deviation_injected | 1 | 1 | 1 | 1 | 1 |
 | design-sharpening | 1 | 0 | - | - | - |
 | detection_latency_seconds | 3 | 3 | 47 | 97 | 48 |
