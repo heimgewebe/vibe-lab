@@ -670,6 +670,36 @@ def _validate_evidence_pack(
         return
 
 
+def _validate_run_local_artifact_ref(
+    *,
+    repo_root: Path,
+    run_dir: Path,
+    rel_file: Path,
+    field_name: str,
+    ref_value: object,
+    errors: list[str],
+) -> Path | None:
+    """Validiert einen run-lokalen Artefaktpfad und gibt den aufgelösten Pfad zurück."""
+    if not isinstance(ref_value, str) or not ref_value.strip():
+        errors.append(
+            f"  ❌ {rel_file}: {field_name} muss ein nicht-leerer String sein."
+        )
+        return None
+
+    target = _resolve_within_run_dir(run_dir, ref_value)
+    if target is None:
+        errors.append(
+            f"  ❌ {rel_file}: {field_name} '{ref_value}' verlässt das Run-Verzeichnis."
+        )
+        return None
+    if not target.is_file():
+        errors.append(
+            f"  ❌ {rel_file}: {field_name} '{ref_value}' zeigt auf keine existierende Datei."
+        )
+        return None
+    return target
+
+
 def _validate_run_dir(
     *,
     repo_root: Path,
@@ -689,6 +719,9 @@ def _validate_run_dir(
     run_yml = run_dir / "run.yml"
     auditor_yml = run_dir / "auditor-output.yml"
     measurement_yml = run_dir / "measurement.yml"
+    comparability_yml = run_dir / "comparability.yml"
+    changed_files_artifact_path: Path | None = None
+    scope_drift_evidence_status: str | None = None
 
     # Legacy-Politik: kein run.yml → kein Bundle-Contract → nichts prüfen.
     if not run_yml.is_file():
@@ -903,6 +936,80 @@ def _validate_run_dir(
         if auditor_data is not None:
             for sem_err in _check_measurement_semantics(measurement, auditor_data):
                 errors.append(f"  ❌ {rel_run}/measurement.yml: {sem_err}")
+
+        scope_drift_evidence_status = (
+            ((measurement.get("metrics") or {}).get("scope_drift_count") or {}).get(
+                "evidence_status"
+            )
+        )
+
+    if comparability_yml.is_file():
+        rel_comp = comparability_yml.relative_to(repo_root)
+        try:
+            comparability = _load_yaml(comparability_yml)
+        except Exception as e:
+            errors.append(f"  ❌ {rel_comp}: YAML-Fehler — {e}")
+            comparability = None
+
+        if comparability is not None and not isinstance(comparability, dict):
+            errors.append(f"  ❌ {rel_comp}: Datei muss ein YAML-Objekt sein.")
+            comparability = None
+
+        if isinstance(comparability, dict):
+            verdict = comparability.get("verdict")
+            has_changed_files_artifact = "changed_files_artifact" in comparability
+            changed_files_artifact = comparability.get("changed_files_artifact")
+
+            if verdict == "not_comparable":
+                if changed_files_artifact is None:
+                    missing_reason = comparability.get("missing_changed_files_reason")
+                    if not isinstance(missing_reason, str) or not missing_reason.strip():
+                        errors.append(
+                            f"  ❌ {rel_comp}: verdict=not_comparable mit "
+                            "changed_files_artifact=null erfordert "
+                            "missing_changed_files_reason (nicht leer)."
+                        )
+                else:
+                    changed_files_artifact_path = _validate_run_local_artifact_ref(
+                        repo_root=repo_root,
+                        run_dir=run_dir,
+                        rel_file=rel_comp,
+                        field_name="changed_files_artifact",
+                        ref_value=changed_files_artifact,
+                        errors=errors,
+                    )
+            else:
+                # Eng begrenzte Altfall-Ausnahme:
+                # run-002/reference_only blieb historisch ohne changed_files_artifact.
+                is_grandfathered_run002 = (
+                    str(exp_dir.relative_to(repo_root))
+                    == "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation"
+                    and run_dir.name == "run-002-controlled-agent-skill-run"
+                    and verdict == "reference_only"
+                    and (not has_changed_files_artifact or changed_files_artifact is None)
+                )
+
+                if not has_changed_files_artifact or changed_files_artifact is None:
+                    if not is_grandfathered_run002:
+                        errors.append(
+                            f"  ❌ {rel_comp}: verdict='{verdict}' erfordert "
+                            "changed_files_artifact auf eine existierende Datei."
+                        )
+                else:
+                    changed_files_artifact_path = _validate_run_local_artifact_ref(
+                        repo_root=repo_root,
+                        run_dir=run_dir,
+                        rel_file=rel_comp,
+                        field_name="changed_files_artifact",
+                        ref_value=changed_files_artifact,
+                        errors=errors,
+                    )
+
+    if scope_drift_evidence_status == "repo_local" and changed_files_artifact_path is None:
+        errors.append(
+            f"  ❌ {rel_run}/measurement.yml: metrics.scope_drift_count.evidence_status='repo_local' "
+            "erfordert comparability.yml.changed_files_artifact auf eine existierende Datei."
+        )
 
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:

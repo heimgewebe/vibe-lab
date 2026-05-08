@@ -2365,5 +2365,131 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("Self-Observation" in e for e in errs), errs)
 
+    # --- Comparability / changed-files guard ---
+
+    def test_not_comparable_null_changed_files_with_reason_passes(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "comparability.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "run_comparability_assessment"
+            run_id: "run-001"
+            verdict: not_comparable
+            changed_files_artifact: null
+            missing_changed_files_reason: "candidate/rehearsal run without independent comparable context"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [])
+
+    def test_not_comparable_null_changed_files_without_reason_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "comparability.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "run_comparability_assessment"
+            run_id: "run-001"
+            verdict: not_comparable
+            changed_files_artifact: null
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("missing_changed_files_reason" in e for e in errs), errs)
+
+    def test_reference_only_without_changed_files_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "comparability.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "run_comparability_assessment"
+            run_id: "run-001"
+            verdict: reference_only
+            changed_files_artifact: null
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("changed_files_artifact" in e for e in errs), errs)
+
+    def test_scope_drift_repo_local_without_changed_files_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        measurement = _valid_measurement_yml().replace(
+            'evidence_status: "external_unverified"',
+            'evidence_status: "repo_local"',
+            1,
+        )
+        _write(run_dir / "measurement.yml", measurement)
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("scope_drift_count.evidence_status='repo_local'" in e for e in errs), errs)
+
+    def test_comparable_with_existing_changed_files_artifact_passes(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        (run_dir / "changed-files.txt").write_text("scripts/docmeta/validate_run_bundle.py\n", encoding="utf-8")
+        _write(
+            run_dir / "comparability.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "run_comparability_assessment"
+            run_id: "run-001"
+            verdict: comparable
+            changed_files_artifact: "changed-files.txt"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [])
+
+    def test_changed_files_artifact_missing_file_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "comparability.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "run_comparability_assessment"
+            run_id: "run-001"
+            verdict: comparable
+            changed_files_artifact: "missing-changed-files.txt"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("keine existierende Datei" in e for e in errs), errs)
+
+    def test_changed_files_artifact_path_escape_fails(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write_legacy_allowlist(self.base, ["experiments/exp-fixture/artifacts/run-001/run.yml"])
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "comparability.yml",
+            """
+            schema_version: "1.0.0"
+            contract: "run_comparability_assessment"
+            run_id: "run-001"
+            verdict: comparable
+            changed_files_artifact: "../outside.txt"
+            """,
+        )
+
+        errs = validate_repo(self.base)
+        self.assertTrue(any("verlässt das Run-Verzeichnis" in e for e in errs), errs)
+
 if __name__ == "__main__":
     unittest.main()
