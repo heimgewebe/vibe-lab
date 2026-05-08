@@ -218,51 +218,49 @@ def _valid_measurement_yml(
     scope_drift_notes: str | None = "scope drift note",
     missing_evidence_items: list[tuple[str, str]] | None = None,
 ) -> str:
-    scope_drift_notes_block = ""
+    lines = [
+        'schema_version: "1.0.0"',
+        'contract: "measurement_run"',
+        f'run_id: "{run_id}"',
+        f'auditor_verdict: "{auditor_verdict}"',
+        'auditor_ref: "auditor-output.yml"',
+        'metrics:',
+        '  scope_drift_count:',
+        f'    value: {json.dumps(scope_drift_value)}',
+        f'    evidence_status: "{scope_drift_evidence_status}"',
+    ]
     if scope_drift_notes is not None:
-        scope_drift_notes_block = f"\n        notes: {json.dumps(scope_drift_notes)}"
-
-    missing_evidence_block = ""
+        lines.append(f'    notes: {json.dumps(scope_drift_notes)}')
+    lines.extend([
+        '  unsupported_claim_count:',
+        f'    value: {unsupported}',
+        '    evidence_status: "derived_from_auditor_output"',
+        '  missing_locator_count:',
+        '    value: 0',
+        '    evidence_status: "external_unverified"',
+        '  validation_gap_count:',
+        f'    value: {val_gap}',
+        '    evidence_status: "derived_from_auditor_output"',
+        '  review_friction_count:',
+        '    value: 0',
+        '    evidence_status: "external_unverified"',
+        '  rework_count:',
+        '    value: 0',
+        '    evidence_status: "external_unverified"',
+        '  false_block_count:',
+        '    value: 0',
+        '    evidence_status: "external_unverified"',
+        '  task_completion_time_observed:',
+        '    value: "n/a"',
+        '    evidence_status: "external_unverified"',
+    ])
     if missing_evidence_items:
-        lines = ["missing_evidence:"]
+        lines.append('missing_evidence:')
         for item, detail in missing_evidence_items:
-            lines.append(f"  - item: {json.dumps(item)}")
-            lines.append(f"    detail: {json.dumps(detail)}")
-        missing_evidence_block = "\n" + "\n".join(lines)
-
-    return f"""
-    schema_version: "1.0.0"
-    contract: "measurement_run"
-    run_id: "{run_id}"
-    auditor_verdict: "{auditor_verdict}"
-    auditor_ref: "auditor-output.yml"
-    metrics:
-      scope_drift_count:
-        value: {json.dumps(scope_drift_value)}
-        evidence_status: "{scope_drift_evidence_status}"{scope_drift_notes_block}
-      unsupported_claim_count:
-        value: {unsupported}
-        evidence_status: "derived_from_auditor_output"
-      missing_locator_count:
-        value: 0
-        evidence_status: "external_unverified"
-      validation_gap_count:
-        value: {val_gap}
-        evidence_status: "derived_from_auditor_output"
-      review_friction_count:
-        value: 0
-        evidence_status: "external_unverified"
-      rework_count:
-        value: 0
-        evidence_status: "external_unverified"
-      false_block_count:
-        value: 0
-        evidence_status: "external_unverified"
-      task_completion_time_observed:
-        value: "n/a"
-        evidence_status: "external_unverified"
-    {missing_evidence_block}
-    """
+            lines.append(f'  - item: {json.dumps(item)}')
+            lines.append(f'    detail: {json.dumps(detail)}')
+    lines.append('')
+    return "\n".join(lines)
 
 
 def _valid_comparability_yml(
@@ -273,34 +271,34 @@ def _valid_comparability_yml(
     compared_against: str | None = "run-000",
     missing_changed_files_reason: str | None = None,
 ) -> str:
-  lines = [
-    'schema_version: "1.0.0"',
-    'contract: "run_comparability_assessment"',
-    f'run_id: "{run_id}"',
-    'assessed_at: "2026-05-08"',
-    "",
-    f"compared_against: {json.dumps(compared_against)}" if compared_against is not None else "compared_against: null",
-    "",
-    "same_experiment_path: true",
-    "same_metric_structure: true",
-    "same_claim_evidence_discipline: true",
-    "",
-    'independent_task_or_pr_ref: "PR#test"',
-    "",
-    f"changed_files_artifact: {json.dumps(changed_files_artifact)}" if changed_files_artifact is not None else "changed_files_artifact: null",
-    "",
-    f'verdict: "{verdict}"',
-  ]
-  if missing_changed_files_reason is not None:
-    lines.append(
-      f"missing_changed_files_reason: {json.dumps(missing_changed_files_reason)}"
-    )
-  lines.extend([
-    "",
-    'notes: "fixture comparability"',
-    "",
-  ])
-  return "\n".join(lines)
+    lines = [
+        'schema_version: "1.0.0"',
+        'contract: "run_comparability_assessment"',
+        f'run_id: "{run_id}"',
+        'assessed_at: "2026-05-08"',
+        '',
+        f"compared_against: {json.dumps(compared_against)}" if compared_against is not None else 'compared_against: null',
+        '',
+        'same_experiment_path: true',
+        'same_metric_structure: true',
+        'same_claim_evidence_discipline: true',
+        '',
+        'independent_task_or_pr_ref: "PR#test"',
+        '',
+        f"changed_files_artifact: {json.dumps(changed_files_artifact)}" if changed_files_artifact is not None else 'changed_files_artifact: null',
+        '',
+        f'verdict: "{verdict}"',
+    ]
+    if missing_changed_files_reason is not None:
+        lines.append(
+            f"missing_changed_files_reason: {json.dumps(missing_changed_files_reason)}"
+        )
+    lines.extend([
+        '',
+        'notes: "fixture comparability"',
+        '',
+    ])
+    return "\n".join(lines)
 
 
 def _run_yml_repo_path(exp_name: str, run_id: str) -> str:
@@ -553,6 +551,18 @@ class RepoLevelTests(unittest.TestCase):
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         self.assertEqual(validate_repo(self.base), [])
 
+    def test_comparable_with_experiment_relative_changed_files_artifact_passes(self) -> None:
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="artifacts/run-001/changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / "run-001")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        self.assertEqual(validate_repo(self.base), [])
+
     def test_grandfathered_run_002_reference_only_without_changed_files_and_scope_drift_claim_passes(self) -> None:
         exp_name = "2026-05-01_agent-skill-minimal-layer-instrumentation"
         run_id = "run-002-controlled-agent-skill-run"
@@ -596,6 +606,7 @@ class RepoLevelTests(unittest.TestCase):
         _write_legacy_allowlist(self.base, [_run_yml_repo_path(exp_name, run_id)])
         errs = validate_repo(self.base)
         self.assertTrue(any("verdict='comparable'" in e for e in errs), errs)
+
     def test_run_created_after_changed_files_contract_without_comparability_fails(self) -> None:
         run_id = "run-post-contract"
         _build_valid_bundle(
@@ -725,6 +736,19 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("ghost.txt" in e and "existierende Datei" in e for e in errs), errs)
 
+    def test_changed_files_artifact_pointing_to_other_run_fails(self) -> None:
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="artifacts/other-run/changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / "other-run")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("muss run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen" in e for e in errs), errs)
+
     def test_changed_files_artifact_parent_escape_fails(self) -> None:
         _build_valid_bundle(
             self.base,
@@ -735,7 +759,14 @@ class RepoLevelTests(unittest.TestCase):
         )
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
-        self.assertTrue(any("verlässt das Run-Verzeichnis" in e for e in errs), errs)
+        self.assertTrue(
+          any(
+            "muss run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen"
+            in e
+            for e in errs
+          ),
+          errs,
+        )
 
     def test_changed_files_artifact_absolute_path_fails(self) -> None:
         _build_valid_bundle(
@@ -760,6 +791,40 @@ class RepoLevelTests(unittest.TestCase):
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
         self.assertTrue(any("leerer String" in e for e in errs), errs)
+
+    def test_invalid_comparability_yaml_does_not_emit_missing_message(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write(exp / "artifacts" / "run-001" / "comparability.yml", "verdict: [\n")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("comparability.yml: YAML-Fehler" in e for e in errs), errs)
+        self.assertFalse(any("comparability.yml: fehlt" in e for e in errs), errs)
+
+    def test_non_object_comparability_yaml_does_not_emit_missing_message(self) -> None:
+        exp = _build_valid_bundle(self.base)
+        _write(exp / "artifacts" / "run-001" / "comparability.yml", "- comparable\n")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Datei muss ein YAML-Objekt sein" in e for e in errs), errs)
+        self.assertFalse(any("comparability.yml: fehlt" in e for e in errs), errs)
+
+    def test_missing_evidence_fixture_yaml_remains_valid(self) -> None:
+        _build_valid_bundle(
+            self.base,
+            measurement_text=_valid_measurement_yml(
+                scope_drift_value=None,
+                scope_drift_evidence_status="missing_evidence",
+                scope_drift_notes=None,
+                missing_evidence_items=[("scope_drift_count", "No changed-files artifact archived.")],
+            ),
+            comparability_text=_valid_comparability_yml(
+                verdict="not_comparable",
+                changed_files_artifact=None,
+                missing_changed_files_reason="Candidate run without archived changed-files evidence.",
+            ),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        self.assertEqual(validate_repo(self.base), [])
 
     # --- Schema isolation ---
 

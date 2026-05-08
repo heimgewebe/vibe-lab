@@ -207,6 +207,35 @@ def _is_absolute_path_str(ref: str) -> bool:
     return Path(ref).is_absolute() or (len(ref) >= 2 and ref[1] == ":")
 
 
+def _resolve_changed_files_artifact_ref(
+    *,
+    exp_dir: Path,
+    run_dir: Path,
+    ref: str,
+) -> Path | None:
+    """Resolve changed_files_artifact in exactly two accepted forms.
+
+    Accepted forms:
+      - run-local: ``changed-files.txt`` or ``subdir/changed-files.txt``
+      - experiment-relative contract style: ``artifacts/<run-id>/changed-files.txt``
+
+    Both forms must still resolve into the current run_dir.
+    """
+    if ref.startswith("artifacts/"):
+        candidate = _resolve_within(exp_dir, ref)
+    else:
+        candidate = _resolve_within_run_dir(run_dir, ref)
+
+    if candidate is None:
+        return None
+
+    try:
+        candidate.relative_to(run_dir.resolve())
+    except (ValueError, OSError):
+        return None
+    return candidate
+
+
 def _is_grandfathered_changed_files_run(rel_run: Path) -> bool:
     return rel_run == _GRANDFATHERED_CHANGED_FILES_RUN
 
@@ -250,63 +279,65 @@ def _has_metric_missing_evidence_reason(measurement: dict, metric_name: str) -> 
 
 def _load_comparability_assessment(
     *,
+    exp_dir: Path,
     run_dir: Path,
     rel_run: Path,
     errors: list[str],
-) -> tuple[dict | None, bool, bool]:
+) -> tuple[dict | None, bool, bool, bool]:
     comparability_yml = run_dir / "comparability.yml"
     if not comparability_yml.is_file():
-        return None, False, True
+        return None, False, False, True
 
     try:
         comparability = _load_yaml(comparability_yml)
     except Exception as e:
         errors.append(f"  ❌ {rel_run}/comparability.yml: YAML-Fehler — {e}")
-        return None, False, True
+        return None, True, False, False
 
     if not isinstance(comparability, dict):
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: Datei muss ein YAML-Objekt sein."
         )
-        return None, False, True
+        return None, True, False, False
 
     raw_ref = comparability.get("changed_files_artifact", _MISSING)
     if raw_ref is _MISSING or raw_ref is None:
-        return comparability, False, True
+        return comparability, True, False, True
 
     if not isinstance(raw_ref, str):
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: changed_files_artifact muss ein String oder null sein."
         )
-        return comparability, False, False
+        return comparability, True, False, False
 
     ref = raw_ref.strip()
     if not ref:
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: changed_files_artifact darf kein leerer String sein."
         )
-        return comparability, False, False
+        return comparability, True, False, False
 
     if _is_absolute_path_str(ref):
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' darf kein absoluter Pfad sein."
         )
-        return comparability, False, False
+        return comparability, True, False, False
 
-    target = _resolve_within_run_dir(run_dir, ref)
+    target = _resolve_changed_files_artifact_ref(exp_dir=exp_dir, run_dir=run_dir, ref=ref)
     if target is None:
         errors.append(
-            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' verlässt das Run-Verzeichnis."
+            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' muss "
+            f"run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen."
         )
-        return comparability, False, False
+        return comparability, True, False, False
 
     if not target.is_file():
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' zeigt nicht auf eine existierende Datei."
         )
-        return comparability, False, False
+        return comparability, True, False, False
 
-    return comparability, True, False
+    return comparability, True, True, False
 
 
 def _compute_max_severity(verdicts: Iterable[str]) -> str:
@@ -965,17 +996,22 @@ def _validate_run_dir(
 
     grandfathered_changed_files_run = _is_grandfathered_changed_files_run(rel_run)
     requires_comparability = _requires_changed_files_comparability(bundle, rel_exp)
-    comparability, changed_files_artifact_valid, changed_files_artifact_missing = (
-        _load_comparability_assessment(run_dir=run_dir, rel_run=rel_run, errors=errors)
+    comparability, comparability_present, changed_files_artifact_valid, changed_files_artifact_missing = (
+        _load_comparability_assessment(
+            exp_dir=exp_dir,
+            run_dir=run_dir,
+            rel_run=rel_run,
+            errors=errors,
+        )
     )
 
-    if comparability is None:
+    if not comparability_present:
         if requires_comparability:
             errors.append(
                 f"  ❌ {rel_run}/comparability.yml: fehlt, obwohl dieser Run nach dem "
                 f"Changed-Files-Contract eine Comparability-Bewertung benötigt."
             )
-    else:
+    elif comparability is not None:
         verdict = comparability.get("verdict")
         grandfathered_reference_only_without_changed_files = (
             grandfathered_changed_files_run
@@ -988,7 +1024,7 @@ def _validate_run_dir(
                 if not isinstance(missing_reason, str) or not missing_reason.strip():
                     errors.append(
                         f"  ❌ {rel_run}/comparability.yml: verdict=not_comparable mit "
-                        f"changed_files_artifact=null erfordert missing_changed_files_reason."
+                        f"changed_files_artifact=null oder fehlend erfordert missing_changed_files_reason."
                     )
         elif changed_files_artifact_missing and not grandfathered_reference_only_without_changed_files:
             errors.append(
