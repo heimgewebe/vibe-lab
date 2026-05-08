@@ -31,6 +31,7 @@ experiment:
     - artifacts/run-003-controlled-agent-skill-run/agent-output.md
     - artifacts/run-003-controlled-agent-skill-run/targeted-tests.txt
     - artifacts/run-003-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-003-controlled-agent-skill-run/comparability.yml
     - artifacts/run-004-controlled-agent-skill-run/run.yml
     - artifacts/run-004-controlled-agent-skill-run/measurement.yml
     - artifacts/run-004-controlled-agent-skill-run/auditor-output.yml
@@ -39,6 +40,7 @@ experiment:
     - artifacts/run-004-controlled-agent-skill-run/agent-output.md
     - artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt
     - artifacts/run-004-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-004-controlled-agent-skill-run/comparability.yml
   created: "2026-05-01"
   updated: "2026-05-08"
   author: "copilot-agent"

@@ -117,14 +117,12 @@ Diese Datei:
   - interpretation_limits.causal_claim_allowed: false
 
 ## PR 10 — Weitere vergleichbare Runs erfassen
-- [x] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
-  - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/`
-  - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/`
-  - run.yml, evidence-pack.yml, auditor-output.yml, measurement.yml, run_meta.json, agent-output.md, targeted-tests.txt, make-validate.txt
-  - current_comparable_runs=3; Schwellenwert für PR-11 erreicht.
-- [x] Claim-/Evidence-Metriken pro Run konsistent erhoben.
-  - Alle 8 Metriken (scope_drift_count, unsupported_claim_count, missing_locator_count, validation_gap_count, review_friction_count, rework_count, false_block_count, task_completion_time_observed) konsistent in allen Runs erhoben.
-  - review_friction_count und rework_count bleiben null/missing_evidence (kein Wert darf als Erfolg gewertet werden).
+- [ ] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
+  - Kandidaten-/Rehearsal-Runs run-003 und run-004 erfasst. Beide haben `comparability_verdict: not_comparable` (kein `independent_task_or_pr_ref`; entstanden im selben PR-10-Session-Durchlauf). `current_comparable_runs` bleibt 1.
+  - Noch ausstehend: zwei Runs mit echten unabhängigen `independent_task_or_pr_ref`-Werten (separate PRs oder Tasks).
+  - Comparability-Regeln sind durch comparability.yml dokumentiert und funktionieren korrekt.
+- [ ] Claim-/Evidence-Metriken pro Run konsistent erhoben.
+  - 8 Metriken sind in run-003/004 strukturell vorhanden; scope_drift_count bleibt null/missing_evidence wegen fehlendem changed-files-Artefakt.
   - Kein Wirksamkeitsclaim, kein Promotion-Claim, kein Kausalclaim.
 
 ## PR 11 — Cross-Run-Assessment

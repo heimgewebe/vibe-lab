@@ -1,0 +1,25 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-004-controlled-agent-skill-run"
+assessed_at: "2026-05-08"
+
+compared_against: "run-002-controlled-agent-skill-run"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: null
+
+changed_files_artifact: null
+
+verdict: not_comparable
+
+notes: >
+  Run 004 describes the finalization and validation phase of the PR-10 roadmap
+  work (manifest/index updates, make generate, make validate). It is part of the
+  same PR-10 session as run-003. No independent PR number, branch, or task
+  reference exists that is separate from the PR-10 work itself.
+  Under comparability rules: independent_task_or_pr_ref is null, therefore
+  verdict cannot be comparable. Run 004 is recorded as a candidate/rehearsal run
+  and does not count toward current_comparable_runs.

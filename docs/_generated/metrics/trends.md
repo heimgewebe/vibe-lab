@@ -62,6 +62,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | completeness | 4 | 0 | - | - | - |
 | consistency | 2 | 0 | - | - | - |
 | control_tasks_executed | 1 | 1 | 3 | 3 | 3 |
+| controlled_run_recorded | 3 | 0 | - | - | - |
 | controlled_schema_deviation_injected | 1 | 1 | 1 | 1 | 1 |
 | design-sharpening | 1 | 0 | - | - | - |
 | detection_latency_seconds | 3 | 3 | 47 | 97 | 48 |
@@ -144,7 +145,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | pr_opened_run_004 | 1 | 0 | - | - | - |
 | pr_opened_run_005 | 1 | 0 | - | - | - |
 | pr_opened_run_006 | 1 | 0 | - | - | - |
-| pr_run_recorded | 6 | 0 | - | - | - |
+| pr_run_recorded | 3 | 0 | - | - | - |
 | prompts-incremental | 1 | 1 | 6 | 6 | 6 |
 | prompts-single-shot | 1 | 1 | 1 | 1 | 1 |
 | prompts_used | 2 | 2 | 1 | 2 | 1.5 |

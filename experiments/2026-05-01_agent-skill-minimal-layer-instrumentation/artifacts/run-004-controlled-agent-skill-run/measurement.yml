@@ -12,9 +12,9 @@ agent_layer_used:
 
 metrics:
   scope_drift_count:
-    value: 0
-    evidence_status: "repo_local"
-    notes: "All new files lie within experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/ and index/manifest updates within declared scope. No files outside declared scope."
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No changed-files artifact archived. Scope appears contained to run-004 artifact directory plus manifest/index updates, but without a repo-local changed-files record this cannot be claimed as repo_local. Absence of evidence is not evidence of absence."
 
   unsupported_claim_count:
     value: 0
@@ -52,6 +52,8 @@ metrics:
     notes: "Approximate. Not independently verifiable. Descriptive only; no causal claim."
 
 missing_evidence:
+  - item: "scope_drift_count"
+    detail: "No changed-files artifact archived. Value is null (unmeasured); not a zero-drift claim."
   - item: "review_friction_count"
     detail: "No review comment artifact archived. Value is null (unmeasured); not a zero-conflict claim."
   - item: "rework_count"
@@ -60,8 +62,9 @@ missing_evidence:
     detail: "Self-reported approximation only. Not independently verifiable. Not a comparable measurement."
 
 interpretation_limits:
-  - "This is the third controlled agent/skill run with full Evidence-Pack coupling. current_comparable_runs now reaches 3 (run-002, run-003, run-004)."
-  - "current_comparable_runs: 3 — minimum threshold for PR-11 cross-run assessment is now met."
+  - "Run 004 is a candidate/rehearsal run, not a confirmed comparable run. See comparability.yml: verdict=not_comparable."
+  - "independent_task_or_pr_ref is null; run-004 is part of the same PR-10 session as run-003."
+  - "current_comparable_runs remains at 1 (only run-002 qualifies)."
   - "No usefulness claim about the agent/skill layer can be derived from this data."
-  - "cross-run-assessment.md remains a separate follow-on PR (PR 11)."
+  - "cross-run-assessment.md (PR 11) may not proceed until current_comparable_runs reaches 3 with genuinely comparable runs."
   - "review_friction_count and rework_count are not repo-locally observed in this run."
