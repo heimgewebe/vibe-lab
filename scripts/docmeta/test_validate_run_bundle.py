@@ -553,7 +553,7 @@ class RepoLevelTests(unittest.TestCase):
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         self.assertEqual(validate_repo(self.base), [])
 
-    def test_grandfathered_run_002_reference_only_without_changed_files_passes(self) -> None:
+    def test_grandfathered_run_002_reference_only_without_changed_files_and_scope_drift_claim_passes(self) -> None:
         exp_name = "2026-05-01_agent-skill-minimal-layer-instrumentation"
         run_id = "run-002-controlled-agent-skill-run"
         _build_valid_bundle(
@@ -576,6 +576,18 @@ class RepoLevelTests(unittest.TestCase):
         )
         _write_legacy_allowlist(self.base, [_run_yml_repo_path(exp_name, run_id)])
         self.assertEqual(validate_repo(self.base), [])
+
+    def test_run_created_after_changed_files_contract_without_comparability_fails(self) -> None:
+        run_id = "run-post-contract"
+        _build_valid_bundle(
+            self.base,
+            run_id=run_id,
+            run_created_at="2026-05-08T00:00:00Z",
+            sequence=1,
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", run_id)])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("Comparability-Bewertung benötigt" in e for e in errs), errs)
 
     def test_not_comparable_without_reason_fails(self) -> None:
         _build_valid_bundle(
