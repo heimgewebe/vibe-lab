@@ -18,7 +18,7 @@ part of this controlled run:
 
 - Created run-004 artifacts (this run)
 - Updated manifest.yml to include run-003 and run-004 execution_refs
-- Updated evidence.jsonl with run-003 and run-004 entries (with controlled_run_recorded metric, not pseudo-PR values)
+- Updated evidence.jsonl with run-003/004 entries using metric=candidate_rehearsal_run_recorded (not controlled_run_recorded, to avoid inflating the confirmed run count)
 - Updated results/result.md to reflect current_comparable_runs=1 and PR-10 remaining open
 - Kept docs/playbooks/evidence-control-plane-roadmap-checklist.md with PR 10 items open
 - Ran make generate and make validate to confirm all validators pass
@@ -51,7 +51,7 @@ No independently verified pre-artifact baseline transcript is archived.
 
 All three validators pass after run-003 and run-004 artifacts are in place.
 manifest.yml updated to include all run-003/004 execution_refs including comparability.yml.
-evidence.jsonl updated with run-003/004 entries using metric=controlled_run_recorded (not pseudo-PR values).
+evidence.jsonl updated with run-003/004 entries using metric=candidate_rehearsal_run_recorded, so candidate runs do not inflate controlled_run_recorded.
 result.md updated to reflect current_comparable_runs=1 and PR-10 remaining open.
 Roadmap checklist keeps PR 10 items open pending two independent comparable runs.
 Taxonomy rule added for .vibe/run-bundle-evidence-pack-legacy.yml; unknown_artifacts is now 0.

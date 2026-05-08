@@ -10,6 +10,8 @@ overall_verdict: "PASS"
 extensions:
   canonical_claim_source: "evidence-pack.yml"
   auditor_role: "projection and assessment; evidence-pack.yml is the canonical evidence contract"
+  missing_evidence_scope: "auditor_claim_level_only"
+  metric_level_missing_evidence: "scope_drift_count, review_friction_count, rework_count missing_evidence; task_completion_time_observed self_reported. See measurement.yml."
 
 claims:
   - id: "claim-001"

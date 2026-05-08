@@ -40,7 +40,7 @@ claims:
         exit_code: 0
 
   - claim_id: "pack-005"
-    text: "Comparability assessment: This run is retained as a candidate/rehearsal run. Verdict is not_comparable because independent_task_or_pr_ref is null (same PR-10 session as run-003, not independent)."
+    text: "Comparability assessment: This run is retained as a candidate/rehearsal run. Verdict is not_comparable (independent_task_or_pr_ref=null; same PR-10 session as run-003). Metric-level gaps remain in measurement.yml and are not resolved by this evidence pack: scope_drift_count, review_friction_count, rework_count (all missing_evidence); task_completion_time_observed (self_reported, not comparable)."
     type: "run_comparability_assessment"
     verdict: "PASS"
     evidence:
