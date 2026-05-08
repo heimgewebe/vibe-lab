@@ -1,0 +1,88 @@
+# Run-002 Measurement
+# Experiment: 2026-05-01_agent-skill-minimal-layer-instrumentation
+# Context: first controlled Agent/Skill run with complete evidence-pack coupling
+
+schema_version: "0.1.0"
+contract: "measurement_run"
+run_id: "run-002-controlled-agent-skill-run"
+
+auditor_verdict: "PASS"
+# auditor_ref: run-dir-relativ (zur Datei selbst). Siehe schemas/measurement-run.v1.schema.json.
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  experiment_critic:
+    used: false
+    evidence_status: "missing_evidence"
+    notes: "No archived experiment-critic output for Run 002; no critic-backed usage claim is made."
+  evidence_reconciliation_auditor:
+    used: true
+    evidence_status: "repo_local"
+    evidence_ref: "auditor-output.yml"
+
+pr_metadata:
+  pr_ref: "github:heimgewebe/vibe-lab/pull/168"
+  branch_ref: "fix/pr9-run002-consistency"
+  evidence_status: "self_reported"
+  notes: >-
+    Controlled run artifact set prepared on branch fix/pr9-run002-consistency.
+    PR reference aligned to active branch pull request.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "self_reported"
+    notes: "No out-of-scope file changes were intentionally introduced in this run record."
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "All auditor claims in auditor-output.yml are PASS and repo-local evidence-bound."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "self_reported"
+    notes: "No missing locators observed in the run-local evidence references."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "Run-level auditor claims are fully evidenced; metric-level gaps are tracked separately below."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Metric-level gap: review metadata artifact for this run is not archived in-repo."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Metric-level gap: rework measurement artifact for this run is not archived in-repo."
+
+  false_block_count:
+    value: 0
+    evidence_status: "self_reported"
+    notes: "No blocking validator failure observed during artifact assembly for this run record."
+
+  task_completion_time_observed:
+    value: "~60 min"
+    evidence_status: "self_reported"
+    notes: >-
+      Descriptive self-observation only; not cross-run comparable and no causal
+      interpretation regarding Agent/Skill impact is allowed.
+
+missing_evidence:
+  - item: "experiment_critic output"
+    detail: "No archived experiment-critic output exists for Run 002; critic usage is not claimed."
+  - item: "review_friction_count source artifact"
+    detail: "No archived review timeline artifact for this run."
+  - item: "rework_count source artifact"
+    detail: "No archived commit/rework timeline artifact for this run."
+
+interpretation_limits:
+  - "Run 001 is a predecessor with MISSING_EVIDENCE and not treated as comparable controlled run."
+  - "Current comparable controlled runs: 1 (Run 002 only)."
+  - "No effectiveness claim about the Agent/Skill layer is allowed."
+  - "No promotion claim is allowed."
+  - "No causal claim is allowed."
+  - "task_completion_time_observed is self_reported and not comparable across runs."

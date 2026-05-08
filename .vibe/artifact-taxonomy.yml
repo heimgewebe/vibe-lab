@@ -159,6 +159,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: .vibe/run-bundle-evidence-pack-legacy.yml
+    layer: contract
+    kind: validation_allowlist
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required, ci_blocking]
+    origin: handcrafted
   - pattern: .vibe/intent.md
     layer: contract
     kind: vibe_intent

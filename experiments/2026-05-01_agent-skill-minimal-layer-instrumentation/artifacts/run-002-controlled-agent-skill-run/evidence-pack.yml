@@ -1,0 +1,26 @@
+# Evidence Pack for Run-002 — Controlled Agent/Skill Run
+# Schema: schemas/run-evidence-pack.v1.schema.json
+
+schema_version: "1.0.0"
+run_id: "run-002-controlled-agent-skill-run"
+claims:
+  - claim_id: "pack-001"
+    text: "Evidence pack is structurally present and coupled to run bundle"
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml"
+        status: "repo_local"
+  - claim_id: "pack-002"
+    text: "Run-002 measurement, auditor output, and run_meta are archived as repo-local artifacts"
+    type: "run_artifacts_archived"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json"
+        status: "repo_local"
