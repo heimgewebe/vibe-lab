@@ -92,6 +92,19 @@ _AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
 _EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
 _LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
+_CHANGED_FILES_CONTRACT_DATE = "2026-05-08"
+_CHANGED_FILES_GUARD_EXPERIMENT = Path(
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation"
+)
+_GRANDFATHERED_CHANGED_FILES_RUN = (
+    _CHANGED_FILES_GUARD_EXPERIMENT / "artifacts" / "run-002-controlled-agent-skill-run"
+)
+# Historical exception for the canonical run-002 baseline: this run may keep
+# reference_only comparability without changed_files_artifact and may also retain
+# an existing non-null scope_drift_count claim without changed-files evidence.
+# The exception is intentionally path-exact and must not generalize.
+
+_MISSING = object()
 
 # Modul-level Warnliste — wird zu Beginn jedes validate_repo()-Aufrufs zurückgesetzt.
 # Allows tests to inspect warnings without modifying the return type of validate_repo().
@@ -188,6 +201,143 @@ def _resolve_within(base: Path, ref: str) -> Path | None:
     except (ValueError, OSError):
         return None
     return candidate
+
+
+def _is_absolute_path_str(ref: str) -> bool:
+    return Path(ref).is_absolute() or (len(ref) >= 2 and ref[1] == ":")
+
+
+def _resolve_changed_files_artifact_ref(
+    *,
+    exp_dir: Path,
+    run_dir: Path,
+    ref: str,
+) -> Path | None:
+    """Resolve changed_files_artifact in exactly two accepted forms.
+
+    Accepted forms:
+      - run-local: ``changed-files.txt`` or ``subdir/changed-files.txt``
+      - experiment-relative contract style: ``artifacts/<run-id>/changed-files.txt``
+
+    Both forms must still resolve into the current run_dir.
+    """
+    if ref.startswith("artifacts/"):
+        candidate = _resolve_within(exp_dir, ref)
+    else:
+        candidate = _resolve_within_run_dir(run_dir, ref)
+
+    if candidate is None:
+        return None
+
+    try:
+        candidate.relative_to(run_dir.resolve())
+    except (ValueError, OSError):
+        return None
+    return candidate
+
+
+def _is_grandfathered_changed_files_run(rel_run: Path) -> bool:
+    return rel_run == _GRANDFATHERED_CHANGED_FILES_RUN
+
+
+def _requires_changed_files_comparability(bundle: dict | None, rel_exp: Path) -> bool:
+    if not isinstance(bundle, dict):
+        return False
+
+    run_block = bundle.get("run") or {}
+    created_at = run_block.get("created_at")
+    if isinstance(created_at, str) and created_at[:10] >= _CHANGED_FILES_CONTRACT_DATE:
+        return True
+
+    sequence = run_block.get("sequence")
+    return rel_exp == _CHANGED_FILES_GUARD_EXPERIMENT and isinstance(sequence, int) and sequence >= 3
+
+
+def _has_metric_missing_evidence_reason(measurement: dict, metric_name: str) -> bool:
+    metrics = measurement.get("metrics") or {}
+    metric = metrics.get(metric_name) or {}
+    if isinstance(metric, dict):
+        notes = metric.get("notes")
+        if isinstance(notes, str) and notes.strip():
+            return True
+
+    missing_evidence = measurement.get("missing_evidence") or []
+    if not isinstance(missing_evidence, list):
+        return False
+
+    for entry in missing_evidence:
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("item") != metric_name:
+            continue
+        for key in ("detail", "reason", "notes"):
+            value = entry.get(key)
+            if isinstance(value, str) and value.strip():
+                return True
+    return False
+
+
+def _load_comparability_assessment(
+    *,
+    exp_dir: Path,
+    run_dir: Path,
+    rel_run: Path,
+    errors: list[str],
+) -> tuple[dict | None, bool, bool, bool]:
+    comparability_yml = run_dir / "comparability.yml"
+    if not comparability_yml.is_file():
+        return None, False, False, True
+
+    try:
+        comparability = _load_yaml(comparability_yml)
+    except Exception as e:
+        errors.append(f"  ❌ {rel_run}/comparability.yml: YAML-Fehler — {e}")
+        return None, True, False, False
+
+    if not isinstance(comparability, dict):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: Datei muss ein YAML-Objekt sein."
+        )
+        return None, True, False, False
+
+    raw_ref = comparability.get("changed_files_artifact", _MISSING)
+    if raw_ref is _MISSING or raw_ref is None:
+        return comparability, True, False, True
+
+    if not isinstance(raw_ref, str):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact muss ein String oder null sein."
+        )
+        return comparability, True, False, False
+
+    ref = raw_ref.strip()
+    if not ref:
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact darf kein leerer String sein."
+        )
+        return comparability, True, False, False
+
+    if _is_absolute_path_str(ref):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' darf kein absoluter Pfad sein."
+        )
+        return comparability, True, False, False
+
+    target = _resolve_changed_files_artifact_ref(exp_dir=exp_dir, run_dir=run_dir, ref=ref)
+    if target is None:
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' muss "
+            f"run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen."
+        )
+        return comparability, True, False, False
+
+    if not target.is_file():
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: changed_files_artifact '{ref}' zeigt nicht auf eine existierende Datei."
+        )
+        return comparability, True, False, False
+
+    return comparability, True, True, False
 
 
 def _compute_max_severity(verdicts: Iterable[str]) -> str:
@@ -685,6 +835,7 @@ def _validate_run_dir(
     errors: list[str],
 ) -> None:
     """Validiert ein einzelnes artifacts/<run-id>/-Verzeichnis."""
+    rel_exp = exp_dir.relative_to(repo_root)
     rel_run = run_dir.relative_to(repo_root)
     run_yml = run_dir / "run.yml"
     auditor_yml = run_dir / "auditor-output.yml"
@@ -843,7 +994,46 @@ def _validate_run_dir(
                     f"stimmt nicht mit run.yml run.id='{run_id_expected}' überein."
                 )
 
+    grandfathered_changed_files_run = _is_grandfathered_changed_files_run(rel_run)
+    requires_comparability = _requires_changed_files_comparability(bundle, rel_exp)
+    comparability, comparability_present, changed_files_artifact_valid, changed_files_artifact_missing = (
+        _load_comparability_assessment(
+            exp_dir=exp_dir,
+            run_dir=run_dir,
+            rel_run=rel_run,
+            errors=errors,
+        )
+    )
+
+    if not comparability_present:
+        if requires_comparability:
+            errors.append(
+                f"  ❌ {rel_run}/comparability.yml: fehlt, obwohl dieser Run nach dem "
+                f"Changed-Files-Contract eine Comparability-Bewertung benötigt."
+            )
+    elif comparability is not None:
+        verdict = comparability.get("verdict")
+        grandfathered_reference_only_without_changed_files = (
+            grandfathered_changed_files_run
+            and verdict == "reference_only"
+            and changed_files_artifact_missing
+        )
+        if verdict == "not_comparable":
+            if changed_files_artifact_missing:
+                missing_reason = comparability.get("missing_changed_files_reason")
+                if not isinstance(missing_reason, str) or not missing_reason.strip():
+                    errors.append(
+                        f"  ❌ {rel_run}/comparability.yml: verdict=not_comparable mit "
+                        f"changed_files_artifact=null oder fehlend erfordert missing_changed_files_reason."
+                    )
+        elif changed_files_artifact_missing and not grandfathered_reference_only_without_changed_files:
+            errors.append(
+                f"  ❌ {rel_run}/comparability.yml: verdict='{verdict}' erfordert ein "
+                f"gültiges changed_files_artifact."
+            )
+
     # R7: measurement.yml
+    measurement: dict | None = None
     if measurement_yml.is_file():
         try:
             measurement = _load_yaml(measurement_yml)
@@ -904,6 +1094,44 @@ def _validate_run_dir(
             for sem_err in _check_measurement_semantics(measurement, auditor_data):
                 errors.append(f"  ❌ {rel_run}/measurement.yml: {sem_err}")
 
+        scope_drift = (measurement.get("metrics") or {}).get("scope_drift_count") or {}
+        if isinstance(scope_drift, dict):
+            scope_value = scope_drift.get("value")
+            scope_evidence_status = scope_drift.get("evidence_status")
+
+            if scope_value is None:
+                if scope_evidence_status != "missing_evidence":
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: scope_drift_count.value=null "
+                        f"erfordert evidence_status=missing_evidence."
+                    )
+                elif not _has_metric_missing_evidence_reason(measurement, "scope_drift_count"):
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: scope_drift_count.value=null "
+                        f"erfordert eine Begründung in notes oder missing_evidence."
+                    )
+            elif not grandfathered_changed_files_run:
+                # Historical bundles before the changed-files contract may lack
+                # comparability.yml. New bundles are guarded via
+                # _requires_changed_files_comparability().
+                if scope_evidence_status == "repo_local":
+                    if not comparability_present:
+                        errors.append(
+                            f"  ❌ {rel_run}/measurement.yml: scope_drift_count.evidence_status=repo_local "
+                            f"erfordert comparability.yml mit gültigem changed_files_artifact."
+                        )
+                    elif comparability is None:
+                        pass
+                    elif not changed_files_artifact_valid:
+                        errors.append(
+                            f"  ❌ {rel_run}/measurement.yml: scope_drift_count.evidence_status=repo_local "
+                            f"erfordert ein gültiges changed_files_artifact."
+                        )
+                elif comparability is not None and not changed_files_artifact_valid:
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: scope_drift_count.value={scope_value!r} "
+                        f"erfordert ein gültiges changed_files_artifact."
+                    )
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:
     """Severity-Precedence + PASS-Konsistenz."""
