@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-05-08T11:00:00Z
+Latest Evidence Timestamp: 2026-05-08T12:00:00Z
 
 ## Gate Snapshot
 
-- Total events: **284**
+- Total events: **285**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **15**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | --- | ---: |
 | decision | 18 |
 | measurement | 133 |
-| observation | 106 |
+| observation | 107 |
 | run | 27 |
 
 ## Metric Aggregates
@@ -63,7 +63,6 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | completeness | 4 | 0 | - | - | - |
 | consistency | 2 | 0 | - | - | - |
 | control_tasks_executed | 1 | 1 | 3 | 3 | 3 |
-| controlled_run_recorded | 1 | 0 | - | - | - |
 | controlled_schema_deviation_injected | 1 | 1 | 1 | 1 | 1 |
 | design-sharpening | 1 | 0 | - | - | - |
 | detection_latency_seconds | 3 | 3 | 47 | 97 | 48 |
@@ -78,6 +77,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | edge_cases_missed_test_first | 2 | 2 | 0 | 0 | 0 |
 | epistemic_gap_visibility | 1 | 0 | - | - | - |
 | error_path_tests | 1 | 1 | 21 | 21 | 21 |
+| evidence_log_reclassification | 1 | 0 | - | - | - |
 | evidence_revision | 1 | 0 | - | - | - |
 | execution-start | 1 | 0 | - | - | - |
 | execution_time_control_minutes | 1 | 1 | 8 | 8 | 8 |
@@ -146,7 +146,7 @@ Latest Evidence Timestamp: 2026-05-08T11:00:00Z
 | pr_opened_run_004 | 1 | 0 | - | - | - |
 | pr_opened_run_005 | 1 | 0 | - | - | - |
 | pr_opened_run_006 | 1 | 0 | - | - | - |
-| pr_run_recorded | 3 | 0 | - | - | - |
+| pr_run_recorded | 4 | 0 | - | - | - |
 | prompts-incremental | 1 | 1 | 6 | 6 | 6 |
 | prompts-single-shot | 1 | 1 | 1 | 1 | 1 |
 | prompts_used | 2 | 2 | 1 | 2 | 1.5 |
