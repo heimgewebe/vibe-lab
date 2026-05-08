@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (125 found):
+Documents not referenced by any other document via frontmatter relations (128 found):
 
 - `.vibe/intent.md`
 - `docs/evaluations/agent-skill-file-fruitfulness.md`
@@ -106,6 +106,9 @@ Documents not referenced by any other document via frontmatter relations (125 fo
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md`

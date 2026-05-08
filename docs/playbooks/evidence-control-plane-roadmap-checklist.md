@@ -118,7 +118,12 @@ Diese Datei:
 
 ## PR 10 — Weitere vergleichbare Runs erfassen
 - [ ] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
+  - Kandidaten-/Rehearsal-Runs run-003 und run-004 erfasst. Beide haben `comparability_verdict: not_comparable` (kein `independent_task_or_pr_ref`; entstanden im selben PR-10-Session-Durchlauf). `current_comparable_runs` bleibt 1.
+  - Noch ausstehend: zwei Runs mit echten unabhängigen `independent_task_or_pr_ref`-Werten (separate PRs oder Tasks).
+  - Comparability-Regeln sind durch comparability.yml dokumentiert und funktionieren korrekt.
 - [ ] Claim-/Evidence-Metriken pro Run konsistent erhoben.
+  - 8 Metriken sind in run-003/004 strukturell vorhanden; scope_drift_count bleibt null/missing_evidence wegen fehlendem changed-files-Artefakt.
+  - Kein Wirksamkeitsclaim, kein Promotion-Claim, kein Kausalclaim.
 
 ## PR 11 — Cross-Run-Assessment
 - [ ] `cross-run-assessment.md` erstellt.

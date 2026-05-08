@@ -23,10 +23,29 @@ experiment:
     - artifacts/run-002-controlled-agent-skill-run/agent-output.md
     - artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt
     - artifacts/run-002-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-002-controlled-agent-skill-run/comparability.yml
+    - artifacts/run-003-controlled-agent-skill-run/run.yml
+    - artifacts/run-003-controlled-agent-skill-run/measurement.yml
+    - artifacts/run-003-controlled-agent-skill-run/auditor-output.yml
+    - artifacts/run-003-controlled-agent-skill-run/run_meta.json
+    - artifacts/run-003-controlled-agent-skill-run/evidence-pack.yml
+    - artifacts/run-003-controlled-agent-skill-run/agent-output.md
+    - artifacts/run-003-controlled-agent-skill-run/targeted-tests.txt
+    - artifacts/run-003-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-003-controlled-agent-skill-run/comparability.yml
+    - artifacts/run-004-controlled-agent-skill-run/run.yml
+    - artifacts/run-004-controlled-agent-skill-run/measurement.yml
+    - artifacts/run-004-controlled-agent-skill-run/auditor-output.yml
+    - artifacts/run-004-controlled-agent-skill-run/run_meta.json
+    - artifacts/run-004-controlled-agent-skill-run/evidence-pack.yml
+    - artifacts/run-004-controlled-agent-skill-run/agent-output.md
+    - artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt
+    - artifacts/run-004-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-004-controlled-agent-skill-run/comparability.yml
   created: "2026-05-01"
-  updated: "2026-05-06"
+  updated: "2026-05-08"
   author: "copilot-agent"
-  iteration: 2
+  iteration: 4
   evidence_level: anecdotal
   falsifiability:
     version: 1
@@ -54,6 +73,10 @@ context:
   language: "Mixed (Markdown, YAML, JSONL)"
   environment: "vibe-lab"
   triggered_by: "user-request-2026-05-01-agent-skill-minimal-layer-instrumentation"
+  governance_contracts:
+    - ".vibe/changed-files-artifact.contract.md"
+    - ".vibe/run-bundle-evidence-pack-legacy.yml"
+    - "contracts/command-semantics.md"
 
 evidence:
   format: jsonl

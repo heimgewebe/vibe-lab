@@ -243,6 +243,22 @@
       "status": "classified"
     },
     {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "evidence_primitive_contract",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".vibe/changed-files-artifact.contract.md"
+      ],
+      "origin": "handcrafted",
+      "path": ".vibe/changed-files-artifact.contract.md",
+      "status": "classified"
+    },
+    {
       "authority": "normative_contract",
       "catchall_match": false,
       "enforcement": [
@@ -336,6 +352,23 @@
       ],
       "origin": "handcrafted",
       "path": ".vibe/quality-gates.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required",
+        "ci_blocking"
+      ],
+      "kind": "validation_allowlist",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".vibe/run-bundle-evidence-pack-legacy.yml"
+      ],
+      "origin": "handcrafted",
+      "path": ".vibe/run-bundle-evidence-pack-legacy.yml",
       "status": "classified"
     },
     {
@@ -1346,6 +1379,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/playbooks/plan-execution-checklist.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/playbooks/pr-run-evidence-pack.md",
       "status": "classified"
     },
     {
@@ -7663,6 +7712,22 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml",
       "status": "classified"
     },
@@ -7696,6 +7761,438 @@
       ],
       "origin": "captured",
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/auditor-output.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/comparability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/make-validate.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/auditor-output.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/comparability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/make-validate.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/measurement.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/targeted-tests.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/auditor-output.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/comparability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/make-validate.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/measurement.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt",
       "status": "classified"
     },
     {
@@ -8874,7 +9371,39 @@
         "scripts/docmeta/test_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/test_generate_backlinks.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_generate_epistemic_state.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_generate_orphans.py",
       "status": "classified"
     },
     {
@@ -11878,8 +12407,33 @@
     "experiments/2026-04-23_phase-1-drift-injection/results/README.md",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/comparability.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/make-validate.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/comparability.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/evidence-pack.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/make-validate.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/measurement.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/targeted-tests.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/comparability.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/evidence-pack.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/make-validate.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/measurement.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt",
     "experiments/_template/artifacts/README.md",
     "tests/fixtures/claim_evidence/invalid/bad-schema-version.yml",
     "tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml",
@@ -11916,19 +12470,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 200,
+      "historical_record": 225,
       "navigation_surface": 3,
       "test_expectation": 32
     },
     "by_layer": {
       "docs": 3,
-      "experiment": 200,
+      "experiment": 225,
       "test": 32
     },
     "by_matched_pattern": {
       "docs/**": 3,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 179,
+      "experiments/*/artifacts/**": 204,
       "tests/fixtures/**": 32
     },
     "high_risk_count": 32,
@@ -11964,8 +12518,8 @@
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
           "top_basenames": {
+            "auditor-output.yml": 4,
             "before.md": 5,
-            "edit_trace.md": 4,
             "expected.json": 5,
             "index.ts": 8,
             "premortem.md": 5,
@@ -11976,18 +12530,18 @@
             "test_processor.py": 8
           },
           "top_parent_dirs": {
-            "experiments/2026-04-14_incremental-debuggability/artifacts/inputs": 5,
             "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
             "experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental": 7,
             "experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental": 7,
             "experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental": 7,
             "experiments/2026-04-14_prompt-length-control/artifacts": 9,
-            "experiments/2026-04-14_tdd-vibe/artifacts": 6,
             "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
-            "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 8,
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run": 8,
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run": 8
           },
-          "total": 179
+          "total": 204
         },
         {
           "high_risk_count": 0,
@@ -12033,8 +12587,8 @@
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
           "top_basenames": {
+            "auditor-output.yml": 4,
             "before.md": 5,
-            "edit_trace.md": 4,
             "expected.json": 5,
             "index.ts": 8,
             "premortem.md": 5,
@@ -12045,18 +12599,18 @@
             "test_processor.py": 8
           },
           "top_parent_dirs": {
-            "experiments/2026-04-14_incremental-debuggability/artifacts/inputs": 5,
             "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
             "experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental": 7,
             "experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental": 7,
             "experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental": 7,
             "experiments/2026-04-14_prompt-length-control/artifacts": 9,
-            "experiments/2026-04-14_tdd-vibe/artifacts": 6,
             "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
-            "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 8,
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run": 8,
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run": 8
           },
-          "total": 179
+          "total": 204
         },
         {
           "high_risk_count": 32,
@@ -12155,8 +12709,8 @@
         "high_risk_count": 0,
         "matched_pattern": "experiments/*/artifacts/**",
         "top_basenames": {
+          "auditor-output.yml": 4,
           "before.md": 5,
-          "edit_trace.md": 4,
           "expected.json": 5,
           "index.ts": 8,
           "premortem.md": 5,
@@ -12167,18 +12721,18 @@
           "test_processor.py": 8
         },
         "top_parent_dirs": {
-          "experiments/2026-04-14_incremental-debuggability/artifacts/inputs": 5,
           "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
           "experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental": 7,
           "experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental": 7,
           "experiments/2026-04-14_incremental-refinement/artifacts/task3-incremental": 7,
           "experiments/2026-04-14_prompt-length-control/artifacts": 9,
-          "experiments/2026-04-14_tdd-vibe/artifacts": 6,
           "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
           "experiments/2026-04-15_agent-task-validity/artifacts": 7,
-          "experiments/2026-04-23_phase-1-drift-injection/artifacts/staging/phase-1-agent-handoff": 6
+          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 8,
+          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run": 8,
+          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run": 8
         },
-        "total": 179
+        "total": 204
       },
       {
         "high_risk_count": 0,
@@ -12388,58 +12942,58 @@
       "diagnostic_signal": 7,
       "evidence_log": 16,
       "generated_projection": 10,
-      "historical_record": 200,
+      "historical_record": 225,
       "implementation_behavior": 9,
       "navigation_surface": 11,
       "normative_contract": 16,
-      "procedure_contract": 94,
+      "procedure_contract": 97,
       "raw_capture": 22,
       "result_interpretation": 55,
-      "runtime_observation": 63,
+      "runtime_observation": 66,
       "schema_truth": 16,
       "sovereign_source": 3,
-      "test_expectation": 164,
+      "test_expectation": 166,
       "unknown": 24
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 277,
+      "ci_blocking": 280,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 258,
+      "no_rewrite": 283,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 210
+      "review_required": 216
     },
     "by_layer": {
       "agent": 4,
       "archive": 24,
       "capture": 6,
       "catalog": 12,
-      "contract": 24,
-      "docs": 28,
-      "experiment": 392,
+      "contract": 26,
+      "docs": 29,
+      "experiment": 420,
       "export": 15,
       "generated": 8,
       "governance": 51,
-      "test": 164
+      "test": 166
     },
     "by_lifecycle": {
-      "append_only": 258,
-      "handcrafted": 407,
+      "append_only": 283,
+      "handcrafted": 412,
       "regenerated": 18,
-      "revision_with_reason": 43,
+      "revision_with_reason": 46,
       "superseded_not_rewritten": 2
     },
-    "classified": 728,
+    "classified": 761,
     "conflict": 0,
-    "fallback_classified": 235,
-    "fallback_share": 0.3228021978021978,
+    "fallback_classified": 260,
+    "fallback_share": 0.3416557161629435,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 728,
+    "total": 761,
     "unknown": 0
   },
   "transition_risk_hints": [],

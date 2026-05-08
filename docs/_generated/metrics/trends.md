@@ -3,22 +3,22 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-04-30T12:05:24Z
+Latest Evidence Timestamp: 2026-05-08T12:00:00Z
 
 ## Gate Snapshot
 
-- Total events: **273**
+- Total events: **285**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **14**
+- Source evidence files: **15**
 
 ## Event Type Counts
 
 | event_type | events |
 | --- | ---: |
-| decision | 17 |
-| measurement | 131 |
-| observation | 104 |
-| run | 21 |
+| decision | 18 |
+| measurement | 133 |
+| observation | 107 |
+| run | 27 |
 
 ## Metric Aggregates
 
@@ -38,6 +38,7 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 | branch_setup_completed | 4 | 0 | - | - | - |
 | bug-task2-incremental-cli-parser | 1 | 0 | - | - | - |
 | candidate_probe_uncaught_count | 1 | 1 | 6 | 6 | 6 |
+| candidate_rehearsal_run_recorded | 2 | 0 | - | - | - |
 | canonical_contract_fix_committed | 1 | 0 | - | - | - |
 | canonical_doc_change_committed | 4 | 0 | - | - | - |
 | canonical_generator_nondeterminism | 2 | 0 | - | - | - |
@@ -76,6 +77,7 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 | edge_cases_missed_test_first | 2 | 2 | 0 | 0 | 0 |
 | epistemic_gap_visibility | 1 | 0 | - | - | - |
 | error_path_tests | 1 | 1 | 21 | 21 | 21 |
+| evidence_log_reclassification | 1 | 0 | - | - | - |
 | evidence_revision | 1 | 0 | - | - | - |
 | execution-start | 1 | 0 | - | - | - |
 | execution_time_control_minutes | 1 | 1 | 8 | 8 | 8 |
@@ -105,6 +107,7 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 | incremental-tradeoff | 1 | 0 | - | - | - |
 | independent_changes_control | 1 | 1 | 0 | 0 | 0 |
 | independent_changes_treatment | 1 | 1 | 0 | 0 | 0 |
+| instrumentation_started | 1 | 1 | 1 | 1 | 1 |
 | iterability | 1 | 0 | - | - | - |
 | iteration3_taskset_prepared | 1 | 1 | 1 | 1 | 1 |
 | iteration4_execution_claims_rollback | 1 | 1 | 1 | 1 | 1 |
@@ -130,7 +133,12 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 | phase_5_patch_gate | 1 | 0 | - | - | - |
 | phase_5_simulation_results | 1 | 0 | - | - | - |
 | phase_5_test_suite_status | 1 | 0 | - | - | - |
+| phase_f_rrg01_real_run_result | 1 | 0 | - | - | - |
+| phase_f_rrg02_real_run_result | 1 | 0 | - | - | - |
 | phase_f_rrg03_planning_started | 1 | 0 | - | - | - |
+| phase_f_rrg03_real_execution_result | 1 | 0 | - | - | - |
+| phase_f_rrg03_real_run02_result | 1 | 0 | - | - | - |
+| phase_f_rrg03_remediation_boundary | 1 | 0 | - | - | - |
 | phase_result_separation | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
@@ -138,7 +146,7 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 | pr_opened_run_004 | 1 | 0 | - | - | - |
 | pr_opened_run_005 | 1 | 0 | - | - | - |
 | pr_opened_run_006 | 1 | 0 | - | - | - |
-| pr_run_recorded | 2 | 0 | - | - | - |
+| pr_run_recorded | 4 | 0 | - | - | - |
 | prompts-incremental | 1 | 1 | 6 | 6 | 6 |
 | prompts-single-shot | 1 | 1 | 1 | 1 | 1 |
 | prompts_used | 2 | 2 | 1 | 2 | 1.5 |
@@ -156,6 +164,7 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 | rework_lines | 2 | 2 | 4 | 23 | 13.5 |
 | rework_semantic | 1 | 0 | - | - | - |
 | rework_test_isolation | 1 | 0 | - | - | - |
+| rrg01_rrg02_cross_diagnosis | 1 | 0 | - | - | - |
 | run_002_availability | 1 | 0 | - | - | - |
 | run_artifacts_written | 1 | 0 | - | - | - |
 | run_started | 2 | 2 | 1 | 1 | 1 |
@@ -232,3 +241,4 @@ Latest Evidence Timestamp: 2026-04-30T12:05:24Z
 - `experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl`
 - `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`

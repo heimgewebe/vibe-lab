@@ -1,0 +1,48 @@
+schema_version: "1.0.0"
+run_id: "run-004-controlled-agent-skill-run"
+claims:
+  - claim_id: "pack-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack (PR-6 coupling)."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/evidence-pack.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-002"
+    text: "A repo-local agent-output artifact records the claimed agent usage for this run. This claim covers the archived artifact, not an independently verified execution transcript."
+    type: "agent_usage"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md"
+        status: "repo_local"
+
+  - claim_id: "pack-003"
+    text: "Archived command summary records exit_code 0; this claim covers the archived summary, not full raw stdout. Targeted validators: test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt"
+        status: "repo_local"
+        command: "python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && python3 scripts/docmeta/test_validate_pr_scope.py"
+        exit_code: 0
+
+  - claim_id: "pack-004"
+    text: "Archived command summary records exit_code 0; this claim covers the archived summary, not full raw stdout. Command: make validate."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 0
+
+  - claim_id: "pack-005"
+    text: "Comparability assessment: This run is retained as a candidate/rehearsal run. Verdict is not_comparable (independent_task_or_pr_ref=null; same PR-10 session as run-003). Metric-level gaps remain in measurement.yml and are not resolved by this evidence pack: scope_drift_count, review_friction_count, rework_count (all missing_evidence); task_completion_time_observed (self_reported, not comparable)."
+    type: "run_comparability_assessment"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/comparability.yml"
+        status: "repo_local"

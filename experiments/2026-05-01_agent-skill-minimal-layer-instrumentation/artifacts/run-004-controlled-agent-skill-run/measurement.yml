@@ -1,0 +1,70 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-004-controlled-agent-skill-run"
+
+auditor_verdict: "PASS"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "claude-sonnet-4-6"
+  executor: "claude-code-cli"
+  role: "run-capture, manifest/index update, and final validation (PR 10, second run)"
+
+metrics:
+  scope_drift_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No changed-files artifact archived. Scope appears contained to run-004 artifact directory plus manifest/index updates, but without a repo-local changed-files record this cannot be claimed as repo_local. Absence of evidence is not evidence of absence."
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "All 5 auditor claims are PASS with repo_local evidence. No MISSING_EVIDENCE claims. (5 = 4 command/reference claims + 1 comparability-assessment claim.)"
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence entries reference specific repo-local files; no locator-less claims."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "No missing command/validator output gaps. targeted-tests.txt and make-validate.txt are present."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review comment artifact archived. No measured value; absence of evidence is not evidence of absence."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No rework artifact archived. No measured value; single-commit observation is not independently verifiable."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "make validate and all targeted tests passed without modification to guards."
+
+  task_completion_time_observed:
+    value: "~30 min"
+    evidence_status: "self_reported"
+    notes: "Approximate. Not independently verifiable. Descriptive only; no causal claim."
+
+missing_evidence:
+  - item: "scope_drift_count"
+    detail: "No changed-files artifact archived. Value is null (unmeasured); not a zero-drift claim."
+  - item: "review_friction_count"
+    detail: "No review comment artifact archived. Value is null (unmeasured); not a zero-conflict claim."
+  - item: "rework_count"
+    detail: "No rework artifact archived. Value is null (unmeasured); not a zero-rework claim."
+  - item: "task_completion_time_observed"
+    detail: "Self-reported approximation only. Not independently verifiable. Not a comparable measurement."
+
+interpretation_limits:
+  - "Run 004 is a candidate/rehearsal run, not a confirmed comparable run. See comparability.yml: verdict=not_comparable."
+  - "independent_task_or_pr_ref is null; run-004 is part of the same PR-10 session as run-003."
+  - "current_comparable_runs remains at 1 (only run-002 qualifies)."
+  - "No usefulness claim about the agent/skill layer can be derived from this data."
+  - "cross-run-assessment.md (PR 11) may not proceed until current_comparable_runs reaches 3 with genuinely comparable runs."
+  - "review_friction_count and rework_count are not repo-locally observed in this run."

@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 728
-- classified: 728
-  - of which fallback_classified (catch-all rule): 235
-  - fallback_share: 32.3% (235 / 728)
+- total: 761
+- classified: 761
+  - of which fallback_classified (catch-all rule): 260
+  - fallback_share: 34.2% (260 / 761)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -30,13 +30,13 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | archive | 24 |
 | capture | 6 |
 | catalog | 12 |
-| contract | 24 |
-| docs | 28 |
-| experiment | 392 |
+| contract | 26 |
+| docs | 29 |
+| experiment | 420 |
 | export | 15 |
 | generated | 8 |
 | governance | 51 |
-| test | 164 |
+| test | 166 |
 
 ### By authority
 
@@ -46,27 +46,27 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | diagnostic_signal | 7 |
 | evidence_log | 16 |
 | generated_projection | 10 |
-| historical_record | 200 |
+| historical_record | 225 |
 | implementation_behavior | 9 |
 | navigation_surface | 11 |
 | normative_contract | 16 |
-| procedure_contract | 94 |
+| procedure_contract | 97 |
 | raw_capture | 22 |
 | result_interpretation | 55 |
-| runtime_observation | 63 |
+| runtime_observation | 66 |
 | schema_truth | 16 |
 | sovereign_source | 3 |
-| test_expectation | 164 |
+| test_expectation | 166 |
 | unknown | 24 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 258 |
-| handcrafted | 407 |
+| append_only | 283 |
+| handcrafted | 412 |
 | regenerated | 18 |
-| revision_with_reason | 43 |
+| revision_with_reason | 46 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -75,14 +75,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 277 |
+| ci_blocking | 280 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
-| no_rewrite | 258 |
+| no_rewrite | 283 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 210 |
+| review_required | 216 |
 
 ## Unknown artifacts
 
@@ -298,8 +298,33 @@ _none_
 - `experiments/2026-04-23_phase-1-drift-injection/results/README.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/evidence-pack.yml`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/auditor-output.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/comparability.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/make-validate.txt`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/auditor-output.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/comparability.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/evidence-pack.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/make-validate.txt`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/measurement.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/targeted-tests.txt`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/auditor-output.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/comparability.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/evidence-pack.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/make-validate.txt`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/measurement.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run.yml`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt`
 - `experiments/_template/artifacts/README.md`
 - `tests/fixtures/claim_evidence/invalid/bad-schema-version.yml`
 - `tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml`
@@ -412,10 +437,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 179 | 76.2% |
-| `tests/fixtures/**` | 32 | 13.6% |
-| `experiments/**` | 21 | 8.9% |
-| `docs/**` | 3 | 1.3% |
+| `experiments/*/artifacts/**` | 204 | 78.5% |
+| `tests/fixtures/**` | 32 | 12.3% |
+| `experiments/**` | 21 | 8.1% |
+| `docs/**` | 3 | 1.2% |
 
 ## Residual fallback clusters
 
@@ -430,7 +455,7 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
 | `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
-| `experiments/*/artifacts/**` | 179 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 204 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run`=8, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run`=8 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |
 
@@ -440,7 +465,7 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 179 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-04-14_incremental-refinement/artifacts/task1-incremental`=7, `experiments/2026-04-14_incremental-refinement/artifacts/task2-incremental`=7 |
+| `experiments/*/artifacts/**` | 204 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `before.md`=5, `expected.json`=5 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run`=8, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run`=8 |
 | `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |

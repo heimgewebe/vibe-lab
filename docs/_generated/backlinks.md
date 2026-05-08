@@ -17,6 +17,10 @@
 
 - ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (references)
 
+## `.vibe/changed-files-artifact.contract.md`
+
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
+
 ## `.vibe/pr-scope-policy.yml`
 
 - ← `docs/policies/artifact-boundary-policy.md` (references)
@@ -175,10 +179,15 @@
 ## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 
 ## `docs/playbooks/plan-execution-checklist.md`
+
+- ← `docs/index.md` (references)
+
+## `docs/playbooks/pr-run-evidence-pack.md`
 
 - ← `docs/index.md` (references)
 
@@ -187,10 +196,12 @@
 - ← `docs/concepts/experiment-ontology.md` (informs)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `docs/policies/artifact-boundary-policy.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `docs/policies/interpretation-budget.md`
 
@@ -199,11 +210,13 @@
 - ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 
 ## `docs/policies/pr-run-evidence-policy.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 
 ## `docs/reference/agent-operability-fixture-matrix.md`
@@ -402,6 +415,14 @@
 ## `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
 
 - ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
+
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/measurement.yml`
+
+- ← `.vibe/changed-files-artifact.contract.md` (references)
+
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/measurement.yml`
+
+- ← `.vibe/changed-files-artifact.contract.md` (references)
 
 ## `experiments/README.md`
 

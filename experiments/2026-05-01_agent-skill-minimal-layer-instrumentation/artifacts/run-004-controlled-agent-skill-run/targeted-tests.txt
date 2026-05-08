@@ -1,0 +1,40 @@
+command: python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && python3 scripts/docmeta/test_validate_pr_scope.py
+exit_code: 0
+captured_at: 2026-05-08T11:00:00Z
+capture_mode: summarized_stdout
+claim_scope: command_exit_and_test_summary_only
+full_log_archived: false
+
+--- test_validate_run_bundle.py ---
+.........................................................................
+----------------------------------------------------------------------
+Ran 73 tests in 3.3s
+OK
+
+--- test_validate_claim_evidence.py ---
+test_invalid_fixtures_exit_one_with_rule_ids ... ok
+test_parse_error_exits_two ... ok
+test_valid_fixtures_exit_zero ... ok
+----------------------------------------------------------------------
+Ran 3 tests in 1.4s
+OK
+
+--- test_validate_pr_scope.py ---
+test_invalid_fixtures_exit_one_with_rule_id ... ok
+test_oversized_allowed_name_still_blocked ... ok
+test_oversized_generic_artifact_exits_one ... ok
+test_artifact_roots_not_list_exits_two ... ok
+test_broken_yaml_exits_two ... ok
+test_forbidden_patterns_not_list_exits_two ... ok
+test_invalid_max_bytes_exits_two ... ok
+test_missing_policy_exits_two ... ok
+test_repo_scan_default_exits_zero ... ok
+test_changed_files_outside_artifact_roots_ignored ... ok
+test_self_obs_bare_filename_blocked ... ok
+test_self_obs_dotslash_filename_blocked ... ok
+test_changed_files_mode_no_forbidden_paths_exit_zero ... ok
+test_valid_fixtures_all_together_exit_zero ... ok
+test_valid_fixtures_individually_exit_zero ... ok
+----------------------------------------------------------------------
+Ran 15 tests in 1.0s
+OK
