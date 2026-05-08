@@ -166,6 +166,8 @@
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md` | Agent/Skill Minimal Layer v0.1 — Initiale Situation | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` | auditor-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` | Failure Modes — Agent/Skill Minimal Layer Instrumentation | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` | Agent/Skill Minimal Layer v0.1 — Methode | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` | Agent/Skill Minimal Layer Instrumentation — Ergebnis | draft | operative |

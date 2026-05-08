@@ -1,0 +1,14 @@
+command: make validate
+exit_code: 0
+captured_at: 2026-05-08T10:00:00Z
+capture_mode: summarized_stdout
+claim_scope: command_exit_and_summary_only
+full_log_archived: false
+
+--- summary (final lines) ---
+  (Phase-1 dry-run report above is informational; --ratchet below is blocking.)
+
+Ratchet Mode (Phase 2)
+  Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
+     No unregistered violations. No stale or over-permissive freeze entries.
+Validation passed.
