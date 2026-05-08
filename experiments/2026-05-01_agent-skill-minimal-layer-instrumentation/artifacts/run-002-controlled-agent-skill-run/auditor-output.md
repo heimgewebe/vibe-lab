@@ -4,7 +4,7 @@ derived_from: "./auditor-output.yml"
 role: "human_projection"
 source_of_truth: false
 run_id: "run-002-controlled-agent-skill-run"
-pr_ref: "github:heimgewebe/vibe-lab/pull/TBD"
+pr_ref: "github:heimgewebe/vibe-lab/pull/168"
 auditor_date: "2026-05-07"
 auditor: "evidence-reconciliation-auditor (copilot-agent)"
 ---

@@ -15,6 +15,7 @@ canonicality: operative
 - **`artifacts/run-002-controlled-agent-skill-run/auditor-output.yml`** — kanonischer YAML-Auditor-Output für Run 002 (machine-readable source of truth)
 - **`artifacts/run-002-controlled-agent-skill-run/measurement.yml`** — Run-002-Metriken
 - **`artifacts/run-002-controlled-agent-skill-run/run.yml`** — kanonischer Run-Bundle-Envelope (inkl. Evidence-Pack-Referenz)
+- **`artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml`** — kanonisches Evidence-Pack für Run 002
 - `artifacts/run-002-controlled-agent-skill-run/auditor-output.md` — nicht-kanonische Projektion (human-readable view only)
 - `artifacts/run-001-promotion-readiness-prepared-without-measurement/*` — Vorläufer-Run mit MISSING_EVIDENCE (nicht vergleichbar)
 

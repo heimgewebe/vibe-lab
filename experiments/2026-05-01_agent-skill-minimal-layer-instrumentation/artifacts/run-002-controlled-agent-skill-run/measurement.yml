@@ -11,15 +11,22 @@ auditor_verdict: "PASS"
 auditor_ref: "auditor-output.yml"
 
 agent_layer_used:
-  experiment_critic: true
-  evidence_reconciliation_auditor: true
+  experiment_critic:
+    used: false
+    evidence_status: "missing_evidence"
+    notes: "No archived experiment-critic output for Run 002; no critic-backed usage claim is made."
+  evidence_reconciliation_auditor:
+    used: true
+    evidence_status: "repo_local"
+    evidence_ref: "auditor-output.yml"
 
 pr_metadata:
-  pr_ref: "github:heimgewebe/vibe-lab/pull/TBD"
+  pr_ref: "github:heimgewebe/vibe-lab/pull/168"
+  branch_ref: "fix/pr9-run002-consistency"
   evidence_status: "self_reported"
   notes: >-
     Controlled run artifact set prepared on branch fix/pr9-run002-consistency.
-    PR number is not assigned in-repo at run artifact creation time.
+    PR reference aligned to active branch pull request.
 
 metrics:
   scope_drift_count:
@@ -65,6 +72,8 @@ metrics:
       interpretation regarding Agent/Skill impact is allowed.
 
 missing_evidence:
+  - item: "experiment_critic output"
+    detail: "No archived experiment-critic output exists for Run 002; critic usage is not claimed."
   - item: "review_friction_count source artifact"
     detail: "No archived review timeline artifact for this run."
   - item: "rework_count source artifact"
