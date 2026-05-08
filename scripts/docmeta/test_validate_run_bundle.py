@@ -801,25 +801,25 @@ class RepoLevelTests(unittest.TestCase):
         self.assertFalse(any("comparability.yml: fehlt" in e for e in errs), errs)
 
     def test_invalid_comparability_yaml_with_repo_local_scope_drift_emits_no_missing_hint(self) -> None:
-      exp = _build_valid_bundle(
-        self.base,
-        measurement_text=_valid_measurement_yml(
-          scope_drift_value=0,
-          scope_drift_evidence_status="repo_local",
-        ),
-      )
-      _write(exp / "artifacts" / "run-001" / "comparability.yml", "verdict: [\n")
-      _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
-      errs = validate_repo(self.base)
-      self.assertTrue(any("comparability.yml: YAML-Fehler" in e for e in errs), errs)
-      self.assertFalse(
-        any(
-          "scope_drift_count.evidence_status=repo_local erfordert comparability.yml mit gültigem changed_files_artifact"
-          in e
-          for e in errs
-        ),
-        errs,
-      )
+        exp = _build_valid_bundle(
+            self.base,
+            measurement_text=_valid_measurement_yml(
+                scope_drift_value=0,
+                scope_drift_evidence_status="repo_local",
+            ),
+        )
+        _write(exp / "artifacts" / "run-001" / "comparability.yml", "verdict: [\n")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("comparability.yml: YAML-Fehler" in e for e in errs), errs)
+        self.assertFalse(
+            any(
+                "scope_drift_count.evidence_status=repo_local erfordert comparability.yml mit gültigem changed_files_artifact"
+                in e
+                for e in errs
+            ),
+            errs,
+        )
 
     def test_non_object_comparability_yaml_does_not_emit_missing_message(self) -> None:
         exp = _build_valid_bundle(self.base)
