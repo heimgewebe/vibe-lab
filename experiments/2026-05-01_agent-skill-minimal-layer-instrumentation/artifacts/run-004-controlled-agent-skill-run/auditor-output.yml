@@ -45,8 +45,14 @@ claims:
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/make-validate.txt"
         status: "repo_local"
-        command: "make validate"
-        exit_code: 0
+
+  - id: "claim-005"
+    text: "Comparability assessment: This run is retained as a candidate/rehearsal run. Verdict is not_comparable."
+    type: "run_comparability_assessment"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/comparability.yml"
+        status: "repo_local"
 
 out_of_scope_claims: []
 
@@ -57,4 +63,4 @@ missing_evidence: []
 required_next_proof:
   - "For future runs: archive actual CI log as ci_artifact if CI is claimed."
   - "For future runs: use a machine-generated agent-output.md with a deterministic hash if provenance level must exceed self_reported."
-  - "PR 11 (cross-run-assessment.md) may now proceed; current_comparable_runs=3 threshold is met."
+  - "PR 10 remains open: capture two additional independent comparable controlled runs with non-null independent_task_or_pr_ref (separate PRs/tasks) before PR-11 (cross-run-assessment.md) may proceed."

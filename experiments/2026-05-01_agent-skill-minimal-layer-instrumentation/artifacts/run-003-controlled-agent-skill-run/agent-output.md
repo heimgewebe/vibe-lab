@@ -2,7 +2,7 @@
 
 run_id: run-003-controlled-agent-skill-run
 agent: claude-sonnet-4-6 (claude-code)
-run_purpose: PR-10 run capture — first of two further comparable controlled runs. Not an effectiveness evaluation.
+run_purpose: PR-10 run capture — candidate/rehearsal run (first phase). Not an effectiveness evaluation. Not counted as comparable.
 produced_at: 2026-05-08T10:00:00Z
 artifact_type: repo_local_run_record
 epistemics: >
@@ -40,7 +40,11 @@ Before creating run-003 artifacts, the agent verified comparability against run-
 - Same metric structure: YES — all 8 metrics: scope_drift_count, unsupported_claim_count, missing_locator_count, validation_gap_count, review_friction_count, rework_count, false_block_count, task_completion_time_observed
 - Same claim/evidence discipline: YES — same repo_local / missing_evidence / self_reported conventions
 
-Verdict: run-003 is comparable to run-002.
+Verdict: run-003 is not comparable to run-002 for PR-10 counting purposes.
+**Reason:** comparability.yml shows `independent_task_or_pr_ref: null` — this run is part of the
+same PR-10 session as run-004, not an independent controlled run on a separate task or PR.
+Run-003 is retained as a candidate/rehearsal run to document the comparability assessment process.
+`current_comparable_runs` remains at 1 (only run-002 qualifies).
 
 ## Validation Evidence Scope
 

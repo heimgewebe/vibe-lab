@@ -2,7 +2,7 @@
 
 run_id: run-004-controlled-agent-skill-run
 agent: claude-sonnet-4-6 (claude-code)
-run_purpose: PR-10 run capture — second of two further comparable controlled runs (finalization + validation). Not an effectiveness evaluation.
+run_purpose: PR-10 run capture — candidate/rehearsal run (finalization + validation phase). Not an effectiveness evaluation. Not counted as comparable.
 produced_at: 2026-05-08T11:00:00Z
 artifact_type: repo_local_run_record
 epistemics: >
@@ -18,10 +18,11 @@ part of this controlled run:
 
 - Created run-004 artifacts (this run)
 - Updated manifest.yml to include run-003 and run-004 execution_refs
-- Updated evidence.jsonl with run-003 and run-004 entries
-- Updated results/result.md to reflect current_comparable_runs=3
-- Updated docs/playbooks/evidence-control-plane-roadmap-checklist.md to mark PR 10 complete
+- Updated evidence.jsonl with run-003 and run-004 entries (with controlled_run_recorded metric, not pseudo-PR values)
+- Updated results/result.md to reflect current_comparable_runs=1 and PR-10 remaining open
+- Kept docs/playbooks/evidence-control-plane-roadmap-checklist.md with PR 10 items open
 - Ran make generate and make validate to confirm all validators pass
+- Added comparability.yml with verdict=not_comparable for both run-003 and run-004
 
 ## Comparability Assessment (Performed Before Artifact Creation)
 
@@ -34,7 +35,12 @@ Before creating run-004 artifacts, the agent verified comparability against run-
 - Same metric structure: YES — all 8 metrics: scope_drift_count, unsupported_claim_count, missing_locator_count, validation_gap_count, review_friction_count, rework_count, false_block_count, task_completion_time_observed
 - Same claim/evidence discipline: YES — same repo_local / missing_evidence / self_reported conventions
 
-Verdict: run-004 is comparable to run-002 and run-003.
+Verdict: run-004 is not comparable to run-002 or run-003 for PR-10 counting purposes.
+**Reason:** comparability.yml shows `independent_task_or_pr_ref: null` — this run is part of the
+same PR-10 session as run-003, not an independent controlled run on a separate task or PR.
+Run-004 is retained as a candidate/rehearsal run to document the finalization and consistency-
+correction phase of the PR-10 work. `current_comparable_runs` remains at 1 (only run-002 qualifies).
+PR-11 (cross-run-assessment.md) cannot proceed without two additional independent comparable runs.
 
 ## Validation Evidence Scope
 
@@ -44,10 +50,11 @@ No independently verified pre-artifact baseline transcript is archived.
 ## Preflight Findings (Diagnosis, Not Effectiveness Claims)
 
 All three validators pass after run-003 and run-004 artifacts are in place.
-manifest.yml updated to include all run-003 and run-004 execution_refs.
-evidence.jsonl updated with run-003 and run-004 entries.
-result.md updated to reflect current_comparable_runs=3.
-Roadmap checklist updated to mark PR 10 items as complete.
+manifest.yml updated to include all run-003/004 execution_refs including comparability.yml.
+evidence.jsonl updated with run-003/004 entries using metric=controlled_run_recorded (not pseudo-PR values).
+result.md updated to reflect current_comparable_runs=1 and PR-10 remaining open.
+Roadmap checklist keeps PR 10 items open pending two independent comparable runs.
+Taxonomy rule added for .vibe/run-bundle-evidence-pack-legacy.yml; unknown_artifacts is now 0.
 
 ## What This Run Does NOT Claim
 

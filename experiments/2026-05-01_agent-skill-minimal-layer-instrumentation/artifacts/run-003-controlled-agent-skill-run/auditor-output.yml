@@ -45,8 +45,14 @@ claims:
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/make-validate.txt"
         status: "repo_local"
-        command: "make validate"
-        exit_code: 0
+
+  - id: "claim-005"
+    text: "Comparability assessment: This run is retained as a candidate/rehearsal run. Verdict is not_comparable."
+    type: "run_comparability_assessment"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/comparability.yml"
+        status: "repo_local"
 
 out_of_scope_claims: []
 

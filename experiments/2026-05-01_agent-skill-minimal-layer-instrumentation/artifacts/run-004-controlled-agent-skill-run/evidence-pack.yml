@@ -38,3 +38,11 @@ claims:
         status: "repo_local"
         command: "make validate"
         exit_code: 0
+
+  - claim_id: "pack-005"
+    text: "Comparability assessment: This run is retained as a candidate/rehearsal run. Verdict is not_comparable because independent_task_or_pr_ref is null (same PR-10 session as run-003, not independent)."
+    type: "run_comparability_assessment"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/comparability.yml"
+        status: "repo_local"

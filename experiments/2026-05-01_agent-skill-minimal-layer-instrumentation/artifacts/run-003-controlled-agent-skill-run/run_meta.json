@@ -9,5 +9,5 @@
   "auditor_output_file": "artifacts/run-003-controlled-agent-skill-run/auditor-output.yml",
   "provenance_level": "self_reported",
   "outcome": "PASS",
-  "notes": "Run 3: controlled agent/skill run for PR-10 (two further comparable runs). No effect claim. All claims PASS with repo-local evidence. current_comparable_runs=2 after this run."
+  "notes": "Run 3: candidate/rehearsal controlled agent/skill run for PR-10 (first phase). No effect claim. All run-level claims PASS with repo-local evidence, but comparability.yml verdict is not_comparable (independent_task_or_pr_ref=null). current_comparable_runs remains 1."
 }
