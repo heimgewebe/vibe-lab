@@ -23,6 +23,7 @@ experiment:
     - artifacts/run-002-controlled-agent-skill-run/agent-output.md
     - artifacts/run-002-controlled-agent-skill-run/targeted-tests.txt
     - artifacts/run-002-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-002-controlled-agent-skill-run/comparability.yml
     - artifacts/run-003-controlled-agent-skill-run/run.yml
     - artifacts/run-003-controlled-agent-skill-run/measurement.yml
     - artifacts/run-003-controlled-agent-skill-run/auditor-output.yml

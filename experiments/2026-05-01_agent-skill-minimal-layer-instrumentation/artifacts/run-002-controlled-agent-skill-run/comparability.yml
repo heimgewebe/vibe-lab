@@ -1,0 +1,25 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-002-controlled-agent-skill-run"
+assessed_at: "2026-05-08"
+
+compared_against: null
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "PR#9"
+
+changed_files_artifact: null
+
+verdict: baseline_reference
+
+notes: >
+  Run 002 is the first controlled agent/skill run with full Evidence-Pack coupling.
+  It serves as the canonical baseline for measuring comparability of subsequent runs.
+  It is inherently comparable (to itself) as the foundational data point.
+  Subsequent runs (003, 004, ...) are assessed against this baseline.
+  independent_task_or_pr_ref is PR#9 (the roadmap PR under which this run was executed),
+  establishing the conceptual boundary between run-execution context (PR-9) and run-identity
+  (run-002-controlled-agent-skill-run).

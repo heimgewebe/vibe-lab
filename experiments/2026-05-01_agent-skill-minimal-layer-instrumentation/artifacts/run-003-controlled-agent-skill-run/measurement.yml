@@ -19,7 +19,7 @@ metrics:
   unsupported_claim_count:
     value: 0
     evidence_status: "derived_from_auditor_output"
-    notes: "All 4 auditor claims are PASS with repo_local evidence. No MISSING_EVIDENCE claims."
+    notes: "All 5 auditor claims are PASS with repo_local evidence. No MISSING_EVIDENCE claims. (5 = 4 command/reference claims + 1 comparability-assessment claim.)"
 
   missing_locator_count:
     value: 0
