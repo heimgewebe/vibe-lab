@@ -15,7 +15,7 @@ canonicality: operative
 - **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output (machine-readable source of truth)
 - **`artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`** — Run-1-Metriken
 - `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion (human-readable view only)
-- **`artifacts/run-002-controlled-agent-skill-run/`** — erster vollständiger kontrollierter Run (PR 9); `comparability_verdict: n/a` (Baseline)
+- **`artifacts/run-002-controlled-agent-skill-run/`** — erster vollständiger kontrollierter Run (PR 9); `comparability_verdict: reference_only`
 - **`artifacts/run-003-controlled-agent-skill-run/`** — Kandidaten-/Rehearsal-Run (PR 10, Session-Phase 1); `comparability_verdict: not_comparable`
 - **`artifacts/run-004-controlled-agent-skill-run/`** — Kandidaten-/Rehearsal-Run (PR 10, Session-Phase 2); `comparability_verdict: not_comparable`
 
