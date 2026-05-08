@@ -73,6 +73,10 @@ context:
   language: "Mixed (Markdown, YAML, JSONL)"
   environment: "vibe-lab"
   triggered_by: "user-request-2026-05-01-agent-skill-minimal-layer-instrumentation"
+  governance_contracts:
+    - ".vibe/changed-files-artifact.contract.md"
+    - ".vibe/run-bundle-evidence-pack-legacy.yml"
+    - "contracts/command-semantics.md"
 
 evidence:
   format: jsonl

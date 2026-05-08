@@ -15,6 +15,14 @@ changed_files_artifact: null
 
 verdict: not_comparable
 
+missing_changed_files_reason: >
+  Per .vibe/changed-files-artifact.contract.md (v0.1), candidate/rehearsal runs may
+  omit changed-files artifacts with documented justification. Run-003 was a
+  candidate/rehearsal run created during PR-10 artifact scaffolding and was not
+  intended as a standalone comparable run; therefore, scope-drift measurement was
+  not prioritized. This is consistent with verdict=not_comparable. For future true
+  comparable runs, changed-files artifact MUST be archived as a first-class primitive.
+
 notes: >
   Run 003 describes the artifact-creation phase of the PR-10 roadmap work
   (reading context files, creating run-003 artifacts, capturing agent-output).

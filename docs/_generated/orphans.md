@@ -3,8 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (128 found):
+Documents not referenced by any other document via frontmatter relations (129 found):
 
+- `.vibe/changed-files-artifact.contract.md`
 - `.vibe/intent.md`
 - `docs/evaluations/agent-skill-file-fruitfulness.md`
 - `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`

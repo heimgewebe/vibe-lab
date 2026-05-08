@@ -5,6 +5,7 @@
 
 | Path | Title | Status | Canonicality |
 | ---- | ----- | ------ | ------------ |
+| `.vibe/changed-files-artifact.contract.md` | Changed-Files Artifact Contract (v0.1) | defining | canonical |
 | `.vibe/intent.md` | intent | — | — |
 | `AGENTS.md` | AGENTS | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |

@@ -7792,6 +7792,22 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/comparability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml",
       "status": "classified"
     },
@@ -12380,6 +12396,7 @@
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/comparability.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/evidence-pack.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/make-validate.txt",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml",
@@ -12437,19 +12454,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 224,
+      "historical_record": 225,
       "navigation_surface": 3,
       "test_expectation": 32
     },
     "by_layer": {
       "docs": 3,
-      "experiment": 224,
+      "experiment": 225,
       "test": 32
     },
     "by_matched_pattern": {
       "docs/**": 3,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 203,
+      "experiments/*/artifacts/**": 204,
       "tests/fixtures/**": 32
     },
     "high_risk_count": 32,
@@ -12504,11 +12521,11 @@
             "experiments/2026-04-14_prompt-length-control/artifacts": 9,
             "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
-            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 7,
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 8,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run": 8,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run": 8
           },
-          "total": 203
+          "total": 204
         },
         {
           "high_risk_count": 0,
@@ -12573,11 +12590,11 @@
             "experiments/2026-04-14_prompt-length-control/artifacts": 9,
             "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
             "experiments/2026-04-15_agent-task-validity/artifacts": 7,
-            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 7,
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 8,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run": 8,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run": 8
           },
-          "total": 203
+          "total": 204
         },
         {
           "high_risk_count": 32,
@@ -12695,11 +12712,11 @@
           "experiments/2026-04-14_prompt-length-control/artifacts": 9,
           "experiments/2026-04-14_upfront-structuring-replication/artifacts": 9,
           "experiments/2026-04-15_agent-task-validity/artifacts": 7,
-          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 7,
+          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run": 8,
           "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run": 8,
           "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run": 8
         },
-        "total": 203
+        "total": 204
       },
       {
         "high_risk_count": 0,
@@ -12909,7 +12926,7 @@
       "diagnostic_signal": 7,
       "evidence_log": 16,
       "generated_projection": 10,
-      "historical_record": 224,
+      "historical_record": 225,
       "implementation_behavior": 9,
       "navigation_surface": 11,
       "normative_contract": 16,
@@ -12928,7 +12945,7 @@
       "ci_blocking": 280,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 282,
+      "no_rewrite": 283,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
@@ -12941,26 +12958,26 @@
       "catalog": 12,
       "contract": 25,
       "docs": 29,
-      "experiment": 419,
+      "experiment": 420,
       "export": 15,
       "generated": 8,
       "governance": 51,
       "test": 166
     },
     "by_lifecycle": {
-      "append_only": 282,
+      "append_only": 283,
       "handcrafted": 411,
       "regenerated": 18,
       "revision_with_reason": 46,
       "superseded_not_rewritten": 2
     },
-    "classified": 759,
+    "classified": 760,
     "conflict": 0,
-    "fallback_classified": 259,
-    "fallback_share": 0.3412384716732543,
+    "fallback_classified": 260,
+    "fallback_share": 0.34210526315789475,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 759,
+    "total": 760,
     "unknown": 0
   },
   "transition_risk_hints": [],

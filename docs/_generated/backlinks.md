@@ -412,6 +412,14 @@
 
 - ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
 
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/measurement.yml`
+
+- ← `.vibe/changed-files-artifact.contract.md` (references)
+
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/measurement.yml`
+
+- ← `.vibe/changed-files-artifact.contract.md` (references)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
