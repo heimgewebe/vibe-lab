@@ -1,0 +1,67 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-005-controlled-agent-skill-run"
+auditor_date: "2026-05-09"
+auditor:
+  name: "evidence-reconciliation-auditor"
+  executor: "gpt-5.3-codex"
+  date: "2026-05-09"
+overall_verdict: "PASS"
+extensions:
+  canonical_claim_source: "evidence-pack.yml"
+  auditor_role: "projection and assessment; evidence-pack.yml is the canonical evidence contract"
+  missing_evidence_scope: "auditor_claim_level_only"
+
+claims:
+  - id: "claim-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/evidence-pack.yml"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "A repo-local agent-output artifact records the claimed agent usage for this run."
+    type: "agent_usage"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md"
+        status: "repo_local"
+
+  - id: "claim-003"
+    text: "Targeted validator test command completed with exit_code 0."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/targeted-tests.txt"
+        status: "repo_local"
+
+  - id: "claim-004"
+    text: "make validate completed with exit_code 0."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/make-validate.txt"
+        status: "repo_local"
+
+  - id: "claim-005"
+    text: "Comparability assessment verdict is comparable and changed_files_artifact points to an existing repo-local artifact."
+    type: "run_comparability_assessment"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/changed-files.txt"
+        status: "repo_local"
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence: []
+
+required_next_proof:
+  - "At least one additional independent comparable run is still required before PR11 may proceed."

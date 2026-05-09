@@ -1,0 +1,15 @@
+# Changed Files (Run 005)
+
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/auditor-output.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/changed-files.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/comparability.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/evidence-pack.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/make-validate.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/measurement.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/targeted-tests.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl
+scripts/docmeta/test_validate_run_bundle.py

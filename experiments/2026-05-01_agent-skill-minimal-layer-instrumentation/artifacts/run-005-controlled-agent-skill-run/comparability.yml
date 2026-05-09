@@ -1,0 +1,22 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-005-controlled-agent-skill-run"
+assessed_at: "2026-05-09"
+
+compared_against: "run-002-controlled-agent-skill-run"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:validator-test-windows-absolute-path-guard"
+
+changed_files_artifact: "artifacts/run-005-controlled-agent-skill-run/changed-files.txt"
+
+verdict: comparable
+
+notes: >
+  Comparable run: same experiment path, same run-bundle artifact structure,
+  and same claim/evidence discipline as prior controlled runs. Task context is
+  independent from run-003/run-004 PR-10 rehearsal context: this run executes a
+  separate small validator-test hardening task.

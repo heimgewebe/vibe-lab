@@ -780,6 +780,18 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("kein absoluter Pfad" in e for e in errs), errs)
 
+    def test_changed_files_artifact_windows_absolute_path_fails(self) -> None:
+      _build_valid_bundle(
+        self.base,
+        comparability_text=_valid_comparability_yml(
+          verdict="comparable",
+          changed_files_artifact="C:/temp/changed-files.txt",
+        ),
+      )
+      _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+      errs = validate_repo(self.base)
+      self.assertTrue(any("kein absoluter Pfad" in e for e in errs), errs)
+
     def test_changed_files_artifact_empty_string_fails(self) -> None:
         _build_valid_bundle(
             self.base,
