@@ -9,9 +9,9 @@ run:
 
 provenance:
   level: "self_reported"
-  executor: "local:gpt-5.3-codex"
+  executor: "copilot-coding-agent:gpt-5.3-codex"
   source_status: "repo_local"
-  notes: "Execution provenance is self-reported; evidence artifacts are archived repo-locally. Command-output claims are limited to archived summaries, not full raw transcripts."
+  notes: "Execution provenance is self-reported. Executor is Copilot coding agent with self-reported model tag. Evidence artifacts are archived repo-locally. Command-output claims are limited to archived summaries, not full raw transcripts."
 
 artifacts:
   auditor_output:

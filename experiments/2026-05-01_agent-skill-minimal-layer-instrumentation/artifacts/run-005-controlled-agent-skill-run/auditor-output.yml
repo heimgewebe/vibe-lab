@@ -4,7 +4,7 @@ run_id: "run-005-controlled-agent-skill-run"
 auditor_date: "2026-05-09"
 auditor:
   name: "evidence-reconciliation-auditor"
-  executor: "gpt-5.3-codex"
+  executor: "copilot-coding-agent:gpt-5.3-codex"
   date: "2026-05-09"
 overall_verdict: "PASS"
 extensions:
