@@ -39,5 +39,4 @@ verdict:
 
 interpretation_limits:
   min_comparable_runs_required: 3
-  current_comparable_runs: 2
   causal_claim_allowed: false
