@@ -1,15 +1,45 @@
 # Changed Files (Run 005)
 
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/auditor-output.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/changed-files.txt
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/comparability.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/evidence-pack.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/make-validate.txt
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/measurement.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/targeted-tests.txt
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl
-scripts/docmeta/test_validate_run_bundle.py
+Generated: 2026-05-09T08:10:58Z
+Run: run-005-controlled-agent-skill-run
+Scope: small validator-test hardening + mandatory run-005 evidence bundle
+
+File List
+=========
+
+scripts/docmeta/test_validate_run_bundle.py [modify]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml [modify]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl [modify]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/auditor-output.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/changed-files.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/comparability.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/evidence-pack.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/make-validate.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/measurement.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/targeted-tests.txt [add]
+
+Scope Boundary
+==============
+
+INCLUDED:
+- Regression test for Windows absolute path rejection in changed_files_artifact validation.
+- Mandatory Run-005 evidence bundle artifacts.
+- Experiment manifest update to reference Run-005 artifacts.
+- Append-only evidence.jsonl entry for Run-005.
+
+EXCLUDED:
+- Validator implementation changes.
+- Existing run-002/run-003/run-004 artifact rewrites.
+- Cross-run assessment / PR11.
+- Generated documentation churn.
+- Effect, promotion, or causal claims.
+
+Scope Drift Assessment
+======================
+
+scope_drift_count: 0
+Reason: all changed files are either the declared validator-test hardening file
+or mandatory Run-005 evidence/bookkeeping artifacts.
