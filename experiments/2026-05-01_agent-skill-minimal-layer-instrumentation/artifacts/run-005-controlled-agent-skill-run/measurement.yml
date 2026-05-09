@@ -1,0 +1,66 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-005-controlled-agent-skill-run"
+
+auditor_verdict: "PASS"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.3-codex"
+  executor: "copilot-coding-agent"
+  role: "small validator-test hardening and run-bundle capture"
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No scope drift observed: changes are limited to the declared small test-hardening task plus this run's mandatory artifacts and experiment bookkeeping files."
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "All auditor claims are PASS with repo-local evidence."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence entries reference specific repo-local files."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "targeted-tests.txt and make-validate.txt are present."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review comment artifact archived for this run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No rework artifact archived for this run."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Targeted tests and make validate passed without reverting guards."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No independently archived timing artifact exists for this run."
+
+missing_evidence:
+  - item: "review_friction_count"
+    detail: "No review comment artifact archived. Value is null (unmeasured)."
+  - item: "rework_count"
+    detail: "No rework artifact archived. Value is null (unmeasured)."
+  - item: "task_completion_time_observed"
+    detail: "No independently archived timing artifact exists for this run."
+
+interpretation_limits:
+  - "Run 005 captures one small, independent validator-test hardening task."
+  - "No usefulness claim about the agent/skill layer is derived."
+  - "No promotion or causal claim is derived."
+  - "PR11 remains blocked until at least 3 comparable runs exist."

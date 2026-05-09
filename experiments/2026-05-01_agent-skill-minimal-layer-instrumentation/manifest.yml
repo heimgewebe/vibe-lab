@@ -42,10 +42,20 @@ experiment:
     - artifacts/run-004-controlled-agent-skill-run/targeted-tests.txt
     - artifacts/run-004-controlled-agent-skill-run/make-validate.txt
     - artifacts/run-004-controlled-agent-skill-run/comparability.yml
+    - artifacts/run-005-controlled-agent-skill-run/run.yml
+    - artifacts/run-005-controlled-agent-skill-run/measurement.yml
+    - artifacts/run-005-controlled-agent-skill-run/auditor-output.yml
+    - artifacts/run-005-controlled-agent-skill-run/run_meta.json
+    - artifacts/run-005-controlled-agent-skill-run/evidence-pack.yml
+    - artifacts/run-005-controlled-agent-skill-run/agent-output.md
+    - artifacts/run-005-controlled-agent-skill-run/targeted-tests.txt
+    - artifacts/run-005-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-005-controlled-agent-skill-run/comparability.yml
+    - artifacts/run-005-controlled-agent-skill-run/changed-files.txt
   created: "2026-05-01"
-  updated: "2026-05-08"
+  updated: "2026-05-09"
   author: "copilot-agent"
-  iteration: 4
+  iteration: 5
   evidence_level: anecdotal
   falsifiability:
     version: 1

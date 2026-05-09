@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-005-controlled-agent-skill-run",
+  "generated_at": "2026-05-09T08:10:00Z",
+  "executor": "copilot-coding-agent:gpt-5.3-codex",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && make validate",
+  "command_scope": "validator regression test hardening for changed_files_artifact absolute-path guard (Windows path case)",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-005-controlled-agent-skill-run/targeted-tests.txt",
+  "auditor_output_file": "artifacts/run-005-controlled-agent-skill-run/auditor-output.yml",
+  "provenance_level": "self_reported",
+  "outcome": "PASS",
+  "notes": "Run 005 executes a real small repo-internal task: add regression coverage for Windows absolute changed_files_artifact path rejection in validate_run_bundle tests. Executor/model provenance is self-reported. No effect, promotion, or causal claims."
+}
