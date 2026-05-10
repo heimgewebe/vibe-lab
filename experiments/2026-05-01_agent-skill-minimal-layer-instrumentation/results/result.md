@@ -58,7 +58,7 @@ Cross-Run-Assessment liegt in `results/cross-run-assessment.md` vor. **Kein resu
 
 - Das Messgerüst (run-bundle-Struktur, comparability.yml, evidence-reconciliation-auditor) kann über mehrere Runs hinweg konsistente Artefakte erfassen.
 - Fünf von acht Metriken sind über die drei vergleichbaren Runs konsistent messbar (scope_drift, unsupported_claim, missing_locator, validation_gap, false_block).
-- Run-bundle-Struktur reproduzierbar über unterschiedliche Task-Typen (evidence-capture + preflight-diagnose vs. small validator-test hardening).
+- Run-bundle-Struktur reproduzierbar über die bisher geprüfte Vergleichsbasis; breitere Task-Typ-Varietät bleibt unbewiesen.
 - Vergleichbarkeitsregeln (comparability.yml) funktionieren: Run-003/004 werden korrekt als `not_comparable` eingestuft.
 
 ### Disallowed Claims
