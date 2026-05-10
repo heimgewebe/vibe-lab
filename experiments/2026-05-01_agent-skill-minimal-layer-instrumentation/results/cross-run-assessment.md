@@ -18,7 +18,7 @@ relations:
 
 **Ausgeschlossen:** run-003, run-004 (`comparability_verdict: not_comparable` — PR-10-Rehearsal-Kontext, kein `independent_task_or_pr_ref`)
 
-**Nicht einbezogen:** run-001 (andere Instrumentierungsklasse: `promotion-readiness-prepared-without-measurement`, kein `evidence-pack.yml`)
+**Nicht einbezogen:** run-001 (andere Instrumentierungsklasse: `promotion-readiness-prepared-without-measurement`, strukturell außerhalb der Vergleichsbasis für `controlled-agent-skill-run`)
 
 **Pflichtlektüre-Lücke:** `docs/policies/agent-reading-protocol.md` — **FEHLT**: Datei existiert nicht im Repo.
 Nötig für: Prüfung ob Lese-Protokoll-Pflicht für dieses Assessment eingehalten wurde.
@@ -114,7 +114,7 @@ In allen drei Runs ist Auditor-Executor == Executor. Kein einziger Run hat einen
 | Intervention | Erste vollständige evidence-pack-Kopplung; alle 4 Auditor-Claims PASS |
 | Validator/Guard | evidence-reconciliation-auditor, make validate, test_validate_run_bundle.py, test_validate_claim_evidence.py, test_validate_pr_scope.py |
 | Was verbessert | Artefaktstruktur-Vollständigkeit; comparability-Baseline etabliert |
-| Was NICHT verbessert | review_friction_count: null; rework_count: null; changed_files_artifact: null |
+| Was NICHT verbessert | review_friction_count: null; rework_count: null; changed_files_artifact: null (added in later runs) |
 | Gegenhypothesen geprüft | E (strukturell korrekt) |
 | Gegenhypothesen nicht geprüft | A, B, C, D (kein Referenzpunkt für Vergleich) |
 | Scope Drift | 0 (repo_local) |
@@ -129,11 +129,11 @@ In allen drei Runs ist Auditor-Executor == Executor. Kein einziger Run hat einen
 | Intervention | changed_files_artifact-Pflichtfeld eingeführt; changed-files.txt archiviert; comparability.yml claim-005 hinzugefügt |
 | Validator/Guard | evidence-reconciliation-auditor (5 claims inkl. claim-005 für comparability), make validate |
 | Was verbessert | changed_files_artifact jetzt archiviert und im Auditor-Verdict verifiziert |
-| Was NICHT verbessert | review_friction_count: null; rework_count: null; task_completion_time: null |
+| Was NICHT verbessert | review_friction_count: null; rework_count: null; task_completion_time_observed: null |
 | Gegenhypothesen geprüft | D (partial: scaffold hält für kleine Tasks) |
 | Gegenhypothesen nicht geprüft | A (kein Kontrollpunkt), C (Selbst-Auditierung) |
 | Scope Drift | 0 (repo_local) |
-| Missing Evidence | review_friction_count, rework_count, task_completion_time |
+| Missing Evidence | review_friction_count, rework_count, task_completion_time_observed |
 
 ### Run-006
 
@@ -144,11 +144,11 @@ In allen drei Runs ist Auditor-Executor == Executor. Kein einziger Run hat einen
 | Intervention | Regressionstest hinzugefügt; Artefaktstruktur identisch zu run-005 |
 | Validator/Guard | Gleich wie run-005 |
 | Was verbessert | Regressionstest für Cross-Run-Pfadfall |
-| Was NICHT verbessert | Gleich wie run-005; keine neue Metrik-Abdeckung |
+| Was NICHT verbessert | Gleich wie run-005: review_friction_count null, rework_count null, task_completion_time_observed null |
 | Gegenhypothesen geprüft | D (partial: zweite Instanz derselben Task-Klasse) |
-| Gegenhypothesen nicht geprüft | A, C; B strukturell verstärkt (zweiter run der gleichen Task-Klasse) |
+| Gegenhypothesen nicht geprüft | A (kein Kontrollpunkt), C (Selbst-Auditierung); B strukturell verstärkt (zweiter run der gleichen Task-Klasse) |
 | Scope Drift | 0 (repo_local) |
-| Missing Evidence | Gleich wie run-005 |
+| Missing Evidence | Gleich wie run-005: review_friction_count, rework_count, task_completion_time_observed |
 
 ### Task-Homogenitätsproblem
 

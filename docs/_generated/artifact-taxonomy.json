@@ -8564,6 +8564,22 @@
       "status": "classified"
     },
     {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "cross_run_assessment",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/cross-run-assessment.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md",
+      "status": "classified"
+    },
+    {
       "authority": "decision_record",
       "catchall_match": false,
       "enforcement": [
@@ -13286,7 +13302,7 @@
       "normative_contract": 16,
       "procedure_contract": 97,
       "raw_capture": 22,
-      "result_interpretation": 55,
+      "result_interpretation": 56,
       "runtime_observation": 68,
       "schema_truth": 16,
       "sovereign_source": 3,
@@ -13303,7 +13319,7 @@
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 218
+      "review_required": 219
     },
     "by_layer": {
       "agent": 4,
@@ -13312,7 +13328,7 @@
       "catalog": 12,
       "contract": 26,
       "docs": 29,
-      "experiment": 440,
+      "experiment": 441,
       "export": 15,
       "generated": 8,
       "governance": 51,
@@ -13320,18 +13336,18 @@
     },
     "by_lifecycle": {
       "append_only": 301,
-      "handcrafted": 412,
+      "handcrafted": 413,
       "regenerated": 18,
       "revision_with_reason": 48,
       "superseded_not_rewritten": 2
     },
-    "classified": 781,
+    "classified": 782,
     "conflict": 0,
     "fallback_classified": 278,
-    "fallback_share": 0.3559539052496799,
+    "fallback_share": 0.3554987212276215,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 781,
+    "total": 782,
     "unknown": 0
   },
   "transition_risk_hints": [],
