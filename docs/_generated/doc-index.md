@@ -170,6 +170,7 @@
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` | Failure Modes — Agent/Skill Minimal Layer Instrumentation | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` | Agent/Skill Minimal Layer v0.1 — Methode | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` | Agent/Skill Minimal Layer Instrumentation — Ergebnis | draft | operative |

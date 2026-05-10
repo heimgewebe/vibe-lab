@@ -1,0 +1,27 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-006-controlled-agent-skill-run"
+assessed_at: "2026-05-10"
+
+compared_against:
+  - "run-002-controlled-agent-skill-run"
+  - "run-005-controlled-agent-skill-run"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:validator-test-cross-run-changed-files-artifact-path-guard"
+
+changed_files_artifact: "artifacts/run-006-controlled-agent-skill-run/changed-files.txt"
+
+verdict: comparable
+
+notes: >
+  Comparable run: same experiment path, same run-bundle artifact structure,
+  and same claim/evidence discipline as prior controlled runs (run-002, run-005).
+  Task context is independent: this run executes a separate small validator-test
+  hardening task (cross-run changed_files_artifact path regression case).
+  Run-003 and run-004 are explicitly excluded from this comparability basis
+  (PR-10 rehearsal context, not_comparable verdict).
+  No PR11 claim. No cross-run assessment. No promotion claim.
