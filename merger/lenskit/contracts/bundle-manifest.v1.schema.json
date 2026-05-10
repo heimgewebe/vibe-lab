@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/merger/lenskit/contracts/bundle-manifest.v1.schema.json",
+  "title": "Bundle Manifest (v1)",
+  "description": "Schema für das Lenskit Bundle Manifest. Listet alle Artefakte eines Lenskit-Bundles mit Role, Authority, Canonicality und Contract-Referenz. citation_map_jsonl ist optional und erfordert authority=navigation_index und canonicality=derived.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "bundle_id", "created_at", "artifacts"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract": {
+      "type": "string",
+      "const": "bundle-manifest"
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Eindeutiger Bezeichner des Bundles."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifacts": {
+      "type": "array",
+      "description": "Liste aller Artefakte im Bundle. citation_map_jsonl ist optional.",
+      "items": {
+        "$ref": "#/$defs/ArtifactRecord"
+      }
+    }
+  },
+  "$defs": {
+    "ArtifactRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "content_type", "authority", "canonicality"],
+      "properties": {
+        "role": {
+          "$ref": "#/$defs/ArtifactRole"
+        },
+        "content_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "$ref": "#/$defs/Authority"
+        },
+        "canonicality": {
+          "$ref": "#/$defs/Canonicality"
+        },
+        "regenerable": {
+          "type": "boolean"
+        },
+        "staleness_sensitive": {
+          "type": "boolean"
+        },
+        "contract": {
+          "$ref": "#/$defs/ContractRef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "role": { "const": "citation_map_jsonl" } },
+            "required": ["role"]
+          },
+          "then": {
+            "properties": {
+              "authority": {
+                "const": "navigation_index",
+                "description": "citation_map_jsonl darf nur authority=navigation_index haben."
+              },
+              "canonicality": {
+                "const": "derived",
+                "description": "citation_map_jsonl darf nur canonicality=derived haben."
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ArtifactRole": {
+      "type": "string",
+      "enum": [
+        "canonical_md",
+        "chunk_index_jsonl",
+        "derived_manifest_json",
+        "dump_index_json",
+        "index_sidecar_json",
+        "sqlite_index",
+        "citation_map_jsonl"
+      ]
+    },
+    "Authority": {
+      "type": "string",
+      "enum": [
+        "canonical_content",
+        "navigation_index",
+        "runtime_cache"
+      ]
+    },
+    "Canonicality": {
+      "type": "string",
+      "enum": [
+        "content_source",
+        "derived",
+        "cache"
+      ]
+    },
+    "ContractRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^v[0-9]+"
+        }
+      }
+    }
+  }
+}
