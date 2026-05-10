@@ -51,6 +51,8 @@ relations:
     target: reference/agent-operability-fixture-matrix.md
   - type: references
     target: reference/replay-trace-redaction.md
+  - type: references
+    target: roadmap.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -64,6 +66,7 @@ relations:
 | [README](../README.md)               | Projekteinstieg und Schnellstart         |
 | [CONTRIBUTING](../CONTRIBUTING.md)    | Contribution Contract und Beitragstypen  |
 | [Masterplan](masterplan.md)           | Inhaltlicher Anker und Zielbild          |
+| [Roadmap](roadmap.md)                | Quellengebundene Koordination offener Arbeitsstränge |
 
 
 ## Grundlagen

@@ -3,11 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (129 found):
+Documents not referenced by any other document via frontmatter relations (127 found):
 
 - `.vibe/intent.md`
-- `docs/evaluations/agent-skill-file-fruitfulness.md`
-- `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
