@@ -84,7 +84,7 @@ Cross-Run-Assessment liegt in `results/cross-run-assessment.md` vor. **Kein resu
 | Repo-lokal belegt (PASS) | Alle run-002/005/006 Artefakte; comparability.yml für alle; auditor-output.yml mit PASS; measurement.yml für alle |
 | Konsistent 0 über 3 Runs | scope_drift_count, unsupported_claim_count, missing_locator_count, validation_gap_count, false_block_count |
 | Self-reported oder null | task_completion_time_observed (run-002: ~60 min self_reported; run-005/006: null) |
-| MISSING_EVIDENCE | review_friction_count, rework_count (alle Runs); unabhängige Metrik-Validierung; task_completion_time (run-005/006) |
+| MISSING_EVIDENCE | review_friction_count, rework_count (alle Runs); unabhängige Metrik-Validierung; task_completion_time_observed (run-005/006) |
 | Nicht vergleichbar (ausgeschlossen) | Run-003/004 (comparability_verdict: not_comparable, PR-10-Rehearsal-Kontext) |
 | Andere Klasse (ausgeschlossen) | Run-001 (promotion-readiness-prepared-without-measurement, nicht controlled-agent-skill-run) |
 | Nicht getestet | Wirkung; Kontrollgruppe; komplexe/ambigue Tasks; Negativfälle (kein FAIL-Verdict) |
