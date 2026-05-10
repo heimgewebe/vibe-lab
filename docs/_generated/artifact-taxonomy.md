@@ -13,8 +13,8 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 - total: 783
 - classified: 783
-  - of which fallback_classified (catch-all rule): 279
-  - fallback_share: 35.6% (279 / 783)
+  - of which fallback_classified (catch-all rule): 278
+  - fallback_share: 35.5% (278 / 783)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -101,7 +101,6 @@ _none_
 - `docs/evaluations/agent-skill-file-fruitfulness.md`
 - `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
 - `docs/evaluations/rrg03-remediation-strategy-comparison.md`
-- `docs/roadmap.md`
 - `experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py`
 - `experiments/2026-04-12_spec-first-legacy/src/test_processor.py`
@@ -456,10 +455,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 222 | 79.6% |
+| `experiments/*/artifacts/**` | 222 | 79.9% |
 | `tests/fixtures/**` | 32 | 11.5% |
-| `experiments/**` | 21 | 7.5% |
-| `docs/**` | 4 | 1.4% |
+| `experiments/**` | 21 | 7.6% |
+| `docs/**` | 3 | 1.1% |
 
 ## Residual fallback clusters
 
@@ -476,7 +475,7 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 | `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
 | `experiments/*/artifacts/**` | 222 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `auditor-output.yml`=6, `evidence-pack.yml`=6 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run`=9, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run`=9 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
-| `docs/**` | 4 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `roadmap.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs`=1 |
+| `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |
 
 ### Volume-first clusters
 
@@ -487,7 +486,7 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 | `experiments/*/artifacts/**` | 222 | 0 | `refactored_processor.py`=15, `index.ts`=8, `test_processor.py`=8, `auditor-output.yml`=6, `evidence-pack.yml`=6 | `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run`=9, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run`=9 |
 | `tests/fixtures/**` | 32 | 32 | `evidence-pack.yml`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1, `ci-pass-without-ci-evidence.yml`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=9, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/claim_evidence_semantic/valid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
-| `docs/**` | 4 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `roadmap.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs`=1 |
+| `docs/**` | 3 | 0 | `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3 |
 
 ## Fallback classified artifacts requiring review
 

@@ -103,7 +103,7 @@ Die folgende Tabelle listet die Quellen, aus denen diese Roadmap Koordinationsin
 | `docs/evaluations/agent-skill-file-fruitfulness.md` | diagnosis | Fruchtbarkeits-Evaluation Agent/Skill | Ja | Evaluation-Plan, noch kein Verdict |
 | `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` | operative | Cross-Diagnose RRG-01/RRG-02 | Ja | RRG-01/02 fixture-proven seit 2026-05-01 |
 | `docs/evaluations/rrg03-remediation-strategy-comparison.md` | operative | Remediation-Strategie-Vergleich | Ja | Kein finaler Gewinner, proposed |
-| `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | exploratory | PR-Checkliste Evidence-Control-Plane | Ja | PR 10/11 offen |
+| `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | exploratory | PR-Checkliste Evidence-Control-Plane | Ja | Enthält ursprüngliche PR-10/11-Checkliste; aktueller Status siehe RM-002 |
 | `docs/playbooks/plan-execution-checklist.md` | operative | Plan-Ausführungscheckliste | Ja | Phase 3/4 teilweise offen |
 | `docs/playbooks/reconciliation.md` | operative | Prozess-Reconciliation | Nein (Methode, kein Arbeitsstrang) | Referenz für Prozess |
 | `docs/playbooks/pr-run-evidence-pack.md` | operative | Evidence-Pack-Struktur | Nein (Methode) | |

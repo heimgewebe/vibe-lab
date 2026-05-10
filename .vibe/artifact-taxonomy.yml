@@ -484,6 +484,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  - pattern: docs/roadmap.md
+    layer: docs
+    kind: roadmap_index
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: docs/foundations/*.md
     layer: docs
     kind: foundation_doc

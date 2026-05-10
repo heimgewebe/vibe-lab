@@ -1541,15 +1541,15 @@
     },
     {
       "authority": "navigation_surface",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
         "review_required"
       ],
-      "kind": "doc",
+      "kind": "roadmap_index",
       "layer": "docs",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "docs/**"
+        "docs/roadmap.md"
       ],
       "origin": "handcrafted",
       "path": "docs/roadmap.md",
@@ -12562,7 +12562,6 @@
     "docs/evaluations/agent-skill-file-fruitfulness.md",
     "docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md",
     "docs/evaluations/rrg03-remediation-strategy-comparison.md",
-    "docs/roadmap.md",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
@@ -12842,16 +12841,16 @@
   "fallback_summary": {
     "by_authority": {
       "historical_record": 243,
-      "navigation_surface": 4,
+      "navigation_surface": 3,
       "test_expectation": 32
     },
     "by_layer": {
-      "docs": 4,
+      "docs": 3,
       "experiment": 243,
       "test": 32
     },
     "by_matched_pattern": {
-      "docs/**": 4,
+      "docs/**": 3,
       "experiments/**": 21,
       "experiments/*/artifacts/**": 222,
       "tests/fixtures/**": 32
@@ -12945,14 +12944,12 @@
           "top_basenames": {
             "agent-skill-file-fruitfulness.md": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
-            "roadmap.md": 1,
             "rrg03-remediation-strategy-comparison.md": 1
           },
           "top_parent_dirs": {
-            "docs": 1,
             "docs/evaluations": 3
           },
-          "total": 4
+          "total": 3
         }
       ],
       "volume_first": [
@@ -13042,14 +13039,12 @@
           "top_basenames": {
             "agent-skill-file-fruitfulness.md": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
-            "roadmap.md": 1,
             "rrg03-remediation-strategy-comparison.md": 1
           },
           "top_parent_dirs": {
-            "docs": 1,
             "docs/evaluations": 3
           },
-          "total": 4
+          "total": 3
         }
       ]
     },
@@ -13140,14 +13135,12 @@
         "top_basenames": {
           "agent-skill-file-fruitfulness.md": 1,
           "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
-          "roadmap.md": 1,
           "rrg03-remediation-strategy-comparison.md": 1
         },
         "top_parent_dirs": {
-          "docs": 1,
           "docs/evaluations": 3
         },
-        "total": 4
+        "total": 3
       }
     ]
   },
@@ -13366,8 +13359,8 @@
     },
     "classified": 783,
     "conflict": 0,
-    "fallback_classified": 279,
-    "fallback_share": 0.3563218390804598,
+    "fallback_classified": 278,
+    "fallback_share": 0.3550446998722861,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
     "total": 783,
