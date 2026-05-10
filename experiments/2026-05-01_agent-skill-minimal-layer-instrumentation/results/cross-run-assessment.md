@@ -6,7 +6,7 @@ triggered_by: user-request-2026-05-10-pr11-cross-run-assessment
 relations:
   - type: references
     target: evidence.jsonl
-  - type: informed_by
+  - type: references
     target: result.md
 ---
 

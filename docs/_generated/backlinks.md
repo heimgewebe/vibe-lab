@@ -439,7 +439,7 @@
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md`
 
-- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (informed_by)
+- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (references)
 
 ## `experiments/README.md`
 
