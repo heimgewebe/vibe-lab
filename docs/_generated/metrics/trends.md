@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-05-08T12:00:00Z
+Latest Evidence Timestamp: 2026-05-10T10:00:00Z
 
 ## Gate Snapshot
 
-- Total events: **285**
+- Total events: **287**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **15**
 
@@ -18,7 +18,7 @@ Latest Evidence Timestamp: 2026-05-08T12:00:00Z
 | decision | 18 |
 | measurement | 133 |
 | observation | 107 |
-| run | 27 |
+| run | 29 |
 
 ## Metric Aggregates
 
@@ -63,6 +63,7 @@ Latest Evidence Timestamp: 2026-05-08T12:00:00Z
 | completeness | 4 | 0 | - | - | - |
 | consistency | 2 | 0 | - | - | - |
 | control_tasks_executed | 1 | 1 | 3 | 3 | 3 |
+| controlled_run_recorded | 2 | 0 | - | - | - |
 | controlled_schema_deviation_injected | 1 | 1 | 1 | 1 | 1 |
 | design-sharpening | 1 | 0 | - | - | - |
 | detection_latency_seconds | 3 | 3 | 47 | 97 | 48 |

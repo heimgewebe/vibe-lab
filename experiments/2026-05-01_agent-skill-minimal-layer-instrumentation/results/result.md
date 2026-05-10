@@ -2,67 +2,99 @@
 title: "Agent/Skill Minimal Layer Instrumentation — Ergebnis"
 status: draft
 canonicality: operative
+relations:
+  - type: references
+    target: evidence.jsonl
+  - type: references
+    target: cross-run-assessment.md
+  - type: references
+    target: decision.yml
 ---
 
 # result.md — Ergebnis
 
 ## Status
 
-**Run 1 und Run 2 erfasst; Run 3–4 als Kandidaten-/Rehearsal-Runs erfasst.** Run 2 (run-002) ist der einzige bestätigte vergleichbare kontrollierte Run. Run 3 und Run 4 (run-003, run-004) sind während desselben PR-10-Sessions-Durchlaufs entstanden und haben `comparability_verdict: not_comparable` (kein `independent_task_or_pr_ref`). `current_comparable_runs = 1`. PR 10 bleibt offen bis zwei weitere wirklich unabhängige vergleichbare Runs vorliegen.
+**Drei vergleichbare kontrollierte Runs abgeschlossen; Cross-Run-Assessment-Schwelle erreicht.** 
+Run 2 (run-002; PR#9), Run 5 (run-005; task:validator-test-windows-absolute-path-guard), Run 6 (run-006; task:validator-test-cross-run-changed-files-artifact-path-guard) sind alle als `comparability_verdict: comparable` oder `reference_only` dokumentiert.
+Run 3 und Run 4 (run-003, run-004) haben `comparability_verdict: not_comparable` (PR-10-Rehearsal-Kontext, kein `independent_task_or_pr_ref`) und zählen nicht.
+`current_comparable_runs = 3`.
+Cross-Run-Assessment liegt in `results/cross-run-assessment.md` vor. **Kein result_assessment, kein promotion_readiness, kein usefulness claim** — siehe decision.yml und cross-run-assessment.md §6.
 
 ## Canonical Artifacts
 
-- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.yml`** — kanonischer YAML-Auditor-Output (machine-readable source of truth)
-- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml`** — Run-1-Metriken
-- `artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md` — nicht-kanonische Projektion (human-readable view only)
-- **`artifacts/run-002-controlled-agent-skill-run/`** — erster vollständiger kontrollierter Run (PR 9); `comparability_verdict: reference_only`
-- **`artifacts/run-003-controlled-agent-skill-run/`** — Kandidaten-/Rehearsal-Run (PR 10, Session-Phase 1); `comparability_verdict: not_comparable`
-- **`artifacts/run-004-controlled-agent-skill-run/`** — Kandidaten-/Rehearsal-Run (PR 10, Session-Phase 2); `comparability_verdict: not_comparable`
+**Vergleichbare Runs (in Cross-Run-Assessment einbezogen):**
+- **`artifacts/run-002-controlled-agent-skill-run/`** — Referenzanker (PR#9, evidence-capture + Preflight-Diagnose); `comparability_verdict: reference_only`
+- **`artifacts/run-005-controlled-agent-skill-run/`** — Small validator-test hardening (windows absolute path guard); `comparability_verdict: comparable`
+- **`artifacts/run-006-controlled-agent-skill-run/`** — Small validator-test hardening (cross-run changed_files_artifact path regression); `comparability_verdict: comparable`
 
-## Datenlage
+**Nicht vergleichbar (ausgeschlossen aus Cross-Run-Assessment):**
+- **`artifacts/run-003-controlled-agent-skill-run/`** — Kandidaten-/Rehearsal-Run (PR#10, Session-Phase 1); `comparability_verdict: not_comparable`
+- **`artifacts/run-004-controlled-agent-skill-run/`** — Kandidaten-/Rehearsal-Run (PR#10, Session-Phase 2); `comparability_verdict: not_comparable`
 
-- 4 Runs erfasst. Run 1 nicht vergleichbar (fehlende Messung). Run 2 bestätigter vergleichbarer Run. Run 3–4 Kandidaten/Rehearsal, nicht vergleichbar.
-- `current_comparable_runs = 1` — Schwellenwert für PR-11 (mindestens 3) nicht erreicht.
-- Run 2 Auditor-Verdict: **PASS** (`derived_from_auditor_output`).
-- Run 3 Auditor-Verdict: **PASS** — aber `comparability_verdict: not_comparable`; zählt nicht.
-- Run 4 Auditor-Verdict: **PASS** — aber `comparability_verdict: not_comparable`; zählt nicht.
-- `review_friction_count` und `rework_count` bleiben `null` / `missing_evidence` in allen Runs.
-- `scope_drift_count` in Run 3/4 `null` / `missing_evidence` (kein changed-files-Artefakt archiviert).
-- `task_completion_time_observed` in allen Runs `self_reported`; nicht vergleichbar, kein Kausalclaim.
-- Kein Wirkungsclaim möglich oder zulässig.
+**Andere Instrumentierungsklasse (nicht vergleichbar):**
+- **`artifacts/run-001-promotion-readiness-prepared-without-measurement/`** — Verschiedene Instrumentierungsklasse (promotion-readiness-prepared-without-measurement, nicht controlled-agent-skill-run); außerhalb Vergleichsbasis
+
+## Datenlage (aus Cross-Run-Assessment)
+
+**Vergleichbare Runs (3):** run-002, run-005, run-006
+- Alle drei haben Auditor-Verdict: **PASS**
+- Alle drei sind mit vollständigen run-bundle-Artefakten (run.yml, measurement.yml, auditor-output.yml, evidence-pack.yml, comparability.yml) archiviert
+
+**Metrik-Abdeckung über die drei vergleichbaren Runs:**
+- Konsistent erfasst: `scope_drift_count` (0 in allen), `unsupported_claim_count` (0 in allen), `missing_locator_count` (0 in allen), `validation_gap_count` (0 in allen), `false_block_count` (0 in allen)
+- Persistently unmeasured: `review_friction_count` (null in allen), `rework_count` (null in allen)
+- Teilweise: `task_completion_time_observed` (run-002: self_reported ~60 min; run-005, run-006: null)
+
+**Gegenhypothesen-Status (siehe cross-run-assessment.md §2):**
+- A (Operator-/Prompt-Effekt): unresolved
+- B (Fallselektion): nicht_widerlegt — Task-Cluster vorhanden (zwei runs gleicher Klasse)
+- C (Bewertungsbias): nicht_widerlegt — Auditor-Executor == Executor in allen drei Runs
+- D (Replizierbarkeit): teilweise_repliziert — nur innerhalb einer Task-Klasse
+- E (Dokumentation ≠ Ausführung): strukturell bestätigt
+
+**Promotion-Blocker (detailliert in cross-run-assessment.md §5):**
+- review_friction_count und rework_count: fehlende Archivierungs-Mechanik
+- Task-Diversität: keine komplexen oder ambiguosen Tasks getestet
+- Negativfälle: kein Run mit Auditor-FAIL-Verdict
+- Unabhängige Bewertung: alle Runs selbst-auditiert (keine externe Validierung)
 
 ## Interpretation Budget
 
 ### Allowed Claims
 
-- Das Experiment legt einen Erhebungsrahmen für künftige PR-Daten an.
-- Run 2 wurde als erster kontrollierter Agent/Skill-Run mit vollständiger Evidence-Pack-Kopplung erfasst.
-- Run 3 und Run 4 wurden als Kandidaten-/Rehearsal-Runs erfasst und haben die Vergleichbarkeitsregeln dokumentiert.
-- Die Vergleichbarkeitsregeln (comparability.yml) funktionieren: Run 3/4 werden korrekt als `not_comparable` eingestuft.
-- Kein Wirksamkeitsclaim.
+- Das Messgerüst (run-bundle-Struktur, comparability.yml, evidence-reconciliation-auditor) kann über mehrere Runs hinweg konsistente Artefakte erfassen.
+- Fünf von acht Metriken sind über die drei vergleichbaren Runs konsistent messbar (scope_drift, unsupported_claim, missing_locator, validation_gap, false_block).
+- Run-bundle-Struktur reproduzierbar über die bisher geprüfte Vergleichsbasis; breitere Task-Typ-Varietät bleibt unbewiesen.
+- Vergleichbarkeitsregeln (comparability.yml) funktionieren: Run-003/004 werden korrekt als `not_comparable` eingestuft.
 
 ### Disallowed Claims
 
-- Die Agent-Schicht reduziert Fehler.
-- Die Agent-Schicht ist nützlich.
-- Skill-Dateien sind bewertet.
-- CI-/Script-Rückbindung ist gerechtfertigt.
-- current_comparable_runs=3 oder >=3 (aktuell: 1).
-- PR-11 kann gestartet werden (Schwellenwert nicht erreicht).
-- Run 3/4 zählen als vergleichbare Runs.
+- Die Agent-Schicht reduziert Fehler (kein outcome-level evidence).
+- Die Agent-Schicht ist nützlich (kein Wirksamkeitsnachweis).
+- Skill-Dateien sind bewertet (keine dedizierten Skill-Dateien im Repo).
+- Promotion readiness (persistent metric gaps, keine unabhängige Validierung).
+- result_assessment oder adoption_assessment (decision.yml verdict: insufficient_proof).
+- Task-Homogenität überwunden (2/3 vergleichbare Runs: gleiche kleine Task-Klasse).
 
 ## Evidence Basis
 
 | Kategorie | Stand |
 |---|---|
-| Repo-lokal belegt (PASS) | Validator-Logik, Ratchet-Entry, Regressionstests, run-002-Artefakte; comparability.yml für Run 3/4 |
-| derived_from_auditor_output | unsupported_claim_count, validation_gap_count (Run 2) |
-| self_reported | task_completion_time_observed (nicht vergleichbar) |
-| MISSING_EVIDENCE | scope_drift_count (Run 3/4); review_friction_count, rework_count (alle Runs); CI-Testprotokoll; experiment-critic-Output |
-| Nicht vergleichbar | Run 3/4 (comparability_verdict: not_comparable) |
-| Nicht getestet | Wirkung; Kontrollgruppe |
-| Offen für PR 10 | Zwei weitere unabhängige vergleichbare Runs mit independent_task_or_pr_ref |
+| Repo-lokal belegt (PASS) | Alle run-002/005/006 Artefakte; comparability.yml für alle; auditor-output.yml mit PASS; measurement.yml für alle |
+| Konsistent 0 über 3 Runs | scope_drift_count, unsupported_claim_count, missing_locator_count, validation_gap_count, false_block_count |
+| Self-reported oder null | task_completion_time_observed (run-002: ~60 min self_reported; run-005/006: null) |
+| MISSING_EVIDENCE | review_friction_count, rework_count (alle Runs); unabhängige Metrik-Validierung; task_completion_time_observed (run-005/006) |
+| Nicht vergleichbar (ausgeschlossen) | Run-003/004 (comparability_verdict: not_comparable, PR-10-Rehearsal-Kontext) |
+| Andere Klasse (ausgeschlossen) | Run-001 (promotion-readiness-prepared-without-measurement, nicht controlled-agent-skill-run) |
+| Nicht getestet | Wirkung; Kontrollgruppe; komplexe/ambigue Tasks; Negativfälle (kein FAIL-Verdict) |
 
-## Nächste Schritte
+## Nächste Schritte (Blocker für Verbesserung des Verdikts)
 
-PR 10 bleibt offen: Zwei weitere Runs mit echten unabhängigen `independent_task_or_pr_ref`-Werten (separate PRs oder Tasks) erfassen. Nach Erreichen von `current_comparable_runs=3` kann PR 11 (`cross-run-assessment.md`) starten.
+**Für Beseitigung des insufficient_proof (execution_assessment):**
+1. review_friction_count und rework_count: Archivierungs-Mechanismus für externe Review-Events etablieren.
+2. Task-Diversitätsnachweis: mindestens ein Run mit komplexem oder ambiguem Scope.
+3. Negativfall-Nachweis: mindestens ein Run mit Auditor-FAIL-Verdict und konkretem Artefakt-Rückverweis.
+4. Unabhängige Metrik-Validierung: Prüfung durch Reviewer, der nicht Executor ist.
+
+(Detailliert in results/cross-run-assessment.md §5)
