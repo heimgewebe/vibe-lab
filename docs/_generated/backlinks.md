@@ -424,6 +424,14 @@
 
 - ← `.vibe/changed-files-artifact.contract.md` (references)
 
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
+
+- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md`
+
+- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (informed_by)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)

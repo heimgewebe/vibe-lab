@@ -6,26 +6,35 @@ schema_version: "0.1.0"
 decision_type: "execution_assessment"
 verdict: "insufficient_proof"
 confidence: "low"
-date: "2026-05-01"
-reviewer: "copilot-agent"
+date: "2026-05-10"
+reviewer: "claude-sonnet-4-6"
 
 rationale: |
-  Run 1 (PR #145) erfasst. Ein einzelner Messpunkt ist unzureichend für eine
-  Wirksamkeitsbewertung der Agent/Skill-Schicht. Kein Vergleichsdatensatz,
-  keine Kontrollgruppe. Run-1-Auditor-Verdict ist MISSING_EVIDENCE wegen
-  fehlender CI/make/critic-Artefakte und fehlendem archivierten
-  PR-Metadaten-Artefakt. Kanonischer Auditor-Output liegt als
-  auditor-output.yml vor.
-  Externe PR-Metadaten (commits, review_friction, rework, completion_time)
-  sind external_unverified. Verdict bleibt insufficient_proof bis mindestens
-  drei vergleichbare PRs vorliegen und eine Zwischenauswertung möglich ist.
+  Drei vergleichbare kontrollierte Runs abgeschlossen (run-002, run-005, run-006).
+  Mindestschwelle für Cross-Run-Auswertung erreicht; Cross-Run-Assessment liegt
+  in results/cross-run-assessment.md vor.
+  Verdict bleibt insufficient_proof — jetzt aus präziseren Gründen:
+  Scaffold-Artefaktstruktur ist reproduzierbar (5/8 Metriken konsistent erfasst),
+  aber review_friction_count, rework_count und task_completion_time_observed sind
+  in allen drei vergleichbaren Runs persistently null oder self_reported. Diese
+  drei Metriken sind die einzigen, die Ausführungsqualität sichtbar machen könnten.
+  Ohne sie ist die Scaffold-Hypothese ("can capture comparable PR-level data") nur
+  partiell belegt. Zusätzlich: runs 005/006 aus derselben Task-Klasse (task-Cluster,
+  keine echte Varietät), Auditor-Executor == Executor in allen Runs (keine
+  unabhängige Bewertung), keine negativen Fälle dokumentiert.
+  Kein Upgrade auf result_assessment zulässig.
 
 evidence_summary:
-  observations: 2
+  observations: 3
   positive: 0
   negative: 0
-  neutral: 2
+  neutral: 3
 
 next_steps: |
-  Mindestens zwei weitere reale PRs als Datensätze erfassen. Zwischenauswertung
-  nach drei vergleichbaren PRs; Verdict erst dann neu bewerten.
+  Blocker für Beseitigung des insufficient_proof (aus results/cross-run-assessment.md §5):
+  1. review_friction_count und rework_count: Archivierungs-Mechanismus für
+     externe Review-Events etablieren.
+  2. Task-Diversitätsnachweis: mindestens ein Run mit komplexem oder ambiguem Scope.
+  3. Negativfall-Nachweis: mindestens ein Run mit Auditor-FAIL-Verdict und
+     konkretem Artefakt-Rückverweis.
+  4. Unabhängige Metrik-Validierung: Prüfung durch Reviewer != Executor.
