@@ -27,9 +27,12 @@ rationale: |
 
 evidence_summary:
   observations: 3
-  positive: 0
-  negative: 0
-  neutral: 3
+  positive: 1
+  negative: 1
+  neutral: 1
+  positive_detail: "Scaffold-Artefaktstruktur reproduzierbar; 5/8 Metriken konsistent erfasst"
+  negative_detail: "3/8 Metriken persistent unmessbar (review_friction, rework, timing); kein unabhängiger Auditor; Task-Cluster ohne Varietät"
+  neutral_detail: "comparability.yml-Mechanismus funktioniert; run-003/004 korrekt ausgeschlossen"
 
 next_steps: |
   Blocker für Beseitigung des insufficient_proof (aus results/cross-run-assessment.md §5):

@@ -424,9 +424,18 @@
 
 - ← `.vibe/changed-files-artifact.contract.md` (references)
 
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
+
+- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
+
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`
+
+- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
+
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
 
 - ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (references)
+- ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md`
 

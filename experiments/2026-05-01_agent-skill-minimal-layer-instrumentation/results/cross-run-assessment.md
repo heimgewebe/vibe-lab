@@ -240,8 +240,8 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 `docs/policies/agent-reading-protocol.md` — referenziert in den Anweisungen für dieses Assessment.
 
-**Status: FEHLT** — Datei existiert nicht im Repo.
+**Status: FEHLT am referenzierten Pfad** — Datei existiert nicht unter `docs/policies/agent-reading-protocol.md`. Repo-weite Suche nach normativem Äquivalent (Lese-Protokoll-Pflicht für Assessments) ergibt keinen kanonischen Ersatz.
 
 Nötig für: Prüfung, ob das Lese-Protokoll für dieses Assessment eingehalten wurde.
 
-Keine Ersatzableitung vorgenommen. Dieser Blocker ist dokumentiert, nicht überbrückt.
+Keine Ersatzableitung vorgenommen. Dokumentiert als offene Governance-Lücke, nicht als harter Blocker für dieses Assessment.

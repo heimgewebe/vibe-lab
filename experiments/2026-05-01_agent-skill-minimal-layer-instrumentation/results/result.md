@@ -2,6 +2,13 @@
 title: "Agent/Skill Minimal Layer Instrumentation — Ergebnis"
 status: draft
 canonicality: operative
+relations:
+  - type: references
+    target: evidence.jsonl
+  - type: references
+    target: cross-run-assessment.md
+  - type: references
+    target: decision.yml
 ---
 
 # result.md — Ergebnis
