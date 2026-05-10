@@ -749,6 +749,25 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("muss run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen" in e for e in errs), errs)
 
+    def test_changed_files_artifact_pointing_to_previous_run_directory_fails(self) -> None:
+        # Regression: run-006 comparability.yml must not reference run-005's
+        # changed-files.txt even when that file physically exists in the repo.
+        current_run = "run-006-controlled-agent-skill-run"
+        previous_run = "run-005-controlled-agent-skill-run"
+        exp = _build_valid_bundle(
+            self.base,
+            run_id=current_run,
+            comparability_text=_valid_comparability_yml(
+                run_id=current_run,
+                verdict="comparable",
+                changed_files_artifact=f"artifacts/{previous_run}/changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / previous_run)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", current_run)])
+        errs = validate_repo(self.base)
+        self.assertTrue(any("muss run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen" in e for e in errs), errs)
+
     def test_changed_files_artifact_parent_escape_fails(self) -> None:
         _build_valid_bundle(
             self.base,

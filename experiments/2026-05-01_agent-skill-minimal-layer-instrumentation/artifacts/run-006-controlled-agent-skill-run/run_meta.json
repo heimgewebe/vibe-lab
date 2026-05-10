@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-006-controlled-agent-skill-run",
+  "generated_at": "2026-05-10T10:00:00Z",
+  "executor": "claude-code:claude-sonnet-4-6",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && make validate",
+  "command_scope": "validator regression test hardening for changed_files_artifact cross-run path guard (previous-run directory reference case)",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-006-controlled-agent-skill-run/targeted-tests.txt",
+  "auditor_output_file": "artifacts/run-006-controlled-agent-skill-run/auditor-output.yml",
+  "provenance_level": "self_reported",
+  "outcome": "PASS",
+  "notes": "Run 006 executes a real small repo-internal task: add regression coverage for the case where comparability.yml changed_files_artifact points to a previous run directory (e.g. run-005) instead of the current run (run-006). Executor/model provenance is self-reported. No effect, promotion, or causal claims."
+}
