@@ -3820,6 +3820,126 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
             errs,
         )
 
+    # ----- evidence_status type safety ----------------------------------------
+
+    def test_evidence_status_list_does_not_crash_gives_error(self) -> None:
+        """evidence_status as a YAML list must produce a validator error, not a TypeError."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status:
+                  - repo_local
+                  - ci_artifact
+                review_thread_refs:
+                  - "https://github.com/test/test/pull/1#issuecomment-1001"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "evidence_status" in e for e in errs),
+            errs,
+        )
+
+    def test_evidence_status_dict_does_not_crash_gives_error(self) -> None:
+        """evidence_status as a YAML mapping must produce a validator error, not a TypeError."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status:
+                  type: repo_local
+                review_thread_refs:
+                  - "https://github.com/test/test/pull/1#issuecomment-1001"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "evidence_status" in e for e in errs),
+            errs,
+        )
+
+    # ----- captured_at ISO-8601 validation ------------------------------------
+
+    def test_captured_at_invalid_string_fails(self) -> None:
+        """captured_at: "yesterday" (non-ISO string) fails with a timestamp error."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'captured_at: "2026-05-11T12:00:00Z"',
+                'captured_at: "yesterday"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any(
+                "review-events.yml" in e
+                and "captured_at" in e
+                and "ISO-8601" in e
+                for e in errs
+            ),
+            errs,
+        )
+
+    def test_captured_at_valid_timestamp_passes(self) -> None:
+        """captured_at: "2026-05-11T12:00:00Z" is a valid ISO-8601 timestamp and passes."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(run_dir / "review-events.yml", _valid_review_events())
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # ----- diagnostic path for subdir artifacts --------------------------------
+
+    def test_subdir_artifact_invalid_content_error_contains_subdir(self) -> None:
+        """An artifact in a subdir of run_dir shows the subdir path in the error message."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        subdir = run_dir / "meta"
+        subdir.mkdir()
+        _write(
+            subdir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "wrong_contract"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir, ref="meta/review-events.yml")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        # Error message must include the subdir component so it is findable on disk.
+        self.assertTrue(
+            any("meta" in e and "review-events.yml" in e and "contract=" in e for e in errs),
+            errs,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

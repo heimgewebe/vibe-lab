@@ -4,6 +4,7 @@ status: defining
 canonicality: canonical
 created: "2026-05-11"
 author: "evidence-control-plane"
+triggered_by: "user-request-2026-05-11-review-rework-outcome-evidence-blocker"
 relations:
   - type: references
     target: "../experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"

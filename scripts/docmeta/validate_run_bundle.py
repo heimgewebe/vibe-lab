@@ -51,6 +51,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -319,6 +320,7 @@ def _validate_review_events_content(
     *,
     path: Path,
     expected_run_id: str,
+    run_dir: Path,
     rel_run: Path,
     errors: list[str],
 ) -> None:
@@ -334,12 +336,19 @@ def _validate_review_events_content(
       - review_friction_count is integer >= 0
       - rework_count is integer >= 0
       - evidence_status ∈ {repo_local, ci_artifact, external_verified}
-      - captured_at is present and non-empty
+      - captured_at is present, non-empty, and parseable as ISO 8601
       - pr_ref is present and non-empty
       - if evidence_status == external_verified: at least one entry in
         review_thread_refs or rework_commit_refs
     """
-    rel = rel_run / path.name
+    # Build a path label that shows the artifact's location relative to the run
+    # directory, so errors for subdir artifacts (e.g. subdir/review-events.yml)
+    # correctly show rel_run/subdir/review-events.yml instead of only the filename.
+    try:
+        rel_artifact = path.relative_to(run_dir)
+    except ValueError:
+        rel_artifact = Path(path.name)
+    rel = rel_run / rel_artifact
 
     try:
         data = _load_yaml(path)
@@ -382,18 +391,32 @@ def _validate_review_events_content(
             f"  ❌ {rel}: rework_count muss eine ganze Zahl >= 0 sein."
         )
 
-    # evidence_status
+    # evidence_status: must be a non-empty string in the valid set
     ev_status = data.get("evidence_status")
-    if ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
+    if not isinstance(ev_status, str) or not ev_status.strip():
+        errors.append(
+            f"  ❌ {rel}: evidence_status fehlt, ist leer oder kein String — "
+            f"erwartet eines von {sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)}."
+        )
+        ev_status = None  # prevent false external_verified branch below
+    elif ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
         errors.append(
             f"  ❌ {rel}: evidence_status='{ev_status}' muss eines von "
             f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
         )
 
-    # captured_at
+    # captured_at: present, non-empty, and ISO-8601 parseable
     captured_at = data.get("captured_at")
     if not isinstance(captured_at, str) or not captured_at.strip():
         errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
+    else:
+        try:
+            datetime.fromisoformat(captured_at.replace("Z", "+00:00"))
+        except ValueError:
+            errors.append(
+                f"  ❌ {rel}: captured_at='{captured_at}' ist kein gültiger "
+                f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z')."
+            )
 
     # pr_ref
     pr_ref = data.get("pr_ref")
@@ -1232,6 +1255,7 @@ def _validate_run_dir(
         _validate_review_events_content(
             path=review_evidence_path,
             expected_run_id=run_dir.name,
+            run_dir=run_dir,
             rel_run=rel_run,
             errors=errors,
         )
