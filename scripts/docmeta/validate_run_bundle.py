@@ -405,17 +405,25 @@ def _validate_review_events_content(
             f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
         )
 
-    # captured_at: present, non-empty, and ISO-8601 parseable
+    # captured_at: present, non-empty, and ISO-8601 parseable.
+    # Accepted formats: YYYY-MM-DDTHH:MM:SSZ, YYYY-MM-DDTHH:MM:SS+HH:MM, and all
+    # variants that Python's datetime.fromisoformat accepts (Python 3.7+).
+    # The trailing "Z" (UTC) suffix is normalised to "+00:00" for compatibility
+    # with Python < 3.11 which does not yet handle "Z" natively.
     captured_at = data.get("captured_at")
     if not isinstance(captured_at, str) or not captured_at.strip():
         errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
     else:
+        _ca = captured_at.strip()
+        # Normalise trailing Z → +00:00; leave all other timezone offsets as-is.
+        if _ca.endswith("Z"):
+            _ca = _ca[:-1] + "+00:00"
         try:
-            datetime.fromisoformat(captured_at.replace("Z", "+00:00"))
+            datetime.fromisoformat(_ca)
         except ValueError:
             errors.append(
                 f"  ❌ {rel}: captured_at='{captured_at}' ist kein gültiger "
-                f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z')."
+                f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z' oder '2026-05-11T12:00:00+02:00')."
             )
 
     # pr_ref
@@ -435,7 +443,7 @@ def _validate_review_events_content(
             isinstance(rework_commit_refs, list)
             and any(
                 (isinstance(r, str) and r.strip())
-                or (isinstance(r, dict) and r.get("sha") and isinstance(r.get("sha"), str) and str(r["sha"]).strip())
+                or (isinstance(r, dict) and isinstance(r.get("sha"), str) and r["sha"].strip())
                 for r in rework_commit_refs
             )
         )
