@@ -410,7 +410,11 @@ def _validate_review_events_content(
         )
         rework_non_empty = (
             isinstance(rework_commit_refs, list)
-            and any(bool(r) for r in rework_commit_refs)
+            and any(
+                (isinstance(r, str) and r.strip())
+                or (isinstance(r, dict) and r.get("sha") and isinstance(r.get("sha"), str) and str(r["sha"]).strip())
+                for r in rework_commit_refs
+            )
         )
         if not thread_non_empty and not rework_non_empty:
             errors.append(

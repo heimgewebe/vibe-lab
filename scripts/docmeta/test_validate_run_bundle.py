@@ -3793,6 +3793,33 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
             errs,
         )
 
+    def test_external_verified_rework_commit_refs_empty_sha_fails(self) -> None:
+        """evidence_status=external_verified with rework_commit_refs containing only empty sha fails."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 1
+                captured_at: "2026-05-11T00:00:00Z"
+                evidence_status: "external_verified"
+                rework_commit_refs:
+                  - sha: ""
+                    description: "empty sha should not count"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "external_verified" in e for e in errs),
+            errs,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
