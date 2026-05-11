@@ -101,12 +101,30 @@
 
 - ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
 - ← `docs/evaluations/rrg03-remediation-strategy-comparison.md` (references)
+- ← `docs/roadmap.md` (references)
+
+## `decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml`
+
+- ← `docs/roadmap.md` (references)
+
+## `decisions/process/p5-validator-scope-boundary.yml`
+
+- ← `docs/roadmap.md` (references)
+
+## `decisions/system/2026-04-23-catalog-staleness-dormant.yml`
+
+- ← `docs/roadmap.md` (references)
+
+## `decisions/system/2026-04-23-metrics-enabled.yml`
+
+- ← `docs/roadmap.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability-phase-1c.md`
 
 - ← `contracts/command-semantics.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
+- ← `docs/roadmap.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` (references)
 
 ## `docs/blueprints/blueprint-agent-operability.md`
@@ -116,12 +134,14 @@
 - ← `docs/blueprints/blueprint-evidence-control-plane-v1.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md`
 
 - ← `docs/blueprints/blueprint-evidence-control-plane-v1.md` (references)
 - ← `docs/evaluations/agent-skill-file-fruitfulness.md` (derived_from)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/blueprints/blueprint-evidence-control-plane-v1.md`
 
@@ -129,15 +149,18 @@
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (derived_from)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/blueprints/blueprint-v2-roadmap.md`
 
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/blueprints/blueprint-v2.md`
 
 - ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (derived_from)
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (derived_from)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/concepts/execution-bound-epistemics.md`
 
@@ -154,23 +177,39 @@
 - ← `docs/playbooks/reconciliation.md` (informed_by)
 - ← `docs/reference/manifest-schema.md` (informed_by)
 
+## `docs/evaluations/agent-skill-file-fruitfulness.md`
+
+- ← `docs/roadmap.md` (references)
+
+## `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
+
+- ← `docs/roadmap.md` (references)
+
 ## `docs/evaluations/rrg03-remediation-strategy-comparison.md`
 
 - ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/foundations/repo-plan.md`
 
 - ← `docs/masterplan.md` (derived_from)
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/foundations/vision.md`
 
 - ← `docs/masterplan.md` (derived_from)
+- ← `docs/roadmap.md` (references)
+
+## `docs/index.md`
+
+- ← `docs/roadmap.md` (references)
 
 ## `docs/masterplan.md`
 
 - ← `docs/blueprints/blueprint-v2.md` (informs)
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/build-reliable-prompt.md`
 
@@ -182,10 +221,12 @@
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/plan-execution-checklist.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/pr-run-evidence-pack.md`
 
@@ -212,6 +253,7 @@
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
+- ← `docs/roadmap.md` (references)
 
 ## `docs/policies/pr-run-evidence-policy.md`
 
@@ -231,6 +273,10 @@
 - ← `docs/concepts/experiment-ontology.md` (informs)
 
 ## `docs/reference/replay-trace-redaction.md`
+
+- ← `docs/index.md` (references)
+
+## `docs/roadmap.md`
 
 - ← `docs/index.md` (references)
 
