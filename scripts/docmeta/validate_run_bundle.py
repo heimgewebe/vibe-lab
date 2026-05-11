@@ -414,7 +414,7 @@ def _validate_review_events_content(
         _ca = captured_at.strip()
         if "T" not in _ca:
             errors.append(
-                f"  ❌ {rel}: captured_at='{captured_at}' muss ein Timestamp mit "
+                f"  ❌ {rel}: captured_at='{_ca}' muss ein Timestamp mit "
                 f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
             )
         else:
@@ -422,7 +422,7 @@ def _validate_review_events_content(
             has_offset = bool(re.search(r"[+-]\d{2}:\d{2}$", _ca))
             if not (has_z or has_offset):
                 errors.append(
-                    f"  ❌ {rel}: captured_at='{captured_at}' muss eine Zeitzone "
+                    f"  ❌ {rel}: captured_at='{_ca}' muss eine Zeitzone "
                     f"angeben (Suffix 'Z' oder Offset wie '+02:00')."
                 )
 
@@ -430,7 +430,7 @@ def _validate_review_events_content(
             datetime.fromisoformat(_ca.replace("Z", "+00:00"))
         except ValueError:
             errors.append(
-                f"  ❌ {rel}: captured_at='{captured_at}' ist kein gültiger "
+                f"  ❌ {rel}: captured_at='{_ca}' ist kein gültiger "
                 f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z' oder '2026-05-11T12:00:00+02:00')."
             )
 
