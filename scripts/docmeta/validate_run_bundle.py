@@ -248,7 +248,7 @@ def _load_comparability_run_artifact_ref(
     run_dir: Path,
     rel_run: Path,
     errors: list[str],
-) -> tuple[bool, bool]:
+) -> tuple[Path | None, bool]:
     """Validates an optional run-local artifact ref field in a comparability dict.
 
     Generic helper for any ``comparability.yml`` field that points to a run-local
@@ -260,36 +260,37 @@ def _load_comparability_run_artifact_ref(
 
     Both forms must still resolve into the current run_dir.
 
-    Returns ``(artifact_valid, artifact_missing)``:
-      ``(True, False)``  — field present, non-null, file exists and is run-local
-      ``(False, True)``  — field absent or null (no error)
-      ``(False, False)`` — field present but invalid (error already appended)
+    Returns ``(resolved_path, artifact_missing)``:
+      ``(Path, False)``  — field present, non-null, file exists and is run-local
+                           (caller receives the resolved path for content validation)
+      ``(None, True)``   — field absent or null (no error)
+      ``(None, False)``  — field present but invalid (error already appended)
     """
     if comparability is None:
-        return False, True
+        return None, True
 
     raw_ref = comparability.get(field_name, _MISSING)
     if raw_ref is _MISSING or raw_ref is None:
-        return False, True
+        return None, True
 
     if not isinstance(raw_ref, str):
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: {field_name} muss ein String oder null sein."
         )
-        return False, False
+        return None, False
 
     ref = raw_ref.strip()
     if not ref:
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: {field_name} darf kein leerer String sein."
         )
-        return False, False
+        return None, False
 
     if _is_absolute_path_str(ref):
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' darf kein absoluter Pfad sein."
         )
-        return False, False
+        return None, False
 
     target = _resolve_changed_files_artifact_ref(exp_dir=exp_dir, run_dir=run_dir, ref=ref)
     if target is None:
@@ -297,15 +298,125 @@ def _load_comparability_run_artifact_ref(
             f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' muss "
             f"run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen."
         )
-        return False, False
+        return None, False
 
     if not target.is_file():
         errors.append(
             f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' zeigt nicht auf eine existierende Datei."
         )
-        return False, False
+        return None, False
 
-    return True, False
+    return target, False
+
+
+# Valid evidence_status values accepted in a review-events.yml artifact.
+_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES = frozenset(
+    {"repo_local", "ci_artifact", "external_verified"}
+)
+
+
+def _validate_review_events_content(
+    *,
+    path: Path,
+    expected_run_id: str,
+    rel_run: Path,
+    errors: list[str],
+) -> None:
+    """Validates the content of a review-events.yml artifact.
+
+    Called whenever comparability.yml.review_evidence_artifact resolves to an
+    existing file.  Enforces the minimal semantic rules from
+    .vibe/review-rework-artifact.contract.md v0.1:
+
+      - YAML is readable and root is a mapping
+      - contract == "review_events"
+      - run_id matches the run directory name
+      - review_friction_count is integer >= 0
+      - rework_count is integer >= 0
+      - evidence_status ∈ {repo_local, ci_artifact, external_verified}
+      - captured_at is present and non-empty
+      - pr_ref is present and non-empty
+      - if evidence_status == external_verified: at least one entry in
+        review_thread_refs or rework_commit_refs
+    """
+    rel = rel_run / path.name
+
+    try:
+        data = _load_yaml(path)
+    except Exception as e:
+        errors.append(f"  ❌ {rel}: YAML-Fehler — {e}")
+        return
+
+    if not isinstance(data, dict):
+        errors.append(f"  ❌ {rel}: Datei muss ein YAML-Objekt (Mapping) sein.")
+        return
+
+    # contract
+    contract = data.get("contract")
+    if contract != "review_events":
+        errors.append(
+            f"  ❌ {rel}: contract='{contract}' muss exakt 'review_events' sein."
+        )
+
+    # run_id
+    run_id = data.get("run_id")
+    if not isinstance(run_id, str) or not run_id.strip():
+        errors.append(f"  ❌ {rel}: run_id fehlt oder ist leer.")
+    elif run_id != expected_run_id:
+        errors.append(
+            f"  ❌ {rel}: run_id='{run_id}' stimmt nicht mit "
+            f"Run-Verzeichnis '{expected_run_id}' überein."
+        )
+
+    # review_friction_count: integer >= 0
+    rfc = data.get("review_friction_count")
+    if not isinstance(rfc, int) or isinstance(rfc, bool) or rfc < 0:
+        errors.append(
+            f"  ❌ {rel}: review_friction_count muss eine ganze Zahl >= 0 sein."
+        )
+
+    # rework_count: integer >= 0
+    rwc = data.get("rework_count")
+    if not isinstance(rwc, int) or isinstance(rwc, bool) or rwc < 0:
+        errors.append(
+            f"  ❌ {rel}: rework_count muss eine ganze Zahl >= 0 sein."
+        )
+
+    # evidence_status
+    ev_status = data.get("evidence_status")
+    if ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
+        errors.append(
+            f"  ❌ {rel}: evidence_status='{ev_status}' muss eines von "
+            f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
+        )
+
+    # captured_at
+    captured_at = data.get("captured_at")
+    if not isinstance(captured_at, str) or not captured_at.strip():
+        errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
+
+    # pr_ref
+    pr_ref = data.get("pr_ref")
+    if not isinstance(pr_ref, str) or not pr_ref.strip():
+        errors.append(f"  ❌ {rel}: pr_ref fehlt oder ist leer.")
+
+    # external_verified: mindestens eine nachvollziehbare Referenz
+    if ev_status == "external_verified":
+        thread_refs = data.get("review_thread_refs")
+        rework_commit_refs = data.get("rework_commit_refs")
+        thread_non_empty = (
+            isinstance(thread_refs, list)
+            and any(isinstance(r, str) and r.strip() for r in thread_refs)
+        )
+        rework_non_empty = (
+            isinstance(rework_commit_refs, list)
+            and any(bool(r) for r in rework_commit_refs)
+        )
+        if not thread_non_empty and not rework_non_empty:
+            errors.append(
+                f"  ❌ {rel}: evidence_status=external_verified erfordert "
+                f"mindestens einen Eintrag in review_thread_refs oder rework_commit_refs."
+            )
 
 
 def _requires_changed_files_comparability(bundle: dict | None, rel_exp: Path) -> bool:
@@ -1103,7 +1214,7 @@ def _validate_run_dir(
     # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.1).
     # The field is optional; when present it enables repo_local evidence_status for
     # review_friction_count and rework_count in measurement.yml.
-    review_evidence_artifact_valid, _review_ev_missing = _load_comparability_run_artifact_ref(
+    review_evidence_path, _review_ev_missing = _load_comparability_run_artifact_ref(
         field_name="review_evidence_artifact",
         comparability=comparability if comparability_present else None,
         exp_dir=exp_dir,
@@ -1111,6 +1222,15 @@ def _validate_run_dir(
         rel_run=rel_run,
         errors=errors,
     )
+    review_evidence_artifact_valid = review_evidence_path is not None
+    if review_evidence_path is not None:
+        # Content validation (review-rework-artifact.contract.md v0.1).
+        _validate_review_events_content(
+            path=review_evidence_path,
+            expected_run_id=run_dir.name,
+            rel_run=rel_run,
+            errors=errors,
+        )
 
     # R7: measurement.yml
     measurement: dict | None = None
