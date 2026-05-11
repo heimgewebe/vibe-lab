@@ -240,6 +240,74 @@ def _is_grandfathered_changed_files_run(rel_run: Path) -> bool:
     return rel_run == _GRANDFATHERED_CHANGED_FILES_RUN
 
 
+def _load_comparability_run_artifact_ref(
+    *,
+    field_name: str,
+    comparability: dict | None,
+    exp_dir: Path,
+    run_dir: Path,
+    rel_run: Path,
+    errors: list[str],
+) -> tuple[bool, bool]:
+    """Validates an optional run-local artifact ref field in a comparability dict.
+
+    Generic helper for any ``comparability.yml`` field that points to a run-local
+    artifact (e.g. ``review_evidence_artifact``).  Uses the same two-form resolution
+    rules as ``changed_files_artifact``:
+
+      - run-local:               ``review-events.yml`` or ``subdir/review-events.yml``
+      - experiment-relative:     ``artifacts/<run-id>/review-events.yml``
+
+    Both forms must still resolve into the current run_dir.
+
+    Returns ``(artifact_valid, artifact_missing)``:
+      ``(True, False)``  — field present, non-null, file exists and is run-local
+      ``(False, True)``  — field absent or null (no error)
+      ``(False, False)`` — field present but invalid (error already appended)
+    """
+    if comparability is None:
+        return False, True
+
+    raw_ref = comparability.get(field_name, _MISSING)
+    if raw_ref is _MISSING or raw_ref is None:
+        return False, True
+
+    if not isinstance(raw_ref, str):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} muss ein String oder null sein."
+        )
+        return False, False
+
+    ref = raw_ref.strip()
+    if not ref:
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} darf kein leerer String sein."
+        )
+        return False, False
+
+    if _is_absolute_path_str(ref):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' darf kein absoluter Pfad sein."
+        )
+        return False, False
+
+    target = _resolve_changed_files_artifact_ref(exp_dir=exp_dir, run_dir=run_dir, ref=ref)
+    if target is None:
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' muss "
+            f"run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen."
+        )
+        return False, False
+
+    if not target.is_file():
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' zeigt nicht auf eine existierende Datei."
+        )
+        return False, False
+
+    return True, False
+
+
 def _requires_changed_files_comparability(bundle: dict | None, rel_exp: Path) -> bool:
     if not isinstance(bundle, dict):
         return False
@@ -1032,6 +1100,18 @@ def _validate_run_dir(
                 f"gültiges changed_files_artifact."
             )
 
+    # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.1).
+    # The field is optional; when present it enables repo_local evidence_status for
+    # review_friction_count and rework_count in measurement.yml.
+    review_evidence_artifact_valid, _review_ev_missing = _load_comparability_run_artifact_ref(
+        field_name="review_evidence_artifact",
+        comparability=comparability if comparability_present else None,
+        exp_dir=exp_dir,
+        run_dir=run_dir,
+        rel_run=rel_run,
+        errors=errors,
+    )
+
     # R7: measurement.yml
     measurement: dict | None = None
     if measurement_yml.is_file():
@@ -1131,6 +1211,32 @@ def _validate_run_dir(
                     errors.append(
                         f"  ❌ {rel_run}/measurement.yml: scope_drift_count.value={scope_value!r} "
                         f"erfordert ein gültiges changed_files_artifact."
+                    )
+
+        # Review/rework metrics: null-discipline and optional review_evidence_artifact coupling.
+        # See .vibe/review-rework-artifact.contract.md for the full contract.
+        for metric_name in ("review_friction_count", "rework_count"):
+            metric = (measurement.get("metrics") or {}).get(metric_name) or {}
+            if not isinstance(metric, dict):
+                continue
+            metric_value = metric.get("value")
+            metric_status = metric.get("evidence_status")
+            if metric_value is None:
+                if metric_status != "missing_evidence":
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: {metric_name}.value=null "
+                        f"erfordert evidence_status=missing_evidence."
+                    )
+                elif not _has_metric_missing_evidence_reason(measurement, metric_name):
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: {metric_name}.value=null "
+                        f"erfordert eine Begründung in notes oder missing_evidence."
+                    )
+            elif metric_status == "repo_local":
+                if not review_evidence_artifact_valid:
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: {metric_name}.evidence_status=repo_local "
+                        f"erfordert ein gültiges review_evidence_artifact in comparability.yml."
                     )
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:
