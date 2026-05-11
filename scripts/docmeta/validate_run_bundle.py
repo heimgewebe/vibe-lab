@@ -419,7 +419,7 @@ def _validate_review_events_content(
             )
         else:
             has_z = captured_at_stripped.endswith("Z")
-            has_offset = bool(re.search(r"[+-]\d{2}:\d{2}$", captured_at_stripped))
+            has_offset = bool(re.search(r"[+-]\d{2}:?\d{2}$", captured_at_stripped))
             if not (has_z or has_offset):
                 errors.append(
                     f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
