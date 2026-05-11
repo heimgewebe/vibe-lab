@@ -8,6 +8,7 @@ read_order:
   - repo.meta.yaml
   - AGENTS.md
   - agent-policy.yaml
+  - docs/roadmap.md  # Pflichtkontext: Koordination offener Arbeit vor operativer Planung
   - README.md
   - docs/index.md
   - "contracts/*"

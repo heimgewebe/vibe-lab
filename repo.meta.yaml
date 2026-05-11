@@ -1,6 +1,6 @@
 # repo.meta.yaml — Maschinenlesbare Repo-Verfassung
 # Handgepflegt. Kanonisch. Nicht generiert.
-# Lesereihenfolge: repo.meta.yaml → AGENTS.md → agent-policy.yaml → README.md → docs/index.md
+# Lesereihenfolge: repo.meta.yaml → AGENTS.md → agent-policy.yaml → docs/roadmap.md → README.md → docs/index.md
 
 schema_version: "0.1.0"
 
@@ -23,6 +23,7 @@ truth_model:
     - docs/foundations/repo-plan.md
   navigation:
     - docs/index.md
+    - docs/roadmap.md
   diagnosis:
     - "docs/_generated/*"
   # Wahrheitshierarchie: canonical > foundational > operative > navigation > diagnosis
