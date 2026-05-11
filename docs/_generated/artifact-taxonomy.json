@@ -355,6 +355,18 @@
       "status": "classified"
     },
     {
+      "authority": "unknown",
+      "catchall_match": false,
+      "enforcement": [],
+      "kind": null,
+      "layer": null,
+      "lifecycle": null,
+      "matched_patterns": [],
+      "origin": null,
+      "path": ".vibe/review-rework-artifact.contract.md",
+      "status": "unknown"
+    },
+    {
       "authority": "procedure_contract",
       "catchall_match": false,
       "enforcement": [
@@ -13323,7 +13335,7 @@
       "schema_truth": 16,
       "sovereign_source": 3,
       "test_expectation": 166,
-      "unknown": 24
+      "unknown": 25
     },
     "by_enforcement": {
       "advisory": 1,
@@ -13338,6 +13350,7 @@
       "review_required": 220
     },
     "by_layer": {
+      "<none>": 1,
       "agent": 4,
       "archive": 24,
       "capture": 6,
@@ -13351,6 +13364,7 @@
       "test": 166
     },
     "by_lifecycle": {
+      "<none>": 1,
       "append_only": 301,
       "handcrafted": 414,
       "regenerated": 18,
@@ -13363,9 +13377,11 @@
     "fallback_share": 0.3550446998722861,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 783,
-    "unknown": 0
+    "total": 784,
+    "unknown": 1
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": []
+  "unknown_artifacts": [
+    ".vibe/review-rework-artifact.contract.md"
+  ]
 }

@@ -50,6 +50,7 @@ Benötigt: python3 -m pip install pyyaml jsonschema rfc3339-validator
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -405,21 +406,28 @@ def _validate_review_events_content(
             f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
         )
 
-    # captured_at: present, non-empty, and ISO-8601 parseable.
-    # Accepted formats: YYYY-MM-DDTHH:MM:SSZ, YYYY-MM-DDTHH:MM:SS+HH:MM, and all
-    # variants that Python's datetime.fromisoformat accepts (Python 3.7+).
-    # The trailing "Z" (UTC) suffix is normalised to "+00:00" for compatibility
-    # with Python < 3.11 which does not yet handle "Z" natively.
+    # captured_at: strict timestamp string (not date-only), with timezone.
     captured_at = data.get("captured_at")
     if not isinstance(captured_at, str) or not captured_at.strip():
         errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
     else:
         _ca = captured_at.strip()
-        # Normalise trailing Z → +00:00; leave all other timezone offsets as-is.
-        if _ca.endswith("Z"):
-            _ca = _ca[:-1] + "+00:00"
+        if "T" not in _ca:
+            errors.append(
+                f"  ❌ {rel}: captured_at='{captured_at}' muss ein Timestamp mit "
+                f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
+            )
+        else:
+            has_z = _ca.endswith("Z")
+            has_offset = bool(re.search(r"[+-]\d{2}:\d{2}$", _ca))
+            if not (has_z or has_offset):
+                errors.append(
+                    f"  ❌ {rel}: captured_at='{captured_at}' muss eine Zeitzone "
+                    f"angeben (Suffix 'Z' oder Offset wie '+02:00')."
+                )
+
         try:
-            datetime.fromisoformat(_ca)
+            datetime.fromisoformat(_ca.replace("Z", "+00:00"))
         except ValueError:
             errors.append(
                 f"  ❌ {rel}: captured_at='{captured_at}' ist kein gültiger "

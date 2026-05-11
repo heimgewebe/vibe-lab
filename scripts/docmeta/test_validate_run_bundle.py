@@ -3902,6 +3902,24 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
             errs,
         )
 
+    def test_captured_at_date_only_fails(self) -> None:
+        """captured_at: "2026-05-11" must fail (date-only is not a timestamp)."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'captured_at: "2026-05-11T12:00:00Z"',
+                'captured_at: "2026-05-11"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "captured_at" in e for e in errs),
+            errs,
+        )
+
     def test_captured_at_valid_timestamp_passes(self) -> None:
         """captured_at: "2026-05-11T12:00:00Z" is a valid ISO-8601 timestamp and passes."""
         exp, run_dir = _setup_review_evidence_base(self.base)

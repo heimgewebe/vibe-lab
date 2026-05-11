@@ -11,14 +11,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 783
+- total: 784
 - classified: 783
   - of which fallback_classified (catch-all rule): 278
   - fallback_share: 35.5% (278 / 783)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 0
+- unknown: 1
 - ambiguous: 0
 - conflict: 0
 
@@ -26,6 +26,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
+| <none> | 1 |
 | agent | 4 |
 | archive | 24 |
 | capture | 6 |
@@ -57,12 +58,13 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | schema_truth | 16 |
 | sovereign_source | 3 |
 | test_expectation | 166 |
-| unknown | 24 |
+| unknown | 25 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
+| <none> | 1 |
 | append_only | 301 |
 | handcrafted | 414 |
 | regenerated | 18 |
@@ -86,7 +88,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 ## Unknown artifacts
 
-_none_
+- `.vibe/review-rework-artifact.contract.md`
 
 ## Ambiguous artifacts
 
