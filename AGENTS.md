@@ -9,10 +9,11 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 1. `repo.meta.yaml` — Maschinenlesbare Repo-Verfassung
 2. `AGENTS.md` — Dieses Dokument
 3. `agent-policy.yaml` — Operative Agentensteuerung
-4. `README.md` — Projekteinstieg
-5. `docs/index.md` — Navigation
-6. Kanonische Pfade (`contracts/`, `schemas/`, `.vibe/`)
-7. `docs/_generated/*` — Diagnose (nur lesen, nie editieren)
+4. `docs/roadmap.md` — Strategische Roadmap (Pflichtkontext)
+5. `README.md` — Projekteinstieg
+6. `docs/index.md` — Navigation
+7. Kanonische Pfade (`contracts/`, `schemas/`, `.vibe/`)
+8. `docs/_generated/*` — Diagnose (nur lesen, nie editieren)
 
 ## Wahrheitshierarchie
 
@@ -20,7 +21,7 @@ Agenten MÜSSEN Dokumente in dieser Reihenfolge lesen:
 | ------------ | ----------------------------------------------------- | ---------------------- |
 | Wahrheit     | `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`   | Kanonisch, handgepflegt |
 | Wahrheit     | `contracts/*`, `schemas/*` | Kanonisch             |
-| Grundlagen   | `docs/foundations/vision.md`, `docs/foundations/repo-plan.md` | Richtungsgebend |
+| Grundlagen   | `docs/roadmap.md`, `docs/foundations/vision.md`, `docs/foundations/repo-plan.md` | Richtungsgebend |
 | Operativ     | `README.md`, `CONTRIBUTING.md`, `.vibe/*`             | Handgepflegt           |
 | Navigation   | `docs/index.md`                                       | Wegweiser              |
 | Diagnose     | `docs/_generated/*`                                   | Maschinell, read-only  |
