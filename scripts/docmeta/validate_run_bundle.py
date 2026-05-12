@@ -326,7 +326,7 @@ def _validate_review_events_content(
     rel_run: Path,
     review_events_validator: Draft202012Validator,
     errors: list[str],
-) -> None:
+) -> bool:
     """Validates the content of a review-events.yml artifact.
 
     Called whenever comparability.yml.review_evidence_artifact resolves to an
@@ -355,11 +355,11 @@ def _validate_review_events_content(
         data = _load_yaml(path)
     except Exception as e:
         errors.append(f"  ❌ {rel}: YAML-Fehler — {e}")
-        return
+        return False
 
     if not isinstance(data, dict):
         errors.append(f"  ❌ {rel}: Datei muss ein YAML-Objekt (Mapping) sein.")
-        return
+        return False
 
     # Schema-Validierung (review-events.v1.schema.json) — zuerst, vor semantischen Checks.
     try:
@@ -369,7 +369,9 @@ def _validate_review_events_content(
             f"  ❌ {rel}: schema-invalid — {e.message} "
             f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
         )
-        return
+        return False
+
+    is_valid = True
 
     # contract (defense-in-depth; schema const ensures this, but explicit message is clearer)
     contract = data.get("contract")
@@ -377,16 +379,19 @@ def _validate_review_events_content(
         errors.append(
             f"  ❌ {rel}: contract='{contract}' muss exakt 'review_events' sein."
         )
+        is_valid = False
 
     # run_id
     run_id = data.get("run_id")
     if not isinstance(run_id, str) or not run_id.strip():
         errors.append(f"  ❌ {rel}: run_id fehlt oder ist leer.")
+        is_valid = False
     elif run_id != expected_run_id:
         errors.append(
             f"  ❌ {rel}: run_id='{run_id}' stimmt nicht mit "
             f"Run-Verzeichnis '{expected_run_id}' überein."
         )
+        is_valid = False
 
     # review_friction_count: integer >= 0
     rfc = data.get("review_friction_count")
@@ -394,6 +399,7 @@ def _validate_review_events_content(
         errors.append(
             f"  ❌ {rel}: review_friction_count muss eine ganze Zahl >= 0 sein."
         )
+        is_valid = False
 
     # rework_count: integer >= 0
     rwc = data.get("rework_count")
@@ -401,6 +407,7 @@ def _validate_review_events_content(
         errors.append(
             f"  ❌ {rel}: rework_count muss eine ganze Zahl >= 0 sein."
         )
+        is_valid = False
 
     # evidence_status: must be a non-empty string in the valid set
     ev_status = data.get("evidence_status")
@@ -410,16 +417,19 @@ def _validate_review_events_content(
             f"erwartet eines von {sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)}."
         )
         ev_status = None  # prevent false external_verified branch below
+        is_valid = False
     elif ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
         errors.append(
             f"  ❌ {rel}: evidence_status='{ev_status}' muss eines von "
             f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
         )
+        is_valid = False
 
     # captured_at: strict timestamp string (not date-only), with timezone.
     captured_at = data.get("captured_at")
     if not isinstance(captured_at, str) or not captured_at.strip():
         errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
+        is_valid = False
     else:
         captured_at_stripped = captured_at.strip()
         if "T" not in captured_at_stripped:
@@ -427,6 +437,7 @@ def _validate_review_events_content(
                 f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss ein Timestamp mit "
                 f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
             )
+            is_valid = False
         else:
             has_z = captured_at_stripped.endswith("Z")
             has_offset = bool(re.search(r"[+-]\d{2}:?\d{2}$", captured_at_stripped))
@@ -435,19 +446,30 @@ def _validate_review_events_content(
                     f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
                     f"angeben (Suffix 'Z' oder Offset wie '+02:00')."
                 )
+                is_valid = False
 
         try:
-            datetime.fromisoformat(captured_at_stripped.replace("Z", "+00:00"))
+            parsed_captured_at = datetime.fromisoformat(
+                captured_at_stripped.replace("Z", "+00:00")
+            )
         except ValueError:
             errors.append(
                 f"  ❌ {rel}: captured_at='{captured_at_stripped}' ist kein gültiger "
                 f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z' oder '2026-05-11T12:00:00+02:00')."
             )
+            is_valid = False
+        else:
+            if parsed_captured_at.tzinfo is None or parsed_captured_at.utcoffset() is None:
+                errors.append(
+                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss timezone-aware sein."
+                )
+                is_valid = False
 
     # pr_ref
     pr_ref = data.get("pr_ref")
     if not isinstance(pr_ref, str) or not pr_ref.strip():
         errors.append(f"  ❌ {rel}: pr_ref fehlt oder ist leer.")
+        is_valid = False
 
     # external_verified: mindestens eine nachvollziehbare Referenz
     if ev_status == "external_verified":
@@ -470,6 +492,9 @@ def _validate_review_events_content(
                 f"  ❌ {rel}: evidence_status=external_verified erfordert "
                 f"mindestens einen Eintrag in review_thread_refs oder rework_commit_refs."
             )
+            is_valid = False
+
+    return is_valid
 
 
 def _requires_changed_files_comparability(bundle: dict | None, rel_exp: Path) -> bool:
@@ -1278,10 +1303,10 @@ def _validate_run_dir(
         rel_run=rel_run,
         errors=errors,
     )
-    review_evidence_artifact_valid = review_evidence_path is not None
+    review_evidence_artifact_valid = False
     if review_evidence_path is not None:
         # Content validation (review-rework-artifact.contract.md v0.2): schema first, then semantic.
-        _validate_review_events_content(
+        review_evidence_artifact_valid = _validate_review_events_content(
             path=review_evidence_path,
             expected_run_id=run_dir.name,
             run_dir=run_dir,

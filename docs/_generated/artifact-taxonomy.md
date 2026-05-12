@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 784
-- classified: 784
+- total: 785
+- classified: 785
   - of which fallback_classified (catch-all rule): 278
-  - fallback_share: 35.5% (278 / 784)
+  - fallback_share: 35.4% (278 / 785)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -30,7 +30,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | archive | 24 |
 | capture | 6 |
 | catalog | 12 |
-| contract | 27 |
+| contract | 28 |
 | docs | 30 |
 | experiment | 441 |
 | export | 15 |
@@ -54,7 +54,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | raw_capture | 22 |
 | result_interpretation | 56 |
 | runtime_observation | 68 |
-| schema_truth | 16 |
+| schema_truth | 17 |
 | sovereign_source | 3 |
 | test_expectation | 166 |
 | unknown | 24 |
@@ -64,7 +64,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | lifecycle | count |
 | --- | ---: |
 | append_only | 301 |
-| handcrafted | 415 |
+| handcrafted | 416 |
 | regenerated | 18 |
 | revision_with_reason | 48 |
 | superseded_not_rewritten | 2 |
@@ -75,7 +75,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 280 |
+| ci_blocking | 281 |
 | diagnostic | 1 |
 | no_manual_edit | 18 |
 | no_rewrite | 301 |
@@ -446,6 +446,7 @@ _none_
 - `schemas/experiment.manifest.schema.json`
 - `schemas/measurement-run.v1.schema.json`
 - `schemas/replay.trace.schema.json`
+- `schemas/review-events.v1.schema.json`
 - `schemas/run-evidence-pack.v1.schema.json`
 - `schemas/run_meta.schema.json`
 

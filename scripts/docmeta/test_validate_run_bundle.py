@@ -4025,6 +4025,86 @@ class ReviewEventsSchemaBackedTests(unittest.TestCase):
             errs,
         )
 
+    def test_repo_local_metrics_with_schema_invalid_review_events_are_blocked(self) -> None:
+        """repo_local review/rework metrics require content-valid review-events.yml, not just an existing path."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+            measurement_text=textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "MISSING_EVIDENCE"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  unsupported_claim_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 2
+                    evidence_status: "repo_local"
+                  rework_count:
+                    value: 1
+                    evidence_status: "repo_local"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "0.9.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 2
+                rework_count: 1
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "schema-invalid" in e for e in errs),
+            errs,
+        )
+        self.assertTrue(
+            any(
+                "review_friction_count.evidence_status=repo_local" in e
+                and "gültiges review_evidence_artifact" in e
+                for e in errs
+            ),
+            errs,
+        )
+        self.assertTrue(
+            any(
+                "rework_count.evidence_status=repo_local" in e
+                and "gültiges review_evidence_artifact" in e
+                for e in errs
+            ),
+            errs,
+        )
+
     def test_wrong_schema_version_rejected_by_schema(self) -> None:
         """schema_version != '1.0.0' fails.
 
@@ -4051,6 +4131,25 @@ class ReviewEventsSchemaBackedTests(unittest.TestCase):
         self.assertTrue(
             any("review-events.yml" in e and "schema-invalid" in e and "schema_version" in e
                 for e in errs),
+            errs,
+        )
+
+    def test_captured_at_without_timezone_fails(self) -> None:
+        """captured_at without Z/offset must fail even if datetime.fromisoformat can parse it."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'captured_at: "2026-05-11T12:00:00Z"',
+                'captured_at: "2026-05-11T12:00:00"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "captured_at" in e and "Zeitzone" in e for e in errs)
+            or any("review-events.yml" in e and "captured_at" in e and "timezone-aware" in e for e in errs),
             errs,
         )
 
