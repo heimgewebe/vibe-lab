@@ -681,10 +681,12 @@ summary: "Kein echter Run-Proof vorhanden. Das Experiment ist nur designed."
 
 **Beispiel 2: adoption_assessment**
 ```yaml
-type: adoption_assessment
-verdict: adopted
-summary: "Auf Basis echter Run-Artefakte und Messwerte übernommen."
+decision_type: adoption_assessment
+verdict: adopt
+summary: "Auf Basis echter Run-Artefakte und Messwerte zur Adoption entschieden."
 ```
+
+`adopt` ist der Decision-Verdict-Wert; ein daraus abgeleiteter Lifecycle-/Statuswert kann `adopted` sein.
 
 ⸻
 
