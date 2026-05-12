@@ -39,9 +39,9 @@ metrics:
     notes: "No auditor claims use command_succeeded/validator_succeeded with missing evidence; command artifacts are explicitly summary-scoped."
 
   review_friction_count:
-    value: 2
+    value: 1
     evidence_status: "repo_local"
-    notes: "Two concrete Copilot review comments are archived and referenced in review-events.yml (single review round, two friction events)."
+    notes: "One Copilot review round before merge is archived in review-events.yml; that round contains two actionable review comments."
 
   rework_count:
     value: 2
