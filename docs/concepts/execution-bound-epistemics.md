@@ -672,7 +672,7 @@ if __name__ == "__main__":
 
 Die Trennung der Decision-Typen erfordert minimale, explizite Dateien.
 
-> Hinweis: Die Beispiele sind auf die entscheidungsrelevanten Felder gekürzt; weitere schema-pflichtige Felder können erforderlich sein.
+> Hinweis: Die Beispiele sind auf die entscheidungsrelevanten Felder gekürzt; weitere schemapflichtige Felder können erforderlich sein.
 
 **Beispiel 1: execution_assessment**
 ```yaml
