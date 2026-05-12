@@ -247,7 +247,7 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 | Executor | `claude-code:claude-sonnet-4-5` |
 | Auditor | `evidence-reconciliation-auditor` executed by same session → partial independence only |
 | Auditor-Verdict | `CLAIM_NOT_PROVEN` (claim-003: independent audit not proven; claim-002: task-diversity PASS) |
-| Timing | `self_reported` with explicit capture_mode, evidence_status, and validation_path note — improvement over run-008 plain-text |
+| Timing | `self_reported` with explicit capture_mode, evidence_status, and upgrade_path note — improvement over run-008 plain-text |
 | comparability_verdict | `not_comparable` (partial independence; scoped as probe, not usefulness run) |
 
 ### Auswirkung auf die Gesamtbewertung
@@ -256,7 +256,7 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 1. **Task-Diversitätsnachweis (§5):** Teilweise adressiert. Run-009 claim-002 ist PASS: mindestens ein Run existiert nun außerhalb des validator-test-hardening-Clusters. Eine zweite unabhängige Instanz in einer weiteren Task-Klasse wäre für stärkere Replikation nötig.
 2. **Unabhängige Metrik-Validierung (§5):** Weiterhin offen. Run-009 dokumentiert explizit CLAIM_NOT_PROVEN für Auditor-Unabhängigkeit statt den Blocker stillschweigend fortzuschreiben.
-3. **Timing-Semantik (§5):** Verbessert. timing.txt enthält nun `capture_mode`, `evidence_status: self_reported` und `validation_path`-Notiz. Der Wert bleibt self_reported — kein Upgrade auf repo_local oder external_verified.
+3. **Timing-Semantik (§5):** Verbessert. timing.txt enthält nun `capture_mode`, `evidence_status: self_reported` und `upgrade_path`-Notiz. Der Wert bleibt self_reported — kein Upgrade auf repo_local oder external_verified.
 4. **Negativfall-Nachweis (§5):** Keine Änderung (run-008 bleibt der Pilot).
 
 **Unverändertes Fazit:**

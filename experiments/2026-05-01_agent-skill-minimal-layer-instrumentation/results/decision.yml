@@ -28,7 +28,7 @@ rationale: |
   Run-009 hat Task-Diversität partiell adressiert: claim-002 PASS (Task außerhalb
   validator-test-hardening-Cluster), claim-003 CLAIM_NOT_PROVEN (Auditor-Unabhängigkeit
   bleibt partial). Timing-Semantik verbessert: self_reported mit explizitem
-  capture_mode und validation_path.
+  capture_mode, evidence_status und upgrade_path.
   Kein Upgrade auf result_assessment zulässig.
 
 evidence_summary:
