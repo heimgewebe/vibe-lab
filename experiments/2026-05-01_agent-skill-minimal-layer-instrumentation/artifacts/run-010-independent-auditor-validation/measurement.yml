@@ -28,13 +28,14 @@ metrics:
 
   unsupported_claim_count:
     value: 1
-    evidence_status: "missing_evidence"
+    evidence_status: "derived_from_auditor_output"
     notes: >
       The independence claim (independent auditor verification) cannot be
       supported by this session: executor and any auditor invoked share the
-      same session. This is the single unsupported claim. No auditor-output.yml
-      exists for this run, so evidence_status is missing_evidence (the auditor
-      output itself is missing, not merely unverified).
+      same session. This is the single unsupported claim. auditor-output.yml
+      exists as a schema-required self-audit artifact produced by the executor
+      session; it does not prove independent auditor validation. The missing
+      evidence is external independence, not the auditor-output.yml file itself.
 
   missing_locator_count:
     value: 0
@@ -84,12 +85,12 @@ metrics:
       and what upgrade path would be required.
 
 missing_evidence:
-  - item: "auditor_independence"
+  - item: "external_auditor_independence"
     detail: >
-      No auditor-output.yml exists for run-010. The evidence-reconciliation-auditor,
-      if invoked by this session, would not be independent of the executor.
-      A genuinely external audit is required: different session, different agent,
-      or human reviewer.
+      auditor-output.yml exists as a schema-required self-audit artifact produced
+      by the executor session (claude-code:claude-sonnet-4-6). It does not constitute
+      independent auditor output. External independent auditor output is missing:
+      a different session, different agent, or human reviewer must produce it.
   - item: "review_friction_count"
     detail: "No PR review events exist for this run at artifact-creation time."
   - item: "rework_count"
@@ -102,19 +103,18 @@ missing_evidence:
 interpretation_limits:
   - "This run is an execution evidence package preparation run; it does not count as a comparable usefulness run."
   - "Auditor independence is CLAIM_NOT_PROVEN: no genuinely external audit has occurred."
-  - "No auditor-output.yml is produced for this run because no external auditor is available."
+  - "auditor-output.yml exists as a schema-required self-audit artifact; it does not prove independent auditor validation."
+  - "External independent auditor output is missing. See audit-request.md."
   - "review_friction_count and rework_count remain missing_evidence."
   - "Timing is self_reported; not independently verified."
   - "This run does not produce a usefulness, adoption, promotion, or causal verdict."
-  - "The absence of auditor-output.yml is intentional and correct: no false auditor-independence claim is made."
 
 extensions:
-  auditor_independence_status: "CLAIM_NOT_PROVEN"
+  auditor_independence_status: "NONE"
   task_cluster: "independent-auditor-validation-preparation"
   run_purpose: "audit-ready-evidence-package"
   note_on_auditor_ref: >
-    The auditor_ref field is required by the schema and points to
-    'auditor-output.yml', but that file does not exist for this run because
-    no independent audit has been performed. This is the correct and honest
-    state. An external auditor who reads this run bundle should create
-    auditor-output.yml after their independent review.
+    auditor-output.yml is present as a schema-required self-audit artifact
+    produced by the executor session. It is explicitly NOT independent auditor
+    output. An external auditor who reads this run bundle should supersede or
+    replace auditor-output.yml with externally produced output per audit-request.md.

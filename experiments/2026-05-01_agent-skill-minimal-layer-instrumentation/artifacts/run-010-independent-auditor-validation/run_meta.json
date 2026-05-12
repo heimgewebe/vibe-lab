@@ -9,9 +9,10 @@
   "command_scope": "independent-auditor-validation preparation: audit-ready execution evidence package",
   "exit_code": 0,
   "test_output_file": "artifacts/run-010-independent-auditor-validation/raw-command-log.txt",
-  "auditor_output_file": null,
+  "auditor_output_file": "artifacts/run-010-independent-auditor-validation/auditor-output.yml",
+  "auditor_independence_status": "NONE",
   "provenance_level": "self_reported",
   "outcome": "CLAIM_NOT_PROVEN",
   "triggered_by": "user-request-2026-05-12-run-010-independent-auditor-validation",
-  "notes": "Execution evidence package preparation run. No auditor-output.yml: no genuinely external audit has occurred. Auditor independence is CLAIM_NOT_PROVEN. See audit-request.md. Validation commands succeed (exit_code 0). No usefulness, adoption, promotion, or causal claim."
+  "notes": "Execution evidence package preparation run. auditor-output.yml is present but self-audit only (auditor_independence_status: NONE); independent external auditor output is missing. Auditor independence is CLAIM_NOT_PROVEN. See audit-request.md. Validation commands succeed (exit_code 0). No usefulness, adoption, promotion, or causal claim."
 }

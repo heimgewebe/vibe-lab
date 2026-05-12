@@ -26,10 +26,11 @@ All prior runs (run-002 through run-009) had the same problem:
   run-007: executor=claude-code:claude-sonnet-4-6, auditor=same session (same)
   run-008: executor=claude-code:claude-sonnet-4-6, auditor=same session (same)
   run-009: executor=claude-code:claude-sonnet-4-5, auditor=same session (same)
-  run-010: executor=claude-code:claude-sonnet-4-6, auditor=NONE (intentionally absent)
+  run-010: executor=claude-code:claude-sonnet-4-6, auditor=self-audit artifact exists, independent auditor=NONE
 
-Run-010 is the first run that explicitly omits auditor-output.yml rather than
-producing a self-audit that misrepresents itself as independent.
+Run-010 is the first run that explicitly labels auditor-output.yml as
+SELF-AUDIT / NOT INDEPENDENT rather than allowing it to be mistaken for
+independent evidence.
 
 === What Would Constitute Independence ===
 For an auditor to be genuinely independent, ALL of the following must be true:
@@ -52,7 +53,10 @@ For an auditor to be genuinely independent, ALL of the following must be true:
 
 === Where The Independent Audit Output Should Go ===
 If a genuinely independent audit occurs after this run:
-  - The auditor should create: artifacts/run-010-independent-auditor-validation/auditor-output.yml
+  - The auditor should supersede the existing self-audit:
+    artifacts/run-010-independent-auditor-validation/auditor-output.yml
+    with externally produced output, OR add a separate
+    external-auditor-output.yml if replacement is not permitted by review policy.
   - The auditor should reference: audit-request.md for scope and claim list
   - The auditor should not edit any other artifact in this bundle
 

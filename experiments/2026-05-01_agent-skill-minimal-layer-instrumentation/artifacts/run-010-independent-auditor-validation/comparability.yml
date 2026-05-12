@@ -29,9 +29,10 @@ notes: >
   previous runs.
 
   Verdict not_comparable because:
-  (1) No auditor-output.yml exists; the independence claim cannot be proven
-      by this session alone, so this run cannot increment the independent-audit
-      blocker resolution.
+  (1) auditor-output.yml exists but is a self-audit artifact with
+      auditor_independence_status: NONE; the independence claim cannot be
+      proven by this session alone, so this run cannot increment the
+      independent-audit blocker resolution.
   (2) This run is explicitly scoped as an audit-ready package preparation, not
       a fourth/fifth comparable usefulness run.
   (3) Comparable-run-count remains at 3 (run-002, run-005, run-006).

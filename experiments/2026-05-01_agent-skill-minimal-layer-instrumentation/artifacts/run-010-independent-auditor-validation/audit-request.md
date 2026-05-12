@@ -22,8 +22,10 @@ auditor was the same session as the executor. This is documented as
 Gegenhypothese C (assessment/bewertungsbias) in cross-run-assessment.md
 and has been `CLAIM_NOT_PROVEN` in runs 008 and 009.
 
-Run-010 intentionally omits `auditor-output.yml` because no genuinely external
-audit has occurred. This audit-request.md is the formal request for one.
+Run-010 includes a schema-required self-audit `auditor-output.yml`, but no
+genuinely external auditor output has occurred. The self-audit is explicitly
+labelled with `auditor_independence_status: NONE`. This audit-request.md is
+the formal request for a genuinely external audit to supersede it.
 
 ---
 
@@ -89,17 +91,27 @@ The overall run verdict must be:
 
 ## Where to Write the Audit Output
 
-Create a new file:
+A schema-required self-audit `auditor-output.yml` already exists in the run
+directory, produced by the executor session (not independent). You must
+supersede it with externally produced output. Options:
+
+**Option A (preferred):** Replace the existing self-audit file:
 ```
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml
 ```
 
-The file must validate against `schemas/auditor-output.v1.schema.json`.
+**Option B:** Add a separate external audit file if replacement is not permitted:
+```
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/external-auditor-output.yml
+```
+
+Either way, the file must validate against `schemas/auditor-output.v1.schema.json`.
 
 In the `auditor` field, include:
 - `name`: your agent or reviewer name/identifier
 - `executor`: your session ID, agent ID, or reviewer handle — something that proves
-  you are NOT the executor of run-010
+  you are NOT the executor of run-010 (not `claude-code:claude-sonnet-4-6`,
+  not session `session_011cvra3PDFriTmZTKsuCCVB`)
 
 This field is what turns your audit into evidence of independence. Without it, the
 audit is CLAIM_NOT_PROVEN regardless of verdicts.
@@ -109,7 +121,7 @@ audit is CLAIM_NOT_PROVEN regardless of verdicts.
 ## Success Criterion for This Request
 
 This audit request is fulfilled if:
-1. `auditor-output.yml` is created by a genuinely external auditor
+1. An externally produced audit file is created (Option A or B above)
 2. The `auditor.executor` field is provably different from `claude-code:claude-sonnet-4-6`
    (session_011cvra3PDFriTmZTKsuCCVB)
 3. The overall verdict is one of the permitted verdicts (PASS or a non-PASS verdict)
