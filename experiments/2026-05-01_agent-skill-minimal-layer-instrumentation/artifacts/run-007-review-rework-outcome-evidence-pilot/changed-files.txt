@@ -1,0 +1,39 @@
+# Changed Files (Run 007)
+
+Generated: 2026-05-12T06:36:41Z
+Run: run-007-review-rework-outcome-evidence-pilot
+Scope: outcome-evidence pilot run bundle + experiment bookkeeping updates
+
+File List
+=========
+
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml [modify]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl [modify]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/auditor-output.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/changed-files.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/comparability.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/copilot-review-comments.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/evidence-pack.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/git-log-review-rework.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/make-validate.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/measurement.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/pr-review-export.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run_meta.json [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/targeted-tests.txt [add]
+
+Scope Boundary
+==============
+
+INCLUDED:
+- Run-007 outcome-evidence pilot artifact directory
+- Experiment manifest update registering run-007 artifacts
+- Experiment evidence log append for run-007
+
+EXCLUDED:
+- Source code changes
+- Validator/schema changes
+- Review/Rework contract changes
+- Usefulness, adoption, promotion, or causal assessment changes
+- Historical run retrofits

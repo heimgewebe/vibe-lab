@@ -1,0 +1,46 @@
+schema_version: "1.0.0"
+run_id: "run-007-review-rework-outcome-evidence-pilot"
+claims:
+  - claim_id: "pack-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/evidence-pack.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-002"
+    text: "Review/Rework evidence for PR #179 is archived via review-events.yml and local exports."
+    type: "run_comparability_assessment"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/pr-review-export.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/copilot-review-comments.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/git-log-review-rework.txt"
+        status: "repo_local"
+
+  - claim_id: "pack-003"
+    text: "Targeted validator regression tests completed with exit_code 0."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/targeted-tests.txt"
+        status: "repo_local"
+        command: "python3 scripts/docmeta/test_validate_run_bundle.py"
+        exit_code: 0
+
+  - claim_id: "pack-004"
+    text: "A summarized make validate capture with exit_code 0 is archived."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 0

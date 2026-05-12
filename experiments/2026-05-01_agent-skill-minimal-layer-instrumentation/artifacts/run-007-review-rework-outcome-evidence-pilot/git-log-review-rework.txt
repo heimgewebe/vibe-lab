@@ -1,0 +1,12 @@
+captured_at: 2026-05-12T06:36:41Z
+source: git rev-list --reverse d7f5f55..4c0e70a
+
+b21bce9367f754cb2ba346cdf9e4600ec1a8d372 | feat: schema-back review-events.yml (review-rework-artifact.contract.md v0.2) | 2026-05-12T05:36:24Z
+c59927a586af70a7f9a1f8913cf48fb7d4a61305 | fix: gate repo_local review metrics on valid review-events | 2026-05-12T05:45:27Z
+6cab32665e40edd91f7cf481e25f60d17fa20ab4 | refine: return explicit review-events validity bool | 2026-05-12T05:47:08Z
+945694609fd3fbf7615546dfdebe7b142c3a9932 | refine: tighten assertion + remove schema-redundant field checks | 2026-05-12T06:22:11Z
+4c0e70ab1df16369c9a9f602992875a929f79d3c | polish: drop redundant isinstance guard and fix test comment | 2026-05-12T06:23:45Z
+
+post_review_rework_commits:
+- 945694609fd3fbf7615546dfdebe7b142c3a9932
+- 4c0e70ab1df16369c9a9f602992875a929f79d3c

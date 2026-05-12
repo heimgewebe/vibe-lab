@@ -1,0 +1,16 @@
+captured_at: 2026-05-12T06:36:41Z
+source: github-mcp-server-pull_request_read(get_review_comments)
+
+comment_1:
+  author: copilot-pull-request-reviewer
+  created_at: 2026-05-12T06:17:13Z
+  path: scripts/docmeta/test_validate_run_bundle.py
+  url: https://github.com/heimgewebe/vibe-lab/pull/179#discussion_r3224114529
+  summary: Assertion too unspecific; should assert schema-invalid marker and sha/minLength path.
+
+comment_2:
+  author: copilot-pull-request-reviewer
+  created_at: 2026-05-12T06:17:13Z
+  path: scripts/docmeta/validate_run_bundle.py
+  url: https://github.com/heimgewebe/vibe-lab/pull/179#discussion_r3224114577
+  summary: Redundant field checks after schema gate; keep only semantic cross-checks.

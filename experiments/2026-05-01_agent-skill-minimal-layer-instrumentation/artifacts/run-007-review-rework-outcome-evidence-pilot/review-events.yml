@@ -1,0 +1,17 @@
+schema_version: "1.0.0"
+contract: "review_events"
+run_id: "run-007-review-rework-outcome-evidence-pilot"
+pr_ref: "https://github.com/heimgewebe/vibe-lab/pull/179"
+review_friction_count: 1
+rework_count: 2
+captured_at: "2026-05-12T06:36:41Z"
+evidence_status: "repo_local"
+review_thread_refs:
+  - "https://github.com/heimgewebe/vibe-lab/pull/179#discussion_r3224114529"
+  - "https://github.com/heimgewebe/vibe-lab/pull/179#discussion_r3224114577"
+rework_commit_refs:
+  - sha: "945694609fd3fbf7615546dfdebe7b142c3a9932"
+    description: "refine: tighten assertion + remove schema-redundant field checks"
+  - sha: "4c0e70ab1df16369c9a9f602992875a929f79d3c"
+    description: "polish: drop redundant isinstance guard and fix test comment"
+notes: "Pilot capture for merged PR #179. The contract defines review_friction_count as reviewer rounds before merge; PR #179 has one Copilot review round containing two actionable comments. Evidence gate satisfied via archived review thread refs + locally verifiable git commit refs; no usefulness/adoption/promotion claim."
