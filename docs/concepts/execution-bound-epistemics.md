@@ -646,12 +646,12 @@ def main():
             decision_data = yaml.safe_load(decision_path.read_text(encoding="utf-8")) or {}
 
             # adoption_assessment needs executed/replicated
-            if decision_data.get("type") == "adoption_assessment":
+            if decision_data.get("decision_type") == "adoption_assessment":
                 if execution_status not in {"executed", "replicated"}:
                     errors.append(f"{manifest_path}: adoption_assessment requires executed or replicated status")
 
             # execution_assessment is fine for designed or reconstructed
-            elif decision_data.get("type") == "execution_assessment":
+            elif decision_data.get("decision_type") == "execution_assessment":
                 pass
 
     if errors:
@@ -672,19 +672,23 @@ if __name__ == "__main__":
 
 Die Trennung der Decision-Typen erfordert minimale, explizite Dateien.
 
+> Hinweis: Die Beispiele sind auf die entscheidungsrelevanten Felder gekürzt; weitere schemapflichtige Felder können erforderlich sein.
+
 **Beispiel 1: execution_assessment**
 ```yaml
-type: execution_assessment
+decision_type: execution_assessment
 verdict: not_executed
 summary: "Kein echter Run-Proof vorhanden. Das Experiment ist nur designed."
 ```
 
 **Beispiel 2: adoption_assessment**
 ```yaml
-type: adoption_assessment
-verdict: adopted
-summary: "Auf Basis echter Run-Artefakte und Messwerte übernommen."
+decision_type: adoption_assessment
+verdict: adopt
+summary: "Auf Basis echter Run-Artefakte und Messwerte zur Adoption entschieden."
 ```
+
+`adopt` ist der Decision-Verdict-Wert; ein daraus abgeleiteter Lifecycle-/Statuswert kann `adopted` sein.
 
 ⸻
 

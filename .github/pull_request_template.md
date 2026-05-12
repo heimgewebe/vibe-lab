@@ -1,72 +1,67 @@
-## Change Summary
-<!-- 2-4 lines: what changed and why -->
+## Änderungszusammenfassung
+<!-- 2–4 Zeilen: Was wurde geändert und warum? -->
 
-## Change Type
-- [ ] docs
-- [ ] guard/validator
-- [ ] experiment artifact
-- [ ] policy/governance
-- [ ] tooling/ci
+## Änderungstyp
+- [ ] Dokumentation
+- [ ] Contract / Schema
+- [ ] Guard / Validator / Test
+- [ ] Experiment-Artefakt / Run-Bundle
+- [ ] Policy / Governance
+- [ ] Tooling / CI
+- [ ] Generierte Artefakte nur aktualisiert
 
-## Touched Paths
-<!-- e.g. docs/, scripts/, .github/workflows/ -->
+## Berührte Pfade
+<!-- Konkrete Pfade, keine Platzhalter (`.../<Pfad>`). z. B. docs/, scripts/, .github/workflows/ -->
 
-## Validation
+## Scope / Nicht-Ziele
+<!-- Was ist bewusst in Scope, was explizit out of scope?
+     Dieser Abschnitt ist Review-Kontext, kein Ersatz für run-lokale Evidence-Artefakte. -->
 
-For each check below, provide an Evidence Artifact pointing to a repo-local
-artifact, CI artifact, or externally verified reference. `external_verified`
-evidence must include a stable `source`/`ref` and `sha256`. Do not push large
-logs or raw artifacts into the repo. If a check did not run or evidence was not
-archived, mark Evidence Status: `missing_evidence` and Verdict: `MISSING_EVIDENCE`.
-Never mark a check PASS without archived evidence.
+## Validierung
 
-- [ ] `make validate`
-  - Evidence:
-  - Evidence Status:
-  - Verdict:
-- [ ] Relevant targeted tests
-  - Evidence:
-  - Evidence Status:
-  - Verdict:
-- [ ] CI result
-  - Evidence:
-  - Evidence Status:
-  - Verdict:
-- [ ] Critic/auditor/agent review, if claimed
-  - Evidence:
-  - Evidence Status:
-  - Verdict:
+Für jeden Check unten ein Evidence Artifact angeben (repo-local, CI-Artifact oder
+extern verifiziert). `external_verified` muss stabiles `source`/`ref` und `sha256`
+enthalten. Keine großen Roh-Logs ins Repo einchecken.
 
-## Claims and Evidence
+Wenn ein Check nicht relevant ist: Verdict `OUT_OF_SCOPE`.
+Wenn ein relevanter Check nicht ausgeführt oder nicht belegt ist: Evidence Status
+`missing_evidence` und Verdict `MISSING_EVIDENCE`.
+Nie `PASS` ohne archivierte Evidenz setzen.
+
+| Check | Evidence | Evidence Status | Verdict | Begründung |
+|---|---|---|---|---|
+| `make validate` |  |  |  |  |
+| Zielgerichtete Tests |  |  |  |  |
+| CI-Ergebnis |  |  |  |  |
+| Agent-/Auditor-/Critic-Review, falls behauptet |  |  |  |  |
+
+## Claims und Evidence
 
 | Claim | Claim Type | Evidence Artifact | Evidence Status | Verdict |
-|-------|------------|-------------------|-----------------|---------|
-|       |            |                   |                 |         |
+|---|---|---|---|---|
+|  |  |  |  |  |
 
 **Evidence Status values** (lowercase): `repo_local`, `ci_artifact`,
 `external_verified`, `derived_from_auditor_output`, `missing_evidence`,
 `external_unverified`, `self_reported`, `unknown`.
 
 **Verdict values** (uppercase): `PASS`, `MISSING_EVIDENCE`, `CLAIM_NOT_PROVEN`,
-`CONTRADICTION`, `OUT_OF_SCOPE`, `NOT_REPRODUCIBLE`. Use the strongest fitting
-verdict.
+`CONTRADICTION`, `OUT_OF_SCOPE`, `NOT_REPRODUCIBLE`.
 
 **Claim Type values / examples**: `command_result`, `test_result`, `ci_result`,
 `critic_usage`, `auditor_usage`, `agent_usage`.
 
-**Rules:**
-- No test-count claim without a test-output evidence artifact.
-- No CI-success claim without CI evidence.
-- No `make validate` PASS without a captured command-output artifact.
-- No critic/auditor/agent-usage claim without an archived reviewer or agent output.
-- `missing_evidence`, `external_unverified`, `self_reported`, and `unknown` must
-  not support `PASS` for process or result claims.
-- Claims without evidence must be `MISSING_EVIDENCE` or `CLAIM_NOT_PROVEN`.
+**Regeln:**
+- Keine Testanzahl-Behauptung ohne Test-Output-Evidence-Artifact.
+- Keine CI-Erfolgsbehauptung ohne CI-Evidenz.
+- Kein `make validate`-`PASS` ohne archivierten Command-Output.
+- Keine Critic-/Auditor-/Agent-Usage-Behauptung ohne archivierten Reviewer- oder Agent-Output.
+- `missing_evidence`, `external_unverified`, `self_reported` und `unknown` dürfen
+  `PASS` bei Prozess- oder Ergebnis-Claims nicht stützen.
+- Claims ohne Evidenz müssen `MISSING_EVIDENCE` oder `CLAIM_NOT_PROVEN` sein.
 
-## Agents and Evidence
-<!-- If an agent, critic, or auditor was used, record the claim in the Claims and
-Evidence table above. Use this section only for a short pointer to the archived
-artifact. -->
+## Risiko / Nicht erledigt
+<!-- Bekannte Grenzen, Follow-ups, bewusst zurückgestellte Punkte -->
 
-## Risks / Not Done
-<!-- Known limits, follow-ups, or intentionally deferred work -->
+## Review-Hinweise
+<!-- Hinweise für Reviewende (Kontext, Prüfpunkte, Trade-offs) -->
