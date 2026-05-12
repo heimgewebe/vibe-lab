@@ -1,6 +1,6 @@
 command: make validate
 exit_code: 0
-captured_at: 2026-05-12T12:55:00Z
+captured_at: 2026-05-12T13:01:35Z
 capture_mode: summarized_stdout
 claim_scope: command_exit_and_summary_only
 full_log_archived: false
@@ -11,4 +11,5 @@ full_log_archived: false
 🔒 Ratchet Mode (Phase 2)
   ✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
+make[1]: Leaving directory '/home/runner/work/vibe-lab/vibe-lab'
 ✅ Validation passed.

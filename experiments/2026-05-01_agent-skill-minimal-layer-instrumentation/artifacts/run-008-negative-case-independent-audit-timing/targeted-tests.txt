@@ -1,6 +1,6 @@
 command: python3 scripts/docmeta/test_validate_run_bundle.py
 exit_code: 0
-captured_at: 2026-05-12T12:54:00Z
+captured_at: 2026-05-12T13:01:31Z
 capture_mode: summarized_stdout
 claim_scope: command_exit_and_test_summary_only
 full_log_archived: false
@@ -8,6 +8,6 @@ full_log_archived: false
 --- test_validate_run_bundle.py ---
 ...........................................................................................................................................
 ----------------------------------------------------------------------
-Ran 139 tests in 4.583s
+Ran 139 tests in 4.533s
 
 OK

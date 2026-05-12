@@ -21,7 +21,8 @@ verdict: not_comparable
 
 notes: >
   Outcome-evidence negative-case run for partial auditor independence and repo-local
-  timing capture. This run intentionally records a schema-valid non-PASS verdict
-  (CLAIM_NOT_PROVEN) because independent auditor verification is not proven.
-  It is not a fourth comparable usefulness run, does not increment comparable-run
-  counts, and carries no usefulness, adoption, promotion, or causal claim.
+  timing capture. This run tests and documents the independent-audit blocker by
+  intentionally recording a schema-valid non-PASS verdict (CLAIM_NOT_PROVEN).
+  It does not provide independent audit evidence. It is not a fourth comparable
+  usefulness run, does not increment comparable-run counts, and carries no
+  usefulness, adoption, promotion, or causal claim.

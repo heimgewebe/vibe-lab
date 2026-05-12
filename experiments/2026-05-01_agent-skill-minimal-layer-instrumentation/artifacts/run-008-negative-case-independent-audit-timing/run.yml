@@ -11,7 +11,7 @@ provenance:
   level: "self_reported"
   executor: "copilot-coding-agent:gpt-5.5"
   source_status: "repo_local"
-  notes: "Synthetic negative-case outcome-evidence run for independent-audit and timing instrumentation. Repo-local artifacts exist, but independent auditor verification is only partial and remains unproven."
+  notes: "Synthetic negative-case outcome-evidence run for independent-audit blocker and timing instrumentation. This run documents the blocker as CLAIM_NOT_PROVEN. Repo-local artifacts exist, but it does not provide independent auditor evidence; independence remains only partial and unproven."
 
 artifacts:
   auditor_output:

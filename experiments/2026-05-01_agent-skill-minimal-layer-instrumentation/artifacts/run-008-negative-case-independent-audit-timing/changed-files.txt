@@ -27,3 +27,8 @@ EXCLUDED:
 - results/decision.yml, results/result.md, and results/cross-run-assessment.md
 - Any usefulness, adoption, promotion, or causal claim
 - Review-events fabrication for a synthetic run
+
+Scope Drift Assessment
+======================
+scope_drift_count: 0
+Reason: all changed files are either run-008 evidence artifacts, experiment bookkeeping, or roadmap coordination updates declared in scope.
