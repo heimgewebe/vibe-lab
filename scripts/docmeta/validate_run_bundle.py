@@ -388,7 +388,7 @@ def _validate_review_events_content(
 
     # captured_at: schema enforces non-empty string; timezone-awareness is semantic.
     captured_at = data.get("captured_at", "")
-    captured_at_stripped = captured_at.strip() if isinstance(captured_at, str) else ""
+    captured_at_stripped = captured_at.strip()
     if captured_at_stripped:
         try:
             parsed_captured_at = datetime.fromisoformat(
