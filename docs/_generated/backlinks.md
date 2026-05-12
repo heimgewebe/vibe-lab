@@ -549,6 +549,10 @@
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `docs/reference/manifest-schema.md` (references)
 
+## `schemas/review-events.v1.schema.json`
+
+- ← `.vibe/review-rework-artifact.contract.md` (references)
+
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)

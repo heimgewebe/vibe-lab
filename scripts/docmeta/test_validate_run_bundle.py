@@ -40,6 +40,7 @@ _BUNDLE_SCHEMA = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA = "measurement-run.v1.schema.json"
 _EVIDENCE_PACK_SCHEMA = "run-evidence-pack.v1.schema.json"
+_REVIEW_EVENTS_SCHEMA = "review-events.v1.schema.json"
 _LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
 
 
@@ -48,14 +49,20 @@ _LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
 # ---------------------------------------------------------------------------
 
 def _make_repo_skeleton(base: Path) -> Path:
-    """Creates base/schemas/ with all four bundle schemas, and base/experiments/.
+    """Creates base/schemas/ with all five bundle schemas, and base/experiments/.
 
     Tests run validate_repo(base) — schemas are loaded from base/schemas/, NOT
     from the real REPO_ROOT. This proves schema-path isolation.
     """
     schemas = base / "schemas"
     schemas.mkdir(parents=True, exist_ok=True)
-    for name in (_BUNDLE_SCHEMA, _AUDITOR_SCHEMA, _MEASUREMENT_SCHEMA, _EVIDENCE_PACK_SCHEMA):
+    for name in (
+        _BUNDLE_SCHEMA,
+        _AUDITOR_SCHEMA,
+        _MEASUREMENT_SCHEMA,
+        _EVIDENCE_PACK_SCHEMA,
+        _REVIEW_EVENTS_SCHEMA,
+    ):
         shutil.copy(PROJECT_SCHEMAS / name, schemas / name)
     (base / "experiments").mkdir(exist_ok=True)
     return base
@@ -3575,8 +3582,9 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
         _append_review_evidence_artifact(run_dir)
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
+        # Schema catches const violation; message contains "contract" and "review_events".
         self.assertTrue(
-            any("review-events.yml" in e and "contract=" in e and "review_events" in e
+            any("review-events.yml" in e and "contract" in e and "review_events" in e
                 for e in errs),
             errs,
         )
@@ -3591,8 +3599,9 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
         _append_review_evidence_artifact(run_dir)
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
+        # Schema catches missing required property; message contains "contract".
         self.assertTrue(
-            any("review-events.yml" in e and "contract=" in e for e in errs),
+            any("review-events.yml" in e and "contract" in e for e in errs),
             errs,
         )
 
@@ -3788,8 +3797,9 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
         _append_review_evidence_artifact(run_dir)
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
+        # Schema catches enum violation; message contains "evidence_status".
         self.assertTrue(
-            any("review-events.yml" in e and "evidence_status=" in e for e in errs),
+            any("review-events.yml" in e and "evidence_status" in e for e in errs),
             errs,
         )
 
@@ -3815,8 +3825,15 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
         _append_review_evidence_artifact(run_dir)
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
+        # Schema catches empty sha via anyOf failure at rework_commit_refs/0:
+        # the item matches neither string(minLength:1) nor object(sha: minLength:1).
         self.assertTrue(
-            any("review-events.yml" in e and "external_verified" in e for e in errs),
+            any(
+                "review-events.yml" in e
+                and "schema-invalid" in e
+                and "rework_commit_refs" in e
+                for e in errs
+            ),
             errs,
         )
 
@@ -3953,10 +3970,307 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
         # Error message must include the subdir component so it is findable on disk.
+        # Schema catches the contract const violation; message contains "contract".
         self.assertTrue(
-            any("meta" in e and "review-events.yml" in e and "contract=" in e for e in errs),
+            any("meta" in e and "review-events.yml" in e and "contract" in e for e in errs),
             errs,
         )
+
+
+# ---------------------------------------------------------------------------
+# Schema-backed enforcement tests for review-events.yml
+# (new in v0.2 — these tests required schemas/review-events.v1.schema.json)
+# ---------------------------------------------------------------------------
+
+class ReviewEventsSchemaBackedTests(unittest.TestCase):
+    """Tests that specifically verify schema-backed enforcement not possible before v0.2.
+
+    Each test documents WHY it was not deterministically testable before the schema:
+    - additionalProperties: false — the semantic validator ignored unknown fields
+    - schema_version const — the semantic validator never checked this field
+    - schema isolation — validate_repo() must raise when schema file is absent
+
+    Path-escape test for review_evidence_artifact is also here since it verifies
+    the containment guard works for review-events specifically.
+    """
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self._tmp.name)
+        _make_repo_skeleton(self.base)
+
+    def tearDown(self) -> None:
+        self._tmp.cleanup()
+
+    def test_unknown_additional_field_rejected_by_schema(self) -> None:
+        """additionalProperties:false — an unknown field in review-events.yml fails.
+
+        Before schemas/review-events.v1.schema.json existed, the semantic validator
+        silently ignored unknown fields. This test is only deterministic with a schema.
+        """
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+                unknown_extra_field: "this should be rejected"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "schema-invalid" in e for e in errs),
+            errs,
+        )
+
+    def test_repo_local_metrics_with_schema_invalid_review_events_are_blocked(self) -> None:
+        """repo_local review/rework metrics require content-valid review-events.yml, not just an existing path."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+            measurement_text=textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "MISSING_EVIDENCE"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  unsupported_claim_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 2
+                    evidence_status: "repo_local"
+                  rework_count:
+                    value: 1
+                    evidence_status: "repo_local"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "0.9.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 2
+                rework_count: 1
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "schema-invalid" in e for e in errs),
+            errs,
+        )
+        self.assertTrue(
+            any(
+                "review_friction_count.evidence_status=repo_local" in e
+                and "gültiges review_evidence_artifact" in e
+                for e in errs
+            ),
+            errs,
+        )
+        self.assertTrue(
+            any(
+                "rework_count.evidence_status=repo_local" in e
+                and "gültiges review_evidence_artifact" in e
+                for e in errs
+            ),
+            errs,
+        )
+
+    def test_wrong_schema_version_rejected_by_schema(self) -> None:
+        """schema_version != '1.0.0' fails.
+
+        Before the schema existed, the semantic validator never checked schema_version.
+        Only the schema const enforcement catches this deterministically.
+        """
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "0.9.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "schema-invalid" in e and "schema_version" in e
+                for e in errs),
+            errs,
+        )
+
+    def test_captured_at_without_timezone_fails(self) -> None:
+        """captured_at without Z/offset must fail even if datetime.fromisoformat can parse it."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'captured_at: "2026-05-11T12:00:00Z"',
+                'captured_at: "2026-05-11T12:00:00"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "captured_at" in e and "Zeitzone" in e for e in errs),
+            errs,
+        )
+
+    def test_schema_isolation_missing_review_events_schema_raises(self) -> None:
+        """validate_repo() must raise FileNotFoundError when review-events schema is absent."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(run_dir / "review-events.yml", _valid_review_events())
+        _append_review_evidence_artifact(run_dir)
+        (self.base / "schemas" / _REVIEW_EVENTS_SCHEMA).unlink()
+        with self.assertRaises(FileNotFoundError):
+            validate_repo(self.base)
+
+    def test_review_evidence_artifact_parent_escape_fails(self) -> None:
+        """review_evidence_artifact: '../review-events.yml' (path escape) → error.
+
+        Mirrors test_changed_files_artifact_parent_escape_fails for the review-events
+        artifact reference. The containment guard in _load_comparability_run_artifact_ref
+        must reject traversal outside the run directory.
+        """
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "../review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any(
+                "review_evidence_artifact" in e
+                and "run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen" in e
+                for e in errs
+            ),
+            errs,
+        )
+
+    def test_repo_local_review_rework_with_valid_schema_backed_artifact_passes(self) -> None:
+        """PASS: repo_local review/rework metrics with a schema-valid review-events.yml.
+
+        This is the canonical happy-path: review-events.yml passes both schema and semantic
+        checks, enabling repo_local evidence_status for both metrics. This test verifies the
+        complete chain from contract to schema to semantic to measurement validation.
+        """
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+            measurement_text=textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "MISSING_EVIDENCE"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  unsupported_claim_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 2
+                    evidence_status: "repo_local"
+                  rework_count:
+                    value: 1
+                    evidence_status: "repo_local"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 2
+                rework_count: 1
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+                notes: "schema-backed repo_local evidence"
+            """),
+        )
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
 
 
 if __name__ == "__main__":

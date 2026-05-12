@@ -93,6 +93,7 @@ _BUNDLE_SCHEMA_NAME = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
 _EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
+_REVIEW_EVENTS_SCHEMA_NAME = "review-events.v1.schema.json"
 _LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
 _CHANGED_FILES_CONTRACT_DATE = "2026-05-08"
 _CHANGED_FILES_GUARD_EXPERIMENT = Path(
@@ -312,10 +313,6 @@ def _load_comparability_run_artifact_ref(
 
 
 # Valid evidence_status values accepted in a review-events.yml artifact.
-_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES = frozenset(
-    {"repo_local", "ci_artifact", "external_verified"}
-)
-
 
 def _validate_review_events_content(
     *,
@@ -323,24 +320,23 @@ def _validate_review_events_content(
     expected_run_id: str,
     run_dir: Path,
     rel_run: Path,
+    review_events_validator: Draft202012Validator,
     errors: list[str],
-) -> None:
+) -> bool:
     """Validates the content of a review-events.yml artifact.
 
     Called whenever comparability.yml.review_evidence_artifact resolves to an
-    existing file.  Enforces the minimal semantic rules from
-    .vibe/review-rework-artifact.contract.md v0.1:
+    existing file.  First validates against schemas/review-events.v1.schema.json,
+    then enforces additional semantic rules from
+    .vibe/review-rework-artifact.contract.md v0.2:
 
       - YAML is readable and root is a mapping
-      - contract == "review_events"
-      - run_id matches the run directory name
-      - review_friction_count is integer >= 0
-      - rework_count is integer >= 0
-      - evidence_status ∈ {repo_local, ci_artifact, external_verified}
-      - captured_at is present, non-empty, and parseable as ISO 8601
-      - pr_ref is present and non-empty
+      - schema-valid against review-events.v1.schema.json (schema_version, contract,
+        all required fields, integer types, minimum 0, additionalProperties: false)
+      - run_id matches the run directory name (semantic cross-check)
+      - captured_at carries a timezone (semantic; schema enforces presence/type only)
       - if evidence_status == external_verified: at least one entry in
-        review_thread_refs or rework_commit_refs
+        review_thread_refs or rework_commit_refs (semantic)
     """
     # Build a path label that shows the artifact's location relative to the run
     # directory, so errors for subdir artifacts (e.g. subdir/review-events.yml)
@@ -355,91 +351,65 @@ def _validate_review_events_content(
         data = _load_yaml(path)
     except Exception as e:
         errors.append(f"  ❌ {rel}: YAML-Fehler — {e}")
-        return
+        return False
 
     if not isinstance(data, dict):
         errors.append(f"  ❌ {rel}: Datei muss ein YAML-Objekt (Mapping) sein.")
-        return
+        return False
 
-    # contract
-    contract = data.get("contract")
-    if contract != "review_events":
+    # Schema-Validierung (review-events.v1.schema.json) — zuerst, vor semantischen Checks.
+    try:
+        review_events_validator.validate(data)
+    except ValidationError as e:
         errors.append(
-            f"  ❌ {rel}: contract='{contract}' muss exakt 'review_events' sein."
+            f"  ❌ {rel}: schema-invalid — {e.message} "
+            f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
         )
+        return False
 
-    # run_id
+    is_valid = True
+
+    # Semantic cross-checks only. Schema (review-events.v1.schema.json) guards all
+    # structural constraints (required fields, types, enums, const values, minLength,
+    # additionalProperties). Only rules that the schema cannot enforce are checked below:
+    #   - run_id must match the run directory name (cross-file equality)
+    #   - captured_at must carry a timezone (schema enforces string presence, not tzinfo)
+    #   - external_verified requires at least one ref (schema cannot check presence
+    #     of a *different* field conditionally on this field's value)
+
+    # run_id cross-check: schema enforces non-empty string; only equality is semantic.
     run_id = data.get("run_id")
-    if not isinstance(run_id, str) or not run_id.strip():
-        errors.append(f"  ❌ {rel}: run_id fehlt oder ist leer.")
-    elif run_id != expected_run_id:
+    if run_id != expected_run_id:
         errors.append(
             f"  ❌ {rel}: run_id='{run_id}' stimmt nicht mit "
             f"Run-Verzeichnis '{expected_run_id}' überein."
         )
+        is_valid = False
 
-    # review_friction_count: integer >= 0
-    rfc = data.get("review_friction_count")
-    if not isinstance(rfc, int) or isinstance(rfc, bool) or rfc < 0:
-        errors.append(
-            f"  ❌ {rel}: review_friction_count muss eine ganze Zahl >= 0 sein."
-        )
-
-    # rework_count: integer >= 0
-    rwc = data.get("rework_count")
-    if not isinstance(rwc, int) or isinstance(rwc, bool) or rwc < 0:
-        errors.append(
-            f"  ❌ {rel}: rework_count muss eine ganze Zahl >= 0 sein."
-        )
-
-    # evidence_status: must be a non-empty string in the valid set
-    ev_status = data.get("evidence_status")
-    if not isinstance(ev_status, str) or not ev_status.strip():
-        errors.append(
-            f"  ❌ {rel}: evidence_status fehlt, ist leer oder kein String — "
-            f"erwartet eines von {sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)}."
-        )
-        ev_status = None  # prevent false external_verified branch below
-    elif ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
-        errors.append(
-            f"  ❌ {rel}: evidence_status='{ev_status}' muss eines von "
-            f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
-        )
-
-    # captured_at: strict timestamp string (not date-only), with timezone.
-    captured_at = data.get("captured_at")
-    if not isinstance(captured_at, str) or not captured_at.strip():
-        errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
-    else:
-        captured_at_stripped = captured_at.strip()
-        if "T" not in captured_at_stripped:
-            errors.append(
-                f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss ein Timestamp mit "
-                f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
-            )
-        else:
-            has_z = captured_at_stripped.endswith("Z")
-            has_offset = bool(re.search(r"[+-]\d{2}:?\d{2}$", captured_at_stripped))
-            if not (has_z or has_offset):
-                errors.append(
-                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
-                    f"angeben (Suffix 'Z' oder Offset wie '+02:00')."
-                )
-
+    # captured_at: schema enforces non-empty string; timezone-awareness is semantic.
+    captured_at = data.get("captured_at", "")
+    captured_at_stripped = captured_at.strip()
+    if captured_at_stripped:
         try:
-            datetime.fromisoformat(captured_at_stripped.replace("Z", "+00:00"))
+            parsed_captured_at = datetime.fromisoformat(
+                captured_at_stripped.replace("Z", "+00:00")
+            )
         except ValueError:
             errors.append(
                 f"  ❌ {rel}: captured_at='{captured_at_stripped}' ist kein gültiger "
                 f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z' oder '2026-05-11T12:00:00+02:00')."
             )
+            is_valid = False
+        else:
+            if parsed_captured_at.tzinfo is None or parsed_captured_at.utcoffset() is None:
+                errors.append(
+                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
+                    f"angeben (timezone-aware; Suffix 'Z' oder Offset wie '+02:00')."
+                )
+                is_valid = False
 
-    # pr_ref
-    pr_ref = data.get("pr_ref")
-    if not isinstance(pr_ref, str) or not pr_ref.strip():
-        errors.append(f"  ❌ {rel}: pr_ref fehlt oder ist leer.")
-
-    # external_verified: mindestens eine nachvollziehbare Referenz
+    # external_verified: mindestens eine nachvollziehbare Referenz (cross-field semantic).
+    ev_status = data.get("evidence_status")
     if ev_status == "external_verified":
         thread_refs = data.get("review_thread_refs")
         rework_commit_refs = data.get("rework_commit_refs")
@@ -460,6 +430,9 @@ def _validate_review_events_content(
                 f"  ❌ {rel}: evidence_status=external_verified erfordert "
                 f"mindestens einen Eintrag in review_thread_refs oder rework_commit_refs."
             )
+            is_valid = False
+
+    return is_valid
 
 
 def _requires_changed_files_comparability(bundle: dict | None, rel_exp: Path) -> bool:
@@ -724,6 +697,7 @@ def validate_repo(repo_root: Path) -> list[str]:
     auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
     measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
     evidence_pack_validator = _build_validator(schemas_dir / _EVIDENCE_PACK_SCHEMA_NAME)
+    review_events_validator = _build_validator(schemas_dir / _REVIEW_EVENTS_SCHEMA_NAME)
     missing_ep_allowlist, allowlist_errors = _load_missing_evidence_pack_allowlist(repo_root)
     errors.extend(allowlist_errors)
 
@@ -833,6 +807,7 @@ def validate_repo(repo_root: Path) -> list[str]:
                     auditor_validator=auditor_validator,
                     measurement_validator=measurement_validator,
                     evidence_pack_validator=evidence_pack_validator,
+                    review_events_validator=review_events_validator,
                     missing_ep_allowlist=missing_ep_allowlist,
                     errors=errors,
                 )
@@ -1053,6 +1028,7 @@ def _validate_run_dir(
     auditor_validator: Draft202012Validator,
     measurement_validator: Draft202012Validator,
     evidence_pack_validator: Draft202012Validator,
+    review_events_validator: Draft202012Validator,
     missing_ep_allowlist: set[str],
     errors: list[str],
 ) -> None:
@@ -1254,7 +1230,7 @@ def _validate_run_dir(
                 f"gültiges changed_files_artifact."
             )
 
-    # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.1).
+    # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.2).
     # The field is optional; when present it enables repo_local evidence_status for
     # review_friction_count and rework_count in measurement.yml.
     review_evidence_path, _review_ev_missing = _load_comparability_run_artifact_ref(
@@ -1265,14 +1241,15 @@ def _validate_run_dir(
         rel_run=rel_run,
         errors=errors,
     )
-    review_evidence_artifact_valid = review_evidence_path is not None
+    review_evidence_artifact_valid = False
     if review_evidence_path is not None:
-        # Content validation (review-rework-artifact.contract.md v0.1).
-        _validate_review_events_content(
+        # Content validation (review-rework-artifact.contract.md v0.2): schema first, then semantic.
+        review_evidence_artifact_valid = _validate_review_events_content(
             path=review_evidence_path,
             expected_run_id=run_dir.name,
             run_dir=run_dir,
             rel_run=rel_run,
+            review_events_validator=review_events_validator,
             errors=errors,
         )
 
