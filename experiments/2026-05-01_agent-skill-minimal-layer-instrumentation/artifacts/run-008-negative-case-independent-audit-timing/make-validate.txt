@@ -1,0 +1,9 @@
+command: make validate
+exit_code: 0
+captured_at: 2026-05-12T12:50:00Z
+capture_mode: summarized_stdout
+claim_scope: command_exit_and_summary_only
+full_log_archived: false
+
+--- summary (final lines) ---
+pending capture

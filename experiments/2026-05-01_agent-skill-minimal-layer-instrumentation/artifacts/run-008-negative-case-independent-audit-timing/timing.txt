@@ -1,0 +1,5 @@
+started_at: 2026-05-12T12:41:00Z
+finished_at: 2026-05-12T12:48:02Z
+duration_seconds: 422
+capture_mode: repo_local_manual_capture
+limitation_note: Plain-text timing artifact without a dedicated schema; duration is documented repo-locally but not independently verified.

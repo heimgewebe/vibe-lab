@@ -1,0 +1,27 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-008-negative-case-independent-audit-timing"
+assessed_at: "2026-05-12"
+
+compared_against:
+  - "run-002-controlled-agent-skill-run"
+  - "run-005-controlled-agent-skill-run"
+  - "run-006-controlled-agent-skill-run"
+  - "run-007-review-rework-outcome-evidence-pilot"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:outcome-evidence-negative-case-independent-audit-timing"
+
+changed_files_artifact: "artifacts/run-008-negative-case-independent-audit-timing/changed-files.txt"
+
+verdict: not_comparable
+
+notes: >
+  Outcome-evidence negative-case run for partial auditor independence and repo-local
+  timing capture. This run intentionally records a schema-valid non-PASS verdict
+  (CLAIM_NOT_PROVEN) because independent auditor verification is not proven.
+  It is not a fourth comparable usefulness run, does not increment comparable-run
+  counts, and carries no usefulness, adoption, promotion, or causal claim.

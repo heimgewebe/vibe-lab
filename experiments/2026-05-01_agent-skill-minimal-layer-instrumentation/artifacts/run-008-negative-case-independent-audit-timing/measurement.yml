@@ -1,0 +1,67 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-008-negative-case-independent-audit-timing"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.5"
+  executor: "copilot-coding-agent"
+  role: "negative-case outcome-evidence instrumentation with partial auditor independence and repo-local timing capture"
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Scope limited to run-008 artifacts plus experiment bookkeeping and roadmap update; changed-files.txt archives the touched paths."
+
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "One auditor claim is non-PASS: the run does not prove independent auditor verification."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence references point to repo-local artifacts inside this run bundle or explicit repo paths."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "No command_result claim is non-PASS; validation artifacts are archived with exit_code 0."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Synthetic negative-case run without a real PR review lifecycle; no review-events.yml exists for this run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Synthetic negative-case run without review-driven rework commits; no repo-local review/rework artifact exists."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "The non-PASS verdict documents an open proof gap, not a false block by the validator stack."
+
+  task_completion_time_observed:
+    value: 422
+    evidence_status: "repo_local"
+    notes: "Derived from timing.txt in this run bundle: started_at 2026-05-12T12:41:00Z, finished_at 2026-05-12T12:48:02Z, duration_seconds 422."
+
+missing_evidence:
+  - item: "review_friction_count"
+    detail: "No merged-PR review events are part of this synthetic negative-case run."
+  - item: "rework_count"
+    detail: "No review-events artifact or rework commit chain exists for this synthetic negative-case run."
+
+interpretation_limits:
+  - "This run is an outcome-evidence negative case, not a fourth comparable usefulness run."
+  - "Partial independence only: auditor and executor are documented in the same session context; no independent verification claim is allowed."
+  - "review_friction_count and rework_count remain missing_evidence because this run has no real review lifecycle."
+  - "timing.txt is a repo-local plain-text artifact without a dedicated schema; the measurement is documented but not validator-enforced."
+
+extensions:
+  auditor_independence_status: "partial"

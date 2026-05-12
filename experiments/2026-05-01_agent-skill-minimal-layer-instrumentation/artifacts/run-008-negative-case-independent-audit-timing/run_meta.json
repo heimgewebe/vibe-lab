@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-008-negative-case-independent-audit-timing",
+  "generated_at": "2026-05-12T12:48:02Z",
+  "executor": "copilot-coding-agent:gpt-5.5",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && make validate",
+  "command_scope": "negative-case outcome-evidence run for partial auditor independence and repo-local timing capture",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-008-negative-case-independent-audit-timing/targeted-tests.txt",
+  "auditor_output_file": "artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml",
+  "provenance_level": "self_reported",
+  "outcome": "CLAIM_NOT_PROVEN",
+  "triggered_by": "user-request-2026-05-12-run-008-negative-case-independent-audit-timing",
+  "notes": "Synthetic negative-case run. Validation commands succeed, but the run intentionally records CLAIM_NOT_PROVEN because independent auditor verification is only partial and not proven. No usefulness, adoption, promotion, or causal claim."
+}
