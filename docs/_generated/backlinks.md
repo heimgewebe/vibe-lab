@@ -19,11 +19,16 @@
 
 ## `.vibe/changed-files-artifact.contract.md`
 
+- ← `.vibe/review-rework-artifact.contract.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `.vibe/pr-scope-policy.yml`
 
 - ← `docs/policies/artifact-boundary-policy.md` (references)
+
+## `.vibe/review-rework-artifact.contract.md`
+
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `CONTRIBUTING.md`
 
@@ -179,6 +184,7 @@
 
 ## `docs/evaluations/agent-skill-file-fruitfulness.md`
 
+- ← `.vibe/review-rework-artifact.contract.md` (references)
 - ← `docs/roadmap.md` (references)
 
 ## `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
@@ -472,10 +478,12 @@
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
 
+- ← `.vibe/review-rework-artifact.contract.md` (references)
 - ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`
 
+- ← `.vibe/review-rework-artifact.contract.md` (references)
 - ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`

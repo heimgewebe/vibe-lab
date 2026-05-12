@@ -16,6 +16,9 @@ relations:
   - type: references
     target: ../../.vibe/changed-files-artifact.contract.md
     reason: "Scope-drift measurement requires changed-files artifact as first-class primitive"
+  - type: references
+    target: ../../.vibe/review-rework-artifact.contract.md
+    reason: "Review/rework outcome metrics require review-events artifact as first-class primitive"
 schema_version: "0.1.0"
 created: "2026-05-05"
 updated: "2026-05-05"

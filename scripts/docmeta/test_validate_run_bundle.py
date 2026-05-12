@@ -2829,5 +2829,1135 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         self.assertTrue(any("Self-Observation" in e for e in errs), errs)
 
+
+# ---------------------------------------------------------------------------
+# Review/Rework Artifact Contract tests (review-rework-artifact.contract.md v0.1)
+# ---------------------------------------------------------------------------
+
+class ReviewReworkArtifactTests(unittest.TestCase):
+    """Tests for null-value discipline and review_evidence_artifact coupling.
+
+    See .vibe/review-rework-artifact.contract.md for the full contract.
+    """
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self._tmp.name)
+        _make_repo_skeleton(self.base)
+
+    def tearDown(self) -> None:
+        self._tmp.cleanup()
+
+    # ----- null-value discipline: passing cases --------------------------------
+
+    def test_review_friction_null_with_notes_reason_passes(self) -> None:
+        """review_friction_count=null + missing_evidence + notes reason → PASS."""
+        exp = _build_valid_bundle(self.base)
+        run_dir = exp / "artifacts" / "run-001"
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        # Write a custom measurement that has null review metrics with reasons, using
+        # auditor_verdict matching the default auditor fixture (MISSING_EVIDENCE, 2 gaps).
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "MISSING_EVIDENCE"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                    notes: "no changed-files artifact"
+                  unsupported_claim_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                    notes: "No review comment artifact archived."
+                  rework_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                    notes: "No rework artifact archived."
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+                missing_evidence:
+                  - item: "scope_drift_count"
+                    detail: "no changed-files artifact"
+            """),
+        )
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    def test_review_friction_null_with_missing_evidence_list_reason_passes(self) -> None:
+        """review_friction_count=null + missing_evidence + reason in missing_evidence list → PASS."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / "run-001")
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "MISSING_EVIDENCE"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                    notes: "no changed-files artifact"
+                  unsupported_claim_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 2
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                  rework_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+                missing_evidence:
+                  - item: "review_friction_count"
+                    detail: "No review comment artifact archived for this run."
+                  - item: "rework_count"
+                    detail: "No rework artifact archived for this run."
+                  - item: "scope_drift_count"
+                    detail: "No changed-files artifact."
+            """),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # ----- null-value discipline: failing cases --------------------------------
+
+    def test_review_friction_null_wrong_evidence_status_fails(self) -> None:
+        """review_friction_count=null with evidence_status != missing_evidence → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / "run-001")
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "PASS"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "repo_local"
+                    notes: "scope contained"
+                  unsupported_claim_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: null
+                    evidence_status: "self_reported"
+                  rework_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review_friction_count.value=null" in e and "missing_evidence" in e for e in errs),
+            errs,
+        )
+
+    def test_review_friction_null_missing_evidence_without_reason_fails(self) -> None:
+        """review_friction_count=null + missing_evidence but no notes and no missing_evidence entry → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / "run-001")
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "PASS"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "repo_local"
+                    notes: "scope contained"
+                  unsupported_claim_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                  rework_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review_friction_count.value=null" in e and "Begründung" in e for e in errs),
+            errs,
+        )
+
+    def test_rework_count_null_missing_evidence_without_reason_fails(self) -> None:
+        """rework_count=null + missing_evidence but no notes and no missing_evidence entry → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        _write_changed_files_artifact(exp / "artifacts" / "run-001")
+        run_dir = exp / "artifacts" / "run-001"
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "PASS"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "repo_local"
+                    notes: "scope contained"
+                  unsupported_claim_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  rework_count:
+                    value: null
+                    evidence_status: "missing_evidence"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("rework_count.value=null" in e and "Begründung" in e for e in errs),
+            errs,
+        )
+
+    # ----- review_evidence_artifact: passing cases ----------------------------
+
+    def _write_review_events(self, run_dir: Path, name: str = "review-events.yml") -> None:
+        _write(
+            run_dir / name,
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 2
+                rework_count: 1
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "external_verified"
+                review_thread_refs:
+                  - "https://github.com/test/test/pull/1#issuecomment-1001"
+                notes: "fixture review events"
+            """),
+        )
+
+    def test_review_friction_repo_local_with_valid_review_evidence_artifact_passes(self) -> None:
+        """review_friction_count.evidence_status=repo_local + valid review_evidence_artifact → PASS."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        self._write_review_events(run_dir)
+        # Write an all-PASS auditor so the measurement can use auditor_verdict=PASS.
+        _write(
+            run_dir / "auditor-output.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "auditor_output"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                auditor: "test-auditor"
+                overall_verdict: "PASS"
+                claims:
+                  - id: "c-1"
+                    text: "all passing"
+                    type: "file_changed"
+                    verdict: "PASS"
+                    evidence: []
+            """),
+        )
+        # Append review_evidence_artifact to comparability.yml
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "PASS"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "repo_local"
+                    notes: "scope contained"
+                  unsupported_claim_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 2
+                    evidence_status: "repo_local"
+                    notes: "review-events.yml archived"
+                  rework_count:
+                    value: 1
+                    evidence_status: "repo_local"
+                    notes: "review-events.yml archived"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        # Also update run.yml verdict to PASS to match auditor
+        _write(
+            run_dir / "run.yml",
+            _valid_run_yml(run_id="run-001").replace(
+                'outcome: "MISSING_EVIDENCE"', 'outcome: "PASS"'
+            ),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    def test_review_friction_repo_local_without_review_evidence_artifact_fails(self) -> None:
+        """review_friction_count.evidence_status=repo_local without review_evidence_artifact → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "PASS"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "repo_local"
+                    notes: "scope contained"
+                  unsupported_claim_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 2
+                    evidence_status: "repo_local"
+                  rework_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review_friction_count.evidence_status=repo_local" in e
+                and "review_evidence_artifact" in e for e in errs),
+            errs,
+        )
+
+    def test_rework_count_repo_local_without_review_evidence_artifact_fails(self) -> None:
+        """rework_count.evidence_status=repo_local without review_evidence_artifact → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write(
+            run_dir / "measurement.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "measurement_run"
+                run_id: "run-001"
+                auditor_verdict: "PASS"
+                auditor_ref: "auditor-output.yml"
+                metrics:
+                  scope_drift_count:
+                    value: 0
+                    evidence_status: "repo_local"
+                    notes: "scope contained"
+                  unsupported_claim_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  missing_locator_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  validation_gap_count:
+                    value: 0
+                    evidence_status: "derived_from_auditor_output"
+                  review_friction_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  rework_count:
+                    value: 1
+                    evidence_status: "repo_local"
+                  false_block_count:
+                    value: 0
+                    evidence_status: "external_unverified"
+                  task_completion_time_observed:
+                    value: "n/a"
+                    evidence_status: "external_unverified"
+            """),
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("rework_count.evidence_status=repo_local" in e
+                and "review_evidence_artifact" in e for e in errs),
+            errs,
+        )
+
+    # ----- review_evidence_artifact: ref validation ---------------------------
+
+    def test_review_evidence_artifact_nonexistent_file_fails(self) -> None:
+        """review_evidence_artifact pointing to non-existent file → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "ghost-review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("ghost-review-events.yml" in e and "existierende Datei" in e for e in errs),
+            errs,
+        )
+
+    def test_review_evidence_artifact_absolute_path_fails(self) -> None:
+        """review_evidence_artifact with absolute path → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "/tmp/review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review_evidence_artifact" in e and "absoluter Pfad" in e for e in errs),
+            errs,
+        )
+
+    def test_review_evidence_artifact_pointing_to_other_run_fails(self) -> None:
+        """review_evidence_artifact referencing a different run directory → error."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        # Create the file in a different run directory.
+        other_run = exp / "artifacts" / "run-000"
+        self._write_review_events(other_run, "review-events.yml")
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "artifacts/run-000/review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review_evidence_artifact" in e
+                and "run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen" in e
+                for e in errs),
+            errs,
+        )
+
+    def test_review_evidence_artifact_experiment_relative_passes(self) -> None:
+        """review_evidence_artifact as experiment-relative path (artifacts/run-id/...) → PASS."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        self._write_review_events(run_dir)
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\nreview_evidence_artifact: "artifacts/run-001/review-events.yml"\n',
+            encoding="utf-8",
+        )
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+
+# ---------------------------------------------------------------------------
+# Content-validation tests for review-events.yml
+# (review-rework-artifact.contract.md v0.1, follow-up to PR #178)
+# ---------------------------------------------------------------------------
+
+def _setup_review_evidence_base(base: Path) -> tuple[Path, Path]:
+    """Build a valid bundle with comparability + changed-files, return (exp_dir, run_dir).
+
+    Caller should write review-events.yml and append review_evidence_artifact
+    to comparability.yml before running validate_repo().
+    """
+    exp = _build_valid_bundle(
+        base,
+        comparability_text=_valid_comparability_yml(
+            verdict="comparable",
+            changed_files_artifact="changed-files.txt",
+        ),
+    )
+    run_dir = exp / "artifacts" / "run-001"
+    _write_changed_files_artifact(run_dir)
+    return exp, run_dir
+
+
+def _append_review_evidence_artifact(run_dir: Path, ref: str = "review-events.yml") -> None:
+    comp_path = run_dir / "comparability.yml"
+    comp_path.write_text(
+        comp_path.read_text(encoding="utf-8")
+        + f'\nreview_evidence_artifact: "{ref}"\n',
+        encoding="utf-8",
+    )
+
+
+def _valid_review_events(run_id: str = "run-001") -> str:
+    return textwrap.dedent(f"""\
+        schema_version: "1.0.0"
+        contract: "review_events"
+        run_id: "{run_id}"
+        pr_ref: "github:test/test/pull/1"
+        review_friction_count: 2
+        rework_count: 1
+        captured_at: "2026-05-11T12:00:00Z"
+        evidence_status: "external_verified"
+        review_thread_refs:
+          - "https://github.com/test/test/pull/1#issuecomment-1001"
+        notes: "fixture review events"
+    """)
+
+
+class ReviewEventsContentValidationTests(unittest.TestCase):
+    """Tests for _validate_review_events_content().
+
+    Each test builds a bundle where comparability.yml sets review_evidence_artifact;
+    the review-events.yml content varies per case.
+    """
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self._tmp.name)
+        _make_repo_skeleton(self.base)
+
+    def tearDown(self) -> None:
+        self._tmp.cleanup()
+
+    # ----- passing case -------------------------------------------------------
+
+    def test_valid_review_events_passes(self) -> None:
+        """A fully valid review-events.yml with all required fields passes."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(run_dir / "review-events.yml", _valid_review_events())
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    def test_valid_review_events_repo_local_evidence_status_passes(self) -> None:
+        """evidence_status=repo_local does not require review_thread_refs/rework_commit_refs."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 0
+                rework_count: 0
+                captured_at: "2026-05-11T00:00:00Z"
+                evidence_status: "repo_local"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # ----- empty / non-dict ---------------------------------------------------
+
+    def test_empty_review_events_file_fails(self) -> None:
+        """An empty YAML file (parsed as empty dict) fails with missing-field errors."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        (run_dir / "review-events.yml").write_text("", encoding="utf-8")
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        # An empty YAML dict has no required fields: contract, run_id, counts, etc. must all fail.
+        review_errs = [e for e in errs if "review-events.yml" in e]
+        self.assertGreater(len(review_errs), 0, errs)
+
+    def test_list_review_events_file_fails(self) -> None:
+        """A YAML list (not a mapping) fails."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(run_dir / "review-events.yml", "- entry1\n- entry2\n")
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "YAML-Objekt" in e for e in errs),
+            errs,
+        )
+
+    # ----- contract -----------------------------------------------------------
+
+    def test_wrong_contract_fails(self) -> None:
+        """contract != 'review_events' is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'contract: "review_events"', 'contract: "measurement_run"'
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "contract=" in e and "review_events" in e
+                for e in errs),
+            errs,
+        )
+
+    def test_missing_contract_fails(self) -> None:
+        """A review-events.yml without a contract field is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        content = _valid_review_events()
+        # Remove the contract line
+        lines = [ln for ln in content.splitlines() if not ln.startswith("contract:")]
+        _write(run_dir / "review-events.yml", "\n".join(lines) + "\n")
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "contract=" in e for e in errs),
+            errs,
+        )
+
+    # ----- run_id mismatch ----------------------------------------------------
+
+    def test_run_id_mismatch_fails(self) -> None:
+        """run_id in review-events.yml that doesn't match the run directory is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events(run_id="run-999-wrong"),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "run_id=" in e and "run-999-wrong" in e
+                for e in errs),
+            errs,
+        )
+
+    # ----- negative counts ----------------------------------------------------
+
+    def test_negative_review_friction_count_fails(self) -> None:
+        """review_friction_count < 0 is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                "review_friction_count: 2", "review_friction_count: -1"
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "review_friction_count" in e for e in errs),
+            errs,
+        )
+
+    def test_negative_rework_count_fails(self) -> None:
+        """rework_count < 0 is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace("rework_count: 1", "rework_count: -3"),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "rework_count" in e for e in errs),
+            errs,
+        )
+
+    def test_string_review_friction_count_fails(self) -> None:
+        """review_friction_count that is a string, not integer, is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                "review_friction_count: 2", 'review_friction_count: "two"'
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "review_friction_count" in e for e in errs),
+            errs,
+        )
+
+    # ----- external_verified without refs -------------------------------------
+
+    def test_external_verified_without_refs_fails(self) -> None:
+        """evidence_status=external_verified without any ref list is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T00:00:00Z"
+                evidence_status: "external_verified"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "external_verified" in e
+                and "review_thread_refs" in e for e in errs),
+            errs,
+        )
+
+    def test_external_verified_empty_thread_refs_list_fails(self) -> None:
+        """evidence_status=external_verified with an empty review_thread_refs list is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T00:00:00Z"
+                evidence_status: "external_verified"
+                review_thread_refs: []
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "external_verified" in e for e in errs),
+            errs,
+        )
+
+    def test_external_verified_with_rework_commit_refs_passes(self) -> None:
+        """evidence_status=external_verified with rework_commit_refs (not thread_refs) → PASS."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 1
+                captured_at: "2026-05-11T00:00:00Z"
+                evidence_status: "external_verified"
+                rework_commit_refs:
+                  - sha: "abc123"
+                    description: "Fix reviewer comment"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # ----- missing required fields -------------------------------------------
+
+    def test_missing_captured_at_fails(self) -> None:
+        """captured_at missing → error."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        lines = [
+            ln for ln in _valid_review_events().splitlines()
+            if not ln.startswith("captured_at:")
+        ]
+        _write(run_dir / "review-events.yml", "\n".join(lines) + "\n")
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "captured_at" in e for e in errs),
+            errs,
+        )
+
+    def test_missing_pr_ref_fails(self) -> None:
+        """pr_ref missing → error."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        lines = [
+            ln for ln in _valid_review_events().splitlines()
+            if not ln.startswith("pr_ref:")
+        ]
+        _write(run_dir / "review-events.yml", "\n".join(lines) + "\n")
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "pr_ref" in e for e in errs),
+            errs,
+        )
+
+    def test_invalid_evidence_status_fails(self) -> None:
+        """evidence_status with an unrecognised value is rejected."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'evidence_status: "external_verified"',
+                'evidence_status: "self_reported"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "evidence_status=" in e for e in errs),
+            errs,
+        )
+
+    def test_external_verified_rework_commit_refs_empty_sha_fails(self) -> None:
+        """evidence_status=external_verified with rework_commit_refs containing only empty sha fails."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 1
+                captured_at: "2026-05-11T00:00:00Z"
+                evidence_status: "external_verified"
+                rework_commit_refs:
+                  - sha: ""
+                    description: "empty sha should not count"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "external_verified" in e for e in errs),
+            errs,
+        )
+
+    # ----- evidence_status type safety ----------------------------------------
+
+    def test_evidence_status_list_does_not_crash_gives_error(self) -> None:
+        """evidence_status as a YAML list must produce a validator error, not a TypeError."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status:
+                  - repo_local
+                  - ci_artifact
+                review_thread_refs:
+                  - "https://github.com/test/test/pull/1#issuecomment-1001"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "evidence_status" in e for e in errs),
+            errs,
+        )
+
+    def test_evidence_status_dict_does_not_crash_gives_error(self) -> None:
+        """evidence_status as a YAML mapping must produce a validator error, not a TypeError."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "review_events"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status:
+                  type: repo_local
+                review_thread_refs:
+                  - "https://github.com/test/test/pull/1#issuecomment-1001"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "evidence_status" in e for e in errs),
+            errs,
+        )
+
+    # ----- captured_at ISO-8601 validation ------------------------------------
+
+    def test_captured_at_invalid_string_fails(self) -> None:
+        """captured_at: "yesterday" (non-ISO string) fails with a timestamp error."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'captured_at: "2026-05-11T12:00:00Z"',
+                'captured_at: "yesterday"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any(
+                "review-events.yml" in e
+                and "captured_at" in e
+                and "ISO-8601" in e
+                for e in errs
+            ),
+            errs,
+        )
+
+    def test_captured_at_date_only_fails(self) -> None:
+        """captured_at: "2026-05-11" must fail (date-only is not a timestamp)."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(
+            run_dir / "review-events.yml",
+            _valid_review_events().replace(
+                'captured_at: "2026-05-11T12:00:00Z"',
+                'captured_at: "2026-05-11"',
+            ),
+        )
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("review-events.yml" in e and "captured_at" in e for e in errs),
+            errs,
+        )
+
+    def test_captured_at_valid_timestamp_passes(self) -> None:
+        """captured_at: "2026-05-11T12:00:00Z" is a valid ISO-8601 timestamp and passes."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        _write(run_dir / "review-events.yml", _valid_review_events())
+        _append_review_evidence_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # ----- diagnostic path for subdir artifacts --------------------------------
+
+    def test_subdir_artifact_invalid_content_error_contains_subdir(self) -> None:
+        """An artifact in a subdir of run_dir shows the subdir path in the error message."""
+        exp, run_dir = _setup_review_evidence_base(self.base)
+        subdir = run_dir / "meta"
+        subdir.mkdir()
+        _write(
+            subdir / "review-events.yml",
+            textwrap.dedent("""\
+                schema_version: "1.0.0"
+                contract: "wrong_contract"
+                run_id: "run-001"
+                pr_ref: "github:test/test/pull/1"
+                review_friction_count: 1
+                rework_count: 0
+                captured_at: "2026-05-11T12:00:00Z"
+                evidence_status: "repo_local"
+            """),
+        )
+        _append_review_evidence_artifact(run_dir, ref="meta/review-events.yml")
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        # Error message must include the subdir component so it is findable on disk.
+        self.assertTrue(
+            any("meta" in e and "review-events.yml" in e and "contract=" in e for e in errs),
+            errs,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -50,7 +50,9 @@ Benötigt: python3 -m pip install pyyaml jsonschema rfc3339-validator
 from __future__ import annotations
 
 import json
+import re
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -238,6 +240,226 @@ def _resolve_changed_files_artifact_ref(
 
 def _is_grandfathered_changed_files_run(rel_run: Path) -> bool:
     return rel_run == _GRANDFATHERED_CHANGED_FILES_RUN
+
+
+def _load_comparability_run_artifact_ref(
+    *,
+    field_name: str,
+    comparability: dict | None,
+    exp_dir: Path,
+    run_dir: Path,
+    rel_run: Path,
+    errors: list[str],
+) -> tuple[Path | None, bool]:
+    """Validates an optional run-local artifact ref field in a comparability dict.
+
+    Generic helper for any ``comparability.yml`` field that points to a run-local
+    artifact (e.g. ``review_evidence_artifact``).  Uses the same two-form resolution
+    rules as ``changed_files_artifact``:
+
+      - run-local:               ``review-events.yml`` or ``subdir/review-events.yml``
+      - experiment-relative:     ``artifacts/<run-id>/review-events.yml``
+
+    Both forms must still resolve into the current run_dir.
+
+    Returns ``(resolved_path, artifact_missing)``:
+      ``(Path, False)``  — field present, non-null, file exists and is run-local
+                           (caller receives the resolved path for content validation)
+      ``(None, True)``   — field absent or null (no error)
+      ``(None, False)``  — field present but invalid (error already appended)
+    """
+    if comparability is None:
+        return None, True
+
+    raw_ref = comparability.get(field_name, _MISSING)
+    if raw_ref is _MISSING or raw_ref is None:
+        return None, True
+
+    if not isinstance(raw_ref, str):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} muss ein String oder null sein."
+        )
+        return None, False
+
+    ref = raw_ref.strip()
+    if not ref:
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} darf kein leerer String sein."
+        )
+        return None, False
+
+    if _is_absolute_path_str(ref):
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' darf kein absoluter Pfad sein."
+        )
+        return None, False
+
+    target = _resolve_changed_files_artifact_ref(exp_dir=exp_dir, run_dir=run_dir, ref=ref)
+    if target is None:
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' muss "
+            f"run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen."
+        )
+        return None, False
+
+    if not target.is_file():
+        errors.append(
+            f"  ❌ {rel_run}/comparability.yml: {field_name} '{ref}' zeigt nicht auf eine existierende Datei."
+        )
+        return None, False
+
+    return target, False
+
+
+# Valid evidence_status values accepted in a review-events.yml artifact.
+_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES = frozenset(
+    {"repo_local", "ci_artifact", "external_verified"}
+)
+
+
+def _validate_review_events_content(
+    *,
+    path: Path,
+    expected_run_id: str,
+    run_dir: Path,
+    rel_run: Path,
+    errors: list[str],
+) -> None:
+    """Validates the content of a review-events.yml artifact.
+
+    Called whenever comparability.yml.review_evidence_artifact resolves to an
+    existing file.  Enforces the minimal semantic rules from
+    .vibe/review-rework-artifact.contract.md v0.1:
+
+      - YAML is readable and root is a mapping
+      - contract == "review_events"
+      - run_id matches the run directory name
+      - review_friction_count is integer >= 0
+      - rework_count is integer >= 0
+      - evidence_status ∈ {repo_local, ci_artifact, external_verified}
+      - captured_at is present, non-empty, and parseable as ISO 8601
+      - pr_ref is present and non-empty
+      - if evidence_status == external_verified: at least one entry in
+        review_thread_refs or rework_commit_refs
+    """
+    # Build a path label that shows the artifact's location relative to the run
+    # directory, so errors for subdir artifacts (e.g. subdir/review-events.yml)
+    # correctly show rel_run/subdir/review-events.yml instead of only the filename.
+    try:
+        rel_artifact = path.relative_to(run_dir)
+    except ValueError:
+        rel_artifact = Path(path.name)
+    rel = rel_run / rel_artifact
+
+    try:
+        data = _load_yaml(path)
+    except Exception as e:
+        errors.append(f"  ❌ {rel}: YAML-Fehler — {e}")
+        return
+
+    if not isinstance(data, dict):
+        errors.append(f"  ❌ {rel}: Datei muss ein YAML-Objekt (Mapping) sein.")
+        return
+
+    # contract
+    contract = data.get("contract")
+    if contract != "review_events":
+        errors.append(
+            f"  ❌ {rel}: contract='{contract}' muss exakt 'review_events' sein."
+        )
+
+    # run_id
+    run_id = data.get("run_id")
+    if not isinstance(run_id, str) or not run_id.strip():
+        errors.append(f"  ❌ {rel}: run_id fehlt oder ist leer.")
+    elif run_id != expected_run_id:
+        errors.append(
+            f"  ❌ {rel}: run_id='{run_id}' stimmt nicht mit "
+            f"Run-Verzeichnis '{expected_run_id}' überein."
+        )
+
+    # review_friction_count: integer >= 0
+    rfc = data.get("review_friction_count")
+    if not isinstance(rfc, int) or isinstance(rfc, bool) or rfc < 0:
+        errors.append(
+            f"  ❌ {rel}: review_friction_count muss eine ganze Zahl >= 0 sein."
+        )
+
+    # rework_count: integer >= 0
+    rwc = data.get("rework_count")
+    if not isinstance(rwc, int) or isinstance(rwc, bool) or rwc < 0:
+        errors.append(
+            f"  ❌ {rel}: rework_count muss eine ganze Zahl >= 0 sein."
+        )
+
+    # evidence_status: must be a non-empty string in the valid set
+    ev_status = data.get("evidence_status")
+    if not isinstance(ev_status, str) or not ev_status.strip():
+        errors.append(
+            f"  ❌ {rel}: evidence_status fehlt, ist leer oder kein String — "
+            f"erwartet eines von {sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)}."
+        )
+        ev_status = None  # prevent false external_verified branch below
+    elif ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
+        errors.append(
+            f"  ❌ {rel}: evidence_status='{ev_status}' muss eines von "
+            f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
+        )
+
+    # captured_at: strict timestamp string (not date-only), with timezone.
+    captured_at = data.get("captured_at")
+    if not isinstance(captured_at, str) or not captured_at.strip():
+        errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
+    else:
+        captured_at_stripped = captured_at.strip()
+        if "T" not in captured_at_stripped:
+            errors.append(
+                f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss ein Timestamp mit "
+                f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
+            )
+        else:
+            has_z = captured_at_stripped.endswith("Z")
+            has_offset = bool(re.search(r"[+-]\d{2}:?\d{2}$", captured_at_stripped))
+            if not (has_z or has_offset):
+                errors.append(
+                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
+                    f"angeben (Suffix 'Z' oder Offset wie '+02:00')."
+                )
+
+        try:
+            datetime.fromisoformat(captured_at_stripped.replace("Z", "+00:00"))
+        except ValueError:
+            errors.append(
+                f"  ❌ {rel}: captured_at='{captured_at_stripped}' ist kein gültiger "
+                f"ISO-8601-Timestamp (z. B. '2026-05-11T12:00:00Z' oder '2026-05-11T12:00:00+02:00')."
+            )
+
+    # pr_ref
+    pr_ref = data.get("pr_ref")
+    if not isinstance(pr_ref, str) or not pr_ref.strip():
+        errors.append(f"  ❌ {rel}: pr_ref fehlt oder ist leer.")
+
+    # external_verified: mindestens eine nachvollziehbare Referenz
+    if ev_status == "external_verified":
+        thread_refs = data.get("review_thread_refs")
+        rework_commit_refs = data.get("rework_commit_refs")
+        thread_non_empty = (
+            isinstance(thread_refs, list)
+            and any(isinstance(r, str) and r.strip() for r in thread_refs)
+        )
+        rework_non_empty = (
+            isinstance(rework_commit_refs, list)
+            and any(
+                (isinstance(r, str) and r.strip())
+                or (isinstance(r, dict) and isinstance(r.get("sha"), str) and r["sha"].strip())
+                for r in rework_commit_refs
+            )
+        )
+        if not thread_non_empty and not rework_non_empty:
+            errors.append(
+                f"  ❌ {rel}: evidence_status=external_verified erfordert "
+                f"mindestens einen Eintrag in review_thread_refs oder rework_commit_refs."
+            )
 
 
 def _requires_changed_files_comparability(bundle: dict | None, rel_exp: Path) -> bool:
@@ -1032,6 +1254,28 @@ def _validate_run_dir(
                 f"gültiges changed_files_artifact."
             )
 
+    # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.1).
+    # The field is optional; when present it enables repo_local evidence_status for
+    # review_friction_count and rework_count in measurement.yml.
+    review_evidence_path, _review_ev_missing = _load_comparability_run_artifact_ref(
+        field_name="review_evidence_artifact",
+        comparability=comparability if comparability_present else None,
+        exp_dir=exp_dir,
+        run_dir=run_dir,
+        rel_run=rel_run,
+        errors=errors,
+    )
+    review_evidence_artifact_valid = review_evidence_path is not None
+    if review_evidence_path is not None:
+        # Content validation (review-rework-artifact.contract.md v0.1).
+        _validate_review_events_content(
+            path=review_evidence_path,
+            expected_run_id=run_dir.name,
+            run_dir=run_dir,
+            rel_run=rel_run,
+            errors=errors,
+        )
+
     # R7: measurement.yml
     measurement: dict | None = None
     if measurement_yml.is_file():
@@ -1131,6 +1375,32 @@ def _validate_run_dir(
                     errors.append(
                         f"  ❌ {rel_run}/measurement.yml: scope_drift_count.value={scope_value!r} "
                         f"erfordert ein gültiges changed_files_artifact."
+                    )
+
+        # Review/rework metrics: null-discipline and optional review_evidence_artifact coupling.
+        # See .vibe/review-rework-artifact.contract.md for the full contract.
+        for metric_name in ("review_friction_count", "rework_count"):
+            metric = (measurement.get("metrics") or {}).get(metric_name) or {}
+            if not isinstance(metric, dict):
+                continue
+            metric_value = metric.get("value")
+            metric_status = metric.get("evidence_status")
+            if metric_value is None:
+                if metric_status != "missing_evidence":
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: {metric_name}.value=null "
+                        f"erfordert evidence_status=missing_evidence."
+                    )
+                elif not _has_metric_missing_evidence_reason(measurement, metric_name):
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: {metric_name}.value=null "
+                        f"erfordert eine Begründung in notes oder missing_evidence."
+                    )
+            elif metric_status == "repo_local":
+                if not review_evidence_artifact_valid:
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: {metric_name}.evidence_status=repo_local "
+                        f"erfordert ein gültiges review_evidence_artifact in comparability.yml."
                     )
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:
