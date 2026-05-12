@@ -11,10 +11,11 @@
 - [ ] Generierte Artefakte nur aktualisiert
 
 ## Berührte Pfade
-<!-- z. B. docs/, scripts/, .github/workflows/ -->
+<!-- Konkrete Pfade, keine Platzhalter (.../). z. B. docs/, scripts/, .github/workflows/ -->
 
 ## Scope / Nicht-Ziele
-<!-- Was ist bewusst in Scope, was explizit out of scope? -->
+<!-- Was ist bewusst in Scope, was explizit out of scope?
+     Dieser Abschnitt ist Review-Kontext, kein Ersatz für run-lokale Evidence-Artefakte. -->
 
 ## Validierung
 
