@@ -56,7 +56,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-005"
-    text: "A repo-local summarized targeted-test capture reports exit_code 0."
+    text: "A repo-local summarized targeted test capture reports exit_code 0."
     type: "command_result"
     verdict: "PASS"
     evidence:

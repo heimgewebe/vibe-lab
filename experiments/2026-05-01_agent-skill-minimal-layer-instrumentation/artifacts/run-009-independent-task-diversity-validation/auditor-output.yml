@@ -90,7 +90,7 @@ claims:
       external_verified.
 
   - id: "claim-005"
-    text: "A repo-local summarized targeted-test capture reports exit_code 0."
+    text: "A repo-local summarized targeted test capture reports exit_code 0."
     type: "command_result"
     verdict: "PASS"
     evidence:
