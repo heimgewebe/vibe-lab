@@ -11,7 +11,7 @@
 - [ ] Generierte Artefakte nur aktualisiert
 
 ## Berührte Pfade
-<!-- Konkrete Pfade, keine Platzhalter (.../). z. B. docs/, scripts/, .github/workflows/ -->
+<!-- Konkrete Pfade, keine Platzhalter wie .../. z. B. docs/, scripts/, .github/workflows/ -->
 
 ## Scope / Nicht-Ziele
 <!-- Was ist bewusst in Scope, was explizit out of scope?
