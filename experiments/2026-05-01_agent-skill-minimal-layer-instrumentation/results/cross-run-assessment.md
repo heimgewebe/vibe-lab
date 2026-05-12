@@ -236,6 +236,47 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 ---
 
+## Post run-009 update (2026-05-12)
+
+### Run-009 — Task-Diversity Probe + Independent-Validation Status
+
+| Dimension | Befund |
+|---|---|
+| Task | Multi-artifact experiment scaffold synthesis: cross-run evidence reading, schema-compliant YAML for 6+ interdependent files, epistemic calibration of verdict and next-steps |
+| Task-Cluster | `multi-artifact-scaffold-synthesis` — distinct from `validator-test-hardening` (run-005/006) and `outcome-evidence-pilot` (run-007/008) |
+| Executor | `claude-code:claude-sonnet-4-5` |
+| Auditor | `evidence-reconciliation-auditor` executed by same session → partial independence only |
+| Auditor-Verdict | `CLAIM_NOT_PROVEN` (claim-003: independent audit not proven; claim-002: task-diversity PASS) |
+| Timing | `self_reported` with explicit capture_mode, evidence_status, and upgrade_path note — improvement over run-008 plain-text |
+| comparability_verdict | `not_comparable` (partial independence; scoped as probe, not usefulness run) |
+
+### Auswirkung auf die Gesamtbewertung
+
+**Blocker-Fortschritt:**
+
+1. **Task-Diversitätsnachweis (§5):** Teilweise adressiert. Run-009 claim-002 ist PASS: mindestens ein Run existiert nun außerhalb des validator-test-hardening-Clusters. Eine zweite unabhängige Instanz in einer weiteren Task-Klasse wäre für stärkere Replikation nötig.
+2. **Unabhängige Metrik-Validierung (§5):** Weiterhin offen. Run-009 dokumentiert explizit CLAIM_NOT_PROVEN für Auditor-Unabhängigkeit statt den Blocker stillschweigend fortzuschreiben.
+3. **Timing-Semantik (§5):** Verbessert. timing.txt enthält nun `capture_mode`, `evidence_status: self_reported` und `upgrade_path`-Notiz. Der Wert bleibt self_reported — kein Upgrade auf repo_local oder external_verified.
+4. **Negativfall-Nachweis (§5):** Keine Änderung (run-008 bleibt der Pilot).
+
+**Unverändertes Fazit:**
+
+- `verdict: insufficient_proof` bleibt korrekt.
+- Comparable-run-Count bleibt bei 3 (run-002, run-005, run-006).
+- `result_assessment`, `promotion_readiness` und Usefulness-Claims sind weiterhin nicht erlaubt.
+
+### Aktualisierte Gegenhypothesen-Lage
+
+| Gegenhypothese | Status nach run-009 |
+|---|---|
+| A: Scaffold-PASS nur Operator-/Prompt-Effekt | unresolved — unverändert |
+| B: Scaffold-PASS nur Fallselektion | abgeschwächt — run-009 ist außerhalb des validator-test-hardening-Clusters, aber Bias nicht ausgeschlossen |
+| C: Scaffold-PASS nur Bewertungsbias | nicht_widerlegt — Selbst-Auditierung in allen Runs inkl. run-009 |
+| D: Scaffold nicht stabil replizierbar | offen — run-009 belegt Scaffold für einen weiteren Task-Cluster, Replikation bleibt thin |
+| E: PASS nur bessere Dokumentation | strukturell bestätigt — unverändert |
+
+---
+
 ## Anhang: Fehlende Governance-Referenz
 
 `docs/policies/agent-reading-protocol.md` — referenziert in den Anweisungen für dieses Assessment.

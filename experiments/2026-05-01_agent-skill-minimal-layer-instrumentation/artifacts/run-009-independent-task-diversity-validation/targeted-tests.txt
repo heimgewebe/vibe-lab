@@ -1,0 +1,6 @@
+Command: python3 scripts/docmeta/test_validate_run_bundle.py
+Exit code: 0
+Ran: 139 tests in ~4.5 s
+Result: OK
+
+All run-bundle validator regression tests passed after adding run-009 artifacts.

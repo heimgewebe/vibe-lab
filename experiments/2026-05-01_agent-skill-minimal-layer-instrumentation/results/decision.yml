@@ -23,22 +23,33 @@ rationale: |
   partiell belegt. Zusätzlich: runs 005/006 aus derselben Task-Klasse (task-Cluster,
   keine echte Varietät), Auditor-Executor == Executor in allen Runs (keine
   unabhängige Bewertung), keine negativen Fälle dokumentiert.
+  Run-007 hat review_friction_count und rework_count als repo_local pilotiert.
+  Run-008 hat einen Negativfall / CLAIM_NOT_PROVEN pilotiert (partielle Unabhängigkeit).
+  Run-009 hat Task-Diversität partiell adressiert: claim-002 PASS (Task außerhalb
+  validator-test-hardening-Cluster), claim-003 CLAIM_NOT_PROVEN (Auditor-Unabhängigkeit
+  bleibt partial). Timing-Semantik verbessert: self_reported mit explizitem
+  capture_mode, evidence_status und upgrade_path.
   Kein Upgrade auf result_assessment zulässig.
 
 evidence_summary:
-  observations: 3
+  observations: 4
   positive: 1
-  negative: 1
+  negative: 2
   neutral: 1
-  positive_detail: "Scaffold-Artefaktstruktur reproduzierbar; 5/8 Metriken konsistent erfasst"
-  negative_detail: "3/8 Metriken persistent unmessbar (review_friction, rework, timing); kein unabhängiger Auditor; Task-Cluster ohne Varietät"
-  neutral_detail: "comparability.yml-Mechanismus funktioniert; run-003/004 korrekt ausgeschlossen"
+  positive_detail: "Scaffold-Artefaktstruktur reproduzierbar; 5/8 Metriken konsistent erfasst; Task-Diversität partiell adressiert (run-009 claim-002 PASS)"
+  negative_detail: "3/8 Metriken persistent unmessbar (review_friction, rework, timing); kein unabhängiger Auditor (CLAIM_NOT_PROVEN in run-008 und run-009); Task-Cluster ohne vollständige Varietät"
+  neutral_detail: "comparability.yml-Mechanismus funktioniert; run-003/004 korrekt ausgeschlossen; Timing-Semantik verbessert aber noch self_reported"
 
 next_steps: |
   Blocker für Beseitigung des insufficient_proof (aus results/cross-run-assessment.md §5):
   1. review_friction_count und rework_count: Archivierungs-Mechanismus für
-     externe Review-Events etablieren.
+     externe Review-Events etablieren. Status: pilotiert in run-007 (repo_local).
   2. Task-Diversitätsnachweis: mindestens ein Run mit komplexem oder ambiguem Scope.
+     Status: partiell adressiert in run-009 (claim-002 PASS, außerhalb validator-
+     test-hardening-Cluster; zweiter unabhängiger Run in weiterer Task-Klasse offen).
   3. Negativfall-Nachweis: mindestens ein Run mit Auditor-FAIL-Verdict und
      konkretem Artefakt-Rückverweis.
+     Status: CLAIM_NOT_PROVEN pilotiert in run-008; echter FAIL noch offen.
   4. Unabhängige Metrik-Validierung: Prüfung durch Reviewer != Executor.
+     Status: CLAIM_NOT_PROVEN in run-008 und run-009; vollständige Unabhängigkeit
+     weiterhin nicht belegt.

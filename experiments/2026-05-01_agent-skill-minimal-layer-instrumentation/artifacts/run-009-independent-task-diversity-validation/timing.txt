@@ -1,0 +1,17 @@
+started_at: "2026-05-12T13:40:00Z"
+finished_at: "2026-05-12T14:20:00Z"
+duration_seconds: 2400
+capture_mode: "repo_local_manual_capture"
+evidence_status: "self_reported"
+limitation_note: >
+  Timing is recorded by the executor (same agent session) at task start
+  and finish. It is not independently verified or cross-checked against
+  an external clock or CI timestamp. Duration (2400 s ≈ 40 min) covers
+  reading all context files, designing and creating 10 run artifacts,
+  updating manifest.yml, evidence.jsonl, cross-run-assessment.md,
+  decision.yml, and roadmap.md, then running tests and make validate.
+upgrade_path: >
+  To upgrade timing from self_reported to repo_local: record a git-log or CI job
+  timestamp for first and last commit of this run. To upgrade to
+  external_verified: use a CI-supplied job duration from the workflow run
+  that merged this PR.
