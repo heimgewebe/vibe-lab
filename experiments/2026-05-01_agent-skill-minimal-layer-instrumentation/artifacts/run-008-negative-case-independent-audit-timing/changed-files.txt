@@ -1,0 +1,34 @@
+# Changed-Files Artifact for run-008-negative-case-independent-audit-timing
+# Generated: 2026-05-12T12:48:02Z
+# Scope: Outcome-evidence negative-case run bundle, experiment bookkeeping, and roadmap coordination update only
+
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/measurement.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/evidence-pack.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/comparability.yml [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/changed-files.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run_meta.json [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/targeted-tests.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/make-validate.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/timing.txt [add]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml [modify]
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl [modify]
+docs/roadmap.md [modify]
+
+Scope Boundary
+==============
+INCLUDED:
+- Run-008 artifact directory and repo-local timing evidence
+- Experiment manifest and evidence-log bookkeeping for run-008
+- Roadmap rows RM-002, RM-005, and GAP-003 to note "negative case piloted"
+
+EXCLUDED:
+- results/decision.yml, results/result.md, and results/cross-run-assessment.md
+- Any usefulness, adoption, promotion, or causal claim
+- Review-events fabrication for a synthetic run
+
+Scope Drift Assessment
+======================
+scope_drift_count: 0
+Reason: all changed files are either run-008 evidence artifacts, experiment bookkeeping, or roadmap coordination updates declared in scope.

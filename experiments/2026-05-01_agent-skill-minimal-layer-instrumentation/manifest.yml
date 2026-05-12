@@ -75,10 +75,20 @@ experiment:
     - artifacts/run-007-review-rework-outcome-evidence-pilot/git-log-review-rework.txt
     - artifacts/run-007-review-rework-outcome-evidence-pilot/copilot-review-comments.txt
     - artifacts/run-007-review-rework-outcome-evidence-pilot/changed-files.txt
+    - artifacts/run-008-negative-case-independent-audit-timing/run.yml
+    - artifacts/run-008-negative-case-independent-audit-timing/measurement.yml
+    - artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml
+    - artifacts/run-008-negative-case-independent-audit-timing/run_meta.json
+    - artifacts/run-008-negative-case-independent-audit-timing/evidence-pack.yml
+    - artifacts/run-008-negative-case-independent-audit-timing/comparability.yml
+    - artifacts/run-008-negative-case-independent-audit-timing/changed-files.txt
+    - artifacts/run-008-negative-case-independent-audit-timing/targeted-tests.txt
+    - artifacts/run-008-negative-case-independent-audit-timing/make-validate.txt
+    - artifacts/run-008-negative-case-independent-audit-timing/timing.txt
   created: "2026-05-01"
   updated: "2026-05-12"
   author: "copilot-agent"
-  iteration: 7
+  iteration: 8
   evidence_level: anecdotal
   falsifiability:
     version: 1

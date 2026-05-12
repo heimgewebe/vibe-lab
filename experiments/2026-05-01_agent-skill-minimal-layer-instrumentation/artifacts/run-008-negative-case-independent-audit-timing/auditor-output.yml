@@ -1,0 +1,74 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-008-negative-case-independent-audit-timing"
+auditor_date: "2026-05-12"
+auditor:
+  name: "evidence-reconciliation-auditor"
+  executor: "copilot-coding-agent:gpt-5.5"
+  date: "2026-05-12"
+overall_verdict: "CLAIM_NOT_PROVEN"
+extensions:
+  canonical_claim_source: "evidence-pack.yml"
+  auditor_role: "projection and assessment; evidence-pack.yml remains the canonical claim/evidence contract"
+  auditor_independence_status: "partial"
+
+claims:
+  - id: "claim-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/evidence-pack.yml"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "This run proves independent auditor verification for the negative-case assessment."
+    type: "independent_audit_assessment"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml"
+        status: "repo_local"
+    notes: "Executor and auditor are documented in the same self-reported run context. This supports only partial independence and does not prove independent verification."
+
+  - id: "claim-003"
+    text: "timing.txt archives a repo-local task-completion measurement for this run."
+    type: "timing_capture"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/measurement.yml"
+        status: "repo_local"
+
+  - id: "claim-004"
+    text: "Targeted validator regression tests completed with exit_code 0."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/targeted-tests.txt"
+        status: "repo_local"
+
+  - id: "claim-005"
+    text: "A summarized make validate capture with exit_code 0 is archived."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/make-validate.txt"
+        status: "repo_local"
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence: []
+
+required_next_proof:
+  - "Partial independence only: auditor and executor share the same self-reported run context; no claim of independent verification is allowed."
+  - "A real negative-case run with external or independently executed audit evidence remains necessary for fully independent validation."
+  - "This run does not produce a usefulness, adoption, promotion, or causal verdict."
