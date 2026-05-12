@@ -26,6 +26,10 @@
 
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 
+## `.vibe/review-rework-artifact.contract.md`
+
+- ← `docs/playbooks/pr-run-evidence-pack.md` (references)
+
 ## `CONTRIBUTING.md`
 
 - ← `docs/playbooks/plan-execution-checklist.md` (references)

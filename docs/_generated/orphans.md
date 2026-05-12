@@ -3,10 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (128 found):
+Documents not referenced by any other document via frontmatter relations (127 found):
 
 - `.vibe/intent.md`
-- `.vibe/review-rework-artifact.contract.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
