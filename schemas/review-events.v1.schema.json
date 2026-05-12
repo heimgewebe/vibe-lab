@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/review-events.v1.schema.json",
+  "title": "Review Events (v1)",
+  "description": "Schema für artifacts/<run-id>/review-events.yml. Strukturelle Validierung für Review/Rework-Outcome-Evidence per .vibe/review-rework-artifact.contract.md v0.2. Semantische Kreuzregeln (run_id-Sync, external_verified-Pflicht-Refs, captured_at-Timezone) prüft validate_run_bundle.py zusätzlich.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract",
+    "run_id",
+    "pr_ref",
+    "review_friction_count",
+    "rework_count",
+    "captured_at",
+    "evidence_status"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Schemaversion. Muss exakt '1.0.0' sein."
+    },
+    "contract": {
+      "type": "string",
+      "const": "review_events",
+      "description": "Contract-Bezeichner. Muss exakt 'review_events' sein."
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Bezeichner des Runs, dem dieses Artefakt zugeordnet ist. Muss mit dem Run-Verzeichnisnamen übereinstimmen."
+    },
+    "pr_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Referenz auf den GitHub-PR oder eine andere nachvollziehbare Quelle der Review-Events."
+    },
+    "review_friction_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Anzahl der Reviewer-Runden vor dem Merge. Ganzzahl >= 0."
+    },
+    "rework_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Anzahl der Nacharbeits-Commits, die frühere Claims revidieren. Ganzzahl >= 0."
+    },
+    "captured_at": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Zeitpunkt der Erfassung als RFC3339/ISO-8601-Timestamp (mit Timezone). Semantische Prüfung durch validate_run_bundle.py."
+    },
+    "evidence_status": {
+      "type": "string",
+      "enum": ["repo_local", "ci_artifact", "external_verified"],
+      "description": "Herkunftsniveau der Evidence. repo_local: im Run-Verzeichnis archiviert. ci_artifact: aus CI-Pipeline. external_verified: extern verifiziert (benötigt review_thread_refs oder rework_commit_refs)."
+    },
+    "review_thread_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optionale Liste von PR-Kommentar-URLs oder API-Refs zur unabhängigen Verifizierung."
+    },
+    "rework_commit_refs": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "description": "Git-Commit-SHA als String."
+          },
+          {
+            "type": "object",
+            "required": ["sha"],
+            "properties": {
+              "sha": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Git-Commit-SHA."
+              }
+            },
+            "additionalProperties": true,
+            "description": "Objekt mit mindestens 'sha'; zusätzliche Felder (z. B. 'description') sind erlaubt."
+          }
+        ]
+      },
+      "description": "Optionale Liste von Git-Commit-SHAs (als String oder Objekt mit 'sha') zu Rework-Commits."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optionale Freitextnotiz."
+    }
+  }
+}

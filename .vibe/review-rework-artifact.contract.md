@@ -1,8 +1,9 @@
 ---
-title: "Review/Rework Artifact Contract (v0.1)"
-status: defining
+title: "Review/Rework Artifact Contract (v0.2)"
+status: schema-backed
 canonicality: canonical
 created: "2026-05-11"
+updated: "2026-05-12"
 author: "evidence-control-plane"
 triggered_by: "user-request-2026-05-11-review-rework-outcome-evidence-blocker"
 relations:
@@ -18,9 +19,12 @@ relations:
   - type: references
     target: "../docs/evaluations/agent-skill-file-fruitfulness.md"
     reason: "Evaluation-Metriken review_friction_count und rework_count definiert"
+  - type: references
+    target: "../schemas/review-events.v1.schema.json"
+    reason: "JSON Schema für review-events.yml Struktur (v0.2)"
 ---
 
-# Review/Rework Artifact Contract (v0.1)
+# Review/Rework Artifact Contract (v0.2)
 
 ## Purpose
 
@@ -50,10 +54,27 @@ these two metrics — once external review events are actually archived.
     (whether measured or null), OR
   - `comparability.yml` includes a `review_evidence_artifact` field
 
-- **Version**: v0.1 (establishing the primitive; subsequent revisions may formalize
-  structure and add CI enforcement)
+- **Version**: v0.2 (schema-backed; enforcement active for repo_local metrics)
 
-- **Status**: Defining (canonical for new runs; not yet enforced by schema)
+- **Status**: Schema-backed (schema established; not globally mandatory for all runs)
+
+## Schema
+
+**Schema file**: `schemas/review-events.v1.schema.json`
+
+The schema enforces:
+- `schema_version`: string, const `"1.0.0"`
+- `contract`: string, const `"review_events"`
+- `run_id`: non-empty string
+- `pr_ref`: non-empty string
+- `review_friction_count`: integer, minimum 0
+- `rework_count`: integer, minimum 0
+- `captured_at`: string (timezone enforcement via semantic validator)
+- `evidence_status`: enum `["repo_local", "ci_artifact", "external_verified"]`
+- `review_thread_refs`: optional array of non-empty strings
+- `rework_commit_refs`: optional array (string SHAs or objects with `sha`)
+- `notes`: optional string
+- `additionalProperties: false`
 
 ## Artifact Structure
 
@@ -61,11 +82,13 @@ A valid `review-events.yml` artifact MUST contain:
 
 ```
 review-events.yml
+├─ schema_version: "1.0.0"
+├─ contract: "review_events"
 ├─ run_id: <run identifier>
 ├─ pr_ref: <GitHub PR URL or PR number>
 ├─ review_friction_count: <integer — number of reviewer rounds before merge>
 ├─ rework_count: <integer — number of follow-up commits revising prior claims>
-├─ captured_at: <ISO 8601 timestamp>
+├─ captured_at: <ISO 8601 timestamp with timezone>
 ├─ evidence_status: repo_local | ci_artifact | external_verified
 └─ notes: <optional free-text explanation>
 ```
@@ -77,6 +100,9 @@ the review friction count independently verifiable:
 ├─ review_thread_refs: [list of PR comment URLs or API refs]
 └─ rework_commit_refs: [list of git commit SHAs with description]
 ```
+
+`external_verified` evidence_status REQUIRES at least one entry in
+`review_thread_refs` or `rework_commit_refs`.
 
 ### Minimal Example (review-events.yml)
 
@@ -107,6 +133,14 @@ If `measurement.yml` declares `review_friction_count` or `rework_count` with
 `review_evidence_artifact` pointing to a valid `review-events.yml` in the same
 run directory.
 
+A valid `review-events.yml` must pass both:
+1. Schema validation against `schemas/review-events.v1.schema.json`
+2. Semantic validation in `validate_run_bundle.py` (run_id match, captured_at timezone,
+   external_verified refs)
+
+An invalid, missing, or path-escaping `review-events.yml` BLOCKS repo_local
+claim for `review_friction_count` and `rework_count`.
+
 ### When review-events.yml MAY be null
 
 In any run where review events are not yet archived:
@@ -117,6 +151,9 @@ In any run where review events are not yet archived:
   under the same condition.
 - In `comparability.yml`, `review_evidence_artifact` may be omitted or set to
   `null` with no penalty — this is the current baseline for all existing runs.
+
+Historical runs (run-002, run-005, run-006) are grandfathered and remain
+unchanged. Retroactive fabrication of `review-events.yml` is explicitly prohibited.
 
 ### How Runs Reference This Artifact
 
@@ -130,9 +167,11 @@ review_evidence_artifact: "artifacts/run-007-controlled-agent-skill-run/review-e
 
 The validator (`validate_run_bundle.py`) will:
 1. Resolve the path using the same containment rules as `changed_files_artifact`
-2. Verify the file exists in the run directory
-3. Allow `review_friction_count.evidence_status: repo_local` and
-   `rework_count.evidence_status: repo_local` only when this field is valid
+2. Verify the file exists in the run directory (path escape blocked)
+3. Validate against `schemas/review-events.v1.schema.json` (schema-backed)
+4. Apply semantic cross-checks (run_id match, captured_at timezone, external_verified refs)
+5. Allow `review_friction_count.evidence_status: repo_local` and
+   `rework_count.evidence_status: repo_local` only when this field passes all checks
 
 ### Null-Value Documentation Discipline (always enforced)
 
@@ -146,12 +185,14 @@ This prevents silent null accumulation and documents the gap explicitly.
 
 ### Operationalization Status
 
-| Enforcement Level | Status   | Details |
-| ---               | ---      | ---     |
-| **Schema**        | Not yet  | JSON schema for review-events.yml structure is pending |
-| **Null-discipline** | Active | Validator enforces: `null → missing_evidence + reason` |
-| **Artifact ref**  | Active   | Validator validates `review_evidence_artifact` when present |
-| **CI**            | Future   | Planned: CI check for mandatory archiving |
+| Enforcement Level | Status        | Details |
+| ---               | ---           | ---     |
+| **Schema**        | **Active**    | `schemas/review-events.v1.schema.json` — enforces structure, types, additionalProperties:false |
+| **Validator**     | **Active**    | `scripts/docmeta/validate_run_bundle.py` — schema + semantic checks |
+| **Null-discipline** | Active      | Validator enforces: `null → missing_evidence + reason` |
+| **Artifact ref**  | Active        | Validator validates `review_evidence_artifact` when present |
+| **Enforcement scope** | repo_local | repo_local Review/Rework-Metriken erfordern valides review-events.yml; nicht global mandatory für alle Runs |
+| **CI global**     | Future        | Planned: CI hard-fail for all new runs without review-events.yml (not this PR) |
 
 ## Design Rationale
 
@@ -166,14 +207,11 @@ This is the exact structural gap documented in:
 - `decision.yml` next_steps (Archivierungsmechanismus als Vorbedingung für Outcome-Evidence)
 - `docs/roadmap.md` RM-005 and GAP-003
 
-**Why v0.1 is "defining"?**
+**Why v0.2 is "schema-backed"?**
 
-This contract is intentionally minimal to:
-1. Establish the principle that review/rework events MUST be archivable as first-class artifacts
-2. Not prescribe a mandatory timeline or enforcement date
-3. Leave schema formalization for v0.2
-4. Not block existing runs (run-002, run-005, run-006 are grandfathered — they document
-   absence with reason, satisfying null-discipline)
+v0.1 established the principle; v0.2 adds machine-enforceable structure via
+`schemas/review-events.v1.schema.json`. Enforcement is scoped to `repo_local`
+Review/Rework-Metriken — not globally mandatory for all runs.
 
 **What this contract explicitly does NOT change:**
 
@@ -181,21 +219,19 @@ This contract is intentionally minimal to:
 - No promotion, adoption, or usefulness claim is created
 - The evaluation in `docs/evaluations/agent-skill-file-fruitfulness.md` is unchanged
 - GAP-003 and EP-002 in `docs/roadmap.md` remain open
+- Historical runs (run-002, run-005, run-006) are grandfathered and unchanged
 
-## Next Steps
+## Residual Gaps
 
-1. **For future runs**: Archive `review-events.yml` as part of run-bundle creation.
-   Reference it in `comparability.yml` via `review_evidence_artifact`.
+The schema-backed mechanism does NOT close these remaining blockers:
 
-2. **For existing runs (run-002, run-005, run-006)**: These runs lack
-   `review-events.yml` (retroactive capture is not feasible for already-closed PRs).
-   They correctly remain with `null + missing_evidence + reason`. No change required.
-
-3. **For independent auditor requirement**: `review-events.yml` alone does not satisfy
-   the independent auditor blocker from `cross-run-assessment.md §5.C`. Both are
-   required: (a) review events archived, and (b) auditor ≠ executor.
-
-4. **For v0.2**: Formalize `review-events.yml` in a JSON schema; add CI enforcement.
+1. **Actual Review/Rework Runs**: No run with a real archived `review-events.yml`
+   exists yet. The mechanism is ready; the evidence is not.
+2. **Independent Auditor**: `review-events.yml` alone does not satisfy the
+   independent auditor blocker. Both are required: (a) review events archived,
+   and (b) auditor ≠ executor.
+3. **Task Diversity**: Single task cluster (file-change tasks) — not addressed here.
+4. **Negative Case**: No documented FAIL scenario (Auditor-FAIL) — not addressed here.
 
 ---
 

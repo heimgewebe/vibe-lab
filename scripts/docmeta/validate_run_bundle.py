@@ -93,6 +93,7 @@ _BUNDLE_SCHEMA_NAME = "experiment-run-bundle.v1.schema.json"
 _AUDITOR_SCHEMA_NAME = "auditor-output.v1.schema.json"
 _MEASUREMENT_SCHEMA_NAME = "measurement-run.v1.schema.json"
 _EVIDENCE_PACK_SCHEMA_NAME = "run-evidence-pack.v1.schema.json"
+_REVIEW_EVENTS_SCHEMA_NAME = "review-events.v1.schema.json"
 _LEGACY_EVIDENCE_PACK_BASELINE = "run-bundle-evidence-pack-legacy.yml"
 _CHANGED_FILES_CONTRACT_DATE = "2026-05-08"
 _CHANGED_FILES_GUARD_EXPERIMENT = Path(
@@ -323,24 +324,23 @@ def _validate_review_events_content(
     expected_run_id: str,
     run_dir: Path,
     rel_run: Path,
+    review_events_validator: Draft202012Validator,
     errors: list[str],
 ) -> None:
     """Validates the content of a review-events.yml artifact.
 
     Called whenever comparability.yml.review_evidence_artifact resolves to an
-    existing file.  Enforces the minimal semantic rules from
-    .vibe/review-rework-artifact.contract.md v0.1:
+    existing file.  First validates against schemas/review-events.v1.schema.json,
+    then enforces additional semantic rules from
+    .vibe/review-rework-artifact.contract.md v0.2:
 
       - YAML is readable and root is a mapping
-      - contract == "review_events"
-      - run_id matches the run directory name
-      - review_friction_count is integer >= 0
-      - rework_count is integer >= 0
-      - evidence_status ∈ {repo_local, ci_artifact, external_verified}
-      - captured_at is present, non-empty, and parseable as ISO 8601
-      - pr_ref is present and non-empty
+      - schema-valid against review-events.v1.schema.json (schema_version, contract,
+        all required fields, integer types, minimum 0, additionalProperties: false)
+      - run_id matches the run directory name (semantic cross-check)
+      - captured_at carries a timezone (semantic; schema enforces presence/type only)
       - if evidence_status == external_verified: at least one entry in
-        review_thread_refs or rework_commit_refs
+        review_thread_refs or rework_commit_refs (semantic)
     """
     # Build a path label that shows the artifact's location relative to the run
     # directory, so errors for subdir artifacts (e.g. subdir/review-events.yml)
@@ -361,7 +361,17 @@ def _validate_review_events_content(
         errors.append(f"  ❌ {rel}: Datei muss ein YAML-Objekt (Mapping) sein.")
         return
 
-    # contract
+    # Schema-Validierung (review-events.v1.schema.json) — zuerst, vor semantischen Checks.
+    try:
+        review_events_validator.validate(data)
+    except ValidationError as e:
+        errors.append(
+            f"  ❌ {rel}: schema-invalid — {e.message} "
+            f"(at {'/'.join(str(p) for p in e.absolute_path) or '<root>'})"
+        )
+        return
+
+    # contract (defense-in-depth; schema const ensures this, but explicit message is clearer)
     contract = data.get("contract")
     if contract != "review_events":
         errors.append(
@@ -724,6 +734,7 @@ def validate_repo(repo_root: Path) -> list[str]:
     auditor_validator = _build_validator(schemas_dir / _AUDITOR_SCHEMA_NAME)
     measurement_validator = _build_validator(schemas_dir / _MEASUREMENT_SCHEMA_NAME)
     evidence_pack_validator = _build_validator(schemas_dir / _EVIDENCE_PACK_SCHEMA_NAME)
+    review_events_validator = _build_validator(schemas_dir / _REVIEW_EVENTS_SCHEMA_NAME)
     missing_ep_allowlist, allowlist_errors = _load_missing_evidence_pack_allowlist(repo_root)
     errors.extend(allowlist_errors)
 
@@ -833,6 +844,7 @@ def validate_repo(repo_root: Path) -> list[str]:
                     auditor_validator=auditor_validator,
                     measurement_validator=measurement_validator,
                     evidence_pack_validator=evidence_pack_validator,
+                    review_events_validator=review_events_validator,
                     missing_ep_allowlist=missing_ep_allowlist,
                     errors=errors,
                 )
@@ -1053,6 +1065,7 @@ def _validate_run_dir(
     auditor_validator: Draft202012Validator,
     measurement_validator: Draft202012Validator,
     evidence_pack_validator: Draft202012Validator,
+    review_events_validator: Draft202012Validator,
     missing_ep_allowlist: set[str],
     errors: list[str],
 ) -> None:
@@ -1254,7 +1267,7 @@ def _validate_run_dir(
                 f"gültiges changed_files_artifact."
             )
 
-    # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.1).
+    # Load review_evidence_artifact from comparability (review-rework-artifact.contract.md v0.2).
     # The field is optional; when present it enables repo_local evidence_status for
     # review_friction_count and rework_count in measurement.yml.
     review_evidence_path, _review_ev_missing = _load_comparability_run_artifact_ref(
@@ -1267,12 +1280,13 @@ def _validate_run_dir(
     )
     review_evidence_artifact_valid = review_evidence_path is not None
     if review_evidence_path is not None:
-        # Content validation (review-rework-artifact.contract.md v0.1).
+        # Content validation (review-rework-artifact.contract.md v0.2): schema first, then semantic.
         _validate_review_events_content(
             path=review_evidence_path,
             expected_run_id=run_dir.name,
             run_dir=run_dir,
             rel_run=rel_run,
+            review_events_validator=review_events_validator,
             errors=errors,
         )
 
