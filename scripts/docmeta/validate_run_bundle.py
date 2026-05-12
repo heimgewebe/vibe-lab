@@ -438,15 +438,6 @@ def _validate_review_events_content(
                 f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
             )
             is_valid = False
-        else:
-            has_z = captured_at_stripped.endswith("Z")
-            has_offset = bool(re.search(r"[+-]\d{2}:?\d{2}$", captured_at_stripped))
-            if not (has_z or has_offset):
-                errors.append(
-                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
-                    f"angeben (Suffix 'Z' oder Offset wie '+02:00')."
-                )
-                is_valid = False
 
         try:
             parsed_captured_at = datetime.fromisoformat(
@@ -461,7 +452,8 @@ def _validate_review_events_content(
         else:
             if parsed_captured_at.tzinfo is None or parsed_captured_at.utcoffset() is None:
                 errors.append(
-                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss timezone-aware sein."
+                    f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss eine Zeitzone "
+                    f"angeben (timezone-aware; Suffix 'Z' oder Offset wie '+02:00')."
                 )
                 is_valid = False
 

@@ -4148,8 +4148,7 @@ class ReviewEventsSchemaBackedTests(unittest.TestCase):
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
         self.assertTrue(
-            any("review-events.yml" in e and "captured_at" in e and "Zeitzone" in e for e in errs)
-            or any("review-events.yml" in e and "captured_at" in e and "timezone-aware" in e for e in errs),
+            any("review-events.yml" in e and "captured_at" in e and "Zeitzone" in e for e in errs),
             errs,
         )
 
