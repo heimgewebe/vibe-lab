@@ -1,0 +1,135 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-010-independent-auditor-validation"
+auditor_date: "2026-05-12"
+auditor:
+  name: "evidence-reconciliation-auditor"
+  executor: "claude-code:claude-sonnet-4-6"
+  date: "2026-05-12"
+overall_verdict: "CLAIM_NOT_PROVEN"
+extensions:
+  canonical_claim_source: "evidence-pack.yml"
+  auditor_independence_status: "NONE"
+  auditor_independence_note: >
+    This auditor-output.yml is a SELF-AUDIT. The auditor (evidence-reconciliation-auditor)
+    was invoked by the same session as the executor (claude-code:claude-sonnet-4-6,
+    session_011cvra3PDFriTmZTKsuCCVB). This does NOT constitute independent verification.
+    The schema structurally requires auditor-output.yml to exist; this file fulfills that
+    requirement while being explicit that no independence was established.
+    A genuinely external audit is documented as CLAIM_NOT_PROVEN below.
+    See also: independent-auditor-proof.txt (INDEPENDENCE_NOT_PROVEN) and
+    audit-request.md (formal request for external audit).
+
+claims:
+  - id: "claim-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/evidence-pack.yml"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Execution evidence package exists: all required run-010 artifacts are present in the artifact directory."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/evidence-pack.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json"
+        status: "repo_local"
+
+  - id: "claim-003"
+    text: "Independent auditor verification is demonstrated for run-010."
+    type: "independent_audit_assessment"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md"
+        status: "repo_local"
+    notes: >
+      Executor (claude-code:claude-sonnet-4-6, session_011cvra3PDFriTmZTKsuCCVB) and
+      auditor (evidence-reconciliation-auditor, same session) are not independent.
+      independent-auditor-proof.txt explicitly documents INDEPENDENCE_NOT_PROVEN.
+      audit-request.md provides a formal request for a genuinely external auditor.
+      This claim remains CLAIM_NOT_PROVEN until an external auditor produces a
+      replacement auditor-output.yml with a different executor/session/identity.
+
+  - id: "claim-004"
+    text: "test_validate_run_bundle.py and test_validate_claim_evidence.py ran with exit_code 0; full output archived in raw-command-log.txt."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt"
+        status: "repo_local"
+        command: "python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py"
+        exit_code: 0
+
+  - id: "claim-005"
+    text: "make validate ran with exit_code 0; full output archived in make-validate.txt."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 0
+
+  - id: "claim-006"
+    text: "Timing evidence exists in ci-or-git-timing.txt with explicit evidence_status self_reported, capture_mode, and upgrade_path note."
+    type: "timing_capture"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt"
+        status: "repo_local"
+    notes: >
+      ci-or-git-timing.txt records evidence_status: self_reported, capture_mode:
+      mixed (git_log lower bound for start; self_reported for end), and an upgrade_path
+      note. Duration is not stated because start is a lower bound. This is an improvement
+      over a plain timestamp: limitations are explicit and verifiable.
+
+  - id: "claim-007"
+    text: "No usefulness, adoption, promotion, or causal claim is made in this run bundle."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml"
+        status: "repo_local"
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence: []
+
+required_next_proof:
+  - "A genuinely external auditor (different session, different agent, or human reviewer) must produce a replacement auditor-output.yml with a distinct executor/session identity in the auditor.executor field."
+  - "The external auditor should read audit-request.md for scope, claim list, and permitted verdicts before producing any verdict."
+  - "Until external audit occurs, auditor independence (claim-003) remains CLAIM_NOT_PROVEN and decision.yml remains insufficient_proof."
+  - "review_friction_count and rework_count remain missing_evidence until a real PR review lifecycle is captured."
+  - "This run does not produce a usefulness, adoption, promotion, or causal verdict."

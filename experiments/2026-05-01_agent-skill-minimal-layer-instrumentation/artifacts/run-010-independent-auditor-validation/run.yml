@@ -1,0 +1,50 @@
+schema_version: "1.0.0"
+contract: "experiment_run_bundle"
+
+run:
+  id: "run-010-independent-auditor-validation"
+  experiment_path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation"
+  created_at: "2026-05-12T21:00:00Z"
+  sequence: 10
+
+provenance:
+  level: "self_reported"
+  executor: "claude-code:claude-sonnet-4-6"
+  source_status: "repo_local"
+  notes: >
+    Executor: claude-code:claude-sonnet-4-6, session_011cvra3PDFriTmZTKsuCCVB,
+    branch claude/improve-audit-independence-Gf8dZ.
+    This session is the executor only. The auditor-output.yml in this bundle is
+    a self-audit (same session as executor); independence is CLAIM_NOT_PROVEN.
+    See independent-auditor-proof.txt (INDEPENDENCE_NOT_PROVEN) and
+    audit-request.md for a formal request to a genuinely external auditor.
+    No usefulness, adoption, promotion, or causal claim.
+
+artifacts:
+  auditor_output:
+    path: "auditor-output.yml"
+    contract: "auditor_output"
+    canonical: true
+  measurement:
+    path: "measurement.yml"
+    contract: "measurement_run"
+    canonical: true
+  run_meta:
+    path: "run_meta.json"
+    contract: "run_meta"
+    canonical: false
+    compatibility: true
+  evidence_pack:
+    path: "evidence-pack.yml"
+    contract: "run-evidence-pack.v1"
+    canonical: true
+
+verdict:
+  outcome: "CLAIM_NOT_PROVEN"
+  effect_claim_allowed: false
+  promotion_claim_allowed: false
+
+interpretation_limits:
+  min_comparable_runs_required: 3
+  current_comparable_runs: 3
+  causal_claim_allowed: false

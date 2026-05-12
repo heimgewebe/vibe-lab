@@ -1,0 +1,54 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-010-independent-auditor-validation"
+assessed_at: "2026-05-12"
+
+compared_against:
+  - "run-002-controlled-agent-skill-run"
+  - "run-005-controlled-agent-skill-run"
+  - "run-006-controlled-agent-skill-run"
+  - "run-007-review-rework-outcome-evidence-pilot"
+  - "run-008-negative-case-independent-audit-timing"
+  - "run-009-independent-task-diversity-validation"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:independent-auditor-validation-preparation-run-010"
+
+changed_files_artifact: "artifacts/run-010-independent-auditor-validation/changed-files.txt"
+
+verdict: not_comparable
+
+notes: >
+  Independent-auditor-validation preparation run.
+  This run's purpose is to create an audit-ready execution evidence package
+  that clearly documents where proof exists and where it is missing — specifically
+  for the auditor-independence blocker that has been CLAIM_NOT_PROVEN in all
+  previous runs.
+
+  Verdict not_comparable because:
+  (1) No auditor-output.yml exists; the independence claim cannot be proven
+      by this session alone, so this run cannot increment the independent-audit
+      blocker resolution.
+  (2) This run is explicitly scoped as an audit-ready package preparation, not
+      a fourth/fifth comparable usefulness run.
+  (3) Comparable-run-count remains at 3 (run-002, run-005, run-006).
+
+  What this run DOES contribute:
+  - Audit-ready evidence package: a full set of run-010 artifacts that a
+    genuinely external auditor can read and verify independently.
+  - audit-request.md: formal request defining what an external auditor should
+    check, which verdicts are permitted, and that the auditor must not repair.
+  - independent-auditor-proof.txt: explicitly documents INDEPENDENCE_NOT_PROVEN
+    rather than silently carrying the gap forward.
+  - raw-command-log.txt: full (not summarised) command output archived, upgrading
+    from run-009 where only summary captures were retained.
+  - ci-or-git-timing.txt: timing with explicit self_reported status and upgrade
+    path note, consistent with run-009 pattern.
+
+  What this run does NOT contribute:
+  - No resolution of Gegenhypothese C (assessment bias / auditor independence).
+  - No increment to comparable-run count.
+  - No usefulness, adoption, promotion, or causal verdict.

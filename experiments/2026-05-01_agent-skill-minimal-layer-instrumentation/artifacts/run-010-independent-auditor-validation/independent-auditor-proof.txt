@@ -1,0 +1,62 @@
+INDEPENDENCE STATUS: INDEPENDENCE_NOT_PROVEN
+
+Run ID: run-010-independent-auditor-validation
+Assessed at: 2026-05-12
+Assessed by: executor session (claude-code:claude-sonnet-4-6, session_011cvra3PDFriTmZTKsuCCVB)
+
+=== Executor ===
+Who: claude-code:claude-sonnet-4-6
+Session: session_011cvra3PDFriTmZTKsuCCVB
+Branch: claude/improve-audit-independence-Gf8dZ
+Evidence: run.yml provenance.executor field; git log (branch name visible in context)
+
+=== Auditor ===
+Who: NO INDEPENDENT AUDITOR for this run.
+Evidence of independence: NONE.
+
+If the evidence-reconciliation-auditor.agent.md were invoked by this session,
+it would run within session_011cvra3PDFriTmZTKsuCCVB — the same session as the
+executor. That does not constitute an independent audit.
+
+=== Why They Are NOT Independent ===
+All prior runs (run-002 through run-009) had the same problem:
+  run-002: executor=local:claude-sonnet-4-6, auditor=claude-sonnet-4-6 (same)
+  run-005: executor=copilot-coding-agent:gpt-5.3-codex, auditor=same agent (same)
+  run-006: executor=claude-code:claude-sonnet-4-6, auditor=same session (same)
+  run-007: executor=claude-code:claude-sonnet-4-6, auditor=same session (same)
+  run-008: executor=claude-code:claude-sonnet-4-6, auditor=same session (same)
+  run-009: executor=claude-code:claude-sonnet-4-5, auditor=same session (same)
+  run-010: executor=claude-code:claude-sonnet-4-6, auditor=NONE (intentionally absent)
+
+Run-010 is the first run that explicitly omits auditor-output.yml rather than
+producing a self-audit that misrepresents itself as independent.
+
+=== What Would Constitute Independence ===
+For an auditor to be genuinely independent, ALL of the following must be true:
+
+1. DIFFERENT SESSION: The auditor runs in a session that did not execute the run.
+   Evidence required: different session ID, different invocation log, or different
+   timestamp chain that cannot be the same agent continuing work.
+
+2. DIFFERENT AGENT OR HUMAN: Either:
+   (a) A different AI agent (e.g., a Copilot agent reviewing a PR opened by this
+       session), OR
+   (b) A human reviewer who reads the run artifacts and produces a written review.
+
+3. TRACEABLE OUTPUT: The auditor produces output that can be located:
+   - A GitHub PR review comment (with reviewer identity and timestamp), OR
+   - An auditor-output.yml produced by the separate session/agent/human, OR
+   - A written review document with external attribution.
+
+4. NO REPAIR: The auditor must not modify any artifacts. It reads and verdicts only.
+
+=== Where The Independent Audit Output Should Go ===
+If a genuinely independent audit occurs after this run:
+  - The auditor should create: artifacts/run-010-independent-auditor-validation/auditor-output.yml
+  - The auditor should reference: audit-request.md for scope and claim list
+  - The auditor should not edit any other artifact in this bundle
+
+=== Conclusion ===
+For run-010: INDEPENDENCE_NOT_PROVEN.
+This is the correct and honest state. No independent audit has occurred.
+The execution evidence package is audit-ready. See audit-request.md.

@@ -277,6 +277,57 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 ---
 
+## Post run-010 update (2026-05-12)
+
+### Run-010 — Independent-Auditor-Validation Preparation
+
+| Dimension | Befund |
+|---|---|
+| Task | Audit-ready execution evidence package for the independent-auditor-validation blocker |
+| Task-Cluster | `independent-auditor-validation-preparation` — distinct from all prior clusters |
+| Executor | `claude-code:claude-sonnet-4-6` (session_011cvra3PDFriTmZTKsuCCVB) |
+| Auditor | `evidence-reconciliation-auditor` executed by same session → **NONE** (no independent auditor) |
+| Auditor-Verdict | `CLAIM_NOT_PROVEN` (claim-003: independent audit not proven; `INDEPENDENCE_NOT_PROVEN` in independent-auditor-proof.txt) |
+| Key addition | `audit-request.md`: formal request for a genuinely external auditor, with scope, claim list, permitted verdicts, and output location |
+| Key addition | `independent-auditor-proof.txt`: explicit `INDEPENDENCE_NOT_PROVEN` documentation rather than a self-audit disguised as independent |
+| Key addition | `raw-command-log.txt`: full (not summarised) command output for test_validate_run_bundle.py (139 tests OK) and test_validate_claim_evidence.py (3 tests OK) |
+| Timing | `ci-or-git-timing.txt` with self_reported status, mixed capture mode, upgrade_path note — consistent with run-009 pattern |
+| comparability_verdict | `not_comparable` (no independence; scoped as audit-package preparation, not usefulness run) |
+| auditor-output.yml | Present (schema requirement) but is an explicit self-audit with `auditor_independence_status: NONE` |
+
+### Auswirkung auf die Gesamtbewertung
+
+**Blocker-Fortschritt:**
+
+1. **Unabhängige Metrik-Validierung (§5):** Weiterhin offen. Run-010 macht den Blocker expliziter als je zuvor: `independent-auditor-proof.txt` dokumentiert `INDEPENDENCE_NOT_PROVEN`, `audit-request.md` spezifiziert genau, was ein externer Auditor prüfen muss. Der Blocker ist nicht reduziert, aber vollständig sichtbar und formal adressierbar.
+2. **Task-Diversitätsnachweis (§5):** Keine Änderung (run-009 claim-002 bleibt der Beleg).
+3. **Negativfall-Nachweis (§5):** Keine Änderung (run-008 bleibt der Pilot).
+4. **Timing-Semantik (§5):** Keine Regression. ci-or-git-timing.txt folgt dem run-009-Muster.
+
+**Unverändertes Fazit:**
+
+- `verdict: insufficient_proof` bleibt korrekt.
+- Comparable-run-Count bleibt bei 3 (run-002, run-005, run-006).
+- `result_assessment`, `promotion_readiness` und Usefulness-Claims sind weiterhin nicht erlaubt.
+
+**Was Run-010 einführt:**
+
+- Das erste Run-Bundle, das bewusst und vollständig auf eine Selbst-Audit-Simulation verzichtet — statt `auditor_independence_status: partial` (run-009) jetzt `auditor_independence_status: NONE`.
+- Die erste formale Audit-Anfrage (`audit-request.md`), die spezifiziert, wer Auditor sein muss, was geprüft wird und wo der Output hingehört.
+- Vollständige (nicht nur zusammengefasste) Command-Logs in `raw-command-log.txt`.
+
+### Aktualisierte Gegenhypothesen-Lage
+
+| Gegenhypothese | Status nach run-010 |
+|---|---|
+| A: Scaffold-PASS nur Operator-/Prompt-Effekt | unresolved — unverändert |
+| B: Scaffold-PASS nur Fallselektion | unverändert — keine neue Vergleichsbasis |
+| C: Scaffold-PASS nur Bewertungsbias | nicht_widerlegt — run-010 macht die Lücke formaler sichtbar, löst sie aber nicht |
+| D: Scaffold nicht stabil replizierbar | unverändert |
+| E: PASS nur bessere Dokumentation | strukturell bestätigt — unverändert |
+
+---
+
 ## Anhang: Fehlende Governance-Referenz
 
 `docs/policies/agent-reading-protocol.md` — referenziert in den Anweisungen für dieses Assessment.
