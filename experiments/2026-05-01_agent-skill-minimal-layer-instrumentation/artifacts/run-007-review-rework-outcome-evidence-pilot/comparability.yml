@@ -26,7 +26,6 @@ notes: >
   and changed-files.txt documents this pilot PR's own touched files (run-007 artifacts
   plus experiment bookkeeping updates).
   Usefulness-run comparability is not established.
-  This run validates the
-  review-events evidence mechanism only and must not increment comparable-run counts
+  This run validates the review-events evidence mechanism only and must not increment comparable-run counts
   for usefulness assessment. Scope remains measurement-only: no usefulness, adoption,
   promotion, or causal claim.

@@ -41,7 +41,7 @@ metrics:
   review_friction_count:
     value: 1
     evidence_status: "repo_local"
-    notes: "One Copilot review round before merge is archived in review-events.yml; that round contains two actionable review comments."
+    notes: "Evidence: artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml. Interpretation: one Copilot review round before merge, containing two actionable comments."
 
   rework_count:
     value: 2
