@@ -1,0 +1,98 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-009-independent-task-diversity-validation"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:claude-sonnet-4-5"
+  executor: "claude-code"
+  role: >
+    Task-diversity probe: multi-artifact experiment scaffold synthesis.
+    Complex/judgment-heavy task requiring cross-run evidence synthesis,
+    schema compliance verification across 6+ files, and epistemic
+    calibration — structurally outside the validator-test-hardening
+    task cluster (run-005/006).
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      Scope limited to run-009 artifacts plus experiment bookkeeping updates
+      (manifest.yml, evidence.jsonl, cross-run-assessment.md, decision.yml,
+      roadmap.md). changed-files.txt archives the full list of touched paths.
+
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: >
+      One auditor claim is non-PASS: claim-003 (independent auditor
+      verification) is CLAIM_NOT_PROVEN because executor and auditor share
+      the same agent session.
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      All evidence references point to concrete repo-local artifacts inside
+      this run bundle or explicit repo paths. No dangling references.
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: >
+      All command_result claims are PASS with archived exit_code 0 artifacts.
+      No validator claims are non-PASS due to command failures.
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: >
+      No PR review lifecycle has occurred for this run at artifact-creation
+      time. No review-events.yml exists. This metric remains missing_evidence.
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: >
+      No review-driven rework commits can be attributed to this run at
+      artifact-creation time. Metric remains missing_evidence.
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      No false blocking observed during this run. The non-PASS overall verdict
+      documents an open proof gap (auditor independence), not a validator false
+      block.
+
+  task_completion_time_observed:
+    value: 2400
+    evidence_status: "self_reported"
+    notes: >
+      Derived from timing.txt: started_at 2026-05-12T13:40:00Z,
+      finished_at 2026-05-12T14:20:00Z, duration_seconds 2400 (approx 40 min).
+      Capture mode: repo_local_manual_capture (self-reported by executor).
+      Source not independently verified; timing is explicitly marked
+      self_reported rather than repo_local to reflect this limitation.
+
+missing_evidence:
+  - item: "review_friction_count"
+    detail: "No PR review events exist for this run at artifact-creation time."
+  - item: "rework_count"
+    detail: "No review-events artifact or rework commit chain exists for this run."
+
+interpretation_limits:
+  - "This run is a task-diversity probe and independent-validation status run; it does not count as a comparable usefulness run."
+  - "Partial independence only: auditor and executor share the same agent session; independent audit verification is CLAIM_NOT_PROVEN."
+  - "Task-diversity claim (claim-002) is PASS: the task is structurally outside the validator-test-hardening cluster."
+  - "review_friction_count and rework_count remain missing_evidence; no PR review lifecycle at artifact-creation time."
+  - "timing is self_reported (same agent session); not independently verified."
+  - "This run does not produce a usefulness, adoption, promotion, or causal verdict."
+
+extensions:
+  auditor_independence_status: "partial"
+  task_cluster: "multi-artifact-scaffold-synthesis"
+  task_cluster_distinct_from: ["validator-test-hardening", "outcome-evidence-pilot"]

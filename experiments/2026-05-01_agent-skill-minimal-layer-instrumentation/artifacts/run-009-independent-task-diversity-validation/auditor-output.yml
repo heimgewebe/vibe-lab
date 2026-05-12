@@ -1,0 +1,107 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-009-independent-task-diversity-validation"
+auditor_date: "2026-05-12"
+auditor:
+  name: "evidence-reconciliation-auditor"
+  executor: "claude-code:claude-sonnet-4-5"
+  date: "2026-05-12"
+overall_verdict: "CLAIM_NOT_PROVEN"
+extensions:
+  canonical_claim_source: "evidence-pack.yml"
+  auditor_role: "projection and assessment; evidence-pack.yml remains the canonical claim/evidence contract"
+  auditor_independence_status: "partial"
+
+claims:
+  - id: "claim-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/evidence-pack.yml"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Task scope is structurally outside the validator-test-hardening task cluster (run-005/006): multi-artifact scaffold synthesis with cross-run evidence, schema compliance across 6+ files, and epistemic calibration."
+    type: "task_diversity_probe"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
+        status: "repo_local"
+    notes: >
+      The task required: (1) reading and synthesising evidence from runs
+      007 and 008, (2) making schema-compliant YAML for 6+ interdependent
+      files, (3) epistemic judgment on what verdict and next-steps are
+      appropriate without overstepping the evidence. This is structurally
+      distinct from run-005 (adding one Windows-path test) and run-006
+      (adding one cross-run path regression test). It is also distinct from
+      run-007 (archiving PR review events) and run-008 (synthetic negative case).
+      Blocker (1) Task-Diversität is partially addressed: at least one run now
+      exists outside the validator-test-hardening cluster. A second independent
+      run in a different task class remains needed for stronger replication.
+
+  - id: "claim-003"
+    text: "This run proves independent auditor verification for the task-diversity and metric-validation assessment."
+    type: "independent_audit_assessment"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/auditor-output.yml"
+        status: "repo_local"
+    notes: >
+      Executor (claude-code:claude-sonnet-4-5) and auditor
+      (evidence-reconciliation-auditor executed by the same session) are not
+      independent. This supports only partial independence and does not prove
+      independent verification. The independence blocker is explicitly
+      documented rather than silently carried forward.
+
+  - id: "claim-004"
+    text: "timing.txt archives a structured task-completion measurement with explicit capture source and limitation note."
+    type: "timing_capture"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
+        status: "repo_local"
+    notes: >
+      Improvement over run-008: timing.txt now explicitly records
+      capture_mode, evidence_status (self_reported), and a validation_path
+      note explaining what would be needed to upgrade to repo_local or
+      external_verified.
+
+  - id: "claim-005"
+    text: "Targeted validator regression tests completed with exit_code 0."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/targeted-tests.txt"
+        status: "repo_local"
+
+  - id: "claim-006"
+    text: "A summarized make validate capture with exit_code 0 is archived."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/make-validate.txt"
+        status: "repo_local"
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence: []
+
+required_next_proof:
+  - "Partial independence only: auditor and executor share the same agent session; independent verification claim is not proven."
+  - "A run with a genuinely external auditor (different session, different agent, or human reviewer) is required to lift the independence blocker."
+  - "Task-diversity claim is PASS for this single run; a second independent run in a different non-trivial task class would strengthen replication."
+  - "review_friction_count and rework_count remain missing_evidence until a real PR review lifecycle is captured."
+  - "This run does not produce a usefulness, adoption, promotion, or causal verdict."

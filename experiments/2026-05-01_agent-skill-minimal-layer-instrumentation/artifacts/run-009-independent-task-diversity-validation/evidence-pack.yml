@@ -1,0 +1,64 @@
+schema_version: "1.0.0"
+run_id: "run-009-independent-task-diversity-validation"
+claims:
+  - claim_id: "pack-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/evidence-pack.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-002"
+    text: "Task scope is structurally outside the validator-test-hardening task cluster: multi-artifact scaffold synthesis requiring cross-run evidence synthesis and schema compliance across 6+ files."
+    type: "task_diversity_probe"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-003"
+    text: "Independent auditor verification is proven for this run."
+    type: "independent_audit_assessment"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/auditor-output.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-004"
+    text: "timing.txt archives a structured task-completion measurement with explicit capture source and limitation note."
+    type: "timing_capture"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-005"
+    text: "Targeted validator regression tests completed with exit_code 0."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/targeted-tests.txt"
+        status: "repo_local"
+        command: "python3 scripts/docmeta/test_validate_run_bundle.py"
+        exit_code: 0
+
+  - claim_id: "pack-006"
+    text: "A summarized make validate capture with exit_code 0 is archived."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 0

@@ -85,10 +85,20 @@ experiment:
     - artifacts/run-008-negative-case-independent-audit-timing/targeted-tests.txt
     - artifacts/run-008-negative-case-independent-audit-timing/make-validate.txt
     - artifacts/run-008-negative-case-independent-audit-timing/timing.txt
+    - artifacts/run-009-independent-task-diversity-validation/run.yml
+    - artifacts/run-009-independent-task-diversity-validation/measurement.yml
+    - artifacts/run-009-independent-task-diversity-validation/auditor-output.yml
+    - artifacts/run-009-independent-task-diversity-validation/run_meta.json
+    - artifacts/run-009-independent-task-diversity-validation/evidence-pack.yml
+    - artifacts/run-009-independent-task-diversity-validation/comparability.yml
+    - artifacts/run-009-independent-task-diversity-validation/changed-files.txt
+    - artifacts/run-009-independent-task-diversity-validation/targeted-tests.txt
+    - artifacts/run-009-independent-task-diversity-validation/make-validate.txt
+    - artifacts/run-009-independent-task-diversity-validation/timing.txt
   created: "2026-05-01"
   updated: "2026-05-12"
   author: "copilot-agent"
-  iteration: 8
+  iteration: 9
   evidence_level: anecdotal
   falsifiability:
     version: 1
@@ -110,6 +120,8 @@ experiment:
           evidence_refs:
             - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
               section: "Run 1 — single PR measurement"
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml
+              section: "Run 9 — task-diversity probe outside validator-test-hardening cluster"
 
 context:
   tools: ["experiment-critic", "evidence-reconciliation-auditor"]

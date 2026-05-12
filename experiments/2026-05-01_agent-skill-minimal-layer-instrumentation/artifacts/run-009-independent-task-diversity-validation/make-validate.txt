@@ -1,0 +1,7 @@
+Command: make validate
+Exit code: 0
+Result: ✅ Validation passed.
+Summary: All schema, run-bundle, relation, epistemics, agent-handoff, generated-artifact,
+artifact-taxonomy, cross-contract, replay, phase1c, adoption-completeness,
+export-parity, promotion-readiness, claim-evidence, and PR-scope validators passed.
+Ran 139 run-bundle regression tests: OK
