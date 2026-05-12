@@ -12,10 +12,22 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-002"
-    text: "Task scope is structurally outside the validator-test-hardening task cluster: multi-artifact scaffold synthesis requiring cross-run evidence synthesis and schema compliance across 6+ files."
+    text: "Repo-local structural contrast shows run-009 is outside the validator-test-hardening changed-files/task cluster."
     type: "task_diversity_probe"
     verdict: "PASS"
     evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run.yml"
+        status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml"
         status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
@@ -44,7 +56,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-005"
-    text: "Targeted validator regression tests completed with exit_code 0."
+    text: "A repo-local summarized targeted-test capture reports exit_code 0."
     type: "command_result"
     verdict: "PASS"
     evidence:
@@ -54,7 +66,7 @@ claims:
         exit_code: 0
 
   - claim_id: "pack-006"
-    text: "A summarized make validate capture with exit_code 0 is archived."
+    text: "A repo-local summarized make validate capture reports exit_code 0."
     type: "command_result"
     verdict: "PASS"
     evidence:

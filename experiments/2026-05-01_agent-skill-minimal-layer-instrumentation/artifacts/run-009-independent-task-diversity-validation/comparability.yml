@@ -40,7 +40,7 @@ notes: >
   - Task-diversity claim: PASS — at least one run now exists outside the
     validator-test-hardening task cluster.
   - Timing semantics: improved over run-008 — timing.txt now records
-    capture_mode, evidence_status, and a validation_path note.
+    capture_mode, evidence_status, and an upgrade_path note.
   - Independence gap: explicitly documented via CLAIM_NOT_PROVEN rather
     than carried forward silently.
 

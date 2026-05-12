@@ -24,10 +24,22 @@ claims:
         status: "repo_local"
 
   - id: "claim-002"
-    text: "Task scope is structurally outside the validator-test-hardening task cluster (run-005/006): multi-artifact scaffold synthesis with cross-run evidence, schema compliance across 6+ files, and epistemic calibration."
+    text: "Repo-local structural contrast shows run-009 is outside the validator-test-hardening changed-files/task cluster."
     type: "task_diversity_probe"
     verdict: "PASS"
     evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run.yml"
+        status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml"
         status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml"
@@ -73,25 +85,27 @@ claims:
         status: "repo_local"
     notes: >
       Improvement over run-008: timing.txt now explicitly records
-      capture_mode, evidence_status (self_reported), and a validation_path
+      capture_mode, evidence_status (self_reported), and an upgrade_path
       note explaining what would be needed to upgrade to repo_local or
       external_verified.
 
   - id: "claim-005"
-    text: "Targeted validator regression tests completed with exit_code 0."
+    text: "A repo-local summarized targeted-test capture reports exit_code 0."
     type: "command_result"
     verdict: "PASS"
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/targeted-tests.txt"
         status: "repo_local"
+    notes: "Summary capture only; no full raw command log is archived in this run bundle."
 
   - id: "claim-006"
-    text: "A summarized make validate capture with exit_code 0 is archived."
+    text: "A repo-local summarized make validate capture reports exit_code 0."
     type: "command_result"
     verdict: "PASS"
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/make-validate.txt"
         status: "repo_local"
+    notes: "Summary capture only; no full raw make validate log is archived in this run bundle."
 
 out_of_scope_claims: []
 
