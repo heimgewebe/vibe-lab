@@ -16,6 +16,7 @@
 - [ ] `CONTEXT.md` und `INITIAL.md` sind vorhanden und vollständig
 - [ ] `evidence.jsonl` enthält mindestens einen maschinenlesbaren Eintrag
 - [ ] `decision.yml` enthält `decision_type: adoption_assessment` und `verdict: adopt` (Decision-Type-Separation gem. `execution-bound-epistemics.md §10.1`; impliziert `execution_status ∈ {executed, replicated}` — durch `validate_schema.py` cross-file erzwungen)
+- [ ] Begriffsabgrenzung ist konsistent: `adopt` ist der Decision-Verdict-Wert; `adopted` ist der daraus folgende Status/Lifecycle-Zustand
 - [ ] Manifest enthält `adoption_basis`: `executed` oder `replicated` bei neuen Promotions. `reconstructed` ist **nur für Altbestand** mit expliziter Legacy-Begründung zulässig (siehe `docs/blueprints/blueprint-v2.md` → Übergangsregel)
 - [ ] Falls `execution_status ∈ {executed, replicated}`: `artifacts/<run-id>/run_meta.json` vorhanden und schema-valide; `test_output_file` existiert
 - [ ] Schema- und Execution-Proof-Validierung bestanden (`make validate`)

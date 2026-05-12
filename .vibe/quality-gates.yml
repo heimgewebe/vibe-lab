@@ -36,7 +36,7 @@ gates:
     description: "Experiment muss vollständig durchgeführt und belastbar ausgewertet sein."
     requirements:
       - "evidence.jsonl enthält mindestens einen Eintrag"
-      - "decision.yml enthält verdict: adopted"
+      - "Für den Übergang zu adopted ist ein decision.yml mit decision_type: adoption_assessment und verdict: adopt erforderlich"
       - "CONTEXT.md und INITIAL.md sind vollständig"
       - "failure_modes.md ist ausgefüllt (nicht nur Template)"
       - "Schema-Validierung bestanden"
