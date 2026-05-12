@@ -22,7 +22,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "pack-003"
-    text: "Independent auditor verification is proven for this run."
+    text: "Independent auditor verification is demonstrated for this run's task-diversity and metric-validation assessment."
     type: "independent_audit_assessment"
     verdict: "CLAIM_NOT_PROVEN"
     evidence:

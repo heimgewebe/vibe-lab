@@ -45,7 +45,7 @@ claims:
       run in a different task class remains needed for stronger replication.
 
   - id: "claim-003"
-    text: "This run proves independent auditor verification for the task-diversity and metric-validation assessment."
+    text: "Independent auditor verification is demonstrated for this run's task-diversity and metric-validation assessment."
     type: "independent_audit_assessment"
     verdict: "CLAIM_NOT_PROVEN"
     evidence:

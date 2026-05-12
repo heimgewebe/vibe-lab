@@ -10,8 +10,8 @@ limitation_note: >
   reading all context files, designing and creating 10 run artifacts,
   updating manifest.yml, evidence.jsonl, cross-run-assessment.md,
   decision.yml, and roadmap.md, then running tests and make validate.
-validation_path: >
-  To upgrade from self_reported to repo_local: record a git-log or CI job
+upgrade_path: >
+  To upgrade timing from self_reported to repo_local: record a git-log or CI job
   timestamp for first and last commit of this run. To upgrade to
   external_verified: use a CI-supplied job duration from the workflow run
   that merged this PR.
