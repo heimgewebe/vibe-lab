@@ -3825,9 +3825,14 @@ class ReviewEventsContentValidationTests(unittest.TestCase):
         _append_review_evidence_artifact(run_dir)
         _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
         errs = validate_repo(self.base)
-        # Schema catches empty sha (minLength:1 on sha); review-events.yml fails validation.
+        # Schema catches empty sha via minLength:1 on sha; error path includes rework_commit_refs.
         self.assertTrue(
-            any("review-events.yml" in e for e in errs),
+            any(
+                "review-events.yml" in e
+                and "schema-invalid" in e
+                and "rework_commit_refs" in e
+                for e in errs
+            ),
             errs,
         )
 

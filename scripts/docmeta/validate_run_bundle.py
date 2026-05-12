@@ -313,10 +313,6 @@ def _load_comparability_run_artifact_ref(
 
 
 # Valid evidence_status values accepted in a review-events.yml artifact.
-_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES = frozenset(
-    {"repo_local", "ci_artifact", "external_verified"}
-)
-
 
 def _validate_review_events_content(
     *,
@@ -373,72 +369,27 @@ def _validate_review_events_content(
 
     is_valid = True
 
-    # contract (defense-in-depth; schema const ensures this, but explicit message is clearer)
-    contract = data.get("contract")
-    if contract != "review_events":
-        errors.append(
-            f"  ❌ {rel}: contract='{contract}' muss exakt 'review_events' sein."
-        )
-        is_valid = False
+    # Semantic cross-checks only. Schema (review-events.v1.schema.json) guards all
+    # structural constraints (required fields, types, enums, const values, minLength,
+    # additionalProperties). Only rules that the schema cannot enforce are checked below:
+    #   - run_id must match the run directory name (cross-file equality)
+    #   - captured_at must carry a timezone (schema enforces string presence, not tzinfo)
+    #   - external_verified requires at least one ref (schema cannot check presence
+    #     of a *different* field conditionally on this field's value)
 
-    # run_id
+    # run_id cross-check: schema enforces non-empty string; only equality is semantic.
     run_id = data.get("run_id")
-    if not isinstance(run_id, str) or not run_id.strip():
-        errors.append(f"  ❌ {rel}: run_id fehlt oder ist leer.")
-        is_valid = False
-    elif run_id != expected_run_id:
+    if run_id != expected_run_id:
         errors.append(
             f"  ❌ {rel}: run_id='{run_id}' stimmt nicht mit "
             f"Run-Verzeichnis '{expected_run_id}' überein."
         )
         is_valid = False
 
-    # review_friction_count: integer >= 0
-    rfc = data.get("review_friction_count")
-    if not isinstance(rfc, int) or isinstance(rfc, bool) or rfc < 0:
-        errors.append(
-            f"  ❌ {rel}: review_friction_count muss eine ganze Zahl >= 0 sein."
-        )
-        is_valid = False
-
-    # rework_count: integer >= 0
-    rwc = data.get("rework_count")
-    if not isinstance(rwc, int) or isinstance(rwc, bool) or rwc < 0:
-        errors.append(
-            f"  ❌ {rel}: rework_count muss eine ganze Zahl >= 0 sein."
-        )
-        is_valid = False
-
-    # evidence_status: must be a non-empty string in the valid set
-    ev_status = data.get("evidence_status")
-    if not isinstance(ev_status, str) or not ev_status.strip():
-        errors.append(
-            f"  ❌ {rel}: evidence_status fehlt, ist leer oder kein String — "
-            f"erwartet eines von {sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)}."
-        )
-        ev_status = None  # prevent false external_verified branch below
-        is_valid = False
-    elif ev_status not in _REVIEW_EVENTS_VALID_EVIDENCE_STATUSES:
-        errors.append(
-            f"  ❌ {rel}: evidence_status='{ev_status}' muss eines von "
-            f"{sorted(_REVIEW_EVENTS_VALID_EVIDENCE_STATUSES)} sein."
-        )
-        is_valid = False
-
-    # captured_at: strict timestamp string (not date-only), with timezone.
-    captured_at = data.get("captured_at")
-    if not isinstance(captured_at, str) or not captured_at.strip():
-        errors.append(f"  ❌ {rel}: captured_at fehlt oder ist leer.")
-        is_valid = False
-    else:
-        captured_at_stripped = captured_at.strip()
-        if "T" not in captured_at_stripped:
-            errors.append(
-                f"  ❌ {rel}: captured_at='{captured_at_stripped}' muss ein Timestamp mit "
-                f"Datum+Zeit (T-Separator) sein, nicht nur ein Datum."
-            )
-            is_valid = False
-
+    # captured_at: schema enforces non-empty string; timezone-awareness is semantic.
+    captured_at = data.get("captured_at", "")
+    captured_at_stripped = captured_at.strip() if isinstance(captured_at, str) else ""
+    if captured_at_stripped:
         try:
             parsed_captured_at = datetime.fromisoformat(
                 captured_at_stripped.replace("Z", "+00:00")
@@ -457,13 +408,8 @@ def _validate_review_events_content(
                 )
                 is_valid = False
 
-    # pr_ref
-    pr_ref = data.get("pr_ref")
-    if not isinstance(pr_ref, str) or not pr_ref.strip():
-        errors.append(f"  ❌ {rel}: pr_ref fehlt oder ist leer.")
-        is_valid = False
-
-    # external_verified: mindestens eine nachvollziehbare Referenz
+    # external_verified: mindestens eine nachvollziehbare Referenz (cross-field semantic).
+    ev_status = data.get("evidence_status")
     if ev_status == "external_verified":
         thread_refs = data.get("review_thread_refs")
         rework_commit_refs = data.get("rework_commit_refs")
