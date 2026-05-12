@@ -1,0 +1,68 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-007-review-rework-outcome-evidence-pilot"
+
+auditor_verdict: "PASS"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.5"
+  executor: "copilot-coding-agent"
+  role: "outcome-evidence pilot run construction with review-events evidence archiving"
+
+pr_metadata:
+  pr_number: 179
+  pr_url: "https://github.com/heimgewebe/vibe-lab/pull/179"
+  merge_commit: "a9eb8a1f501f6931b690f4f94b5a602d1bc56de5"
+  head_commit: "4c0e70ab1df16369c9a9f602992875a929f79d3c"
+  evidence_status: "repo_local"
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Scope limited to run-007 artifacts plus experiment bookkeeping updates."
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "All auditor claims PASS with repo-local evidence pointers."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All recorded evidence points to concrete repo-local artifacts or explicit GitHub URLs archived in local text artifacts."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "targeted-tests.txt and make-validate.txt are present with exit_code 0 summaries."
+
+  review_friction_count:
+    value: 2
+    evidence_status: "repo_local"
+    notes: "Two concrete Copilot review comments are archived and referenced in review-events.yml (single review round, two friction events)."
+
+  rework_count:
+    value: 2
+    evidence_status: "repo_local"
+    notes: "Two post-review rework commits (9456946, 4c0e70a) addressing the review comments are archived in review-events.yml and git-log-review-rework.txt."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false blocking observed during this run; validator stack completed successfully."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No independently archived timing artifact captured for this run."
+
+missing_evidence:
+  - item: "task_completion_time_observed"
+    detail: "No independently archived timing artifact exists for this run."
+
+interpretation_limits:
+  - "This run validates measurability and evidence capture mechanics only."
+  - "No usefulness, adoption, promotion, or causal claim is allowed from this run."
+  - "review_friction_count/rework_count becoming repo_local here does not resolve independent auditor, task-diversity, or negative-case blockers."

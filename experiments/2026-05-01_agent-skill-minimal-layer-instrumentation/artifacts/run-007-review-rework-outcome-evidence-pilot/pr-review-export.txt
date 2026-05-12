@@ -1,0 +1,18 @@
+captured_at: 2026-05-12T06:36:41Z
+source: github-mcp-server-pull_request_read(get)
+
+pr_number: 179
+pr_url: https://github.com/heimgewebe/vibe-lab/pull/179
+title: feat: schema-back review-events.yml (review-rework-artifact.contract.md v0.2)
+state: closed
+merged: true
+merged_at: 2026-05-12T06:30:02Z
+base_ref: main
+base_sha: d7f5f55658bae9b8b9089cc71a2399d667023678
+head_ref: copilot/optimize-agent-instruction
+head_sha: 4c0e70ab1df16369c9a9f602992875a929f79d3c
+merge_commit: a9eb8a1f501f6931b690f4f94b5a602d1bc56de5
+commits_total: 5
+changed_files: 9
+additions: 591
+deletions: 144

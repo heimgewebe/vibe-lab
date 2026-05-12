@@ -1,0 +1,2 @@
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl

@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-007-review-rework-outcome-evidence-pilot",
+  "generated_at": "2026-05-12T06:36:41Z",
+  "executor": "copilot-coding-agent:gpt-5.5",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && make validate",
+  "command_scope": "first real review-events outcome-evidence pilot using merged PR #179 as documented review/rework case",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-007-review-rework-outcome-evidence-pilot/targeted-tests.txt",
+  "auditor_output_file": "artifacts/run-007-review-rework-outcome-evidence-pilot/auditor-output.yml",
+  "provenance_level": "self_reported",
+  "outcome": "PASS",
+  "notes": "Goal is strictly instrumentation: verify that review/rework metrics can move from missing_evidence to repo_local with explicit evidence-gating. No usefulness, adoption, promotion, or causal claim."
+}
