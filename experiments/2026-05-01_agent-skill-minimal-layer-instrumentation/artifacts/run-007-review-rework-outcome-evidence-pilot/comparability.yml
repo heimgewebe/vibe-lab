@@ -17,10 +17,16 @@ independent_task_or_pr_ref: "PR#179"
 changed_files_artifact: "artifacts/run-007-review-rework-outcome-evidence-pilot/changed-files.txt"
 review_evidence_artifact: "artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml"
 
-verdict: comparable
+verdict: not_comparable
 
 notes: >
   Outcome-evidence pilot run anchored to merged PR #179. This run introduces a real
   review-events artifact and validates the contract path from missing_evidence to
-  repo_local for review_friction_count and rework_count. Scope remains measurement-only:
-  no usefulness, adoption, promotion, or causal claim.
+  repo_local for review_friction_count and rework_count. Metric schema alignment exists,
+  and changed-files.txt documents this pilot PR's own touched files (run-007 artifacts
+  plus experiment bookkeeping updates).
+  Usefulness-run comparability is not established.
+  This run validates the
+  review-events evidence mechanism only and must not increment comparable-run counts
+  for usefulness assessment. Scope remains measurement-only: no usefulness, adoption,
+  promotion, or causal claim.

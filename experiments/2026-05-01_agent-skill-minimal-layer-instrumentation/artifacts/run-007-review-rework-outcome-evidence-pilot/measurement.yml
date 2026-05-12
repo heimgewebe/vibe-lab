@@ -36,7 +36,7 @@ metrics:
   validation_gap_count:
     value: 0
     evidence_status: "derived_from_auditor_output"
-    notes: "targeted-tests.txt and make-validate.txt are present with exit_code 0 summaries."
+    notes: "No auditor claims use command_succeeded/validator_succeeded with missing evidence; command artifacts are explicitly summary-scoped."
 
   review_friction_count:
     value: 2
@@ -66,3 +66,4 @@ interpretation_limits:
   - "This run validates measurability and evidence capture mechanics only."
   - "No usefulness, adoption, promotion, or causal claim is allowed from this run."
   - "review_friction_count/rework_count becoming repo_local here does not resolve independent auditor, task-diversity, or negative-case blockers."
+  - "make-validate evidence is summary-only (exit_code + final lines), not full raw command output."

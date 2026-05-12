@@ -36,7 +36,7 @@ claims:
         exit_code: 0
 
   - claim_id: "pack-004"
-    text: "make validate completed with exit_code 0."
+    text: "A summarized make validate capture with exit_code 0 is archived."
     type: "command_result"
     verdict: "PASS"
     evidence:
