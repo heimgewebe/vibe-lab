@@ -22,5 +22,5 @@
   "provenance_level": "self_reported",
   "outcome": "PASS",
   "triggered_by": "user-request-2026-05-12-run-010-independent-auditor-validation",
-  "notes": "Post-audit reconciliation state. auditor-output.yml is externally produced by a different session and is PASS for pack-001 through pack-007 in the run-010 evidence package scope. Full auditor independence remains PARTIAL because the same model family was used. No usefulness, adoption, promotion, or causal claim."
+  "notes": "Post-audit reconciliation state. auditor-output.yml is externally produced by a different session and is PASS for pack-001 through pack-007 in the run-010 evidence package scope. auditor_independence_status is PARTIAL because the same model family was used; full auditor independence remains not proven. No usefulness, adoption, promotion, or causal claim."
 }

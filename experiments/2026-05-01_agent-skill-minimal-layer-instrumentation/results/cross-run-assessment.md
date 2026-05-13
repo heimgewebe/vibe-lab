@@ -342,9 +342,10 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 - auditor identity differs by session ID from run-010 executor
   (`session_01WRxj2xvpB7Xgu4soTdJYE4` vs
   `session_011cvra3PDFriTmZTKsuCCVB`).
-- full independence remains **PARTIAL** because executor and auditor use the
-  same model family; the stricter `independent-auditor-proof.txt` criterion is
-  not fully satisfied.
+- `auditor_independence_status` is **PARTIAL**; full auditor independence
+  remains **not proven** because executor and auditor use the same model
+  family, so the stricter `independent-auditor-proof.txt` criterion is not
+  fully satisfied.
 - comparable-run count remains 3.
 - experiment verdict remains `insufficient_proof`.
 

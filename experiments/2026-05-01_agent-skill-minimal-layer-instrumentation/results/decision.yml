@@ -32,9 +32,10 @@ rationale: |
   Post-Audit-Reconciliation 2026-05-13: Run-010 hat nun einen externen
   different-session Auditor-Output mit
   `overall_verdict: PASS` für den Evidence-Package-Scope (pack-001 bis pack-007).
-  Das reduziert die Run-010 package-validation gap. Full auditor independence
-  bleibt PARTIAL (gleiche Modellfamilie), Comparable-run-Count bleibt
-  unverändert (3). Kein Upgrade auf result_assessment zulässig.
+  Das reduziert die Run-010 package-validation gap. auditor_independence_status
+  bleibt PARTIAL (gleiche Modellfamilie); vollständige Auditor-Unabhängigkeit
+  bleibt nicht belegt. Comparable-run-Count bleibt unverändert (3). Kein
+  Upgrade auf result_assessment zulässig.
 
 evidence_summary:
   observations: 5
@@ -43,7 +44,7 @@ evidence_summary:
   neutral: 2
   positive_detail: "Scaffold-Artefaktstruktur reproduzierbar; 5/8 Metriken konsistent erfasst; Task-Diversität partiell adressiert (run-009 claim-002 PASS)"
   negative_detail: "3/8 Metriken persistent unmessbar (review_friction, rework, timing); kein vollständig unabhängiger Auditor (run-008/009 CLAIM_NOT_PROVEN, run-010 nur PARTIAL independence); Task-Cluster ohne vollständige Varietät"
-  neutral_detail: "comparability.yml-Mechanismus funktioniert; run-003/004 korrekt ausgeschlossen; Timing-Semantik verbessert aber noch self_reported; run-010 external different-session audit PASS liegt vor, full independence bleibt PARTIAL"
+  neutral_detail: "comparability.yml-Mechanismus funktioniert; run-003/004 korrekt ausgeschlossen; Timing-Semantik verbessert aber noch self_reported; run-010 external different-session audit PASS liegt vor, auditor_independence_status bleibt PARTIAL und vollständige Auditor-Unabhängigkeit bleibt nicht belegt"
 
 next_steps: |
   Blocker für Beseitigung des insufficient_proof (aus results/cross-run-assessment.md §5):
@@ -57,5 +58,6 @@ next_steps: |
      Status: CLAIM_NOT_PROVEN pilotiert in run-008; echter FAIL noch offen.
   4. Unabhängige Metrik-Validierung: Prüfung durch Reviewer != Executor.
      Status: run-010 hat different-session external audit PASS für pack-001 bis
-     pack-007; full independence bleibt PARTIAL unter strengem Kriterium
+     pack-007; auditor_independence_status bleibt PARTIAL und vollständige
+     Auditor-Unabhängigkeit bleibt unter strengem Kriterium nicht belegt
      (different AI system oder human reviewer weiterhin offen).

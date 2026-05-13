@@ -11,9 +11,9 @@ agent_layer_used:
   role: >
     Post-audit reconciliation of the run-010 execution evidence package.
     PASS is derived from external different-session auditor-output.yml for
-    pack-001 through pack-007. Full auditor independence remains PARTIAL
-    (same model family), and this run still makes no usefulness, adoption,
-    promotion, or causal claim.
+    pack-001 through pack-007. auditor_independence_status is PARTIAL (same
+    model family); full auditor independence remains not proven. This run still
+    makes no usefulness, adoption, promotion, or causal claim.
 
 metrics:
   scope_drift_count:
@@ -85,10 +85,11 @@ metrics:
 missing_evidence:
   - item: "full_auditor_independence"
     detail: >
-      Different-session audit exists, but full independence per
-      independent-auditor-proof.txt remains PARTIAL because the same model
-      family was used. Human reviewer or different AI system still needed for
-      full independence.
+      Different-session audit exists, and auditor_independence_status is
+      PARTIAL. Full auditor independence remains not proven under
+      independent-auditor-proof.txt criteria because the same model family was
+      used. Human reviewer or different AI system is still needed for full
+      independence.
   - item: "review_friction_count"
     detail: "No PR review events exist for this run at artifact-creation time."
   - item: "rework_count"
@@ -100,7 +101,7 @@ missing_evidence:
 
 interpretation_limits:
   - "This run is an execution evidence package preparation run; it does not count as a comparable usefulness run."
-  - "auditor-output.yml is externally audited PASS for pack-001 through pack-007, but full auditor independence remains PARTIAL."
+  - "auditor-output.yml is externally audited PASS for pack-001 through pack-007; auditor_independence_status is PARTIAL and full auditor independence remains not proven."
   - "review_friction_count and rework_count remain missing_evidence."
   - "Timing is self_reported; not independently verified."
   - "This run does not produce a usefulness, adoption, promotion, or causal verdict."
@@ -111,6 +112,6 @@ extensions:
   run_purpose: "audit-ready-evidence-package"
   note_on_auditor_ref: >
     auditor-output.yml was replaced by an external different-session auditor and
-    is canonical for pack-001 through pack-007 package validation. Full
-    independence remains PARTIAL because executor and auditor still share the
-    same model family.
+    is canonical for pack-001 through pack-007 package validation.
+    auditor_independence_status is PARTIAL, and full independence remains not
+    proven because executor and auditor still share the same model family.

@@ -18,9 +18,9 @@ provenance:
     external different-session auditor
     (session_01WRxj2xvpB7Xgu4soTdJYE4) and verifies pack-001 through pack-007
     as PASS for the run-010 evidence package scope.
-    Full auditor independence remains PARTIAL because the same model family was
-    used; a human reviewer or different AI system is still required for full
-    independence.
+    auditor_independence_status is PARTIAL because the same model family was
+    used; full auditor independence remains not proven, and a human reviewer or
+    different AI system is still required.
     No usefulness, adoption, promotion, or causal claim.
 
 artifacts:

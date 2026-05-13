@@ -29,8 +29,9 @@ notes: >
   through pack-007.
 
   Verdict not_comparable because:
-  (1) Full auditor independence remains PARTIAL: session identity is different,
-      but executor and auditor use the same model family.
+  (1) auditor_independence_status is PARTIAL: session identity is different,
+      but full auditor independence remains not proven because executor and
+      auditor use the same model family.
   (2) This run is scoped to evidence-package audit/reconciliation, not
       a fourth/fifth comparable usefulness run.
   (3) Comparable-run-count remains at 3 (run-002, run-005, run-006).
