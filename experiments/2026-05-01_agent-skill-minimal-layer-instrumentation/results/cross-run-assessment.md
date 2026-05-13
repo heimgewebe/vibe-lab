@@ -277,9 +277,9 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 ---
 
-## Post run-010 update (2026-05-12)
+## Post run-010 update (2026-05-12, pre-audit snapshot — superseded; see Post-Audit-Reconciliation update (2026-05-13) below)
 
-### Run-010 — Independent-Auditor-Validation Preparation
+### Run-010 — Independent-Auditor-Validation Preparation (historischer Prä-Audit-Zustand)
 
 | Dimension | Befund |
 |---|---|
@@ -296,6 +296,13 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 | auditor-output.yml | Present (schema requirement) but is an explicit self-audit with `auditor_independence_status: NONE` |
 
 ### Auswirkung auf die Gesamtbewertung
+
+> **Hinweis:** Die Aussagen in diesem Abschnitt dokumentieren den Stand vom
+> 2026-05-12 vor externer Audit-Durchführung. Der aktuelle Zustand ist im
+> Abschnitt **Post-Audit-Reconciliation update (2026-05-13)** dokumentiert
+> (`auditor-output.yml` PASS für pack-001 bis pack-007, different-session
+> Auditor, independence PARTIAL, comparable-run count 3, verdict
+> `insufficient_proof` unverändert).
 
 **Blocker-Fortschritt:**
 

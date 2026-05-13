@@ -9,12 +9,11 @@ agent_layer_used:
   agent: "self_reported:claude-sonnet-4-6"
   executor: "claude-code"
   role: >
-    Execution evidence package preparation. Task: create an audit-ready
-    run-010 artifact bundle that clearly separates what is proven (execution
-    evidence exists, commands ran, timing captured) from what is not proven
-    (auditor independence). The primary goal is structural: make the
-    independence gap visible and formally documented, not to produce a
-    PASS verdict by bypassing it.
+    Post-audit reconciliation of the run-010 execution evidence package.
+    PASS is derived from external different-session auditor-output.yml for
+    pack-001 through pack-007. Full auditor independence remains PARTIAL
+    (same model family), and this run still makes no usefulness, adoption,
+    promotion, or causal claim.
 
 metrics:
   scope_drift_count:
