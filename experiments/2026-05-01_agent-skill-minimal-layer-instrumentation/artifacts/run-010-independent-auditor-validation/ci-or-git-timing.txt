@@ -10,10 +10,19 @@ start_note: >
   a precise session-start capture.
 
 end_source: "self_reported"
-end_timestamp: "2026-05-12T21:30:00Z (approx)"
+end_timestamp: null
 end_note: >
-  End timestamp is self-reported by the executor session. No CI job, no
-  independent session log, no external clock is available.
+  No reliable run end timestamp is available. The previously self-reported value
+  (2026-05-12T21:30:00Z) cannot be treated as the final evidence-package
+  completion time because a later validation artifact (make-validate.txt) was
+  captured at 2026-05-13T05:28:21Z. make validate was a post-run validation step,
+  not part of the original run-010 execution; see run_meta.json post_run_validation.
+
+latest_validation_capture:
+  source: "make-validate.txt"
+  timestamp: "2026-05-13T05:28:21Z"
+  evidence_status: "repo_local"
+  classification: "post_run_validation"
 
 duration_seconds: null
 duration_note: >
