@@ -29,11 +29,11 @@ rationale: |
   validator-test-hardening-Cluster), claim-003 CLAIM_NOT_PROVEN (Auditor-Unabhängigkeit
   bleibt partial). Timing-Semantik verbessert: self_reported mit explizitem
   capture_mode, evidence_status und upgrade_path.
-  Run-010 hat Audit-ready-Paket erstellt: independent-auditor-proof.txt mit
-  INDEPENDENCE_NOT_PROVEN, audit-request.md mit formalem Audit-Request für einen
-  genuinen externen Auditor. auditor_independence_status: NONE (kein Selbst-Audit
-  kaschiert als unabhängig). Comparable-run-Count unverändert (3). Kein Upgrade
-  auf result_assessment zulässig.
+  Run-010 hat nun einen externen different-session Auditor-Output mit
+  `overall_verdict: PASS` für den Evidence-Package-Scope (pack-001 bis pack-007).
+  Das reduziert die run-010 package-validation gap. Full auditor independence
+  bleibt PARTIAL (gleiche Modellfamilie), Comparable-run-Count bleibt
+  unverändert (3). Kein Upgrade auf result_assessment zulässig.
 
 evidence_summary:
   observations: 5
@@ -55,8 +55,6 @@ next_steps: |
      konkretem Artefakt-Rückverweis.
      Status: CLAIM_NOT_PROVEN pilotiert in run-008; echter FAIL noch offen.
   4. Unabhängige Metrik-Validierung: Prüfung durch Reviewer != Executor.
-     Status: CLAIM_NOT_PROVEN in run-008, run-009, run-010. Run-010 hat
-     audit-request.md erstellt und INDEPENDENCE_NOT_PROVEN explizit dokumentiert.
-     Nächster Schritt: ein externer Auditor liest artifacts/run-010-independent-
-     auditor-validation/audit-request.md und produziert auditor-output.yml mit
-     einer vom Executor unterscheidbaren executor/session-Identität.
+     Status: run-010 hat different-session external audit PASS für pack-001 bis
+     pack-007; full independence bleibt PARTIAL unter strengem Kriterium
+     (different AI system oder human reviewer weiterhin offen).

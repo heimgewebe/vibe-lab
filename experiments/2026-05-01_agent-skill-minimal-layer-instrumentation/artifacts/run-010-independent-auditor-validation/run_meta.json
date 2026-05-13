@@ -18,9 +18,9 @@
     "note": "make validate was executed after the original run-010 session as a follow-up verification step. Its capture timestamp (2026-05-13T05:28:21Z) postdates the original run generated_at (2026-05-12T21:00:00Z) and is therefore not part of the original run execution."
   },
   "auditor_output_file": "artifacts/run-010-independent-auditor-validation/auditor-output.yml",
-  "auditor_independence_status": "NONE",
+  "auditor_independence_status": "PARTIAL",
   "provenance_level": "self_reported",
-  "outcome": "CLAIM_NOT_PROVEN",
+  "outcome": "PASS",
   "triggered_by": "user-request-2026-05-12-run-010-independent-auditor-validation",
-  "notes": "Execution evidence package preparation run. auditor-output.yml is present but self-audit only (auditor_independence_status: NONE); independent external auditor output is missing. Auditor independence is CLAIM_NOT_PROVEN. See audit-request.md. Validation commands succeed (exit_code 0). No usefulness, adoption, promotion, or causal claim."
+  "notes": "Post-audit reconciliation state. auditor-output.yml is externally produced by a different session and is PASS for pack-001 through pack-007 in the run-010 evidence package scope. Full auditor independence remains PARTIAL because the same model family was used. No usefulness, adoption, promotion, or causal claim."
 }

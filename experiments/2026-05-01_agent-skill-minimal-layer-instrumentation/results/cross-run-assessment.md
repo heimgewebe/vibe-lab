@@ -328,6 +328,21 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 ---
 
+## Post-Audit-Reconciliation update (2026-05-13)
+
+- run-010 external different-session audit produced `auditor-output.yml` with
+  `overall_verdict: PASS` for pack-001 through pack-007.
+- auditor identity differs by session ID from run-010 executor
+  (`session_01WRxj2xvpB7Xgu4soTdJYE4` vs
+  `session_011cvra3PDFriTmZTKsuCCVB`).
+- full independence remains **PARTIAL** because executor and auditor use the
+  same model family; the stricter `independent-auditor-proof.txt` criterion is
+  not fully satisfied.
+- comparable-run count remains 3.
+- experiment verdict remains `insufficient_proof`.
+
+---
+
 ## Anhang: Fehlende Governance-Referenz
 
 `docs/policies/agent-reading-protocol.md` — referenziert in den Anweisungen für dieses Assessment.

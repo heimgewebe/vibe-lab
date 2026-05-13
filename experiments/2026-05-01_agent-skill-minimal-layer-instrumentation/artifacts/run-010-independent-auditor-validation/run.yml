@@ -14,10 +14,13 @@ provenance:
   notes: >
     Executor: claude-code:claude-sonnet-4-6, session_011cvra3PDFriTmZTKsuCCVB,
     branch claude/improve-audit-independence-Gf8dZ.
-    This session is the executor only. The auditor-output.yml in this bundle is
-    a self-audit (same session as executor); independence is CLAIM_NOT_PROVEN.
-    See independent-auditor-proof.txt (INDEPENDENCE_NOT_PROVEN) and
-    audit-request.md for a formal request to a genuinely external auditor.
+    This session is the executor only. auditor-output.yml was replaced by an
+    external different-session auditor
+    (session_01WRxj2xvpB7Xgu4soTdJYE4) and verifies pack-001 through pack-007
+    as PASS for the run-010 evidence package scope.
+    Full auditor independence remains PARTIAL because the same model family was
+    used; a human reviewer or different AI system is still required for full
+    independence.
     No usefulness, adoption, promotion, or causal claim.
 
 artifacts:
@@ -40,7 +43,7 @@ artifacts:
     canonical: true
 
 verdict:
-  outcome: "CLAIM_NOT_PROVEN"
+  outcome: "PASS"
   effect_claim_allowed: false
   promotion_claim_allowed: false
 
