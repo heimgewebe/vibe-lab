@@ -81,7 +81,9 @@ The overall run verdict must be:
 ## What the Auditor Must NOT Do
 
 - Repair claims (do not fix missing artifacts)
-- Edit any artifact in this bundle
+- Edit any artifact in this bundle except replacing `auditor-output.yml` with
+  your externally produced audit output (see below — this replacement is the
+  requested audit output, not a repair of run evidence)
 - Infer missing evidence ("it is plausible that...")
 - Upgrade a CLAIM_NOT_PROVEN to PASS without locatable evidence
 - Add usefulness, promotion, adoption, or causal claims
@@ -92,20 +94,14 @@ The overall run verdict must be:
 ## Where to Write the Audit Output
 
 A schema-required self-audit `auditor-output.yml` already exists in the run
-directory, produced by the executor session (not independent). You must
-supersede it with externally produced output. Options:
+directory, produced by the executor session (`auditor_independence_status: NONE`).
+Replace it with your externally produced audit output:
 
-**Option A (preferred):** Replace the existing self-audit file:
 ```
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml
 ```
 
-**Option B:** Add a separate external audit file if replacement is not permitted:
-```
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/external-auditor-output.yml
-```
-
-Either way, the file must validate against `schemas/auditor-output.v1.schema.json`.
+The file must validate against `schemas/auditor-output.v1.schema.json`.
 
 In the `auditor` field, include:
 - `name`: your agent or reviewer name/identifier
@@ -116,12 +112,16 @@ In the `auditor` field, include:
 This field is what turns your audit into evidence of independence. Without it, the
 audit is CLAIM_NOT_PROVEN regardless of verdicts.
 
+All other run artifacts remain read-only. Replacing `auditor-output.yml` is not
+a repair of the evidence package — it is the externally produced audit output
+that this request is asking for.
+
 ---
 
 ## Success Criterion for This Request
 
 This audit request is fulfilled if:
-1. An externally produced audit file is created (Option A or B above)
+1. `auditor-output.yml` is replaced by a genuinely external auditor
 2. The `auditor.executor` field is provably different from `claude-code:claude-sonnet-4-6`
    (session_011cvra3PDFriTmZTKsuCCVB)
 3. The overall verdict is one of the permitted verdicts (PASS or a non-PASS verdict)

@@ -53,12 +53,12 @@ For an auditor to be genuinely independent, ALL of the following must be true:
 
 === Where The Independent Audit Output Should Go ===
 If a genuinely independent audit occurs after this run:
-  - The auditor should supersede the existing self-audit:
+  - The auditor should replace the existing self-audit:
     artifacts/run-010-independent-auditor-validation/auditor-output.yml
-    with externally produced output, OR add a separate
-    external-auditor-output.yml if replacement is not permitted by review policy.
+    with externally produced output. This replacement is not a repair of
+    run evidence — it is the requested audit output.
   - The auditor should reference: audit-request.md for scope and claim list
-  - The auditor should not edit any other artifact in this bundle
+  - All other artifacts in this bundle remain read-only
 
 === Conclusion ===
 For run-010: INDEPENDENCE_NOT_PROVEN.

@@ -52,7 +52,7 @@ claims:
         exit_code: 0
 
   - claim_id: "pack-004"
-    text: "make validate ran with exit_code 0 (prior to bookkeeping updates); full output archived in make-validate.txt."
+    text: "make validate ran with exit_code 0; full output archived in make-validate.txt."
     type: "command_result"
     verdict: "PASS"
     evidence:

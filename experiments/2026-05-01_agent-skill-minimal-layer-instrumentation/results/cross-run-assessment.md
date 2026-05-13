@@ -312,7 +312,7 @@ Die Hypothese ist für 5/8 Metriken in einem schmalen Task-Korridor bestätigt: 
 
 **Was Run-010 einführt:**
 
-- Das erste Run-Bundle, das bewusst und vollständig auf eine Selbst-Audit-Simulation verzichtet — statt `auditor_independence_status: partial` (run-009) jetzt `auditor_independence_status: NONE`.
+- Das erste Run-Bundle, das nicht auf eine Unabhängigkeits-Simulation setzt: `auditor-output.yml` existiert nur als schema-required self-audit artifact und wird ausdrücklich nicht als unabhängige Validierung gewertet (`auditor_independence_status: NONE`, statt `partial` wie in run-009).
 - Die erste formale Audit-Anfrage (`audit-request.md`), die spezifiziert, wer Auditor sein muss, was geprüft wird und wo der Output hingehört.
 - Vollständige (nicht nur zusammengefasste) Command-Logs in `raw-command-log.txt`.
 
