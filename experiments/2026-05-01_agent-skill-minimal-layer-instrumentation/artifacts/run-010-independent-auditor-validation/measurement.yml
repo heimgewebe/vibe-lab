@@ -2,19 +2,18 @@ schema_version: "1.0.0"
 contract: "measurement_run"
 run_id: "run-010-independent-auditor-validation"
 
-auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_verdict: "PASS"
 auditor_ref: "auditor-output.yml"
 
 agent_layer_used:
   agent: "self_reported:claude-sonnet-4-6"
   executor: "claude-code"
   role: >
-    Execution evidence package preparation. Task: create an audit-ready
-    run-010 artifact bundle that clearly separates what is proven (execution
-    evidence exists, commands ran, timing captured) from what is not proven
-    (auditor independence). The primary goal is structural: make the
-    independence gap visible and formally documented, not to produce a
-    PASS verdict by bypassing it.
+    Post-audit reconciliation of the run-010 execution evidence package.
+    PASS is derived from external different-session auditor-output.yml for
+    pack-001 through pack-007. Full auditor independence remains PARTIAL
+    (same model family), and this run still makes no usefulness, adoption,
+    promotion, or causal claim.
 
 metrics:
   scope_drift_count:
@@ -27,15 +26,14 @@ metrics:
       touched paths.
 
   unsupported_claim_count:
-    value: 1
+    value: 0
     evidence_status: "derived_from_auditor_output"
     notes: >
-      The independence claim (independent auditor verification) cannot be
-      supported by this session: executor and any auditor invoked share the
-      same session. This is the single unsupported claim. auditor-output.yml
-      exists as a schema-required self-audit artifact produced by the executor
-      session; it does not prove independent auditor validation. The missing
-      evidence is external independence, not the auditor-output.yml file itself.
+      All externally audited package claims (pack-001 through pack-007) are PASS
+      in auditor-output.yml. This metric counts non-PASS claims in the
+      auditor-output.yml claim set only; it does not represent all remaining
+      experiment-level blockers. The earlier unsupported independence gap is now
+      tracked separately as missing_evidence item full_auditor_independence.
 
   missing_locator_count:
     value: 0
@@ -70,8 +68,8 @@ metrics:
     value: 0
     evidence_status: "repo_local"
     notes: >
-      No false blocking observed. The CLAIM_NOT_PROVEN verdict documents the
-      open independence proof gap, not a validator false block.
+      No false blocking observed. The PASS verdict reflects the externally
+      audited run-010 evidence package scope (pack-001 through pack-007).
 
   task_completion_time_observed:
     value: null
@@ -85,12 +83,12 @@ metrics:
       and what upgrade path would be required.
 
 missing_evidence:
-  - item: "external_auditor_independence"
+  - item: "full_auditor_independence"
     detail: >
-      auditor-output.yml exists as a schema-required self-audit artifact produced
-      by the executor session (claude-code:claude-sonnet-4-6). It does not constitute
-      independent auditor output. External independent auditor output is missing:
-      a different session, different agent, or human reviewer must produce it.
+      Different-session audit exists, but full independence per
+      independent-auditor-proof.txt remains PARTIAL because the same model
+      family was used. Human reviewer or different AI system still needed for
+      full independence.
   - item: "review_friction_count"
     detail: "No PR review events exist for this run at artifact-creation time."
   - item: "rework_count"
@@ -102,19 +100,17 @@ missing_evidence:
 
 interpretation_limits:
   - "This run is an execution evidence package preparation run; it does not count as a comparable usefulness run."
-  - "Auditor independence is CLAIM_NOT_PROVEN: no genuinely external audit has occurred."
-  - "auditor-output.yml exists as a schema-required self-audit artifact; it does not prove independent auditor validation."
-  - "External independent auditor output is missing. See audit-request.md."
+  - "auditor-output.yml is externally audited PASS for pack-001 through pack-007, but full auditor independence remains PARTIAL."
   - "review_friction_count and rework_count remain missing_evidence."
   - "Timing is self_reported; not independently verified."
   - "This run does not produce a usefulness, adoption, promotion, or causal verdict."
 
 extensions:
-  auditor_independence_status: "NONE"
+  auditor_independence_status: "PARTIAL"
   task_cluster: "independent-auditor-validation-preparation"
   run_purpose: "audit-ready-evidence-package"
   note_on_auditor_ref: >
-    auditor-output.yml is present as a schema-required self-audit artifact
-    produced by the executor session. It is explicitly NOT independent auditor
-    output. An external auditor who reads this run bundle should supersede or
-    replace auditor-output.yml with externally produced output per audit-request.md.
+    auditor-output.yml was replaced by an external different-session auditor and
+    is canonical for pack-001 through pack-007 package validation. Full
+    independence remains PARTIAL because executor and auditor still share the
+    same model family.
