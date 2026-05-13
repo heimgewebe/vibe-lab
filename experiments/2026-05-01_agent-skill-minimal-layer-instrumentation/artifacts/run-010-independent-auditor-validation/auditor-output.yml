@@ -8,7 +8,9 @@ auditor:
   date: "2026-05-12"
 overall_verdict: "CLAIM_NOT_PROVEN"
 extensions:
-  canonical_claim_source: "evidence-pack.yml"
+  canonical_claim_source: "self_audit_guard_claim_set"
+  evidence_pack_claim_source: "evidence-pack.yml"
+  self_audit_guard_claim_present: true
   auditor_independence_status: "NONE"
   auditor_independence_note: >
     This auditor-output.yml is a SELF-AUDIT. The auditor (evidence-reconciliation-auditor)
@@ -16,6 +18,11 @@ extensions:
     session_011cvra3PDFriTmZTKsuCCVB). This does NOT constitute independent verification.
     The schema structurally requires auditor-output.yml to exist; this file fulfills that
     requirement while being explicit that no independence was established.
+
+    This self-audit contains an additional guard claim about auditor independence (claim-003).
+    The external auditor should audit the canonical evidence-pack claims pack-001 through
+    pack-007 as specified in audit-request.md.
+
     A genuinely external audit is documented as CLAIM_NOT_PROVEN below.
     See also: independent-auditor-proof.txt (INDEPENDENCE_NOT_PROVEN) and
     audit-request.md (formal request for external audit).

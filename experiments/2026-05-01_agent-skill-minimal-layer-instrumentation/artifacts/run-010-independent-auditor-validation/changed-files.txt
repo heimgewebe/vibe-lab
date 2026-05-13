@@ -8,6 +8,8 @@ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-0
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/make-validate.txt
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md

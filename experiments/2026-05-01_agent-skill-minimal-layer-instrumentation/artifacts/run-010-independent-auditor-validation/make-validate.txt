@@ -1,5 +1,5 @@
 RAW COMMAND LOG — make validate
-Captured: 2026-05-13T05:11:42Z
+Captured: 2026-05-13T05:28:21Z
 COMMAND: make validate
 
 ================================================================================
@@ -18,7 +18,7 @@ OK
 🧪 Running artifact taxonomy generator regression tests...
 .......................................................................................................................................
 ----------------------------------------------------------------------
-Ran 135 tests in 0.207s
+Ran 135 tests in 0.176s
 
 OK
 🧪 Running artifact taxonomy contract validator regression tests...
@@ -554,7 +554,7 @@ adoption_basis:
 🧪 Running run-bundle validator regression tests...
 ...........................................................................................................................................
 ----------------------------------------------------------------------
-Ran 139 tests in 8.434s
+Ran 139 tests in 7.450s
 
 OK
 🧷 Validating experiment run bundles...
@@ -837,7 +837,7 @@ test_zero_target_is_reported_as_type_error (__main__.ValidateRelationsTests.test
 ``target: 0`` must produce a type-error, not a 'missing' diagnostic. ... ok
 
 ----------------------------------------------------------------------
-Ran 18 tests in 0.042s
+Ran 18 tests in 0.033s
 
 OK
 🧪 Running backlinks generator regression tests...
@@ -851,7 +851,7 @@ test_pure_fragment_target_is_skipped (__main__.GenerateBacklinksTests.test_pure_
 ``#issue`` targets must not produce any backlink entry. ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.021s
+Ran 4 tests in 0.017s
 
 OK
 🧪 Running orphans generator regression tests...
@@ -867,7 +867,7 @@ test_unreferenced_file_is_orphan (__main__.GenerateOrphansTests.test_unreference
 A file with no incoming references is reported as an orphan. ... ok
 
 ----------------------------------------------------------------------
-Ran 5 tests in 0.024s
+Ran 5 tests in 0.018s
 
 OK
 🧠 Validating interpretation budget...
@@ -875,7 +875,7 @@ OK
 🧪 Running interpretation budget regression tests...
 .
 ----------------------------------------------------------------------
-Ran 1 test in 0.014s
+Ran 1 test in 0.012s
 
 OK
 🤝 Validating agent handoff fixtures...
@@ -896,7 +896,7 @@ OK
 🧪 Running agent handoff regression tests...
 .............
 ----------------------------------------------------------------------
-Ran 13 tests in 0.156s
+Ran 13 tests in 0.131s
 
 OK
 🤖 Validating agent command fixtures...
@@ -934,7 +934,7 @@ OK
 🧪 Running agent command regression tests...
 ..............
 ----------------------------------------------------------------------
-Ran 14 tests in 0.071s
+Ran 14 tests in 0.063s
 
 OK
 🔗 Validating command chain fixtures...
@@ -964,19 +964,19 @@ OK
 🧪 Running command chain regression tests...
 .......................................
 ----------------------------------------------------------------------
-Ran 39 tests in 0.518s
+Ran 39 tests in 0.439s
 
 OK
 🧪 Running command version policy tests...
 ........
 ----------------------------------------------------------------------
-Ran 8 tests in 0.130s
+Ran 8 tests in 0.115s
 
 OK
 🧪 Running fixture matrix audit tests...
 .
 ----------------------------------------------------------------------
-Ran 1 test in 0.002s
+Ran 1 test in 0.001s
 
 OK
 🧪 Running known-gaps audit tests...
@@ -1001,10 +1001,10 @@ OK
 
 ✅ Cross-contract validation passed.
 🧪 Running cross-contract regression tests...
-..ERROR: fixture /tmp/tmpukwmsb3r.json: chain[0] must be a JSON object, got int
+..ERROR: fixture /tmp/tmp2tmkcuv2.json: chain[0] must be a JSON object, got int
 ..............
 ----------------------------------------------------------------------
-Ran 16 tests in 0.333s
+Ran 16 tests in 0.299s
 
 OK
 ♻️  Replay dry-run (no mutations by design)...
@@ -1013,13 +1013,13 @@ OK
 🧪 Running replay runner regression tests...
 ......
 ----------------------------------------------------------------------
-Ran 6 tests in 0.073s
+Ran 6 tests in 0.065s
 
 OK
 🧪 Running replay trace contract tests (v0.2)...
 ..........................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.610s
+Ran 26 tests in 0.548s
 
 OK
 🧭 Validating Phase-1c fixture corpus...
@@ -1032,7 +1032,7 @@ OK
 🧪 Running Phase-1c fixture checker regression tests...
 ....
 ----------------------------------------------------------------------
-Ran 4 tests in 0.229s
+Ran 4 tests in 0.204s
 
 OK
 📦 Validating adoption completeness...
@@ -1040,13 +1040,13 @@ OK
 🧪 Running adoption completeness regression tests...
 ......
 ----------------------------------------------------------------------
-Ran 6 tests in 0.024s
+Ran 6 tests in 0.019s
 
 OK
 🧪 Running epistemic state regression tests...
 .........
 ----------------------------------------------------------------------
-Ran 9 tests in 0.022s
+Ran 9 tests in 0.019s
 
 OK
 🔎 Validating export parity (collision / orphan / missing)...
@@ -1054,13 +1054,13 @@ OK
 🧪 Running export generator regression tests...
 ..........................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.161s
+Ran 26 tests in 0.131s
 
 OK
 🧪 Running export parity validator regression tests...
 .........................
 ----------------------------------------------------------------------
-Ran 25 tests in 0.030s
+Ran 25 tests in 0.024s
 
 OK
 🧪 Running promotion-readiness regression tests...
@@ -1172,7 +1172,7 @@ test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTest
 test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests.test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing) ... ok
 
 ----------------------------------------------------------------------
-Ran 102 tests in 0.600s
+Ran 102 tests in 0.476s
 
 OK
 🧪 Running run-evidence-pack schema regression tests...
@@ -1180,7 +1180,7 @@ test_invalid_fixtures (__main__.RunEvidencePackSchemaTests.test_invalid_fixtures
 test_valid_fixtures (__main__.RunEvidencePackSchemaTests.test_valid_fixtures) ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 0.014s
+Ran 2 tests in 0.011s
 
 OK
 🧪 Running claim-evidence semantic validator tests...
@@ -1189,7 +1189,7 @@ test_parse_error_exits_two (__main__.ClaimEvidenceValidatorTests.test_parse_erro
 test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests.test_valid_fixtures_exit_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 3 tests in 1.512s
+Ran 3 tests in 1.279s
 
 OK
 🔎 Validating claim-evidence semantic rules...
@@ -1211,7 +1211,7 @@ test_valid_fixtures_all_together_exit_zero (__main__.ValidFixtureTests.test_vali
 test_valid_fixtures_individually_exit_zero (__main__.ValidFixtureTests.test_valid_fixtures_individually_exit_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 1.337s
+Ran 15 tests in 1.137s
 
 OK
 🔎 Validating PR scope / artifact boundary...
