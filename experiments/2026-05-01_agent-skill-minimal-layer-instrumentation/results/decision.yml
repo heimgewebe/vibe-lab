@@ -31,7 +31,7 @@ rationale: |
   capture_mode, evidence_status und upgrade_path.
   Run-010 hat nun einen externen different-session Auditor-Output mit
   `overall_verdict: PASS` für den Evidence-Package-Scope (pack-001 bis pack-007).
-  Das reduziert die run-010 package-validation gap. Full auditor independence
+  Das reduziert die Run-010 package-validation gap. Full auditor independence
   bleibt PARTIAL (gleiche Modellfamilie), Comparable-run-Count bleibt
   unverändert (3). Kein Upgrade auf result_assessment zulässig.
 

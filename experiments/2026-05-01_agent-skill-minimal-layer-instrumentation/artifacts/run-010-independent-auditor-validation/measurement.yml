@@ -33,7 +33,8 @@ metrics:
       All externally audited package claims (pack-001 through pack-007) are PASS
       in auditor-output.yml. This metric counts non-PASS claims in the
       auditor-output.yml claim set only; it does not represent all remaining
-      experiment-level blockers.
+      experiment-level blockers. The earlier unsupported independence gap is now
+      tracked separately as missing_evidence item full_auditor_independence.
 
   missing_locator_count:
     value: 0
