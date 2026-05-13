@@ -21,8 +21,8 @@ rationale: |
   drei Metriken sind die einzigen, die Ausführungsqualität sichtbar machen könnten.
   Ohne sie ist die Scaffold-Hypothese ("can capture comparable PR-level data") nur
   partiell belegt. Zusätzlich: runs 005/006 aus derselben Task-Klasse (task-Cluster,
-  keine echte Varietät), Auditor-Executor == Executor in allen Runs (keine
-  unabhängige Bewertung), keine negativen Fälle dokumentiert.
+  keine echte Varietät), in den vergleichbaren Runs (run-002, run-005, run-006)
+  keine vollständig unabhängige Bewertung, keine negativen Fälle dokumentiert.
   Run-007 hat review_friction_count und rework_count als repo_local pilotiert.
   Run-008 hat einen Negativfall / CLAIM_NOT_PROVEN pilotiert (partielle Unabhängigkeit).
   Run-009 hat Task-Diversität partiell adressiert: claim-002 PASS (Task außerhalb

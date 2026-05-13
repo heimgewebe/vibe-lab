@@ -127,15 +127,16 @@ claims:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt"
         status: "repo_local"
         notes: >
-          independent-auditor-proof.txt opens with "INDEPENDENCE STATUS: INDEPENDENCE_NOT_PROVEN"
-          and closes with "For run-010: INDEPENDENCE_NOT_PROVEN. This is the correct and
-          honest state." The executor explicitly states no independent audit occurred.
-          No false independence claim is made.
+          independent-auditor-proof.txt is retained as a pre-audit historical snapshot
+          and is explicitly marked as superseded by the 2026-05-13 external different-session
+          audit. It documents the prior INDEPENDENCE_NOT_PROVEN state and the stricter
+          full-independence criterion that still remains open.
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md"
         status: "repo_local"
         notes: >
-          audit-request.md status field is "pending_external_audit". The document
-          frames itself as a request to a different agent or human, not a completed audit.
+          audit-request.md is the historical request artifact that defined audit scope
+          and constraints before external validation. Its "pending_external_audit" status
+          reflects the pre-audit state and is now fulfilled by this external auditor-output.yml.
     notes: >
       This claim is about honest gap documentation, not about closing the independence gap.
       Per audit-request.md: "pack-006 proves that the pre-external-audit independence gap
