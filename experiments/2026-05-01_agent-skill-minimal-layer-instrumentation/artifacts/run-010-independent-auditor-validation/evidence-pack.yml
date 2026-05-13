@@ -1,0 +1,100 @@
+schema_version: "1.0.0"
+run_id: "run-010-independent-auditor-validation"
+claims:
+  - claim_id: "pack-001"
+    text: "run.yml references evidence-pack.yml via artifacts.evidence_pack."
+    type: "run_bundle_evidence_pack_reference"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/evidence-pack.yml"
+        status: "repo_local"
+
+  - claim_id: "pack-002"
+    text: "Execution evidence package exists: all required run-010 artifacts are present in the artifact directory."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/evidence-pack.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/make-validate.txt"
+        status: "repo_local"
+
+  - claim_id: "pack-003"
+    text: "test_validate_run_bundle.py and test_validate_claim_evidence.py ran with exit_code 0; full output archived in raw-command-log.txt."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt"
+        status: "repo_local"
+        command: "python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py"
+        exit_code: 0
+
+  - claim_id: "pack-004"
+    text: "make validate ran with exit_code 0; full output archived in make-validate.txt."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 0
+
+  - claim_id: "pack-005"
+    text: "Timing evidence exists in ci-or-git-timing.txt with explicit evidence_status self_reported, capture_mode, and upgrade_path note."
+    type: "timing_capture"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt"
+        status: "repo_local"
+
+  - claim_id: "pack-006"
+    text: "The run-010 independence gap is explicitly documented; no independent auditor verification is claimed by the executor."
+    type: "independence_gap_documented"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt"
+        status: "repo_local"
+        reason: >
+          independent-auditor-proof.txt explicitly documents INDEPENDENCE_NOT_PROVEN.
+          The executor does not claim independence; the gap is honestly documented.
+          This is evidence of honest gap documentation, not of independent validation.
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md"
+        status: "repo_local"
+        reason: "Formal request for a genuinely external audit; documents what must be verified and by whom."
+
+  - claim_id: "pack-007"
+    text: "No usefulness, adoption, promotion, or causal claim is made in this run bundle."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml"
+        status: "repo_local"
+        reason: "effect_claim_allowed: false, promotion_claim_allowed: false"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/measurement.yml"
+        status: "repo_local"
+        reason: "interpretation_limits: no usefulness/adoption/promotion/causal verdict"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml"
+        status: "repo_local"
+        reason: "verdict not_comparable; comparable-run count unchanged at 3"

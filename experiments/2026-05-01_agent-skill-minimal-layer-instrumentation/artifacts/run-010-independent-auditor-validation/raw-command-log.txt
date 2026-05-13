@@ -1,0 +1,28 @@
+RAW COMMAND LOG — run-010-independent-auditor-validation
+Captured: 2026-05-12 by executor session_011cvra3PDFriTmZTKsuCCVB
+Commands: python3 scripts/docmeta/test_validate_run_bundle.py
+          python3 scripts/docmeta/test_validate_claim_evidence.py
+Note: make validate output is archived separately in make-validate.txt.
+
+================================================================================
+COMMAND 1: python3 scripts/docmeta/test_validate_run_bundle.py
+EXIT CODE: 0
+--------------------------------------------------------------------------------
+...........................................................................................................................................
+----------------------------------------------------------------------
+Ran 139 tests in 8.057s
+
+OK
+
+================================================================================
+COMMAND 2: python3 scripts/docmeta/test_validate_claim_evidence.py
+EXIT CODE: 0
+--------------------------------------------------------------------------------
+test_invalid_fixtures_exit_one_with_rule_ids (__main__.ClaimEvidenceValidatorTests.test_invalid_fixtures_exit_one_with_rule_ids) ... ok
+test_parse_error_exits_two (__main__.ClaimEvidenceValidatorTests.test_parse_error_exits_two) ... ok
+test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests.test_valid_fixtures_exit_zero) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.574s
+
+OK

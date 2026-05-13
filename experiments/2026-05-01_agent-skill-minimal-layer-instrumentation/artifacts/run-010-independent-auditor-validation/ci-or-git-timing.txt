@@ -1,0 +1,51 @@
+TIMING RECORD — run-010-independent-auditor-validation
+
+start_source: "git_log"
+start_ref: "02f2041bd4537ed70fd32111be9573bbcd9eb551"
+start_timestamp: "2026-05-12T20:59:47+02:00 (UTC: 2026-05-12T18:59:47Z)"
+start_note: >
+  Start timestamp derived from the most recent merge commit on main at session
+  start (git log --format='%H %ai' -1). This is the last known repo state before
+  run-010 artifacts were created. It is a lower bound on the real start time, not
+  a precise session-start capture.
+
+end_source: "self_reported"
+end_timestamp: null
+end_note: >
+  No reliable run end timestamp is available. The previously self-reported value
+  (2026-05-12T21:30:00Z) cannot be treated as the final evidence-package
+  completion time because a later validation artifact (make-validate.txt) was
+  captured at 2026-05-13T05:28:21Z. make validate was a post-run validation step,
+  not part of the original run-010 execution; see run_meta.json post_run_validation.
+
+latest_validation_capture:
+  source: "make-validate.txt"
+  timestamp: "2026-05-13T05:28:21Z"
+  evidence_status: "repo_local"
+  classification: "post_run_validation"
+
+duration_seconds: null
+duration_note: >
+  Because start is a lower bound and end is self-reported, a precise duration
+  cannot be stated without overstating the evidence. Duration is not derived.
+
+evidence_status: "self_reported"
+capture_mode: "mixed: git_log lower bound for start; self_reported for end"
+
+limitation_note: >
+  This timing record cannot be upgraded to repo_local or external_verified
+  because:
+  - The start bound is a git commit timestamp, not a session-start signal.
+  - The end is self-reported by the same session that executed the run.
+  - No CI job log is available (this run was not triggered by CI).
+  - No independent session transcript exists.
+
+upgrade_path: >
+  To upgrade to repo_local or ci_artifact:
+  1. Run in a CI context that records job start/end timestamps in a retrievable
+     log artifact.
+  2. OR: capture session start via a hook that writes a timestamped marker to
+     the repo at session start (before any file changes), then diff git history
+     for that marker.
+  3. OR: a human reviewer records the time of their audit separately; this proves
+     only their audit timing, not the executor timing.
