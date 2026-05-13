@@ -1,8 +1,9 @@
-INDEPENDENCE STATUS: INDEPENDENCE_NOT_PROVEN
+INDEPENDENCE STATUS: PRE-AUDIT SNAPSHOT (SUPERSEDED 2026-05-13)
 
 Run ID: run-010-independent-auditor-validation
 Assessed at: 2026-05-12
 Assessed by: executor session (claude-code:claude-sonnet-4-6, session_011cvra3PDFriTmZTKsuCCVB)
+Superseded by: external auditor session (claude-code:claude-sonnet-4-6, session_01WRxj2xvpB7Xgu4soTdJYE4) in auditor-output.yml
 
 === Executor ===
 Who: claude-code:claude-sonnet-4-6
@@ -11,8 +12,8 @@ Branch: claude/improve-audit-independence-Gf8dZ
 Evidence: run.yml provenance.executor field; git log (branch name visible in context)
 
 === Auditor ===
-Who: NO INDEPENDENT AUDITOR for this run.
-Evidence of independence: NONE.
+Who (at pre-audit snapshot time): NO INDEPENDENT AUDITOR for this run.
+Evidence of independence (at pre-audit snapshot time): NONE.
 
 If the evidence-reconciliation-auditor.agent.md were invoked by this session,
 it would run within session_011cvra3PDFriTmZTKsuCCVB — the same session as the
@@ -63,6 +64,9 @@ If a genuinely independent audit occurs after this run:
   - All other artifacts in this bundle remain read-only
 
 === Conclusion ===
-For run-010: INDEPENDENCE_NOT_PROVEN.
-This is the correct and honest state. No independent audit has occurred.
-The execution evidence package is audit-ready. See audit-request.md.
+Pre-audit snapshot (2026-05-12): INDEPENDENCE_NOT_PROVEN.
+Post-audit reconciled state (2026-05-13): different-session external audit exists,
+so session-level independence is PARTIAL. Full independence remains not proven
+under the stricter criterion (different AI system or human reviewer still required).
+The execution evidence package was audit-ready and has now been externally audited
+for pack-001 through pack-007. See auditor-output.yml and audit-request.md.

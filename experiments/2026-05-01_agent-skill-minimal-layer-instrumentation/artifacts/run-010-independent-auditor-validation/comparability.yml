@@ -1,7 +1,7 @@
 schema_version: "1.0.0"
 contract: "run_comparability_assessment"
 run_id: "run-010-independent-auditor-validation"
-assessed_at: "2026-05-12"
+assessed_at: "2026-05-13"
 
 compared_against:
   - "run-002-controlled-agent-skill-run"
@@ -22,34 +22,28 @@ changed_files_artifact: "artifacts/run-010-independent-auditor-validation/change
 verdict: not_comparable
 
 notes: >
-  Independent-auditor-validation preparation run.
-  This run's purpose is to create an audit-ready execution evidence package
-  that clearly documents where proof exists and where it is missing — specifically
-  for the auditor-independence blocker that has been CLAIM_NOT_PROVEN in all
-  previous runs.
+  Post-audit reconciliation state for run-010.
+  auditor-output.yml is now externally produced by a different session
+  (session_01WRxj2xvpB7Xgu4soTdJYE4) than the run executor
+  (session_011cvra3PDFriTmZTKsuCCVB), with overall_verdict PASS for pack-001
+  through pack-007.
 
   Verdict not_comparable because:
-  (1) auditor-output.yml exists but is a self-audit artifact with
-      auditor_independence_status: NONE; the independence claim cannot be
-      proven by this session alone, so this run cannot increment the
-      independent-audit blocker resolution.
-  (2) This run is explicitly scoped as an audit-ready package preparation, not
+  (1) auditor_independence_status is PARTIAL: session identity is different,
+      but full auditor independence remains not proven because executor and
+      auditor use the same model family.
+  (2) This run is scoped to evidence-package audit/reconciliation, not
       a fourth/fifth comparable usefulness run.
   (3) Comparable-run-count remains at 3 (run-002, run-005, run-006).
 
   What this run DOES contribute:
-  - Audit-ready evidence package: a full set of run-010 artifacts that a
-    genuinely external auditor can read and verify independently.
-  - audit-request.md: formal request defining what an external auditor should
-    check, which verdicts are permitted, and that the auditor must not repair.
-  - independent-auditor-proof.txt: explicitly documents INDEPENDENCE_NOT_PROVEN
-    rather than silently carrying the gap forward.
-  - raw-command-log.txt: full (not summarised) command output archived, upgrading
-    from run-009 where only summary captures were retained.
-  - ci-or-git-timing.txt: timing with explicit self_reported status and upgrade
-    path note, consistent with run-009 pattern.
+  - External different-session auditor-output.yml with PASS for pack-001
+    through pack-007.
+  - Explicit independence calibration: auditor_independence_status is PARTIAL,
+    not NONE.
+  - Comparable-run-count preserved at 3.
 
   What this run does NOT contribute:
-  - No resolution of Gegenhypothese C (assessment bias / auditor independence).
+  - No full resolution of Gegenhypothese C (assessment bias / auditor independence).
   - No increment to comparable-run count.
   - No usefulness, adoption, promotion, or causal verdict.
