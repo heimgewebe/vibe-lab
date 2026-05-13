@@ -1,10 +1,32 @@
+RAW COMMAND LOG — make validate
+Captured: 2026-05-13T05:11:42Z
+COMMAND: make validate
+
+================================================================================
+OUTPUT
+--------------------------------------------------------------------------------
 📜 Validating generated-artifact contract (v2)...
 ✅ Generated-artifact contract valid (/home/user/vibe-lab/.vibe/generated-artifacts.yml).
 🧪 Running generated-artifact contract regression tests...
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 0.001s
+
+OK
 📋 Validating artifact taxonomy contract...
 ✅ Artifact taxonomy valid (/home/user/vibe-lab/.vibe/artifact-taxonomy.yml).
 🧪 Running artifact taxonomy generator regression tests...
+.......................................................................................................................................
+----------------------------------------------------------------------
+Ran 135 tests in 0.207s
+
+OK
 🧪 Running artifact taxonomy contract validator regression tests...
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK
 🔍 Validating schemas...
 🔍 Schema Validation
 
@@ -328,6 +350,7 @@ Evidence Files:
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:9 (run)
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:10 (run)
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:11 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:12 (run)
 
 Decision Files:
   ✅ experiments/2026-04-08_spec-first/results/decision.yml (result_assessment)
@@ -456,6 +479,33 @@ Docmeta Frontmatter:
 
 ✅ All schema validations passed.
 🧪 Running counterevidence P2-rule regression tests...
+test_confirms_plus_counterevidence_false_is_error (__main__.P2CounterevidenceRuleTests.test_confirms_plus_counterevidence_false_is_error)
+Fall 1: verdict=confirms + counterevidence_checked=False → Fehler. ... ok
+test_confirms_plus_found_and_confirming_is_error (__main__.P2CounterevidenceRuleTests.test_confirms_plus_found_and_confirming_is_error)
+Fall 3: verdict=confirms + counter_hypothesis_outcome=found_and_confirming → Fehler. ... ok
+test_counterevidence_true_plus_confirms_is_allowed (__main__.P2CounterevidenceRuleTests.test_counterevidence_true_plus_confirms_is_allowed)
+Fall 8: counterevidence_checked=True + verdict=confirms → erlaubt (Normalfall). ... ok
+test_error_message_contains_rel_path (__main__.P2CounterevidenceRuleTests.test_error_message_contains_rel_path)
+Der Fehlertext enthält den relativen Pfad zur Datei. ... ok
+test_inconclusive_is_always_allowed (__main__.P2CounterevidenceRuleTests.test_inconclusive_is_always_allowed)
+Zusatz: inconclusive mit counterevidence_checked=False → erlaubt. ... ok
+test_mixed_plus_counterevidence_false_is_allowed (__main__.P2CounterevidenceRuleTests.test_mixed_plus_counterevidence_false_is_allowed)
+Fall 2: verdict=mixed + counterevidence_checked=False → erlaubt. ... ok
+test_mixed_plus_found_and_confirming_is_allowed (__main__.P2CounterevidenceRuleTests.test_mixed_plus_found_and_confirming_is_allowed)
+Fall 4: verdict=mixed + counter_hypothesis_outcome=found_and_confirming → erlaubt. ... ok
+test_no_new_fields_is_allowed (__main__.P2CounterevidenceRuleTests.test_no_new_fields_is_allowed)
+Fall 5: result_assessment ohne neue Felder → kein Fehler (keine Pflicht). ... ok
+test_none_verdict_with_counterevidence_false_is_allowed (__main__.P2CounterevidenceRuleTests.test_none_verdict_with_counterevidence_false_is_allowed)
+Kein verdict gesetzt + counterevidence_checked=False → kein Fehler (fehlerhaftes YAML ... ok
+test_other_decision_type_is_not_checked (__main__.P2CounterevidenceRuleTests.test_other_decision_type_is_not_checked)
+Fall 6: adoption_assessment → P2-Regel greift nicht, auch wenn Felder gesetzt sind. ... ok
+test_refutes_plus_counterevidence_false_is_allowed (__main__.P2CounterevidenceRuleTests.test_refutes_plus_counterevidence_false_is_allowed)
+Fall 7: verdict=refutes + counterevidence_checked=False → erlaubt. ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.000s
+
+OK
 🔍 Validating execution proof...
 🔍 Execution-Proof Validation
 
@@ -502,6 +552,11 @@ adoption_basis:
 
 ✅ All execution-proof checks passed.
 🧪 Running run-bundle validator regression tests...
+...........................................................................................................................................
+----------------------------------------------------------------------
+Ran 139 tests in 8.434s
+
+OK
 🧷 Validating experiment run bundles...
 🧷 Validating experiment run bundles...
 ✅ All run bundles consistent.
@@ -751,11 +806,78 @@ adoption_basis:
 Scanned 206 markdown files.
 ✅ All relations valid.
 🧪 Running relations validator regression tests...
+test_blank_string_target_is_reported_as_empty (__main__.ValidateRelationsTests.test_blank_string_target_is_reported_as_empty)
+Whitespace-only ``target`` must be rejected as empty, not resolved as a directory. ... ok
+test_blank_string_type_is_reported_as_empty (__main__.ValidateRelationsTests.test_blank_string_type_is_reported_as_empty)
+Whitespace-only ``type`` must be rejected as empty. ... ok
+test_false_target_is_reported_as_type_error (__main__.ValidateRelationsTests.test_false_target_is_reported_as_type_error)
+``target: false`` must produce a type-error, not a 'missing' diagnostic. ... ok
+test_fragment_target_resolves_against_file (__main__.ValidateRelationsTests.test_fragment_target_resolves_against_file)
+``file.md#anchor`` should validate the underlying file, not a non-existent path. ... ok
+test_fragment_target_with_missing_file_is_reported (__main__.ValidateRelationsTests.test_fragment_target_with_missing_file_is_reported)
+``missing.md#anchor`` should report the file as missing, not silently pass. ... ok
+test_issue_reference_is_skipped (__main__.ValidateRelationsTests.test_issue_reference_is_skipped) ... ok
+test_missing_target_is_reported (__main__.ValidateRelationsTests.test_missing_target_is_reported) ... ok
+test_missing_type_or_target_is_reported (__main__.ValidateRelationsTests.test_missing_type_or_target_is_reported) ... ok
+test_non_list_relations_is_reported (__main__.ValidateRelationsTests.test_non_list_relations_is_reported) ... ok
+test_non_mapping_relation_entry_is_reported (__main__.ValidateRelationsTests.test_non_mapping_relation_entry_is_reported) ... ok
+test_non_string_target_is_reported (__main__.ValidateRelationsTests.test_non_string_target_is_reported)
+Non-string target (e.g. integer 42) must produce a type-error, not a crash. ... ok
+test_non_string_type_is_reported (__main__.ValidateRelationsTests.test_non_string_type_is_reported)
+``type: false`` must produce a type-error for 'type', not a 'missing' diagnostic. ... ok
+test_path_escape_is_reported (__main__.ValidateRelationsTests.test_path_escape_is_reported) ... ok
+test_repeated_calls_do_not_accumulate_errors (__main__.ValidateRelationsTests.test_repeated_calls_do_not_accumulate_errors)
+Guards against the previous global ``errors = []`` bug. ... ok
+test_target_with_leading_trailing_whitespace_is_rejected (__main__.ValidateRelationsTests.test_target_with_leading_trailing_whitespace_is_rejected)
+``target: " target.md "`` must fail even if the underlying file exists. ... ok
+test_type_with_leading_trailing_whitespace_is_rejected (__main__.ValidateRelationsTests.test_type_with_leading_trailing_whitespace_is_rejected)
+``type: " references "`` must fail as a distinct whitespace fault. ... ok
+test_valid_relation_to_existing_file (__main__.ValidateRelationsTests.test_valid_relation_to_existing_file) ... ok
+test_zero_target_is_reported_as_type_error (__main__.ValidateRelationsTests.test_zero_target_is_reported_as_type_error)
+``target: 0`` must produce a type-error, not a 'missing' diagnostic. ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.042s
+
+OK
 🧪 Running backlinks generator regression tests...
+test_fragment_target_backlink_recorded_under_file_not_fragment (__main__.GenerateBacklinksTests.test_fragment_target_backlink_recorded_under_file_not_fragment)
+``target.md#section`` must produce a backlink under ``target.md``, ... ok
+test_path_escape_target_is_skipped (__main__.GenerateBacklinksTests.test_path_escape_target_is_skipped)
+Targets that escape the repo root must be silently dropped. ... ok
+test_plain_target_produces_backlink (__main__.GenerateBacklinksTests.test_plain_target_produces_backlink)
+A plain ``target: target.md`` produces a backlink under ``docs/target.md``. ... ok
+test_pure_fragment_target_is_skipped (__main__.GenerateBacklinksTests.test_pure_fragment_target_is_skipped)
+``#issue`` targets must not produce any backlink entry. ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.021s
+
+OK
 🧪 Running orphans generator regression tests...
+test_fragment_target_counts_as_reference_to_file (__main__.GenerateOrphansTests.test_fragment_target_counts_as_reference_to_file)
+``target.md#section`` must count as a reference to ``target.md`` ... ok
+test_path_escape_target_does_not_affect_orphan_set (__main__.GenerateOrphansTests.test_path_escape_target_does_not_affect_orphan_set)
+Targets that escape the repo root must be silently dropped. ... ok
+test_plain_target_removes_file_from_orphan_set (__main__.GenerateOrphansTests.test_plain_target_removes_file_from_orphan_set)
+A file that is a plain relation target must not appear in orphans. ... ok
+test_pure_fragment_does_not_count_as_file_reference (__main__.GenerateOrphansTests.test_pure_fragment_does_not_count_as_file_reference)
+``#issue`` targets must not count as a reference to any file. ... ok
+test_unreferenced_file_is_orphan (__main__.GenerateOrphansTests.test_unreferenced_file_is_orphan)
+A file with no incoming references is reported as an orphan. ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.024s
+
+OK
 🧠 Validating interpretation budget...
 ✅ Interpretation Budget: 2 adopted Experiment(e) valide.
 🧪 Running interpretation budget regression tests...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.014s
+
+OK
 🤝 Validating agent handoff fixtures...
 🔍 Agent Handoff Validation
   ✅ tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json (expected contract_invalid)
@@ -772,6 +894,11 @@ Scanned 206 markdown files.
 
 ✅ Agent handoff validation passed.
 🧪 Running agent handoff regression tests...
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.156s
+
+OK
 🤖 Validating agent command fixtures...
 🔍 Agent Command Validation
 🔍 Command: read_context
@@ -805,6 +932,11 @@ Scanned 206 markdown files.
 
 ✅ Agent command validation passed.
 🧪 Running agent command regression tests...
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.071s
+
+OK
 🔗 Validating command chain fixtures...
 🔍 Command Chain Validation
   ✅ tests/fixtures/command_chains/invalid-add-with-exact-before.json (expected errors: ['semantic_contradiction'])
@@ -830,9 +962,29 @@ Scanned 206 markdown files.
 
 ✅ Command chain validation passed.
 🧪 Running command chain regression tests...
+.......................................
+----------------------------------------------------------------------
+Ran 39 tests in 0.518s
+
+OK
 🧪 Running command version policy tests...
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.130s
+
+OK
 🧪 Running fixture matrix audit tests...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
 🧪 Running known-gaps audit tests...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
 🪢 Validating cross-contract (Handoff ↔ Chain) fixtures...
 🔍 Cross-Contract Validation (Handoff ↔ Chain)
   ✅ tests/fixtures/cross_contract/invalid/contract_invalid.json (expected errors: ['handoff_contract_invalid'])
@@ -849,11 +1001,27 @@ Scanned 206 markdown files.
 
 ✅ Cross-contract validation passed.
 🧪 Running cross-contract regression tests...
-ERROR: fixture /tmp/tmpiff8l2kv.json: chain[0] must be a JSON object, got int
+..ERROR: fixture /tmp/tmpukwmsb3r.json: chain[0] must be a JSON object, got int
+..............
+----------------------------------------------------------------------
+Ran 16 tests in 0.333s
+
+OK
 ♻️  Replay dry-run (no mutations by design)...
+# replay_minimal.py: dry-run mode (no mutations by design)
 ✅ Replay trace generator completed (non-mutation enforced by design + tests + CI).
 🧪 Running replay runner regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.073s
+
+OK
 🧪 Running replay trace contract tests (v0.2)...
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.610s
+
+OK
 🧭 Validating Phase-1c fixture corpus...
 🔍 Phase-1c Fixture Validation
   ✅ valid
@@ -862,19 +1030,190 @@ ERROR: fixture /tmp/tmpiff8l2kv.json: chain[0] must be a JSON object, got int
 
 ✅ Fixture validation passed.
 🧪 Running Phase-1c fixture checker regression tests...
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.229s
+
+OK
 📦 Validating adoption completeness...
 ✅ Adoption-Completeness: 2 adopted Experiment(e) mit vollständiger Katalog-Extraktion.
 🧪 Running adoption completeness regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.024s
+
+OK
 🧪 Running epistemic state regression tests...
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.022s
+
+OK
 🔎 Validating export parity (collision / orphan / missing)...
 ✅ Export-Parität OK (5 Quelldatei(en), 2 Ziel(e))
 🧪 Running export generator regression tests...
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.161s
+
+OK
 🧪 Running export parity validator regression tests...
+.........................
+----------------------------------------------------------------------
+Ran 25 tests in 0.030s
+
+OK
 🧪 Running promotion-readiness regression tests...
+test_no_trigger_designed (__main__.ClassifyAndTriggerTests.test_no_trigger_designed) ... ok
+test_no_trigger_prepared (__main__.ClassifyAndTriggerTests.test_no_trigger_prepared) ... ok
+test_reconstructed_historical_escape_not_blocking (__main__.ClassifyAndTriggerTests.test_reconstructed_historical_escape_not_blocking) ... ok
+test_trigger_adopted_executed_basis (__main__.ClassifyAndTriggerTests.test_trigger_adopted_executed_basis) ... ok
+test_trigger_executed (__main__.ClassifyAndTriggerTests.test_trigger_executed) ... ok
+test_trigger_replicated (__main__.ClassifyAndTriggerTests.test_trigger_replicated) ... ok
+test_confirms_plus_no_counterevidence_is_warning_not_missing (__main__.CrossRuleDocumentationTests.test_confirms_plus_no_counterevidence_is_warning_not_missing) ... ok
+test_report_has_no_timestamp_key (__main__.DeterminismTests.test_report_has_no_timestamp_key) ... ok
+test_report_rendering_is_deterministic (__main__.DeterminismTests.test_report_rendering_is_deterministic) ... ok
+test_report_shape_has_required_keys (__main__.DeterminismTests.test_report_shape_has_required_keys) ... ok
+test_counterevidence_false_is_warning_not_missing (__main__.EvaluateFalsifiabilityTests.test_counterevidence_false_is_warning_not_missing) ... ok
+test_missing_block (__main__.EvaluateFalsifiabilityTests.test_missing_block) ... ok
+test_missing_subfields (__main__.EvaluateFalsifiabilityTests.test_missing_subfields) ... ok
+test_non_string_fields_are_flagged (__main__.EvaluateFalsifiabilityTests.test_non_string_fields_are_flagged) ... ok
+test_too_short_counter_hypothesis (__main__.EvaluateFalsifiabilityTests.test_too_short_counter_hypothesis) ... ok
+test_valid_block (__main__.EvaluateFalsifiabilityTests.test_valid_block) ... ok
+test_evidence_refs_invalid_is_non_blocking (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_invalid_is_non_blocking)
+Invalid evidence_refs must not set promotion_ready=false on its own. ... ok
+test_evidence_refs_item_empty_dict_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_item_empty_dict_warns) ... ok
+test_evidence_refs_item_missing_path_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_item_missing_path_warns) ... ok
+test_evidence_refs_item_not_a_dict_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_item_not_a_dict_warns) ... ok
+test_evidence_refs_not_a_list_warns (__main__.EvidenceRefsInvalidWarningTests.test_evidence_refs_not_a_list_warns) ... ok
+test_valid_evidence_refs_no_invalid_warning (__main__.EvidenceRefsInvalidWarningTests.test_valid_evidence_refs_no_invalid_warning) ... ok
+test_invalid_fixture_triggers_missing_entries (__main__.FixtureShapeTests.test_invalid_fixture_triggers_missing_entries) ... ok
+test_valid_fixture_has_all_fields (__main__.FixtureShapeTests.test_valid_fixture_has_all_fields) ... ok
+test_executed_insufficient_proof_not_ready (__main__.IsolatedRepoScenarios.test_executed_insufficient_proof_not_ready)
+executed + decision_type=execution_assessment + verdict=insufficient_proof ... ok
+test_full_scenario_matrix (__main__.IsolatedRepoScenarios.test_full_scenario_matrix) ... ok
+test_prepared_insufficient_proof_not_ready (__main__.IsolatedRepoScenarios.test_prepared_insufficient_proof_not_ready)
+prepared + decision_type=execution_assessment + verdict=insufficient_proof ... ok
+test_prepared_without_decision_file_still_ready (__main__.IsolatedRepoScenarios.test_prepared_without_decision_file_still_ready)
+prepared without decision.yml → promotion_ready remains True (no change). ... ok
+test_counter_hypotheses_without_version_is_not_legacy (__main__.MalformedStructuredBlockTests.test_counter_hypotheses_without_version_is_not_legacy) ... ok
+test_invalid_outcome_typo_is_blocking (__main__.MalformedStructuredBlockTests.test_invalid_outcome_typo_is_blocking) ... ok
+test_invalid_status_cannot_produce_ready (__main__.MalformedStructuredBlockTests.test_invalid_status_cannot_produce_ready) ... ok
+test_invalid_status_typo_is_blocking (__main__.MalformedStructuredBlockTests.test_invalid_status_typo_is_blocking) ... ok
+test_legacy_block_still_uses_legacy_evaluator (__main__.MalformedStructuredBlockTests.test_legacy_block_still_uses_legacy_evaluator) ... ok
+test_missing_assessment_dict_is_blocking (__main__.MalformedStructuredBlockTests.test_missing_assessment_dict_is_blocking) ... ok
+test_missing_outcome_is_blocking (__main__.MalformedStructuredBlockTests.test_missing_outcome_is_blocking) ... ok
+test_missing_status_is_blocking (__main__.MalformedStructuredBlockTests.test_missing_status_is_blocking) ... ok
+test_version_2_is_blocking (__main__.MalformedStructuredBlockTests.test_version_2_is_blocking) ... ok
+test_version_only_block_is_not_ready (__main__.MalformedStructuredBlockTests.test_version_only_block_is_not_ready) ... ok
+test_actual_freeze_file_is_valid (__main__.RatchetModeTests.test_actual_freeze_file_is_valid) ... ok
+test_actual_freeze_passes_ratchet_against_real_experiments (__main__.RatchetModeTests.test_actual_freeze_passes_ratchet_against_real_experiments) ... ok
+test_cli_ratchet_fails_when_freeze_file_missing (__main__.RatchetModeTests.test_cli_ratchet_fails_when_freeze_file_missing) ... ok
+test_cli_ratchet_fails_with_invalid_freeze_file (__main__.RatchetModeTests.test_cli_ratchet_fails_with_invalid_freeze_file) ... ok
+test_cli_ratchet_passes_with_actual_freeze (__main__.RatchetModeTests.test_cli_ratchet_passes_with_actual_freeze) ... ok
+test_duplicate_allowed_missing_value_in_same_entry_fails (__main__.RatchetModeTests.test_duplicate_allowed_missing_value_in_same_entry_fails) ... ok
+test_duplicate_path_in_freeze_fails_validation (__main__.RatchetModeTests.test_duplicate_path_in_freeze_fails_validation) ... ok
+test_freeze_insufficient_fails_ratchet (__main__.RatchetModeTests.test_freeze_insufficient_fails_ratchet) ... ok
+test_freeze_mismatched_missing_set_fails_both (__main__.RatchetModeTests.test_freeze_mismatched_missing_set_fails_both) ... ok
+test_freeze_partial_overlap_reports_both_directions (__main__.RatchetModeTests.test_freeze_partial_overlap_reports_both_directions) ... ok
+test_freeze_too_broad_fails_ratchet (__main__.RatchetModeTests.test_freeze_too_broad_fails_ratchet) ... ok
+test_frozen_at_variants (__main__.RatchetModeTests.test_frozen_at_variants) ... ok
+test_frozen_not_ready_accepted_by_ratchet (__main__.RatchetModeTests.test_frozen_not_ready_accepted_by_ratchet) ... ok
+test_invalid_freeze_absolute_path_fails (__main__.RatchetModeTests.test_invalid_freeze_absolute_path_fails) ... ok
+test_invalid_freeze_backslash_path_fails (__main__.RatchetModeTests.test_invalid_freeze_backslash_path_fails) ... ok
+test_invalid_freeze_dot_path_fails (__main__.RatchetModeTests.test_invalid_freeze_dot_path_fails) ... ok
+test_invalid_freeze_duplicate_separator_path_fails (__main__.RatchetModeTests.test_invalid_freeze_duplicate_separator_path_fails) ... ok
+test_invalid_freeze_missing_path_fails (__main__.RatchetModeTests.test_invalid_freeze_missing_path_fails) ... ok
+test_invalid_freeze_missing_reason_fails (__main__.RatchetModeTests.test_invalid_freeze_missing_reason_fails) ... ok
+test_invalid_freeze_missing_version_fails (__main__.RatchetModeTests.test_invalid_freeze_missing_version_fails) ... ok
+test_invalid_freeze_nested_experiment_path_fails (__main__.RatchetModeTests.test_invalid_freeze_nested_experiment_path_fails) ... ok
+test_invalid_freeze_non_experiment_path_fails (__main__.RatchetModeTests.test_invalid_freeze_non_experiment_path_fails) ... ok
+test_invalid_freeze_parent_traversal_path_fails (__main__.RatchetModeTests.test_invalid_freeze_parent_traversal_path_fails) ... ok
+test_invalid_freeze_path_with_whitespace_fails (__main__.RatchetModeTests.test_invalid_freeze_path_with_whitespace_fails) ... ok
+test_invalid_freeze_trailing_slash_path_fails (__main__.RatchetModeTests.test_invalid_freeze_trailing_slash_path_fails) ... ok
+test_invalid_freeze_unknown_allowed_missing_value_fails (__main__.RatchetModeTests.test_invalid_freeze_unknown_allowed_missing_value_fails) ... ok
+test_load_freeze_config_returns_none_if_absent (__main__.RatchetModeTests.test_load_freeze_config_returns_none_if_absent) ... ok
+test_ready_experiment_accepted_without_freeze_entry (__main__.RatchetModeTests.test_ready_experiment_accepted_without_freeze_entry) ... ok
+test_same_value_in_different_entries_is_allowed (__main__.RatchetModeTests.test_same_value_in_different_entries_is_allowed) ... ok
+test_stale_freeze_entry_for_historical_escape_fails (__main__.RatchetModeTests.test_stale_freeze_entry_for_historical_escape_fails) ... ok
+test_stale_freeze_entry_for_ready_experiment_fails (__main__.RatchetModeTests.test_stale_freeze_entry_for_ready_experiment_fails) ... ok
+test_stale_freeze_entry_nonexistent_experiment_fails (__main__.RatchetModeTests.test_stale_freeze_entry_nonexistent_experiment_fails) ... ok
+test_unfrozen_not_ready_fails_ratchet (__main__.RatchetModeTests.test_unfrozen_not_ready_fails_ratchet) ... ok
+test_valid_freeze_direct_experiment_path_passes_path_validation (__main__.RatchetModeTests.test_valid_freeze_direct_experiment_path_passes_path_validation) ... ok
+test_counter_hypotheses_without_version_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_counter_hypotheses_without_version_fails_schema) ... ok
+test_evidence_refs_item_without_path_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_evidence_refs_item_without_path_fails_schema) ... ok
+test_hybrid_block_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_hybrid_block_fails_schema) ... ok
+test_invalid_outcome_enum_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_invalid_outcome_enum_fails_schema) ... ok
+test_invalid_status_enum_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_invalid_status_enum_fails_schema) ... ok
+test_legacy_block_is_schema_valid (__main__.SchemaFalsifiabilityRegressionTests.test_legacy_block_is_schema_valid) ... ok
+test_structured_v1_block_is_schema_valid (__main__.SchemaFalsifiabilityRegressionTests.test_structured_v1_block_is_schema_valid) ... ok
+test_version_only_fails_schema (__main__.SchemaFalsifiabilityRegressionTests.test_version_only_fails_schema) ... ok
+test_blocked_is_not_ready (__main__.StructuredFalsifiabilityTests.test_blocked_is_not_ready) ... ok
+test_checked_supports_primary_no_evidence_refs_warns (__main__.StructuredFalsifiabilityTests.test_checked_supports_primary_no_evidence_refs_warns) ... ok
+test_checked_supports_primary_no_pending_is_ready (__main__.StructuredFalsifiabilityTests.test_checked_supports_primary_no_pending_is_ready) ... ok
+test_checked_supports_primary_with_pending_is_blocking (__main__.StructuredFalsifiabilityTests.test_checked_supports_primary_with_pending_is_blocking) ... ok
+test_documented_is_not_ready (__main__.StructuredFalsifiabilityTests.test_documented_is_not_ready) ... ok
+test_historical_escape_with_structured_format (__main__.StructuredFalsifiabilityTests.test_historical_escape_with_structured_format) ... ok
+test_mixed_no_pending_is_warning_only (__main__.StructuredFalsifiabilityTests.test_mixed_no_pending_is_warning_only) ... ok
+test_mixed_with_pending_is_not_ready (__main__.StructuredFalsifiabilityTests.test_mixed_with_pending_is_not_ready) ... ok
+test_multiple_hypotheses_all_ready (__main__.StructuredFalsifiabilityTests.test_multiple_hypotheses_all_ready) ... ok
+test_multiple_hypotheses_one_blocking (__main__.StructuredFalsifiabilityTests.test_multiple_hypotheses_one_blocking) ... ok
+test_partially_checked_inconclusive_no_pending_is_warning_only (__main__.StructuredFalsifiabilityTests.test_partially_checked_inconclusive_no_pending_is_warning_only) ... ok
+test_partially_checked_inconclusive_with_pending_is_not_ready (__main__.StructuredFalsifiabilityTests.test_partially_checked_inconclusive_with_pending_is_not_ready) ... ok
+test_pending_is_not_ready (__main__.StructuredFalsifiabilityTests.test_pending_is_not_ready) ... ok
+test_structured_empty_counter_hypotheses_is_blocking (__main__.StructuredFalsifiabilityTests.test_structured_empty_counter_hypotheses_is_blocking) ... ok
+test_structured_missing_falsification_criterion_is_blocking (__main__.StructuredFalsifiabilityTests.test_structured_missing_falsification_criterion_is_blocking) ... ok
+test_structured_routing_detected_by_key (__main__.StructuredFalsifiabilityTests.test_structured_routing_detected_by_key) ... ok
+test_supports_counterhypothesis_is_not_ready (__main__.StructuredFalsifiabilityTests.test_supports_counterhypothesis_is_not_ready) ... ok
+test_all_real_missing_signals_are_in_valid_allowed_missing (__main__.ValidAllowedMissingCoverageTests.test_all_real_missing_signals_are_in_valid_allowed_missing) ... ok
+test_falsifiability_top_level_signal_is_covered (__main__.ValidAllowedMissingCoverageTests.test_falsifiability_top_level_signal_is_covered) ... ok
+test_structured_signals_are_covered (__main__.ValidAllowedMissingCoverageTests.test_structured_signals_are_covered) ... ok
+test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTests.test_valid_allowed_missing_is_nonempty) ... ok
+test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests.test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing) ... ok
+
+----------------------------------------------------------------------
+Ran 102 tests in 0.600s
+
+OK
 🧪 Running run-evidence-pack schema regression tests...
+test_invalid_fixtures (__main__.RunEvidencePackSchemaTests.test_invalid_fixtures) ... ok
+test_valid_fixtures (__main__.RunEvidencePackSchemaTests.test_valid_fixtures) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.014s
+
+OK
 🧪 Running claim-evidence semantic validator tests...
+test_invalid_fixtures_exit_one_with_rule_ids (__main__.ClaimEvidenceValidatorTests.test_invalid_fixtures_exit_one_with_rule_ids) ... ok
+test_parse_error_exits_two (__main__.ClaimEvidenceValidatorTests.test_parse_error_exits_two) ... ok
+test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests.test_valid_fixtures_exit_zero) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.512s
+
+OK
 🔎 Validating claim-evidence semantic rules...
 🧪 Running PR scope validator tests...
+test_invalid_fixtures_exit_one_with_rule_id (__main__.InvalidFixtureTests.test_invalid_fixtures_exit_one_with_rule_id) ... ok
+test_oversized_allowed_name_still_blocked (__main__.OversizedArtifactTest.test_oversized_allowed_name_still_blocked) ... ok
+test_oversized_generic_artifact_exits_one (__main__.OversizedArtifactTest.test_oversized_generic_artifact_exits_one) ... ok
+test_artifact_roots_not_list_exits_two (__main__.PolicyValidationTest.test_artifact_roots_not_list_exits_two) ... ok
+test_broken_yaml_exits_two (__main__.PolicyValidationTest.test_broken_yaml_exits_two) ... ok
+test_forbidden_patterns_not_list_exits_two (__main__.PolicyValidationTest.test_forbidden_patterns_not_list_exits_two) ... ok
+test_invalid_max_bytes_exits_two (__main__.PolicyValidationTest.test_invalid_max_bytes_exits_two) ... ok
+test_missing_policy_exits_two (__main__.PolicyValidationTest.test_missing_policy_exits_two) ... ok
+test_repo_scan_default_exits_zero (__main__.RepoScanTest.test_repo_scan_default_exits_zero) ... ok
+test_changed_files_outside_artifact_roots_ignored (__main__.ScopeFilterTest.test_changed_files_outside_artifact_roots_ignored) ... ok
+test_self_obs_bare_filename_blocked (__main__.SelfObservationRelativePathTest.test_self_obs_bare_filename_blocked) ... ok
+test_self_obs_dotslash_filename_blocked (__main__.SelfObservationRelativePathTest.test_self_obs_dotslash_filename_blocked) ... ok
+test_changed_files_mode_no_forbidden_paths_exit_zero (__main__.ValidFixtureTests.test_changed_files_mode_no_forbidden_paths_exit_zero) ... ok
+test_valid_fixtures_all_together_exit_zero (__main__.ValidFixtureTests.test_valid_fixtures_all_together_exit_zero) ... ok
+test_valid_fixtures_individually_exit_zero (__main__.ValidFixtureTests.test_valid_fixtures_individually_exit_zero) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.337s
+
+OK
 🔎 Validating PR scope / artifact boundary...
 make[1]: Entering directory '/home/user/vibe-lab'
 🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)...
@@ -937,3 +1276,8 @@ make[1]: Entering directory '/home/user/vibe-lab'
      No unregistered violations. No stale or over-permissive freeze entries.
 make[1]: Leaving directory '/home/user/vibe-lab'
 ✅ Validation passed.
+
+================================================================================
+RESULT
+--------------------------------------------------------------------------------
+EXIT CODE: 0

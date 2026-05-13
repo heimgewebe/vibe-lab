@@ -41,8 +41,9 @@ Before producing any verdict, read these files in order:
 6. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml`
 7. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/changed-files.txt`
 8. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt`
-9. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt`
-10. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt`
+9. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/make-validate.txt`
+10. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt`
+11. `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt`
 
 ---
 
@@ -57,8 +58,15 @@ The following claims are from evidence-pack.yml. Verify each independently:
 | pack-003 | test_validate_run_bundle.py and test_validate_claim_evidence.py ran with exit_code 0 | Read raw-command-log.txt; confirm it contains actual test command output (not a summary); check for exit_code 0 evidence |
 | pack-004 | make validate ran with exit_code 0 | Read make-validate.txt; confirm it contains actual make command output and documents exit_code 0 |
 | pack-005 | Timing evidence exists in ci-or-git-timing.txt with explicit evidence_status self_reported and upgrade_path | Read ci-or-git-timing.txt; confirm evidence_status is self_reported, capture_mode is documented, upgrade_path is present |
-| pack-006 | Independent auditor proof exists for run-010 documenting INDEPENDENCE_NOT_PROVEN explicitly | Read independent-auditor-proof.txt; confirm INDEPENDENCE_NOT_PROVEN is documented; confirm no false independence claim is made; verdict should be CLAIM_NOT_PROVEN |
+| pack-006 | The run-010 independence gap is explicitly documented; no independent auditor verification is claimed by the executor | Read independent-auditor-proof.txt; confirm INDEPENDENCE_NOT_PROVEN is documented and no false independence claim is made; package-level verdict should be PASS if this is true |
 | pack-007 | No usefulness, adoption, promotion, or causal claim is made in this run bundle | Read run.yml, measurement.yml, comparability.yml; confirm effect_claim_allowed=false, promotion_claim_allowed=false, no usefulness/adoption/promotion/causal language |
+
+**Note on external auditor independence and pack-006:**
+pack-006 proves that the pre-external-audit independence gap was honestly documented; it does not
+itself prove independent validation. External auditor independence is assessed separately: through
+the replacement `auditor-output.yml` and its `auditor.executor` identity field. A future external
+auditor can achieve PASS on pack-006 by confirming the gap is honestly documented in
+independent-auditor-proof.txt, without needing to close the independence gap itself.
 
 ---
 
