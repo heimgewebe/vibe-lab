@@ -164,8 +164,9 @@ claims:
         status: "repo_local"
         notes: >
           verdict: not_comparable. notes section explicitly lists what the run does NOT
-          contribute: "No resolution of Gegenhypothese C ... No increment to
-          comparable-run count. No usefulness, adoption, promotion, or causal verdict."
+          contribute: "No full resolution of Gegenhypothese C (assessment bias /
+          auditor independence). No increment to comparable-run count. No usefulness,
+          adoption, promotion, or causal verdict."
     notes: >
       All three documents examined contain explicit prohibitions or absence of
       usefulness, adoption, promotion, and causal language. No such claim found
