@@ -65,6 +65,8 @@ claims:
         status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json"
         status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/make-validate.txt"
+        status: "repo_local"
 
   - id: "claim-003"
     text: "Independent auditor verification is demonstrated for run-010."
