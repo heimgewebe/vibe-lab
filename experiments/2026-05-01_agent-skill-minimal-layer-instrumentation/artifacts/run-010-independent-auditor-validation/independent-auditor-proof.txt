@@ -49,7 +49,9 @@ For an auditor to be genuinely independent, ALL of the following must be true:
    - An auditor-output.yml produced by the separate session/agent/human, OR
    - A written review document with external attribution.
 
-4. NO REPAIR: The auditor must not modify any artifacts. It reads and verdicts only.
+4. NO REPAIR: The auditor must not modify any other artifacts. The only permitted action is
+   replacing auditor-output.yml with the externally produced audit output. All other run
+   artifacts remain read-only. The auditor reads evidence and produces verdicts only.
 
 === Where The Independent Audit Output Should Go ===
 If a genuinely independent audit occurs after this run:

@@ -53,11 +53,12 @@ The following claims are from evidence-pack.yml. Verify each independently:
 | Claim ID | Text | Expected verdict basis |
 |---|---|---|
 | pack-001 | run.yml references evidence-pack.yml via artifacts.evidence_pack | Read run.yml; confirm artifacts.evidence_pack.path field exists and points to evidence-pack.yml |
-| pack-002 | Execution evidence package exists: all required artifacts are present | Locate each artifact listed in the claim's evidence array; confirm each file is present in the repo |
-| pack-003 | Raw command output exists in raw-command-log.txt with full output | Read raw-command-log.txt; confirm it contains actual command output (not a summary); check for exit_code evidence |
-| pack-004 | Timing evidence exists with explicit self_reported status and upgrade path | Read ci-or-git-timing.txt; confirm evidence_status is self_reported, capture_mode is documented, upgrade_path is present |
-| pack-005 | Independent auditor proof exists | Read independent-auditor-proof.txt; confirm INDEPENDENCE_NOT_PROVEN is documented; confirm no false independence claim is made; verdict should be CLAIM_NOT_PROVEN |
-| pack-006 | No usefulness, adoption, promotion, or causal claim is made | Read run.yml, measurement.yml, comparability.yml; confirm effect_claim_allowed=false, promotion_claim_allowed=false, no usefulness/adoption/causal language |
+| pack-002 | Execution evidence package exists: all required run-010 artifacts are present | Locate each artifact listed in the claim's evidence array; confirm each file is present in the repo |
+| pack-003 | test_validate_run_bundle.py and test_validate_claim_evidence.py ran with exit_code 0 | Read raw-command-log.txt; confirm it contains actual test command output (not a summary); check for exit_code 0 evidence |
+| pack-004 | make validate ran with exit_code 0 | Read make-validate.txt; confirm it contains actual make command output and documents exit_code 0 |
+| pack-005 | Timing evidence exists in ci-or-git-timing.txt with explicit evidence_status self_reported and upgrade_path | Read ci-or-git-timing.txt; confirm evidence_status is self_reported, capture_mode is documented, upgrade_path is present |
+| pack-006 | Independent auditor proof exists for run-010 documenting INDEPENDENCE_NOT_PROVEN explicitly | Read independent-auditor-proof.txt; confirm INDEPENDENCE_NOT_PROVEN is documented; confirm no false independence claim is made; verdict should be CLAIM_NOT_PROVEN |
+| pack-007 | No usefulness, adoption, promotion, or causal claim is made in this run bundle | Read run.yml, measurement.yml, comparability.yml; confirm effect_claim_allowed=false, promotion_claim_allowed=false, no usefulness/adoption/promotion/causal language |
 
 ---
 
@@ -121,11 +122,11 @@ that this request is asking for.
 ## Success Criterion for This Request
 
 This audit request is fulfilled if:
-1. `auditor-output.yml` is replaced by a genuinely external auditor
+1. `auditor-output.yml` is replaced by a genuinely external auditor with externally produced audit output
 2. The `auditor.executor` field is provably different from `claude-code:claude-sonnet-4-6`
    (session_011cvra3PDFriTmZTKsuCCVB)
 3. The overall verdict is one of the permitted verdicts (PASS or a non-PASS verdict)
-4. No repair, editing, or inference is performed
+4. No repair, inference, or editing of other run artifacts is performed (auditor-output.yml replacement is the requested output, not a repair)
 
 If the independent audit verdict is `PASS`: the independence blocker in
 `results/decision.yml` may be updated. That update requires a separate commit,
