@@ -123,7 +123,7 @@ Diese Datei:
   - Comparability-Regeln sind durch comparability.yml dokumentiert und funktionieren korrekt.
   - Evidence: `artifacts/run-005-controlled-agent-skill-run/comparability.yml`, `artifacts/run-006-controlled-agent-skill-run/comparability.yml`
 - [x] Claim-/Evidence-Metriken pro Run konsistent erhoben.
-  - 8 Metriken in run-005 und run-006 strukturell vorhanden und mit repo-lokaler Evidence belegt.
+  - 8 Metriken in run-005 und run-006 strukturell vorhanden; 5/8 operativ belegt, review_friction_count und rework_count bleiben null/missing_evidence, task_completion_time_observed bleibt self_reported/nicht belastbar vergleichbar.
   - scope_drift_count: 0 in allen drei vergleichbaren Runs (002, 005, 006).
   - review_friction_count und rework_count: null/missing_evidence in Runs 002/005/006 — bis run-007-Pilot nicht behebbar.
   - Kein Wirksamkeitsclaim, kein Promotion-Claim, kein Kausalclaim.
@@ -133,9 +133,9 @@ Diese Datei:
   - Pfad: `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
 - [x] Bewertet Messsystem-Reife vor Nutzenaussagen.
   - Vergleichsbasis: run-002, run-005, run-006. Drei Gegenhypothesen teilweise geprüft. Persistente Blocker dokumentiert.
-- [x] Verdict gesetzt: `insufficient_proof`
-  - Entspricht `not_ready` im Checklist-Schema. Scaffold reproduzierbar, Outcome-Evidence-Blocker offen (review_friction, rework, unabhängige Validierung, Task-Diversität, Negativfall).
-  - Kein usefulness claim, kein promotion claim.
+- [x] Verdict gesetzt: `partially_ready`
+  - Messsystem-Reife: 5/8 Metriken operativ belegt in engem Task-Korridor; 3/8 strukturell unvollständig (cross-run-assessment.md §6).
+  - Mapping: Experiment-/Decision-Verdict bleibt `insufficient_proof` (decision.yml): kein usefulness claim, kein promotion claim.
 
 ## Durchgehende Qualitätsgates
 - [ ] `claim_to_evidence_binding_rate` steigt.
