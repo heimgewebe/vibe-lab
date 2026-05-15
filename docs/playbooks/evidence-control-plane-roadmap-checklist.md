@@ -117,18 +117,24 @@ Diese Datei:
   - interpretation_limits.causal_claim_allowed: false
 
 ## PR 10 — Weitere vergleichbare Runs erfassen
-- [ ] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
-  - Kandidaten-/Rehearsal-Runs run-003 und run-004 erfasst. Beide haben `comparability_verdict: not_comparable` (kein `independent_task_or_pr_ref`; entstanden im selben PR-10-Session-Durchlauf). `current_comparable_runs` bleibt 1.
-  - Noch ausstehend: zwei Runs mit echten unabhängigen `independent_task_or_pr_ref`-Werten (separate PRs oder Tasks).
+- [x] Mindestens zwei weitere vergleichbare Runs (insgesamt >= 3) durchgeführt.
+  - run-005 (task:validator-test-windows-absolute-path-guard): `comparability_verdict: comparable`. `current_comparable_runs = 2`.
+  - run-006 (task:validator-test-cross-run-changed-files-artifact-path-guard): `comparability_verdict: comparable`. `current_comparable_runs = 3`. Schwellenwert erreicht.
   - Comparability-Regeln sind durch comparability.yml dokumentiert und funktionieren korrekt.
-- [ ] Claim-/Evidence-Metriken pro Run konsistent erhoben.
-  - 8 Metriken sind in run-003/004 strukturell vorhanden; scope_drift_count bleibt null/missing_evidence wegen fehlendem changed-files-Artefakt.
+  - Evidence: `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/comparability.yml`, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/comparability.yml`
+- [x] Claim-/Evidence-Metriken pro Run konsistent erhoben.
+  - 8 Metriken in run-005 und run-006 strukturell vorhanden; 5/8 operativ belegt. In run-005 und run-006 bleiben review_friction_count, rework_count und task_completion_time_observed null/missing_evidence; nur run-002 hat task_completion_time_observed als self_reported und daher nicht belastbar vergleichbar.
+  - scope_drift_count: 0 in allen drei vergleichbaren Runs (002, 005, 006).
+  - review_friction_count und rework_count: null/missing_evidence in Runs 002/005/006 — im PR-10/11-Stand noch nicht belegt; später separat in run-007 pilotiert.
   - Kein Wirksamkeitsclaim, kein Promotion-Claim, kein Kausalclaim.
 
 ## PR 11 — Cross-Run-Assessment
-- [ ] `cross-run-assessment.md` erstellt.
-- [ ] Bewertet Messsystem-Reife vor Nutzenaussagen.
-- [ ] Verdict gesetzt: `not_ready` | `partially_ready` | `ready_for_effect_evaluation`.
+- [x] `cross-run-assessment.md` erstellt.
+  - Pfad: `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
+- [x] Bewertet Messsystem-Reife vor Nutzenaussagen.
+  - Vergleichsbasis: run-002, run-005, run-006. Drei Gegenhypothesen teilweise geprüft. Persistente Blocker dokumentiert.
+- [x] Verdict gesetzt: `not_ready`
+  - Mapping: Das Experiment-/Decision-Verdict bleibt `insufficient_proof` gemäß `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` und `docs/roadmap.md`. PR 11 hat das Assessment-Artefakt erstellt, aber keine Ergebnis- oder Wirksamkeitsreife erreicht.
 
 ## Durchgehende Qualitätsgates
 - [ ] `claim_to_evidence_binding_rate` steigt.
