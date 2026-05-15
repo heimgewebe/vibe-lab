@@ -121,9 +121,9 @@ Diese Datei:
   - run-005 (task:validator-test-windows-absolute-path-guard): `comparability_verdict: comparable`. `current_comparable_runs = 2`.
   - run-006 (task:validator-test-cross-run-changed-files-artifact-path-guard): `comparability_verdict: comparable`. `current_comparable_runs = 3`. Schwellenwert erreicht.
   - Comparability-Regeln sind durch comparability.yml dokumentiert und funktionieren korrekt.
-  - Evidence: `artifacts/run-005-controlled-agent-skill-run/comparability.yml`, `artifacts/run-006-controlled-agent-skill-run/comparability.yml`
+  - Evidence: `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/comparability.yml`, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/comparability.yml`
 - [x] Claim-/Evidence-Metriken pro Run konsistent erhoben.
-  - 8 Metriken in run-005 und run-006 strukturell vorhanden; 5/8 operativ belegt, review_friction_count und rework_count bleiben null/missing_evidence, task_completion_time_observed bleibt self_reported/nicht belastbar vergleichbar.
+  - 8 Metriken in run-005 und run-006 strukturell vorhanden; 5/8 operativ belegt. In run-005 und run-006 bleiben review_friction_count, rework_count und task_completion_time_observed null/missing_evidence; nur run-002 hat task_completion_time_observed als self_reported und daher nicht belastbar vergleichbar.
   - scope_drift_count: 0 in allen drei vergleichbaren Runs (002, 005, 006).
   - review_friction_count und rework_count: null/missing_evidence in Runs 002/005/006 — bis run-007-Pilot nicht behebbar.
   - Kein Wirksamkeitsclaim, kein Promotion-Claim, kein Kausalclaim.
@@ -133,9 +133,8 @@ Diese Datei:
   - Pfad: `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
 - [x] Bewertet Messsystem-Reife vor Nutzenaussagen.
   - Vergleichsbasis: run-002, run-005, run-006. Drei Gegenhypothesen teilweise geprüft. Persistente Blocker dokumentiert.
-- [x] Verdict gesetzt: `partially_ready`
-  - Messsystem-Reife: 5/8 Metriken operativ belegt in engem Task-Korridor; 3/8 strukturell unvollständig (cross-run-assessment.md §6).
-  - Mapping: Experiment-/Decision-Verdict bleibt `insufficient_proof` (decision.yml): kein usefulness claim, kein promotion claim.
+- [x] Verdict gesetzt: `not_ready`
+  - Mapping: Das Experiment-/Decision-Verdict bleibt `insufficient_proof` gemäß `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`, `results/cross-run-assessment.md` und `docs/roadmap.md`. PR 11 hat das Assessment-Artefakt erstellt, aber keine Ergebnis- oder Wirksamkeitsreife erreicht.
 
 ## Durchgehende Qualitätsgates
 - [ ] `claim_to_evidence_binding_rate` steigt.
