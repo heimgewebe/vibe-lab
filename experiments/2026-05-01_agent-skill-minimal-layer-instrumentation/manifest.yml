@@ -52,10 +52,21 @@ experiment:
     - artifacts/run-005-controlled-agent-skill-run/make-validate.txt
     - artifacts/run-005-controlled-agent-skill-run/comparability.yml
     - artifacts/run-005-controlled-agent-skill-run/changed-files.txt
+    - artifacts/run-006-controlled-agent-skill-run/run.yml
+    - artifacts/run-006-controlled-agent-skill-run/measurement.yml
+    - artifacts/run-006-controlled-agent-skill-run/auditor-output.yml
+    - artifacts/run-006-controlled-agent-skill-run/run_meta.json
+    - artifacts/run-006-controlled-agent-skill-run/evidence-pack.yml
+    - artifacts/run-006-controlled-agent-skill-run/agent-output.md
+    - artifacts/run-006-controlled-agent-skill-run/targeted-tests.txt
+    - artifacts/run-006-controlled-agent-skill-run/make-validate.txt
+    - artifacts/run-006-controlled-agent-skill-run/comparability.yml
+    - artifacts/run-006-controlled-agent-skill-run/changed-files.txt
+    - results/cross-run-assessment.md
   created: "2026-05-01"
-  updated: "2026-05-09"
+  updated: "2026-05-15"
   author: "copilot-agent"
-  iteration: 5
+  iteration: 6
   evidence_level: anecdotal
   falsifiability:
     version: 1
@@ -72,11 +83,17 @@ experiment:
           PR-Kontext, Metriken oder Run-Bundles zwischen PRs zu stark variieren,
           um epistemisch sinnvolle Vergleiche zu ermöglichen.
         assessment:
-          status: partially_checked
+          status: checked
           outcome: inconclusive
           evidence_refs:
-            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/measurement.yml
-              section: "Run 1 — single PR measurement"
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/measurement.yml
+              section: "Run 2 — first controlled comparable run"
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/measurement.yml
+              section: "Run 5 — second controlled comparable run"
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/measurement.yml
+              section: "Run 6 — third controlled comparable run"
+            - path: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md
+              section: "Cross-Run Assessment — verdict: partially_ready"
 
 context:
   tools: ["experiment-critic", "evidence-reconciliation-auditor"]

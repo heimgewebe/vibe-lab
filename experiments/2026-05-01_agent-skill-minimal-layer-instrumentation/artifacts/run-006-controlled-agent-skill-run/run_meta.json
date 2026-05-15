@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-006-controlled-agent-skill-run",
+  "generated_at": "2026-05-15T00:00:00Z",
+  "executor": "local:claude-sonnet-4-6",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && make validate",
+  "command_scope": "cross-run-assessment creation and run-006 instrumentation (PR 11 deliverable)",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-006-controlled-agent-skill-run/targeted-tests.txt",
+  "auditor_output_file": "artifacts/run-006-controlled-agent-skill-run/auditor-output.yml",
+  "provenance_level": "self_reported",
+  "outcome": "PASS",
+  "notes": "Run 006 executes a real repo-internal task: create cross-run-assessment.md (PR 11 deliverable) and complete run-006 instrumentation. This is the 3rd comparable run; current_comparable_runs reaches 3. No effect, promotion, or causal claims."
+}
