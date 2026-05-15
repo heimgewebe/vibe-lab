@@ -125,7 +125,7 @@ Diese Datei:
 - [x] Claim-/Evidence-Metriken pro Run konsistent erhoben.
   - 8 Metriken in run-005 und run-006 strukturell vorhanden; 5/8 operativ belegt. In run-005 und run-006 bleiben review_friction_count, rework_count und task_completion_time_observed null/missing_evidence; nur run-002 hat task_completion_time_observed als self_reported und daher nicht belastbar vergleichbar.
   - scope_drift_count: 0 in allen drei vergleichbaren Runs (002, 005, 006).
-  - review_friction_count und rework_count: null/missing_evidence in Runs 002/005/006 — bis run-007-Pilot nicht behebbar.
+  - review_friction_count und rework_count: null/missing_evidence in Runs 002/005/006 — im PR-10/11-Stand noch nicht belegt; später separat in run-007 pilotiert.
   - Kein Wirksamkeitsclaim, kein Promotion-Claim, kein Kausalclaim.
 
 ## PR 11 — Cross-Run-Assessment
@@ -134,7 +134,7 @@ Diese Datei:
 - [x] Bewertet Messsystem-Reife vor Nutzenaussagen.
   - Vergleichsbasis: run-002, run-005, run-006. Drei Gegenhypothesen teilweise geprüft. Persistente Blocker dokumentiert.
 - [x] Verdict gesetzt: `not_ready`
-  - Mapping: Das Experiment-/Decision-Verdict bleibt `insufficient_proof` gemäß `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`, `results/cross-run-assessment.md` und `docs/roadmap.md`. PR 11 hat das Assessment-Artefakt erstellt, aber keine Ergebnis- oder Wirksamkeitsreife erreicht.
+  - Mapping: Das Experiment-/Decision-Verdict bleibt `insufficient_proof` gemäß `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` und `docs/roadmap.md`. PR 11 hat das Assessment-Artefakt erstellt, aber keine Ergebnis- oder Wirksamkeitsreife erreicht.
 
 ## Durchgehende Qualitätsgates
 - [ ] `claim_to_evidence_binding_rate` steigt.
