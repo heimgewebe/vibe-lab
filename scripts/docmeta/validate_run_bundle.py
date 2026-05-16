@@ -1253,6 +1253,19 @@ def _validate_run_dir(
             errors=errors,
         )
 
+    # Load timing_artifact from comparability (Option B / Check C-1).
+    # The field is optional; when present it couples
+    # task_completion_time_observed.evidence_status=repo_local to an existing run-local file.
+    timing_artifact_path, _timing_ev_missing = _load_comparability_run_artifact_ref(
+        field_name="timing_artifact",
+        comparability=comparability if comparability_present else None,
+        exp_dir=exp_dir,
+        run_dir=run_dir,
+        rel_run=rel_run,
+        errors=errors,
+    )
+    timing_artifact_valid = timing_artifact_path is not None
+
     # R7: measurement.yml
     measurement: dict | None = None
     if measurement_yml.is_file():
@@ -1378,6 +1391,22 @@ def _validate_run_dir(
                     errors.append(
                         f"  ❌ {rel_run}/measurement.yml: {metric_name}.evidence_status=repo_local "
                         f"erfordert ein gültiges review_evidence_artifact in comparability.yml."
+                    )
+
+        # Timing metric: task_completion_time_observed artifact coupling (Option B / Check C-1).
+        # When evidence_status=repo_local, comparability.yml must carry a timing_artifact
+        # pointing to an existing run-local file — analogous to changed_files_artifact
+        # (scope_drift_count) and review_evidence_artifact (review_friction_count/rework_count).
+        timing_metric = (measurement.get("metrics") or {}).get("task_completion_time_observed") or {}
+        if isinstance(timing_metric, dict):
+            timing_metric_value = timing_metric.get("value")
+            timing_metric_status = timing_metric.get("evidence_status")
+            if timing_metric_value is not None and timing_metric_status == "repo_local":
+                if not timing_artifact_valid:
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: "
+                        f"task_completion_time_observed.evidence_status=repo_local "
+                        f"erfordert ein gültiges timing_artifact in comparability.yml."
                     )
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:

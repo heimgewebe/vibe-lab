@@ -16,6 +16,7 @@ same_claim_evidence_discipline: true
 independent_task_or_pr_ref: "task:outcome-evidence-negative-case-independent-audit-timing"
 
 changed_files_artifact: "artifacts/run-008-negative-case-independent-audit-timing/changed-files.txt"
+timing_artifact: "timing.txt"
 
 verdict: not_comparable
 
