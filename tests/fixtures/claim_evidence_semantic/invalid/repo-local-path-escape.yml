@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-path-escape"
+claims:
+  - claim_id: "c-semantic-path-escape"
+    text: "Escaped path should not validate"
+    type: "command_succeeded"
+    verdict: "PASS"
+    evidence:
+      - path: "../../outside.txt"
+        status: "repo_local"

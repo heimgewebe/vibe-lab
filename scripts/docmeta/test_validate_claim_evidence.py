@@ -32,6 +32,7 @@ INVALID_FIXTURES = {
     "invalid/ci-pass-without-ci-evidence.yml": "CI_PASS_WITHOUT_CI_EVIDENCE",
     "invalid/make-validate-pass-without-exit-zero.yml": "MAKE_VALIDATE_PASS_WITHOUT_EXIT_ZERO",
     "invalid/make-validate-pass-without-command-output.yml": "MAKE_VALIDATE_WITH_COMMAND_MISMATCH",
+    "invalid/repo-local-nonexistent-path.yml": "REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND",
 }
 
 
@@ -57,6 +58,13 @@ class ClaimEvidenceValidatorTests(unittest.TestCase):
                 completed = self.run_validator(FIXTURE_ROOT / rel_path)
                 self.assertEqual(completed.returncode, 1, completed.stdout + completed.stderr)
                 self.assertIn(rule_id, completed.stdout)
+
+    def test_path_escape_fixture_fails_schema_validation(self) -> None:
+        # Path-escape is blocked at schema level (evidence.path pattern rejects `../../...`),
+        # before semantic checks run. Exit code is 2 (schema error), not 1 (semantic error).
+        completed = self.run_validator(FIXTURE_ROOT / "invalid/repo-local-path-escape.yml")
+        self.assertEqual(completed.returncode, 2, completed.stdout + completed.stderr)
+        self.assertIn("does not match", completed.stdout)
 
     def test_parse_error_exits_two(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

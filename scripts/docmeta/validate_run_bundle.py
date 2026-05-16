@@ -1010,7 +1010,7 @@ def _validate_evidence_pack(
             f"nicht verfügbar (ImportError: {_SEMANTIC_IMPORT_ERROR})."
         )
         return
-    sem_exit_code, sem_errors = validate_claim_evidence_file(ep_path, evidence_pack_validator)
+    sem_exit_code, sem_errors = validate_claim_evidence_file(ep_path, evidence_pack_validator, repo_root)
     if sem_exit_code != 0:
         for sem_err in sem_errors:
             errors.append(f"  ❌ {ep_path.relative_to(repo_root)}: {sem_err}")

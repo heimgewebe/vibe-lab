@@ -41,6 +41,7 @@
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
+| `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` | Evidence-Control-Plane — Diagnose nach Merge PR #189 | draft | diagnosis |
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/pr-run-evidence-pack.md` | Playbook: PR Run Evidence Pack | active | operative |
