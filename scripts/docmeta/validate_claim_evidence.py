@@ -155,7 +155,8 @@ def has_non_empty_source(entry: dict) -> bool:
 def repo_local_existence_errors(claim: dict, path: Path, repo_root: Path) -> list[str]:
     """Emit REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND for every repo_local evidence entry
     whose path does not resolve to an existing file under repo_root.
-    Emit REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO for path-escape attempts.
+    Emit REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO for path-escape attempts
+    as defense-in-depth for programmatic/non-CLI usage.
 
     Fires for PASS and non-PASS claims alike — repo_local is an existence claim.
     """

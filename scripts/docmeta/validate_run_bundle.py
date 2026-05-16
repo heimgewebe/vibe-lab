@@ -837,7 +837,7 @@ def _validate_evidence_pack(
     - Datei-Existenz
     - Schema-Validierung gegen run-evidence-pack.v1.schema.json
     - run_id-Übereinstimmung
-    - repo_local Evidence-Pfade existieren und verlassen nicht das Repo
+    - repo_local Evidence-Pfade via validate_claim_evidence.py prüfen
     - PASS nicht mit missing_evidence/external_unverified/self_reported
     - Kein Self-Observation-PASS (EP beweist nur sich selbst)
     """
@@ -940,31 +940,6 @@ def _validate_evidence_pack(
             f"stimmt nicht mit run.yml run.id='{run_id}' überein."
         )
         return
-
-    # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
-    for claim in ep_data.get("claims", []):
-        claim_id = claim.get("claim_id", "<missing>")
-        for ev_entry in claim.get("evidence", []):
-            if not isinstance(ev_entry, dict):
-                continue
-            if ev_entry.get("status") != "repo_local":
-                continue
-            ev_path_str = ev_entry.get("path", "")
-            if not ev_path_str:
-                continue
-            # Escape-Check (repo_local Pfade sind repo-root-relativ)
-            ev_target = _resolve_within(repo_root, ev_path_str)
-            if ev_target is None:
-                errors.append(
-                    f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim_id}' "
-                    f"repo_local Evidence-Pfad '{ev_path_str}' verlässt das Repo."
-                )
-                continue
-            if not ev_target.is_file():
-                errors.append(
-                    f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim_id}' "
-                    f"repo_local Evidence-Pfad '{ev_path_str}' existiert nicht."
-                )
 
     # Self-Observation-Check: PASS-Claim darf nicht ausschließlich auf das
     # Evidence-Pack selbst verweisen. Auch run_bundle_evidence_pack_reference
@@ -1253,19 +1228,6 @@ def _validate_run_dir(
             errors=errors,
         )
 
-    # Load timing_artifact from comparability (Option B / Check C-1).
-    # The field is optional; when present it couples
-    # task_completion_time_observed.evidence_status=repo_local to an existing run-local file.
-    timing_artifact_path, _timing_ev_missing = _load_comparability_run_artifact_ref(
-        field_name="timing_artifact",
-        comparability=comparability if comparability_present else None,
-        exp_dir=exp_dir,
-        run_dir=run_dir,
-        rel_run=rel_run,
-        errors=errors,
-    )
-    timing_artifact_valid = timing_artifact_path is not None
-
     # R7: measurement.yml
     measurement: dict | None = None
     if measurement_yml.is_file():
@@ -1391,22 +1353,6 @@ def _validate_run_dir(
                     errors.append(
                         f"  ❌ {rel_run}/measurement.yml: {metric_name}.evidence_status=repo_local "
                         f"erfordert ein gültiges review_evidence_artifact in comparability.yml."
-                    )
-
-        # Timing metric: task_completion_time_observed artifact coupling (Option B / Check C-1).
-        # When evidence_status=repo_local, comparability.yml must carry a timing_artifact
-        # pointing to an existing run-local file — analogous to changed_files_artifact
-        # (scope_drift_count) and review_evidence_artifact (review_friction_count/rework_count).
-        timing_metric = (measurement.get("metrics") or {}).get("task_completion_time_observed") or {}
-        if isinstance(timing_metric, dict):
-            timing_metric_value = timing_metric.get("value")
-            timing_metric_status = timing_metric.get("evidence_status")
-            if timing_metric_value is not None and timing_metric_status == "repo_local":
-                if not timing_artifact_valid:
-                    errors.append(
-                        f"  ❌ {rel_run}/measurement.yml: "
-                        f"task_completion_time_observed.evidence_status=repo_local "
-                        f"erfordert ein gültiges timing_artifact in comparability.yml."
                     )
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:
