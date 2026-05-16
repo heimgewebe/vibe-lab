@@ -57,7 +57,6 @@ Nicht enthalten:
 | # | Blocker | Quelle | Warum noch real |
 |---|---------|--------|-----------------|
 | B-01 | **PR-4-Checklist nie abgehakt**: `schemas/run-evidence-pack.v1.schema.json`, Fixtures in `tests/fixtures/claim_evidence/*`, Schema-Validierung inkl. invalid-Fälle | Checklist §PR 4: alle vier Items `[ ]` | Der Validator (PR 5) existiert und lädt das Schema zur Laufzeit — aber die PR-4-Checkliste ist nie als erledigt markiert worden. Unklar, ob Fixtures und Negativ-Fixture-Tests vollständig grün sind. |
-| B-02 | ~~**PR-5 fehlt eine Regel**: `[ ] No PASS without existing/archived evidence file.`~~ **Erledigt in diesem PR.** | Checklist §PR 5: Item `[x]` | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py` implementiert. Fixture `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` belegt den Negativfall. |
 | B-03 | **Alle Durchgehenden Qualitätsgates unbelegt** | Checklist §Durchgehende Qualitätsgates: alle `[ ]` | Keine einzige der fünf Metriken (`claim_to_evidence_binding_rate`, `unsupported_claim_count`, `validation_gap_count`, `contradiction_count`, `external_unverified_ratio`) hat einen Validator-Gate, der ihren Trend über PRs hinweg misst oder blockiert. Sie sind nur im Blueprint benannt. |
 | B-04 | **Definition of Done komplett offen** | Checklist §Definition of Done: alle `[ ]` | Die drei DoD-Punkte (verbindliche Verankerung, PASS-Blocking, technische Absicherung von Self-Observation/Artefaktgrenzen) sind formal nicht erfüllt, obwohl Validator-Code existiert. |
 | B-05 | **Vollständig unabhängiger Auditor fehlt** | `decision.yml` next_steps §4; `cross-run-assessment.md` §5; `roadmap.md` RM-005 Blocker | run-010 hat `auditor_independence_status: PARTIAL` (gleiche Modellfamilie). Ein Auditor eines anderen AI-Systems oder ein Human-Reviewer ist noch nicht belegt. Experiment-Verdict bleibt `insufficient_proof`. |
@@ -73,6 +72,12 @@ Nicht enthalten:
 | P-03 | Timing-Semantik | run-009: `capture_mode`, `evidence_status: self_reported`, `upgrade_path`-Notiz in timing.txt | Timing bleibt `self_reported`. Kein `repo_local` oder `external_verified` Timing-Beleg vorhanden. |
 | P-04 | Externer Audit | run-010: different-session Audit mit `overall_verdict: PASS` für pack-001 bis pack-007 | `auditor_independence_status: PARTIAL`; gleiche Modellfamilie. Vollständige Unabhängigkeit nicht belegt. |
 | P-05 | Audit-Request-Artefakt | run-010: `audit-request.md` spezifiziert exakt Scope, Claims und Output-Pfad für externen Auditor | Der externe Auditor hat (im different-session run) nur das Package validiert, nicht den Primärprozess. Blocker formal offen. |
+
+### 1.3 In diesem PR erledigt
+
+| # | Blocker | Umsetzung | Rest |
+|---|---------|-----------|------|
+| B-02 | PR-5: No PASS without existing/archived evidence file | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py`; Negativ-Fixture `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml`; Checklist-Item auf `[x]` gesetzt | Validierung muss grün sein |
 
 ---
 
@@ -103,27 +108,21 @@ deklarieren, ohne dass `validate_run_bundle.py` prüft, ob eine Timing-Datei
   Optional: `comparability.yml` um `timing_artifact`-Feld erweitern (kein Schema
   für comparability.yml vorhanden — das wäre ein neues Contract-Dokument).
 
-### 2.2 `validate_claim_evidence.py` — fehlende Datei-Existenz-Prüfung (B-02)
+### 2.2 `validate_claim_evidence.py` — Datei-Existenz-Prüfung für `repo_local`
 
-**Problem:** `validate_claim_evidence.py` prüft `evidence.status` (Herkunftsniveau),
-aber nicht ob `evidence.path` tatsächlich existiert.
+**Status:** In diesem PR umgesetzt.
 
-- **Betroffen:** Alle Claims mit `evidence_status: repo_local` in `evidence-pack.yml`.
-- **Konsequenz:** `PASS`-Claims können auf nicht-existierende Pfade zeigen, ohne
-  dass der Validator blockiert.
-- **Bereits geprüft in** `validate_run_bundle.py` (R5: `repo_local`-Pfade in
-  `evidence-pack.yml` werden auf Dateiexistenz geprüft). Aber `validate_claim_evidence.py`
-  läuft auch standalone (CLI + Make-Target `validate-claim-evidence`).
+`validate_claim_evidence.py` prüft nun für Evidence-Einträge mit
+`status: repo_local`, ob `evidence.path` unter `REPO_ROOT` auf eine existierende
+Datei zeigt. Fehlende Dateien erzeugen `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
 
-**Benötigte Änderung:**
-- Ziel-Datei: `scripts/docmeta/validate_claim_evidence.py`
-- Ziel-Funktion: `semantic_errors_for_claim()`
-- Gate: für jeden Evidence-Eintrag mit `status: repo_local` → prüfe ob `path`
-  (aufgelöst relativ zu `REPO_ROOT`) existiert. Neue Rule-ID:
-  `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
-- **ACHTUNG:** `validate_claim_evidence.py` kennt keinen `run_dir`-Kontext —
-  `repo_local`-Pfade werden als repo-root-relativ interpretiert. Das ist konsistent
-  mit `validate_run_bundle.py` (dort Zeile 955–963 gleiche Semantik).
+Analoger Mechanismus existiert bereits in `validate_run_bundle.py` (R5:
+`repo_local`-Pfade in `evidence-pack.yml` werden auf Dateiexistenz geprüft).
+Beide Validatoren sind nun konsistent.
+
+**Grenze:** Path-Escape-Versuche werden in `repo_local_existence_errors()` bewusst
+übersprungen (`except (ValueError, OSError): continue`). Das ist nur zulässig,
+weil ein bestehender Boundary-Validator diesen Fall im selben Validierungspfad abfängt.
 
 ### 2.3 `review_friction_count` / `rework_count` — Contract aktiv, aber CI-Enforcement fehlt
 
@@ -170,25 +169,20 @@ existierende, run-lokale Datei zeigt.
 `self_reported` deklariert — diese würden durch diesen Check nicht blockiert
 (nur `repo_local` wird gegated). Kein breaking change für bestehende Runs.
 
-### Check C-2 — Evidence-Datei-Existenz in validate_claim_evidence.py (B-02)
+### Check C-2 — Evidence-Datei-Existenz in validate_claim_evidence.py (B-02) — umgesetzt in diesem PR
 
-**Was:** `validate_claim_evidence.py`, `semantic_errors_for_claim()`:
-für `evidence.status == "repo_local"` → prüfe ob `REPO_ROOT / evidence.path`
-existiert. Neue Rule-ID: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
+**Status:** Umgesetzt.
 
-**Ziel-Datei:** `scripts/docmeta/validate_claim_evidence.py`
+Implementierung: `validate_claim_evidence.py`, neue Funktion `repo_local_existence_errors()`
+aufgerufen aus `semantic_errors_for_claim()`. Für `evidence.status == "repo_local"` →
+prüft ob `REPO_ROOT / evidence.path` existiert. Rule-ID: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
 
-**Ziel-Claims:** Alle `evidence-pack.yml`-Claims mit `repo_local`-Evidence-Pfaden
-
-**Warum minimal:** `validate_run_bundle.py` prüft das bereits (Zeilen 944–963),
-aber `validate_claim_evidence.py` prüft es nicht standalone. Lücke schließen
-ohne neue Infrastruktur.
-
-**Risiko:** `validate_claim_evidence.py` bekommt Zugriff auf das Dateisystem
-(bisher nur YAML-Parsing). Tests müssen mit temporären Fixtures angepasst werden.
-Führt keinen Breaking Change in bestehenden Runs ein, weil bestehende
-`repo_local`-Evidence-Pfade bereits existieren (sonst hätte `validate_run_bundle.py`
-blockiert).
+Geänderte Dateien:
+- `scripts/docmeta/validate_claim_evidence.py`
+- `scripts/docmeta/test_validate_claim_evidence.py`
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml`
+- `tests/fixtures/claim_evidence_semantic/valid/test-output.txt`
 
 ### Check C-3 — `self_reported`-Timing darf kein PASS-Claim-Beleg sein
 
@@ -219,23 +213,20 @@ geprüft werden, bevor implementiert wird.
 
 ## 4. Patch-Optionen (maximal 3, mit Risiko/Nutzen)
 
-### Option A — Kleinster sicherer Patch: Check C-2 (Datei-Existenz in validate_claim_evidence.py)
+### Option A — umgesetzt in diesem PR: Check C-2
 
-**Ziel-Dateien:**
-- `scripts/docmeta/validate_claim_evidence.py` — neue Prüfung in `semantic_errors_for_claim()`
-- `scripts/docmeta/test_validate_claim_evidence.py` — neue Fixture-Tests für den Fall "repo_local, Datei fehlt"
+**Status:** Umgesetzt.
 
-**Ziel-Claims:** `evidence.status == "repo_local"` in beliebiger `evidence-pack.yml`
+Geänderte Dateien:
+- `scripts/docmeta/validate_claim_evidence.py` — neue Funktion `repo_local_existence_errors()` in `semantic_errors_for_claim()`
+- `scripts/docmeta/test_validate_claim_evidence.py` — Negativ-Fixture-Test für `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` — neues Negativ-Fixture
+- `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml` — Pfad auf existierende Datei korrigiert
+- `tests/fixtures/claim_evidence_semantic/valid/test-output.txt` — neues Stub-Artefakt
+- `docs/playbooks/evidence-control-plane-roadmap-checklist.md` — Checklist-Item `[x]` gesetzt
 
-**Validator-Gate:** Rule `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` blockiert PASS und
-non-PASS-Claims gleichermaßen (nicht nur PASS — Datei-Existenz ist immer Pflicht
-wenn `repo_local` behauptet wird).
-
-**Risiko (niedrig):** Kein Breaking Change. `validate_run_bundle.py` prüft
-dasselbe bereits. Konvergenz, keine Regression.
-
-**Nutzen (mittel):** Schließt die PR-5-Checklisten-Lücke `[ ] No PASS without existing/archived evidence file.`
-Standalone-CLI (`validate-claim-evidence`) wird vollständig.
+Rule `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` blockiert PASS und non-PASS-Claims
+gleichermaßen. Standalone-CLI (`validate-claim-evidence`) ist nun vollständig.
 
 ---
 
@@ -290,21 +281,20 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 
 ---
 
-## 5. Stop-Kriterium dieser Diagnose
+## 5. Status nach diesem PR
 
-**Erfüllt:** Für jeden der drei Patch-Optionen sind benannt:
-- Exakte Ziel-Dateien (s. §4)
-- Exakte Ziel-Claims / Ziel-Felder (s. §2 und §3)
-- Validator-Gate-ID (s. §3 und §4)
+**Umgesetzt in diesem PR:**
+- Option A / Check C-2: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py`.
 
-**Nicht erfüllt — erfordert weitere Sichtung vor Patch-Start:**
+**Weiterhin offen — erfordert Sichtung vor Patch-Start:**
 - Tatsächlicher Zustand von `tests/fixtures/claim_evidence/` (Option C) — Dateisystem
   nicht ausgelesen.
 - Tatsächlicher Zustand der `evidence-pack.yml`-Dateien in run-007 bis run-010 bzgl.
   `self_reported`-Evidence (für Check C-3) — YAML-Inhalt nicht ausgelesen.
 - Entscheidung, ob CI-Global-Enforce für `review_evidence_artifact` (§2.3) als
-  eigener PR gewertet wird oder als Teil eines der obigen Optionen.
+  eigener PR gewertet wird oder als Teil von Option B/C.
 
-**Kein Patch vor Entscheidung über:**
-- Welche(r) der drei Optionen (A, B, C) zuerst umgesetzt wird.
-- Ob Option A + B kombiniert oder sequenziell umgesetzt werden.
+**Kein weiterer Patch vor Entscheidung über:**
+- Option B (Timing-Artifact-Kopplung).
+- Option C (PR-4-Fixture-Konsolidierung).
+- CI-Global-Enforce für `review_evidence_artifact`.
