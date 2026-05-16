@@ -1,0 +1,1 @@
+stub test output artifact for repo_local evidence path validation tests
