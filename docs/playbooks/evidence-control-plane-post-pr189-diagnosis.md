@@ -28,9 +28,25 @@ relations:
 
 # Evidence-Control-Plane — Diagnose nach Merge PR #189
 
-> **Zweck dieser Datei:** Kein Patch. Keine neuen Runs. Nur Diagnose.
-> Konsolidierung offener Qualitätsgates und Metrikblocker aus den
-> Quellquellen nach Stand run-007 bis run-010.
+> **Zweck dieser Datei:** Diagnose-Artefakt nach Merge PR #189, plus Umsetzung von Option A (Check C-2) im selben PR.
+> Konsolidierung offener Qualitätsgates und Metrikblocker aus den Quellquellen nach Stand run-007 bis run-010.
+
+---
+
+## 0. Status dieses PR
+
+Dieser PR enthält zwei Teile:
+
+1. Diagnose nach Merge PR #189.
+2. Umsetzung von Option A / Check C-2:
+   `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in
+   `scripts/docmeta/validate_claim_evidence.py`.
+
+Nicht enthalten:
+- Option B / Timing-Artifact-Kopplung.
+- Option C / PR-4-Fixture-Konsolidierung.
+- CI-Global-Enforce für `review_evidence_artifact`.
+- Neue Runs.
 
 ---
 
@@ -41,7 +57,7 @@ relations:
 | # | Blocker | Quelle | Warum noch real |
 |---|---------|--------|-----------------|
 | B-01 | **PR-4-Checklist nie abgehakt**: `schemas/run-evidence-pack.v1.schema.json`, Fixtures in `tests/fixtures/claim_evidence/*`, Schema-Validierung inkl. invalid-Fälle | Checklist §PR 4: alle vier Items `[ ]` | Der Validator (PR 5) existiert und lädt das Schema zur Laufzeit — aber die PR-4-Checkliste ist nie als erledigt markiert worden. Unklar, ob Fixtures und Negativ-Fixture-Tests vollständig grün sind. |
-| B-02 | **PR-5 fehlt eine Regel**: `[ ] No PASS without existing/archived evidence file.` | Checklist §PR 5: ein Item `[ ]` | `validate_claim_evidence.py` prüft die Evidence-*Statuses* (`repo_local`, `ci_artifact`, …), aber nicht ob die referenzierte Datei tatsächlich existiert. Ein PASS-Claim mit `evidence.path = "artifacts/run-007/.../nonexistent.txt"` und `status: repo_local` wird nicht blockiert. |
+| B-02 | ~~**PR-5 fehlt eine Regel**: `[ ] No PASS without existing/archived evidence file.`~~ **Erledigt in diesem PR.** | Checklist §PR 5: Item `[x]` | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py` implementiert. Fixture `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` belegt den Negativfall. |
 | B-03 | **Alle Durchgehenden Qualitätsgates unbelegt** | Checklist §Durchgehende Qualitätsgates: alle `[ ]` | Keine einzige der fünf Metriken (`claim_to_evidence_binding_rate`, `unsupported_claim_count`, `validation_gap_count`, `contradiction_count`, `external_unverified_ratio`) hat einen Validator-Gate, der ihren Trend über PRs hinweg misst oder blockiert. Sie sind nur im Blueprint benannt. |
 | B-04 | **Definition of Done komplett offen** | Checklist §Definition of Done: alle `[ ]` | Die drei DoD-Punkte (verbindliche Verankerung, PASS-Blocking, technische Absicherung von Self-Observation/Artefaktgrenzen) sind formal nicht erfüllt, obwohl Validator-Code existiert. |
 | B-05 | **Vollständig unabhängiger Auditor fehlt** | `decision.yml` next_steps §4; `cross-run-assessment.md` §5; `roadmap.md` RM-005 Blocker | run-010 hat `auditor_independence_status: PARTIAL` (gleiche Modellfamilie). Ein Auditor eines anderen AI-Systems oder ein Human-Reviewer ist noch nicht belegt. Experiment-Verdict bleibt `insufficient_proof`. |
