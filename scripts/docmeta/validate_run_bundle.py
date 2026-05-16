@@ -837,7 +837,8 @@ def _validate_evidence_pack(
     - Datei-Existenz
     - Schema-Validierung gegen run-evidence-pack.v1.schema.json
     - run_id-Übereinstimmung
-    - repo_local Evidence-Pfade via validate_claim_evidence.py prüfen
+    - repo_local Evidence-Pfade via delegierte Claim-Evidence-Validierung
+      (validate_claim_evidence_file(...)) prüfen
     - PASS nicht mit missing_evidence/external_unverified/self_reported
     - Kein Self-Observation-PASS (EP beweist nur sich selbst)
     """
@@ -978,7 +979,9 @@ def _validate_evidence_pack(
             )
 
     # Semantische Claim-Evidence-Prüfung via vollständiger Validator-Delegation.
-    # Dadurch folgen file-level und claim-level Regeln konsistent validate_claim_evidence.py.
+    # Dieser Aufruf validiert u. a. repo_local-Pfad-Existenz/-Containment
+    # (Rule-IDs REPO_LOCAL_EVIDENCE_PATH_*), damit keine doppelte Inline-Prüfung
+    # in validate_run_bundle.py nötig ist.
     if validate_claim_evidence_file is None:
         errors.append(
             f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "
