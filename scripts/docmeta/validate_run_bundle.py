@@ -837,7 +837,8 @@ def _validate_evidence_pack(
     - Datei-Existenz
     - Schema-Validierung gegen run-evidence-pack.v1.schema.json
     - run_id-Übereinstimmung
-    - repo_local Evidence-Pfade existieren und verlassen nicht das Repo
+    - repo_local Evidence-Pfade via delegierte Claim-Evidence-Validierung
+      (validate_claim_evidence_file(...)) prüfen
     - PASS nicht mit missing_evidence/external_unverified/self_reported
     - Kein Self-Observation-PASS (EP beweist nur sich selbst)
     """
@@ -941,31 +942,6 @@ def _validate_evidence_pack(
         )
         return
 
-    # repo_local Evidence-Pfade: müssen unter repo_root existieren und dort bleiben.
-    for claim in ep_data.get("claims", []):
-        claim_id = claim.get("claim_id", "<missing>")
-        for ev_entry in claim.get("evidence", []):
-            if not isinstance(ev_entry, dict):
-                continue
-            if ev_entry.get("status") != "repo_local":
-                continue
-            ev_path_str = ev_entry.get("path", "")
-            if not ev_path_str:
-                continue
-            # Escape-Check (repo_local Pfade sind repo-root-relativ)
-            ev_target = _resolve_within(repo_root, ev_path_str)
-            if ev_target is None:
-                errors.append(
-                    f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim_id}' "
-                    f"repo_local Evidence-Pfad '{ev_path_str}' verlässt das Repo."
-                )
-                continue
-            if not ev_target.is_file():
-                errors.append(
-                    f"  ❌ {ep_path.relative_to(repo_root)}: claim '{claim_id}' "
-                    f"repo_local Evidence-Pfad '{ev_path_str}' existiert nicht."
-                )
-
     # Self-Observation-Check: PASS-Claim darf nicht ausschließlich auf das
     # Evidence-Pack selbst verweisen. Auch run_bundle_evidence_pack_reference
     # benötigt mindestens ein weiteres, von ep_path verschiedenes Artefakt.
@@ -1003,7 +979,9 @@ def _validate_evidence_pack(
             )
 
     # Semantische Claim-Evidence-Prüfung via vollständiger Validator-Delegation.
-    # Dadurch folgen file-level und claim-level Regeln konsistent validate_claim_evidence.py.
+    # Dieser Aufruf validiert u. a. repo_local-Pfad-Existenz/-Containment
+    # (Rule-IDs REPO_LOCAL_EVIDENCE_PATH_*), damit keine doppelte Inline-Prüfung
+    # in validate_run_bundle.py nötig ist.
     if validate_claim_evidence_file is None:
         errors.append(
             f"  ❌ {ep_path.relative_to(repo_root)}: Semantische Claim-Evidence-Prüfung "

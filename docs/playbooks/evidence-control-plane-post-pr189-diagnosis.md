@@ -4,7 +4,7 @@ status: draft
 canonicality: diagnosis
 created: "2026-05-16"
 triggered_by: "user-request-2026-05-16-diag-post-pr189"
-stop_criterion: "Option A umgesetzt; kein weiterer Patch ohne neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
+stop_criterion: "Dieser PR setzt ausschließlich Option A um; Option B/C bleiben separate Kandidaten. Weitere Patches in diesem Diagnose-Track erfordern neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
 relations:
   - type: references
     target: evidence-control-plane-roadmap-checklist.md
@@ -28,7 +28,7 @@ relations:
 
 # Evidence-Control-Plane — Diagnose nach Merge PR #189
 
-> **Zweck dieser Datei:** Diagnose-Artefakt nach Merge PR #189, plus Umsetzung von Option A (Check C-2) im selben PR.
+> **Zweck dieser Datei:** Diagnose-Artefakt nach Merge PR #189; dieser PR setzt zusätzlich Option A / Check C-2 um.
 > Konsolidierung offener Qualitätsgates und Metrikblocker aus den Quellen nach Stand run-007 bis run-010.
 
 ---
@@ -69,7 +69,7 @@ Nicht enthalten:
 |---|---------|--------------|-----------------|
 | P-01 | review_friction_count / rework_count persistent null | run-007: Schema-backed contract (`.vibe/review-rework-artifact.contract.md` v0.2) + `schemas/review-events.v1.schema.json` + Validator-Kopplung in `validate_run_bundle.py` aktiv; run-007 hat **echte** `review-events.yml` mit `repo_local` Daten | Kein zweiter Run mit echten Review-Events. Einmalige Pilotierung, keine Replikation. |
 | P-02 | Negativfall / CLAIM_NOT_PROVEN | run-008: `CLAIM_NOT_PROVEN` bei partieller Unabhängigkeit dokumentiert, `timing.txt` repo-lokal archiviert | Echter FAIL (Auditor blockiert Artefakt wegen Fehler) noch nicht belegt. |
-| P-03 | Timing-Semantik | run-009: `capture_mode`, `evidence_status: self_reported`, `upgrade_path`-Notiz in timing.txt | Timing bleibt `self_reported`. Kein `repo_local` oder `external_verified` Timing-Beleg vorhanden. |
+| P-03 | Timing-Semantik | run-009: `capture_mode`, `evidence_status: self_reported`, `upgrade_path`-Notiz in `timing.txt`; run-008 enthält `timing.txt` als Timing-Artefakt | Offen bleibt der Enforcement-Blocker: Ohne `timing_artifact`-Kopplung erzwingt der Validator kein technisch belegtes `repo_local`-Timing. |
 | P-04 | Externer Audit | run-010: different-session Audit mit `overall_verdict: PASS` für pack-001 bis pack-007 | `auditor_independence_status: PARTIAL`; gleiche Modellfamilie. Vollständige Unabhängigkeit nicht belegt. |
 | P-05 | Audit-Request-Artefakt | run-010: `audit-request.md` spezifiziert exakt Scope, Claims und Output-Pfad für externen Auditor | Der externe Auditor hat (im different-session run) nur das Package validiert, nicht den Primärprozess. Blocker formal offen. |
 
