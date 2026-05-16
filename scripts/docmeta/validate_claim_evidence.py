@@ -155,10 +155,9 @@ def has_non_empty_source(entry: dict) -> bool:
 def repo_local_existence_errors(claim: dict, path: Path, repo_root: Path) -> list[str]:
     """Emit REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND for every repo_local evidence entry
     whose path does not resolve to an existing file under repo_root.
+    Emit REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO for path-escape attempts.
 
     Fires for PASS and non-PASS claims alike — repo_local is an existence claim.
-    Path-escape attempts (resolved path outside repo_root) are silently skipped;
-    other validators enforce path boundaries.
     """
     claim_id = str(claim.get("claim_id", "<missing>"))
     errors: list[str] = []
@@ -174,7 +173,15 @@ def repo_local_existence_errors(claim: dict, path: Path, repo_root: Path) -> lis
             candidate = (repo_root / ev_path_str).resolve()
             candidate.relative_to(repo_root.resolve())
         except (ValueError, OSError):
-            continue  # path escape — boundary validators handle this
+            errors.append(
+                format_error(
+                    "REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO",
+                    claim_id,
+                    path,
+                    f"repo_local evidence path '{ev_path_str}' resolves outside repo root.",
+                )
+            )
+            continue
         if not candidate.is_file():
             errors.append(
                 format_error(

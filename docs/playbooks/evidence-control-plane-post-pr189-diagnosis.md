@@ -4,7 +4,7 @@ status: draft
 canonicality: diagnosis
 created: "2026-05-16"
 triggered_by: "user-request-2026-05-16-diag-post-pr189"
-stop_criterion: "Kein Patch, bevor exakte Ziel-Dateien, Ziel-Claims und Validator-Gates benannt sind."
+stop_criterion: "Option A umgesetzt; kein weiterer Patch ohne neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
 relations:
   - type: references
     target: evidence-control-plane-roadmap-checklist.md
@@ -77,7 +77,7 @@ Nicht enthalten:
 
 | # | Blocker | Umsetzung | Rest |
 |---|---------|-----------|------|
-| B-02 | PR-5: No PASS without existing/archived evidence file | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py`; Negativ-Fixture `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml`; Checklist-Item auf `[x]` gesetzt | Validierung muss grün sein |
+| B-02 | PR-5: No PASS without existing/archived evidence file | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` + `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` in `validate_claim_evidence.py`; Negativ-Fixtures `repo-local-nonexistent-path.yml` und `repo-local-path-escape.yml`; Checklist-Item auf `[x]` gesetzt | Validierung muss grün sein |
 
 ---
 
@@ -115,14 +115,11 @@ deklarieren, ohne dass `validate_run_bundle.py` prüft, ob eine Timing-Datei
 `validate_claim_evidence.py` prüft nun für Evidence-Einträge mit
 `status: repo_local`, ob `evidence.path` unter `REPO_ROOT` auf eine existierende
 Datei zeigt. Fehlende Dateien erzeugen `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
+Path-Escape-Versuche (Pfad verlässt `REPO_ROOT`) erzeugen
+`REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO`.
 
-Analoger Mechanismus existiert bereits in `validate_run_bundle.py` (R5:
-`repo_local`-Pfade in `evidence-pack.yml` werden auf Dateiexistenz geprüft).
-Beide Validatoren sind nun konsistent.
-
-**Grenze:** Path-Escape-Versuche werden in `repo_local_existence_errors()` bewusst
-übersprungen (`except (ValueError, OSError): continue`). Das ist nur zulässig,
-weil ein bestehender Boundary-Validator diesen Fall im selben Validierungspfad abfängt.
+Analoger Mechanismus existiert bereits in `validate_run_bundle.py` (`_resolve_within()`
++ expliziter Fehler "verlässt das Repo"). Beide Validatoren sind nun konsistent.
 
 ### 2.3 `review_friction_count` / `rework_count` — Contract aktiv, aber CI-Enforcement fehlt
 
@@ -144,9 +141,7 @@ neuen Runs ohne review-events.yml), nicht nur eine Validator-Erweiterung.
 
 ## 3. Minimale Checks gegen falsche Belegung von Timing/Review/Rework
 
-Folgende drei Checks würden verhindern, dass `task_completion_time_observed`,
-`review_friction_count` und `rework_count` erneut als belegt erscheinen, obwohl
-sie nur `self_reported` oder `missing_evidence` sind.
+C-2 ist in diesem PR umgesetzt; C-1 und C-3 bleiben offene Kandidaten.
 
 ### Check C-1 — Timing-Artifact-Kopplung (neu)
 
@@ -175,12 +170,14 @@ existierende, run-lokale Datei zeigt.
 
 Implementierung: `validate_claim_evidence.py`, neue Funktion `repo_local_existence_errors()`
 aufgerufen aus `semantic_errors_for_claim()`. Für `evidence.status == "repo_local"` →
-prüft ob `REPO_ROOT / evidence.path` existiert. Rule-ID: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
+prüft ob `REPO_ROOT / evidence.path` existiert. Rule-IDs: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`
+(fehlende Datei), `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` (Path-Escape).
 
 Geänderte Dateien:
 - `scripts/docmeta/validate_claim_evidence.py`
 - `scripts/docmeta/test_validate_claim_evidence.py`
 - `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml`
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-path-escape.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/test-output.txt`
 
@@ -219,8 +216,9 @@ geprüft werden, bevor implementiert wird.
 
 Geänderte Dateien:
 - `scripts/docmeta/validate_claim_evidence.py` — neue Funktion `repo_local_existence_errors()` in `semantic_errors_for_claim()`
-- `scripts/docmeta/test_validate_claim_evidence.py` — Negativ-Fixture-Test für `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`
-- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` — neues Negativ-Fixture
+- `scripts/docmeta/test_validate_claim_evidence.py` — Negativ-Fixture-Tests für `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` und `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO`
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` — Negativ-Fixture (fehlende Datei)
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-path-escape.yml` — Negativ-Fixture (Path-Escape)
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml` — Pfad auf existierende Datei korrigiert
 - `tests/fixtures/claim_evidence_semantic/valid/test-output.txt` — neues Stub-Artefakt
 - `docs/playbooks/evidence-control-plane-roadmap-checklist.md` — Checklist-Item `[x]` gesetzt
