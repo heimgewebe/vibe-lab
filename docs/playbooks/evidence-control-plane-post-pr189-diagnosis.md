@@ -115,8 +115,11 @@ deklarieren, ohne dass `validate_run_bundle.py` prüft, ob eine Timing-Datei
 `validate_claim_evidence.py` prüft nun für Evidence-Einträge mit
 `status: repo_local`, ob `evidence.path` unter `REPO_ROOT` auf eine existierende
 Datei zeigt. Fehlende Dateien erzeugen `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`.
-Path-Escape-Versuche (Pfad verlässt `REPO_ROOT`) erzeugen
-`REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO`.
+
+Path-Escape-Versuche (z. B. `../../outside.txt`) werden bereits durch das JSON-Schema
+geblockt (`evidence.path`-Pattern schlägt fehl → Exit 2, vor semantischen Prüfungen).
+`REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` in `repo_local_existence_errors()` ist daher
+Defense-in-depth und im normalen CLI-Pfad nicht erreichbar.
 
 Analoger Mechanismus existiert bereits in `validate_run_bundle.py` (`_resolve_within()`
 + expliziter Fehler "verlässt das Repo"). Beide Validatoren sind nun konsistent.
