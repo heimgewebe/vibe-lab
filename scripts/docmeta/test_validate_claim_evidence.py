@@ -32,6 +32,7 @@ INVALID_FIXTURES = {
     "invalid/ci-pass-without-ci-evidence.yml": "CI_PASS_WITHOUT_CI_EVIDENCE",
     "invalid/make-validate-pass-without-exit-zero.yml": "MAKE_VALIDATE_PASS_WITHOUT_EXIT_ZERO",
     "invalid/make-validate-pass-without-command-output.yml": "MAKE_VALIDATE_WITH_COMMAND_MISMATCH",
+    "invalid/repo-local-nonexistent-path.yml": "REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND",
 }
 
 

@@ -6,5 +6,5 @@ claims:
     type: "test_result"
     verdict: "PASS"
     evidence:
-      - path: "artifacts/run-001/test-output.txt"
+      - path: "tests/fixtures/claim_evidence_semantic/valid/test-output.txt"
         status: "repo_local"

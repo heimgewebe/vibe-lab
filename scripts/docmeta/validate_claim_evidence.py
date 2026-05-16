@@ -152,6 +152,41 @@ def has_non_empty_source(entry: dict) -> bool:
     return False
 
 
+def repo_local_existence_errors(claim: dict, path: Path, repo_root: Path) -> list[str]:
+    """Emit REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND for every repo_local evidence entry
+    whose path does not resolve to an existing file under repo_root.
+
+    Fires for PASS and non-PASS claims alike — repo_local is an existence claim.
+    Path-escape attempts (resolved path outside repo_root) are silently skipped;
+    other validators enforce path boundaries.
+    """
+    claim_id = str(claim.get("claim_id", "<missing>"))
+    errors: list[str] = []
+    for entry in claim.get("evidence", []):
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("status") != "repo_local":
+            continue
+        ev_path_str = str(entry.get("path", "")).strip()
+        if not ev_path_str:
+            continue
+        try:
+            candidate = (repo_root / ev_path_str).resolve()
+            candidate.relative_to(repo_root.resolve())
+        except (ValueError, OSError):
+            continue  # path escape — boundary validators handle this
+        if not candidate.is_file():
+            errors.append(
+                format_error(
+                    "REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND",
+                    claim_id,
+                    path,
+                    f"repo_local evidence path '{ev_path_str}' does not exist under repo root.",
+                )
+            )
+    return errors
+
+
 def external_verified_errors(claim: dict, path: Path) -> list[str]:
     claim_id = str(claim.get("claim_id", "<missing>"))
     errors: list[str] = []
@@ -173,7 +208,7 @@ def external_verified_errors(claim: dict, path: Path) -> list[str]:
     return errors
 
 
-def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
+def semantic_errors_for_claim(claim: dict, path: Path, repo_root: Path | None = None) -> list[str]:
     claim_id = str(claim.get("claim_id", "<missing>"))
     verdict = str(claim.get("verdict", ""))
     statuses = evidence_statuses(claim)
@@ -217,6 +252,9 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
         )
 
     errors.extend(external_verified_errors(claim, path))
+
+    if repo_root is not None:
+        errors.extend(repo_local_existence_errors(claim, path, repo_root))
 
     if verdict == "PASS" and statuses and set(statuses) == {"external_unverified"}:
         errors.append(
@@ -288,7 +326,8 @@ def semantic_errors_for_claim(claim: dict, path: Path) -> list[str]:
     return errors
 
 
-def validate_file(path: Path, validator: Draft202012Validator) -> tuple[int, list[str]]:
+def validate_file(path: Path, validator: Draft202012Validator, repo_root: Path | None = None) -> tuple[int, list[str]]:
+    effective_root = repo_root if repo_root is not None else REPO_ROOT
     try:
         data = load_yaml(path)
     except (FileNotFoundError, ValueError) as exc:
@@ -300,7 +339,7 @@ def validate_file(path: Path, validator: Draft202012Validator) -> tuple[int, lis
 
     errors: list[str] = []
     for claim in data.get("claims", []):
-        errors.extend(semantic_errors_for_claim(claim, path))
+        errors.extend(semantic_errors_for_claim(claim, path, repo_root=effective_root))
 
     if errors:
         return 1, errors

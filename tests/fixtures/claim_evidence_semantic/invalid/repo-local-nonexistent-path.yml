@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-2026-05-03-semantic-nonexistent"
+claims:
+  - claim_id: "c-semantic-nonexistent"
+    text: "Validator output archived"
+    type: "command_succeeded"
+    verdict: "PASS"
+    evidence:
+      - path: "artifacts/run-99999/this-file-does-not-exist.txt"
+        status: "repo_local"

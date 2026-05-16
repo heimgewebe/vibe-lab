@@ -78,7 +78,7 @@ Diese Datei:
 - [x] Gate prüft reale `evidence-pack.yml`/`evidence-pack.yaml`-Dateien; bei Abwesenheit erfolgt ein sauberer Skip-Hinweis.
 - [x] Semantische Claim-Evidence-Regeln aktiv:
   - [x] No PASS without strong evidence status.
-  - [ ] No PASS without existing/archived evidence file.
+  - [x] No PASS without existing/archived evidence file.
   - [x] `*.MISSING_EVIDENCE.*` dokumentiert Abwesenheit, beweist keinen Erfolg.
   - [x] Kein quantitativer Testcount-Claim ohne Test-Output-Artefakt.
   - [x] Kein CI-success-Claim ohne archivierte CI-Evidence.
