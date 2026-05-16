@@ -77,7 +77,7 @@ Nicht enthalten:
 
 | # | Blocker | Umsetzung | Rest |
 |---|---------|-----------|------|
-| B-02 | PR-5: No PASS without existing/archived evidence file | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` + `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` in `validate_claim_evidence.py`; Negativ-Fixtures `repo-local-nonexistent-path.yml` und `repo-local-path-escape.yml`; Checklist-Item auf `[x]` gesetzt | Validierung muss grün sein |
+| B-02 | PR-5: No PASS without existing/archived evidence file | `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py`; Negativ-Fixtures `repo-local-nonexistent-path.yml` (semantisch) und `repo-local-path-escape.yml` (schema-level); Checklist-Item auf `[x]` gesetzt | Validierung muss grün sein |
 
 ---
 
@@ -173,8 +173,10 @@ existierende, run-lokale Datei zeigt.
 
 Implementierung: `validate_claim_evidence.py`, neue Funktion `repo_local_existence_errors()`
 aufgerufen aus `semantic_errors_for_claim()`. Für `evidence.status == "repo_local"` →
-prüft ob `REPO_ROOT / evidence.path` existiert. Rule-IDs: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`
-(fehlende Datei), `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` (Path-Escape).
+prüft ob `REPO_ROOT / evidence.path` existiert. Rule-ID: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`
+für fehlende repo-lokale Dateien. `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` ist Defense-in-depth
+für direkten programmatischen Aufruf; im normalen CLI-Pfad blockt das JSON-Schema
+path escapes (z. B. `../../outside.txt`) bereits mit Exit 2 vor der semantischen Prüfung.
 
 Geänderte Dateien:
 - `scripts/docmeta/validate_claim_evidence.py`
@@ -219,9 +221,9 @@ geprüft werden, bevor implementiert wird.
 
 Geänderte Dateien:
 - `scripts/docmeta/validate_claim_evidence.py` — neue Funktion `repo_local_existence_errors()` in `semantic_errors_for_claim()`
-- `scripts/docmeta/test_validate_claim_evidence.py` — Negativ-Fixture-Tests für `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` und `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO`
-- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` — Negativ-Fixture (fehlende Datei)
-- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-path-escape.yml` — Negativ-Fixture (Path-Escape)
+- `scripts/docmeta/test_validate_claim_evidence.py` — Negativ-Fixture-Test für `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND`; separater Schema-Test für path escape (`../../outside.txt`, Exit 2)
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` — Negativ-Fixture: semantischer Fehler, Exit 1
+- `tests/fixtures/claim_evidence_semantic/invalid/repo-local-path-escape.yml` — Schema-Boundary-Proof: Exit 2 (`evidence.path`-Pattern rejects `../../...`)
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml` — Pfad auf existierende Datei korrigiert
 - `tests/fixtures/claim_evidence_semantic/valid/test-output.txt` — neues Stub-Artefakt
 - `docs/playbooks/evidence-control-plane-roadmap-checklist.md` — Checklist-Item `[x]` gesetzt
