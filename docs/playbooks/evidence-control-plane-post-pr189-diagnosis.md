@@ -29,7 +29,7 @@ relations:
 # Evidence-Control-Plane — Diagnose nach Merge PR #189
 
 > **Zweck dieser Datei:** Diagnose-Artefakt nach Merge PR #189, plus Umsetzung von Option A (Check C-2) im selben PR.
-> Konsolidierung offener Qualitätsgates und Metrikblocker aus den Quellquellen nach Stand run-007 bis run-010.
+> Konsolidierung offener Qualitätsgates und Metrikblocker aus den Quellen nach Stand run-007 bis run-010.
 
 ---
 
