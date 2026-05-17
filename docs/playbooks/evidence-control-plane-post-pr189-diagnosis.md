@@ -121,8 +121,9 @@ geblockt (`evidence.path`-Pattern schlägt fehl → Exit 2, vor semantischen Pr�
 `REPO_LOCAL_EVIDENCE_PATH_OUTSIDE_REPO` in `repo_local_existence_errors()` ist daher
 Defense-in-depth und im normalen CLI-Pfad nicht erreichbar.
 
-Analoger Mechanismus existiert bereits in `validate_run_bundle.py` (`_resolve_within()`
-+ expliziter Fehler "verlässt das Repo"). Beide Validatoren sind nun konsistent.
+Die frühere Inline-Prüfung in `validate_run_bundle.py` ist nicht mehr die primäre
+Autorität; `repo_local`-Existenz wird über `validate_claim_evidence_file()`
+validiert.
 
 ### 2.3 `review_friction_count` / `rework_count` — Contract aktiv, aber CI-Enforcement fehlt
 
@@ -144,9 +145,10 @@ neuen Runs ohne review-events.yml), nicht nur eine Validator-Erweiterung.
 
 ## 3. Minimale Checks gegen falsche Belegung von Timing/Review/Rework
 
-C-2 ist in diesem PR umgesetzt; C-1 und C-3 bleiben offene Kandidaten.
+C-2 ist umgesetzt. C-1 ist durch das `timing_artifact`-Gate in
+`validate_run_bundle.py` umgesetzt. C-3 bleibt offener Kandidat.
 
-### Check C-1 — Timing-Artifact-Kopplung (neu)
+### Check C-1 — Timing-Artifact-Kopplung — umgesetzt
 
 **Was:** `validate_run_bundle.py` prüft: wenn
 `metrics.task_completion_time_observed.evidence_status == "repo_local"` →
