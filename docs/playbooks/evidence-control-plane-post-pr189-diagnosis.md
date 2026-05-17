@@ -4,7 +4,7 @@ status: draft
 canonicality: diagnosis
 created: "2026-05-16"
 triggered_by: "user-request-2026-05-16-diag-post-pr189"
-stop_criterion: "Option A umgesetzt; kein weiterer Patch ohne neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
+stop_criterion: "Dieser PR setzt ausschließlich Option A um; Option B/C bleiben separate Kandidaten. Weitere Patches in diesem Diagnose-Track erfordern neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
 relations:
   - type: references
     target: evidence-control-plane-roadmap-checklist.md

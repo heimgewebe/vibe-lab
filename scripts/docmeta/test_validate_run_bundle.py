@@ -2526,7 +2526,6 @@ class RepoLevelTests(unittest.TestCase):
         )
         
         errs = validate_repo(self.base)
-        # Delegation to validate_claim_evidence_file() produces REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND.
         self.assertTrue(any("REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND" in e for e in errs), errs)
 
     def test_evidence_pack_repo_local_evidence_escape_fails(self) -> None:
