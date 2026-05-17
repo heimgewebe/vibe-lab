@@ -1261,6 +1261,18 @@ def _validate_run_dir(
             errors=errors,
         )
 
+    # Load timing_artifact from comparability (C-1: evidence-control-plane-post-pr189-diagnosis.md).
+    # Optional field; when present it backs repo_local evidence_status for task_completion_time_observed.
+    timing_artifact_path, _timing_artifact_missing = _load_comparability_run_artifact_ref(
+        field_name="timing_artifact",
+        comparability=comparability if comparability_present else None,
+        exp_dir=exp_dir,
+        run_dir=run_dir,
+        rel_run=rel_run,
+        errors=errors,
+    )
+    timing_artifact_valid = timing_artifact_path is not None
+
     # R7: measurement.yml
     measurement: dict | None = None
     if measurement_yml.is_file():
@@ -1386,6 +1398,21 @@ def _validate_run_dir(
                     errors.append(
                         f"  ❌ {rel_run}/measurement.yml: {metric_name}.evidence_status=repo_local "
                         f"erfordert ein gültiges review_evidence_artifact in comparability.yml."
+                    )
+
+        # task_completion_time_observed: timing_artifact coupling (C-1).
+        # repo_local requires a timing_artifact field in comparability.yml that resolves to
+        # an existing file inside this run directory. self_reported and missing_evidence are
+        # allowed without any artifact.
+        timing_metric = (measurement.get("metrics") or {}).get("task_completion_time_observed") or {}
+        if isinstance(timing_metric, dict):
+            timing_ev_status = timing_metric.get("evidence_status")
+            if timing_ev_status == "repo_local":
+                if not timing_artifact_valid:
+                    errors.append(
+                        f"  ❌ {rel_run}/measurement.yml: "
+                        f"task_completion_time_observed.evidence_status=repo_local "
+                        f"erfordert ein gültiges timing_artifact in comparability.yml."
                     )
 
 def _check_auditor_semantics(auditor: dict) -> list[str]:

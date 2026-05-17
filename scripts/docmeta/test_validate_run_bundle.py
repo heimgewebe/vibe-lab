@@ -4274,5 +4274,218 @@ class ReviewEventsSchemaBackedTests(unittest.TestCase):
         self.assertEqual(errs, [], errs)
 
 
+# ---------------------------------------------------------------------------
+# Timing-artifact coupling tests (Check C-1)
+# docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md
+# ---------------------------------------------------------------------------
+
+def _measurement_with_timing_status(evidence_status: str, value: object = 60) -> str:
+    """Return a measurement.yml string with the given task_completion_time_observed status."""
+    return textwrap.dedent(f"""\
+        schema_version: "1.0.0"
+        contract: "measurement_run"
+        run_id: "run-001"
+        auditor_verdict: "MISSING_EVIDENCE"
+        auditor_ref: "auditor-output.yml"
+        metrics:
+          scope_drift_count:
+            value: 0
+            evidence_status: "external_unverified"
+          unsupported_claim_count:
+            value: 2
+            evidence_status: "derived_from_auditor_output"
+          missing_locator_count:
+            value: 0
+            evidence_status: "external_unverified"
+          validation_gap_count:
+            value: 2
+            evidence_status: "derived_from_auditor_output"
+          review_friction_count:
+            value: 0
+            evidence_status: "external_unverified"
+          rework_count:
+            value: 0
+            evidence_status: "external_unverified"
+          false_block_count:
+            value: 0
+            evidence_status: "external_unverified"
+          task_completion_time_observed:
+            value: {json.dumps(value)}
+            evidence_status: "{evidence_status}"
+            notes: "test fixture"
+    """)
+
+
+class TimingArtifactTests(unittest.TestCase):
+    """Regression tests for timing_artifact coupling (Check C-1).
+
+    When measurement.yml has task_completion_time_observed.evidence_status=repo_local,
+    comparability.yml must contain a valid timing_artifact field pointing to an
+    existing file inside this run directory.  self_reported and missing_evidence
+    are allowed without any artifact.
+    """
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self._tmp.name)
+        _make_repo_skeleton(self.base)
+
+    def tearDown(self) -> None:
+        self._tmp.cleanup()
+
+    def _build_with_repo_local_timing(self) -> tuple[Path, Path]:
+        """Build bundle with task_completion_time_observed: repo_local; return (exp, run_dir)."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+            measurement_text=_measurement_with_timing_status("repo_local", value=60),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        return exp, run_dir
+
+    # --- A: PASS ---
+
+    def test_repo_local_timing_with_valid_timing_artifact_passes(self) -> None:
+        """A: repo_local + timing_artifact: timing.txt + file exists → PASS."""
+        _exp, run_dir = self._build_with_repo_local_timing()
+        (run_dir / "timing.txt").write_text("duration_seconds: 60\n", encoding="utf-8")
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8") + '\ntiming_artifact: "timing.txt"\n',
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # --- B: PASS ---
+
+    def test_self_reported_timing_without_timing_artifact_passes(self) -> None:
+        """B: self_reported + no timing_artifact → PASS (gate not triggered)."""
+        exp = _build_valid_bundle(
+            self.base,
+            comparability_text=_valid_comparability_yml(
+                verdict="comparable",
+                changed_files_artifact="changed-files.txt",
+            ),
+            measurement_text=_measurement_with_timing_status("self_reported", value="~60 min"),
+        )
+        run_dir = exp / "artifacts" / "run-001"
+        _write_changed_files_artifact(run_dir)
+        _write_legacy_allowlist(self.base, [_run_yml_repo_path("exp-fixture", "run-001")])
+        errs = validate_repo(self.base)
+        self.assertEqual(errs, [], errs)
+
+    # --- C: FAIL ---
+
+    def test_repo_local_timing_without_timing_artifact_fails(self) -> None:
+        """C: repo_local + no timing_artifact in comparability.yml → error."""
+        _exp, run_dir = self._build_with_repo_local_timing()
+        # No timing_artifact added, no timing.txt created.
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any(
+                "task_completion_time_observed" in e
+                and "repo_local" in e
+                and "timing_artifact" in e
+                for e in errs
+            ),
+            errs,
+        )
+
+    # --- D: FAIL ---
+
+    def test_timing_artifact_pointing_to_nonexistent_file_fails(self) -> None:
+        """D: timing_artifact: ghost.txt (file does not exist) → error."""
+        _exp, run_dir = self._build_with_repo_local_timing()
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8") + '\ntiming_artifact: "ghost.txt"\n',
+            encoding="utf-8",
+        )
+        # ghost.txt intentionally not created
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("timing_artifact" in e and "ghost.txt" in e for e in errs),
+            errs,
+        )
+
+    # --- E: FAIL ---
+
+    def test_timing_artifact_parent_escape_fails(self) -> None:
+        """E: timing_artifact: ../timing.txt (parent-escape) → error."""
+        _exp, run_dir = self._build_with_repo_local_timing()
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8") + '\ntiming_artifact: "../timing.txt"\n',
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("timing_artifact" in e for e in errs),
+            errs,
+        )
+
+    # --- F: FAIL ---
+
+    def test_timing_artifact_unix_absolute_path_fails(self) -> None:
+        """F: timing_artifact: /tmp/timing.txt (Unix absolute path) → error."""
+        _exp, run_dir = self._build_with_repo_local_timing()
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8") + '\ntiming_artifact: "/tmp/timing.txt"\n',
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("timing_artifact" in e and "absoluter Pfad" in e for e in errs),
+            errs,
+        )
+
+    # --- G: FAIL ---
+
+    def test_timing_artifact_windows_absolute_path_fails(self) -> None:
+        """G: timing_artifact: C:/tmp/timing.txt (Windows absolute path) → error."""
+        _exp, run_dir = self._build_with_repo_local_timing()
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8") + '\ntiming_artifact: "C:/tmp/timing.txt"\n',
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any("timing_artifact" in e and "absoluter Pfad" in e for e in errs),
+            errs,
+        )
+
+    # --- H: FAIL ---
+
+    def test_timing_artifact_pointing_to_other_run_fails(self) -> None:
+        """H: timing_artifact: artifacts/other-run/timing.txt (different run) → error."""
+        exp, run_dir = self._build_with_repo_local_timing()
+        other_run = exp / "artifacts" / "run-000"
+        other_run.mkdir(parents=True, exist_ok=True)
+        (other_run / "timing.txt").write_text("duration_seconds: 60\n", encoding="utf-8")
+        comp_path = run_dir / "comparability.yml"
+        comp_path.write_text(
+            comp_path.read_text(encoding="utf-8")
+            + '\ntiming_artifact: "artifacts/run-000/timing.txt"\n',
+            encoding="utf-8",
+        )
+        errs = validate_repo(self.base)
+        self.assertTrue(
+            any(
+                "timing_artifact" in e
+                and "run-lokal oder experiment-relativ auf dieses Run-Verzeichnis zeigen" in e
+                for e in errs
+            ),
+            errs,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

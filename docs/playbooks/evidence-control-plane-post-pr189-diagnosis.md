@@ -146,9 +146,9 @@ neuen Runs ohne review-events.yml), nicht nur eine Validator-Erweiterung.
 
 ## 3. Minimale Checks gegen falsche Belegung von Timing/Review/Rework
 
-C-2 ist in diesem PR umgesetzt; C-1 und C-3 bleiben offene Kandidaten.
+C-2 wurde in PR #189 umgesetzt; C-1 ist im Folge-PR umgesetzt (fix/double-repo-local-check-option-a-cleanup + Folge-Branch); C-3 bleibt offener Kandidat.
 
-### Check C-1 — Timing-Artifact-Kopplung (neu)
+### Check C-1 — Timing-Artifact-Kopplung — umgesetzt
 
 **Was:** `validate_run_bundle.py` prüft: wenn
 `metrics.task_completion_time_observed.evidence_status == "repo_local"` →
