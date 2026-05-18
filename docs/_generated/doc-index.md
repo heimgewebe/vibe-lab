@@ -25,9 +25,9 @@
 | `catalog/workflows/causal-control-study.md` | Kausale Kontrollstudie | adopted | — |
 | `catalog/workflows/spec-first-api-generation.md` | Spec-First API-Generierung | adopted | — |
 | `contracts/command-semantics.md` | Command Semantics (v0.1) | active | canonical |
-| `decisions/benchmark/README.md` | README | — | — |
-| `decisions/export/README.md` | README | — | — |
-| `decisions/policy/README.md` | README | — | — |
+| `decisions/benchmark/README.md` | Decisions/Benchmark (Stub-Namespace) | active | navigation |
+| `decisions/export/README.md` | Decisions/Export (Stub-Namespace) | active | navigation |
+| `decisions/policy/README.md` | Decisions/Policy (Stub-Namespace) | active | navigation |
 | `docs/blueprints/blueprint-agent-operability-phase-1c.md` | Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns | active | exploratory |
 | `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | active | exploratory |
 | `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` | Blueprint — Agent/Skill Minimal Layer v0.1 | draft | exploratory |
