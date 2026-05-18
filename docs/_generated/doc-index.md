@@ -25,6 +25,7 @@
 | `catalog/workflows/causal-control-study.md` | Kausale Kontrollstudie | adopted | — |
 | `catalog/workflows/spec-first-api-generation.md` | Spec-First API-Generierung | adopted | — |
 | `contracts/command-semantics.md` | Command Semantics (v0.1) | active | canonical |
+| `decisions/README.md` | Decisions — Navigation | active | navigation |
 | `decisions/benchmark/README.md` | Decisions/Benchmark (Stub-Namespace) | active | navigation |
 | `decisions/export/README.md` | Decisions/Export (Stub-Namespace) | active | navigation |
 | `decisions/policy/README.md` | Decisions/Policy (Stub-Namespace) | active | navigation |

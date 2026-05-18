@@ -103,6 +103,22 @@
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
+## `decisions/README.md`
+
+- ← `docs/index.md` (references)
+
+## `decisions/benchmark/README.md`
+
+- ← `decisions/README.md` (references)
+
+## `decisions/export/README.md`
+
+- ← `decisions/README.md` (references)
+
+## `decisions/policy/README.md`
+
+- ← `decisions/README.md` (references)
+
 ## `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
 
 - ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
@@ -204,6 +220,10 @@
 
 ## `docs/foundations/repo-plan.md`
 
+- ← `decisions/README.md` (references)
+- ← `decisions/benchmark/README.md` (references)
+- ← `decisions/export/README.md` (references)
+- ← `decisions/policy/README.md` (references)
 - ← `docs/experiments/README.md` (references)
 - ← `docs/masterplan.md` (derived_from)
 - ← `docs/onboarding/README.md` (references)

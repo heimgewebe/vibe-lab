@@ -754,6 +754,22 @@
       "status": "classified"
     },
     {
+      "authority": "decision_record",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
+      "path": "decisions/benchmark/README.md",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -768,6 +784,22 @@
       "status": "classified"
     },
     {
+      "authority": "decision_record",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
+      "path": "decisions/export/README.md",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -779,6 +811,22 @@
       ],
       "origin": "handcrafted",
       "path": "decisions/policy/.gitkeep",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "decision_record",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/**"
+      ],
+      "origin": "handcrafted",
+      "path": "decisions/policy/README.md",
       "status": "classified"
     },
     {
@@ -1258,6 +1306,22 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/experiments/README.md",
+      "status": "classified"
+    },
+    {
       "authority": "normative_contract",
       "catchall_match": false,
       "enforcement": [
@@ -1333,6 +1397,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/onboarding/.gitkeep",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/onboarding/README.md",
       "status": "classified"
     },
     {
@@ -1602,6 +1682,22 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/rules/README.md",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -1613,6 +1709,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/syntheses/.gitkeep",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/syntheses/README.md",
       "status": "classified"
     },
     {
@@ -9882,6 +9994,22 @@
         "raw-vibes/*.md"
       ],
       "origin": "handcrafted",
+      "path": "raw-vibes/2026-05-18_audit-followup-second-pass.md",
+      "status": "classified"
+    },
+    {
+      "authority": "raw_capture",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "raw_capture",
+      "layer": "capture",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "raw-vibes/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "raw-vibes/README.md",
       "status": "classified"
     },
@@ -13375,9 +13503,16 @@
   ],
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
+    "decisions/benchmark/README.md",
+    "decisions/export/README.md",
+    "decisions/policy/README.md",
     "docs/evaluations/agent-skill-file-fruitfulness.md",
     "docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md",
     "docs/evaluations/rrg03-remediation-strategy-comparison.md",
+    "docs/experiments/README.md",
+    "docs/onboarding/README.md",
+    "docs/rules/README.md",
+    "docs/syntheses/README.md",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/refactored_processor.py",
     "experiments/2026-04-12_spec-first-legacy/src/test_processor.py",
@@ -13700,22 +13835,25 @@
   ],
   "fallback_summary": {
     "by_authority": {
+      "decision_record": 3,
       "historical_record": 284,
-      "navigation_surface": 3,
+      "navigation_surface": 7,
       "test_expectation": 35
     },
     "by_layer": {
-      "docs": 3,
+      "docs": 7,
       "experiment": 284,
+      "governance": 3,
       "test": 35
     },
     "by_matched_pattern": {
-      "docs/**": 3,
+      "decisions/**": 3,
+      "docs/**": 7,
       "experiments/**": 21,
       "experiments/*/artifacts/**": 263,
       "tests/fixtures/**": 35
     },
-    "high_risk_count": 35,
+    "high_risk_count": 38,
     "residual_cluster_views": {
       "risk_first": [
         {
@@ -13743,6 +13881,19 @@
             "tests/fixtures/pr_scope/valid": 5
           },
           "total": 35
+        },
+        {
+          "high_risk_count": 3,
+          "matched_pattern": "decisions/**",
+          "top_basenames": {
+            "README.md": 3
+          },
+          "top_parent_dirs": {
+            "decisions/benchmark": 1,
+            "decisions/export": 1,
+            "decisions/policy": 1
+          },
+          "total": 3
         },
         {
           "high_risk_count": 0,
@@ -13802,14 +13953,19 @@
           "high_risk_count": 0,
           "matched_pattern": "docs/**",
           "top_basenames": {
+            "README.md": 4,
             "agent-skill-file-fruitfulness.md": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
             "rrg03-remediation-strategy-comparison.md": 1
           },
           "top_parent_dirs": {
-            "docs/evaluations": 3
+            "docs/evaluations": 3,
+            "docs/experiments": 1,
+            "docs/onboarding": 1,
+            "docs/rules": 1,
+            "docs/syntheses": 1
           },
-          "total": 3
+          "total": 7
         }
       ],
       "volume_first": [
@@ -13897,12 +14053,30 @@
           "high_risk_count": 0,
           "matched_pattern": "docs/**",
           "top_basenames": {
+            "README.md": 4,
             "agent-skill-file-fruitfulness.md": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
             "rrg03-remediation-strategy-comparison.md": 1
           },
           "top_parent_dirs": {
-            "docs/evaluations": 3
+            "docs/evaluations": 3,
+            "docs/experiments": 1,
+            "docs/onboarding": 1,
+            "docs/rules": 1,
+            "docs/syntheses": 1
+          },
+          "total": 7
+        },
+        {
+          "high_risk_count": 3,
+          "matched_pattern": "decisions/**",
+          "top_basenames": {
+            "README.md": 3
+          },
+          "top_parent_dirs": {
+            "decisions/benchmark": 1,
+            "decisions/export": 1,
+            "decisions/policy": 1
           },
           "total": 3
         }
@@ -13934,6 +14108,19 @@
           "tests/fixtures/pr_scope/valid": 5
         },
         "total": 35
+      },
+      {
+        "high_risk_count": 3,
+        "matched_pattern": "decisions/**",
+        "top_basenames": {
+          "README.md": 3
+        },
+        "top_parent_dirs": {
+          "decisions/benchmark": 1,
+          "decisions/export": 1,
+          "decisions/policy": 1
+        },
+        "total": 3
       },
       {
         "high_risk_count": 0,
@@ -13993,14 +14180,19 @@
         "high_risk_count": 0,
         "matched_pattern": "docs/**",
         "top_basenames": {
+          "README.md": 4,
           "agent-skill-file-fruitfulness.md": 1,
           "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
           "rrg03-remediation-strategy-comparison.md": 1
         },
         "top_parent_dirs": {
-          "docs/evaluations": 3
+          "docs/evaluations": 3,
+          "docs/experiments": 1,
+          "docs/onboarding": 1,
+          "docs/rules": 1,
+          "docs/syntheses": 1
         },
-        "total": 3
+        "total": 7
       }
     ]
   },
@@ -14108,6 +14300,9 @@
     "agent-policy.yaml",
     "contracts/docmeta.schema.json",
     "contracts/system_decision.schema.json",
+    "decisions/benchmark/README.md",
+    "decisions/export/README.md",
+    "decisions/policy/README.md",
     "decisions/process/2026-04-30-rrg03-remediation-boundary.yml",
     "decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml",
     "decisions/process/p5-validator-scope-boundary.yml",
@@ -14169,16 +14364,16 @@
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 18,
+      "decision_record": 21,
       "diagnostic_signal": 7,
       "evidence_log": 16,
       "generated_projection": 10,
       "historical_record": 284,
       "implementation_behavior": 9,
-      "navigation_surface": 12,
+      "navigation_surface": 16,
       "normative_contract": 16,
       "procedure_contract": 99,
-      "raw_capture": 22,
+      "raw_capture": 23,
       "result_interpretation": 56,
       "runtime_observation": 72,
       "schema_truth": 17,
@@ -14192,39 +14387,39 @@
       "ci_blocking": 284,
       "diagnostic": 1,
       "no_manual_edit": 18,
-      "no_rewrite": 342,
+      "no_rewrite": 343,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 226
+      "review_required": 233
     },
     "by_layer": {
       "agent": 4,
       "archive": 24,
-      "capture": 6,
+      "capture": 7,
       "catalog": 12,
       "contract": 28,
-      "docs": 31,
+      "docs": 35,
       "experiment": 486,
       "export": 15,
       "generated": 8,
-      "governance": 51,
+      "governance": 54,
       "test": 169
     },
     "by_lifecycle": {
-      "append_only": 342,
-      "handcrafted": 420,
+      "append_only": 343,
+      "handcrafted": 427,
       "regenerated": 18,
       "revision_with_reason": 52,
       "superseded_not_rewritten": 2
     },
-    "classified": 834,
+    "classified": 842,
     "conflict": 0,
-    "fallback_classified": 322,
-    "fallback_share": 0.38609112709832133,
+    "fallback_classified": 329,
+    "fallback_share": 0.39073634204275537,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 834,
+    "total": 842,
     "unknown": 0
   },
   "transition_risk_hints": [],

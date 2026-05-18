@@ -3,12 +3,9 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (132 found):
+Documents not referenced by any other document via frontmatter relations (129 found):
 
 - `.vibe/intent.md`
-- `decisions/benchmark/README.md`
-- `decisions/export/README.md`
-- `decisions/policy/README.md`
 - `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
