@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 842
-- classified: 842
-  - of which fallback_classified (catch-all rule): 329
-  - fallback_share: 39.1% (329 / 842)
+- total: 843
+- classified: 843
+  - of which fallback_classified (catch-all rule): 326
+  - fallback_share: 38.7% (326 / 843)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -35,20 +35,20 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | experiment | 486 |
 | export | 15 |
 | generated | 8 |
-| governance | 54 |
+| governance | 55 |
 | test | 169 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 21 |
+| decision_record | 18 |
 | diagnostic_signal | 7 |
 | evidence_log | 16 |
 | generated_projection | 10 |
 | historical_record | 284 |
 | implementation_behavior | 9 |
-| navigation_surface | 16 |
+| navigation_surface | 20 |
 | normative_contract | 16 |
 | procedure_contract | 99 |
 | raw_capture | 23 |
@@ -64,7 +64,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | lifecycle | count |
 | --- | ---: |
 | append_only | 343 |
-| handcrafted | 427 |
+| handcrafted | 428 |
 | regenerated | 18 |
 | revision_with_reason | 52 |
 | superseded_not_rewritten | 2 |
@@ -82,7 +82,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 233 |
+| review_required | 234 |
 
 ## Unknown artifacts
 
@@ -98,9 +98,6 @@ _none_
 
 ## Fallback classified artifacts (catch-all rule, low confidence)
 
-- `decisions/benchmark/README.md`
-- `decisions/export/README.md`
-- `decisions/policy/README.md`
 - `docs/evaluations/agent-skill-file-fruitfulness.md`
 - `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`
 - `docs/evaluations/rrg03-remediation-strategy-comparison.md`
@@ -443,9 +440,6 @@ _none_
 - `agent-policy.yaml`
 - `contracts/docmeta.schema.json`
 - `contracts/system_decision.schema.json`
-- `decisions/benchmark/README.md`
-- `decisions/export/README.md`
-- `decisions/policy/README.md`
 - `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
 - `decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml`
 - `decisions/process/p5-validator-scope-boundary.yml`
@@ -510,11 +504,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 263 | 79.9% |
-| `tests/fixtures/**` | 35 | 10.6% |
+| `experiments/*/artifacts/**` | 263 | 80.7% |
+| `tests/fixtures/**` | 35 | 10.7% |
 | `experiments/**` | 21 | 6.4% |
 | `docs/**` | 7 | 2.1% |
-| `decisions/**` | 3 | 0.9% |
 
 ## Residual fallback clusters
 
@@ -529,7 +522,6 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
 | `tests/fixtures/**` | 35 | 35 | `evidence-pack.yml`=2, `test-output.txt`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/claim_evidence_semantic/valid`=6, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
-| `decisions/**` | 3 | 3 | `README.md`=3 | `decisions/benchmark`=1, `decisions/export`=1, `decisions/policy`=1 |
 | `experiments/*/artifacts/**` | 263 | 0 | `refactored_processor.py`=15, `auditor-output.yml`=10, `evidence-pack.yml`=10, `measurement.yml`=10, `run.yml`=10 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot`=12, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation`=11, `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9, `experiments/2026-04-14_upfront-structuring-replication/artifacts`=9 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
@@ -544,7 +536,6 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 | `tests/fixtures/**` | 35 | 35 | `evidence-pack.yml`=2, `test-output.txt`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/claim_evidence_semantic/valid`=6, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
-| `decisions/**` | 3 | 3 | `README.md`=3 | `decisions/benchmark`=1, `decisions/export`=1, `decisions/policy`=1 |
 
 ## Fallback classified artifacts requiring review
 
@@ -552,9 +543,6 @@ Fallback classifications come from broad catch-all rules (low confidence). High-
 
 | Path | Layer | Kind | Authority | Risk | Matched pattern |
 | ---- | ----- | ---- | --------- | ---- | --------------- |
-| `decisions/benchmark/README.md` | governance | decision_record | decision_record | high | `decisions/**` |
-| `decisions/export/README.md` | governance | decision_record | decision_record | high | `decisions/**` |
-| `decisions/policy/README.md` | governance | decision_record | decision_record | high | `decisions/**` |
 | `tests/fixtures/claim_evidence/invalid/bad-schema-version.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence/invalid/missing-run-id.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
@@ -572,6 +560,9 @@ Fallback classifications come from broad catch-all rules (low confidence). High-
 | `tests/fixtures/claim_evidence_semantic/invalid/pass-with-external-unverified-only.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence_semantic/invalid/pass-with-missing-evidence.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/repo-local-path-escape.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/claim_evidence_semantic/invalid/testcount-pass-without-test-output.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 
 ## Generated artifacts cross-check
 

@@ -740,6 +740,22 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "navigation_index",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "decisions/README.md"
+      ],
+      "origin": "handcrafted",
+      "path": "decisions/README.md",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -754,16 +770,16 @@
       "status": "classified"
     },
     {
-      "authority": "decision_record",
-      "catchall_match": true,
+      "authority": "navigation_surface",
+      "catchall_match": false,
       "enforcement": [
         "review_required"
       ],
-      "kind": "decision_record",
+      "kind": "navigation_index",
       "layer": "governance",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "decisions/**"
+        "decisions/*/README.md"
       ],
       "origin": "handcrafted",
       "path": "decisions/benchmark/README.md",
@@ -784,16 +800,16 @@
       "status": "classified"
     },
     {
-      "authority": "decision_record",
-      "catchall_match": true,
+      "authority": "navigation_surface",
+      "catchall_match": false,
       "enforcement": [
         "review_required"
       ],
-      "kind": "decision_record",
+      "kind": "navigation_index",
       "layer": "governance",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "decisions/**"
+        "decisions/*/README.md"
       ],
       "origin": "handcrafted",
       "path": "decisions/export/README.md",
@@ -814,16 +830,16 @@
       "status": "classified"
     },
     {
-      "authority": "decision_record",
-      "catchall_match": true,
+      "authority": "navigation_surface",
+      "catchall_match": false,
       "enforcement": [
         "review_required"
       ],
-      "kind": "decision_record",
+      "kind": "navigation_index",
       "layer": "governance",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "decisions/**"
+        "decisions/*/README.md"
       ],
       "origin": "handcrafted",
       "path": "decisions/policy/README.md",
@@ -13503,9 +13519,6 @@
   ],
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
-    "decisions/benchmark/README.md",
-    "decisions/export/README.md",
-    "decisions/policy/README.md",
     "docs/evaluations/agent-skill-file-fruitfulness.md",
     "docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md",
     "docs/evaluations/rrg03-remediation-strategy-comparison.md",
@@ -13835,7 +13848,6 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "decision_record": 3,
       "historical_record": 284,
       "navigation_surface": 7,
       "test_expectation": 35
@@ -13843,17 +13855,15 @@
     "by_layer": {
       "docs": 7,
       "experiment": 284,
-      "governance": 3,
       "test": 35
     },
     "by_matched_pattern": {
-      "decisions/**": 3,
       "docs/**": 7,
       "experiments/**": 21,
       "experiments/*/artifacts/**": 263,
       "tests/fixtures/**": 35
     },
-    "high_risk_count": 38,
+    "high_risk_count": 35,
     "residual_cluster_views": {
       "risk_first": [
         {
@@ -13881,19 +13891,6 @@
             "tests/fixtures/pr_scope/valid": 5
           },
           "total": 35
-        },
-        {
-          "high_risk_count": 3,
-          "matched_pattern": "decisions/**",
-          "top_basenames": {
-            "README.md": 3
-          },
-          "top_parent_dirs": {
-            "decisions/benchmark": 1,
-            "decisions/export": 1,
-            "decisions/policy": 1
-          },
-          "total": 3
         },
         {
           "high_risk_count": 0,
@@ -14066,19 +14063,6 @@
             "docs/syntheses": 1
           },
           "total": 7
-        },
-        {
-          "high_risk_count": 3,
-          "matched_pattern": "decisions/**",
-          "top_basenames": {
-            "README.md": 3
-          },
-          "top_parent_dirs": {
-            "decisions/benchmark": 1,
-            "decisions/export": 1,
-            "decisions/policy": 1
-          },
-          "total": 3
         }
       ]
     },
@@ -14108,19 +14092,6 @@
           "tests/fixtures/pr_scope/valid": 5
         },
         "total": 35
-      },
-      {
-        "high_risk_count": 3,
-        "matched_pattern": "decisions/**",
-        "top_basenames": {
-          "README.md": 3
-        },
-        "top_parent_dirs": {
-          "decisions/benchmark": 1,
-          "decisions/export": 1,
-          "decisions/policy": 1
-        },
-        "total": 3
       },
       {
         "high_risk_count": 0,
@@ -14300,9 +14271,6 @@
     "agent-policy.yaml",
     "contracts/docmeta.schema.json",
     "contracts/system_decision.schema.json",
-    "decisions/benchmark/README.md",
-    "decisions/export/README.md",
-    "decisions/policy/README.md",
     "decisions/process/2026-04-30-rrg03-remediation-boundary.yml",
     "decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml",
     "decisions/process/p5-validator-scope-boundary.yml",
@@ -14364,13 +14332,13 @@
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 21,
+      "decision_record": 18,
       "diagnostic_signal": 7,
       "evidence_log": 16,
       "generated_projection": 10,
       "historical_record": 284,
       "implementation_behavior": 9,
-      "navigation_surface": 16,
+      "navigation_surface": 20,
       "normative_contract": 16,
       "procedure_contract": 99,
       "raw_capture": 23,
@@ -14391,7 +14359,7 @@
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 233
+      "review_required": 234
     },
     "by_layer": {
       "agent": 4,
@@ -14403,23 +14371,23 @@
       "experiment": 486,
       "export": 15,
       "generated": 8,
-      "governance": 54,
+      "governance": 55,
       "test": 169
     },
     "by_lifecycle": {
       "append_only": 343,
-      "handcrafted": 427,
+      "handcrafted": 428,
       "regenerated": 18,
       "revision_with_reason": 52,
       "superseded_not_rewritten": 2
     },
-    "classified": 842,
+    "classified": 843,
     "conflict": 0,
-    "fallback_classified": 329,
-    "fallback_share": 0.39073634204275537,
+    "fallback_classified": 326,
+    "fallback_share": 0.3867141162514828,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 842,
+    "total": 843,
     "unknown": 0
   },
   "transition_risk_hints": [],

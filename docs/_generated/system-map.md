@@ -12,7 +12,7 @@
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
 | `catalog/` | 📚 Bibliothek | 11 | 10 |
 | `contracts/` | 🏛️ Governance | 3 | 1 |
-| `decisions/` | 🏛️ Governance | 12 | 3 |
+| `decisions/` | 🏛️ Governance | 13 | 4 |
 | `docs/` | 📖 Dokumentation | 42 | 33 |
 | `docs/_generated/` | ⚙️ Generiert | 9 | 6 |
 | `experiments/` | 🔬 Labor | 495 | 132 |
@@ -25,4 +25,4 @@
 | `tests/` | 📁 Root | 140 | 9 |
 | `tools/` | 🔧 Tooling | 4 | 0 |
 
-**Total:** 831 files in 17 directories
+**Total:** 832 files in 17 directories
