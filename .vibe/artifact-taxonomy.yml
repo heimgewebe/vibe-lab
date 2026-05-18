@@ -570,6 +570,24 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  # ---- decision namespace navigation (must precede decisions/** catchall) -----
+  # decisions/README.md and decisions/*/README.md are navigation surfaces, not
+  # decision records. Without these rules the broad decisions/** catchall would
+  # classify them as decision_record, which is semantically wrong.
+  - pattern: decisions/README.md
+    layer: governance
+    kind: navigation_index
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: decisions/*/README.md
+    layer: governance
+    kind: navigation_index
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: decisions/**
     layer: governance
     kind: decision_record

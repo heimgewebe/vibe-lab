@@ -105,3 +105,21 @@ Kontext aktualisiert (Teilstand, updated-Datum).
 make validate   # vorher: ✅ passed
 make validate   # nachher: ✅ passed
 ```
+
+## Post-Review-Rework (nach Copilot-/Codex-Review)
+
+Nach Review-Iterationen ergänzt:
+
+| # | Änderung | Begründung |
+|---|----------|------------|
+| R1 | `docs/index.md` Body-Links für vier Stub-Namespaces (Folder-Link → README.md-Link) | Frontmatter-Relations allein reichen nicht für menschliche Navigation |
+| R2 | `decisions/README.md` als inbound Navigation Surface für `decisions/{benchmark,export,policy}/README.md` | Echte Orphan-Lösung statt generiertem Pflaster; Decision-Stubs aus Orphan-Liste raus |
+| R3 | `docs/index.md` verlinkt `decisions/README.md` in Frontmatter und Body (neuer Abschnitt „Decisions") | Konsistenz: decisions/ war bisher in docs/index.md unsichtbar |
+| R4 | `.vibe/artifact-taxonomy.yml`: zwei Regeln für `decisions/README.md` und `decisions/*/README.md` vor dem `decisions/**`-Catchall | Verhindert Fehlklassifikation als `decision_record`; Stubs sind Navigation Surfaces |
+
+**Wirkung:** Der Artifact-Taxonomy-Generator klassifiziert `decisions/README.md`
+und `decisions/*/README.md` jetzt korrekt als `navigation_index` / `navigation_surface`
+statt als `decision_record`. Kein falsches Governance-Audit-Signal mehr.
+
+**Nicht verändert:** Keine Berührung von `AGENTS.md`, `repo.meta.yaml`, `agent-policy.yaml`.
+Alle `docs/_generated/*`-Dateien ausschließlich durch Generatoren geändert.
