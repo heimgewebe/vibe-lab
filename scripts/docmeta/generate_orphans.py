@@ -151,11 +151,16 @@ def load_orphan_policy(repo_root: Path) -> list[dict]:
     if version is not None and version != "0.1.0":
         raise ValueError(f"{POLICY_PATH}: unsupported schema_version {version!r} (expected '0.1.0')")
 
-    rules_raw = data.get("expected_orphans") or []
-    if not isinstance(rules_raw, list):
-        raise ValueError(
-            f"{POLICY_PATH}: 'expected_orphans' must be a list, got {type(rules_raw).__name__}"
-        )
+    if "expected_orphans" in data:
+        rules_raw = data["expected_orphans"]
+        if rules_raw is None:
+            raise ValueError(f"{POLICY_PATH}: 'expected_orphans' must be a list, got null")
+        if not isinstance(rules_raw, list):
+            raise ValueError(
+                f"{POLICY_PATH}: 'expected_orphans' must be a list, got {type(rules_raw).__name__}"
+            )
+    else:
+        rules_raw = []
 
     validated: list[dict] = []
     for i, rule in enumerate(rules_raw):

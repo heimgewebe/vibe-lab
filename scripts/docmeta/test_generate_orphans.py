@@ -14,8 +14,11 @@ Covers:
 - policy entry with missing reason field is rejected with ValueError
 - top-level YAML list is rejected with ValueError
 - expected_orphans as non-list is rejected with ValueError
+- expected_orphans as empty string is rejected with ValueError
+- expected_orphans as null is rejected with ValueError
 - whitespace-only reason is rejected with ValueError
 - single-star pattern does not cross path segment boundaries
+- double-star pattern matches zero, one, and multiple intermediate segments
 """
 
 from __future__ import annotations
@@ -214,6 +217,24 @@ class OrphanPolicyTests(unittest.TestCase):
             "expected_orphans:\n"
             "  - pattern: 'experiments/*/CONTEXT.md'\n"
             "    reason: '   '\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_expected_orphans_empty_string_raises_value_error(self) -> None:
+        """expected_orphans as an empty string must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans: ''\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_expected_orphans_null_raises_value_error(self) -> None:
+        """expected_orphans as null must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
         )
         with self.assertRaises(ValueError):
             self.mod.load_orphan_policy(self.repo)
