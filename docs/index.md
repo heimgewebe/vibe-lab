@@ -53,6 +53,16 @@ relations:
     target: reference/replay-trace-redaction.md
   - type: references
     target: roadmap.md
+  - type: references
+    target: onboarding/README.md
+  - type: references
+    target: rules/README.md
+  - type: references
+    target: syntheses/README.md
+  - type: references
+    target: experiments/README.md
+  - type: references
+    target: ../decisions/README.md
 ---
 
 # Vibe-Lab Dokumentation
@@ -90,15 +100,21 @@ relations:
 | ------------------------- | ------------------------------------------- |
 | [raw-vibes/](../raw-vibes/) | Rohe Ideen und Beobachtungen                |
 | [concepts/](concepts/)    | Unvalidierte Begriffe und Denkmodelle       |
-| [experiments/](experiments/) | Dokumentationsebene für Versuchsdesign   |
+| [experiments/ →](experiments/README.md) | Dokumentationsebene für Versuchsdesign (Stub-Namespace) |
 | [evaluations/](evaluations/) | Auswertungen und Bewertungen             |
-| [syntheses/](syntheses/)  | Verdichtete Erkenntnisse                    |
-| [rules/](rules/)          | Operationalisierte Regeln                   |
+| [syntheses/ →](syntheses/README.md)  | Verdichtete Erkenntnisse (Stub-Namespace)   |
+| [rules/ →](rules/README.md)          | Operationalisierte Regeln (Stub-Namespace)  |
 | [blueprints/](blueprints/) | Überführung in Praxis                      |
 | [policies/](policies/)    | Richtlinien und Policy-Dokumente            |
 | [reference/](reference/)  | Nachschlagewerke und Referenzmaterial       |
 | [playbooks/](playbooks/)  | Triage-Runbooks und operative Anleitungen   |
-| [onboarding/](onboarding/) | Einstiegsdokumentation                     |
+| [onboarding/ →](onboarding/README.md) | Einstiegsdokumentation (Stub-Namespace)    |
+
+## Decisions
+
+| Dokument | Zweck |
+| -------- | ----- |
+| [decisions/ — Navigation](../decisions/README.md) | Typisierte Decision-Namespaces (Überblick) |
 
 ## Policies (direkte Referenzen)
 

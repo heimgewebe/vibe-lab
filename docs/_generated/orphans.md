@@ -3,9 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (127 found):
+Documents not referenced by any other document via frontmatter relations (129 found):
 
 - `.vibe/intent.md`
+- `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md`
 - `experiments/2026-04-08_spec-first/CONTEXT.md`
 - `experiments/2026-04-08_spec-first/INITIAL.md`
 - `experiments/2026-04-08_spec-first/failure_modes.md`
@@ -109,6 +110,7 @@ Documents not referenced by any other document via frontmatter relations (127 fo
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/agent-output.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md`
 - `exports/copilot/constraint-before-code.md`

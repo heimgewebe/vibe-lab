@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-05-10T10:00:00Z
+Latest Evidence Timestamp: 2026-05-13T13:26:59Z
 
 ## Gate Snapshot
 
-- Total events: **287**
+- Total events: **292**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **15**
 
@@ -18,7 +18,7 @@ Latest Evidence Timestamp: 2026-05-10T10:00:00Z
 | decision | 18 |
 | measurement | 133 |
 | observation | 107 |
-| run | 29 |
+| run | 34 |
 
 ## Metric Aggregates
 
@@ -106,6 +106,7 @@ Latest Evidence Timestamp: 2026-05-10T10:00:00Z
 | incremental-input4 | 1 | 0 | - | - | - |
 | incremental-input5 | 1 | 0 | - | - | - |
 | incremental-tradeoff | 1 | 0 | - | - | - |
+| independent_auditor_validation_preparation_recorded | 1 | 0 | - | - | - |
 | independent_changes_control | 1 | 1 | 0 | 0 | 0 |
 | independent_changes_treatment | 1 | 1 | 0 | 0 | 0 |
 | instrumentation_started | 1 | 1 | 1 | 1 | 1 |
@@ -117,6 +118,8 @@ Latest Evidence Timestamp: 2026-05-10T10:00:00Z
 | make_validate | 1 | 0 | - | - | - |
 | manual_regen_steps | 6 | 5 | 0 | 2 | 1 |
 | measurement_object_alignment | 1 | 1 | 1 | 1 | 1 |
+| outcome_evidence_negative_case_recorded | 1 | 0 | - | - | - |
+| outcome_evidence_pilot_recorded | 1 | 0 | - | - | - |
 | patch_size | 1 | 1 | 7 | 7 | 7 |
 | phase0-setup | 1 | 0 | - | - | - |
 | phase1_execution_run | 1 | 0 | - | - | - |
@@ -167,6 +170,7 @@ Latest Evidence Timestamp: 2026-05-10T10:00:00Z
 | rework_test_isolation | 1 | 0 | - | - | - |
 | rrg01_rrg02_cross_diagnosis | 1 | 0 | - | - | - |
 | run_002_availability | 1 | 0 | - | - | - |
+| run_010_post_audit_reconciliation_recorded | 1 | 0 | - | - | - |
 | run_artifacts_written | 1 | 0 | - | - | - |
 | run_started | 2 | 2 | 1 | 1 | 1 |
 | scaffold_created | 1 | 1 | 1 | 1 | 1 |
@@ -198,6 +202,7 @@ Latest Evidence Timestamp: 2026-05-10T10:00:00Z
 | task_abort_rate_control | 1 | 1 | 1 | 1 | 1 |
 | task_abort_rate_treatment | 1 | 1 | 1 | 1 | 1 |
 | task_complexity_classification | 1 | 1 | 2 | 2 | 2 |
+| task_diversity_probe_recorded | 1 | 0 | - | - | - |
 | task_validity_check_completed | 1 | 1 | 1 | 1 | 1 |
 | task_validity_locator_proof_completed | 1 | 1 | 1 | 1 | 1 |
 | test_cases_generated | 1 | 1 | 0 | 0 | 0 |

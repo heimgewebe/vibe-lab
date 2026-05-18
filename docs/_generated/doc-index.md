@@ -25,6 +25,10 @@
 | `catalog/workflows/causal-control-study.md` | Kausale Kontrollstudie | adopted | — |
 | `catalog/workflows/spec-first-api-generation.md` | Spec-First API-Generierung | adopted | — |
 | `contracts/command-semantics.md` | Command Semantics (v0.1) | active | canonical |
+| `decisions/README.md` | Decisions — Navigation | active | navigation |
+| `decisions/benchmark/README.md` | Decisions/Benchmark (Stub-Namespace) | active | navigation |
+| `decisions/export/README.md` | Decisions/Export (Stub-Namespace) | active | navigation |
+| `decisions/policy/README.md` | Decisions/Policy (Stub-Namespace) | active | navigation |
 | `docs/blueprints/blueprint-agent-operability-phase-1c.md` | Blueprint — Phase 1c: Systemverankerung des Agent-Operability-Kerns | active | exploratory |
 | `docs/blueprints/blueprint-agent-operability.md` | Blueprint — Minimaler Agent-Operability-Kern | active | exploratory |
 | `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` | Blueprint — Agent/Skill Minimal Layer v0.1 | draft | exploratory |
@@ -36,10 +40,12 @@
 | `docs/evaluations/agent-skill-file-fruitfulness.md` | Agent/Skill File Fruitfulness | draft | diagnosis |
 | `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` | Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten | draft | operative |
 | `docs/evaluations/rrg03-remediation-strategy-comparison.md` | RRG-03 Remediation Strategy Comparison with RRG-01/RRG-02 Cross-Check | draft | operative |
+| `docs/experiments/README.md` | Docs/Experiments (Stub-Namespace) | active | navigation |
 | `docs/foundations/repo-plan.md` | Repository-Plan | active | foundational |
 | `docs/foundations/vision.md` | Systemvision | active | foundational |
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
+| `docs/onboarding/README.md` | Onboarding (Stub-Namespace) | active | navigation |
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
 | `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` | Evidence-Control-Plane — Diagnose nach Merge PR #189 | draft | diagnosis |
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
@@ -54,6 +60,8 @@
 | `docs/reference/manifest-schema.md` | Referenz: Manifest-Schema-Semantik | active | operative |
 | `docs/reference/replay-trace-redaction.md` | Referenz: Replay-Trace-Redaction | active | operative |
 | `docs/roadmap.md` | Roadmap — Koordination offener Arbeitsstränge | active | navigation |
+| `docs/rules/README.md` | Rules (Stub-Namespace) | active | navigation |
+| `docs/syntheses/README.md` | Syntheses (Stub-Namespace) | active | navigation |
 | `experiments/2026-04-08_spec-first/CONTEXT.md` | Spec-First Vibe-Coding — Experiment-Kontext | adopted | operative |
 | `experiments/2026-04-08_spec-first/INITIAL.md` | Spec-First Vibe-Coding — Initiale Situation | adopted | operative |
 | `experiments/2026-04-08_spec-first/failure_modes.md` | Failure Modes — Spec-First Vibe-Coding | adopted | operative |

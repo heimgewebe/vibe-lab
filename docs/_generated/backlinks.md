@@ -28,6 +28,7 @@
 
 ## `.vibe/review-rework-artifact.contract.md`
 
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `CONTRIBUTING.md`
@@ -102,6 +103,22 @@
 - ← `experiments/2026-04-23_agent-failure-surface/results/phase5-adversarial-agent-simulation.md` (references)
 - ← `experiments/2026-04-23_agent-failure-surface/results/result.md` (references)
 
+## `decisions/README.md`
+
+- ← `docs/index.md` (references)
+
+## `decisions/benchmark/README.md`
+
+- ← `decisions/README.md` (references)
+
+## `decisions/export/README.md`
+
+- ← `decisions/README.md` (references)
+
+## `decisions/policy/README.md`
+
+- ← `decisions/README.md` (references)
+
 ## `decisions/process/2026-04-30-rrg03-remediation-boundary.yml`
 
 - ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
@@ -151,6 +168,7 @@
 ## `docs/blueprints/blueprint-evidence-control-plane-v1.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (derived_from)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
@@ -196,11 +214,23 @@
 - ← `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` (references)
 - ← `docs/roadmap.md` (references)
 
+## `docs/experiments/README.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/foundations/repo-plan.md`
 
+- ← `decisions/README.md` (references)
+- ← `decisions/benchmark/README.md` (references)
+- ← `decisions/export/README.md` (references)
+- ← `decisions/policy/README.md` (references)
+- ← `docs/experiments/README.md` (references)
 - ← `docs/masterplan.md` (derived_from)
+- ← `docs/onboarding/README.md` (references)
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
 - ← `docs/roadmap.md` (references)
+- ← `docs/rules/README.md` (references)
+- ← `docs/syntheses/README.md` (references)
 
 ## `docs/foundations/vision.md`
 
@@ -217,6 +247,10 @@
 - ← `docs/concepts/execution-bound-epistemics.md` (informs)
 - ← `docs/roadmap.md` (references)
 
+## `docs/onboarding/README.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/playbooks/build-reliable-prompt.md`
 
 - ← `docs/index.md` (references)
@@ -224,6 +258,7 @@
 ## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
@@ -283,6 +318,15 @@
 - ← `docs/index.md` (references)
 
 ## `docs/roadmap.md`
+
+- ← `docs/index.md` (references)
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
+
+## `docs/rules/README.md`
+
+- ← `docs/index.md` (references)
+
+## `docs/syntheses/README.md`
 
 - ← `docs/index.md` (references)
 
@@ -479,11 +523,13 @@
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
 
 - ← `.vibe/review-rework-artifact.contract.md` (references)
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`
 
 - ← `.vibe/review-rework-artifact.contract.md` (references)
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
@@ -498,6 +544,7 @@
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
+- ← `docs/experiments/README.md` (references)
 
 ## `instruction-blocks/constraint-before-code.md`
 
@@ -552,11 +599,20 @@
 ## `schemas/review-events.v1.schema.json`
 
 - ← `.vibe/review-rework-artifact.contract.md` (references)
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 
 ## `schemas/run_meta.schema.json`
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` (references)
+
+## `scripts/docmeta/validate_claim_evidence.py`
+
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
+
+## `scripts/docmeta/validate_run_bundle.py`
+
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 
 ## `tests/fixtures/agent_commands`
 
