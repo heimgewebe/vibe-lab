@@ -1,3 +1,13 @@
+---
+title: "Decisions/Export (Stub-Namespace)"
+status: active
+canonicality: navigation
+updated: "2026-05-18"
+relations:
+  - type: references
+    target: ../../docs/foundations/repo-plan.md
+---
+
 # Decisions / Export — Stub-Namespace
 
 Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.

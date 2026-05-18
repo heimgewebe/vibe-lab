@@ -11,7 +11,7 @@ Das Repository ist ein exekutierbarer Erkenntnisraum. Es erfasst Vibe‑Coding�
 
 Die Vision „Sammlung → Erprobung → Validierung → Kreation“ wird als Pipeline mit asymmetrischer Rückkopplung umgesetzt. Nichts bleibt „nur Idee“, aber nichts wird unvalidiert zur „Best Practice“ erklärt.
 
-**Teilstand 2026-05-18:** Der minimale `system_decision`-Kern ist umgesetzt, ein decision-gated Metrics-Pilot ist im Standard-Generate-Pfad verankert, und der Guard-/Validator-Stack ist repo-operativ (~30 Validatoren, alle mit Regressionstests). Phase A/B vollständig, Phase C zu ~70% umgesetzt (offen: Staleness — durch `system/2026-04-23-catalog-staleness-dormant.yml` bewusst dormant, Weak-Links/Knowledge-Gaps-Generatoren, Benchmark-Challenge-Versionierung, GitHub-Rulesets). Phase D bewusst zurückgehalten. Stub-Zonen sind seit 2026-05-18 mit Stub-READMEs als „intentionally empty" markiert (Wirkung: Transparenz, kein Skelett-Wachstum).
+**Teilstand 2026-05-18:** Der minimale `system_decision`-Kern ist umgesetzt, ein decision-gated Metrics-Pilot ist im Standard-Generate-Pfad verankert, und der Guard-/Validator-Stack ist repo-operativ (~30 Validatoren, alle mit Regressionstests). Phase A/B vollständig, Phase C in wesentlichen Teilen umgesetzt (offen: Staleness — durch `system/2026-04-23-catalog-staleness-dormant.yml` bewusst dormant, Weak-Links/Knowledge-Gaps-Generatoren, Benchmark-Challenge-Versionierung, GitHub-Rulesets). Phase D bewusst zurückgehalten. Stub-Zonen sind seit 2026-05-18 mit Stub-READMEs als `intentionally empty` Namespaces markiert (Wirkung: Transparenz, kein Skelett-Wachstum).
 
 ### Epistemische Zustände und Repo-Mechanik
 Das System trennt strikt zwischen Wissensreife (epistemischen Zuständen) und dem operativen Status.
