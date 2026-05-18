@@ -12,6 +12,10 @@ Covers:
 - unmatched orphan stays in unexpected
 - policy entry with empty reason is rejected with ValueError
 - policy entry with missing reason field is rejected with ValueError
+- top-level YAML list is rejected with ValueError
+- expected_orphans as non-list is rejected with ValueError
+- whitespace-only reason is rejected with ValueError
+- single-star pattern does not cross path segment boundaries
 """
 
 from __future__ import annotations
@@ -185,6 +189,78 @@ class OrphanPolicyTests(unittest.TestCase):
         """When .vibe/orphan-policy.yml does not exist, rules list is empty."""
         rules = self.mod.load_orphan_policy(self.repo)
         self.assertEqual(rules, [])
+
+    def test_toplevel_list_raises_value_error(self) -> None:
+        """A policy file whose top-level is a YAML list must be rejected."""
+        self._write_policy("- pattern: foo\n  reason: bar\n")
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_expected_orphans_not_a_list_raises_value_error(self) -> None:
+        """expected_orphans must be a list; a mapping or scalar must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  pattern: 'experiments/*/CONTEXT.md'\n"
+            "  reason: 'some_reason'\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_whitespace_only_reason_raises_value_error(self) -> None:
+        """A reason that is only whitespace must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  - pattern: 'experiments/*/CONTEXT.md'\n"
+            "    reason: '   '\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_single_star_does_not_cross_path_segments(self) -> None:
+        """'experiments/*/CONTEXT.md' matches one level but not two."""
+        rules = [{"pattern": "experiments/*/CONTEXT.md", "reason": "test_reason"}]
+
+        _, expected_one = self.mod.classify_orphans(
+            ["experiments/run-001/CONTEXT.md"], rules
+        )
+        self.assertIn(
+            "experiments/run-001/CONTEXT.md",
+            [p for p, _ in expected_one],
+            "single-level path must match experiments/*/CONTEXT.md",
+        )
+
+        unexpected_two, _ = self.mod.classify_orphans(
+            ["experiments/a/b/CONTEXT.md"], rules
+        )
+        self.assertIn(
+            "experiments/a/b/CONTEXT.md",
+            unexpected_two,
+            "two-level path must NOT match experiments/*/CONTEXT.md",
+        )
+
+    def test_double_star_matches_multiple_segments(self) -> None:
+        """'exports/**/*.md' matches both single-level and multi-level paths."""
+        rules = [{"pattern": "exports/**/*.md", "reason": "generated_export_surface"}]
+
+        _, expected_shallow = self.mod.classify_orphans(
+            ["exports/copilot/spec-first.md"], rules
+        )
+        self.assertIn(
+            "exports/copilot/spec-first.md",
+            [p for p, _ in expected_shallow],
+            "single-level export path must match exports/**/*.md",
+        )
+
+        _, expected_deep = self.mod.classify_orphans(
+            ["exports/a/b/c.md"], rules
+        )
+        self.assertIn(
+            "exports/a/b/c.md",
+            [p for p, _ in expected_deep],
+            "multi-level export path must match exports/**/*.md",
+        )
 
 
 if __name__ == "__main__":

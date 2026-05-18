@@ -7,9 +7,9 @@ Identifiziert Markdown-Dateien, die von keiner anderen Datei
 Ausgabe: docs/_generated/orphans.md
 """
 
-import fnmatch
+import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
@@ -83,11 +83,47 @@ def collect_unreferenced(repo_root: Path) -> set[str]:
     return all_docs - referenced - ROOT_FILES
 
 
+def _path_matches(path: str, pattern: str) -> bool:
+    """Match a POSIX repo path against a glob pattern with segment-aware semantics.
+
+    For patterns without '**': delegates to PurePosixPath.match(), where '*'
+    matches exactly one path segment (does not cross '/').
+
+    For patterns with '**': translates to a regex where '**' matches zero or
+    more path segments and '*' matches any single non-'/' sequence.
+    This handles Python 3.11 where PurePosixPath.match() does not support '**'.
+    """
+    if "**" not in pattern:
+        return PurePosixPath(path).match(pattern)
+
+    i = 0
+    regex = "^"
+    while i < len(pattern):
+        if pattern[i: i + 2] == "**":
+            regex += ".*"
+            i += 2
+            if i < len(pattern) and pattern[i] == "/":
+                regex += "/"
+                i += 1
+        elif pattern[i] == "*":
+            regex += "[^/]*"
+            i += 1
+        elif pattern[i] == ".":
+            regex += r"\."
+            i += 1
+        else:
+            regex += re.escape(pattern[i])
+            i += 1
+    regex += "$"
+    return bool(re.match(regex, path))
+
+
 def load_orphan_policy(repo_root: Path) -> list[dict]:
     """Load expected-orphan rules from .vibe/orphan-policy.yml.
 
     Returns an empty list when the policy file does not exist.
-    Raises ValueError on invalid entries (missing or empty pattern/reason).
+    Raises ValueError when the structure is invalid or any entry has a
+    missing, empty, or whitespace-only pattern/reason.
     """
     policy_file = repo_root / POLICY_PATH
     if not policy_file.exists():
@@ -97,8 +133,21 @@ def load_orphan_policy(repo_root: Path) -> list[dict]:
     if _yaml is None:
         raise RuntimeError(f"pyyaml is required to load {POLICY_PATH}")
 
-    data = _yaml.safe_load(text) or {}
-    rules_raw = data.get("expected_orphans", []) or []
+    data = _yaml.safe_load(text)
+    if data is None:
+        data = {}
+    if not isinstance(data, dict):
+        raise ValueError(f"{POLICY_PATH}: top-level must be a YAML mapping, got {type(data).__name__}")
+
+    version = data.get("schema_version")
+    if version is not None and version != "0.1.0":
+        raise ValueError(f"{POLICY_PATH}: unsupported schema_version {version!r} (expected '0.1.0')")
+
+    rules_raw = data.get("expected_orphans") or []
+    if not isinstance(rules_raw, list):
+        raise ValueError(
+            f"{POLICY_PATH}: 'expected_orphans' must be a list, got {type(rules_raw).__name__}"
+        )
 
     validated: list[dict] = []
     for i, rule in enumerate(rules_raw):
@@ -106,11 +155,11 @@ def load_orphan_policy(repo_root: Path) -> list[dict]:
             raise ValueError(f"{POLICY_PATH}: entry {i} is not a mapping")
         pattern = rule.get("pattern", "")
         reason = rule.get("reason", "")
-        if not isinstance(pattern, str) or not pattern:
+        if not isinstance(pattern, str) or not pattern.strip():
             raise ValueError(f"{POLICY_PATH}: entry {i} missing or empty 'pattern'")
-        if not isinstance(reason, str) or not reason:
+        if not isinstance(reason, str) or not reason.strip():
             raise ValueError(f"{POLICY_PATH}: entry {i} missing or empty 'reason'")
-        validated.append({"pattern": pattern, "reason": reason})
+        validated.append({"pattern": pattern.strip(), "reason": reason.strip()})
 
     return validated
 
@@ -129,7 +178,7 @@ def classify_orphans(
     for path in sorted(orphans):
         matched_reason: str | None = None
         for rule in rules:
-            if fnmatch.fnmatch(path, rule["pattern"]):
+            if _path_matches(path, rule["pattern"]):
                 matched_reason = rule["reason"]
                 break
         if matched_reason is not None:
