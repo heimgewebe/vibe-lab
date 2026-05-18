@@ -53,6 +53,14 @@ relations:
     target: reference/replay-trace-redaction.md
   - type: references
     target: roadmap.md
+  - type: references
+    target: onboarding/README.md
+  - type: references
+    target: rules/README.md
+  - type: references
+    target: syntheses/README.md
+  - type: references
+    target: experiments/README.md
 ---
 
 # Vibe-Lab Dokumentation
