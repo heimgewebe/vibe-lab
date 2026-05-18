@@ -10,7 +10,7 @@ relations:
 
 # Rules — Stub-Namespace
 
-Dieser Ordner ist absichtlich leer.
+Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
 
 `docs/rules/` ist im Zielbaum als Ablage für **operationalisierte Regeln**
 vorgesehen (`docs/foundations/repo-plan.md` → Zielstruktur, Abschnitt `docs/rules/`).

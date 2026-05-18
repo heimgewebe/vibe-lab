@@ -12,7 +12,7 @@ relations:
 
 # Docs/Experiments — Stub-Namespace
 
-Dieser Ordner ist absichtlich leer.
+Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
 
 `docs/experiments/` ist im Zielbaum als **Dokumentationsebene für
 Versuchsdesign** vorgesehen (`docs/foundations/repo-plan.md` → Zielstruktur,

@@ -81,9 +81,12 @@ Diese Stränge sind alle bewusst menschlich gesteuert; keine Auto-Bewegung sinnv
 | 7 | `decisions/export/README.md` (neu) | trivial | Stub: verweist auf aktive Export-Logik (`.vibe/generated-artifacts.yml`) |
 | 8 | `decisions/policy/README.md` (neu) | trivial | Stub: verweist auf aktive Policies in `docs/policies/` |
 
-**Wirkung:** Wer im Repo landet, sieht jetzt für jeden leeren Stub-Ordner *warum*
-er leer ist und *womit* der intendierte Inhalt aktuell abgedeckt wird. Keine
-Code-Änderung, kein neuer Generator, keine Berührung kanonischer Steuerdokumente.
+**Wirkung:** Wer im Repo landet, sieht jetzt für jeden Stub-Namespace *warum*
+er noch keine fachlichen Artefakte enthält und *womit* der intendierte Inhalt
+aktuell abgedeckt wird. Keine Code-Änderung, kein neuer Generator.
+Keine Berührung von `AGENTS.md`, `repo.meta.yaml` oder `agent-policy.yaml`;
+`docs/foundations/repo-plan.md` wurde bewusst als `canonicality: foundational`
+Kontext aktualisiert (Teilstand, updated-Datum).
 
 ## Bewusst NICHT umgesetzt (autonome Begrenzung)
 

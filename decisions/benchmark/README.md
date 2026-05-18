@@ -1,6 +1,6 @@
 # Decisions / Benchmark — Stub-Namespace
 
-Dieser Ordner ist absichtlich leer.
+Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
 
 `decisions/benchmark/` ist Teil der **typisierten Decision-Namespaces**
 (`process/`, `system/`, `export/`, `policy/`, `benchmark/`), die im Repo-Plan

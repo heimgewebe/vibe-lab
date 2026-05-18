@@ -10,7 +10,7 @@ relations:
 
 # Onboarding — Stub-Namespace
 
-Dieser Ordner ist absichtlich leer.
+Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
 
 Onboarding-Dokumente sind im Repo-Plan als **Phase D** vorgesehen
 (`docs/foundations/repo-plan.md` → Phase D: „Playbooks & Onboarding").
