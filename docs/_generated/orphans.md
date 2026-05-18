@@ -3,35 +3,10 @@
 
 # Unreferenced Documents
 
-Documents not referenced by any other document via frontmatter relations (129 found):
+Unexpected orphans (56 found):
 
 - `.vibe/intent.md`
 - `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md`
-- `experiments/2026-04-08_spec-first/CONTEXT.md`
-- `experiments/2026-04-08_spec-first/INITIAL.md`
-- `experiments/2026-04-08_spec-first/failure_modes.md`
-- `experiments/2026-04-08_spec-first/method.md`
-- `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md`
-- `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md`
-- `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md`
-- `experiments/2026-04-11_yolo-vs-spec-first/method.md`
-- `experiments/2026-04-11_yolo-vs-spec-first/results/result.md`
-- `experiments/2026-04-12_spec-first-legacy/CONTEXT.md`
-- `experiments/2026-04-12_spec-first-legacy/INITIAL.md`
-- `experiments/2026-04-12_spec-first-legacy/failure_modes.md`
-- `experiments/2026-04-12_spec-first-legacy/method.md`
-- `experiments/2026-04-12_spec-first-legacy/results/result.md`
-- `experiments/2026-04-14_incremental-debuggability/CONTEXT.md`
-- `experiments/2026-04-14_incremental-debuggability/INITIAL.md`
-- `experiments/2026-04-14_incremental-debuggability/failure_modes.md`
-- `experiments/2026-04-14_incremental-debuggability/method.md`
-- `experiments/2026-04-14_incremental-debuggability/results/result.md`
-- `experiments/2026-04-14_incremental-refinement/CONTEXT.md`
-- `experiments/2026-04-14_incremental-refinement/INITIAL.md`
-- `experiments/2026-04-14_incremental-refinement/failure_modes.md`
-- `experiments/2026-04-14_incremental-refinement/method.md`
-- `experiments/2026-04-14_premortem-prompting/CONTEXT.md`
-- `experiments/2026-04-14_premortem-prompting/INITIAL.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`
@@ -49,61 +24,25 @@ Documents not referenced by any other document via frontmatter relations (129 fo
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-013-replication-session-b/replication_notes.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-014-exotic-injection-session-b/exotic_injection.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-015-extended-premortem/premortem.md`
-- `experiments/2026-04-14_premortem-prompting/failure_modes.md`
-- `experiments/2026-04-14_premortem-prompting/method.md`
-- `experiments/2026-04-14_premortem-prompting/results/result.md`
-- `experiments/2026-04-14_prompt-length-control/CONTEXT.md`
-- `experiments/2026-04-14_prompt-length-control/INITIAL.md`
-- `experiments/2026-04-14_prompt-length-control/failure_modes.md`
-- `experiments/2026-04-14_prompt-length-control/method.md`
-- `experiments/2026-04-14_tdd-vibe/CONTEXT.md`
-- `experiments/2026-04-14_tdd-vibe/INITIAL.md`
-- `experiments/2026-04-14_tdd-vibe/failure_modes.md`
 - `experiments/2026-04-14_tdd-vibe/followups.md`
-- `experiments/2026-04-14_tdd-vibe/method.md`
-- `experiments/2026-04-14_tdd-vibe/results/result.md`
 - `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe/README.md`
-- `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md`
-- `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md`
-- `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md`
-- `experiments/2026-04-14_upfront-structuring-replication/method.md`
-- `experiments/2026-04-14_upfront-structuring-replication/results/result.md`
-- `experiments/2026-04-14_upfront-structuring/CONTEXT.md`
-- `experiments/2026-04-14_upfront-structuring/INITIAL.md`
-- `experiments/2026-04-14_upfront-structuring/failure_modes.md`
-- `experiments/2026-04-14_upfront-structuring/method.md`
-- `experiments/2026-04-14_upfront-structuring/results/result.md`
 - `experiments/2026-04-15_agent-task-validity/AGENT_INSTRUCTION.md`
-- `experiments/2026-04-15_agent-task-validity/INITIAL.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/iteration4-reconciliation.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/review-notes-iteration4.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/review-notes.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-001-control.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/run-002-treatment.md`
 - `experiments/2026-04-15_agent-task-validity/artifacts/task-validity-check.md`
-- `experiments/2026-04-15_agent-task-validity/results/result.md`
-- `experiments/2026-04-19_generated-artifact-contract-validation/CONTEXT.md`
-- `experiments/2026-04-19_generated-artifact-contract-validation/INITIAL.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/README.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/contract-v2-reconciliation.md`
 - `experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-template.md`
-- `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md`
-- `experiments/2026-04-19_generated-artifact-contract-validation/method.md`
-- `experiments/2026-04-23_agent-failure-surface/CONTEXT.md`
-- `experiments/2026-04-23_agent-failure-surface/INITIAL.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/fixtures/before.md`
 - `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/fixtures/before.md`
-- `experiments/2026-04-23_agent-failure-surface/failure_modes.md`
-- `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md`
 - `experiments/2026-04-23_phase-1-drift-injection/artifacts/run-template.md`
-- `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md`
 - `experiments/2026-04-23_phase-1-drift-injection/fixtures/README.md`
-- `experiments/2026-04-23_phase-1-drift-injection/results/result.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/auditor-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/agent-output.md`
@@ -111,18 +50,6 @@ Documents not referenced by any other document via frontmatter relations (129 fo
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md`
-- `exports/copilot/constraint-before-code.md`
-- `exports/copilot/edge-case-enumeration.md`
-- `exports/copilot/no-vague-prompts.md`
-- `exports/copilot/spec-first.md`
-- `exports/copilot/validate-against-spec.md`
-- `exports/cursor/constraint-before-code.md`
-- `exports/cursor/edge-case-enumeration.md`
-- `exports/cursor/no-vague-prompts.md`
-- `exports/cursor/spec-first.md`
-- `exports/cursor/validate-against-spec.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
@@ -134,3 +61,79 @@ Documents not referenced by any other document via frontmatter relations (129 fo
 - `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md`
 - `tests/fixtures/experiment_structure_phase1c/valid/results/result.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
+
+Expected orphans (73 found):
+
+- `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-08_spec-first/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-08_spec-first/method.md` — experiment_bundle_method
+- `experiments/2026-04-11_yolo-vs-spec-first/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-11_yolo-vs-spec-first/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-11_yolo-vs-spec-first/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-11_yolo-vs-spec-first/method.md` — experiment_bundle_method
+- `experiments/2026-04-11_yolo-vs-spec-first/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-12_spec-first-legacy/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-12_spec-first-legacy/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-12_spec-first-legacy/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-12_spec-first-legacy/method.md` — experiment_bundle_method
+- `experiments/2026-04-12_spec-first-legacy/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-14_incremental-debuggability/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_incremental-debuggability/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_incremental-debuggability/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_incremental-debuggability/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_incremental-debuggability/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-14_incremental-refinement/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_incremental-refinement/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_incremental-refinement/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_incremental-refinement/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_premortem-prompting/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_premortem-prompting/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_premortem-prompting/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_premortem-prompting/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_premortem-prompting/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-14_prompt-length-control/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_prompt-length-control/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_prompt-length-control/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_prompt-length-control/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_tdd-vibe/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_tdd-vibe/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_tdd-vibe/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_tdd-vibe/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_tdd-vibe/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-14_upfront-structuring-replication/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_upfront-structuring-replication/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_upfront-structuring-replication/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_upfront-structuring-replication/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_upfront-structuring-replication/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-14_upfront-structuring/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-14_upfront-structuring/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-14_upfront-structuring/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-14_upfront-structuring/method.md` — experiment_bundle_method
+- `experiments/2026-04-14_upfront-structuring/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-15_agent-task-validity/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-15_agent-task-validity/results/result.md` — experiment_result_local_surface
+- `experiments/2026-04-19_generated-artifact-contract-validation/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-19_generated-artifact-contract-validation/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-19_generated-artifact-contract-validation/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-19_generated-artifact-contract-validation/method.md` — experiment_bundle_method
+- `experiments/2026-04-23_agent-failure-surface/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-04-23_agent-failure-surface/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-23_agent-failure-surface/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-04-23_phase-1-drift-injection/results/result.md` — experiment_result_local_surface
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` — experiment_bundle_method
+- `exports/copilot/constraint-before-code.md` — generated_export_surface
+- `exports/copilot/edge-case-enumeration.md` — generated_export_surface
+- `exports/copilot/no-vague-prompts.md` — generated_export_surface
+- `exports/copilot/spec-first.md` — generated_export_surface
+- `exports/copilot/validate-against-spec.md` — generated_export_surface
+- `exports/cursor/constraint-before-code.md` — generated_export_surface
+- `exports/cursor/edge-case-enumeration.md` — generated_export_surface
+- `exports/cursor/no-vague-prompts.md` — generated_export_surface
+- `exports/cursor/spec-first.md` — generated_export_surface
+- `exports/cursor/validate-against-spec.md` — generated_export_surface

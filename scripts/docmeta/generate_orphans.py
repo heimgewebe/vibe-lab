@@ -7,12 +7,20 @@ Identifiziert Markdown-Dateien, die von keiner anderen Datei
 Ausgabe: docs/_generated/orphans.md
 """
 
+import fnmatch
 import sys
 from pathlib import Path
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
 from _paths import should_skip, write_if_changed, extract_frontmatter, resolve_relation_target  # noqa: E402
+
+try:
+    import yaml as _yaml
+except ImportError:
+    _yaml = None
+
+POLICY_PATH = ".vibe/orphan-policy.yml"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = REPO_ROOT / "docs" / "_generated" / "orphans.md"
@@ -75,8 +83,73 @@ def collect_unreferenced(repo_root: Path) -> set[str]:
     return all_docs - referenced - ROOT_FILES
 
 
+def load_orphan_policy(repo_root: Path) -> list[dict]:
+    """Load expected-orphan rules from .vibe/orphan-policy.yml.
+
+    Returns an empty list when the policy file does not exist.
+    Raises ValueError on invalid entries (missing or empty pattern/reason).
+    """
+    policy_file = repo_root / POLICY_PATH
+    if not policy_file.exists():
+        return []
+
+    text = policy_file.read_text(encoding="utf-8")
+    if _yaml is None:
+        raise RuntimeError(f"pyyaml is required to load {POLICY_PATH}")
+
+    data = _yaml.safe_load(text) or {}
+    rules_raw = data.get("expected_orphans", []) or []
+
+    validated: list[dict] = []
+    for i, rule in enumerate(rules_raw):
+        if not isinstance(rule, dict):
+            raise ValueError(f"{POLICY_PATH}: entry {i} is not a mapping")
+        pattern = rule.get("pattern", "")
+        reason = rule.get("reason", "")
+        if not isinstance(pattern, str) or not pattern:
+            raise ValueError(f"{POLICY_PATH}: entry {i} missing or empty 'pattern'")
+        if not isinstance(reason, str) or not reason:
+            raise ValueError(f"{POLICY_PATH}: entry {i} missing or empty 'reason'")
+        validated.append({"pattern": pattern, "reason": reason})
+
+    return validated
+
+
+def classify_orphans(
+    orphans: list[str], rules: list[dict]
+) -> tuple[list[str], list[tuple[str, str]]]:
+    """Split orphan paths into unexpected and expected lists.
+
+    First matching rule wins. Both output lists are sorted alphabetically.
+    Returns (unexpected_paths, [(path, reason), ...]).
+    """
+    unexpected: list[str] = []
+    expected: list[tuple[str, str]] = []
+
+    for path in sorted(orphans):
+        matched_reason: str | None = None
+        for rule in rules:
+            if fnmatch.fnmatch(path, rule["pattern"]):
+                matched_reason = rule["reason"]
+                break
+        if matched_reason is not None:
+            expected.append((path, matched_reason))
+        else:
+            unexpected.append(path)
+
+    return unexpected, expected
+
+
 def main():
     orphans = sorted(collect_unreferenced(REPO_ROOT))
+
+    try:
+        rules = load_orphan_policy(REPO_ROOT)
+    except (ValueError, RuntimeError) as exc:
+        print(f"ERROR loading orphan policy: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    unexpected, expected = classify_orphans(orphans, rules)
 
     lines = [
         "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->",
@@ -84,21 +157,34 @@ def main():
         "",
         "# Unreferenced Documents",
         "",
-        f"Documents not referenced by any other document via frontmatter relations ({len(orphans)} found):",
+        f"Unexpected orphans ({len(unexpected)} found):",
         "",
     ]
 
-    if orphans:
-        for orphan in orphans:
-            lines.append(f"- `{orphan}`")
+    if unexpected:
+        for path in unexpected:
+            lines.append(f"- `{path}`")
     else:
-        lines.append("*No unreferenced documents found.*")
+        lines.append("*No unexpected unreferenced documents found.*")
+
+    lines.append("")
+    lines.append(f"Expected orphans ({len(expected)} found):")
+    lines.append("")
+
+    if expected:
+        for path, reason in expected:
+            lines.append(f"- `{path}` — {reason}")
+    else:
+        lines.append("*No expected orphans defined.*")
 
     lines.append("")
     content = "\n".join(lines)
     written = write_if_changed(OUTPUT, content)
     status_sym = "✅" if written else "✔️ (unchanged)"
-    print(f"{status_sym} Generated {OUTPUT.relative_to(REPO_ROOT)} ({len(orphans)} unreferenced)")
+    print(
+        f"{status_sym} Generated {OUTPUT.relative_to(REPO_ROOT)}"
+        f" ({len(unexpected)} unexpected, {len(expected)} expected)"
+    )
 
 
 if __name__ == "__main__":
