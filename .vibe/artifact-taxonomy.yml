@@ -166,6 +166,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: .vibe/orphan-policy.yml
+    layer: contract
+    kind: orphan_classification_policy
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [diagnostic]
+    origin: handcrafted
   - pattern: .vibe/intent.md
     layer: contract
     kind: vibe_intent

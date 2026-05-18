@@ -241,8 +241,17 @@ class OrphanPolicyTests(unittest.TestCase):
         )
 
     def test_double_star_matches_multiple_segments(self) -> None:
-        """'exports/**/*.md' matches both single-level and multi-level paths."""
+        """'exports/**/*.md' matches zero, one, and multiple intermediate segments."""
         rules = [{"pattern": "exports/**/*.md", "reason": "generated_export_surface"}]
+
+        _, expected_zero = self.mod.classify_orphans(
+            ["exports/spec-first.md"], rules
+        )
+        self.assertIn(
+            "exports/spec-first.md",
+            [p for p, _ in expected_zero],
+            "zero-intermediate-segment path must match exports/**/*.md",
+        )
 
         _, expected_shallow = self.mod.classify_orphans(
             ["exports/copilot/spec-first.md"], rules

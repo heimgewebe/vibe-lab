@@ -310,6 +310,22 @@
       "authority": "procedure_contract",
       "catchall_match": false,
       "enforcement": [
+        "diagnostic"
+      ],
+      "kind": "orphan_classification_policy",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".vibe/orphan-policy.yml"
+      ],
+      "origin": "handcrafted",
+      "path": ".vibe/orphan-policy.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
         "ci_blocking"
       ],
       "kind": "pr_scope_policy",
@@ -14340,7 +14356,7 @@
       "implementation_behavior": 9,
       "navigation_surface": 20,
       "normative_contract": 16,
-      "procedure_contract": 99,
+      "procedure_contract": 100,
       "raw_capture": 23,
       "result_interpretation": 56,
       "runtime_observation": 72,
@@ -14353,7 +14369,7 @@
       "advisory": 1,
       "best_effort": 1,
       "ci_blocking": 284,
-      "diagnostic": 1,
+      "diagnostic": 2,
       "no_manual_edit": 18,
       "no_rewrite": 343,
       "no_silent_edit": 3,
@@ -14366,7 +14382,7 @@
       "archive": 24,
       "capture": 7,
       "catalog": 12,
-      "contract": 28,
+      "contract": 29,
       "docs": 35,
       "experiment": 486,
       "export": 15,
@@ -14376,18 +14392,18 @@
     },
     "by_lifecycle": {
       "append_only": 343,
-      "handcrafted": 428,
+      "handcrafted": 429,
       "regenerated": 18,
       "revision_with_reason": 52,
       "superseded_not_rewritten": 2
     },
-    "classified": 843,
+    "classified": 844,
     "conflict": 0,
     "fallback_classified": 326,
-    "fallback_share": 0.3867141162514828,
+    "fallback_share": 0.3862559241706161,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 843,
+    "total": 844,
     "unknown": 0
   },
   "transition_risk_hints": [],

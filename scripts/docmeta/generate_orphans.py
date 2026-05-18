@@ -89,8 +89,13 @@ def _path_matches(path: str, pattern: str) -> bool:
     For patterns without '**': delegates to PurePosixPath.match(), where '*'
     matches exactly one path segment (does not cross '/').
 
-    For patterns with '**': translates to a regex where '**' matches zero or
-    more path segments and '*' matches any single non-'/' sequence.
+    For patterns with '**': translates to a regex.
+      - '**/' matches zero or more path segments, each followed by '/'.
+        e.g. 'exports/**/*.md' matches 'exports/file.md' (zero segments),
+        'exports/copilot/file.md' (one segment), and 'exports/a/b/file.md'.
+      - '**' not followed by '/' matches any remaining content.
+      - '*' matches any single non-'/' sequence.
+
     This handles Python 3.11 where PurePosixPath.match() does not support '**'.
     """
     if "**" not in pattern:
@@ -100,11 +105,14 @@ def _path_matches(path: str, pattern: str) -> bool:
     regex = "^"
     while i < len(pattern):
         if pattern[i: i + 2] == "**":
-            regex += ".*"
             i += 2
             if i < len(pattern) and pattern[i] == "/":
-                regex += "/"
+                # **/ → zero or more path segments (each ends with /)
+                regex += "(?:[^/]+/)*"
                 i += 1
+            else:
+                # ** at end or not followed by / → any remaining content
+                regex += ".*"
         elif pattern[i] == "*":
             regex += "[^/]*"
             i += 1
