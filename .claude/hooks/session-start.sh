@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # .claude/hooks/session-start.sh
-# SessionStart hook for Claude Code (Web + Desktop + CLI).
+# SessionStart hook for Claude Code sessions.
 # Surfaces the binding read order and the five core prohibitions
 # so every fresh container session starts inside the agent contract.
 #

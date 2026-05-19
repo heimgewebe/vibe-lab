@@ -66,6 +66,12 @@ ineinandergreifende Schichten:
 | [`CONVENTIONS.md`](../../CONVENTIONS.md) + `.aider.conf.yml` | Aider | Anker + Auto-Load-Liste |
 | [`.claude/settings.json`](../../.claude/settings.json) + `.claude/hooks/session-start.sh` | Claude Code SessionStart | Druckt Regelkern beim Session-Start |
 
+**Hinweis:** `.claude/settings.json` ist kein passiver Markdown-Anker,
+sondern eine aktive Claude-Code-Hook-Konfiguration. Der
+`SessionStart`-Hook führt lokal `.claude/hooks/session-start.sh` aus und
+gibt nur statischen Kontext auf stdout aus. Er ist deshalb absichtlich
+read-only und darf keine Repo-Zustände verändern.
+
 **Regel:** Alle Anker außer `AGENTS.md` sind **nicht kanonisch**. Sie
 verweisen auf AGENTS.md und dürfen den Regelinhalt zusammenfassen, aber
 nicht verändern. Wenn ein Anker veraltet und AGENTS.md widerspricht,
