@@ -881,6 +881,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: scripts/agents/hooks/*
+    layer: agent
+    kind: agent_hook_script
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: scripts/agents/hooks/*.sh
     layer: agent
     kind: agent_hook_script

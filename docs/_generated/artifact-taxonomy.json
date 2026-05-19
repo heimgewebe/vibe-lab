@@ -10544,15 +10544,15 @@
     },
     {
       "authority": "implementation_behavior",
-      "catchall_match": true,
+      "catchall_match": false,
       "enforcement": [
-        "ci_blocking"
+        "review_required"
       ],
-      "kind": "implementation_script",
-      "layer": "governance",
+      "kind": "agent_hook_script",
+      "layer": "agent",
       "lifecycle": "handcrafted",
       "matched_patterns": [
-        "scripts/**"
+        "scripts/agents/hooks/*"
       ],
       "origin": "handcrafted",
       "path": "scripts/agents/hooks/pre-commit",
@@ -14002,7 +14002,6 @@
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml",
     "experiments/_template/artifacts/README.md",
-    "scripts/agents/hooks/pre-commit",
     "tests/fixtures/claim_evidence/invalid/bad-schema-version.yml",
     "tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml",
     "tests/fixtures/claim_evidence/invalid/missing-run-id.yml",
@@ -14042,24 +14041,21 @@
   "fallback_summary": {
     "by_authority": {
       "historical_record": 284,
-      "implementation_behavior": 1,
       "navigation_surface": 7,
       "test_expectation": 35
     },
     "by_layer": {
       "docs": 7,
       "experiment": 284,
-      "governance": 1,
       "test": 35
     },
     "by_matched_pattern": {
       "docs/**": 7,
       "experiments/**": 21,
       "experiments/*/artifacts/**": 263,
-      "scripts/**": 1,
       "tests/fixtures/**": 35
     },
-    "high_risk_count": 36,
+    "high_risk_count": 35,
     "residual_cluster_views": {
       "risk_first": [
         {
@@ -14087,17 +14083,6 @@
             "tests/fixtures/pr_scope/valid": 5
           },
           "total": 35
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "scripts/**",
-          "top_basenames": {
-            "pre-commit": 1
-          },
-          "top_parent_dirs": {
-            "scripts/agents/hooks": 1
-          },
-          "total": 1
         },
         {
           "high_risk_count": 0,
@@ -14270,17 +14255,6 @@
             "docs/syntheses": 1
           },
           "total": 7
-        },
-        {
-          "high_risk_count": 1,
-          "matched_pattern": "scripts/**",
-          "top_basenames": {
-            "pre-commit": 1
-          },
-          "top_parent_dirs": {
-            "scripts/agents/hooks": 1
-          },
-          "total": 1
         }
       ]
     },
@@ -14310,17 +14284,6 @@
           "tests/fixtures/pr_scope/valid": 5
         },
         "total": 35
-      },
-      {
-        "high_risk_count": 1,
-        "matched_pattern": "scripts/**",
-        "top_basenames": {
-          "pre-commit": 1
-        },
-        "top_parent_dirs": {
-          "scripts/agents/hooks": 1
-        },
-        "total": 1
       },
       {
         "high_risk_count": 0,
@@ -14581,17 +14544,17 @@
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 287,
+      "ci_blocking": 286,
       "diagnostic": 2,
       "no_manual_edit": 18,
       "no_rewrite": 343,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 242
+      "review_required": 243
     },
     "by_layer": {
-      "agent": 12,
+      "agent": 13,
       "archive": 24,
       "capture": 7,
       "catalog": 12,
@@ -14600,7 +14563,7 @@
       "experiment": 486,
       "export": 15,
       "generated": 8,
-      "governance": 56,
+      "governance": 55,
       "test": 170
     },
     "by_lifecycle": {
@@ -14612,8 +14575,8 @@
     },
     "classified": 855,
     "conflict": 0,
-    "fallback_classified": 327,
-    "fallback_share": 0.3824561403508772,
+    "fallback_classified": 326,
+    "fallback_share": 0.38128654970760234,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
     "total": 855,
