@@ -10,4 +10,4 @@ set -eu
 
 repo_root="$(git rev-parse --show-toplevel)"
 
-python3 "${repo_root}/scripts/agents/check_agent_compliance.py" --staged --quiet
+make --no-print-directory -C "${repo_root}" agent-check-staged

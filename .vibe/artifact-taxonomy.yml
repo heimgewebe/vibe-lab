@@ -94,6 +94,48 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  - pattern: CLAUDE.md
+    layer: agent
+    kind: agent_anchor
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: GEMINI.md
+    layer: agent
+    kind: agent_anchor
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: CONVENTIONS.md
+    layer: agent
+    kind: agent_anchor
+    authority: navigation_surface
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .aider.conf.yml
+    layer: agent
+    kind: agent_tool_config
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .claude/settings.json
+    layer: agent
+    kind: agent_tool_config
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: .claude/hooks/*.sh
+    layer: agent
+    kind: agent_lifecycle_hook
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: .gitignore
     layer: governance
     kind: config
@@ -526,6 +568,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [review_required]
     origin: handcrafted
+  - pattern: docs/policies/agent-compliance.md
+    layer: docs
+    kind: agent_compliance_policy
+    authority: procedure_contract
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
   - pattern: docs/policies/*.md
     layer: docs
     kind: policy_doc
@@ -821,6 +870,35 @@ rules:
     layer: governance
     kind: implementation_script
     authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  # scripts/agents — fast agent-control-plane guard, hooks, and tests.
+  - pattern: scripts/agents/test_*.py
+    layer: test
+    kind: test_script
+    authority: test_expectation
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
+  - pattern: scripts/agents/hooks/*.sh
+    layer: agent
+    kind: agent_hook_script
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: scripts/agents/*.sh
+    layer: agent
+    kind: agent_support_script
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [review_required]
+    origin: handcrafted
+  - pattern: scripts/agents/*.py
+    layer: agent
+    kind: agent_guard_script
+    authority: procedure_contract
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted

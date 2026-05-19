@@ -3,6 +3,18 @@
 
 # Backlinks
 
+## `.aider.conf.yml`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
+## `.claude/hooks/session-start.sh`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
+## `.claude/settings.json`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
 ## `.github/agents/evidence-reconciliation-auditor.agent.md`
 
 - ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
@@ -22,22 +34,51 @@
 - ← `.vibe/review-rework-artifact.contract.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
+## `.vibe/constraints.yml`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
+## `.vibe/generated-artifacts.yml`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
 ## `.vibe/pr-scope-policy.yml`
 
 - ← `docs/policies/artifact-boundary-policy.md` (references)
+
+## `.vibe/quality-gates.yml`
+
+- ← `docs/policies/agent-compliance.md` (references)
 
 ## `.vibe/review-rework-artifact.contract.md`
 
 - ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
+## `AGENTS.md`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
+## `CLAUDE.md`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
 ## `CONTRIBUTING.md`
 
 - ← `docs/playbooks/plan-execution-checklist.md` (references)
 
+## `CONVENTIONS.md`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
+## `GEMINI.md`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
 ## `agent-policy.yaml`
 
 - ← `docs/blueprints/blueprint-agent-operability-phase-1c.md` (references)
+- ← `docs/policies/agent-compliance.md` (references)
 
 ## `catalog/anti-patterns/token-bloat-as-quality-proxy.md`
 
@@ -279,6 +320,10 @@
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
+
+## `docs/policies/agent-compliance.md`
+
+- ← `docs/index.md` (references)
 
 ## `docs/policies/artifact-boundary-policy.md`
 
@@ -605,6 +650,14 @@
 
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` (references)
+
+## `scripts/agents/check_agent_compliance.py`
+
+- ← `docs/policies/agent-compliance.md` (references)
+
+## `scripts/agents/hooks/pre-commit`
+
+- ← `docs/policies/agent-compliance.md` (references)
 
 ## `scripts/docmeta/validate_claim_evidence.py`
 

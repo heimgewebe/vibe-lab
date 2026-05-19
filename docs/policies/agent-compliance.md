@@ -16,6 +16,20 @@ relations:
     target: ../../.vibe/generated-artifacts.yml
   - type: references
     target: ../../CLAUDE.md
+  - type: references
+    target: ../../GEMINI.md
+  - type: references
+    target: ../../CONVENTIONS.md
+  - type: references
+    target: ../../.aider.conf.yml
+  - type: references
+    target: ../../.claude/settings.json
+  - type: references
+    target: ../../.claude/hooks/session-start.sh
+  - type: references
+    target: ../../scripts/agents/check_agent_compliance.py
+  - type: references
+    target: ../../scripts/agents/hooks/pre-commit
 ---
 
 # Policy — Agent Compliance
@@ -37,7 +51,10 @@ ineinandergreifende Schichten:
 2. **Lokaler Guard** — gibt 2-Sekunden-Feedback auf die zwei häufigsten
    Verstöße, bevor CI startet.
 3. **CI-Validierung** — die vollständige Gate-Pipeline in
-   `.github/workflows/validate.yml` bleibt der harte Boden.
+  `.github/workflows/validate.yml` bleibt der harte Boden. CI testet
+  den Guard selbst und ergänzt ihn um spezialisierte Drift- und
+  Contract-Checks, führt aber aktuell **keinen allgemeinen**
+  `agent-check` gegen den PR-Diff aus.
 
 ## Anker-Dateien (Tool-Auto-Load)
 
@@ -76,8 +93,8 @@ Welche Regel wird **wo** geprüft?
 
 | Regel | Lokaler Guard (~2 s) | `make validate` (~150 s) | CI |
 |-------|:---:|:---:|:---:|
-| Kanonische Steuerungsdokumente unangetastet | ✅ `make agent-check` | ✅ (indirekt über Schemas + CODEOWNERS) | ✅ CODEOWNERS-Review |
-| Generierte Artefakte nicht manuell editiert | ✅ `make agent-check` | ✅ `validate_generated_artifacts_contract.py` + `validate_export_parity.py` | ✅ + Drift-Report |
+| Kanonische Steuerungsdokumente unangetastet | ✅ `make agent-check` / `make agent-check-staged` | ⚠️ `agent-check-tests` prüfen den Guard, aber kein direkter Diff-Scan | ⚠️ kein allgemeiner `agent-check`-Diff-Scan; Review/Ownership bleibt Backstop |
+| Generierte Artefakte nicht manuell editiert | ✅ `make agent-check` / `make agent-check-staged` | ✅ `validate_generated_artifacts_contract.py` + `validate_export_parity.py` + ⚠️ `agent-check-tests` | ✅ Blocking-Artifact-Drift + spezifische Contract-Checks, aber kein allgemeiner `agent-check`-Diff-Scan |
 | Schema-Compliance (Experiment, Catalog, Decision) | — | ✅ `validate_schema.py` | ✅ |
 | Frontmatter-Relationen konsistent | — | ✅ `validate_relations.py` | ✅ |
 | Promotion-Readiness (Falsifizierbarkeit etc.) | — | ✅ Ratchet | ✅ |
@@ -91,6 +108,7 @@ Vor jedem Commit:
 
 ```bash
 make agent-check    # 2-Sekunden-Guard: kanonische + generierte Pfade
+make agent-check-staged
 make validate       # vollständige Validierung (~150 s)
 ```
 
@@ -100,9 +118,11 @@ Optional einmalig installieren (Pre-Commit-Hook):
 bash scripts/agents/install_hooks.sh
 ```
 
-Der Hook ruft `make agent-check` für gestagete Dateien auf. Er ist
-**opt-in** — CI macht dieselben Prüfungen, aber der Hook spart einen
-Round-Trip.
+Der Hook ruft `make agent-check-staged` auf. Dieses Target kapselt
+intern `scripts/agents/check_agent_compliance.py --staged --quiet`.
+Der Hook ist **opt-in**. CI testet den Guard derzeit über
+`agent-check-tests` und ergänzt ihn um spezialisierte Validatoren,
+ersetzt aber nicht dieselbe allgemeine lokale Diff-Prüfung.
 
 ## Override-Flags (nur bei legitimen Generator-Outputs)
 
@@ -117,6 +137,7 @@ python3 scripts/agents/check_agent_compliance.py --allow-generated
   Flag nicht setzen — Edits an kanonischen Steuerungsdokumenten bleiben
   immer ein Verstoß gegen
   [`.vibe/constraints.yml#canonical-sources-immutable-by-agents`](../../.vibe/constraints.yml).
+  Das Flag ist damit ein expliziter Maintainer-Override, kein Agentenpfad.
 - `--allow-generated` ist erlaubt, **wenn** der Generator gerade gelaufen
   ist (z. B. `make generate-blocking`) und die Änderung dessen Output
   ist. Wird der Guard ohne Generator-Lauf umgangen, erkennt CI den

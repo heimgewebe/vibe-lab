@@ -7,6 +7,54 @@
       "enforcement": [
         "review_required"
       ],
+      "kind": "agent_tool_config",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".aider.conf.yml"
+      ],
+      "origin": "handcrafted",
+      "path": ".aider.conf.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_lifecycle_hook",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".claude/hooks/*.sh"
+      ],
+      "origin": "handcrafted",
+      "path": ".claude/hooks/session-start.sh",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_tool_config",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".claude/settings.json"
+      ],
+      "origin": "handcrafted",
+      "path": ".claude/settings.json",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
       "kind": "config_template",
       "layer": "governance",
       "lifecycle": "handcrafted",
@@ -421,6 +469,22 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_anchor",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "CLAUDE.md"
+      ],
+      "origin": "handcrafted",
+      "path": "CLAUDE.md",
+      "status": "classified"
+    },
+    {
       "authority": "normative_contract",
       "catchall_match": false,
       "enforcement": [
@@ -434,6 +498,38 @@
       ],
       "origin": "handcrafted",
       "path": "CONTRIBUTING.md",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_anchor",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "CONVENTIONS.md"
+      ],
+      "origin": "handcrafted",
+      "path": "CONVENTIONS.md",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_anchor",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "GEMINI.md"
+      ],
+      "origin": "handcrafted",
+      "path": "GEMINI.md",
       "status": "classified"
     },
     {
@@ -1555,6 +1651,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/playbooks/reconciliation.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_compliance_policy",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/policies/agent-compliance.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/policies/agent-compliance.md",
       "status": "classified"
     },
     {
@@ -10415,6 +10527,70 @@
       "status": "classified"
     },
     {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "agent_guard_script",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/agents/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/agents/check_agent_compliance.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": true,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/agents/hooks/pre-commit",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "agent_support_script",
+      "layer": "agent",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/agents/*.sh"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/agents/install_hooks.sh",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/agents/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/agents/test_check_agent_compliance.py",
+      "status": "classified"
+    },
+    {
       "authority": "implementation_behavior",
       "catchall_match": false,
       "enforcement": [
@@ -13826,6 +14002,7 @@
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/raw-command-log.txt",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run.yml",
     "experiments/_template/artifacts/README.md",
+    "scripts/agents/hooks/pre-commit",
     "tests/fixtures/claim_evidence/invalid/bad-schema-version.yml",
     "tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml",
     "tests/fixtures/claim_evidence/invalid/missing-run-id.yml",
@@ -13865,21 +14042,24 @@
   "fallback_summary": {
     "by_authority": {
       "historical_record": 284,
+      "implementation_behavior": 1,
       "navigation_surface": 7,
       "test_expectation": 35
     },
     "by_layer": {
       "docs": 7,
       "experiment": 284,
+      "governance": 1,
       "test": 35
     },
     "by_matched_pattern": {
       "docs/**": 7,
       "experiments/**": 21,
       "experiments/*/artifacts/**": 263,
+      "scripts/**": 1,
       "tests/fixtures/**": 35
     },
-    "high_risk_count": 35,
+    "high_risk_count": 36,
     "residual_cluster_views": {
       "risk_first": [
         {
@@ -13907,6 +14087,17 @@
             "tests/fixtures/pr_scope/valid": 5
           },
           "total": 35
+        },
+        {
+          "high_risk_count": 1,
+          "matched_pattern": "scripts/**",
+          "top_basenames": {
+            "pre-commit": 1
+          },
+          "top_parent_dirs": {
+            "scripts/agents/hooks": 1
+          },
+          "total": 1
         },
         {
           "high_risk_count": 0,
@@ -14079,6 +14270,17 @@
             "docs/syntheses": 1
           },
           "total": 7
+        },
+        {
+          "high_risk_count": 1,
+          "matched_pattern": "scripts/**",
+          "top_basenames": {
+            "pre-commit": 1
+          },
+          "top_parent_dirs": {
+            "scripts/agents/hooks": 1
+          },
+          "total": 1
         }
       ]
     },
@@ -14108,6 +14310,17 @@
           "tests/fixtures/pr_scope/valid": 5
         },
         "total": 35
+      },
+      {
+        "high_risk_count": 1,
+        "matched_pattern": "scripts/**",
+        "top_basenames": {
+          "pre-commit": 1
+        },
+        "top_parent_dirs": {
+          "scripts/agents/hooks": 1
+        },
+        "total": 1
       },
       {
         "high_risk_count": 0,
@@ -14353,57 +14566,57 @@
       "evidence_log": 16,
       "generated_projection": 10,
       "historical_record": 284,
-      "implementation_behavior": 9,
-      "navigation_surface": 20,
+      "implementation_behavior": 14,
+      "navigation_surface": 23,
       "normative_contract": 16,
-      "procedure_contract": 100,
+      "procedure_contract": 102,
       "raw_capture": 23,
       "result_interpretation": 56,
       "runtime_observation": 72,
       "schema_truth": 17,
       "sovereign_source": 3,
-      "test_expectation": 169,
+      "test_expectation": 170,
       "unknown": 24
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 284,
+      "ci_blocking": 287,
       "diagnostic": 2,
       "no_manual_edit": 18,
       "no_rewrite": 343,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 234
+      "review_required": 242
     },
     "by_layer": {
-      "agent": 4,
+      "agent": 12,
       "archive": 24,
       "capture": 7,
       "catalog": 12,
       "contract": 29,
-      "docs": 35,
+      "docs": 36,
       "experiment": 486,
       "export": 15,
       "generated": 8,
-      "governance": 55,
-      "test": 169
+      "governance": 56,
+      "test": 170
     },
     "by_lifecycle": {
       "append_only": 343,
-      "handcrafted": 429,
+      "handcrafted": 440,
       "regenerated": 18,
       "revision_with_reason": 52,
       "superseded_not_rewritten": 2
     },
-    "classified": 844,
+    "classified": 855,
     "conflict": 0,
-    "fallback_classified": 326,
-    "fallback_share": 0.3862559241706161,
+    "fallback_classified": 327,
+    "fallback_share": 0.3824561403508772,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 844,
+    "total": 855,
     "unknown": 0
   },
   "transition_risk_hints": [],
