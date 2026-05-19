@@ -9,7 +9,7 @@ Ausgabe: docs/_generated/orphans.md
 
 import re
 import sys
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 
 # Gemeinsame Pfad-Logik aus _paths.py
 sys.path.insert(0, str(Path(__file__).parent))
@@ -84,40 +84,30 @@ def collect_unreferenced(repo_root: Path) -> set[str]:
 
 
 def _path_matches(path: str, pattern: str) -> bool:
-    """Match a POSIX repo path against a glob pattern with segment-aware semantics.
+    """Match a POSIX repo path against a repo-root-anchored glob pattern.
 
-    For patterns without '**': delegates to PurePosixPath.match(), where '*'
-    matches exactly one path segment (does not cross '/').
+    Always matches from the start of the repo-relative path (root-anchored via '^').
+    This prevents suffix-style false positives where 'experiments/*/CONTEXT.md'
+    could match 'tests/fixtures/experiments/run-001/CONTEXT.md'.
 
-    For patterns with '**': translates to a regex.
-      - '**/' matches zero or more path segments, each followed by '/'.
-        e.g. 'exports/**/*.md' matches 'exports/file.md' (zero segments),
-        'exports/copilot/file.md' (one segment), and 'exports/a/b/file.md'.
-      - '**' not followed by '/' matches any remaining content.
-      - '*' matches any single non-'/' sequence.
-
-    This handles Python 3.11 where PurePosixPath.match() does not support '**'.
+      - '*'   matches any sequence within a single path segment (no '/').
+      - '**/' matches zero or more path segments each followed by '/':
+              'exports/**/*.md' matches 'exports/file.md', 'exports/a/file.md',
+              and 'exports/a/b/file.md'.
+      - '**'  not followed by '/' matches any remaining content.
     """
-    if "**" not in pattern:
-        return PurePosixPath(path).match(pattern)
-
     i = 0
     regex = "^"
     while i < len(pattern):
         if pattern[i: i + 2] == "**":
             i += 2
             if i < len(pattern) and pattern[i] == "/":
-                # **/ → zero or more path segments (each ends with /)
-                regex += "(?:[^/]+/)*"
+                regex += r"(?:[^/]+/)*"
                 i += 1
             else:
-                # ** at end or not followed by / → any remaining content
-                regex += ".*"
+                regex += r".*"
         elif pattern[i] == "*":
-            regex += "[^/]*"
-            i += 1
-        elif pattern[i] == ".":
-            regex += r"\."
+            regex += r"[^/]*"
             i += 1
         else:
             regex += re.escape(pattern[i])
@@ -141,7 +131,10 @@ def load_orphan_policy(repo_root: Path) -> list[dict]:
     if _yaml is None:
         raise RuntimeError(f"pyyaml is required to load {POLICY_PATH}")
 
-    data = _yaml.safe_load(text)
+    try:
+        data = _yaml.safe_load(text)
+    except _yaml.YAMLError as exc:
+        raise ValueError(f"{POLICY_PATH}: invalid YAML: {exc}") from exc
     if data is None:
         data = {}
     if not isinstance(data, dict):
@@ -203,15 +196,13 @@ def classify_orphans(
 
 
 def main():
-    orphans = sorted(collect_unreferenced(REPO_ROOT))
-
     try:
         rules = load_orphan_policy(REPO_ROOT)
     except (ValueError, RuntimeError) as exc:
         print(f"ERROR loading orphan policy: {exc}", file=sys.stderr)
         sys.exit(1)
 
-    unexpected, expected = classify_orphans(orphans, rules)
+    unexpected, expected = classify_orphans(collect_unreferenced(REPO_ROOT), rules)
 
     lines = [
         "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->",
@@ -236,8 +227,10 @@ def main():
     if expected:
         for path, reason in expected:
             lines.append(f"- `{path}` — {reason}")
+    elif rules:
+        lines.append("*No expected unreferenced documents found.*")
     else:
-        lines.append("*No expected orphans defined.*")
+        lines.append("*No orphan policy rules are configured.*")
 
     lines.append("")
     content = "\n".join(lines)

@@ -18,7 +18,9 @@ Covers:
 - expected_orphans as null is rejected with ValueError
 - whitespace-only reason is rejected with ValueError
 - single-star pattern does not cross path segment boundaries
+- pattern matching is repo-root-anchored (no suffix-style false positives)
 - double-star pattern matches zero, one, and multiple intermediate segments
+- invalid YAML in policy file raises ValueError with 'invalid YAML' message
 """
 
 from __future__ import annotations
@@ -260,6 +262,26 @@ class OrphanPolicyTests(unittest.TestCase):
             unexpected_two,
             "two-level path must NOT match experiments/*/CONTEXT.md",
         )
+
+    def test_pattern_is_root_anchored(self) -> None:
+        """'experiments/*/CONTEXT.md' must NOT match a path that merely ends with it."""
+        rules = [{"pattern": "experiments/*/CONTEXT.md", "reason": "test_reason"}]
+
+        unexpected, _ = self.mod.classify_orphans(
+            ["tests/fixtures/experiments/run-001/CONTEXT.md"], rules
+        )
+        self.assertIn(
+            "tests/fixtures/experiments/run-001/CONTEXT.md",
+            unexpected,
+            "suffix match must NOT classify fixture paths as expected orphans",
+        )
+
+    def test_invalid_yaml_raises_value_error(self) -> None:
+        """A policy file with invalid YAML must raise ValueError mentioning 'invalid YAML'."""
+        self._write_policy("schema_version: '0.1.0'\nexpected_orphans: [\n  unclosed\n")
+        with self.assertRaises(ValueError) as ctx:
+            self.mod.load_orphan_policy(self.repo)
+        self.assertIn("invalid YAML", str(ctx.exception))
 
     def test_double_star_matches_multiple_segments(self) -> None:
         """'exports/**/*.md' matches zero, one, and multiple intermediate segments."""
