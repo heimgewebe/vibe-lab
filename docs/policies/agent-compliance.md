@@ -72,6 +72,10 @@ sondern eine aktive Claude-Code-Hook-Konfiguration. Der
 gibt nur statischen Kontext auf stdout aus. Er ist deshalb absichtlich
 read-only und darf keine Repo-Zustände verändern.
 
+Da der Hook derzeit nur statischen Kontext ausgibt, ist dies eine
+bewusste Ausnahme von der Claude-Code-Empfehlung, für statischen Kontext
+primär `CLAUDE.md` zu verwenden.
+
 **Regel:** Alle Anker außer `AGENTS.md` sind **nicht kanonisch**. Sie
 verweisen auf AGENTS.md und dürfen den Regelinhalt zusammenfassen, aber
 nicht verändern. Wenn ein Anker veraltet und AGENTS.md widerspricht,
