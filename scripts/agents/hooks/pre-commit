@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# scripts/agents/hooks/pre-commit
+# Vibe-Lab pre-commit hook: runs the fast agent compliance guard
+# against staged changes.
+#
+# Install with: bash scripts/agents/install_hooks.sh
+# Skip once with: git commit --no-verify   (only when justified)
+
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+
+python3 "${repo_root}/scripts/agents/check_agent_compliance.py" --staged --quiet

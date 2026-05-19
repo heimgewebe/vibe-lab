@@ -1,0 +1,13 @@
+# .aider.conf.yml — Aider Auto-Load Configuration
+# https://aider.chat/docs/config/aider_conf.html
+#
+# Dieser File sorgt dafür, dass Aider beim Start die kanonischen
+# Steuerungsdokumente des Repos lädt und als Read-Only-Kontext führt.
+# AGENTS.md bleibt die kanonische Wahrheitsquelle.
+
+read:
+  - AGENTS.md
+  - CONVENTIONS.md
+  - repo.meta.yaml
+  - agent-policy.yaml
+  - .vibe/constraints.yml
