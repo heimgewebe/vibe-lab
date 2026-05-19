@@ -2473,7 +2473,7 @@ class RepoLevelTests(unittest.TestCase):
         """evidence-pack claims with repo_local evidence must point to existing files."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
-        
+
         _write(
             run_dir / "run.yml",
             """
@@ -2508,7 +2508,7 @@ class RepoLevelTests(unittest.TestCase):
               effect_claim_allowed: false
             """,
         )
-        
+
         _write(
             run_dir / "evidence-pack.yml",
             """
@@ -2524,9 +2524,10 @@ class RepoLevelTests(unittest.TestCase):
                     status: "repo_local"
             """,
         )
-        
+
         errs = validate_repo(self.base)
-        self.assertTrue(any("REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND" in e for e in errs), errs)
+        matches = [e for e in errs if "REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND" in e]
+        self.assertEqual(len(matches), 1, errs)
 
     def test_evidence_pack_repo_local_evidence_escape_fails(self) -> None:
         """evidence-pack repo_local evidence paths with .. are rejected (schema regex)."""
