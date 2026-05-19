@@ -8,6 +8,19 @@ Covers:
   ``file.md``, so ``file.md`` is NOT reported as an orphan
 - pure fragment targets (``#issue``) do not count as a file reference
 - path-escape targets are silently skipped (no crash, no effect on orphan set)
+- expected orphan matched by policy rule is classified as expected with reason
+- unmatched orphan stays in unexpected
+- policy entry with empty reason is rejected with ValueError
+- policy entry with missing reason field is rejected with ValueError
+- top-level YAML list is rejected with ValueError
+- expected_orphans as non-list is rejected with ValueError
+- expected_orphans as empty string is rejected with ValueError
+- expected_orphans as null is rejected with ValueError
+- whitespace-only reason is rejected with ValueError
+- single-star pattern does not cross path segment boundaries
+- pattern matching is repo-root-anchored (no suffix-style false positives)
+- double-star pattern matches zero, one, and multiple intermediate segments
+- invalid YAML in policy file raises ValueError with 'invalid YAML' message
 """
 
 from __future__ import annotations
@@ -102,6 +115,204 @@ class GenerateOrphansTests(unittest.TestCase):
         # target.md still has no valid incoming reference → remains an orphan
         orphans = self.mod.collect_unreferenced(self.repo)
         self.assertIn("docs/target.md", orphans)
+
+
+class OrphanPolicyTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.mod = _load_module()
+        self._tmp = tempfile.TemporaryDirectory()
+        self.repo = Path(self._tmp.name)
+        (self.repo / "docs").mkdir()
+
+    def tearDown(self) -> None:
+        self._tmp.cleanup()
+
+    def _write_policy(self, content: str) -> None:
+        policy_dir = self.repo / ".vibe"
+        policy_dir.mkdir(exist_ok=True)
+        (policy_dir / "orphan-policy.yml").write_text(content, encoding="utf-8")
+
+    def test_expected_orphan_classified_with_reason(self) -> None:
+        """An orphan matched by a policy rule appears in expected, not unexpected."""
+        _write(self.repo, "experiments/run-001/CONTEXT.md", "---\ntitle: Context\n---\n")
+        _write(self.repo, "docs/other.md", "---\ntitle: Other\n---\n")
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  - pattern: 'experiments/*/CONTEXT.md'\n"
+            "    reason: 'experiment_bundle_local_context'\n"
+        )
+        rules = self.mod.load_orphan_policy(self.repo)
+        orphans = list(self.mod.collect_unreferenced(self.repo))
+        unexpected, expected = self.mod.classify_orphans(orphans, rules)
+
+        expected_paths = [p for p, _ in expected]
+        self.assertIn("experiments/run-001/CONTEXT.md", expected_paths)
+        self.assertNotIn("experiments/run-001/CONTEXT.md", unexpected)
+
+        matched_reason = next(r for p, r in expected if p == "experiments/run-001/CONTEXT.md")
+        self.assertEqual(matched_reason, "experiment_bundle_local_context")
+
+    def test_unmatched_orphan_stays_unexpected(self) -> None:
+        """An orphan that matches no policy rule remains in the unexpected list."""
+        _write(self.repo, "docs/stray.md", "---\ntitle: Stray\n---\n")
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  - pattern: 'experiments/*/CONTEXT.md'\n"
+            "    reason: 'experiment_bundle_local_context'\n"
+        )
+        rules = self.mod.load_orphan_policy(self.repo)
+        orphans = list(self.mod.collect_unreferenced(self.repo))
+        unexpected, expected = self.mod.classify_orphans(orphans, rules)
+
+        self.assertIn("docs/stray.md", unexpected)
+        self.assertNotIn("docs/stray.md", [p for p, _ in expected])
+
+    def test_empty_reason_raises_value_error(self) -> None:
+        """A policy entry with an empty reason string must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  - pattern: 'experiments/*/CONTEXT.md'\n"
+            "    reason: ''\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_missing_reason_raises_value_error(self) -> None:
+        """A policy entry without a reason field must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  - pattern: 'experiments/*/CONTEXT.md'\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_missing_policy_file_returns_empty_rules(self) -> None:
+        """When .vibe/orphan-policy.yml does not exist, rules list is empty."""
+        rules = self.mod.load_orphan_policy(self.repo)
+        self.assertEqual(rules, [])
+
+    def test_toplevel_list_raises_value_error(self) -> None:
+        """A policy file whose top-level is a YAML list must be rejected."""
+        self._write_policy("- pattern: foo\n  reason: bar\n")
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_expected_orphans_not_a_list_raises_value_error(self) -> None:
+        """expected_orphans must be a list; a mapping or scalar must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  pattern: 'experiments/*/CONTEXT.md'\n"
+            "  reason: 'some_reason'\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_whitespace_only_reason_raises_value_error(self) -> None:
+        """A reason that is only whitespace must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+            "  - pattern: 'experiments/*/CONTEXT.md'\n"
+            "    reason: '   '\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_expected_orphans_empty_string_raises_value_error(self) -> None:
+        """expected_orphans as an empty string must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans: ''\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_expected_orphans_null_raises_value_error(self) -> None:
+        """expected_orphans as null must be rejected."""
+        self._write_policy(
+            "schema_version: '0.1.0'\n"
+            "expected_orphans:\n"
+        )
+        with self.assertRaises(ValueError):
+            self.mod.load_orphan_policy(self.repo)
+
+    def test_single_star_does_not_cross_path_segments(self) -> None:
+        """'experiments/*/CONTEXT.md' matches one level but not two."""
+        rules = [{"pattern": "experiments/*/CONTEXT.md", "reason": "test_reason"}]
+
+        _, expected_one = self.mod.classify_orphans(
+            ["experiments/run-001/CONTEXT.md"], rules
+        )
+        self.assertIn(
+            "experiments/run-001/CONTEXT.md",
+            [p for p, _ in expected_one],
+            "single-level path must match experiments/*/CONTEXT.md",
+        )
+
+        unexpected_two, _ = self.mod.classify_orphans(
+            ["experiments/a/b/CONTEXT.md"], rules
+        )
+        self.assertIn(
+            "experiments/a/b/CONTEXT.md",
+            unexpected_two,
+            "two-level path must NOT match experiments/*/CONTEXT.md",
+        )
+
+    def test_pattern_is_root_anchored(self) -> None:
+        """'experiments/*/CONTEXT.md' must NOT match a path that merely ends with it."""
+        rules = [{"pattern": "experiments/*/CONTEXT.md", "reason": "test_reason"}]
+
+        unexpected, _ = self.mod.classify_orphans(
+            ["tests/fixtures/experiments/run-001/CONTEXT.md"], rules
+        )
+        self.assertIn(
+            "tests/fixtures/experiments/run-001/CONTEXT.md",
+            unexpected,
+            "suffix match must NOT classify fixture paths as expected orphans",
+        )
+
+    def test_invalid_yaml_raises_value_error(self) -> None:
+        """A policy file with invalid YAML must raise ValueError mentioning 'invalid YAML'."""
+        self._write_policy("schema_version: '0.1.0'\nexpected_orphans: [\n  unclosed\n")
+        with self.assertRaises(ValueError) as ctx:
+            self.mod.load_orphan_policy(self.repo)
+        self.assertIn("invalid YAML", str(ctx.exception))
+
+    def test_double_star_matches_multiple_segments(self) -> None:
+        """'exports/**/*.md' matches zero, one, and multiple intermediate segments."""
+        rules = [{"pattern": "exports/**/*.md", "reason": "generated_export_surface"}]
+
+        _, expected_zero = self.mod.classify_orphans(
+            ["exports/spec-first.md"], rules
+        )
+        self.assertIn(
+            "exports/spec-first.md",
+            [p for p, _ in expected_zero],
+            "zero-intermediate-segment path must match exports/**/*.md",
+        )
+
+        _, expected_shallow = self.mod.classify_orphans(
+            ["exports/copilot/spec-first.md"], rules
+        )
+        self.assertIn(
+            "exports/copilot/spec-first.md",
+            [p for p, _ in expected_shallow],
+            "single-level export path must match exports/**/*.md",
+        )
+
+        _, expected_deep = self.mod.classify_orphans(
+            ["exports/a/b/c.md"], rules
+        )
+        self.assertIn(
+            "exports/a/b/c.md",
+            [p for p, _ in expected_deep],
+            "multi-level export path must match exports/**/*.md",
+        )
 
 
 if __name__ == "__main__":
