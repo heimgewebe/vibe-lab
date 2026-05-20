@@ -209,6 +209,11 @@ bereits über `PASS_WITHOUT_STRONG_EVIDENCE`. Der Fall ist explizit über
 abgedeckt. Damit ist die gewünschte Schutzwirkung vorhanden, ohne zusätzliche
 Rule-ID-Dopplung.
 
+Belegt durch:
+- `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml` — Negativ-Fixture, erkannt als Violation.
+- Testlauf: `make validate-claim-evidence-semantic-tests` (Bestandteil von `make validate`).
+- `make validate` → EXIT_CODE=0 (2026-05-20).
+
 ---
 
 ## 4. Patch-Optionen (maximal 3, mit Risiko/Nutzen)
@@ -264,6 +269,12 @@ Beleglage im aktuellen Stand:
 **Ziel-Claims:** Formale PR-4-Checkliste (`[ ]` → `[x]`)
 
 **Validator-Gate:** Keine neuen Gates. Bestehende Gates werden über vorhandene Tests/Validierungsläufe belegt.
+Bestehende Gates wurden über folgende Läufe belegt:
+- `schemas/run-evidence-pack.v1.schema.json` vorhanden und schema-valide.
+- `tests/fixtures/claim_evidence/invalid/` enthält `missing-run-id`, `path-escape`,
+  `empty-evidence-path`, `unknown-evidence-status`, `bad-schema-version` — alle als invalid erkannt.
+- `make validate-run-evidence-pack-schema-tests` → 2 tests OK (`scripts/docmeta/test_run_evidence_pack_schema.py`).
+- `make validate` → EXIT_CODE=0.
 
 **Risiko (niedrig):** Hauptfehler wäre ein vorzeitiges Abhaken ohne Testbeleg.
 
@@ -289,8 +300,13 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 
 Für diesen Reconciliation-Stand müssen folgende Checks grün sein:
 
-- `make validate-run-evidence-pack-schema-tests`
-- `make validate-run-bundle-tests`
-- `make validate-run-bundle`
-- `make validate-relations`
-- `make validate`
+Für diesen Reconciliation-Stand wurden folgende Checks ausgeführt und waren grün
+(ausgeführt 2026-05-20, Branch `copilot/evidence-control-reconciliation`):
+
+| Check | Ergebnis |
+|-------|----------|
+| `make validate-run-evidence-pack-schema-tests` | ✅ 2 tests OK |
+| `make validate-run-bundle-tests` | ✅ 147 tests OK |
+| `make validate-run-bundle` | ✅ All run bundles consistent |
+| `make validate-relations` | ✅ All relations valid (220 files) |
+| `make validate` | ✅ Validation passed (EXIT_CODE=0) |

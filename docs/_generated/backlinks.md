@@ -7,14 +7,6 @@
 
 - ← `docs/policies/agent-compliance.md` (references)
 
-## `.claude/hooks/session-start.sh`
-
-- ← `docs/policies/agent-compliance.md` (references)
-
-## `.claude/settings.json`
-
-- ← `docs/policies/agent-compliance.md` (references)
-
 ## `.github/agents/evidence-reconciliation-auditor.agent.md`
 
 - ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
