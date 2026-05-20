@@ -26,6 +26,14 @@ notes: >
   closure. This increases audit depth but does not by itself add a replicated
   task-diversity proof.
 
+  Scope calibration:
+  (a) changed-files scope includes .claude deprecation deletes and related
+      agent-compliance reconciliation updates (docs/policies + script/test
+      touchpoints),
+  (b) generated diagnostics changed accordingly (doc-index/backlinks/orphans),
+  (c) these are treated as reconciliation/compliance support edits, not as new
+      comparable usefulness-run evidence.
+
   Comparability limits:
   (1) preparation-only run; no independent external auditor-output consumed yet,
   (2) no verdict upgrade and no additional comparable usefulness run,

@@ -24,6 +24,8 @@ relations:
     target: ../../scripts/docmeta/validate_claim_evidence.py
   - type: references
     target: ../../scripts/docmeta/validate_run_bundle.py
+  - type: references
+    target: ../../experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md
 ---
 
 # Evidence-Control-Plane — Diagnose nach Merge PR #189
@@ -211,7 +213,7 @@ Rule-ID-Dopplung.
 
 Belegt durch:
 - `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml` — Negativ-Fixture, erkannt als Violation.
-- Testlauf: `make validate-claim-evidence-semantic-tests` (Bestandteil von `make validate`).
+- Testlauf: `make validate-claim-evidence-tests` (Bestandteil von `make validate`).
 - `make validate` → EXIT_CODE=0 (2026-05-20).
 
 ---
@@ -301,7 +303,7 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 Für diesen Reconciliation-Stand müssen folgende Checks grün sein:
 
 Für diesen Reconciliation-Stand wurden folgende Checks ausgeführt und waren grün
-(ausgeführt 2026-05-20, Branch `copilot/evidence-control-reconciliation`):
+(ausgeführt 2026-05-20; Beleg: `artifacts/run-011-external-outcome-audit-prep/make-validate.txt`):
 
 | Check | Ergebnis |
 |-------|----------|

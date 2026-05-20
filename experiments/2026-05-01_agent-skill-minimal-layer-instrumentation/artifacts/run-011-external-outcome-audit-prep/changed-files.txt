@@ -1,17 +1,29 @@
 # Changed files for run-011-external-outcome-audit-prep
 # generated_at=2026-05-20
+# base_ref=origin/main
+# merge_base=5414f64df8e0b8a224fd1c051e4a1a3fc7e4eaad
+# scope_command=git diff --name-status "5414f64df8e0b8a224fd1c051e4a1a3fc7e4eaad"
 
-docs/_generated/doc-index.md
-docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md
-docs/roadmap.md
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/auditor-output.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/changed-files.txt
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/comparability.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/evidence-pack.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/make-validate.txt
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/measurement.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run_meta.json
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run.yml
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/targeted-tests.txt
-experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+D	.claude/hooks/session-start.sh
+D	.claude/settings.json
+M	docs/_generated/artifact-taxonomy.json
+M	docs/_generated/artifact-taxonomy.md
+M	docs/_generated/backlinks.md
+M	docs/_generated/doc-index.md
+M	docs/_generated/system-map.md
+M	docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md
+M	docs/policies/agent-compliance.md
+M	docs/roadmap.md
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/auditor-output.yml
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/changed-files.txt
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/comparability.yml
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/evidence-pack.yml
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/make-validate.txt
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/measurement.yml
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run.yml
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run_meta.json
+A	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/targeted-tests.txt
+M	experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+M	scripts/agents/check_agent_compliance.py
+M	scripts/docmeta/test_validate_run_bundle.py

@@ -2588,8 +2588,9 @@ class RepoLevelTests(unittest.TestCase):
         errs = validate_repo(self.base)
         # Ensure we fail on schema path validation (not on an unrelated schema error).
         schema_path_errors = [
-          e for e in errs
-          if "schema-invalid" in e and "evidence" in e and "path" in e
+            e
+            for e in errs
+            if "schema-invalid" in e and "evidence" in e and "path" in e
         ]
         self.assertTrue(schema_path_errors, errs)
 

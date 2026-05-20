@@ -8,7 +8,6 @@
 | Directory | Zone | Files | Markdown |
 | --------- | ---- | ----: | -------: |
 | `./` | 📁 Root | 12 | 6 |
-| `.claude/` | 📁 Root | 2 | 0 |
 | `.vibe/` | 🏛️ Governance | 12 | 3 |
 | `benchmarks/` | 📚 Bibliothek | 3 | 3 |
 | `catalog/` | 📚 Bibliothek | 11 | 10 |
@@ -16,7 +15,7 @@
 | `decisions/` | 🏛️ Governance | 13 | 4 |
 | `docs/` | 📖 Dokumentation | 43 | 34 |
 | `docs/_generated/` | ⚙️ Generiert | 9 | 6 |
-| `experiments/` | 🔬 Labor | 495 | 132 |
+| `experiments/` | 🔬 Labor | 505 | 133 |
 | `exports/` | ⚙️ Generiert | 10 | 10 |
 | `instruction-blocks/` | 📚 Bibliothek | 5 | 5 |
 | `prompts/` | 📚 Bibliothek | 2 | 2 |
@@ -26,4 +25,4 @@
 | `tests/` | 📁 Root | 140 | 9 |
 | `tools/` | 🔧 Tooling | 4 | 0 |
 
-**Total:** 844 files in 18 directories
+**Total:** 852 files in 17 directories

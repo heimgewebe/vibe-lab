@@ -561,6 +561,10 @@
 
 - ← `.vibe/changed-files-artifact.contract.md` (references)
 
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md`
+
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
+
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
 
 - ← `.vibe/review-rework-artifact.contract.md` (references)
