@@ -296,6 +296,10 @@
 
 - ← `docs/index.md` (references)
 
+## `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md`
+
+- ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
+
 ## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
 
 - ← `docs/index.md` (references)

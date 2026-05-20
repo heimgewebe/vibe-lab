@@ -3,10 +3,9 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (56 found):
+Unexpected orphans (55 found):
 
 - `.vibe/intent.md`
-- `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`
