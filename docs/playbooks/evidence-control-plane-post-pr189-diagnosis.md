@@ -4,7 +4,7 @@ status: draft
 canonicality: diagnosis
 created: "2026-05-16"
 triggered_by: "user-request-2026-05-16-diag-post-pr189"
-stop_criterion: "Der Option-A/B-Track setzt Check C-1 und C-2 um; Option C bleibt ein separater Reconciliation-Kandidat. Weitere Patches in diesem Diagnose-Track erfordern neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
+stop_criterion: "Der Reconciliation-Track dokumentiert C-1/C-2 als umgesetzt, klärt C-3 als durch PASS_WITHOUT_STRONG_EVIDENCE abgedeckt und schließt PR-4 dokumentarisch auf Basis bestehender Fixtures/Gates. Weitere Patches in diesem Diagnose-Track reagieren nur auf neue Belege oder neue Drift-Signale."
 relations:
   - type: references
     target: evidence-control-plane-roadmap-checklist.md
@@ -244,17 +244,17 @@ wenn `repo_local` behauptet wird.
 
 ### Option C — Reconciliation: PR-4-Checkliste mit belegtem Ist-Zustand schließen
 
-**Status:** Dokumentarisch umsetzbar, sofern die bestehenden Gates grün sind.
+**Status:** Dokumentarisch geschlossen im Reconciliation-Track.
 
 Beleglage im aktuellen Stand:
 - `schemas/run-evidence-pack.v1.schema.json` vorhanden.
 - `tests/fixtures/claim_evidence/invalid/` enthält `missing-run-id`, `path-escape`,
   `empty-evidence-path`, `unknown-evidence-status`, `bad-schema-version`.
-- `make validate-claim-evidence-tests` und `make validate-claim-evidence` laufen grün.
+- `make validate-claim-evidence-tests` und `make validate-claim-evidence` müssen grün sein.
 
 **Ziel-Claims:** Formale PR-4-Checkliste (`[ ]` → `[x]`)
 
-**Validator-Gate:** Keine neuen Gates. Bestehende Gates durch Tests abgedeckt.
+**Validator-Gate:** Keine neuen Gates. Bestehende Gates werden über vorhandene Tests/Validierungsläufe belegt.
 
 **Risiko (niedrig):** Hauptfehler wäre ein vorzeitiges Abhaken ohne Testbeleg.
 
@@ -273,3 +273,14 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 **Weiterhin offen als separater Track:**
 - CI-Global-Enforce für `review_evidence_artifact` (§2.3).
 - Neue Runs für Auditor-Unabhängigkeit und Task-Diversität.
+
+## Validation
+
+Für diesen Reconciliation-Stand müssen folgende Checks grün sein:
+
+- `make validate-claim-evidence-tests`
+- `make validate-claim-evidence`
+- `make validate-run-bundle-tests`
+- `make validate-run-bundle`
+- `make validate-relations`
+- `make validate`
