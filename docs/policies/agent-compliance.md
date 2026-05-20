@@ -23,10 +23,6 @@ relations:
   - type: references
     target: ../../.aider.conf.yml
   - type: references
-    target: ../../.claude/settings.json
-  - type: references
-    target: ../../.claude/hooks/session-start.sh
-  - type: references
     target: ../../scripts/agents/check_agent_compliance.py
   - type: references
     target: ../../scripts/agents/hooks/pre-commit
@@ -64,18 +60,6 @@ ineinandergreifende Schichten:
 | [`CLAUDE.md`](../../CLAUDE.md) | Claude Code (Web, Desktop, CLI) | Anker → AGENTS.md |
 | [`GEMINI.md`](../../GEMINI.md) | Gemini Code Assist | Anker → AGENTS.md |
 | [`CONVENTIONS.md`](../../CONVENTIONS.md) + `.aider.conf.yml` | Aider | Anker + Auto-Load-Liste |
-| [`.claude/settings.json`](../../.claude/settings.json) + `.claude/hooks/session-start.sh` | Claude Code SessionStart | Druckt Regelkern beim Session-Start |
-
-**Hinweis:** `.claude/settings.json` ist kein passiver Markdown-Anker,
-sondern eine aktive Claude-Code-Hook-Konfiguration. Der
-`SessionStart`-Hook führt lokal `.claude/hooks/session-start.sh` aus und
-gibt nur statischen Kontext auf stdout aus. Er ist deshalb absichtlich
-read-only und darf keine Repo-Zustände verändern.
-
-Da der Hook derzeit nur statischen Kontext ausgibt, ist dies eine
-bewusste Ausnahme von der Claude-Code-Empfehlung, für statischen Kontext
-primär `CLAUDE.md` zu verwenden.
-
 **Regel:** Alle Anker außer `AGENTS.md` sind **nicht kanonisch**. Sie
 verweisen auf AGENTS.md und dürfen den Regelinhalt zusammenfassen, aber
 nicht verändern. Wenn ein Anker veraltet und AGENTS.md widerspricht,
@@ -134,6 +118,12 @@ Der Hook ist **opt-in**. CI testet den Guard derzeit über
 `agent-check-tests` und ergänzt ihn um spezialisierte Validatoren,
 ersetzt aber nicht dieselbe allgemeine lokale Diff-Prüfung.
 
+> **Hinweis Generator-Diffs:** `make agent-check-staged` kann nicht
+> unterscheiden, ob eine Änderung an `docs/_generated/*`, `exports/*`
+> oder `.cursor/rules/*` vom Generator stammt oder manuell eingebracht
+> wurde. Legitime Generator-Outputs erfordern deshalb einen expliziten
+> Override (siehe unten) oder `--no-verify` beim Commit.
+
 ## Override-Flags (nur bei legitimen Generator-Outputs)
 
 Der Guard erkennt zwei Override-Flags:
@@ -152,6 +142,14 @@ python3 scripts/agents/check_agent_compliance.py --allow-generated
   ist (z. B. `make generate-blocking`) und die Änderung dessen Output
   ist. Wird der Guard ohne Generator-Lauf umgangen, erkennt CI den
   Verstoß spätestens beim Drift-Check.
+
+Legitimer Pfad für Generator-Outputs:
+
+```bash
+make generate-blocking
+python3 scripts/agents/check_agent_compliance.py --staged --allow-generated
+make validate
+```
 
 ## Verhalten bei Konflikten
 
