@@ -1,0 +1,32 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-011-external-outcome-audit-prep"
+assessed_at: "2026-05-20"
+
+compared_against:
+  - "run-007-review-rework-outcome-evidence-pilot"
+  - "run-008-negative-case-independent-audit-timing"
+  - "run-009-independent-task-diversity-validation"
+  - "run-010-independent-auditor-validation"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-011-external-outcome-audit-prep"
+
+changed_files_artifact: "artifacts/run-011-external-outcome-audit-prep/changed-files.txt"
+
+verdict: not_comparable
+
+notes: >
+  Run-011 is in the same experiment family and uses the same claim/evidence
+  discipline as runs 007-010, but it changes the audit perspective: this run
+  prepares and requests external outcome audit rather than claiming outcome
+  closure. This increases audit depth but does not by itself add a replicated
+  task-diversity proof.
+
+  Comparability limits:
+  (1) preparation-only run; no independent external auditor-output consumed yet,
+  (2) no verdict upgrade and no additional comparable usefulness run,
+  (3) task-diversity remains partially addressed (run-009) and not replicated.

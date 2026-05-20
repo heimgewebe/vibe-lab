@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-011-external-outcome-audit-prep",
+  "generated_at": "2026-05-20T00:00:00Z",
+  "executor": "copilot-coding-agent:gpt-5.3-codex",
+  "command": "python3 scripts/docmeta/test_validate_claim_evidence.py && python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_generate_orphans.py",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-011-external-outcome-audit-prep/targeted-tests.txt",
+  "provenance_level": "self_reported",
+  "notes": "Preparation run for external outcome audit request; no external independent verdict yet."
+}

@@ -187,6 +187,7 @@
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/agent-output.md` | agent-output | — | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md` | Audit Request — run-010-independent-auditor-validation | pending_external_audit | — |
+| `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md` | Audit Request — run-011-external-outcome-audit-prep | external_audit_requested | — |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` | Failure Modes — Agent/Skill Minimal Layer Instrumentation | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` | Agent/Skill Minimal Layer v0.1 — Methode | draft | operative |
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` | Cross-Run-Auswertung: Agent/Skill Minimal Layer Instrumentation | draft | operative |

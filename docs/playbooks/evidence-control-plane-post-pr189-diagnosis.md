@@ -50,6 +50,14 @@ Nicht enthalten:
 - CI-Global-Enforce für `review_evidence_artifact`.
 - Neue Runs.
 
+Ergaenzung (2026-05-20, Run-011-Reconciliation):
+- Neuer vorbereiteter Track angelegt:
+  `artifacts/run-011-external-outcome-audit-prep/`.
+- Zweck: externe Outcome-Pruefung fuer RM-002/RM-005 vorbereiten.
+- Epistemische Leerstelle explizit: externer unabhaengiger Auditor-Output fehlt.
+- Kein Upgrade von `insufficient_proof` oder gleichwertiger Nicht-PASS-Lage ohne
+  externen Input.
+
 ---
 
 ## 1. Offene Blocker — Real vs. Teilweise erledigt
@@ -274,6 +282,8 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 **Weiterhin offen als separater Track:**
 - CI-Global-Enforce für `review_evidence_artifact` (§2.3).
 - Neue Runs für Auditor-Unabhängigkeit und Task-Diversität.
+- Run-011 ist nur vorbereitet (`external_audit_requested`) und wartet auf
+  externen Auditor-Output.
 
 ## Validation
 

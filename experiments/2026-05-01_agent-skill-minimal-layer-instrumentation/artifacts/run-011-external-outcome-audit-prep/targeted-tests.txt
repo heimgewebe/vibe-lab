@@ -1,0 +1,73 @@
+$ python3 scripts/docmeta/test_validate_claim_evidence.py
+test_invalid_fixtures_exit_one_with_rule_ids (__main__.ClaimEvidenceValidatorTests) ... ok
+test_parse_error_exits_two (__main__.ClaimEvidenceValidatorTests) ... ok
+test_path_escape_fixture_fails_schema_validation (__main__.ClaimEvidenceValidatorTests) ... ok
+test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.044s
+
+OK
+EXIT_CODE=0
+
+$ python3 scripts/docmeta/test_validate_run_bundle.py
+...................................................................................................................................................
+----------------------------------------------------------------------
+Ran 147 tests in 6.989s
+
+OK
+EXIT_CODE=0
+
+$ python3 scripts/docmeta/test_generate_orphans.py
+test_fragment_target_counts_as_reference_to_file (__main__.GenerateOrphansTests)
+``target.md#section`` must count as a reference to ``target.md`` ... ok
+test_path_escape_target_does_not_affect_orphan_set (__main__.GenerateOrphansTests)
+Targets that escape the repo root must be silently dropped. ... ok
+test_plain_target_removes_file_from_orphan_set (__main__.GenerateOrphansTests)
+A file that is a plain relation target must not appear in orphans. ... ok
+test_pure_fragment_does_not_count_as_file_reference (__main__.GenerateOrphansTests)
+``#issue`` targets must not count as a reference to any file. ... ok
+test_unreferenced_file_is_orphan (__main__.GenerateOrphansTests)
+A file with no incoming references is reported as an orphan. ... ok
+test_double_star_matches_multiple_segments (__main__.OrphanPolicyTests)
+'exports/**/*.md' matches zero, one, and multiple intermediate segments. ... ok
+test_empty_reason_raises_value_error (__main__.OrphanPolicyTests)
+A policy entry with an empty reason string must be rejected. ... ok
+test_expected_orphan_classified_with_reason (__main__.OrphanPolicyTests)
+An orphan matched by a policy rule appears in expected, not unexpected. ... ok
+test_expected_orphans_empty_string_raises_value_error (__main__.OrphanPolicyTests)
+expected_orphans as an empty string must be rejected. ... ok
+test_expected_orphans_not_a_list_raises_value_error (__main__.OrphanPolicyTests)
+expected_orphans must be a list; a mapping or scalar must be rejected. ... ok
+test_expected_orphans_null_raises_value_error (__main__.OrphanPolicyTests)
+expected_orphans as null must be rejected. ... ok
+test_invalid_yaml_raises_value_error (__main__.OrphanPolicyTests)
+A policy file with invalid YAML must raise ValueError mentioning 'invalid YAML'. ... ok
+test_missing_policy_file_returns_empty_rules (__main__.OrphanPolicyTests)
+When .vibe/orphan-policy.yml does not exist, rules list is empty. ... ok
+test_missing_reason_raises_value_error (__main__.OrphanPolicyTests)
+A policy entry without a reason field must be rejected. ... ok
+test_pattern_is_root_anchored (__main__.OrphanPolicyTests)
+'experiments/*/CONTEXT.md' must NOT match a path that merely ends with it. ... ok
+test_single_star_does_not_cross_path_segments (__main__.OrphanPolicyTests)
+'experiments/*/CONTEXT.md' matches one level but not two. ... ok
+test_toplevel_list_raises_value_error (__main__.OrphanPolicyTests)
+A policy file whose top-level is a YAML list must be rejected. ... ok
+test_unmatched_orphan_stays_unexpected (__main__.OrphanPolicyTests)
+An orphan that matches no policy rule remains in the unexpected list. ... ok
+test_whitespace_only_reason_raises_value_error (__main__.OrphanPolicyTests)
+A reason that is only whitespace must be rejected. ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.031s
+
+OK
+EXIT_CODE=0
+
+$ make generate-blocking
+✔️ (unchanged) Generated docs/_generated/doc-index.md (214 documents)
+✅ Exported 5 instruction-blocks to exports/copilot/
+✅ Exported 5 instruction-blocks to exports/cursor/
+✅ Generated tool projections in exports/.
+✅ Generated blocking artifacts (doc-index, projections).
+EXIT_CODE=0
