@@ -11,7 +11,7 @@ OK
 🧪 Running artifact taxonomy generator regression tests...
 .......................................................................................................................................
 ----------------------------------------------------------------------
-Ran 135 tests in 0.165s
+Ran 135 tests in 0.189s
 
 OK
 🧪 Running artifact taxonomy contract validator regression tests...
@@ -555,7 +555,7 @@ adoption_basis:
 🧪 Running run-bundle validator regression tests...
 ...................................................................................................................................................
 ----------------------------------------------------------------------
-Ran 147 tests in 4.648s
+Ran 147 tests in 5.598s
 
 OK
 🧷 Validating experiment run bundles...
@@ -878,7 +878,7 @@ test_zero_target_is_reported_as_type_error (__main__.ValidateRelationsTests.test
 ``target: 0`` must produce a type-error, not a 'missing' diagnostic. ... ok
 
 ----------------------------------------------------------------------
-Ran 18 tests in 0.030s
+Ran 18 tests in 0.036s
 
 OK
 🧪 Running backlinks generator regression tests...
@@ -892,7 +892,7 @@ test_pure_fragment_target_is_skipped (__main__.GenerateBacklinksTests.test_pure_
 ``#issue`` targets must not produce any backlink entry. ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.016s
+Ran 4 tests in 0.018s
 
 OK
 🧪 Running orphans generator regression tests...
@@ -936,7 +936,7 @@ test_whitespace_only_reason_raises_value_error (__main__.OrphanPolicyTests.test_
 A reason that is only whitespace must be rejected. ... ok
 
 ----------------------------------------------------------------------
-Ran 19 tests in 0.028s
+Ran 19 tests in 0.035s
 
 OK
 🧠 Validating interpretation budget...
@@ -944,7 +944,7 @@ OK
 🧪 Running interpretation budget regression tests...
 .
 ----------------------------------------------------------------------
-Ran 1 test in 0.011s
+Ran 1 test in 0.012s
 
 OK
 🤝 Validating agent handoff fixtures...
@@ -965,7 +965,7 @@ OK
 🧪 Running agent handoff regression tests...
 .............
 ----------------------------------------------------------------------
-Ran 13 tests in 0.072s
+Ran 13 tests in 0.086s
 
 OK
 🤖 Validating agent command fixtures...
@@ -1003,7 +1003,7 @@ OK
 🧪 Running agent command regression tests...
 ..............
 ----------------------------------------------------------------------
-Ran 14 tests in 0.041s
+Ran 14 tests in 0.049s
 
 OK
 🔗 Validating command chain fixtures...
@@ -1033,13 +1033,13 @@ OK
 🧪 Running command chain regression tests...
 .......................................
 ----------------------------------------------------------------------
-Ran 39 tests in 0.287s
+Ran 39 tests in 0.331s
 
 OK
 🧪 Running command version policy tests...
 ........
 ----------------------------------------------------------------------
-Ran 8 tests in 0.074s
+Ran 8 tests in 0.089s
 
 OK
 🧪 Running fixture matrix audit tests...
@@ -1072,23 +1072,23 @@ OK
 🧪 Running cross-contract regression tests...
 ................
 ----------------------------------------------------------------------
-Ran 16 tests in 0.175s
+Ran 16 tests in 0.208s
 
 OK
-ERROR: fixture /tmp/tmprl0ke6h6.json: chain[0] must be a JSON object, got int
+ERROR: fixture /tmp/tmph6kq7k1k.json: chain[0] must be a JSON object, got int
 ♻️  Replay dry-run (no mutations by design)...
 # replay_minimal.py: dry-run mode (no mutations by design)
 ✅ Replay trace generator completed (non-mutation enforced by design + tests + CI).
 🧪 Running replay runner regression tests...
 ......
 ----------------------------------------------------------------------
-Ran 6 tests in 0.043s
+Ran 6 tests in 0.051s
 
 OK
 🧪 Running replay trace contract tests (v0.2)...
 ..........................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.306s
+Ran 26 tests in 0.367s
 
 OK
 🧭 Validating Phase-1c fixture corpus...
@@ -1101,7 +1101,7 @@ OK
 🧪 Running Phase-1c fixture checker regression tests...
 ....
 ----------------------------------------------------------------------
-Ran 4 tests in 0.135s
+Ran 4 tests in 0.153s
 
 OK
 📦 Validating adoption completeness...
@@ -1109,13 +1109,13 @@ OK
 🧪 Running adoption completeness regression tests...
 ......
 ----------------------------------------------------------------------
-Ran 6 tests in 0.017s
+Ran 6 tests in 0.019s
 
 OK
 🧪 Running epistemic state regression tests...
 .........
 ----------------------------------------------------------------------
-Ran 9 tests in 0.017s
+Ran 9 tests in 0.020s
 
 OK
 🔎 Validating export parity (collision / orphan / missing)...
@@ -1123,13 +1123,13 @@ OK
 🧪 Running export generator regression tests...
 ..........................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.105s
+Ran 26 tests in 0.119s
 
 OK
 🧪 Running export parity validator regression tests...
 .........................
 ----------------------------------------------------------------------
-Ran 25 tests in 0.020s
+Ran 25 tests in 0.024s
 
 OK
 🧪 Running promotion-readiness regression tests...
@@ -1241,7 +1241,7 @@ test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTest
 test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests.test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing) ... ok
 
 ----------------------------------------------------------------------
-Ran 102 tests in 0.453s
+Ran 102 tests in 0.505s
 
 OK
 🧪 Running run-evidence-pack schema regression tests...
@@ -1249,7 +1249,7 @@ test_invalid_fixtures (__main__.RunEvidencePackSchemaTests.test_invalid_fixtures
 test_valid_fixtures (__main__.RunEvidencePackSchemaTests.test_valid_fixtures) ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 0.008s
+Ran 2 tests in 0.010s
 
 OK
 🧪 Running claim-evidence semantic validator tests...
@@ -1259,7 +1259,7 @@ test_path_escape_fixture_fails_schema_validation (__main__.ClaimEvidenceValidato
 test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests.test_valid_fixtures_exit_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 1.550s
+Ran 4 tests in 1.568s
 
 OK
 🔎 Validating claim-evidence semantic rules...
@@ -1281,7 +1281,7 @@ test_valid_fixtures_all_together_exit_zero (__main__.ValidFixtureTests.test_vali
 test_valid_fixtures_individually_exit_zero (__main__.ValidFixtureTests.test_valid_fixtures_individually_exit_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 1.141s
+Ran 15 tests in 1.173s
 
 OK
 🔎 Validating PR scope / artifact boundary...
@@ -1313,7 +1313,7 @@ test_canonical_and_generated_combine (__main__.RunChecksTests.test_canonical_and
 test_no_violations_for_clean_paths (__main__.RunChecksTests.test_no_violations_for_clean_paths) ... ok
 
 ----------------------------------------------------------------------
-Ran 25 tests in 0.118s
+Ran 25 tests in 0.138s
 
 OK
 make[1]: Entering directory '/home/runner/work/vibe-lab/vibe-lab'

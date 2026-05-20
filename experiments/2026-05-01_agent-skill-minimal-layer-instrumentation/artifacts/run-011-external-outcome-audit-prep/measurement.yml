@@ -17,8 +17,9 @@ metrics:
     value: 0
     evidence_status: "repo_local"
     notes: >
-      Scope limited to run-011 audit-preparation artifacts and minimal
-      documentation reconciliation.
+      Scope limited to run-011 audit-preparation plus reconciliation edits for
+      .claude deprecation follow-through (agent-compliance policy/doc updates,
+      check_agent_compliance script touchpoint, and run-bundle test touchpoint).
 
   unsupported_claim_count:
     value: 1
