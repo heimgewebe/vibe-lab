@@ -8,6 +8,8 @@ relations:
   - type: references
     target: reconciliation.md
   - type: references
+    target: evidence-control-plane-post-pr189-diagnosis.md
+  - type: references
     target: ../policies/interpretation-budget.md
   - type: references
     target: ../blueprints/blueprint-agent-operability.md
@@ -27,6 +29,9 @@ Diese Datei:
 - trifft keinen Wirksamkeitsclaim zur Agent/Skill-Schicht.
 - gilt erst durch separate validierte PRs als umgesetzt.
 - verwendet Checkboxen als geplante Umsetzungsschritte, nicht als Beleg bereits aktiver Enforcement-Regeln.
+
+Aktuelle Diagnose und Reconciliation-Status: siehe
+`evidence-control-plane-post-pr189-diagnosis.md`.
 
 ## PR 1 — Blueprint + Roadmap + Navigation Scaffold
 
@@ -64,10 +69,10 @@ Diese Datei:
 - [x] `docs/playbooks/pr-run-evidence-pack.md` erstellt.
 
 ## PR 4 — Evidence-Pack-Schema + Fixtures
-- [ ] `schemas/run-evidence-pack.v1.schema.json` erstellt.
-- [ ] Fixtures angelegt (`tests/fixtures/claim_evidence/*`).
-- [ ] Schema validiert (inkl. invalid status, fehlende `run_id`, path escape, leere Pfade).
-- [ ] Keine rot eingebundenen Mainline-Tests.
+- [x] `schemas/run-evidence-pack.v1.schema.json` erstellt.
+- [x] Fixtures angelegt (`tests/fixtures/claim_evidence/*`).
+- [x] Schema validiert (inkl. invalid status, fehlende `run_id`, path escape, leere Pfade).
+- [x] Keine rot eingebundenen Mainline-Tests.
 
 ## PR 5 — Claim-Evidence-Validator
 - [x] `scripts/docmeta/validate_claim_evidence.py` implementiert.

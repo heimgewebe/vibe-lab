@@ -4,7 +4,7 @@ status: draft
 canonicality: diagnosis
 created: "2026-05-16"
 triggered_by: "user-request-2026-05-16-diag-post-pr189"
-stop_criterion: "Der Option-A-Track setzt ausschließlich Check C-2 um; Option B/C bleiben separate Kandidaten. Weitere Patches in diesem Diagnose-Track erfordern neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
+stop_criterion: "Der Option-A/B-Track setzt Check C-1 und C-2 um; Option C bleibt ein separater Reconciliation-Kandidat. Weitere Patches in diesem Diagnose-Track erfordern neue Ziel-Dateien, Ziel-Claims und Validator-Gates."
 relations:
   - type: references
     target: evidence-control-plane-roadmap-checklist.md
@@ -28,23 +28,25 @@ relations:
 
 # Evidence-Control-Plane — Diagnose nach Merge PR #189
 
-> **Zweck dieser Datei:** Diagnose-Artefakt nach Merge PR #189; dieser PR setzt zusätzlich Option A / Check C-2 um.
+> **Zweck dieser Datei:** Diagnose-Artefakt nach Merge PR #189; der aktuelle Stand setzt Option A/B (Check C-2 + C-1) um.
 > Konsolidierung offener Qualitätsgates und Metrikblocker aus den Quellen nach Stand run-007 bis run-010.
 
 ---
 
-## 0. Status dieses PR
+## 0. Status dieses Tracks
 
-Dieser PR enthält zwei Teile:
+Der aktuelle Stand enthält:
 
 1. Diagnose nach Merge PR #189.
 2. Umsetzung von Option A / Check C-2:
-   `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in
-   `scripts/docmeta/validate_claim_evidence.py`.
+  `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in
+  `scripts/docmeta/validate_claim_evidence.py`.
+3. Umsetzung von Option B / Check C-1:
+  `timing_artifact`-Kopplung für
+  `task_completion_time_observed.evidence_status=repo_local` in
+  `scripts/docmeta/validate_run_bundle.py`.
 
 Nicht enthalten:
-- Option B / Timing-Artifact-Kopplung.
-- Option C / PR-4-Fixture-Konsolidierung.
 - CI-Global-Enforce für `review_evidence_artifact`.
 - Neue Runs.
 
@@ -69,7 +71,7 @@ Nicht enthalten:
 |---|---------|--------------|-----------------|
 | P-01 | review_friction_count / rework_count persistent null | run-007: Schema-backed contract (`.vibe/review-rework-artifact.contract.md` v0.2) + `schemas/review-events.v1.schema.json` + Validator-Kopplung in `validate_run_bundle.py` aktiv; run-007 hat **echte** `review-events.yml` mit `repo_local` Daten | Kein zweiter Run mit echten Review-Events. Einmalige Pilotierung, keine Replikation. |
 | P-02 | Negativfall / CLAIM_NOT_PROVEN | run-008: `CLAIM_NOT_PROVEN` bei partieller Unabhängigkeit dokumentiert, `timing.txt` repo-lokal archiviert | Echter FAIL (Auditor blockiert Artefakt wegen Fehler) noch nicht belegt. |
-| P-03 | Timing-Semantik | run-009: `capture_mode`, `evidence_status: self_reported`, `upgrade_path`-Notiz in `timing.txt`; run-008 enthält `timing.txt` als Timing-Artefakt | Offen bleibt der Enforcement-Blocker: Ohne `timing_artifact`-Kopplung erzwingt der Validator kein technisch belegtes `repo_local`-Timing. |
+| P-03 | Timing-Semantik | run-009: `capture_mode`, `evidence_status: self_reported`, `upgrade_path`-Notiz in `timing.txt`; run-008 enthält `timing.txt` als Timing-Artefakt | Die `repo_local`-Kopplung ist durch `timing_artifact` umgesetzt. Offen bleibt nur die methodische Vergleichbarkeit von `self_reported` Timing-Werten (kein neuer Validator-Blocker in diesem Track). |
 | P-04 | Externer Audit | run-010: different-session Audit mit `overall_verdict: PASS` für pack-001 bis pack-007 | `auditor_independence_status: PARTIAL`; gleiche Modellfamilie. Vollständige Unabhängigkeit nicht belegt. |
 | P-05 | Audit-Request-Artefakt | run-010: `audit-request.md` spezifiziert exakt Scope, Claims und Output-Pfad für externen Auditor | Der externe Auditor hat (im different-session run) nur das Package validiert, nicht den Primärprozess. Blocker formal offen. |
 
@@ -146,7 +148,8 @@ neuen Runs ohne review-events.yml), nicht nur eine Validator-Erweiterung.
 ## 3. Minimale Checks gegen falsche Belegung von Timing/Review/Rework
 
 C-2 ist umgesetzt. C-1 ist durch das `timing_artifact`-Gate in
-`validate_run_bundle.py` umgesetzt. C-3 bleibt offener Kandidat.
+`validate_run_bundle.py` umgesetzt. Der C-3-Fall ist bereits durch die
+generische Strong-Evidence-Regel (`PASS_WITHOUT_STRONG_EVIDENCE`) abgedeckt.
 
 ### Check C-1 — Timing-Artifact-Kopplung — umgesetzt
 
@@ -188,30 +191,15 @@ Geänderte Dateien:
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/test-output.txt`
 
-### Check C-3 — `self_reported`-Timing darf kein PASS-Claim-Beleg sein
+### Check C-3 — `self_reported`-only PASS-Claims
 
-**Was:** `validate_claim_evidence.py` oder `validate_run_bundle.py`:
-wenn ein `evidence-pack.yml`-Claim `verdict: PASS` hat und alle Evidence-Einträge
-`status: self_reported` (oder kein Status) haben → Block mit Rule-ID
-`PASS_WITH_SELF_REPORTED_ONLY`.
+**Status:** Kein separater Spezial-Validator erforderlich.
 
-**Ziel-Datei:** `scripts/docmeta/validate_claim_evidence.py`,
-Funktion `semantic_errors_for_claim()`
-
-**Ziel-Claims:** Jeder `verdict: PASS`-Claim in `evidence-pack.yml` mit
-ausschließlich `self_reported` Evidence.
-
-**Warum minimal:** `self_reported` ist derzeit kein `STRONG_EVIDENCE_STATUS`
-in `validate_claim_evidence.py` (Zeile 27–32), aber auch kein explizit verbotenes
-Evidence für PASS. Der Status `external_unverified` ist bereits geblockt
-(`PASS_WITH_EXTERNAL_UNVERIFIED_ONLY`, Zeile 221–229). `self_reported` fehlt
-in dieser Abgrenzung.
-
-**Risiko:** `self_reported` in `evidence-pack.yml` ist aktuell selten —
-die meisten Timing-Daten sind in `measurement.yml` (nicht in `evidence-pack.yml`).
-Wenn kein Run ein `evidence-pack.yml`-Claim mit `self_reported` und `PASS` hat,
-wäre das ein No-Op-Gate. Muss gegen tatsächliche `evidence-pack.yml`-Dateien
-geprüft werden, bevor implementiert wird.
+`validate_claim_evidence.py` blockiert PASS-Claims ohne starken Evidence-Status
+bereits über `PASS_WITHOUT_STRONG_EVIDENCE`. Der Fall ist explizit über
+`tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml`
+abgedeckt. Damit ist die gewünschte Schutzwirkung vorhanden, ohne zusätzliche
+Rule-ID-Dopplung.
 
 ---
 
@@ -235,22 +223,17 @@ gleichermaßen. Standalone-CLI (`validate-claim-evidence`) ist nun vollständig.
 
 ---
 
-### Option B — Mittelgroßer Patch: Check C-1 (Timing-Artifact-Kopplung)
+### Option B — umgesetzt: Check C-1 (Timing-Artifact-Kopplung)
 
-**Ziel-Dateien:**
-- `scripts/docmeta/validate_run_bundle.py` — neues `timing_artifact`-Gate in `_validate_run_dir()`,
-  analoges Pattern zu `changed_files_artifact` / `review_evidence_artifact`
-- `.vibe/timing-artifact.contract.md` — neues Contract-Dokument (analog `.vibe/review-rework-artifact.contract.md`)
+**Status:** Umgesetzt in `scripts/docmeta/validate_run_bundle.py`.
 
 **Ziel-Claims:** `measurement.yml`-Feld `task_completion_time_observed.evidence_status: repo_local`
 
 **Validator-Gate:** Wenn `evidence_status == "repo_local"` → `comparability.yml.timing_artifact`
 muss gesetzt sein und auf existierende run-lokale Datei zeigen.
 
-**Risiko (mittel):** Erfordert neues Contract-Dokument. Alle zukünftigen Runs mit
-`task_completion_time_observed: repo_local` müssen ein `timing_artifact` in
-`comparability.yml` setzen. Bestehende Runs (run-007 bis run-010) haben
-`self_reported` — kein Breaking Change. Größerer Diff als Option A.
+**Risiko:** Bestehende Runs mit `self_reported` bleiben unverändert; nur
+`repo_local` wird an ein vorhandenes Timing-Artefakt gekoppelt.
 
 **Nutzen (hoch):** Schließt die letzte nicht-gegated Metrik. Nach diesem Patch
 sind alle drei zentralen Outcome-Metriken (`scope_drift_count`, `review_friction_count` /
@@ -259,27 +242,21 @@ wenn `repo_local` behauptet wird.
 
 ---
 
-### Option C — Konsolidierungs-Patch: PR-4-Checkliste schließen + Fixtures vervollständigen
+### Option C — Reconciliation: PR-4-Checkliste mit belegtem Ist-Zustand schließen
 
-**Ziel-Dateien:**
-- `schemas/run-evidence-pack.v1.schema.json` — prüfen ob vollständig (invalid-Fälle
-  abgedeckt?)
-- `tests/fixtures/claim_evidence/` — prüfen ob Verzeichnis und Fixtures existieren;
-  fehlende anlegen
-- `scripts/docmeta/test_validate_claim_evidence.py` — Negativ-Fixtures für:
-  - `invalid status`
-  - `fehlende run_id`
-  - `path escape` (`../../secrets.txt`)
-  - `leere Pfade`
-- Checklist §PR 4 — alle vier Items abhaken
+**Status:** Dokumentarisch umsetzbar, sofern die bestehenden Gates grün sind.
+
+Beleglage im aktuellen Stand:
+- `schemas/run-evidence-pack.v1.schema.json` vorhanden.
+- `tests/fixtures/claim_evidence/invalid/` enthält `missing-run-id`, `path-escape`,
+  `empty-evidence-path`, `unknown-evidence-status`, `bad-schema-version`.
+- `make validate-claim-evidence-tests` und `make validate-claim-evidence` laufen grün.
 
 **Ziel-Claims:** Formale PR-4-Checkliste (`[ ]` → `[x]`)
 
 **Validator-Gate:** Keine neuen Gates. Bestehende Gates durch Tests abgedeckt.
 
-**Risiko (niedrig bis mittel):** Erfordert Sichtung der tatsächlichen Fixture-Lage
-(bekannt: Validator läuft und ist grün — unklar ob Fixtures für alle Negativ-Fälle
-existieren). Möglicher Befund: PR-4-Items sind de facto erledigt, nur nie abgehakt.
+**Risiko (niedrig):** Hauptfehler wäre ein vorzeitiges Abhaken ohne Testbeleg.
 
 **Nutzen (gering bis mittel):** Dokumentarische Bereinigung. Verhindert keine
 neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validators.
@@ -288,18 +265,11 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 
 ## 5. Status nach diesem PR
 
-**Umgesetzt in diesem PR:**
+**Umgesetzt im aktuellen Stand:**
 - Option A / Check C-2: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py`.
+- Option B / Check C-1: `timing_artifact`-Kopplung in `validate_run_bundle.py`.
+- C-3-Abdeckung über `PASS_WITHOUT_STRONG_EVIDENCE` statt Spezial-Rule.
 
-**Weiterhin offen — erfordert Sichtung vor Patch-Start:**
-- Tatsächlicher Zustand von `tests/fixtures/claim_evidence/` (Option C) — Dateisystem
-  nicht ausgelesen.
-- Tatsächlicher Zustand der `evidence-pack.yml`-Dateien in run-007 bis run-010 bzgl.
-  `self_reported`-Evidence (für Check C-3) — YAML-Inhalt nicht ausgelesen.
-- Entscheidung, ob CI-Global-Enforce für `review_evidence_artifact` (§2.3) als
-  eigener PR gewertet wird oder als Teil von Option B/C.
-
-**Kein weiterer Patch vor Entscheidung über:**
-- Option B (Timing-Artifact-Kopplung).
-- Option C (PR-4-Fixture-Konsolidierung).
-- CI-Global-Enforce für `review_evidence_artifact`.
+**Weiterhin offen als separater Track:**
+- CI-Global-Enforce für `review_evidence_artifact` (§2.3).
+- Neue Runs für Auditor-Unabhängigkeit und Task-Diversität.
