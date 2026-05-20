@@ -39,12 +39,12 @@ Der aktuelle Stand enthält:
 
 1. Diagnose nach Merge PR #189.
 2. Umsetzung von Option A / Check C-2:
-  `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in
-  `scripts/docmeta/validate_claim_evidence.py`.
+    - `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in
+      `scripts/docmeta/validate_claim_evidence.py`.
 3. Umsetzung von Option B / Check C-1:
-  `timing_artifact`-Kopplung für
-  `task_completion_time_observed.evidence_status=repo_local` in
-  `scripts/docmeta/validate_run_bundle.py`.
+    - `timing_artifact`-Kopplung für
+      `task_completion_time_observed.evidence_status=repo_local` in
+      `scripts/docmeta/validate_run_bundle.py`.
 
 Nicht enthalten:
 - CI-Global-Enforce für `review_evidence_artifact`.
@@ -250,7 +250,8 @@ Beleglage im aktuellen Stand:
 - `schemas/run-evidence-pack.v1.schema.json` vorhanden.
 - `tests/fixtures/claim_evidence/invalid/` enthält `missing-run-id`, `path-escape`,
   `empty-evidence-path`, `unknown-evidence-status`, `bad-schema-version`.
-- `make validate-claim-evidence-tests` und `make validate-claim-evidence` müssen grün sein.
+- `make validate-run-evidence-pack-schema-tests` muss grün sein
+  (`scripts/docmeta/test_run_evidence_pack_schema.py`).
 
 **Ziel-Claims:** Formale PR-4-Checkliste (`[ ]` → `[x]`)
 
@@ -263,7 +264,7 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 
 ---
 
-## 5. Status nach diesem PR
+## 5. Status im aktuellen Stand
 
 **Umgesetzt im aktuellen Stand:**
 - Option A / Check C-2: `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `validate_claim_evidence.py`.
@@ -278,8 +279,7 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 
 Für diesen Reconciliation-Stand müssen folgende Checks grün sein:
 
-- `make validate-claim-evidence-tests`
-- `make validate-claim-evidence`
+- `make validate-run-evidence-pack-schema-tests`
 - `make validate-run-bundle-tests`
 - `make validate-run-bundle`
 - `make validate-relations`
