@@ -35,6 +35,9 @@ notes: >
       comparable usefulness-run evidence.
 
   Comparability limits:
+  (0) compared_against lists four audit-track context runs (007-010); this is
+      broader context, not the comparable usefulness-run count in run.yml.
+      That count remains 3 (run-002, run-005, run-006).
   (1) preparation-only run; no independent external auditor-output consumed yet,
   (2) no verdict upgrade and no additional comparable usefulness run,
   (3) task-diversity remains partially addressed (run-009) and not replicated.

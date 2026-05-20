@@ -2,7 +2,7 @@
 # generated_at=2026-05-20
 # base_ref=origin/main
 # merge_base=5414f64df8e0b8a224fd1c051e4a1a3fc7e4eaad
-# scope_command=git diff --name-status "5414f64df8e0b8a224fd1c051e4a1a3fc7e4eaad"
+# scope_command=git diff --name-status "5414f64df8e0b8a224fd1c051e4a1a3fc7e4eaad" HEAD
 
 D	.claude/hooks/session-start.sh
 D	.claude/settings.json
