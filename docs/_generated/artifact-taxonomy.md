@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 844
-- classified: 844
+- total: 855
+- classified: 855
   - of which fallback_classified (catch-all rule): 326
-  - fallback_share: 38.6% (326 / 844)
+  - fallback_share: 38.1% (326 / 855)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -26,17 +26,17 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
-| agent | 4 |
+| agent | 13 |
 | archive | 24 |
 | capture | 7 |
 | catalog | 12 |
 | contract | 29 |
-| docs | 35 |
+| docs | 36 |
 | experiment | 486 |
 | export | 15 |
 | generated | 8 |
 | governance | 55 |
-| test | 169 |
+| test | 170 |
 
 ### By authority
 
@@ -47,16 +47,16 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | evidence_log | 16 |
 | generated_projection | 10 |
 | historical_record | 284 |
-| implementation_behavior | 9 |
-| navigation_surface | 20 |
+| implementation_behavior | 14 |
+| navigation_surface | 23 |
 | normative_contract | 16 |
-| procedure_contract | 100 |
+| procedure_contract | 102 |
 | raw_capture | 23 |
 | result_interpretation | 56 |
 | runtime_observation | 72 |
 | schema_truth | 17 |
 | sovereign_source | 3 |
-| test_expectation | 169 |
+| test_expectation | 170 |
 | unknown | 24 |
 
 ### By lifecycle
@@ -64,7 +64,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | lifecycle | count |
 | --- | ---: |
 | append_only | 343 |
-| handcrafted | 429 |
+| handcrafted | 440 |
 | regenerated | 18 |
 | revision_with_reason | 52 |
 | superseded_not_rewritten | 2 |
@@ -75,14 +75,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 284 |
+| ci_blocking | 286 |
 | diagnostic | 2 |
 | no_manual_edit | 18 |
 | no_rewrite | 343 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 234 |
+| review_required | 243 |
 
 ## Unknown artifacts
 

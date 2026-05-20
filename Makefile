@@ -1,10 +1,10 @@
 # Makefile — Schlanke Routine-Frontdoor
 # Siehe: docs/foundations/repo-plan.md → Scaffolding-CLI & Frontdoor
 
-.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-run-bundle validate-run-bundle-tests validate-relations validate-relations-tests validate-backlinks-tests validate-orphans-tests validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-promotion-readiness-ratchet validate-ratchet validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-run-evidence-pack-schema-tests validate-claim-evidence validate-claim-evidence-tests validate-pr-scope validate-pr-scope-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
+.PHONY: validate validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-run-bundle validate-run-bundle-tests validate-relations validate-relations-tests validate-backlinks-tests validate-orphans-tests validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-mutation-guard validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-exports-tests validate-export-parity validate-export-parity-tests validate-promotion-readiness validate-promotion-readiness-tests validate-promotion-readiness-ratchet validate-ratchet validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-run-evidence-pack-schema-tests validate-claim-evidence validate-claim-evidence-tests validate-pr-scope validate-pr-scope-tests agent-check agent-check-staged agent-check-tests check-decisions generate generate-blocking generate-generated-diagnostics generate-artifact-only generate-generated-gated generate-projections generate-exports generate-metrics generate-promotion-readiness generate-doc-index generate-system-map generate-backlinks generate-orphans generate-epistemic-state generate-artifact-taxonomy diagnose help
 
 # Minimaler Guard-Stack
-validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-run-bundle-tests validate-run-bundle validate-relations validate-relations-tests validate-backlinks-tests validate-orphans-tests validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-export-parity validate-exports-tests validate-export-parity-tests validate-promotion-readiness-tests validate-run-evidence-pack-schema-tests validate-claim-evidence-tests validate-claim-evidence validate-pr-scope-tests validate-pr-scope
+validate: validate-generated-artifacts-contract validate-generated-artifacts-contract-tests validate-artifact-taxonomy validate-artifact-taxonomy-tests validate-artifact-taxonomy-contract-tests validate-schemas validate-schemas-counterevidence-tests validate-execution-proof validate-run-bundle-tests validate-run-bundle validate-relations validate-relations-tests validate-backlinks-tests validate-orphans-tests validate-epistemics validate-epistemics-tests validate-agent-handoff validate-agent-handoff-tests validate-agent-commands validate-agent-commands-tests validate-command-chain validate-command-chain-tests validate-command-version-policy-tests validate-fixture-matrix-audit-tests validate-known-gaps-audit validate-cross-contract validate-cross-contract-tests validate-replay-dry-run validate-replay-tests validate-replay-trace-contract validate-phase1c-fixtures validate-phase1c-fixture-tests validate-adoption-completeness validate-adoption-completeness-tests validate-epistemic-state-tests validate-export-parity validate-exports-tests validate-export-parity-tests validate-promotion-readiness-tests validate-run-evidence-pack-schema-tests validate-claim-evidence-tests validate-claim-evidence validate-pr-scope-tests validate-pr-scope agent-check-tests
 	@# Promotion-Readiness als Dry-Run (Phase 1): inhaltliche not_ready-Befunde
 	@# sind non-blocking, weil das Skript dafür exit=0 liefert. Echte Crashes
 	@# (ImportError, RuntimeError, fehlende Dateien) sollen make validate brechen.
@@ -237,6 +237,18 @@ validate-artifact-taxonomy-contract-tests:
 	@echo "🧪 Running artifact taxonomy contract validator regression tests..."
 	@python3 scripts/docmeta/test_validate_artifact_taxonomy.py
 
+agent-check:
+	@echo "🛡  Running fast agent compliance guard (canonical + generated paths)..."
+	@python3 scripts/agents/check_agent_compliance.py
+
+agent-check-staged:
+	@echo "🛡  Running fast agent compliance guard on staged paths..."
+	@python3 scripts/agents/check_agent_compliance.py --staged --quiet
+
+agent-check-tests:
+	@echo "🧪 Running agent compliance guard regression tests..."
+	@python3 scripts/agents/test_check_agent_compliance.py
+
 check-decisions:
 	@echo "🔐 Validating system decision guard..."
 	@python3 scripts/docmeta/check_system_decisions.py
@@ -305,6 +317,8 @@ help:
 	@echo "Vibe-Lab Makefile"
 	@echo ""
 	@echo "  make validate                  — Run schema, execution-proof, relations, interpretation-budget, handoff, generated-artifact contract, and regression-test guards"
+	@echo "  make agent-check               — Fast guard: blocks edits to canonical control documents and generated artifacts (~2 s)"
+	@echo "  make agent-check-tests         — Run agent compliance guard regression tests"
 	@echo "  make validate-generated-artifacts-contract — Validate .vibe/generated-artifacts.yml against v2 contract"
 	@echo "  make validate-generated-artifacts-contract-tests — Run generated-artifact contract regression tests"
 	@echo "  make validate-artifact-taxonomy-tests — Run artifact taxonomy generator regression tests"

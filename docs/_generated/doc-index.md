@@ -9,7 +9,10 @@
 | `.vibe/intent.md` | intent | — | — |
 | `.vibe/review-rework-artifact.contract.md` | Review/Rework Artifact Contract (v0.2) | schema-backed | canonical |
 | `AGENTS.md` | AGENTS | — | — |
+| `CLAUDE.md` | CLAUDE | — | — |
 | `CONTRIBUTING.md` | CONTRIBUTING | — | — |
+| `CONVENTIONS.md` | CONVENTIONS | — | — |
+| `GEMINI.md` | GEMINI | — | — |
 | `README.md` | README | — | — |
 | `benchmarks/challenges/kanban-board-v1.md` | Kanban Board UI/State Challenge v1 | active | operative |
 | `benchmarks/challenges/legacy-refactoring-v1.md` | Legacy Refactoring Challenge v1 | active | operative |
@@ -52,6 +55,7 @@
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/pr-run-evidence-pack.md` | Playbook: PR Run Evidence Pack | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
+| `docs/policies/agent-compliance.md` | Policy — Agent Compliance | active | operative |
 | `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | active | exploratory |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
 | `docs/policies/pr-run-evidence-policy.md` | Policy — PR Run Evidence | draft | exploratory |

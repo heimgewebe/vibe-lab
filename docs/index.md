@@ -16,6 +16,8 @@ relations:
   - type: references
     target: policies/artifact-boundary-policy.md
   - type: references
+    target: policies/agent-compliance.md
+  - type: references
     target: playbooks/reconciliation.md
   - type: references
     target: playbooks/build-reliable-prompt.md
@@ -124,6 +126,7 @@ relations:
 | [policies/interpretation-budget.md](policies/interpretation-budget.md) | Guard gegen Overclaiming bei Promotion |
 | [policies/pr-run-evidence-policy.md](policies/pr-run-evidence-policy.md) | Normative Claim/Evidence-Grenzen für PR-Runs (policy-only, nicht enforced) |
 | [policies/artifact-boundary-policy.md](policies/artifact-boundary-policy.md) | Artefaktgrenzen für repo-lokale Evidence (policy-only, nicht enforced) |
+| [policies/agent-compliance.md](policies/agent-compliance.md) | Agent-Compliance: Anker-Dateien, lokaler Guard, Durchsetzungs-Map |
 
 ## Diagnose (Generiert)
 
