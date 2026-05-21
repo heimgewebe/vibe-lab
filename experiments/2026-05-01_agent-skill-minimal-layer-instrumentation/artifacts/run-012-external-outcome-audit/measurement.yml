@@ -1,0 +1,74 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-012-external-outcome-audit"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.3-codex"
+  executor: "copilot-coding-agent"
+  role: >
+    Produce schema-valid external outcome audit mapping under existing auditor_output
+    contract without schema extension and without reconciliation-side upgrades.
+
+metrics:
+  scope_drift_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: >
+      Run-012 is intentionally audit-only and non-comparable for changed-files scope metrics.
+
+  unsupported_claim_count:
+    value: 4
+    evidence_status: "derived_from_auditor_output"
+    notes: "Four claims in auditor-output.yml are non-PASS and remain CLAIM_NOT_PROVEN."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All referenced evidence paths are repo-relative and resolvable in this audit bundle."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "No command_succeeded/validator_succeeded claims are marked MISSING_EVIDENCE."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No new independent review lifecycle evidence is produced by this audit-only run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No new independent rework-chain evidence is produced by this audit-only run."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block observed while generating schema-compatible audit artifacts."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No independent timing artifact is provided for this audit-only run."
+
+missing_evidence:
+  - item: "scope_drift_count"
+    detail: "Comparability is intentionally marked not_comparable for this audit-only run."
+  - item: "review_friction_count"
+    detail: "No independent replicated review-event evidence is added in run-012."
+  - item: "rework_count"
+    detail: "No independent replicated rework-chain evidence is added in run-012."
+  - item: "task_completion_time_observed"
+    detail: "No independent timing artifact is added in run-012."
+
+interpretation_limits:
+  - "Green validation is an integrity signal, not an outcome-utility proof."
+  - "Repo-local self-reports can support governance/method utility, but not strong outcome utility closure."
+  - "No usefulness, adoption, promotion, or causal verdict is produced by run-012."
+
+extensions:
+  audit_status: "schema_compatible_external_outcome_audit"
+  target_blockers: ["RM-002", "RM-005"]

@@ -117,10 +117,20 @@ experiment:
     - artifacts/run-011-external-outcome-audit-prep/targeted-tests.txt
     - artifacts/run-011-external-outcome-audit-prep/make-validate.txt
     - artifacts/run-011-external-outcome-audit-prep/audit-request.md
+    - artifacts/run-012-external-outcome-audit/run.yml
+    - artifacts/run-012-external-outcome-audit/measurement.yml
+    - artifacts/run-012-external-outcome-audit/auditor-output.yml
+    - artifacts/run-012-external-outcome-audit/run_meta.json
+    - artifacts/run-012-external-outcome-audit/evidence-pack.yml
+    - artifacts/run-012-external-outcome-audit/comparability.yml
+    - artifacts/run-012-external-outcome-audit/evidence-basis.yml
+    - artifacts/run-012-external-outcome-audit/independence.yml
+    - artifacts/run-012-external-outcome-audit/targeted-tests.txt
+    - artifacts/run-012-external-outcome-audit/auditor-inability-report.md
   created: "2026-05-01"
-  updated: "2026-05-20"
+  updated: "2026-05-21"
   author: "copilot-agent"
-  iteration: 11
+  iteration: 12
   evidence_level: anecdotal
   falsifiability:
     version: 1

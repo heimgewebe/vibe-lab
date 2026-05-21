@@ -1,0 +1,156 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-012-external-outcome-audit"
+auditor:
+  name: "evidence-reconciliation-auditor"
+  executor: "copilot-coding-agent:gpt-5.3-codex"
+  date: "2026-05-21"
+overall_verdict: "CLAIM_NOT_PROVEN"
+
+claims:
+  - id: "claim-001"
+    text: "The repository has demonstrated governance utility by making evidence gaps explicit and blocking unsupported upgrades."
+    type: "governance_utility"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md"
+        status: "repo_local"
+        reason: "run-012 stop report documents schema conflict and prevents non-conforming audit claims."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+        reason: "decision verdict remains insufficient_proof with explicit blockers."
+
+  - id: "claim-002"
+    text: "The repository has demonstrated method utility by preventing premature claims and preserving CLAIM_NOT_PROVEN where evidence is insufficient."
+    type: "method_utility"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"
+        status: "repo_local"
+        reason: "cross-run assessment explicitly blocks usefulness/promotion claims."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml"
+        status: "repo_local"
+        reason: "negative-case pilot retains CLAIM_NOT_PROVEN under partial independence."
+
+  - id: "claim-003"
+    text: "Runs 007-010 provide strong outcome utility proof through reduced review/rework friction and independently verified quality gains."
+    type: "outcome_utility"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"
+        status: "repo_local"
+        reason: "review/rework/timing remain insufficient for strong outcome claim across comparable runs."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/measurement.yml"
+        status: "repo_local"
+        reason: "single-run pilot exists but no replicated outcome-level closure."
+
+  - id: "claim-004"
+    text: "Runs 007-010 conclusively demonstrate reduced review/rework friction across comparable tasks."
+    type: "review_rework_friction_reduction"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml"
+        status: "repo_local"
+        reason: "review/rework evidence is pilot-level and not replicated across comparable outcome tasks."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"
+        status: "repo_local"
+        reason: "assessment keeps insufficient_proof for outcome-level interpretation."
+
+  - id: "claim-005"
+    text: "review_friction_count and rework_count are currently strong enough (repo_local/external_verified) for outcome promotion decisions."
+    type: "metric_sufficiency"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+        reason: "next_steps keep review/rework evidence as blocker for insufficient_proof removal."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"
+        status: "repo_local"
+        reason: "missing/weakly independent outcome metrics remain open."
+
+  - id: "claim-006"
+    text: "Task diversity evidence is currently sufficient and replicated across independent non-trivial task classes."
+    type: "task_diversity"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/auditor-output.yml"
+        status: "repo_local"
+        reason: "run-009 is a partial diversity probe, not replicated independent closure."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+        reason: "decision still requests additional task-diversity replication."
+
+  - id: "claim-007"
+    text: "At least one explicit negative-case pattern exists that preserves CLAIM_NOT_PROVEN discipline instead of forcing PASS."
+    type: "negative_case_guard"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml"
+        status: "repo_local"
+        reason: "run-008 records explicit CLAIM_NOT_PROVEN negative-case pilot."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/auditor-output.yml"
+        status: "repo_local"
+        reason: "run-011 keeps external outcome claim open rather than inferring closure."
+
+  - id: "claim-008"
+    text: "Evidence against roadmap/result upgrade is present; RM-002 and RM-005 must remain open."
+    type: "upgrade_blockers_present"
+    verdict: "PASS"
+    evidence:
+      - path: "docs/roadmap.md"
+        status: "repo_local"
+        reason: "RM-002 and RM-005 are still documented as open with outcome blockers."
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+        reason: "verdict remains insufficient_proof with explicit unresolved blockers."
+
+required_next_proof:
+  - "Independent external auditor output for outcome/usefulness evaluation beyond same-model-family partial independence."
+  - "Replicated review_friction_count and rework_count evidence across genuinely comparable outcome tasks."
+  - "Second independent task-diversity run in a different non-trivial task class."
+  - "Outcome evidence that is stronger than validator-green and stronger than self-reported/prep-run context."
+
+extensions:
+  audit_kind: "external_outcome_audit"
+  utility_assessment:
+    governance_utility: "supported"
+    method_utility: "supported"
+    outcome_utility: "not_proven"
+  independence:
+    same_execution_context_as_run_011: false
+    produced_prior_related_artifacts: true
+    inspected_commit: "e120a5841ce7dbd68d328b284f2030b9384a74a0"
+    base_commit: "cfb85844de1d5e7e53314d041fdf959b769c2baa"
+    independence_claim: "partially_independent"
+    independence_reason: "Different audit run and explicit stop-to-contract mapping, but same agent family and prior artifact involvement."
+  assessed_runs:
+    context_runs:
+      - "run-007-review-rework-outcome-evidence-pilot"
+      - "run-008-negative-case-independent-audit-timing"
+      - "run-009-independent-task-diversity-validation"
+      - "run-010-independent-auditor-validation"
+      - "run-011-external-outcome-audit-prep"
+    comparable_outcome_runs:
+      - "run-002-controlled-agent-skill-run"
+      - "run-005-controlled-agent-skill-run"
+      - "run-006-controlled-agent-skill-run"
+    non_comparable_runs:
+      - "run-007-review-rework-outcome-evidence-pilot"
+      - "run-008-negative-case-independent-audit-timing"
+      - "run-009-independent-task-diversity-validation"
+      - "run-010-independent-auditor-validation"
+      - "run-011-external-outcome-audit-prep"
+  evidence_classification:
+    belegt:
+      - "Governance utility: evidence gaps are made explicit and blocked from forced PASS."
+      - "Method utility: premature usefulness/promotion claims are prevented by explicit CLAIM_NOT_PROVEN discipline."
+    plausibel:
+      - "Outcome utility might emerge if review/rework metrics are replicated and independently validated."
+    spekulativ:
+      - "Strong outcome improvement claim from existing run-007..run-010 evidence alone."
+    nicht_pruefbar:
+      - "Causal claim that agent-skill layer already improves quality independent of confounders."
+  blocking_gaps:
+    - "Independent external outcome auditor proof is not yet strong enough for upgrade."
+    - "Outcome metrics are not sufficiently replicated across diverse comparable tasks."
+    - "Review/rework evidence remains insufficient for promotion/result upgrade."

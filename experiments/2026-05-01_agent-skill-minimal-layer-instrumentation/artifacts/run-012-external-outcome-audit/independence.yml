@@ -1,0 +1,12 @@
+schema_version: "1.0.0"
+run_id: "run-012-external-outcome-audit"
+same_agent_as_prior_runs: true
+same_execution_context: false
+prior_artifact_author: true
+inspected_commit: "e120a5841ce7dbd68d328b284f2030b9384a74a0"
+base_commit: "cfb85844de1d5e7e53314d041fdf959b769c2baa"
+independence_verdict: "partially_independent"
+consequences_for_verdict:
+  - "No PASS verdict for outcome utility is allowed under partial independence."
+  - "overall_verdict remains CLAIM_NOT_PROVEN."
+  - "RM-002 and RM-005 remain open pending stronger independent outcome evidence."

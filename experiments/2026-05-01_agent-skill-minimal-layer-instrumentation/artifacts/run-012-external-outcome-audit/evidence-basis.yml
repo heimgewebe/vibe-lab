@@ -1,0 +1,50 @@
+schema_version: "1.0.0"
+run_id: "run-012-external-outcome-audit"
+sources:
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+    purpose: "Primary verdict and blocker baseline for RM-002/RM-005."
+    used_for_claims: ["claim-003", "claim-005", "claim-006", "claim-008"]
+    evidence_status: "repo_local"
+    limitation: "Decision is experiment-internal and not independent external outcome proof."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"
+    purpose: "Cross-run interpretation and unresolved outcome utility constraints."
+    used_for_claims: ["claim-002", "claim-003", "claim-004", "claim-005"]
+    evidence_status: "repo_local"
+    limitation: "Assessment documents constraints but does not provide new independent outcome measurement."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/"
+    purpose: "Pilot review/rework evidence bundle for outcome-tracking mechanism."
+    used_for_claims: ["claim-003", "claim-004"]
+    evidence_status: "repo_local"
+    limitation: "Pilot-only; lacks replicated comparable outcome confirmation."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/"
+    purpose: "Negative-case CLAIM_NOT_PROVEN discipline and timing capture pilot."
+    used_for_claims: ["claim-002", "claim-007"]
+    evidence_status: "repo_local"
+    limitation: "Partial independence only; no strong external outcome closure."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/"
+    purpose: "Task-diversity probe outside validator-test-hardening cluster."
+    used_for_claims: ["claim-006"]
+    evidence_status: "repo_local"
+    limitation: "Single partial probe; replication remains open."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/"
+    purpose: "Different-session audit package validation with partial independence."
+    used_for_claims: ["claim-003", "claim-004", "claim-008"]
+    evidence_status: "repo_local"
+    limitation: "Same model family; full independence still unproven."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/"
+    purpose: "Prep-track evidence showing external outcome audit remains open."
+    used_for_claims: ["claim-001", "claim-007"]
+    evidence_status: "repo_local"
+    limitation: "Preparation run is not itself outcome proof."
+
+  - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md"
+    purpose: "Historical stop record proving contract-discipline before schema-compatible mapping."
+    used_for_claims: ["claim-001"]
+    evidence_status: "repo_local"
+    limitation: "Stop diagnosis indicates constraints but does not add direct outcome evidence."
