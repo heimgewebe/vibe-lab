@@ -15,7 +15,7 @@ claims:
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md"
         status: "repo_local"
-        reason: "run-012 stop report documents schema conflict and prevents non-conforming audit claims."
+        reason: "Historical stop report documenting a schema conflict resolved by schema-compatible mapping. Evidence for contract discipline, not current STOP status."
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
         status: "repo_local"
         reason: "decision verdict remains insufficient_proof with explicit blockers."
@@ -150,6 +150,7 @@ extensions:
       - "Strong outcome improvement claim from existing run-007..run-010 evidence alone."
     nicht_pruefbar:
       - "Causal claim that agent-skill layer already improves quality independent of confounders."
+  calibration_note: "This is a partially independent schema-compatible outcome audit mapping run, not a fully independent external audit."
   blocking_gaps:
     - "Independent external outcome auditor proof is not yet strong enough for upgrade."
     - "Outcome metrics are not sufficiently replicated across diverse comparable tasks."

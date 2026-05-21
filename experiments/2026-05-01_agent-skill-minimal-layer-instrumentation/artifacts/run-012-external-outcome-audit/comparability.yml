@@ -26,3 +26,4 @@ notes: >
   It is intentionally non-comparable for outcome metrics and does not increase the
   comparable usefulness-run count. It preserves CLAIM_NOT_PROVEN discipline for
   outcome utility and avoids roadmap/result upgrades.
+  This is a partially independent schema-compatible outcome audit mapping run, not a fully independent external audit.

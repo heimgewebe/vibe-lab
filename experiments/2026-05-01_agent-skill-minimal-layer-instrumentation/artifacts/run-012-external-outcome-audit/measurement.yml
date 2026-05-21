@@ -68,6 +68,7 @@ interpretation_limits:
   - "Green validation is an integrity signal, not an outcome-utility proof."
   - "Repo-local self-reports can support governance/method utility, but not strong outcome utility closure."
   - "No usefulness, adoption, promotion, or causal verdict is produced by run-012."
+  - "This is a partially independent schema-compatible outcome audit mapping run, not a fully independent external audit."
 
 extensions:
   audit_status: "schema_compatible_external_outcome_audit"

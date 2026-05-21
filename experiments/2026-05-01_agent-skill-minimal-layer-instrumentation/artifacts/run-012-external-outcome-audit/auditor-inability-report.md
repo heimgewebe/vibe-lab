@@ -58,4 +58,15 @@ Option B (Instruktionsanpassung auf bestehendes Schema, ohne Schemaaenderung):
   - neue Audit-Details ausschliesslich unter extensions
   - overall_verdict strikt innerhalb der existierenden Enum-Werte halten
 
-Bis diese Entscheidung getroffen ist, bleibt run-012 im Zustand STOP und enthaelt ausschliesslich diesen Inability-Report.
+## Follow-up 2026-05-21 — STOP resolved by schema-compatible mapping
+
+Der ursprüngliche STOP-Zustand wurde durch Option B aufgelöst:
+Die Auditstruktur wurde auf den bestehenden `auditor_output`-v1-Contract abgebildet, ohne Schemaänderung.
+Dieser Report bleibt als historische Diagnose erhalten. Er beschreibt nicht mehr den aktuellen Zustand von run-012.
+
+Aktueller Zustand:
+- `auditor-output.yml` ist vorhanden.
+- `overall_verdict` bleibt `CLAIM_NOT_PROVEN`.
+- Outcome utility bleibt unbewiesen.
+- RM-002 und RM-005 bleiben offen.
+- Der Run ist audit-only und nicht als vergleichbarer Outcome-Run zu zählen.
