@@ -1,0 +1,23 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-011-external-outcome-audit-prep"
+auditor:
+  name: "self-reconciliation-placeholder"
+  executor: "copilot-coding-agent:gpt-5.3-codex"
+  date: "2026-05-20"
+overall_verdict: "CLAIM_NOT_PROVEN"
+claims:
+  - id: "claim-001"
+    text: "An independent external outcome-audit verdict for run-011 is available in this bundle."
+    type: "independent_outcome_audit"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md"
+        status: "repo_local"
+        reason: "External audit is requested, but no independent external auditor output is present yet."
+required_next_proof:
+  - "Provide independent auditor output from a different agent system or human reviewer."
+  - "Evaluate runs 007-010 for outcome evidence sufficiency with explicit blocking gaps."
+extensions:
+  audit_status: "external_audit_requested"
+  independence_status: "not_proven"

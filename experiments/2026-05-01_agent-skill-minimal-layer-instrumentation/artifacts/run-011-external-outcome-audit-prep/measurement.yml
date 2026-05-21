@@ -1,0 +1,87 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-011-external-outcome-audit-prep"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.3-codex"
+  executor: "copilot-coding-agent"
+  role: >
+    Prepare and reconcile an external outcome audit request for RM-002/RM-005
+    without producing synthetic certainty.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      Scope limited to run-011 audit-preparation plus reconciliation edits for
+      .claude deprecation follow-through (agent-compliance policy/doc updates,
+      check_agent_compliance script touchpoint, and run-bundle test touchpoint).
+
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: >
+      Auditor output intentionally keeps the external-outcome proof claim as
+      CLAIM_NOT_PROVEN until independent output exists.
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      Referenced run-011 evidence paths are repo-local and resolvable.
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: >
+      No command_succeeded/validator_succeeded claim is marked MISSING_EVIDENCE
+      in auditor-output.yml.
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: >
+      This run prepares external audit artifacts and has no merged-review
+      lifecycle evidence in this bundle.
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: >
+      No review-driven rework chain is attributable to this preparation-only run.
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      No validator false block observed during artifact preparation.
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: >
+      No independently verifiable timing capture is available in this run.
+
+missing_evidence:
+  - item: "external_independent_auditor_output"
+    detail: >
+      Independent external outcome-audit verdict is requested but not yet present.
+  - item: "review_friction_count"
+    detail: "No run-011 review-events evidence available."
+  - item: "rework_count"
+    detail: "No run-011 rework chain linked to review events."
+  - item: "task_completion_time_observed"
+    detail: "No independent timing artifact for this run."
+
+interpretation_limits:
+  - "Run-011 is a preparation/reconciliation track for external audit, not an outcome verdict track."
+  - "No upgrade from insufficient_proof to sufficient/pass is allowed without independent external auditor output."
+  - "No usefulness, adoption, promotion, or causal claim is made."
+
+extensions:
+  audit_status: "external_audit_requested"
+  target_blockers: ["RM-002", "RM-005"]

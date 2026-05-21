@@ -7,14 +7,6 @@
 
 - ← `docs/policies/agent-compliance.md` (references)
 
-## `.claude/hooks/session-start.sh`
-
-- ← `docs/policies/agent-compliance.md` (references)
-
-## `.claude/settings.json`
-
-- ← `docs/policies/agent-compliance.md` (references)
-
 ## `.github/agents/evidence-reconciliation-auditor.agent.md`
 
 - ← `docs/evaluations/agent-skill-file-fruitfulness.md` (references)
@@ -568,6 +560,10 @@
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/measurement.yml`
 
 - ← `.vibe/changed-files-artifact.contract.md` (references)
+
+## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md`
+
+- ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md`
 

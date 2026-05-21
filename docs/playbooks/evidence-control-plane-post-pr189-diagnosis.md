@@ -24,6 +24,8 @@ relations:
     target: ../../scripts/docmeta/validate_claim_evidence.py
   - type: references
     target: ../../scripts/docmeta/validate_run_bundle.py
+  - type: references
+    target: ../../experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/audit-request.md
 ---
 
 # Evidence-Control-Plane — Diagnose nach Merge PR #189
@@ -49,6 +51,14 @@ Der aktuelle Stand enthält:
 Nicht enthalten:
 - CI-Global-Enforce für `review_evidence_artifact`.
 - Neue Runs.
+
+Ergaenzung (2026-05-20, Run-011-Reconciliation):
+- Neuer vorbereiteter Track angelegt:
+  `artifacts/run-011-external-outcome-audit-prep/`.
+- Zweck: externe Outcome-Pruefung fuer RM-002/RM-005 vorbereiten.
+- Epistemische Leerstelle explizit: externer unabhaengiger Auditor-Output fehlt.
+- Kein Upgrade von `insufficient_proof` oder gleichwertiger Nicht-PASS-Lage ohne
+  externen Input.
 
 ---
 
@@ -201,6 +211,11 @@ bereits über `PASS_WITHOUT_STRONG_EVIDENCE`. Der Fall ist explizit über
 abgedeckt. Damit ist die gewünschte Schutzwirkung vorhanden, ohne zusätzliche
 Rule-ID-Dopplung.
 
+Belegt durch:
+- `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml` — Negativ-Fixture, erkannt als Violation.
+- Testlauf: `make validate-claim-evidence-tests` (Bestandteil von `make validate`).
+- `make validate` → EXIT_CODE=0 (2026-05-20).
+
 ---
 
 ## 4. Patch-Optionen (maximal 3, mit Risiko/Nutzen)
@@ -256,6 +271,12 @@ Beleglage im aktuellen Stand:
 **Ziel-Claims:** Formale PR-4-Checkliste (`[ ]` → `[x]`)
 
 **Validator-Gate:** Keine neuen Gates. Bestehende Gates werden über vorhandene Tests/Validierungsläufe belegt.
+Bestehende Gates wurden über folgende Läufe belegt:
+- `schemas/run-evidence-pack.v1.schema.json` vorhanden und schema-valide.
+- `tests/fixtures/claim_evidence/invalid/` enthält `missing-run-id`, `path-escape`,
+  `empty-evidence-path`, `unknown-evidence-status`, `bad-schema-version` — alle als invalid erkannt.
+- `make validate-run-evidence-pack-schema-tests` → 2 tests OK (`scripts/docmeta/test_run_evidence_pack_schema.py`).
+- `make validate` → EXIT_CODE=0.
 
 **Risiko (niedrig):** Hauptfehler wäre ein vorzeitiges Abhaken ohne Testbeleg.
 
@@ -274,13 +295,20 @@ neuen Fehler. Wichtig für Klarheit über tatsächlichen Reifegrad des Validator
 **Weiterhin offen als separater Track:**
 - CI-Global-Enforce für `review_evidence_artifact` (§2.3).
 - Neue Runs für Auditor-Unabhängigkeit und Task-Diversität.
+- Run-011 ist nur vorbereitet (`external_audit_requested`) und wartet auf
+  externen Auditor-Output.
 
 ## Validation
 
 Für diesen Reconciliation-Stand müssen folgende Checks grün sein:
 
-- `make validate-run-evidence-pack-schema-tests`
-- `make validate-run-bundle-tests`
-- `make validate-run-bundle`
-- `make validate-relations`
-- `make validate`
+Für diesen Reconciliation-Stand wurden folgende Checks ausgeführt und waren grün
+(ausgeführt 2026-05-20; Beleg: `artifacts/run-011-external-outcome-audit-prep/make-validate.txt`):
+
+| Check | Ergebnis |
+|-------|----------|
+| `make validate-run-evidence-pack-schema-tests` | ✅ 2 tests OK |
+| `make validate-run-bundle-tests` | ✅ 147 tests OK |
+| `make validate-run-bundle` | ✅ All run bundles consistent |
+| `make validate-relations` | ✅ All relations valid (220 files) |
+| `make validate` | ✅ Validation passed (EXIT_CODE=0) |

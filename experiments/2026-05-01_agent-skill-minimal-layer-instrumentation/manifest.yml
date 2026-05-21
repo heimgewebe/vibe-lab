@@ -107,10 +107,20 @@ experiment:
     - artifacts/run-010-independent-auditor-validation/ci-or-git-timing.txt
     - artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt
     - artifacts/run-010-independent-auditor-validation/audit-request.md
+    - artifacts/run-011-external-outcome-audit-prep/run.yml
+    - artifacts/run-011-external-outcome-audit-prep/measurement.yml
+    - artifacts/run-011-external-outcome-audit-prep/auditor-output.yml
+    - artifacts/run-011-external-outcome-audit-prep/run_meta.json
+    - artifacts/run-011-external-outcome-audit-prep/evidence-pack.yml
+    - artifacts/run-011-external-outcome-audit-prep/comparability.yml
+    - artifacts/run-011-external-outcome-audit-prep/changed-files.txt
+    - artifacts/run-011-external-outcome-audit-prep/targeted-tests.txt
+    - artifacts/run-011-external-outcome-audit-prep/make-validate.txt
+    - artifacts/run-011-external-outcome-audit-prep/audit-request.md
   created: "2026-05-01"
-  updated: "2026-05-12"
+  updated: "2026-05-20"
   author: "copilot-agent"
-  iteration: 10
+  iteration: 11
   evidence_level: anecdotal
   falsifiability:
     version: 1

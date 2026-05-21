@@ -14,9 +14,12 @@ Rule 2 — Generated-artifact protection
     ``enforcement: [..., no_manual_edit]``. Manual edits violate
     ``AGENTS.md`` and ``.vibe/constraints.yml:no-manual-edit-generated``.
 
-The script reads protected paths from canonical sources so it stays in
-sync without duplicating policy. It is intentionally additive and never
-modifies repo state.
+Generated artifact patterns are read from canonical contracts
+(``.vibe/generated-artifacts.yml`` and ``agent-policy.yaml``) so that
+list stays in sync without duplication. Canonical protected paths are
+intentionally hardcoded from ``AGENTS.md`` policy — they are a small,
+stable set that does not benefit from dynamic loading. The script is
+intentionally additive and never modifies repo state.
 
 Exit codes
     0 — no violations (or only violations explicitly allowed via flags)

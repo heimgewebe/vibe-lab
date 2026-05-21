@@ -2530,7 +2530,7 @@ class RepoLevelTests(unittest.TestCase):
         self.assertEqual(len(matches), 1, errs)
 
     def test_evidence_pack_repo_local_evidence_escape_fails(self) -> None:
-        """evidence-pack repo_local evidence paths with .. are rejected (schema regex)."""
+        """evidence-pack repo_local evidence paths with .. are rejected by schema path guard."""
         exp = _build_valid_bundle(self.base)
         run_dir = exp / "artifacts" / "run-001"
         
@@ -2586,8 +2586,13 @@ class RepoLevelTests(unittest.TestCase):
         )
         
         errs = validate_repo(self.base)
-        # Schema regex rejects .. pattern in evidence paths
-        self.assertTrue(any("schema-invalid" in e for e in errs), errs)
+        # Ensure we fail on schema path validation (not on an unrelated schema error).
+        schema_path_errors = [
+            e
+            for e in errs
+            if "schema-invalid" in e and "evidence" in e and "path" in e
+        ]
+        self.assertTrue(schema_path_errors, errs)
 
     def test_evidence_pack_self_observation_pass_fails(self) -> None:
         """PASS claims that only reference the evidence-pack itself are rejected."""
