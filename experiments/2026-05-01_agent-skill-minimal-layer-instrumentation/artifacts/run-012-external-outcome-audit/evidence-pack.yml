@@ -1,0 +1,38 @@
+schema_version: "1.0.0"
+run_id: "run-012-external-outcome-audit"
+claims:
+  - claim_id: "pack-001"
+    text: "run-012 provides a schema-valid auditor_output artifact under the existing contract."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run_meta.json"
+        status: "repo_local"
+
+  - claim_id: "pack-002"
+    text: "Outcome utility remains unproven under current evidence and independence constraints."
+    type: "outcome_utility"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md"
+        status: "repo_local"
+
+  - claim_id: "pack-003"
+    text: "run-012 does not introduce usefulness/adoption/promotion/causal closure claims."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-output.yml"
+        status: "repo_local"

@@ -1,0 +1,29 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-012-external-outcome-audit"
+assessed_at: "2026-05-21"
+
+compared_against:
+  - "run-007-review-rework-outcome-evidence-pilot"
+  - "run-008-negative-case-independent-audit-timing"
+  - "run-009-independent-task-diversity-validation"
+  - "run-010-independent-auditor-validation"
+  - "run-011-external-outcome-audit-prep"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-012-external-outcome-audit"
+
+changed_files_artifact: null
+missing_changed_files_reason: "Audit-only run: no changed-files based comparability claim is asserted."
+
+verdict: not_comparable
+
+notes: >
+  run-012 is an external outcome audit mapping run under existing auditor_output schema.
+  It is intentionally non-comparable for outcome metrics and does not increase the
+  comparable usefulness-run count. It preserves CLAIM_NOT_PROVEN discipline for
+  outcome utility and avoids roadmap/result upgrades.
+  This is a partially independent schema-compatible outcome audit mapping run, not a fully independent external audit.
