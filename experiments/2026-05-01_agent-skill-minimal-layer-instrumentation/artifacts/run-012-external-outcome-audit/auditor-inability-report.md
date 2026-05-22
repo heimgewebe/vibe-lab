@@ -2,7 +2,7 @@
 
 Datum: 2026-05-21
 Run-Pfad: experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/
-Status: STOP (audit-only output cannot be produced as schema-valid artifact under current contracts)
+Status: HISTORISCHER STOP (am 2026-05-21 durch schema-kompatibles Mapping aufgelöst; auditor-output.yml ist im Run-Bundle vorhanden)
 
 ## 1) Welches Schema/Contract fehlt oder blockiert
 
