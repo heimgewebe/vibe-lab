@@ -7,5 +7,5 @@
   "exit_code": 0,
   "test_output_file": "artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt",
   "provenance_level": "self_reported",
-  "notes": "Replicated outcome-evidence run with non-null review/rework/timing metric capture in a documentation/contract-alignment task class."
+  "notes": "Replicated outcome-metric capture attempt in a documentation/contract-alignment task class. Timing is captured as repo_local; review_event_count and revision_commit_count are observable via source artifacts; review_friction_count and rework_count remain null/missing_evidence in canonical measurement interpretation."
 }
