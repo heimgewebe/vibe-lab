@@ -49,8 +49,8 @@ Unexpected orphans (57 found):
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md`
-- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md`
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
@@ -63,7 +63,7 @@ Unexpected orphans (57 found):
 - `tests/fixtures/experiment_structure_phase1c/valid/results/result.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
 
-Expected orphans (73 found):
+Expected orphans (75 found):
 
 - `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
@@ -126,6 +126,8 @@ Expected orphans (73 found):
 - `experiments/2026-04-23_phase-1-drift-injection/results/result.md` — experiment_result_local_surface
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md` — external_auditor_inability_archive
+- `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md` — run_local_task_brief_archive
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` — experiment_bundle_local_analysis
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` — experiment_bundle_method
 - `exports/copilot/constraint-before-code.md` — generated_export_surface

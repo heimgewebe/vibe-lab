@@ -12,3 +12,7 @@ expected_orphans:
     reason: "experiment_result_local_surface"
   - pattern: "exports/**/*.md"
     reason: "generated_export_surface"
+  - pattern: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md"
+    reason: "external_auditor_inability_archive"
+  - pattern: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md"
+    reason: "run_local_task_brief_archive"

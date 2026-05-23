@@ -1,9 +1,12 @@
-]633;E;echo "# generated_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)";9ba7b98a-d761-4397-915e-cfcd2b75fa5c]633;C# generated_at: 2026-05-23T07:40:10Z
+# changed-files for run-013-replicated-outcome-evidence
+# generated_at: 2026-05-23T07:40:10Z
 # base_ref: origin/main
 # merge_base: 09275b7e801c74342abe8442a9733c52860746c3
 # command: git --no-pager diff --name-only origin/main...HEAD
-# scope: full_pr_changed_file_list
+# scope: full PR scope
+# semantic_task_target_subset: task-target-files.txt
 
+docs/_generated/doc-index.md
 docs/_generated/orphans.md
 docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md
 docs/playbooks/pr-run-evidence-pack.md
@@ -12,6 +15,7 @@ docs/roadmap.md
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/auditor-output.yml
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/changed-files.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/comparability.yml
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/evidence-pack.yml
 experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/make-validate.txt
