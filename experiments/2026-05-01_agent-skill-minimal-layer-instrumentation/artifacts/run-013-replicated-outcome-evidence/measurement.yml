@@ -1,0 +1,72 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-013-replicated-outcome-evidence"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.3-codex"
+  executor: "copilot-coding-agent"
+  role: >
+    Execute a non-trivial documentation/contract-alignment task and capture
+    review/rework/timing metrics in a schema-valid replicated outcome-evidence run
+    without upgrading usefulness/adoption/promotion claims.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      Task scope is constrained to four documented files listed in changed-files.txt.
+
+  unsupported_claim_count:
+    value: 2
+    evidence_status: "derived_from_auditor_output"
+    notes: "Two auditor claims remain non-PASS and preserve CLAIM_NOT_PROVEN discipline."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence paths are repo-relative and resolvable."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "No validator/command-success claims are marked MISSING_EVIDENCE."
+
+  review_friction_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      Captured from PR #201 snapshot at artifact capture time: no review rounds present.
+      This is metric capture evidence only, not outcome utility proof.
+
+  rework_count:
+    value: 4
+    evidence_status: "repo_local"
+    notes: >
+      Captured from PR #201 commit sequence as four follow-up refinement commits after
+      initialization. Recorded as run-local rework evidence, not a usefulness claim.
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block observed during run-013 artifact production."
+
+  task_completion_time_observed:
+    value: 2100
+    evidence_status: "repo_local"
+    notes: >
+      Captured from timing.txt as a run-local manual timing snapshot.
+
+interpretation_limits:
+  - "Validator-green is integrity evidence only, not outcome proof."
+  - "This run does not close RM-002 or RM-005."
+  - "Captured non-null review/rework metrics are run-scoped and remain CLAIM_NOT_PROVEN for strong outcome utility."
+
+extensions:
+  task_class: "documentation_contract_alignment"
+  task_cluster_distinct_from:
+    - "validator-test-hardening"
+    - "multi-artifact-scaffold-synthesis"

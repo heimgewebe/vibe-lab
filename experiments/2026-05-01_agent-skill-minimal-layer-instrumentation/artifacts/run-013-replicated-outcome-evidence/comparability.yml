@@ -1,0 +1,29 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-013-replicated-outcome-evidence"
+assessed_at: "2026-05-23"
+
+compared_against:
+  - "run-002-controlled-agent-skill-run"
+  - "run-005-controlled-agent-skill-run"
+  - "run-006-controlled-agent-skill-run"
+  - "run-009-independent-task-diversity-validation"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-013-documentation-contract-alignment"
+
+changed_files_artifact: "changed-files.txt"
+review_evidence_artifact: "review-events.yml"
+timing_artifact: "timing.txt"
+
+verdict: not_comparable
+
+notes: >
+  Run-013 is intentionally a different task class (documentation/contract alignment)
+  that captures review/rework/timing metrics for replication quality, not a new
+  comparable usefulness run. It is outside the validator-test-hardening cluster and
+  outside run-009's multi-artifact scaffold synthesis class. The run contributes
+  metric capture evidence but does not close RM-002/RM-005 or upgrade outcome utility.

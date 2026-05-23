@@ -30,6 +30,17 @@ relations:
 - Kein Critic-/Auditor-Usage-Claim ohne archiviertes Agent-Output-Artefakt.
 - PR-Body-Claims müssen auf Evidence-Artefakte verweisen oder ausdrücklich als nicht belegt markiert werden.
 
+## Review/Rework Null-vs-Zero Disziplin
+
+- `review_friction_count` und `rework_count` dürfen nur dann als numerischer Wert erfasst werden,
+  wenn ein explizites Quelle-Artefakt mit Zeitstempel und Scope archiviert ist.
+- Ein leeres Review-Feld in einem Tool-Output darf als Momentaufnahme dokumentiert werden,
+  ist aber kein Outcome-Nachweis und darf kein Upgrade von RM-002/RM-005 ausloesen.
+- `0` ist nur als beobachteter Zustand in einem klar benannten Erfassungsfenster zulaessig,
+  nicht als implizite Default-Annahme aus fehlender Evidence.
+- Jeder numerische Review/Rework-Wert bleibt methodisch unter `CLAIM_NOT_PROVEN`,
+  solange keine unabhaengige Replikation ueber mehrere Task-Klassen vorliegt.
+
 ## Nicht-Ziel dieser Policy
 
 - Keine unmittelbare Aktivierung von Blockern in CI oder lokalen Validatoren durch dieses Dokument allein.

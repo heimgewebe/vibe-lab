@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-013-replicated-outcome-evidence",
+  "generated_at": "2026-05-23T07:25:00Z",
+  "executor": "copilot-coding-agent:gpt-5.3-codex",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && make validate-run-bundle && make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt",
+  "provenance_level": "self_reported",
+  "notes": "Replicated outcome-evidence run with non-null review/rework/timing metric capture in a documentation/contract-alignment task class."
+}
