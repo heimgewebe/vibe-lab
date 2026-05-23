@@ -37,19 +37,24 @@ metrics:
     notes: "No validator/command-success claims are marked MISSING_EVIDENCE."
 
   review_friction_count:
-    value: 1
-    evidence_status: "repo_local"
+    value: null
+    evidence_status: "missing_evidence"
     notes: >
-      Captured from archived PR #201 snapshot in review-source.md:
-      one COMMENTED review event is present in the capture window.
-      This is run-local metric observability evidence only, not outcome utility proof.
+      review-source.md proves review_event_count=1 in the capture window,
+      but COMMENTED state plus generic review body is insufficient to classify
+      review_friction_count under the strict rule.
+    extensions:
+      review_event_count_observed: 1
 
   rework_count:
-    value: 4
-    evidence_status: "repo_local"
+    value: null
+    evidence_status: "missing_evidence"
     notes: >
-      Captured from PR #201 commit sequence as four follow-up refinement commits after
-      initialization. Recorded as run-local rework evidence, not a usefulness claim.
+      commit-source.md proves revision_commit_count=4, but review-driven rework is
+      not established because captured commits are not post-review and not explicitly
+      linked to review feedback.
+    extensions:
+      revision_commit_count_observed: 4
 
   false_block_count:
     value: 0
@@ -65,7 +70,13 @@ metrics:
 interpretation_limits:
   - "Validator-green is integrity evidence only, not outcome proof."
   - "This run does not close RM-002 or RM-005."
-  - "Captured non-null review/rework metrics are run-scoped and remain CLAIM_NOT_PROVEN for strong outcome utility."
+  - "review_event_count and revision_commit_count are observable, but review_friction_count and rework_count remain interpretation-limited."
+
+missing_evidence:
+  - item: "review_friction_count"
+    detail: "Captured evidence proves review_event_count=1, but not friction classification."
+  - item: "rework_count"
+    detail: "Captured evidence proves revision_commit_count=4, but not review-driven rework linkage."
 
 extensions:
   task_class: "documentation_contract_alignment"

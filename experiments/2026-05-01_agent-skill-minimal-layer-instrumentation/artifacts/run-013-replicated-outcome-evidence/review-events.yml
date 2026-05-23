@@ -2,23 +2,15 @@ schema_version: "1.0.0"
 contract: "review_events"
 run_id: "run-013-replicated-outcome-evidence"
 pr_ref: "https://github.com/heimgewebe/vibe-lab/pull/201"
-review_friction_count: 1
-rework_count: 4
+review_friction_count: 0
+rework_count: 0
 captured_at: "2026-05-23T07:25:00Z"
 evidence_status: "repo_local"
 review_thread_refs:
   - "github_review_id:PRR_kwDOR8ZYIc8AAAABA0cJiQ"
-rework_commit_refs:
-  - sha: "34ce0055c7a52f6f395dd6195a2eeeee6f0dbf52"
-    description: "docs(run-013): harden pre-execution task brief"
-  - sha: "ce3ed367257f54f3f4d969684ef8222eefa21788"
-    description: "docs(run-013): tighten evidence and inability semantics"
-  - sha: "bbf68756d3eb5900dd7c79fea60302522ea59db3"
-    description: "docs(run-013): forbid zeroing review absence artifacts"
-  - sha: "2efac086d6831721fb933ec8e325b9213798eb0e"
-    description: "docs(run-013): harden schema and roadmap wording"
 notes: >
   Snapshot capture for PR #201 at 2026-05-23T07:25:00Z (archived in review-source.md):
-  one COMMENTED review event is present, and four follow-up refinement commits are
-  observable after the initial task-brief commit. This artifact captures metric
-  observability only and does not assert outcome utility closure.
+  one COMMENTED review event is present. Under the strict classification rule,
+  no actionable feedback/rework trigger is captured; therefore review_friction_count
+  and rework_count remain 0 in this contract artifact. commit-source.md separately
+  records revision_commit_count=4 as observability evidence without rework classification.

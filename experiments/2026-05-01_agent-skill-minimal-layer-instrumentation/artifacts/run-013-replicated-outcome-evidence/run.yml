@@ -12,10 +12,10 @@ provenance:
   executor: "copilot-coding-agent:gpt-5.3-codex"
   source_status: "repo_local"
   notes: >
-    Replicated outcome-evidence run in a different task class
-    (documentation/contract alignment). Captures review_friction_count,
-    rework_count, and timing with repo-local artifacts, but keeps
-    interpretation conservative and does not upgrade RM-002/RM-005.
+    Replicated outcome-metric capture attempt in a different task class
+    (documentation/contract alignment). Review and commit sources are archived,
+    while review_friction_count and rework_count remain interpretation-limited.
+    No upgrade of RM-002/RM-005.
 
 artifacts:
   auditor_output:

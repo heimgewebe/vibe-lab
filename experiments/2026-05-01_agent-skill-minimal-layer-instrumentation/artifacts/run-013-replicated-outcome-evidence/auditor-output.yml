@@ -64,6 +64,8 @@ claims:
         status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md"
         status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md"
+        status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
         status: "repo_local"
 

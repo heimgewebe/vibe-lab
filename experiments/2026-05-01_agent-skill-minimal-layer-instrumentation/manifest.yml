@@ -138,6 +138,7 @@ experiment:
     - artifacts/run-013-replicated-outcome-evidence/make-validate.txt
     - artifacts/run-013-replicated-outcome-evidence/review-events.yml
     - artifacts/run-013-replicated-outcome-evidence/review-source.md
+    - artifacts/run-013-replicated-outcome-evidence/commit-source.md
     - artifacts/run-013-replicated-outcome-evidence/task-target-files.txt
     - artifacts/run-013-replicated-outcome-evidence/timing.txt
     - artifacts/run-013-replicated-outcome-evidence/TASK.md
