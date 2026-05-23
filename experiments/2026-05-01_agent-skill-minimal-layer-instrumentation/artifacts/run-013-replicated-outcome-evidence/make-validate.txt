@@ -4,7 +4,4 @@ $ make validate-run-bundle
 ✅ All run bundles consistent.
 
 $ make validate
-🔒 Ratchet Mode (Phase 2)
-✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
- No unregistered violations. No stale or over-permissive freeze entries.
 ✅ Validation passed.

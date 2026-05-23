@@ -48,6 +48,8 @@ claims:
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/changed-files.txt"
         status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/task-target-files.txt"
+        status: "repo_local"
       - path: "docs/policies/pr-run-evidence-policy.md"
         status: "repo_local"
       - path: "docs/playbooks/pr-run-evidence-pack.md"
@@ -59,6 +61,8 @@ claims:
     verdict: "CLAIM_NOT_PROVEN"
     evidence:
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-events.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md"
         status: "repo_local"
       - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
         status: "repo_local"

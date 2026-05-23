@@ -27,3 +27,5 @@ notes: >
   comparable usefulness run. It is outside the validator-test-hardening cluster and
   outside run-009's multi-artifact scaffold synthesis class. The run contributes
   metric capture evidence but does not close RM-002/RM-005 or upgrade outcome utility.
+  changed-files.txt archives full PR scope; task-target-files.txt archives the
+  2-4 semantic target files for this task class.

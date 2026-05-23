@@ -1,6 +1,6 @@
 # run-013: Replicated Outcome Evidence — Task Brief
 
-**Status:** PENDING — awaiting agent execution
+**Status:** EXECUTED / HISTORICAL TASK BRIEF — run bundle created; this file is not itself outcome evidence
 
 This file is a pre-execution task brief. It is not itself the run-013 evidence bundle
 and must not be counted as outcome evidence.

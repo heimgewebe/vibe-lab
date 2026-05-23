@@ -18,7 +18,8 @@ metrics:
     value: 0
     evidence_status: "repo_local"
     notes: >
-      Task scope is constrained to four documented files listed in changed-files.txt.
+      Full PR file scope is archived in changed-files.txt.
+      The semantic task target subset is archived in task-target-files.txt.
 
   unsupported_claim_count:
     value: 2
@@ -36,11 +37,12 @@ metrics:
     notes: "No validator/command-success claims are marked MISSING_EVIDENCE."
 
   review_friction_count:
-    value: 0
+    value: 1
     evidence_status: "repo_local"
     notes: >
-      Captured from PR #201 snapshot at artifact capture time: no review rounds present.
-      This is metric capture evidence only, not outcome utility proof.
+      Captured from archived PR #201 snapshot in review-source.md:
+      one COMMENTED review event is present in the capture window.
+      This is run-local metric observability evidence only, not outcome utility proof.
 
   rework_count:
     value: 4

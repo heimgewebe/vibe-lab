@@ -142,8 +142,10 @@ Ergaenzung 2026-05-20 (ohne Status-Hochstufung):
 - RM-002 und RM-005 bleiben offen; kein Upgrade auf erledigt/sufficient/pass.
 
 Ergaenzung 2026-05-23 (ohne Status-Hochstufung):
-- `run-013-replicated-outcome-evidence` fuegt replizierte Outcome-Evidence-Messdaten
-  fuer eine andere Task-Klasse (Documentation/Contract-Alignment) hinzu.
+- `run-013-replicated-outcome-evidence` dokumentiert einen replizierten
+  Outcome-Evidence-Erfassungsversuch in einer anderen Task-Klasse
+  (Documentation/Contract-Alignment); die Belegstaerke haengt von den
+  archivierten Review/Rework/Timing-Quellen ab.
 - Die Auswertung bleibt `CLAIM_NOT_PROVEN`; RM-002 und RM-005 bleiben offen,
   bis staerkere unabhaengige Outcome-Evidence vorliegt.
 

@@ -2,11 +2,12 @@ schema_version: "1.0.0"
 contract: "review_events"
 run_id: "run-013-replicated-outcome-evidence"
 pr_ref: "https://github.com/heimgewebe/vibe-lab/pull/201"
-review_friction_count: 0
+review_friction_count: 1
 rework_count: 4
 captured_at: "2026-05-23T07:25:00Z"
 evidence_status: "repo_local"
-review_thread_refs: []
+review_thread_refs:
+  - "github_review_id:PRR_kwDOR8ZYIc8AAAABA0cJiQ"
 rework_commit_refs:
   - sha: "34ce0055c7a52f6f395dd6195a2eeeee6f0dbf52"
     description: "docs(run-013): harden pre-execution task brief"
@@ -17,7 +18,7 @@ rework_commit_refs:
   - sha: "2efac086d6831721fb933ec8e325b9213798eb0e"
     description: "docs(run-013): harden schema and roadmap wording"
 notes: >
-  Snapshot capture for open PR #201 at 2026-05-23T07:25:00Z: no completed review rounds
-  are present, while four follow-up refinement commits are observable after the initial
-  task-brief commit. This artifact captures metric observability only and does not assert
-  outcome utility closure.
+  Snapshot capture for PR #201 at 2026-05-23T07:25:00Z (archived in review-source.md):
+  one COMMENTED review event is present, and four follow-up refinement commits are
+  observable after the initial task-brief commit. This artifact captures metric
+  observability only and does not assert outcome utility closure.
