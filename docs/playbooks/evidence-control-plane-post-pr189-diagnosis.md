@@ -41,12 +41,9 @@ Der aktuelle Stand enthält:
 
 1. Diagnose nach Merge PR #189.
 2. Umsetzung von Option A / Check C-2:
-    - `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in
-      `scripts/docmeta/validate_claim_evidence.py`.
+   - `REPO_LOCAL_EVIDENCE_PATH_NOT_FOUND` in `scripts/docmeta/validate_claim_evidence.py`.
 3. Umsetzung von Option B / Check C-1:
-    - `timing_artifact`-Kopplung für
-      `task_completion_time_observed.evidence_status=repo_local` in
-      `scripts/docmeta/validate_run_bundle.py`.
+   - `timing_artifact`-Kopplung fuer `task_completion_time_observed.evidence_status=repo_local` in `scripts/docmeta/validate_run_bundle.py`.
 
 Nicht enthalten:
 - CI-Global-Enforce für `review_evidence_artifact`.
@@ -267,6 +264,7 @@ Beleglage im aktuellen Stand:
   `empty-evidence-path`, `unknown-evidence-status`, `bad-schema-version`.
 - `make validate-run-evidence-pack-schema-tests` muss grün sein
   (`scripts/docmeta/test_run_evidence_pack_schema.py`).
+- PR-4 ist damit ueber Schema/Fixture-Coverage belegt; der semantische Claim-Evidence-Validator ist hier nicht der primaere Nachweis.
 
 **Ziel-Claims:** Formale PR-4-Checkliste (`[ ]` → `[x]`)
 
