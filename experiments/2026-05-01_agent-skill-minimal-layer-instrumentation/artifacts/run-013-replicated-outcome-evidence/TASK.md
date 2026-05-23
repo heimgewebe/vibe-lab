@@ -16,9 +16,12 @@ can be captured across a genuinely different task class.
 
 ## Motivation
 
-run-012 self-reports outcome utility as `not_proven`. The roadmap keeps EP-002 blocked
-because ≥3 comparable PRs exist but usefulness remains `insufficient_proof`. This run
-must provide independent, non-self-reported evidence or write an inability report.
+run-012 self-reports outcome utility as `not_proven`. The roadmap keeps RM-002/RM-005
+blocked because ≥3 comparable PRs exist but usefulness remains `insufficient_proof`.
+This run must provide independently reviewable source artifacts for review/rework
+metrics or write an inability report. Self-authored absence records may document
+missing review/rework evidence, but must not upgrade metric confidence beyond
+`repo_local` and must not be treated as independent outcome evidence.
 
 ## Task Class
 
@@ -93,6 +96,12 @@ an inability/limitation report instead of fabricating values.
 
 If review or rework evidence is absent, record the absence as `MISSING_EVIDENCE` with
 reason and add an explicit source artifact instead of inferring a zero value.
+
+If an inability report is written before a schema-valid run bundle can be produced, do
+not register run-013 as completed evidence. Register only the pre-execution/inability
+artifact if the manifest requires discoverability. If a schema-valid minimal bundle can
+be produced, all unavailable metrics must remain null/`MISSING_EVIDENCE` and
+`overall_verdict` must remain `CLAIM_NOT_PROVEN`.
 
 ## Validation (after bundle is created)
 
