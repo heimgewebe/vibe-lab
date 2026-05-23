@@ -2,6 +2,9 @@
 
 **Status:** PENDING — awaiting agent execution
 
+This file is a pre-execution task brief. It is not itself the run-013 evidence bundle
+and must not be counted as outcome evidence.
+
 **Bundle path:**
 `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/`
 
@@ -23,6 +26,25 @@ Choose a non-trivial task outside the validator-test-hardening cluster and outsi
 run-009's task class. Prefer a documentation/contract-alignment task touching exactly
 2–4 files with clear before/after reviewability.
 
+## Concrete Execution Target
+
+The executing agent must first propose the exact target task before creating the run bundle.
+
+The target task must satisfy all of the following:
+
+- touches exactly 2–4 files;
+- changes at least one normative or semi-normative document, not only generated output;
+- is outside validator-test-hardening and outside run-009's task class;
+- has a clear before/after claim that can be reviewed by another agent or reviewer;
+- produces changed-files evidence;
+- can receive or record review feedback before final metric interpretation;
+- does not upgrade RM-002 or RM-005.
+
+Suggested target class:
+Documentation/contract-alignment around roadmap/usefulness evidence semantics, for example
+clarifying how `review_friction_count`, `rework_count`, and
+`task_completion_time_observed` may and may not support RM-002/RM-005.
+
 ## Required Artifacts
 
 1. `run.yml`
@@ -35,6 +57,8 @@ run-009's task class. Prefer a documentation/contract-alignment task touching ex
 8. `make-validate.txt`
 9. `review-events.yml`
 10. `timing.txt`
+11. `review-source.txt` or `review-source.md`
+12. `inability-report.md` if any required evidence cannot be captured
 
 ## Constraints
 
@@ -44,11 +68,31 @@ run-009's task class. Prefer a documentation/contract-alignment task touching ex
 - Keep overall interpretation `CLAIM_NOT_PROVEN` unless evidence independently supports otherwise.
 - Treat validator-green as integrity evidence only, not outcome proof.
 - RM-002 and RM-005 must remain open.
+- Do not create the final run bundle until the exact target task is named and checked
+  against the constraints in this brief.
+
+## Metric Evidence Rule
+
+A metric may only be non-null if it is backed by an explicit source artifact.
+
+Allowed sources include:
+
+- PR review export;
+- Copilot review comments;
+- human review comment;
+- `git log` showing rework commits;
+- explicit no-review/no-rework artifact with timestamp and scope.
+
+Do not infer `review_friction_count` or `rework_count` from absence of evidence.
+Absence of review evidence is `MISSING_EVIDENCE`, not zero.
 
 ## Stop Condition
 
 If any required metric cannot be captured without self-report inflation, stop and write
 an inability/limitation report instead of fabricating values.
+
+If review or rework evidence is absent, record the absence as `MISSING_EVIDENCE` with
+reason and add an explicit source artifact instead of inferring a zero value.
 
 ## Validation (after bundle is created)
 
