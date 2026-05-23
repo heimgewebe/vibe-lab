@@ -32,10 +32,19 @@ Captured commit set:
   - explicit_review_link: no
 
 Classification result:
-- revision_commit_count: 4 follow-up refinement commits after initial task brief commit.
+- initial_task_brief_commit: 12d26c6d6b7503d80f90e450a54fbd6b011ac535
+- revision_commit_count: 4 follow-up refinement commits after the initial task brief commit.
+- counted_revision_commits:
+  - 34ce0055c7a52f6f395dd6195a2eeeee6f0dbf52
+  - ce3ed367257f54f3f4d969684ef8222eefa21788
+  - bbf68756d3eb5900dd7c79fea60302522ea59db3
+  - 2efac086d6831721fb933ec8e325b9213798eb0e
 - review_driven_rework_count: not proven from captured evidence.
-- Reason: no captured commit is post-review and explicitly linked to review feedback.
+- Interpretation: rework_count follows the repo contract definition
+  (follow-up commits revising prior claims). review_driven_rework_count is a stricter
+  non-contract interpretation and must not replace rework_count.
 
 Interpretation limit:
 This is a repo-local point-in-time commit snapshot. It supports revision activity
-observability but does not independently prove review-driven rework.
+observability and rework_count metric capture, but does not independently prove
+review-driven causal linkage or outcome improvement.

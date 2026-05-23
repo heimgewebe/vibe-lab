@@ -20,12 +20,15 @@ Snapshot summary (point-in-time):
   - github_review_id:PRR_kwDOR8ZYIc8AAAABA0cJiQ
 
 Classification rule used for run-013:
-- review_event_count increments when a review entry exists in the capture window.
-- review_friction_count increments only if captured review content contains actionable
-  criticism, requested correction, blocking concern, or explicit rework trigger.
-- A COMMENTED state alone is insufficient to classify friction.
+- review_friction_count follows the repo contract definition:
+  number of reviewer rounds observed before merge/closure in the captured PR history.
+- Captured review text and COMMENTED/non-COMMENTED state may describe context,
+  but do not redefine review_friction_count as actionable criticism or blocking concern.
+- The captured PR snapshot contains one review event before closure; therefore
+  review_friction_count is 1 for this capture window.
+- This remains repo_local metric evidence, not outcome utility proof.
 
 Interpretation limit:
 This is a point-in-time repo-local snapshot artifact. It supports metric observability
-for run-013 (including observed review_event_count in the capture window), but it is
+for run-013 (including observed review_friction_count=1 in the capture window), but it is
 not independent outcome proof and does not justify closing RM-002 or RM-005.

@@ -1,13 +1,17 @@
 # changed-files for run-013-replicated-outcome-evidence
-# generated_at: 2026-05-23T07:40:10Z
+# generated_at: 2026-05-23T08:37:53Z
 # base_ref: origin/main
 # merge_base: 09275b7e801c74342abe8442a9733c52860746c3
 # command: git --no-pager diff --name-only origin/main...HEAD
 # scope: full PR scope
 # semantic_task_target_subset: task-target-files.txt
 
+.vibe/orphan-policy.yml
+docs/_generated/artifact-taxonomy.json
+docs/_generated/artifact-taxonomy.md
 docs/_generated/doc-index.md
 docs/_generated/orphans.md
+docs/_generated/system-map.md
 docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md
 docs/playbooks/pr-run-evidence-pack.md
 docs/policies/pr-run-evidence-policy.md
