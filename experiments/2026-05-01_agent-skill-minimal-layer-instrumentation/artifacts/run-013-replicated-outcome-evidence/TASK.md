@@ -84,7 +84,7 @@ Allowed sources include:
 - Copilot review comments;
 - human review comment;
 - `git log` showing rework commits;
-- explicit no-review/no-rework artifact with timestamp and scope.
+- explicit no-review/no-rework artifact with timestamp and scope, only to document `MISSING_EVIDENCE` or absence-of-review context; it must not by itself justify `review_friction_count: 0` or `rework_count: 0`.
 
 Do not infer `review_friction_count` or `rework_count` from absence of evidence.
 Absence of review evidence is `MISSING_EVIDENCE`, not zero.
