@@ -67,7 +67,8 @@ clarifying how `review_friction_count`, `rework_count`, and
 
 - Do not edit prior run artifacts.
 - Do not mark usefulness/adoption/promotion as proven.
-- Do not change schemas unless validation proves impossible.
+- Do not change schemas in this run. If current schemas cannot represent the required
+  evidence without distortion, stop and write an inability/limitation report.
 - Keep overall interpretation `CLAIM_NOT_PROVEN` unless evidence independently supports otherwise.
 - Treat validator-green as integrity evidence only, not outcome proof.
 - RM-002 and RM-005 must remain open.
@@ -115,6 +116,9 @@ make validate
 ## Required Updates (after validation passes)
 
 - `experiment manifest.yml`: add run-013 artifacts, bump iteration/date.
-- `docs/roadmap.md`: add note that run-013 adds replicated outcome-evidence data
-  but does not by itself close RM-002/RM-005.
+- `docs/roadmap.md`: add a note that run-013 records a replicated
+  outcome-evidence attempt, with evidence strength determined by the produced
+  artifacts; do not state that replicated outcome evidence exists unless
+  review/rework/timing evidence is actually captured. In all cases,
+  RM-002/RM-005 remain open unless separately supported by stronger evidence.
 - Regenerate generated docs if `make validate` requires it.
