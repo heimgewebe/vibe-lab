@@ -9668,6 +9668,406 @@
       "status": "classified"
     },
     {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-output.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/comparability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/evidence-basis.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/independence.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/measurement.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/targeted-tests.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/auditor-output.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/changed-files.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/comparability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/evidence-pack.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/make-validate.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/measurement.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-events.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/task-target-files.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/timing.txt",
+      "status": "classified"
+    },
+    {
       "authority": "result_interpretation",
       "catchall_match": false,
       "enforcement": [
@@ -14138,6 +14538,29 @@
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/measurement.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run.yml",
     "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/targeted-tests.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/comparability.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/evidence-basis.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/evidence-pack.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/independence.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/measurement.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/targeted-tests.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/auditor-output.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/changed-files.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/comparability.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/evidence-pack.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/make-validate.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/measurement.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-events.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run.yml",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/task-target-files.txt",
+    "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/timing.txt",
     "experiments/_template/artifacts/README.md",
     "tests/fixtures/claim_evidence/invalid/bad-schema-version.yml",
     "tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml",
@@ -14177,19 +14600,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 293,
+      "historical_record": 316,
       "navigation_surface": 7,
       "test_expectation": 35
     },
     "by_layer": {
       "docs": 7,
-      "experiment": 293,
+      "experiment": 316,
       "test": 35
     },
     "by_matched_pattern": {
       "docs/**": 7,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 272,
+      "experiments/*/artifacts/**": 295,
       "tests/fixtures/**": 35
     },
     "high_risk_count": 35,
@@ -14225,16 +14648,16 @@
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
           "top_basenames": {
-            "auditor-output.yml": 11,
-            "comparability.yml": 10,
-            "evidence-pack.yml": 11,
+            "auditor-output.yml": 13,
+            "changed-files.txt": 8,
+            "comparability.yml": 12,
+            "evidence-pack.yml": 13,
             "index.ts": 8,
-            "make-validate.txt": 10,
-            "measurement.yml": 11,
+            "make-validate.txt": 11,
+            "measurement.yml": 13,
             "refactored_processor.py": 15,
-            "run.yml": 11,
-            "targeted-tests.txt": 9,
-            "test_processor.py": 8
+            "run.yml": 13,
+            "targeted-tests.txt": 11
           },
           "top_parent_dirs": {
             "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
@@ -14246,9 +14669,9 @@
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing": 9,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation": 9,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation": 11,
-            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep": 9
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence": 14
           },
-          "total": 272
+          "total": 295
         },
         {
           "high_risk_count": 0,
@@ -14299,16 +14722,16 @@
           "high_risk_count": 0,
           "matched_pattern": "experiments/*/artifacts/**",
           "top_basenames": {
-            "auditor-output.yml": 11,
-            "comparability.yml": 10,
-            "evidence-pack.yml": 11,
+            "auditor-output.yml": 13,
+            "changed-files.txt": 8,
+            "comparability.yml": 12,
+            "evidence-pack.yml": 13,
             "index.ts": 8,
-            "make-validate.txt": 10,
-            "measurement.yml": 11,
+            "make-validate.txt": 11,
+            "measurement.yml": 13,
             "refactored_processor.py": 15,
-            "run.yml": 11,
-            "targeted-tests.txt": 9,
-            "test_processor.py": 8
+            "run.yml": 13,
+            "targeted-tests.txt": 11
           },
           "top_parent_dirs": {
             "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
@@ -14320,9 +14743,9 @@
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing": 9,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation": 9,
             "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation": 11,
-            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep": 9
+            "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence": 14
           },
-          "total": 272
+          "total": 295
         },
         {
           "high_risk_count": 35,
@@ -14426,16 +14849,16 @@
         "high_risk_count": 0,
         "matched_pattern": "experiments/*/artifacts/**",
         "top_basenames": {
-          "auditor-output.yml": 11,
-          "comparability.yml": 10,
-          "evidence-pack.yml": 11,
+          "auditor-output.yml": 13,
+          "changed-files.txt": 8,
+          "comparability.yml": 12,
+          "evidence-pack.yml": 13,
           "index.ts": 8,
-          "make-validate.txt": 10,
-          "measurement.yml": 11,
+          "make-validate.txt": 11,
+          "measurement.yml": 13,
           "refactored_processor.py": 15,
-          "run.yml": 11,
-          "targeted-tests.txt": 9,
-          "test_processor.py": 8
+          "run.yml": 13,
+          "targeted-tests.txt": 11
         },
         "top_parent_dirs": {
           "experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental": 9,
@@ -14447,9 +14870,9 @@
           "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing": 9,
           "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation": 9,
           "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation": 11,
-          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep": 9
+          "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence": 14
         },
-        "total": 272
+        "total": 295
       },
       {
         "high_risk_count": 0,
@@ -14665,14 +15088,14 @@
       "diagnostic_signal": 7,
       "evidence_log": 16,
       "generated_projection": 10,
-      "historical_record": 293,
+      "historical_record": 316,
       "implementation_behavior": 12,
       "navigation_surface": 23,
       "normative_contract": 16,
       "procedure_contract": 102,
       "raw_capture": 23,
       "result_interpretation": 56,
-      "runtime_observation": 73,
+      "runtime_observation": 75,
       "schema_truth": 17,
       "sovereign_source": 3,
       "test_expectation": 170,
@@ -14684,11 +15107,11 @@
       "ci_blocking": 286,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 352,
+      "no_rewrite": 375,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 242
+      "review_required": 244
     },
     "by_layer": {
       "agent": 11,
@@ -14697,26 +15120,26 @@
       "catalog": 12,
       "contract": 29,
       "docs": 36,
-      "experiment": 496,
+      "experiment": 521,
       "export": 15,
       "generated": 8,
       "governance": 55,
       "test": 170
     },
     "by_lifecycle": {
-      "append_only": 352,
+      "append_only": 375,
       "handcrafted": 438,
       "regenerated": 18,
-      "revision_with_reason": 53,
+      "revision_with_reason": 55,
       "superseded_not_rewritten": 2
     },
-    "classified": 863,
+    "classified": 888,
     "conflict": 0,
-    "fallback_classified": 335,
-    "fallback_share": 0.388180764774044,
+    "fallback_classified": 358,
+    "fallback_share": 0.40315315315315314,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 863,
+    "total": 888,
     "unknown": 0
   },
   "transition_risk_hints": [],

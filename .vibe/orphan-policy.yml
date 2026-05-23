@@ -16,3 +16,7 @@ expected_orphans:
     reason: "external_auditor_inability_archive"
   - pattern: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md"
     reason: "run_local_task_brief_archive"
+  - pattern: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md"
+    reason: "run_local_review_source_archive"
+  - pattern: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md"
+    reason: "run_local_commit_source_archive"

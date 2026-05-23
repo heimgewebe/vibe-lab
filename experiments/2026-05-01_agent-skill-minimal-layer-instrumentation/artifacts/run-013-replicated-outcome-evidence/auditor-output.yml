@@ -88,3 +88,9 @@ extensions:
   task_class: "documentation_contract_alignment"
   blocker_target: ["RM-002", "RM-005"]
   calibration: "claim-conservative"
+  review_rework_semantics_note: >
+    review-events.yml uses integer-only contract fields and therefore records
+    capture-window classifications (review_friction_count=0, rework_count=0).
+    Canonical outcome interpretation for run-013 is measurement.yml, where both
+    metrics remain null/missing_evidence because outcome-level friction/rework
+    proof is insufficient.

@@ -71,6 +71,7 @@ interpretation_limits:
   - "Validator-green is integrity evidence only, not outcome proof."
   - "This run does not close RM-002 or RM-005."
   - "review_event_count and revision_commit_count are observable, but review_friction_count and rework_count remain interpretation-limited."
+  - "review-events.yml keeps integer-only capture-window classifications (0/0) due to contract constraints; canonical outcome interpretation is this measurement file (null/missing_evidence for review_friction_count and rework_count)."
 
 missing_evidence:
   - item: "review_friction_count"
