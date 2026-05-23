@@ -104,6 +104,20 @@ Kurzablauf fuer jede PR:
 3. Fehlende Evidence explizit als fehlend markieren.
 4. Keine grossen Logs ins Repo pushen; stattdessen kleine repo-lokale Artefakte oder stabile externe Referenzen nutzen.
 
+## G1. Review/Rework Metric Capture (replicated outcome attempts)
+
+Fuer Runs, die `review_friction_count` und `rework_count` explizit erfassen wollen,
+gelten zusaetzlich diese Leitplanken:
+
+1. Ein `review-events.yml`-Artefakt ist Pflicht, wenn die Metriken `repo_local` sind.
+2. Die Quelle muss ein konkretes Capture-Fenster dokumentieren (z. B. PR-API-Snapshot,
+  review export, commit log), inklusive Zeitstempel.
+3. `0` ist nur als beobachteter Snapshot-Wert zulaessig, nicht als automatisch
+  angenommener Default bei fehlender Evidence.
+4. Nicht-null Metriken belegen Metrik-Erfassbarkeit, nicht Outcome-Nutzen.
+5. Auch bei validator-green bleibt die Interpretation auf Integritaet beschraenkt,
+  bis unabhaengige Replikation und staerkere Audit-Evidence vorliegen.
+
 ## H. Nicht-Ziele
 
 Dieses Playbook leistet bewusst nicht:

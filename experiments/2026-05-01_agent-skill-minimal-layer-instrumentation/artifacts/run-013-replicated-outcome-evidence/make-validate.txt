@@ -1,0 +1,7 @@
+$ make validate-run-bundle
+🧷 Validating experiment run bundles...
+🧷 Validating experiment run bundles...
+✅ All run bundles consistent.
+
+$ make validate
+✅ Validation passed.

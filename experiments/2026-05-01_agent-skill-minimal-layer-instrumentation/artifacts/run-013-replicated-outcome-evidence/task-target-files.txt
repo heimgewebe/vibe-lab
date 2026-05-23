@@ -1,0 +1,4 @@
+docs/policies/pr-run-evidence-policy.md
+docs/playbooks/pr-run-evidence-pack.md
+docs/roadmap.md
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml

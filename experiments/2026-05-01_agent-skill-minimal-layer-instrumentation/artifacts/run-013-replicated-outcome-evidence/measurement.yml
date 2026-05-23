@@ -1,0 +1,78 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-013-replicated-outcome-evidence"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.3-codex"
+  executor: "copilot-coding-agent"
+  role: >
+    Execute a non-trivial documentation/contract-alignment task and capture
+    review/rework/timing metrics in a schema-valid replicated outcome-evidence run
+    without upgrading usefulness/adoption/promotion claims.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: >
+      Full PR file scope is archived in changed-files.txt.
+      The semantic task target subset is archived in task-target-files.txt.
+
+  unsupported_claim_count:
+    value: 2
+    evidence_status: "derived_from_auditor_output"
+    notes: "Two auditor claims remain non-PASS and preserve CLAIM_NOT_PROVEN discipline."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence paths are repo-relative and resolvable."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "No validator/command-success claims are marked MISSING_EVIDENCE."
+
+  review_friction_count:
+    value: 1
+    evidence_status: "repo_local"
+    notes: >
+      review-source.md records one reviewer round in the captured PR window.
+      This follows the repo-wide review-events contract definition and is
+      observability evidence only, not outcome utility proof.
+
+  rework_count:
+    value: 4
+    evidence_status: "repo_local"
+    notes: >
+      commit-source.md identifies four follow-up refinement commits after the
+      initial task brief commit. This follows the repo-wide review-events
+      contract definition and is observability evidence only, not proof of
+      review-driven or causal improvement.
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block observed during run-013 artifact production."
+
+  task_completion_time_observed:
+    value: 2100
+    evidence_status: "repo_local"
+    notes: >
+      Captured from timing.txt as a run-local manual timing snapshot.
+
+interpretation_limits:
+  - "Validator-green is integrity evidence only, not outcome proof."
+  - "This run does not close RM-002 or RM-005."
+  - "review_friction_count=1 and rework_count=4 are repo_local observability metrics, not outcome utility proof."
+  - "Independent replication and further cross-task evidence remain required for strong outcome claims."
+
+extensions:
+  task_class: "documentation_contract_alignment"
+  task_cluster_distinct_from:
+    - "validator-test-hardening"
+    - "multi-artifact-scaffold-synthesis"
+  metric_capture_interpretation: "repo_local observability evidence; does not prove outcome causal linkage or utility improvement."

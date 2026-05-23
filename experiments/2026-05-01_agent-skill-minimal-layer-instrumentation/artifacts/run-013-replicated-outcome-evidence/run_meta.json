@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-013-replicated-outcome-evidence",
+  "generated_at": "2026-05-23T07:25:00Z",
+  "executor": "copilot-coding-agent:gpt-5.3-codex",
+  "command": "python3 scripts/docmeta/test_validate_run_bundle.py && python3 scripts/docmeta/test_validate_claim_evidence.py && make validate-run-bundle && make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt",
+  "provenance_level": "self_reported",
+  "notes": "Replicated outcome-metric capture attempt in a documentation/contract-alignment task class. Timing is captured as repo_local; review_friction_count=1 and rework_count=4 are observable via review-source.md, commit-source.md, and review-events.yml. These values are repo_local observability metrics only and do not prove outcome utility, review-driven improvement, or causal friction reduction."
+}

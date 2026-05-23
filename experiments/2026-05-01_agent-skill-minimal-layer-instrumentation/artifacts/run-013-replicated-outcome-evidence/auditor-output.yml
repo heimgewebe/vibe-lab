@@ -1,0 +1,96 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-013-replicated-outcome-evidence"
+pr_ref: "https://github.com/heimgewebe/vibe-lab/pull/201"
+auditor:
+  name: "evidence-reconciliation-auditor"
+  executor: "copilot-coding-agent:gpt-5.3-codex"
+  date: "2026-05-23"
+overall_verdict: "CLAIM_NOT_PROVEN"
+
+claims:
+  - id: "claim-001"
+    text: "Governance utility is preserved: the run records measurable evidence while explicitly blocking premature upgrades."
+    type: "governance_utility"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Method utility is preserved: validator-green is treated as integrity evidence only."
+    type: "method_utility"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/make-validate.txt"
+        status: "repo_local"
+
+  - id: "claim-003"
+    text: "Strong outcome utility is independently proven by run-013 alone."
+    type: "outcome_utility"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+
+  - id: "claim-004"
+    text: "Task diversity is demonstrated for a different non-trivial class (documentation/contract alignment)."
+    type: "task_diversity"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/task-target-files.txt"
+        status: "repo_local"
+      - path: "docs/policies/pr-run-evidence-policy.md"
+        status: "repo_local"
+      - path: "docs/playbooks/pr-run-evidence-pack.md"
+        status: "repo_local"
+
+  - id: "claim-005"
+    text: "Review/rework friction reduction is strongly proven across independent outcome runs."
+    type: "review_rework_friction_reduction"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-events.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+
+  - id: "claim-006"
+    text: "Upgrade blockers are still present; RM-002 and RM-005 must remain open."
+    type: "upgrade_blockers_present"
+    verdict: "PASS"
+    evidence:
+      - path: "docs/roadmap.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml"
+        status: "repo_local"
+
+required_next_proof:
+  - "Independent external outcome audit beyond same-agent-family self-report context."
+  - "Further replicated review/rework evidence across additional task classes."
+  - "Stronger timing evidence (ci_artifact or external_verified) for outcome interpretation upgrades."
+
+extensions:
+  task_class: "documentation_contract_alignment"
+  blocker_target: ["RM-002", "RM-005"]
+  calibration: "claim-conservative"
+  review_rework_semantics_note: >
+    review_friction_count and rework_count now follow the repo contract definition
+    with repo_local values (1 and 4 respectively). review-events.yml records the same
+    values with auditable refs (review_thread_refs and rework_commit_refs). This is
+    observability evidence only; it does not prove review-driven improvement, outcome
+    utility, or causal friction reduction. RM-002/RM-005 remain open.

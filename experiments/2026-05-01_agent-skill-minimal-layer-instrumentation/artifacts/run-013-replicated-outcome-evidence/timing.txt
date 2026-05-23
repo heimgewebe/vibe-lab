@@ -1,0 +1,11 @@
+started_at: "2026-05-23T06:50:00Z"
+finished_at: "2026-05-23T07:25:00Z"
+duration_seconds: 2100
+capture_mode: "repo_local_manual_capture"
+evidence_status: "repo_local"
+limitation_note: >
+  Manual run-local timing capture for run-013 artifact preparation and validation.
+  This supports metric observability only and is not independently verified.
+upgrade_path: >
+  Upgrade to ci_artifact or external_verified by linking timing to CI job duration
+  or an independently timestamped workflow execution.

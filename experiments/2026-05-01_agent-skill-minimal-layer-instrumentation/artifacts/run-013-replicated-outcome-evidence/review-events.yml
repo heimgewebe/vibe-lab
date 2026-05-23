@@ -1,0 +1,21 @@
+schema_version: "1.0.0"
+contract: "review_events"
+run_id: "run-013-replicated-outcome-evidence"
+pr_ref: "https://github.com/heimgewebe/vibe-lab/pull/201"
+review_friction_count: 1
+rework_count: 4
+captured_at: "2026-05-23T07:25:00Z"
+evidence_status: "repo_local"
+review_thread_refs:
+  - "github_review_id:PRR_kwDOR8ZYIc8AAAABA0cJiQ"
+rework_commit_refs:
+  - "34ce0055c7a52f6f395dd6195a2eeeee6f0dbf52"
+  - "ce3ed367257f54f3f4d969684ef8222eefa21788"
+  - "bbf68756d3eb5900dd7c79fea60302522ea59db3"
+  - "2efac086d6831721fb933ec8e325b9213798eb0e"
+notes: >
+  Snapshot capture for PR #201 at 2026-05-23T07:25:00Z (archived in review-source.md and commit-source.md):
+  review_friction_count=1 (one reviewer round observed before closure); rework_count=4 (four follow-up commits)
+  follow the .vibe/review-rework-artifact.contract.md semantics. This is repo_local observability
+  evidence only; it does not prove reduced friction, does not prove causal outcome utility, and does not
+  close RM-002/RM-005.

@@ -1,0 +1,34 @@
+# changed-files for run-013-replicated-outcome-evidence
+# generated_at: 2026-05-23T08:37:53Z
+# base_ref: origin/main
+# merge_base: 09275b7e801c74342abe8442a9733c52860746c3
+# command: git --no-pager diff --name-only origin/main...HEAD
+# scope: full PR scope
+# semantic_task_target_subset: task-target-files.txt
+
+.vibe/orphan-policy.yml
+docs/_generated/artifact-taxonomy.json
+docs/_generated/artifact-taxonomy.md
+docs/_generated/doc-index.md
+docs/_generated/orphans.md
+docs/_generated/system-map.md
+docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md
+docs/playbooks/pr-run-evidence-pack.md
+docs/policies/pr-run-evidence-policy.md
+docs/roadmap.md
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/TASK.md
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/auditor-output.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/changed-files.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/commit-source.md
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/comparability.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/evidence-pack.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/make-validate.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/measurement.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-events.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run.yml
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run_meta.json
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/task-target-files.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/timing.txt
+experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
