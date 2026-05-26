@@ -35,9 +35,14 @@ This gate blocks any Outcome-Upgrade until the series has enough comparable runs
 - `auditor-output.yml`
 - `evidence-pack.yml`
 - `comparability.yml`
-- `review-events.yml` when review/rework claims are made
-- a timing artifact when duration or friction is claimed
-- `make-validate.txt` or CI evidence when validity is claimed
+- `changed-files.txt`
+- `timing.txt`
+- `make-validate.txt`
+- `review-events.yml` only when review/rework claims are made
+
+For contract-/documentation-alignment runs in this series:
+- `outcome_upgrade_allowed` must be `false`
+- no promotion, adoption, or validator-architecture claim
 
 ## Hard Rules
 - No Outcome-Upgrade with only run-local, self-reported, or partially independent evidence.

@@ -1,0 +1,7 @@
+ M docs/_generated/promotion-readiness.json
+ M docs/playbooks/outcome-evidence-replication-series-gate.md
+ M docs/roadmap.md
+ M experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
+ M experiments/2026-05-25_outcome-evidence-replication-series/method.md
+ M experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
+?? experiments/2026-05-25_outcome-evidence-replication-series/artifacts/
