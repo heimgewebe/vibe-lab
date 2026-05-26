@@ -3,15 +3,33 @@ schema_version: "0.1.0"
 experiment:
   name: "outcome-evidence-replication-series"
   hypothesis: "Eine Outcome-Evidence-Replication-Series kann RM-002/RM-005/EP-002 nur dann belastbar adressieren, wenn Task-Diversitaet, Auditor-Unabhaengigkeit, Negativkontrolle und run-uebergreifende Metrik-Evidence gemeinsam erfuellt sind."
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - artifacts/run-001-contract-documentation-alignment/run.yml
+    - results/evidence.jsonl
   created: "2026-05-25"
-  updated: "2026-05-25"
+  updated: "2026-05-26"
   author: "GitHub Copilot"
-  iteration: 1
+  iteration: 2
   evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: "Die Gate-Wirksamkeit waere nicht belegt, wenn die Series trotz fehlender Vergleichbarkeit, fehlender starker Unabhaengigkeit oder fehlender stabiler Negativkontrolle ein Outcome-Upgrade erlauben wuerde."
+    counter_hypotheses:
+      - id: gate_without_effect
+        statement: "Der Gate-Scaffold erzeugt nur Dokumentationskonsistenz, verhindert aber keine verfruehten Outcome-Upgrades in realen Runs."
+        assessment:
+          status: checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: experiments/2026-05-25_outcome-evidence-replication-series/method.md
+            - path: experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
+          limitations:
+            - "Der erste Run ist nur contract_documentation_alignment und nicht vergleichbar"
+            - "independence_status ist partial"
+          confidence: low
 
 context:
   tools: ["VS Code", "GitHub Copilot"]

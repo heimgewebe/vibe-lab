@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-001-contract-documentation-alignment",
+  "generated_at": "2026-05-26T14:08:10Z",
+  "executor": "copilot-coding-agent:gpt-5.3-codex",
+  "command": "make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-contract-documentation-alignment/make-validate.txt",
+  "provenance_level": "self_reported",
+  "notes": "First real run for contract/documentation alignment in the outcome-evidence-replication-series. No outcome upgrade, no CLAIM_NOT_PROVEN upgrade, no promotion, no adoption."
+}

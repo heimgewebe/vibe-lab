@@ -1,0 +1,66 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-001-contract-documentation-alignment"
+
+auditor_verdict: "PASS"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.3-codex"
+  executor: "copilot-coding-agent"
+  role: >
+    Execute the first real gate-application run in task class
+    contract_documentation_alignment and preserve strict no-upgrade discipline.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Changed file scope is archived in changed-files.txt."
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "All claims in auditor-output.yml are PASS."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence paths are repo-local and resolvable."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "make validate output is archived in make-validate.txt with exit code 0."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim made in this run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim made in this run."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block observed."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "timing.txt records capture metadata only; no strong timing claim is made."
+
+interpretation_limits:
+  - "This run applies the gate but does not perform any outcome upgrade."
+  - "This run does not claim promotion, adoption, or causal effectiveness."
+  - "review_friction_count and rework_count remain missing_evidence by design."
+
+extensions:
+  series: "outcome-evidence-replication-series"
+  task_class: "contract_documentation_alignment"
+  comparability_scope: "same outcome-evidence gate family"
+  outcome_upgrade_allowed: false
+  independence_status: "partial"

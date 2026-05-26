@@ -156,6 +156,14 @@ Ergaenzung 2026-05-25 (ohne Status-Hochstufung):
 - RM-002, RM-005 und EP-002 bleiben offen.
 - Keine Promotion, keine Adoption, keine Status-Hochstufung.
 
+Ergaenzung 2026-05-26 (Experiment-Statuswechsel auf `testing`, ohne Outcome-/Promotion-/Adoption-Hochstufung):
+- Erster realer Series-Run ausgefuehrt:
+  `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/`
+- Task-Klasse: `contract_documentation_alignment`; comparability_scope:
+  `same outcome-evidence gate family`; independence_status: `partial`.
+- Outcome-Upgrade bleibt explizit deaktiviert (`outcome_upgrade_allowed: false`).
+- RM-002, RM-005 und EP-002 bleiben offen; keine Promotion, keine Adoption und kein Outcome-Upgrade.
+
 ---
 
 ## 3. Entscheidungspunkte

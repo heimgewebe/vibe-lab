@@ -14,11 +14,12 @@ A usable outcome conclusion requires task diversity, auditor independence, a sta
 
 ### Procedure
 
-1. Keep the series in designed state (planned-only; no runs executed) until the gate playbook is satisfied.
-2. Record each later run with the required artifact bundle.
-3. Classify each run by task class and comparability.
-4. Distinguish full independence from partial independence.
-5. Preserve a negative control with expected `CLAIM_NOT_PROVEN`.
+1. Execute `run-001-contract-documentation-alignment` as the first real series run.
+2. Record the run with the required artifact bundle (`run.yml`, `measurement.yml`, `auditor-output.yml`, `evidence-pack.yml`, `comparability.yml`, `changed-files.txt`, `timing.txt`, `make-validate.txt`).
+3. Classify the run as `task_class: contract_documentation_alignment` within the same outcome-evidence gate family.
+4. Mark independence as `partial` unless a Human Reviewer or another AI system / model family is involved.
+5. Keep `outcome_upgrade_allowed: false` and do not claim promotion, adoption, or outcome upgrade from this run.
+6. Preserve a negative control with expected `CLAIM_NOT_PROVEN` in later runs.
 
 ### Metrics
 
@@ -30,7 +31,7 @@ A usable outcome conclusion requires task diversity, auditor independence, a sta
 
 ### Success Criteria
 
-The hypothesis is supported only if the full gate criteria are met across the series. Otherwise the series remains a planning scaffold.
+The hypothesis is supported only if the full gate criteria are met across multiple runs. A single run may improve alignment evidence but does not justify outcome upgrade.
 
 ## Variables
 
@@ -45,3 +46,4 @@ The hypothesis is supported only if the full gate criteria are met across the se
 - A single run can look convincing while still being only local evidence.
 - Same-family different-session review is not full independence.
 - Without a stable negative control, the series can overstate its claim.
+- Contract-/documentation-alignment evidence is necessary but not sufficient for RM-002/RM-005/EP-002 closure.

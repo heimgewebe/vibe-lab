@@ -1,0 +1,57 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-001-contract-documentation-alignment"
+auditor:
+  name: "self-audit"
+  executor: "copilot-coding-agent:gpt-5.3-codex"
+  date: "2026-05-26"
+auditor_date: "2026-05-26"
+overall_verdict: "PASS"
+
+claims:
+  - id: "claim-001"
+    text: "Run bundle contains all required mandatory artifacts for run-001."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/evidence-pack.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Comparability metadata is declared and outcome upgrade remains disabled."
+    type: "comparability_metadata"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml"
+        status: "repo_local"
+
+  - id: "claim-003"
+    text: "No outcome upgrade, no CLAIM_NOT_PROVEN upgrade, no promotion, and no adoption are claimed."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/results/result.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml"
+        status: "repo_local"
+
+required_next_proof:
+  - "At least 3 additional comparable runs in the same gate family."
+  - "At least 2 runs with independent review and at least 1 with full independence."
+  - "A stable negative control with expected CLAIM_NOT_PROVEN."
