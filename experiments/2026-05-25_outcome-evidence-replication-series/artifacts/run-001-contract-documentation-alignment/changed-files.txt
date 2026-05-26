@@ -1,17 +1,55 @@
-M	docs/_generated/promotion-readiness.json
-M	docs/playbooks/outcome-evidence-replication-series-gate.md
-M	docs/roadmap.md
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/auditor-output.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/evidence-pack.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/measurement.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run_meta.json
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/timing.txt
-M	experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
-M	experiments/2026-05-25_outcome-evidence-replication-series/method.md
-M	experiments/2026-05-25_outcome-evidence-replication-series/results/decision.yml
-M	experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl
-M	experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
+# Changed Files (run-001-contract-documentation-alignment)
+
+Generated: 2026-05-26T14:08:10Z
+Run: run-001-contract-documentation-alignment
+Base: merge-base with origin/main
+Command: git diff --name-status "$BASE"...HEAD
+Scope: first real outcome-evidence-replication-series run bundle plus required experiment bookkeeping only
+
+File List
+=========
+
+docs/_generated/promotion-readiness.json [modify]
+docs/playbooks/outcome-evidence-replication-series-gate.md [modify]
+docs/roadmap.md [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/auditor-output.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/evidence-pack.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/measurement.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run_meta.json [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/timing.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/method.md [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/decision.yml [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/result.md [modify]
+
+Scope Boundary
+==============
+
+INCLUDED:
+- Run-001 artifact bundle for contract_documentation_alignment.
+- Experiment manifest/evidence/result/decision/method updates needed to move the series from designed scaffold to executed run-001.
+- Gate playbook update to list run-001 mandatory artifacts.
+- Roadmap note for executed run-001 without RM/EP closure.
+- Generated promotion-readiness dry-run update caused by execution_status=executed.
+
+EXCLUDED:
+- Any outcome upgrade.
+- Any CLAIM_NOT_PROVEN upgrade.
+- Any adoption or promotion claim.
+- Validator implementation changes.
+- New schemas.
+- CI hard-fail or ratchet changes.
+- Additional runs beyond run-001.
+- Review/rework claims or fabricated review-events.yml.
+- Full independence claim.
+
+Scope Drift Assessment
+======================
+
+scope_drift_count: 0
+Reason: all changed files are either run-001 evidence artifacts, required experiment bookkeeping, the gate/roadmap coordination text, or generated promotion-readiness diagnostics declared in scope.
