@@ -218,15 +218,17 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [],
       "notes": [],
       "path": "experiments/2026-05-25_outcome-evidence-replication-series",
       "promotion_ready": true,
-      "status": "designed",
-      "warnings": []
+      "status": "testing",
+      "warnings": [
+        "falsifiability_assessment_inconclusive"
+      ]
     }
   ],
   "mode": "dry_run",
@@ -236,7 +238,7 @@
     "historical_escape": 1,
     "not_ready": 12,
     "ready": 3,
-    "warnings": 2
+    "warnings": 3
   },
   "trigger": "need_for_reproducibility"
 }
