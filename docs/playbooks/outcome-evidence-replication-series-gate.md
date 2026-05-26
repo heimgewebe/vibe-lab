@@ -1,7 +1,7 @@
 ---
 title: "Playbook — Outcome-Evidence-Replication-Series Gate"
 status: draft
-canonicality: exploratory
+canonicality: operative
 relations:
   - type: references
     target: ../roadmap.md
