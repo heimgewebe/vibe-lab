@@ -1,4 +1,17 @@
- M experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt
- M experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt
- M experiments/2026-05-25_outcome-evidence-replication-series/results/decision.yml
- M experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl
+M	docs/_generated/promotion-readiness.json
+M	docs/playbooks/outcome-evidence-replication-series-gate.md
+M	docs/roadmap.md
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/auditor-output.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/evidence-pack.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/measurement.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run_meta.json
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/timing.txt
+M	experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
+M	experiments/2026-05-25_outcome-evidence-replication-series/method.md
+M	experiments/2026-05-25_outcome-evidence-replication-series/results/decision.yml
+M	experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl
+M	experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
