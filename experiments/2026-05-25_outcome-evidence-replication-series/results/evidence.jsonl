@@ -1,0 +1,1 @@
+{"event_type":"observation","timestamp":"2026-05-25T00:00:00Z","iteration":1,"metric":"series_scaffold_status","value":"planned_not_executed","context":"outcome-evidence-replication-series scaffold","notes":"No experiment runs executed; no outcome claim, promotion claim, adoption claim, or CLAIM_NOT_PROVEN upgrade derived."}

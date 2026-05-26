@@ -1,0 +1,23 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-evidence-replication-series"
+  hypothesis: "Eine Outcome-Evidence-Replication-Series kann RM-002/RM-005/EP-002 nur dann belastbar adressieren, wenn Task-Diversitaet, Auditor-Unabhaengigkeit, Negativkontrolle und run-uebergreifende Metrik-Evidence gemeinsam erfuellt sind."
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-05-25"
+  updated: "2026-05-25"
+  author: "GitHub Copilot"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools: ["VS Code", "GitHub Copilot"]
+  language: "Markdown"
+  environment: "Linux workspace"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
