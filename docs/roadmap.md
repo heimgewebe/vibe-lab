@@ -4,7 +4,7 @@ status: active
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-05-20"
+updated: "2026-05-25"
 relations:
   - type: references
     target: masterplan.md
@@ -34,6 +34,8 @@ relations:
     target: evaluations/rrg03-remediation-strategy-comparison.md
   - type: references
     target: playbooks/evidence-control-plane-roadmap-checklist.md
+  - type: references
+    target: playbooks/outcome-evidence-replication-series-gate.md
   - type: references
     target: playbooks/plan-execution-checklist.md
   - type: references
@@ -147,6 +149,12 @@ Ergaenzung 2026-05-23 (ohne Status-Hochstufung):
   Die Metriken bleiben run-lokal und begruenden kein Outcome-Upgrade.
 - Die Auswertung bleibt `CLAIM_NOT_PROVEN`; RM-002 und RM-005 bleiben offen,
   bis staerkere unabhaengige Outcome-Evidence vorliegt.
+
+Ergaenzung 2026-05-25 (ohne Status-Hochstufung):
+- Neues Planungs-Scaffold: `experiments/2026-05-25_outcome-evidence-replication-series/`
+- Neues Gate-Playbook: `docs/playbooks/outcome-evidence-replication-series-gate.md`
+- RM-002, RM-005 und EP-002 bleiben offen.
+- Keine Promotion, keine Adoption, keine Status-Hochstufung.
 
 ---
 
