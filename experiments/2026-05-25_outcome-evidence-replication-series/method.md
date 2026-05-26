@@ -14,7 +14,7 @@ A usable outcome conclusion requires task diversity, auditor independence, a sta
 
 ### Procedure
 
-1. Keep the series in planned state until the gate playbook is satisfied.
+1. Keep the series in designed state (planned-only; no runs executed) until the gate playbook is satisfied.
 2. Record each later run with the required artifact bundle.
 3. Classify each run by task class and comparability.
 4. Distinguish full independence from partial independence.

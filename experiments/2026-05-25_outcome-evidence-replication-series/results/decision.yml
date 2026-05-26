@@ -19,4 +19,4 @@ evidence_summary:
   neutral: 1
 
 next_steps: |
-  Keep the series in planned status until the gate criteria are satisfied by real runs.
+  Keep the series in designed status until the gate criteria are satisfied by real runs.
