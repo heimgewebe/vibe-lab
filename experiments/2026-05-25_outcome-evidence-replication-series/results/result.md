@@ -24,6 +24,14 @@ The gate is a precondition for future runs, not a result of them. The current st
 
 Not executed.
 
+## Promotion-Readiness Note
+
+`docs/_generated/promotion-readiness.json` may mark this designed scaffold as
+`promotion_ready=true` because `execution_status: designed` does not trigger
+the falsifiability gate. This is only a dry-run schema/readiness classification
+and must not be interpreted as outcome readiness, adoption readiness,
+promotion, or evidence of usefulness.
+
 ## Lessons Learned
 
 - Gate-first planning is required before adding more outcome runs.
