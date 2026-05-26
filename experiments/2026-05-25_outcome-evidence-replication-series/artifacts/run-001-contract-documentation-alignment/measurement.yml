@@ -50,8 +50,8 @@ metrics:
 
   task_completion_time_observed:
     value: null
-    evidence_status: "self_reported"
-    notes: "timing.txt records capture metadata only; no strong timing claim."
+    evidence_status: "missing_evidence"
+    notes: "timing.txt records capture metadata only; no strong timing claim is made."
 
 interpretation_limits:
   - "This run applies the gate but does not perform any outcome upgrade."

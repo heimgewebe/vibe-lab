@@ -4,7 +4,7 @@ contract: "experiment_run_bundle"
 run:
   id: "run-001-contract-documentation-alignment"
   experiment_path: "experiments/2026-05-25_outcome-evidence-replication-series"
-  created_at: "2026-05-26T10:30:00Z"
+  created_at: "2026-05-26T14:07:54Z"
   sequence: 1
 
 provenance:
@@ -43,5 +43,8 @@ verdict:
 
 interpretation_limits:
   min_comparable_runs_required: 4
+  # Run-001 is the first series baseline, but it is not yet comparable.
   current_comparable_runs: 0
+  # PASS refers only to run artifact/package discipline, not outcome usefulness,
+  # adoption, promotion, or CLAIM_NOT_PROVEN upgrade.
   causal_claim_allowed: false

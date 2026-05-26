@@ -1,5 +1,5 @@
 📜 Validating generated-artifact contract (v2)...
-✅ Generated-artifact contract valid (/home/alex/repos/vibe-lab/.vibe/generated-artifacts.yml).
+✅ Generated-artifact contract valid (/.vibe/generated-artifacts.yml).
 🧪 Running generated-artifact contract regression tests...
 ....................
 ----------------------------------------------------------------------
@@ -7,11 +7,11 @@ Ran 20 tests in 0.001s
 
 OK
 📋 Validating artifact taxonomy contract...
-✅ Artifact taxonomy valid (/home/alex/repos/vibe-lab/.vibe/artifact-taxonomy.yml).
+✅ Artifact taxonomy valid (/.vibe/artifact-taxonomy.yml).
 🧪 Running artifact taxonomy generator regression tests...
 .......................................................................................................................................
 ----------------------------------------------------------------------
-Ran 135 tests in 0.156s
+Ran 135 tests in 0.168s
 
 OK
 🧪 Running artifact taxonomy contract validator regression tests...
@@ -568,7 +568,7 @@ adoption_basis:
 🧪 Running run-bundle validator regression tests...
 ...................................................................................................................................................
 ----------------------------------------------------------------------
-Ran 147 tests in 6.622s
+Ran 147 tests in 7.110s
 
 OK
 🧷 Validating experiment run bundles...
@@ -894,7 +894,7 @@ test_zero_target_is_reported_as_type_error (__main__.ValidateRelationsTests)
 ``target: 0`` must produce a type-error, not a 'missing' diagnostic. ... ok
 
 ----------------------------------------------------------------------
-Ran 18 tests in 0.024s
+Ran 18 tests in 0.026s
 
 OK
 🧪 Running backlinks generator regression tests...
@@ -952,7 +952,7 @@ test_whitespace_only_reason_raises_value_error (__main__.OrphanPolicyTests)
 A reason that is only whitespace must be rejected. ... ok
 
 ----------------------------------------------------------------------
-Ran 19 tests in 0.024s
+Ran 19 tests in 0.026s
 
 OK
 🧠 Validating interpretation budget...
@@ -960,7 +960,7 @@ OK
 🧪 Running interpretation budget regression tests...
 .
 ----------------------------------------------------------------------
-Ran 1 test in 0.008s
+Ran 1 test in 0.010s
 
 OK
 🤝 Validating agent handoff fixtures...
@@ -981,7 +981,7 @@ OK
 🧪 Running agent handoff regression tests...
 .............
 ----------------------------------------------------------------------
-Ran 13 tests in 0.116s
+Ran 13 tests in 0.124s
 
 OK
 🤖 Validating agent command fixtures...
@@ -1019,7 +1019,7 @@ OK
 🧪 Running agent command regression tests...
 ..............
 ----------------------------------------------------------------------
-Ran 14 tests in 0.056s
+Ran 14 tests in 0.058s
 
 OK
 🔗 Validating command chain fixtures...
@@ -1049,13 +1049,13 @@ OK
 🧪 Running command chain regression tests...
 .......................................
 ----------------------------------------------------------------------
-Ran 39 tests in 0.392s
+Ran 39 tests in 0.402s
 
 OK
 🧪 Running command version policy tests...
 ........
 ----------------------------------------------------------------------
-Ran 8 tests in 0.103s
+Ran 8 tests in 0.106s
 
 OK
 🧪 Running fixture matrix audit tests...
@@ -1088,23 +1088,23 @@ OK
 🧪 Running cross-contract regression tests...
 ................
 ----------------------------------------------------------------------
-Ran 16 tests in 0.264s
+Ran 16 tests in 0.276s
 
 OK
-ERROR: fixture /tmp/tmpauwvzxic.json: chain[0] must be a JSON object, got int
+ERROR: fixture /tmp/tmp4wdygfaw.json: chain[0] must be a JSON object, got int
 ♻️  Replay dry-run (no mutations by design)...
 # replay_minimal.py: dry-run mode (no mutations by design)
 ✅ Replay trace generator completed (non-mutation enforced by design + tests + CI).
 🧪 Running replay runner regression tests...
 ......
 ----------------------------------------------------------------------
-Ran 6 tests in 0.058s
+Ran 6 tests in 0.056s
 
 OK
 🧪 Running replay trace contract tests (v0.2)...
 ..........................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.452s
+Ran 26 tests in 0.466s
 
 OK
 🧭 Validating Phase-1c fixture corpus...
@@ -1117,7 +1117,7 @@ OK
 🧪 Running Phase-1c fixture checker regression tests...
 ....
 ----------------------------------------------------------------------
-Ran 4 tests in 0.181s
+Ran 4 tests in 0.167s
 
 OK
 📦 Validating adoption completeness...
@@ -1125,13 +1125,13 @@ OK
 🧪 Running adoption completeness regression tests...
 ......
 ----------------------------------------------------------------------
-Ran 6 tests in 0.015s
+Ran 6 tests in 0.014s
 
 OK
 🧪 Running epistemic state regression tests...
 .........
 ----------------------------------------------------------------------
-Ran 9 tests in 0.014s
+Ran 9 tests in 0.015s
 
 OK
 🔎 Validating export parity (collision / orphan / missing)...
@@ -1139,13 +1139,13 @@ OK
 🧪 Running export generator regression tests...
 ..........................
 ----------------------------------------------------------------------
-Ran 26 tests in 0.093s
+Ran 26 tests in 0.092s
 
 OK
 🧪 Running export parity validator regression tests...
 .........................
 ----------------------------------------------------------------------
-Ran 25 tests in 0.020s
+Ran 25 tests in 0.016s
 
 OK
 🧪 Running promotion-readiness regression tests...
@@ -1257,7 +1257,7 @@ test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTest
 test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 102 tests in 0.443s
+Ran 102 tests in 0.426s
 
 OK
 🧪 Running run-evidence-pack schema regression tests...
@@ -1265,7 +1265,7 @@ test_invalid_fixtures (__main__.RunEvidencePackSchemaTests) ... ok
 test_valid_fixtures (__main__.RunEvidencePackSchemaTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 0.009s
+Ran 2 tests in 0.008s
 
 OK
 🧪 Running claim-evidence semantic validator tests...
@@ -1275,7 +1275,7 @@ test_path_escape_fixture_fails_schema_validation (__main__.ClaimEvidenceValidato
 test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 1.046s
+Ran 4 tests in 1.005s
 
 OK
 🔎 Validating claim-evidence semantic rules...
@@ -1297,7 +1297,7 @@ test_valid_fixtures_all_together_exit_zero (__main__.ValidFixtureTests) ... ok
 test_valid_fixtures_individually_exit_zero (__main__.ValidFixtureTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 0.833s
+Ran 15 tests in 0.836s
 
 OK
 🔎 Validating PR scope / artifact boundary...
@@ -1329,10 +1329,10 @@ test_canonical_and_generated_combine (__main__.RunChecksTests) ... ok
 test_no_violations_for_clean_paths (__main__.RunChecksTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 25 tests in 0.114s
+Ran 25 tests in 0.113s
 
 OK
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
+make[1]: Verzeichnis „“ wird betreten
 🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1359,8 +1359,8 @@ make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
     - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation: missing=insufficient_proof_assessment
 
   (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird verlassen
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
+make[1]: Verzeichnis „“ wird verlassen
+make[1]: Verzeichnis „“ wird betreten
 🔒 Running promotion-readiness ratchet (Phase 2, blocking for new violations)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1391,5 +1391,5 @@ make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
 🔒 Ratchet Mode (Phase 2)
   ✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird verlassen
+make[1]: Verzeichnis „“ wird verlassen
 ✅ Validation passed.
