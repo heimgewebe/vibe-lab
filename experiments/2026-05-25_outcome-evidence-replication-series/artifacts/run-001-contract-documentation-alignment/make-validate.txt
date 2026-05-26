@@ -1,5 +1,5 @@
 📜 Validating generated-artifact contract (v2)...
-✅ Generated-artifact contract valid (/.vibe/generated-artifacts.yml).
+✅ Generated-artifact contract valid (./.vibe/generated-artifacts.yml).
 🧪 Running generated-artifact contract regression tests...
 ....................
 ----------------------------------------------------------------------
@@ -7,7 +7,7 @@ Ran 20 tests in 0.001s
 
 OK
 📋 Validating artifact taxonomy contract...
-✅ Artifact taxonomy valid (/.vibe/artifact-taxonomy.yml).
+✅ Artifact taxonomy valid (./.vibe/artifact-taxonomy.yml).
 🧪 Running artifact taxonomy generator regression tests...
 .......................................................................................................................................
 ----------------------------------------------------------------------
@@ -1332,7 +1332,7 @@ test_no_violations_for_clean_paths (__main__.RunChecksTests) ... ok
 Ran 25 tests in 0.113s
 
 OK
-make[1]: Verzeichnis „“ wird betreten
+make[1]: Verzeichnis „.“ wird betreten
 🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1359,8 +1359,8 @@ make[1]: Verzeichnis „“ wird betreten
     - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation: missing=insufficient_proof_assessment
 
   (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
-make[1]: Verzeichnis „“ wird verlassen
-make[1]: Verzeichnis „“ wird betreten
+make[1]: Verzeichnis „.“ wird verlassen
+make[1]: Verzeichnis „.“ wird betreten
 🔒 Running promotion-readiness ratchet (Phase 2, blocking for new violations)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1391,5 +1391,5 @@ make[1]: Verzeichnis „“ wird betreten
 🔒 Ratchet Mode (Phase 2)
   ✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
-make[1]: Verzeichnis „“ wird verlassen
+make[1]: Verzeichnis „.“ wird verlassen
 ✅ Validation passed.
