@@ -1,22 +1,27 @@
 schema_version: "0.1.0"
 
-decision_type: execution_assessment
-verdict: not_executed
-confidence: none
-date: "2026-05-25"
-reviewer: "GitHub Copilot"
+decision_type: "execution_assessment"
+verdict: "executed"
+confidence: "low"
+date: "2026-05-26"
+reviewer: "codex:self_reported"
 
 rationale: |
-  No runs were executed for this series scaffold.
-  No outcome claims were evaluated.
+  Run-001 was executed as a contract/documentation-alignment run.
+  The run records artifact discipline, comparability labeling, and strict
+  no-upgrade scope.
+  No outcome claims were evaluated for upgrade.
   No CLAIM_NOT_PROVEN upgrade was made.
-  No promotion or adoption decision was made.
+  No promotion, adoption, or usefulness evidence was derived.
+  independence_status remains partial, comparability verdict is
+  not_comparable, and no negative control was executed.
 
 evidence_summary:
-  observations: 1
+  observations: 2
   positive: 0
   negative: 0
-  neutral: 1
+  neutral: 2
 
 next_steps: |
-  Keep the series in designed status until the gate criteria are satisfied by real runs.
+  Continue with additional task classes, stronger independence, and a stable
+  negative control before any outcome upgrade can be considered.
