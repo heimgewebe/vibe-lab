@@ -27,11 +27,14 @@ Executed, but outcome not upgraded.
 
 ## Promotion-Readiness Note
 
-`docs/_generated/promotion-readiness.json` may mark this designed scaffold as
-`promotion_ready=true` because `execution_status: designed` does not trigger
-the falsifiability gate. This is only a dry-run schema/readiness classification
-and must not be interpreted as outcome readiness, adoption readiness,
-promotion, or evidence of usefulness.
+`docs/_generated/promotion-readiness.json` may still mark this experiment as
+`promotion_ready=true`, now with `execution_status=executed` and warning
+`falsifiability_assessment_inconclusive`. This is only a dry-run schema/readiness
+classification.
+
+It must not be interpreted as outcome readiness, adoption readiness, promotion,
+usefulness evidence, or a `CLAIM_NOT_PROVEN` upgrade. Run-001 is partial,
+not comparable yet, and has no negative control.
 
 ## Lessons Learned
 
