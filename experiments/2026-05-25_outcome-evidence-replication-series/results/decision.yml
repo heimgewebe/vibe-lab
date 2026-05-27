@@ -1,0 +1,19 @@
+# Decision
+# Validiert gegen: schemas/decision.schema.json
+
+schema_version: "0.1.0"
+
+decision_type: "execution_assessment"
+verdict: "not_executed"
+confidence: "none"
+date: "2026-05-25"
+reviewer: "codex:self_reported"
+
+rationale: |
+  Diese Serie wurde in diesem PR nur vorbereitet.
+  Es wurden keine Runs ausgeführt, keine Outcome-Claims bewertet,
+  und kein Upgrade von CLAIM_NOT_PROVEN vorgenommen.
+
+next_steps: |
+  Geplante Runs gemäß method.md unter Anwendung des Evidence-Gates durchführen.
+  Vorher keine Status-Hochstufung, keine Promotion, keine Adoption.
