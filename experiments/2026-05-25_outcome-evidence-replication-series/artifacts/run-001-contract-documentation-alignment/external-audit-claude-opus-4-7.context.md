@@ -2,6 +2,10 @@
 title: "Run-001 External Cross-Family Audit — Context"
 status: designed
 canonicality: operative
+triggered_by: "external-cross-family-audit-request-for-run-001"
+policy: "agent-policy.yaml traceability; AGENTS.md agent-change traceability"
+action: "add supplementary external audit context for run-001"
+outcome: "documents additive cross-family audit scope, limits, and no-upgrade semantics"
 ---
 
 # Run-001 External Cross-Family Audit — Context

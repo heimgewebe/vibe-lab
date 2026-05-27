@@ -10,6 +10,7 @@ experiment:
     - artifacts/run-001-contract-documentation-alignment/run.yml
     - artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.yml
     - artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.context.md
+    - artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.make-validate.txt
     - results/evidence.jsonl
   created: "2026-05-25"
   updated: "2026-05-27"

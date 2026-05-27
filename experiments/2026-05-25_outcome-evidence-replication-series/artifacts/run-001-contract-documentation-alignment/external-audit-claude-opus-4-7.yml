@@ -94,20 +94,20 @@ claims:
       consistently present across the bundle.
 
   - id: "pack-004"
-    text: "make validate completed successfully for this run state."
+    text: "make validate completed successfully for the post-audit artifact state."
     type: "command_result"
     verdict: "PASS"
     evidence:
-      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.make-validate.txt"
         status: "repo_local"
         command: "make validate"
         exit_code: 0
     notes: >
-      make-validate.txt archives the full validator output for this run state.
-      The archived log lists per-validator success markers including schemas,
-      run-bundle, relations, claim-evidence, pr-scope, and the closing line
-      "✅ Validation passed." The redaction polish in commit 8654513 limits
-      the scope of the log without altering exit semantics.
+      external-audit-claude-opus-4-7.make-validate.txt archives validation
+      after adding the external audit YAML, context document, manifest refs,
+      evidence.jsonl iteration-3 entry, result note, and regenerated
+      doc-index. It validates the post-audit artifact state and does not
+      replace the original run-001 make-validate.txt.
 
 out_of_scope_claims: []
 
