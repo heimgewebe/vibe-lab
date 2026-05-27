@@ -1,0 +1,18 @@
+# Changed Files (run-002-negative-control-claim-not-proven)
+
+Generated: 2026-05-27T16:03:03Z
+Run: run-002-negative-control-claim-not-proven
+Base: merge-base with origin/main
+Command: git diff --name-status "$BASE"...HEAD
+Scope: stable negative control run bundle plus required experiment bookkeeping only
+
+File List
+=========
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/auditor-output.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/changed-files.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/comparability.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/evidence-pack.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/measurement.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run_meta.json [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/timing.txt [add]
