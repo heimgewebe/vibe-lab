@@ -56,9 +56,10 @@ It supports auditor independence for this audit via the different-AI-system /
 different-model-family branch of the gate, but it does not change
 `comparability.yml verdict: not_comparable`.
 
-It does not satisfy the four-comparable-runs threshold, does not add a negative
-control, does not upgrade `CLAIM_NOT_PROVEN`, and does not justify promotion,
-adoption, usefulness, or outcome upgrade.
+This audit itself does not satisfy the four-comparable-runs threshold and does
+not add a negative control. Run-002 later adds a separate negative-control run,
+but the series still lacks four comparable runs and no outcome, usefulness,
+promotion, adoption, or `CLAIM_NOT_PROVEN` upgrade is justified.
 
 ## Next Steps
 
