@@ -3,7 +3,7 @@
   "run_id": "run-002-negative-control-claim-not-proven",
   "generated_at": "2026-05-27T16:03:03Z",
   "executor": "copilot-coding-agent:gpt-5.4-mini",
-  "command": "make validate | tee experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/make-validate.txt",
+  "command": "bash -o pipefail -c 'make validate | tee experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/make-validate.txt'",
   "exit_code": 0,
   "test_output_file": "artifacts/run-002-negative-control-claim-not-proven/make-validate.txt",
   "provenance_level": "self_reported"
