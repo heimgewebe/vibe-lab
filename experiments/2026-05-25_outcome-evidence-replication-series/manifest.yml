@@ -10,9 +10,9 @@ experiment:
     - artifacts/run-001-contract-documentation-alignment/run.yml
     - results/evidence.jsonl
   created: "2026-05-25"
-  updated: "2026-05-26"
+  updated: "2026-05-27"
   author: "GitHub Copilot"
-  iteration: 2
+  iteration: 3
   evidence_level: experimental
   falsifiability:
     version: 1
