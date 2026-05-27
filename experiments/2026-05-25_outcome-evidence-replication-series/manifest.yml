@@ -8,11 +8,16 @@ experiment:
   execution_status: executed
   execution_refs:
     - artifacts/run-001-contract-documentation-alignment/run.yml
+    - artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.yml
+    - artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.context.md
+    - artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.make-validate.txt
+    - artifacts/run-002-negative-control-claim-not-proven/run.yml
+    - artifacts/run-002-negative-control-claim-not-proven/make-validate.txt
     - results/evidence.jsonl
   created: "2026-05-25"
-  updated: "2026-05-26"
+  updated: "2026-05-27"
   author: "GitHub Copilot"
-  iteration: 2
+  iteration: 4
   evidence_level: experimental
   falsifiability:
     version: 1
