@@ -1,8 +1,8 @@
 📜 Validating generated-artifact contract (v2)...
-✅ Generated-artifact contract valid (/.vibe/generated-artifacts.yml).
+✅ Generated-artifact contract valid (./.vibe/generated-artifacts.yml).
 🧪 Running generated-artifact contract regression tests...
 📋 Validating artifact taxonomy contract...
-✅ Artifact taxonomy valid (/.vibe/artifact-taxonomy.yml).
+✅ Artifact taxonomy valid (./.vibe/artifact-taxonomy.yml).
 🧪 Running artifact taxonomy generator regression tests...
 🧪 Running artifact taxonomy contract validator regression tests...
 🔍 Validating schemas...
@@ -333,7 +333,8 @@ Evidence Files:
   ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:29 (decision)
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:3 (run)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:4 (run)
 
 Decision Files:
   ✅ experiments/2026-04-08_spec-first/results/decision.yml (result_assessment)
@@ -815,7 +816,7 @@ adoption_basis:
   ✅ prompts/adopted/spec-first-api.md → derived_from → ../../catalog/techniques/spec-first-prompting.md
   ✅ prompts/adopted/spec-first-api.md → validated_by → ../../experiments/2026-04-08_spec-first/results/result.md
 
-Scanned 230 markdown files.
+Scanned 231 markdown files.
 ✅ All relations valid.
 🧪 Running relations validator regression tests...
 🧪 Running backlinks generator regression tests...
@@ -916,7 +917,7 @@ Scanned 230 markdown files.
 
 ✅ Cross-contract validation passed.
 🧪 Running cross-contract regression tests...
-ERROR: fixture /tmp/tmpjo94574_.json: chain[0] must be a JSON object, got int
+ERROR: fixture /tmp/tmpaji63v0b.json: chain[0] must be a JSON object, got int
 ♻️  Replay dry-run (no mutations by design)...
 ✅ Replay trace generator completed (non-mutation enforced by design + tests + CI).
 🧪 Running replay runner regression tests...
@@ -944,7 +945,7 @@ ERROR: fixture /tmp/tmpjo94574_.json: chain[0] must be a JSON object, got int
 🧪 Running PR scope validator tests...
 🔎 Validating PR scope / artifact boundary...
 🧪 Running agent compliance guard regression tests...
-make[1]: Verzeichnis „“ wird betreten
+make[1]: Verzeichnis „.“ wird betreten
 🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -971,8 +972,8 @@ make[1]: Verzeichnis „“ wird betreten
     - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation: missing=insufficient_proof_assessment
 
   (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
-make[1]: Verzeichnis „“ wird verlassen
-make[1]: Verzeichnis „“ wird betreten
+make[1]: Verzeichnis „.“ wird verlassen
+make[1]: Verzeichnis „.“ wird betreten
 🔒 Running promotion-readiness ratchet (Phase 2, blocking for new violations)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1003,5 +1004,5 @@ make[1]: Verzeichnis „“ wird betreten
 🔒 Ratchet Mode (Phase 2)
   ✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
-make[1]: Verzeichnis „“ wird verlassen
+make[1]: Verzeichnis „.“ wird verlassen
 ✅ Validation passed.
