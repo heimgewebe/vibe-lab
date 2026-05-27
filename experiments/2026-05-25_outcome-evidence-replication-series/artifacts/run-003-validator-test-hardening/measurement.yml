@@ -1,0 +1,68 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-003-validator-test-hardening"
+
+auditor_verdict: "PASS"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.4"
+  executor: "copilot-coding-agent"
+  role: >
+    Document a validator_test_hardening series run with strict no-upgrade
+    discipline and explicit artifact-level hardening only.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Changed file scope is archived in changed-files.txt."
+
+  unsupported_claim_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "No unsupported validator, outcome, or promotion claim is made in auditor-output.yml."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence paths are repo-local and resolvable."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "make validate output is archived in make-validate.txt with exit code 0."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim is made in this run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim is made in this run."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block is observed or claimed in this artifact-level hardening run."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "timing.txt records capture metadata only; no strong timing claim is made."
+
+interpretation_limits:
+  - "This run documents validator/test hardening only at evidence/artifact level."
+  - "This run does not claim a validator or test code effect."
+  - "This run does not claim promotion, adoption, usefulness, outcome, or causal effectiveness."
+
+extensions:
+  series: "outcome-evidence-replication-series"
+  task_class: "validator_test_hardening"
+  comparability_scope: "same outcome-evidence gate family"
+  outcome_upgrade_allowed: false
+  effect_claim_allowed: false
+  promotion_claim_allowed: false
+  independence_status: "partial"

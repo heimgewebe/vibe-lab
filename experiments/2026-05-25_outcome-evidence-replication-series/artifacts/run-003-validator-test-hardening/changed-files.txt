@@ -1,0 +1,24 @@
+branch_diff_origin_main_head:
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/auditor-output.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/changed-files.txt
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/comparability.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/evidence-pack.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/make-validate.txt
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/measurement.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run.yml
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run_meta.json
+A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/timing.txt
+M	experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
+M	experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl
+M	experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
+
+working_tree_not_yet_in_head:
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/auditor-output.yml
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/changed-files.txt
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/comparability.yml
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/evidence-pack.yml
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/make-validate.txt
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/measurement.yml
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run.yml
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run_meta.json
+??	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/timing.txt
