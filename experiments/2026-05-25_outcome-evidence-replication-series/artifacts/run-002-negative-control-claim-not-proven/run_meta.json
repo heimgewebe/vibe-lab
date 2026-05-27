@@ -5,6 +5,6 @@
   "executor": "copilot-coding-agent:gpt-5.4-mini",
   "command": "make validate | tee experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/make-validate.txt",
   "exit_code": 0,
-  "test_output_file": "make-validate.txt",
+  "test_output_file": "artifacts/run-002-negative-control-claim-not-proven/make-validate.txt",
   "provenance_level": "self_reported"
 }
