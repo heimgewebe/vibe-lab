@@ -13,7 +13,9 @@ extensions:
   canonical_self_audit_preserved: true
   canonical_self_audit_ref: "auditor-output.yml"
   canonical_self_audit_executor: "copilot-coding-agent:gpt-5.3-codex"
-  auditor_independence_status: "FULL_BY_MODEL_FAMILY"
+  auditor_independence_status: "full_by_model_family_for_this_audit"
+  series_gate_independence_effect: "does_not_make_run_comparable_or_gate_satisfied"
+  comparability_effect: "none; comparability.yml remains not_comparable"
   auditor_independence_note: >
     This audit is produced by claude-opus-4-7 (Anthropic Claude 4.x family),
     a different AI system and different model family from the original

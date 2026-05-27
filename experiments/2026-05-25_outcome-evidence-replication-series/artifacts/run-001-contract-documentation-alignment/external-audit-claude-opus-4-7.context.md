@@ -58,6 +58,7 @@ EXCLUDED:
 
 ## What This Audit Does NOT Do
 
+- It does not change `comparability.yml independence_status: partial`; it adds a supplementary audit-independence observation for run-001.
 - It does not change run-001's `comparability.yml verdict: not_comparable`.
 - It does not make run-001 comparable with anything; only future runs can
   populate that.
