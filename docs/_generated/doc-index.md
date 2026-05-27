@@ -199,6 +199,7 @@
 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/result.md` | Agent/Skill Minimal Layer Instrumentation — Ergebnis | draft | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/CONTEXT.md` | Outcome-Evidence-Replication-Series — Context | designed | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/INITIAL.md` | Outcome-Evidence-Replication-Series — Initial State | designed | operative |
+| `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.context.md` | Run-001 External Cross-Family Audit — Context | designed | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/failure_modes.md` | Outcome-Evidence-Replication-Series — Failure Modes | designed | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/method.md` | Outcome-Evidence-Replication-Series — Method | designed | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/results/result.md` | Outcome-Evidence-Replication-Series — Results | designed | operative |

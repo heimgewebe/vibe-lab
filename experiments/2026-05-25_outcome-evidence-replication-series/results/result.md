@@ -43,6 +43,20 @@ not comparable yet, and has no negative control.
 - A stable negative control must be part of the series before promotion is considered.
 - Contract-/documentation-alignment runs can harden gate usage without changing outcome status.
 
+## External Cross-Family Audit Note
+
+Run-001 now has an additive external cross-family audit:
+`artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.yml`.
+
+This audit is supplementary. It does not replace `auditor-output.yml`.
+It supports auditor independence for this audit via the different-AI-system /
+different-model-family branch of the gate, but it does not change
+`comparability.yml verdict: not_comparable`.
+
+It does not satisfy the four-comparable-runs threshold, does not add a negative
+control, does not upgrade `CLAIM_NOT_PROVEN`, and does not justify promotion,
+adoption, usefulness, or outcome upgrade.
+
 ## Next Steps
 
 Continue with additional task classes and stronger independence while keeping outcome upgrades disabled until gate criteria are met.

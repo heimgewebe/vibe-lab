@@ -1,0 +1,152 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-001-contract-documentation-alignment"
+auditor:
+  name: "external-cross-family-audit (claude-opus-4-7)"
+  executor: "claude-code:claude-opus-4-7"
+  date: "2026-05-27"
+auditor_date: "2026-05-27"
+overall_verdict: "PASS"
+
+extensions:
+  artifact_role: "supplementary_external_audit"
+  canonical_self_audit_preserved: true
+  canonical_self_audit_ref: "auditor-output.yml"
+  canonical_self_audit_executor: "copilot-coding-agent:gpt-5.3-codex"
+  auditor_independence_status: "full_by_model_family_for_this_audit"
+  series_gate_independence_effect: "does_not_make_run_comparable_or_gate_satisfied"
+  comparability_effect: "none; comparability.yml remains not_comparable"
+  auditor_independence_note: >
+    This audit is produced by claude-opus-4-7 (Anthropic Claude 4.x family),
+    a different AI system and different model family from the original
+    run-001 executor and self-auditor (copilot-coding-agent:gpt-5.3-codex,
+    OpenAI GPT family). Per the gate playbook
+    docs/playbooks/outcome-evidence-replication-series-gate.md, full
+    independence "means a Human Reviewer or another AI system / different
+    model family"; this audit satisfies the different-model-family criterion.
+    A human reviewer has not been involved at audit time. This artifact is
+    additive: it does NOT replace, supersede, or contradict the original
+    auditor-output.yml; both remain valid records of distinct audits.
+  audit_scope: "pack-001 through pack-004 of evidence-pack.yml plus claim-001 through claim-003 of auditor-output.yml"
+  no_claims_repaired: true
+  no_claims_inferred: true
+  prior_self_audit_replaced: false
+  audit_commit_hash: "3bad30a56f805202e3c5cb019a9e8e0d0c4bc72b"
+  audit_session_environment: "claude-code remote execution environment on branch claude/determined-archimedes-3uRFw"
+
+claims:
+  - id: "pack-001"
+    text: "Run-001 contains all mandatory run artifacts for the contract/documentation alignment class."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/evidence-pack.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt"
+        status: "repo_local"
+    notes: >
+      Verified by directory listing on commit 3bad30a. All eight gate-required
+      artifacts plus run_meta.json are present. No artifact is missing. The
+      list matches the evidence array in evidence-pack.yml pack-001 and
+      auditor-output.yml claim-001.
+
+  - id: "pack-002"
+    text: "Run-001 is explicitly labeled for comparability within the same outcome-evidence gate family."
+    type: "comparability_metadata"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml"
+        status: "repo_local"
+    notes: >
+      comparability.yml declares verbatim: series:
+      "outcome-evidence-replication-series", task_class:
+      "contract_documentation_alignment", comparability_scope:
+      "same outcome-evidence gate family", independence_status: "partial",
+      verdict: not_comparable, compared_against: []. The labeling is explicit
+      and consistent. not_comparable is honest for the first series run.
+
+  - id: "pack-003"
+    text: "No outcome upgrade is allowed for run-001."
+    type: "outcome_upgrade_guard"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml"
+        status: "repo_local"
+    notes: >
+      comparability.yml has outcome_upgrade_allowed: false (verbatim).
+      run.yml has verdict.effect_claim_allowed: false,
+      verdict.promotion_claim_allowed: false, and
+      interpretation_limits.causal_claim_allowed: false. The guard is
+      consistently present across the bundle.
+
+  - id: "pack-004"
+    text: "make validate completed successfully for the post-audit artifact state."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.make-validate.txt"
+        status: "repo_local"
+        command: "make validate"
+        exit_code: 0
+    notes: >
+      external-audit-claude-opus-4-7.make-validate.txt archives validation
+      after adding the external audit YAML, context document, manifest refs,
+      evidence.jsonl iteration-3 entry, result note, and regenerated
+      doc-index. It validates the post-audit artifact state and does not
+      replace the original run-001 make-validate.txt.
+
+out_of_scope_claims: []
+
+contradictions: []
+
+missing_evidence:
+  - item: "human_reviewer_audit"
+    detail: >
+      This audit is by a different AI system and different model family, not
+      a human reviewer. Full independence by the strictest interpretation
+      (human reviewer) remains not proven. The gate playbook explicitly
+      accepts different model family as one valid form of full independence,
+      so this audit qualifies under that branch, but the human-reviewer
+      branch remains open.
+  - item: "comparable_runs_in_series"
+    detail: >
+      Run-001 is correctly labeled not_comparable; the series still needs at
+      least four comparable runs across at least three task classes before
+      any outcome upgrade can be considered. Cross-family audit does not
+      change this requirement.
+  - item: "negative_control_run"
+    detail: >
+      No negative control run exists in this series yet. The gate explicitly
+      requires at least one stable CLAIM_NOT_PROVEN negative control. This
+      audit does not substitute for that requirement.
+
+required_next_proof:
+  - >
+    At least three additional runs in distinct task classes that are
+    comparable with each other (not contract/documentation alignment only),
+    so the gate threshold of four comparable runs is reached.
+  - >
+    A stable negative control run with expected CLAIM_NOT_PROVEN, applied
+    in this series.
+  - >
+    The independence dimension is improved by this cross-family audit, but
+    a second independently-reviewed comparable run is still required so the
+    gate's "at least 2 runs with independent review" criterion is met.
+  - >
+    No outcome upgrade, no CLAIM_NOT_PROVEN upgrade, no promotion, and no
+    adoption is justified by this audit. The run-001 contract/documentation
+    alignment scope is unchanged.
