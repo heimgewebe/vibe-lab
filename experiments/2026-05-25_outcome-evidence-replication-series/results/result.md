@@ -18,15 +18,13 @@ Run-003 adds a new task class, `validator_test_hardening`, but only as a conserv
 - The run is explicitly constrained to `outcome_upgrade_allowed: false`.
 - Independence is documented as `partial` for this run.
 - No negative control was executed in run-001.
-- Run-002 adds a stable negative control under `artifacts/run-002-negative-control-claim-not-proven/`.
-- `CLAIM_NOT_PROVEN` remains stable for Run-002, but there are still not four comparable runs.
 - Run-003 adds `artifacts/run-003-validator-test-hardening/` as a small validator-/test-hardening-scoped bundle.
 - Run-003 is explicitly documented as evidence-/artifact-level hardening only; no real validator or test code change is asserted.
 - The series still has no outcome upgrade, no usefulness verdict, and no adoption or promotion basis.
 
 ## Interpretation
 
-The gate is now applied across a slightly broader set of run types, including a negative control and a validator-/test-hardening documentation slice. This increases task diversity at the series bookkeeping level, but it still does not create comparable outcome evidence or justify any outcome conclusion.
+The gate is now applied across a slightly broader set of run types, including a validator-/test-hardening documentation slice. This increases task diversity at the series bookkeeping level, but it still does not create comparable outcome evidence or justify any outcome conclusion.
 
 ## Verdict
 
@@ -61,9 +59,8 @@ It supports auditor independence for this audit via the different-AI-system /
 different-model-family branch of the gate, but it does not change
 `comparability.yml verdict: not_comparable`.
 
-This audit itself does not satisfy the four-comparable-runs threshold and does
-not add a negative control. Run-002 later adds a separate negative-control run,
-but the series still lacks four comparable runs and no outcome, usefulness,
+This audit itself does not satisfy the four-comparable-runs threshold, and the
+series still lacks four comparable runs and no outcome, usefulness,
 promotion, adoption, or `CLAIM_NOT_PROVEN` upgrade is justified.
 
 ## Next Steps

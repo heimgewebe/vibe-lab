@@ -1,44 +1,128 @@
 📜 Validating generated-artifact contract (v2)...
-✅ Generated-artifact contract valid (/home/alex/repos/vibe-lab/.vibe/generated-artifacts.yml).
+✅ Generated-artifact contract valid ($REPO_ROOT/.vibe/generated-artifacts.yml).
 🧪 Running generated-artifact contract regression tests...
 📋 Validating artifact taxonomy contract...
-✅ Artifact taxonomy valid (/home/alex/repos/vibe-lab/.vibe/artifact-taxonomy.yml).
+✅ Artifact taxonomy valid ($REPO_ROOT/.vibe/artifact-taxonomy.yml).
 🧪 Running artifact taxonomy generator regression tests...
 🧪 Running artifact taxonomy contract validator regression tests...
 🔍 Validating schemas...
 🔍 Schema Validation
 
 Experiment Manifests:
-  ✅ experiments/2026-04-23_agent-failure-surface/manifest.yml
-  ✅ experiments/2026-04-14_incremental-debuggability/manifest.yml
-  ✅ experiments/2026-04-14_upfront-structuring-replication/manifest.yml
-  ✅ experiments/2026-04-14_upfront-structuring/manifest.yml
-  ✅ experiments/2026-04-19_generated-artifact-contract-validation/manifest.yml
   ✅ experiments/2026-04-14_tdd-vibe/manifest.yml
+  ✅ experiments/2026-04-15_agent-task-validity/manifest.yml
+  ✅ experiments/2026-04-14_incremental-debuggability/manifest.yml
+  ✅ experiments/2026-04-14_prompt-length-control/manifest.yml
+  ✅ experiments/2026-04-23_agent-failure-surface/manifest.yml
+  ✅ experiments/2026-04-19_generated-artifact-contract-validation/manifest.yml
   ✅ experiments/2026-04-11_yolo-vs-spec-first/manifest.yml
   ✅ experiments/2026-04-14_incremental-refinement/manifest.yml
-  ✅ experiments/2026-04-12_spec-first-legacy/manifest.yml
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+  ✅ experiments/2026-04-14_upfront-structuring-replication/manifest.yml
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
   ✅ experiments/2026-04-14_premortem-prompting/manifest.yml
   ✅ experiments/2026-04-08_spec-first/manifest.yml
-  ✅ experiments/2026-04-14_prompt-length-control/manifest.yml
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
+  ✅ experiments/2026-04-14_upfront-structuring/manifest.yml
+  ✅ experiments/2026-04-12_spec-first-legacy/manifest.yml
   ✅ experiments/2026-04-23_phase-1-drift-injection/manifest.yml
-  ✅ experiments/2026-04-15_agent-task-validity/manifest.yml
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
 
 Catalog Entries:
-  ✅ catalog/styles/structured-specification.md
-  ✅ catalog/styles/constraint-first.md
-  ✅ catalog/anti-patterns/vague-prompt-and-fix.md
-  ✅ catalog/anti-patterns/token-bloat-as-quality-proxy.md
-  ✅ catalog/techniques/prompt-length-control.md
-  ✅ catalog/techniques/spec-first-prompting.md
   ✅ catalog/combos/spec-first-constraint-control.md
   ✅ catalog/combos/spec-first-anti-pattern-awareness.md
-  ✅ catalog/workflows/causal-control-study.md
+  ✅ catalog/styles/structured-specification.md
+  ✅ catalog/styles/constraint-first.md
   ✅ catalog/workflows/spec-first-api-generation.md
+  ✅ catalog/workflows/causal-control-study.md
+  ✅ catalog/techniques/prompt-length-control.md
+  ✅ catalog/techniques/spec-first-prompting.md
+  ✅ catalog/anti-patterns/token-bloat-as-quality-proxy.md
+  ✅ catalog/anti-patterns/vague-prompt-and-fix.md
 
 Evidence Files:
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:2 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:4 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:6 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:8 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:9 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:10 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:11 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:12 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:13 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:14 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:15 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:16 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:17 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:18 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:19 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:20 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:21 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:22 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:23 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:24 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:25 (decision)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:1 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:6 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:7 (decision)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:8 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:9 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:10 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:11 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:12 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:13 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:14 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:15 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:16 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:17 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:18 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:19 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:20 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:21 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:22 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:23 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:24 (decision)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:25 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:26 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:27 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:28 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:29 (decision)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:2 (observation)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:4 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:6 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:8 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:9 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:10 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:11 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:12 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:13 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:14 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:15 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:16 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:17 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:18 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:19 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:20 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:21 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:22 (decision)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:6 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:8 (decision)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:2 (measurement)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:3 (observation)
@@ -69,42 +153,6 @@ Evidence Files:
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:28 (observation)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:29 (run)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:30 (run)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:2 (observation)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:3 (observation)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:4 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:6 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:8 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:9 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:10 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:11 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:12 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:13 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:14 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:15 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:16 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:17 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:18 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:19 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:20 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:21 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:22 (decision)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:6 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:8 (decision)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:4 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:6 (decision)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:2 (run)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:3 (measurement)
@@ -182,31 +230,6 @@ Evidence Files:
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:75 (measurement)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:76 (measurement)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:77 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:2 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:4 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:6 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:8 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:9 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:10 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:11 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:12 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:13 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:14 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:15 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:16 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:17 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:18 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:19 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:20 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:21 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:22 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:23 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:24 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:25 (decision)
   ✅ experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl:2 (observation)
   ✅ experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl:3 (observation)
@@ -245,11 +268,31 @@ Evidence Files:
   ✅ experiments/2026-04-14_incremental-refinement/results/evidence.jsonl:31 (observation)
   ✅ experiments/2026-04-14_incremental-refinement/results/evidence.jsonl:32 (observation)
   ✅ experiments/2026-04-14_incremental-refinement/results/evidence.jsonl:33 (decision)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:2 (observation)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:3 (observation)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:4 (measurement)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:3 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:6 (observation)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:7 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:8 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:9 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:10 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:11 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:12 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:13 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:6 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:8 (decision)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:4 (run)
   ✅ experiments/2026-04-14_premortem-prompting/results/evidence.jsonl:1 (run)
   ✅ experiments/2026-04-14_premortem-prompting/results/evidence.jsonl:2 (measurement)
   ✅ experiments/2026-04-14_premortem-prompting/results/evidence.jsonl:3 (measurement)
@@ -274,27 +317,17 @@ Evidence Files:
   ✅ experiments/2026-04-08_spec-first/results/evidence.jsonl:11 (measurement)
   ✅ experiments/2026-04-08_spec-first/results/evidence.jsonl:12 (measurement)
   ✅ experiments/2026-04-08_spec-first/results/evidence.jsonl:13 (decision)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:6 (run)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:8 (decision)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:3 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:5 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:6 (observation)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:7 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:8 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:9 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:10 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:11 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:12 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:13 (run)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:4 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:6 (decision)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:2 (observation)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:4 (measurement)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:5 (run)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:1 (run)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:2 (observation)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:3 (observation)
@@ -302,40 +335,6 @@ Evidence Files:
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:5 (observation)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:6 (observation)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:7 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:1 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:5 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:6 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:7 (decision)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:8 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:9 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:10 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:11 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:12 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:13 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:14 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:15 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:16 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:17 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:18 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:19 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:20 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:21 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:22 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:23 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:24 (decision)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:25 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:26 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:27 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:28 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:29 (decision)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:3 (observation)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:5 (run)
 
 Decision Files:
   ✅ experiments/2026-04-08_spec-first/results/decision.yml (result_assessment)
@@ -489,38 +488,37 @@ run_meta.json proofs:
   ✅ experiments/2026-04-14_tdd-vibe/artifacts/run-tdd-vibe/run_meta.json
   ✅ experiments/2026-04-14_upfront-structuring/artifacts/run-reconstructed/run_meta.json
   ✅ experiments/2026-04-14_upfront-structuring-replication/artifacts/run-reconstructed/run_meta.json
-  ✅ experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/run_meta.json
   ✅ experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/run_meta.json
+  ✅ experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-004-pr63/run_meta.json
-  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/run_meta.json
+  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-005-pr64/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-003-pr62/run_meta.json
+  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-006-pr67/run_meta.json
-  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase2/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase3/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase3/run_meta.json
   ✅ experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run_meta.json
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run_meta.json
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run_meta.json
 
 adoption_basis:
@@ -919,7 +917,7 @@ Scanned 231 markdown files.
 
 ✅ Cross-contract validation passed.
 🧪 Running cross-contract regression tests...
-ERROR: fixture /tmp/tmp00yfa8jz.json: chain[0] must be a JSON object, got int
+ERROR: fixture /tmp/tmpx60hql42.json: chain[0] must be a JSON object, got int
 ♻️  Replay dry-run (no mutations by design)...
 ✅ Replay trace generator completed (non-mutation enforced by design + tests + CI).
 🧪 Running replay runner regression tests...
@@ -947,7 +945,7 @@ ERROR: fixture /tmp/tmp00yfa8jz.json: chain[0] must be a JSON object, got int
 🧪 Running PR scope validator tests...
 🔎 Validating PR scope / artifact boundary...
 🧪 Running agent compliance guard regression tests...
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
+make[1]: Entering directory '$REPO_ROOT'
 🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -974,8 +972,8 @@ make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
     - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation: missing=insufficient_proof_assessment
 
   (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird verlassen
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
+make[1]: Leaving directory '$REPO_ROOT'
+make[1]: Entering directory '$REPO_ROOT'
 🔒 Running promotion-readiness ratchet (Phase 2, blocking for new violations)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1006,5 +1004,5 @@ make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird betreten
 🔒 Ratchet Mode (Phase 2)
   ✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
-make[1]: Verzeichnis „/home/alex/repos/vibe-lab“ wird verlassen
+make[1]: Leaving directory '$REPO_ROOT'
 ✅ Validation passed.

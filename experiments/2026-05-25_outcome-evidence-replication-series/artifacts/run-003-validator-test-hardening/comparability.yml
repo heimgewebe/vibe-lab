@@ -13,7 +13,6 @@ negative_control: false
 
 compared_against:
   - "run-001-contract-documentation-alignment"
-  - "run-002-negative-control-claim-not-proven"
 
 same_experiment_path: true
 same_metric_structure: true
