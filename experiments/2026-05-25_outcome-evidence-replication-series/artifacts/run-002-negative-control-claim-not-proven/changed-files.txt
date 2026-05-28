@@ -1,10 +1,10 @@
 # Changed Files (run-002-negative-control-claim-not-proven)
 
-Generated: 2026-05-27T16:03:03Z
+Generated: 2026-05-28T06:46:00Z
 Run: run-002-negative-control-claim-not-proven
 Base: merge-base with origin/main
 Command: git diff --name-status origin/main...HEAD
-Scope: stable negative control run bundle plus required series bookkeeping
+Scope: stable negative control run bundle, minimal schema compatibility update, plus required series bookkeeping
 
 File List
 =========
@@ -20,6 +20,7 @@ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-neg
 experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml [modify]
 experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl [modify]
 experiments/2026-05-25_outcome-evidence-replication-series/results/result.md [modify]
+schemas/experiment-run-bundle.v1.schema.json [modify]
 
 Scope Boundary
 ==============
@@ -27,11 +28,12 @@ Scope Boundary
 INCLUDED:
 - Run-002 negative-control artifact bundle (9 files).
 - Series bookkeeping updates in manifest.yml, results/evidence.jsonl, results/result.md.
+- Minimal schema compatibility update allowing provenance.triggered_by in experiment run bundles (enables traceability field in run.yml).
 
 EXCLUDED:
 - Any Run-001 external-audit artifacts (already merged in main).
 - Any generated-doc artifacts for Run-001 external audit.
-- Any schemas or validators.
+- Any other schema or validator changes beyond triggered_by support.
 - Any promotion, adoption, usefulness, or outcome upgrade.
 
 Scope Drift Assessment
@@ -39,6 +41,7 @@ Scope Drift Assessment
 
 scope_drift_count: 0
 
-Reason: All touched files are either the new Run-002 bundle or direct series bookkeeping 
-required to register the run. No unrelated experiment content, no already-merged artifacts 
+Reason: All touched files are either the new Run-002 bundle, direct series bookkeeping
+required to register the run, or the minimal schema extension enabling provenance.triggered_by
+for improved traceability. No unrelated experiment content, no already-merged artifacts
 (external-audit), and no generated artifacts outside Run-002 scope are included.
