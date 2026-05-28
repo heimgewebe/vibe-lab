@@ -10,6 +10,8 @@ canonicality: operative
 
 The first real run was executed (`run-001-contract-documentation-alignment`) with a contract-/documentation-alignment scope only. There is still no outcome upgrade, no CLAIM_NOT_PROVEN upgrade, and no adoption basis.
 
+Run-003 adds a new task class, `validator_test_hardening`, but only as a conservative evidence-/artifact-level hardening run. No validator or test code path effect is claimed from this run.
+
 ## Observations
 
 - Run-001 artifacts are present under `artifacts/run-001-contract-documentation-alignment/`.
@@ -18,11 +20,13 @@ The first real run was executed (`run-001-contract-documentation-alignment`) wit
 - No negative control was executed in run-001.
 - Run-002 adds a stable negative control under `artifacts/run-002-negative-control-claim-not-proven/`.
 - `CLAIM_NOT_PROVEN` remains stable for Run-002, but there are still not four comparable runs.
+- Run-003 adds `artifacts/run-003-validator-test-hardening/` as a small validator-/test-hardening-scoped bundle.
+- Run-003 is explicitly documented as evidence-/artifact-level hardening only; no real validator or test code change is asserted.
 - The series still has no outcome upgrade, no usefulness verdict, and no adoption or promotion basis.
 
 ## Interpretation
 
-The gate is now applied in a real run context, but this remains a narrow alignment run. The current state supports artifact discipline and comparability labeling, not an outcome conclusion.
+The gate is now applied across a slightly broader set of run types, including a negative control and a validator-/test-hardening documentation slice. The run-003 task class is tracked for bookkeeping only and must not be counted as outcome-gate task diversity while no real validator or test code path is changed. It still does not create comparable outcome evidence or justify any outcome conclusion.
 
 ## Verdict
 
@@ -45,6 +49,7 @@ not comparable yet, and has no negative control.
 - Partial independence is not enough for outcome upgrade decisions.
 - A stable negative control must be part of the series before promotion is considered.
 - Contract-/documentation-alignment runs can harden gate usage without changing outcome status.
+- Validator-/test-hardening runs must state clearly whether they changed real validator or test code or only hardened evidence artifacts. Artifact-level hardening alone does not justify an effect claim.
 
 ## External Cross-Family Audit Note
 
@@ -63,4 +68,4 @@ promotion, adoption, or `CLAIM_NOT_PROVEN` upgrade is justified.
 
 ## Next Steps
 
-Continue with additional task classes and stronger independence while keeping outcome upgrades disabled until gate criteria are met.
+Continue with additional task classes, stronger independence, and more comparable runs while keeping outcome upgrades disabled until gate criteria are met.

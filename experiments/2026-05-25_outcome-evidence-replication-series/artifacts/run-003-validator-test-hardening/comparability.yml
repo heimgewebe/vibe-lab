@@ -1,0 +1,35 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-003-validator-test-hardening"
+assessed_at: "2026-05-27"
+
+series: "outcome-evidence-replication-series"
+task_class: "validator_test_hardening"
+comparability_scope: "same outcome-evidence gate family"
+outcome_upgrade_allowed: false
+effect_claim_allowed: false
+promotion_claim_allowed: false
+negative_control: false
+
+compared_against:
+  - "run-001-contract-documentation-alignment"
+  - "run-002-negative-control-claim-not-proven"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-003-validator-test-hardening"
+
+changed_files_artifact: "changed-files.txt"
+timing_artifact: "timing.txt"
+
+verdict: not_comparable
+
+notes: >
+  Run-003 records task_class=validator_test_hardening as series bookkeeping only.
+  It is a conservative evidence/artifact-level hardening run and does not count
+  as outcome-gate task diversity because no real validator or test code path was
+  changed. There are still fewer than four comparable runs, and stronger
+  independent review remains missing. The series gate therefore remains open and
+  no outcome/usefulness/promotion/adoption/CLAIM_NOT_PROVEN upgrade is justified.
