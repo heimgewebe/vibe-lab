@@ -27,9 +27,9 @@ timing_artifact: "timing.txt"
 verdict: not_comparable
 
 notes: >
-  Run-003 increases task diversity by adding task_class=validator_test_hardening,
-  but it remains a conservative evidence/artifact-level hardening run.
-  No real validator or test code effect is claimed, there are still fewer than
-  four comparable runs, and stronger independent review remains missing.
-  The series gate therefore remains open and no outcome/usefulness/promotion/
-  adoption/CLAIM_NOT_PROVEN upgrade is justified.
+  Run-003 records task_class=validator_test_hardening as series bookkeeping only.
+  It is a conservative evidence/artifact-level hardening run and does not count
+  as outcome-gate task diversity because no real validator or test code path was
+  changed. There are still fewer than four comparable runs, and stronger
+  independent review remains missing. The series gate therefore remains open and
+  no outcome/usefulness/promotion/adoption/CLAIM_NOT_PROVEN upgrade is justified.

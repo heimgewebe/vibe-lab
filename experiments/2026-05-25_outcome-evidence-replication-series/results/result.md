@@ -26,7 +26,7 @@ Run-003 adds a new task class, `validator_test_hardening`, but only as a conserv
 
 ## Interpretation
 
-The gate is now applied across a slightly broader set of run types, including a negative control and a validator-/test-hardening documentation slice. This increases task diversity at the series bookkeeping level, but it still does not create comparable outcome evidence or justify any outcome conclusion.
+The gate is now applied across a slightly broader set of run types, including a negative control and a validator-/test-hardening documentation slice. The run-003 task class is tracked for bookkeeping only and must not be counted as outcome-gate task diversity while no real validator or test code path is changed. It still does not create comparable outcome evidence or justify any outcome conclusion.
 
 ## Verdict
 

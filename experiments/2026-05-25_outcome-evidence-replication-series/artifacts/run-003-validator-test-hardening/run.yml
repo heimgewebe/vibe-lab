@@ -10,6 +10,7 @@ run:
 provenance:
   level: "self_reported"
   executor: "copilot-coding-agent:gpt-5.4"
+  triggered_by: "Follow-up correction to prevent outcome-gate task-diversity over-interpretation for artifact-only run-003."
   source_status: "repo_local"
   notes: >
     Run-003 adds a validator_test_hardening task class to the
