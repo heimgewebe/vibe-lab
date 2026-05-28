@@ -10,6 +10,11 @@ run:
 provenance:
   level: "self_reported"
   executor: "copilot-coding-agent:gpt-5.4-mini"
+  triggered_by: >
+    Outcome-evidence-replication-series gate follow-up: add a stable
+    negative-control run for CLAIM_NOT_PROVEN before any outcome,
+    usefulness, promotion, adoption, or CLAIM_NOT_PROVEN upgrade can be
+    considered.
   source_status: "repo_local"
   notes: >
     Stable negative control for the outcome-evidence-replication-series.
