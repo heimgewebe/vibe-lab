@@ -15,7 +15,7 @@ experiment:
     - artifacts/run-002-negative-control-claim-not-proven/make-validate.txt
     - results/evidence.jsonl
   created: "2026-05-25"
-  updated: "2026-05-27"
+  updated: "2026-05-28"
   author: "GitHub Copilot"
   iteration: 4
   evidence_level: experimental
