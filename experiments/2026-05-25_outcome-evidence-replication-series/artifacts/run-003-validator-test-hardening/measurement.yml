@@ -16,7 +16,7 @@ metrics:
   scope_drift_count:
     value: 0
     evidence_status: "repo_local"
-    notes: "Changed file scope is archived in changed-files.txt."
+    notes: "Changed file scope is archived in changed-files.txt. Schema change (provenance.triggered_by support) is treated as minimal in-scope compatibility update, not scope drift."
 
   unsupported_claim_count:
     value: 0
