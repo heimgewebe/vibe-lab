@@ -1,13 +1,46 @@
-branch_diff_origin_main_head:
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/auditor-output.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/changed-files.txt
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/comparability.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/evidence-pack.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/make-validate.txt
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/measurement.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run.yml
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run_meta.json
-A	experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/timing.txt
-M	experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
-M	experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl
-M	experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
+# Changed Files (run-003-validator-test-hardening)
+
+Generated: 2026-05-28T17:30:00Z
+Run: run-003-validator-test-hardening
+Base: merge-base with origin/main
+Command: git diff --name-status origin/main...HEAD
+Scope: run-003 validator_test_hardening artifact bundle plus required series bookkeeping
+
+File List
+=========
+
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/auditor-output.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/changed-files.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/comparability.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/evidence-pack.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/make-validate.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/measurement.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run_meta.json [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/timing.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/result.md [modify]
+
+Scope Boundary
+==============
+
+INCLUDED:
+- Run-003 validator_test_hardening artifact bundle (9 files).
+- Series bookkeeping updates in manifest.yml, results/evidence.jsonl, and results/result.md.
+- Semantic guardrail wording updates to prevent outcome-gate task-diversity over-interpretation for artifact-only run-003.
+
+EXCLUDED:
+- Any real validator or test code path changes.
+- Any schema updates.
+- Any run-001/run-002 artifact additions in this PR diff.
+- Any outcome/usefulness/promotion/adoption/CLAIM_NOT_PROVEN upgrade.
+
+Scope Drift Assessment
+======================
+
+scope_drift_count: 0
+
+Reason: All touched files are confined to the run-003 artifact directory and the required
+series bookkeeping files that register and interpret the run. No unrelated source code,
+schema, or cross-run artifact additions are included.
