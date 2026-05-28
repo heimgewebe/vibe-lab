@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-004-real-validator-test-hardening",
+  "generated_at": "2026-05-28T00:00:00Z",
+  "executor": "claude-sonnet-4-6",
+  "command": "bash -o pipefail -c 'make validate | tee experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt'",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-004-real-validator-test-hardening/make-validate.txt",
+  "provenance_level": "self_reported"
+}

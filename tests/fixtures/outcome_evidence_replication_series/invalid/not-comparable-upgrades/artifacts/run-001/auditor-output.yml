@@ -1,0 +1,8 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-001"
+auditor_date: "2026-05-28"
+auditor:
+  name: "fixture-self-audit"
+overall_verdict: "PASS"
+claims: []

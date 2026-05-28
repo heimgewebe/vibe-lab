@@ -1,0 +1,14 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-001"
+auditor_verdict: "PASS"
+auditor_ref: "auditor-output.yml"
+metrics:
+  validation_gap_count:
+    value: 0
+    evidence_status: "repo_local"
+extensions:
+  series: "outcome-evidence-replication-series"
+  task_class: "contract_documentation_alignment"
+  independence_status: "partial"
+  outcome_upgrade_allowed: false

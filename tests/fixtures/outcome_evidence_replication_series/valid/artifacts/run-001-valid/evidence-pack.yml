@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+run_id: "run-001-valid"
+claims:
+  - claim_id: "pack-001"
+    text: "Valid fixture run — no upgrade claims."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/run.yml"
+        status: "repo_local"

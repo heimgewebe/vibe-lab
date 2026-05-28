@@ -1,0 +1,15 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-001-valid"
+auditor_date: "2026-05-28"
+auditor:
+  name: "fixture-self-audit"
+overall_verdict: "PASS"
+claims:
+  - id: "claim-001"
+    text: "All required artifacts are present."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/run.yml"
+        status: "repo_local"

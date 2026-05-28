@@ -1,0 +1,70 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-004-real-validator-test-hardening"
+auditor_date: "2026-05-28"
+auditor:
+  name: "self-audit"
+  executor: "claude-sonnet-4-6"
+  date: "2026-05-28"
+overall_verdict: "PASS"
+extensions:
+  canonical_claim_source: "evidence-pack.yml"
+  auditor_role: "projection and assessment; evidence-pack.yml is the canonical claim/evidence contract"
+  auditor_independence_status: "partial"
+
+claims:
+  - id: "claim-001"
+    text: "Run-004 contains all required mandatory artifacts for the run bundle."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/measurement.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/auditor-output.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/evidence-pack.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/changed-files.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/timing.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Run-004 delivers real validator and test code under scripts/ and tests/."
+    type: "execution_evidence_package_exists"
+    verdict: "PASS"
+    evidence:
+      - path: "scripts/docmeta/validate_outcome_evidence_replication_series.py"
+        status: "repo_local"
+      - path: "scripts/docmeta/test_validate_outcome_evidence_replication_series.py"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/changed-files.txt"
+        status: "repo_local"
+
+  - id: "claim-003"
+    text: "30 tests pass; make validate exits 0 with the new validator integrated."
+    type: "command_result"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt"
+        status: "repo_local"
+
+  - id: "claim-004"
+    text: "No outcome upgrade, no CLAIM_NOT_PROVEN upgrade, no promotion, no adoption, no usefulness upgrade."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/comparability.yml"
+        status: "repo_local"
+
+required_next_proof:
+  - "A real outcome upgrade requires at least 4 comparable runs — the series has 0 comparable runs so far."
+  - "This run does not produce a usefulness, adoption, promotion, or CLAIM_NOT_PROVEN upgrade verdict."
