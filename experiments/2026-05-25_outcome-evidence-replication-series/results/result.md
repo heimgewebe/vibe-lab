@@ -16,6 +16,9 @@ The first real run was executed (`run-001-contract-documentation-alignment`) wit
 - The run is explicitly constrained to `outcome_upgrade_allowed: false`.
 - Independence is documented as `partial` for this run.
 - No negative control was executed in run-001.
+- Run-002 adds a stable negative control under `artifacts/run-002-negative-control-claim-not-proven/`.
+- `CLAIM_NOT_PROVEN` remains stable for Run-002, but there are still not four comparable runs.
+- The series still has no outcome upgrade, no usefulness verdict, and no adoption or promotion basis.
 
 ## Interpretation
 
@@ -53,9 +56,10 @@ It supports auditor independence for this audit via the different-AI-system /
 different-model-family branch of the gate, but it does not change
 `comparability.yml verdict: not_comparable`.
 
-It does not satisfy the four-comparable-runs threshold, does not add a negative
-control, does not upgrade `CLAIM_NOT_PROVEN`, and does not justify promotion,
-adoption, usefulness, or outcome upgrade.
+This audit itself does not satisfy the four-comparable-runs threshold and does
+not add a negative control. Run-002 later adds a separate negative-control run,
+but the series still lacks four comparable runs and no outcome, usefulness,
+promotion, adoption, or `CLAIM_NOT_PROVEN` upgrade is justified.
 
 ## Next Steps
 

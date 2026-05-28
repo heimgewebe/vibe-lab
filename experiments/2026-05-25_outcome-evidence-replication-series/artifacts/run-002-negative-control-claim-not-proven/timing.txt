@@ -1,0 +1,6 @@
+start_utc: 2026-05-28T06:46:30Z
+end_utc: 2026-05-28T06:46:35Z
+duration_seconds: 5
+evidence_status: self_reported
+capture_mode: wall_clock_local
+note: timing snapshot for scope artifact update and validation refresh; no upgrade claim
