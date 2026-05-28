@@ -1,0 +1,32 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-002-negative-control-claim-not-proven"
+assessed_at: "2026-05-27"
+
+series: "outcome-evidence-replication-series"
+task_class: "negative_control"
+comparability_scope: "same outcome-evidence gate family"
+outcome_upgrade_allowed: false
+negative_control: true
+
+compared_against:
+  - "run-001-contract-documentation-alignment"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-002-negative-control-claim-not-proven"
+
+changed_files_artifact: "changed-files.txt"
+timing_artifact: "timing.txt"
+
+verdict: not_comparable
+
+notes: >
+  Run-002 is a stable negative control. It intentionally leaves the
+  outcome/usefulness/promotion claim underdetermined and records
+  CLAIM_NOT_PROVEN rather than any upgrade. The run is compared against
+  the first series run only as a baseline reference, but it does not
+  satisfy the bar for a comparable outcome-upgrade run because the first
+  run itself was not comparable and no upgrade path is being claimed here.

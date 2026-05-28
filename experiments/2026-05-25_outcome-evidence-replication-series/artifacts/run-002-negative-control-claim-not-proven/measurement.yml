@@ -1,0 +1,67 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-002-negative-control-claim-not-proven"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:gpt-5.4-mini"
+  executor: "copilot-coding-agent"
+  role: >
+    Negative-control run documenting that an intentionally insufficient outcome
+    claim stays CLAIM_NOT_PROVEN with no promotion or usefulness upgrade.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Changed file scope is archived in changed-files.txt. Schema change (provenance.triggered_by support) is treated as minimal in-scope compatibility update, not scope drift."
+
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "The core outcome claim is intentionally not proven."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence references are repo-local and resolvable."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "make validate output is archived in make-validate.txt with exit code 0."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim is made for this negative-control run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim is made for this negative-control run."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "The verdict documents an open proof gap, not a false validator block."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "timing.txt records capture metadata only; no strong timing claim is made."
+
+interpretation_limits:
+  - "This run applies the gate but does not perform any outcome upgrade."
+  - "This run does not claim promotion, adoption, or causal effectiveness."
+  - "review_friction_count and rework_count remain missing_evidence by design."
+
+extensions:
+  series: "outcome-evidence-replication-series"
+  task_class: "negative_control"
+  comparability_scope: "same outcome-evidence gate family"
+  outcome_upgrade_allowed: false
+  independence_status: "partial"
+  negative_control: true
