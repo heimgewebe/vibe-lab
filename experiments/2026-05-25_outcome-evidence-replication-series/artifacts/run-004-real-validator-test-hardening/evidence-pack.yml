@@ -50,5 +50,5 @@ claims:
     evidence:
       - path: "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt"
         status: "repo_local"
-        command: "bash -o pipefail -c 'make validate | tee experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt'"
+        command: "bash -o pipefail -c 'make validate 2>&1 | tee experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt'"
         exit_code: 0
