@@ -13,7 +13,7 @@ provenance:
   source_status: "repo_local"
   notes: >
     Run-004 implements a real gate validator (validate_outcome_evidence_replication_series.py),
-    30 regression tests, file-based fixture corpus (valid + 6 invalid cases), and Makefile
+    39 regression tests, file-based fixture corpus (valid + 6 invalid cases), and Makefile
     integration. This is the first run with actual code and test changes in scripts/ and tests/.
     No outcome upgrade, no CLAIM_NOT_PROVEN upgrade, no promotion, no adoption, and no
     usefulness upgrade are claimed.

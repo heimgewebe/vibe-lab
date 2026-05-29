@@ -47,10 +47,15 @@ def _make_minimal_run(
     comparability_verdict: str = "not_comparable",
     outcome_upgrade_allowed: bool = False,
     effect_claim_allowed: bool = False,
+    promotion_claim_allowed: bool = False,
     task_class: str = "contract_documentation_alignment",
     negative_control: bool = False,
     independence_status: str = "partial",
+    comparability_independence_status: str | None = None,
     provenance_level: str = "self_reported",
+    run_effect_claim_allowed: bool = False,
+    run_promotion_claim_allowed: bool = False,
+    measurement_outcome_upgrade_allowed: bool = False,
     changed_files_content: str | None = None,
 ) -> Path:
     """Create a minimal valid run directory under base/artifacts/<run_id>/."""
@@ -83,8 +88,8 @@ def _make_minimal_run(
             canonical: true
         verdict:
           outcome: "{outcome}"
-          effect_claim_allowed: false
-          promotion_claim_allowed: false
+          effect_claim_allowed: {"true" if run_effect_claim_allowed else "false"}
+          promotion_claim_allowed: {"true" if run_promotion_claim_allowed else "false"}
     """)
 
     _w(run_dir / "measurement.yml", f"""
@@ -101,7 +106,7 @@ def _make_minimal_run(
           series: "outcome-evidence-replication-series"
           task_class: "{task_class}"
           independence_status: "{independence_status}"
-          outcome_upgrade_allowed: false
+          outcome_upgrade_allowed: {"true" if measurement_outcome_upgrade_allowed else "false"}
     """)
 
     _w(run_dir / "auditor-output.yml", f"""
@@ -130,8 +135,10 @@ def _make_minimal_run(
         task_class: "{task_class}"
         outcome_upgrade_allowed: {"true" if outcome_upgrade_allowed else "false"}
         effect_claim_allowed: {"true" if effect_claim_allowed else "false"}
+        promotion_claim_allowed: {"true" if promotion_claim_allowed else "false"}
         negative_control: {"true" if negative_control else "false"}
         verdict: {comparability_verdict}
+        {"independence_status: " + comparability_independence_status if comparability_independence_status else ""}
     """)
 
     default_changed = (
@@ -302,6 +309,95 @@ class TestValidateRun(unittest.TestCase):
             g5_errors = [e for e in errors if "G5" in e]
             self.assertEqual(g5_errors, [], f"Should not get G5 error: {errors}")
 
+    def test_g5_negative_control_missing_outcome(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(
+                Path(d),
+                task_class="negative_control",
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+            )
+            run_path = run_dir / "run.yml"
+            run_text = run_path.read_text(encoding="utf-8").replace(
+                '  outcome: "CLAIM_NOT_PROVEN"\n', ""
+            )
+            run_path.write_text(run_text, encoding="utf-8")
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("G5" in e for e in errors),
+                f"Expected G5 error for missing verdict.outcome, got: {errors}",
+            )
+
+    def test_malformed_comparability_yaml_fails(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(Path(d))
+            (run_dir / "comparability.yml").write_text("verdict: [", encoding="utf-8")
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("malformed YAML in comparability.yml" in e for e in errors),
+                f"Expected malformed comparability.yml error, got: {errors}",
+            )
+
+    def test_empty_comparability_yaml_fails(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(Path(d))
+            (run_dir / "comparability.yml").write_text("", encoding="utf-8")
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("empty YAML document in comparability.yml" in e for e in errors),
+                f"Expected empty comparability.yml error, got: {errors}",
+            )
+
+    def test_unknown_verdict_fails(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(Path(d), comparability_verdict="mystery")
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("verdict must be one of" in e for e in errors),
+                f"Expected unknown verdict error, got: {errors}",
+            )
+
+    def test_g2_not_comparable_with_run_effect_claim(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(
+                Path(d),
+                comparability_verdict="not_comparable",
+                run_effect_claim_allowed=True,
+            )
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("G2" in e and "run.yml verdict.effect_claim_allowed" in e for e in errors),
+                f"Expected G2 run effect-claim error, got: {errors}",
+            )
+
+    def test_outcome_upgrade_allowed_string_is_type_error(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(Path(d))
+            comp_path = run_dir / "comparability.yml"
+            comp_text = comp_path.read_text(encoding="utf-8").replace(
+                "outcome_upgrade_allowed: false",
+                'outcome_upgrade_allowed: "false"',
+            )
+            comp_path.write_text(comp_text, encoding="utf-8")
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("must be a YAML boolean" in e and "outcome_upgrade_allowed" in e for e in errors),
+                f"Expected bool type error, got: {errors}",
+            )
+
+    def test_g6_self_reported_full_independence_in_comparability(self):
+        with tempfile.TemporaryDirectory() as d:
+            run_dir = _make_minimal_run(
+                Path(d),
+                provenance_level="self_reported",
+                comparability_independence_status="full_independence",
+            )
+            errors = validate_run(run_dir)
+            self.assertTrue(
+                any("G6" in e and "comparability.yml independence_status" in e for e in errors),
+                f"Expected G6 comparability independence error, got: {errors}",
+            )
+
     def test_g6_self_reported_full_independence(self):
         with tempfile.TemporaryDirectory() as d:
             run_dir = _make_minimal_run(
@@ -367,6 +463,43 @@ class TestValidateSeries(unittest.TestCase):
             errors = validate_series(base)
             g4_errors = [e for e in errors if "G4" in e]
             self.assertEqual(g4_errors, [], f"Should not get G4 error: {errors}")
+
+    def test_unknown_verdict_does_not_count_as_comparable(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            _make_minimal_run(base, "run-001", comparability_verdict="comparable")
+            _make_minimal_run(base, "run-002", comparability_verdict="comparable")
+            _make_minimal_run(base, "run-003", comparability_verdict="mystery")
+            _make_minimal_run(
+                base,
+                "run-004",
+                comparability_verdict="comparable",
+                outcome_upgrade_allowed=True,
+            )
+            errors = validate_series(base)
+            self.assertTrue(
+                any("verdict must be one of" in e for e in errors),
+                f"Expected unknown verdict error, got: {errors}",
+            )
+            self.assertTrue(
+                any("G4" in e and "run-004" in e for e in errors),
+                f"Expected G4 error because unknown verdict must not count as comparable, got: {errors}",
+            )
+
+    def test_g4_premature_upgrade_via_run_promotion_flag(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            _make_minimal_run(
+                base,
+                "run-001",
+                comparability_verdict="comparable",
+                run_promotion_claim_allowed=True,
+            )
+            errors = validate_series(base)
+            self.assertTrue(
+                any("G4" in e and "run.yml verdict.promotion_claim_allowed" in e for e in errors),
+                f"Expected G4 run promotion error, got: {errors}",
+            )
 
     def test_no_artifacts_dir_returns_error(self):
         with tempfile.TemporaryDirectory() as d:

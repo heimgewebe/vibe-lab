@@ -9,7 +9,7 @@ agent_layer_used:
   agent: "self_reported:claude-sonnet-4-6"
   executor: "claude-code-agent"
   role: >
-    Implement validate_outcome_evidence_replication_series.py, 30 regression tests,
+    Implement validate_outcome_evidence_replication_series.py, 39 regression tests,
     file-based fixture corpus, and Makefile integration for the outcome-evidence-replication-series
     gate. Strict no-upgrade discipline.
 

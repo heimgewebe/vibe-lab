@@ -15,12 +15,15 @@ Rules enforced:
       if changed-files.txt contains at least one real code path under
       scripts/, tests/, .github/workflows/, or Makefile.
       If no real code paths exist, outcome_upgrade_allowed must be false.
-  G4  No run may claim outcome_upgrade_allowed=true unless the series has at
-      least 4 comparable runs (verdict != not_comparable).
+  G4  No run may claim upgrade flags=true
+      (comparability: outcome/effect/promotion; run verdict: effect/promotion;
+      optional measurement extension: outcome_upgrade_allowed)
+      unless the series has at least 4 comparable runs (verdict is "comparable").
   G5  A negative_control run may only be counted when run.yml
       verdict.outcome == CLAIM_NOT_PROVEN.
-  G6  If provenance.level == self_reported, independence_status cannot be
-      full_independence — only partial_independence is permitted.
+  G6  If provenance.level == self_reported, run-artifact independence_status
+      fields (measurement extensions + comparability) cannot claim
+      full-independence variants.
 
 Exit code:
   0  All checks passed.
@@ -67,13 +70,258 @@ REAL_CODE_PREFIXES = (
 REAL_CODE_EXACT = {"Makefile"}
 
 GATE_MIN_COMPARABLE_RUNS = 4
+ALLOWED_VERDICTS = {"comparable", "not_comparable", "reference_only"}
+STRICT_MAPPING_ARTIFACTS = (
+    "run.yml",
+    "measurement.yml",
+    "comparability.yml",
+    "auditor-output.yml",
+    "evidence-pack.yml",
+)
+DISALLOWED_SELF_REPORTED_INDEPENDENCE_VALUES = {
+    "full",
+    "full_independence",
+    "FULL_BY_MODEL_FAMILY",
+    "full_by_model_family_for_this_audit",
+}
 
 
-def _load_yaml(path: Path) -> dict[str, Any]:
+def _load_yaml_strict(path: Path, errors: list[str], run_name: str, artifact: str) -> dict[str, Any]:
     try:
-        return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception:
+        raw = path.read_text(encoding="utf-8")
+    except Exception as exc:
+        errors.append(f"[{run_name}] G1: failed to read {artifact}: {exc}")
         return {}
+
+    try:
+        data = yaml.safe_load(raw)
+    except Exception as exc:
+        errors.append(f"[{run_name}] G1: malformed YAML in {artifact}: {exc}")
+        return {}
+
+    if data is None:
+        errors.append(f"[{run_name}] G1: empty YAML document in {artifact}")
+        return {}
+    if not isinstance(data, dict):
+        errors.append(f"[{run_name}] G1: {artifact} must be a YAML mapping/object")
+        return {}
+
+    return data
+
+
+def _yaml_bool(
+    mapping: dict[str, Any],
+    key: str,
+    *,
+    errors: list[str],
+    run_name: str,
+    rule: str,
+    artifact: str,
+    default: bool = False,
+) -> bool:
+    value = mapping.get(key, default)
+    if isinstance(value, bool):
+        return value
+    errors.append(
+        f"[{run_name}] {rule}: {artifact}.{key} must be a YAML boolean (true/false), got {type(value).__name__}"
+    )
+    return default
+
+
+def _nested_mapping(
+    parent: dict[str, Any],
+    key: str,
+    *,
+    errors: list[str],
+    run_name: str,
+    rule: str,
+    artifact: str,
+) -> dict[str, Any]:
+    value = parent.get(key, {})
+    if isinstance(value, dict):
+        return value
+    errors.append(f"[{run_name}] {rule}: {artifact}.{key} must be a YAML mapping/object")
+    return {}
+
+
+def _validate_run_and_collect(run_dir: Path) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    name = run_dir.name
+    loaded: dict[str, dict[str, Any]] = {}
+
+    for artifact in REQUIRED_RUN_ARTIFACTS:
+        artifact_path = run_dir / artifact
+        if not artifact_path.exists():
+            errors.append(f"[{name}] G1: missing required artifact: {artifact}")
+            continue
+        if artifact in STRICT_MAPPING_ARTIFACTS:
+            loaded[artifact] = _load_yaml_strict(artifact_path, errors, name, artifact)
+
+    comp = loaded.get("comparability.yml", {})
+    run_data = loaded.get("run.yml", {})
+    measurement = loaded.get("measurement.yml", {})
+
+    verdict = comp.get("verdict", "")
+    if not isinstance(verdict, str):
+        errors.append(
+            f"[{name}] G2: comparability.yml verdict must be a string in {sorted(ALLOWED_VERDICTS)}"
+        )
+        verdict = ""
+    verdict = verdict.strip()
+    if verdict not in ALLOWED_VERDICTS:
+        errors.append(
+            f"[{name}] G2: comparability.yml verdict must be one of {sorted(ALLOWED_VERDICTS)}, got {verdict!r}"
+        )
+
+    task_class = comp.get("task_class", "")
+    if not isinstance(task_class, str):
+        task_class = ""
+
+    outcome_upgrade_allowed = _yaml_bool(
+        comp,
+        "outcome_upgrade_allowed",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="comparability.yml",
+    )
+    comp_effect_claim_allowed = _yaml_bool(
+        comp,
+        "effect_claim_allowed",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="comparability.yml",
+    )
+    comp_promotion_claim_allowed = _yaml_bool(
+        comp,
+        "promotion_claim_allowed",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="comparability.yml",
+    )
+    negative_control = _yaml_bool(
+        comp,
+        "negative_control",
+        errors=errors,
+        run_name=name,
+        rule="G5",
+        artifact="comparability.yml",
+    )
+
+    run_verdict = _nested_mapping(
+        run_data,
+        "verdict",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="run.yml",
+    )
+    run_effect_claim_allowed = _yaml_bool(
+        run_verdict,
+        "effect_claim_allowed",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="run.yml verdict",
+    )
+    run_promotion_claim_allowed = _yaml_bool(
+        run_verdict,
+        "promotion_claim_allowed",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="run.yml verdict",
+    )
+
+    measurement_extensions = _nested_mapping(
+        measurement,
+        "extensions",
+        errors=errors,
+        run_name=name,
+        rule="G2",
+        artifact="measurement.yml",
+    )
+    meas_outcome_upgrade_present = "outcome_upgrade_allowed" in measurement_extensions
+    meas_outcome_upgrade_allowed = False
+    if meas_outcome_upgrade_present:
+        meas_outcome_upgrade_allowed = _yaml_bool(
+            measurement_extensions,
+            "outcome_upgrade_allowed",
+            errors=errors,
+            run_name=name,
+            rule="G2",
+            artifact="measurement.yml extensions",
+        )
+
+    # measurement.yml extensions.outcome_upgrade_allowed is optional in this repo,
+    # while comparability/run verdict flags are treated as core gate flags.
+    upgrade_flags: list[tuple[str, bool]] = [
+        ("comparability.yml outcome_upgrade_allowed", outcome_upgrade_allowed),
+        ("comparability.yml effect_claim_allowed", comp_effect_claim_allowed),
+        ("comparability.yml promotion_claim_allowed", comp_promotion_claim_allowed),
+        ("run.yml verdict.effect_claim_allowed", run_effect_claim_allowed),
+        ("run.yml verdict.promotion_claim_allowed", run_promotion_claim_allowed),
+    ]
+    if meas_outcome_upgrade_present:
+        upgrade_flags.append(
+            ("measurement.yml extensions.outcome_upgrade_allowed", meas_outcome_upgrade_allowed)
+        )
+
+    # G2 — not_comparable must not claim upgrades
+    if verdict == "not_comparable":
+        for flag_name, flag_value in upgrade_flags:
+            if flag_value:
+                errors.append(
+                    f"[{name}] G2: verdict=not_comparable but {flag_name}=true"
+                )
+
+    # G3 — validator_test_hardening without real code paths cannot claim upgrade
+    if task_class == "validator_test_hardening":
+        changed_files = run_dir / "changed-files.txt"
+        if not _changed_files_has_real_code(changed_files) and outcome_upgrade_allowed:
+            errors.append(
+                f"[{name}] G3: task_class=validator_test_hardening with no real code paths "
+                f"in changed-files.txt, but outcome_upgrade_allowed=true"
+            )
+
+    # G5 — negative_control requires CLAIM_NOT_PROVEN outcome in run.yml
+    if negative_control:
+        outcome = run_verdict.get("outcome")
+        if outcome != "CLAIM_NOT_PROVEN":
+            outcome_display = "<missing>" if not outcome else repr(outcome)
+            errors.append(
+                f"[{name}] G5: negative_control=true but run.yml verdict.outcome="
+                f"{outcome_display} (expected 'CLAIM_NOT_PROVEN')"
+            )
+
+    # G6 — self_reported provenance cannot claim full independence
+    provenance = _nested_mapping(
+        run_data,
+        "provenance",
+        errors=errors,
+        run_name=name,
+        rule="G6",
+        artifact="run.yml",
+    )
+    provenance_level = provenance.get("level", "")
+    if provenance_level == "self_reported":
+        measurement_independence = measurement_extensions.get("independence_status")
+        comparability_independence = comp.get("independence_status")
+        for src, value in (
+            ("measurement.yml extensions.independence_status", measurement_independence),
+            ("comparability.yml independence_status", comparability_independence),
+        ):
+            if value in DISALLOWED_SELF_REPORTED_INDEPENDENCE_VALUES:
+                errors.append(
+                    f"[{name}] G6: provenance=self_reported cannot claim {src}={value!r}"
+                )
+
+    return errors, {
+        "verdict": verdict if verdict in ALLOWED_VERDICTS else "",
+        "upgrade_flags": upgrade_flags,
+    }
 
 
 def _changed_files_has_real_code(path: Path) -> bool:
@@ -96,74 +344,7 @@ def _changed_files_has_real_code(path: Path) -> bool:
 
 def validate_run(run_dir: Path) -> list[str]:
     """Validate one run directory. Returns blocking error messages."""
-    errors: list[str] = []
-    name = run_dir.name
-
-    # G1 — required artifacts
-    for artifact in REQUIRED_RUN_ARTIFACTS:
-        if not (run_dir / artifact).exists():
-            errors.append(f"[{name}] G1: missing required artifact: {artifact}")
-
-    # Load comparability.yml (tolerate absence — G1 already flagged it)
-    comp: dict[str, Any] = {}
-    comp_path = run_dir / "comparability.yml"
-    if comp_path.exists():
-        comp = _load_yaml(comp_path)
-
-    verdict = comp.get("verdict", "")
-    task_class = comp.get("task_class", "")
-    outcome_upgrade_allowed = bool(comp.get("outcome_upgrade_allowed", False))
-    effect_claim_allowed = bool(comp.get("effect_claim_allowed", False))
-    negative_control = bool(comp.get("negative_control", False))
-
-    # G2 — not_comparable must not claim upgrades
-    if verdict == "not_comparable":
-        if outcome_upgrade_allowed:
-            errors.append(
-                f"[{name}] G2: verdict=not_comparable but outcome_upgrade_allowed=true"
-            )
-        if effect_claim_allowed:
-            errors.append(
-                f"[{name}] G2: verdict=not_comparable but effect_claim_allowed=true"
-            )
-
-    # G3 — validator_test_hardening without real code paths cannot claim upgrade
-    if task_class == "validator_test_hardening":
-        changed_files = run_dir / "changed-files.txt"
-        if not _changed_files_has_real_code(changed_files) and outcome_upgrade_allowed:
-            errors.append(
-                f"[{name}] G3: task_class=validator_test_hardening with no real code paths "
-                f"in changed-files.txt, but outcome_upgrade_allowed=true"
-            )
-
-    # G5 — negative_control requires CLAIM_NOT_PROVEN outcome in run.yml
-    if negative_control:
-        run_path = run_dir / "run.yml"
-        if run_path.exists():
-            run_data = _load_yaml(run_path)
-            outcome = (run_data.get("verdict") or {}).get("outcome", "")
-            if outcome and outcome != "CLAIM_NOT_PROVEN":
-                errors.append(
-                    f"[{name}] G5: negative_control=true but run.yml verdict.outcome="
-                    f"'{outcome}' (expected CLAIM_NOT_PROVEN)"
-                )
-
-    # G6 — self_reported provenance cannot claim full independence
-    run_path = run_dir / "run.yml"
-    if run_path.exists():
-        run_data = _load_yaml(run_path)
-        provenance_level = (run_data.get("provenance") or {}).get("level", "")
-        if provenance_level == "self_reported":
-            meas_path = run_dir / "measurement.yml"
-            if meas_path.exists():
-                meas = _load_yaml(meas_path)
-                independence = (meas.get("extensions") or {}).get("independence_status", "")
-                if independence in ("full_independence", "full"):
-                    errors.append(
-                        f"[{name}] G6: provenance=self_reported cannot claim "
-                        f"independence_status={independence}"
-                    )
-
+    errors, _ = _validate_run_and_collect(run_dir)
     return errors
 
 
@@ -184,25 +365,23 @@ def validate_series(series_dir: Path) -> list[str]:
 
     # Per-run checks
     comparable_count = 0
+    run_infos: list[tuple[Path, dict[str, Any]]] = []
     for run_dir in run_dirs:
-        errors.extend(validate_run(run_dir))
-        comp_path = run_dir / "comparability.yml"
-        if comp_path.exists():
-            comp = _load_yaml(comp_path)
-            if comp.get("verdict", "") != "not_comparable":
-                comparable_count += 1
+        run_errors, run_info = _validate_run_and_collect(run_dir)
+        errors.extend(run_errors)
+        run_infos.append((run_dir, run_info))
+        if run_info.get("verdict") == "comparable":
+            comparable_count += 1
 
     # G4 — no premature upgrade claims at series level
-    for run_dir in run_dirs:
-        comp_path = run_dir / "comparability.yml"
-        if not comp_path.exists():
-            continue
-        comp = _load_yaml(comp_path)
-        if comp.get("outcome_upgrade_allowed", False) and comparable_count < GATE_MIN_COMPARABLE_RUNS:
-            errors.append(
-                f"[{run_dir.name}] G4: outcome_upgrade_allowed=true but series has only "
-                f"{comparable_count} comparable run(s) (minimum {GATE_MIN_COMPARABLE_RUNS} required)"
-            )
+    if comparable_count < GATE_MIN_COMPARABLE_RUNS:
+        for run_dir, run_info in run_infos:
+            for flag_name, flag_value in run_info.get("upgrade_flags", []):
+                if flag_value:
+                    errors.append(
+                        f"[{run_dir.name}] G4: {flag_name}=true but series has only "
+                        f"{comparable_count} comparable run(s) (minimum {GATE_MIN_COMPARABLE_RUNS} required)"
+                    )
 
     return errors
 

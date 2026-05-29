@@ -29,7 +29,7 @@ verdict: not_comparable
 
 notes: >
   Run-004 delivers a real validator (scripts/docmeta/validate_outcome_evidence_replication_series.py),
-  30 passing tests, file-based fixtures under tests/fixtures/outcome_evidence_replication_series/,
+  39 passing tests, file-based fixtures under tests/fixtures/outcome_evidence_replication_series/,
   and Makefile integration. The task_class=validator_test_hardening therefore reflects an actual
   code and test change — changed-files.txt records the real code paths.
   However, with fewer than 4 comparable runs (runs 001–003 all have verdict=not_comparable),
