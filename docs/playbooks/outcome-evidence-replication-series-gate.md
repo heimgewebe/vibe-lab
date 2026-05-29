@@ -1,6 +1,6 @@
 ---
 title: "Playbook — Outcome-Evidence-Replication-Series Gate"
-status: operative
+status: active
 canonicality: operative
 relations:
   - type: references

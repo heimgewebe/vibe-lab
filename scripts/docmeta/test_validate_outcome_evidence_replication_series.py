@@ -615,6 +615,131 @@ class TestValidateSeries(unittest.TestCase):
             g7_errors = [e for e in errors if "G7" in e]
             self.assertEqual(g7_errors, [], f"Should not get G7 error with complete criteria: {errors}")
 
+    def test_g7_fake_task_diversity_filtered(self):
+        """G7: validator_test_hardening without real code changes should not count toward task diversity"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            # Create 4 comparable runs:
+            # - run-001: test_task_a, comparable, upgrade=true
+            # - run-002: test_task_b, comparable
+            # - run-003: validator_test_hardening (no real code changes), comparable
+            # - run-004: validator_test_hardening (no real code changes), comparable
+            # Distinct task classes WITHOUT filtering: 3 (test_task_a, test_task_b, validator_test_hardening)
+            # Distinct task classes WITH filtering: 2 (test_task_a, test_task_b) → G7 fails
+            
+            _make_minimal_run(
+                base,
+                "run-001",
+                comparability_verdict="comparable",
+                task_class="test_task_a",
+                outcome_upgrade_allowed=True,  # Set upgrade flag
+                independence_status="full",
+                provenance_level="external",
+            )
+            _make_minimal_run(
+                base,
+                "run-002",
+                comparability_verdict="comparable",
+                task_class="test_task_b",
+                independence_status="full",
+                provenance_level="external",
+            )
+            # Two validator_test_hardening runs with no real code changes (only experiments/fixture changes)
+            _make_minimal_run(
+                base,
+                "run-003",
+                comparability_verdict="comparable",
+                task_class="validator_test_hardening",
+                independence_status="independent_review",
+                provenance_level="external",
+                changed_files_content="A\texperiments/fixture/artifacts/run-003/run.yml\n",
+            )
+            _make_minimal_run(
+                base,
+                "run-004",
+                comparability_verdict="comparable",
+                task_class="validator_test_hardening",
+                independence_status="independent_review",
+                provenance_level="external",
+                changed_files_content="M\texperiments/fixture/artifacts/run-004/comparability.yml\n",
+            )
+            # Add negative control with a task class that already exists to not increase diversity
+            _make_minimal_run(
+                base,
+                "run-005",
+                comparability_verdict="not_comparable",  # Not comparable, so doesn't count in G7 diversity
+                task_class="test_task_a",  # Same task_class as run-001, doesn't add diversity
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+            )
+            errors = validate_series(base)
+            self.assertTrue(
+                any("G7" in e and "distinct task class(es)" in e for e in errors),
+                f"Expected G7 task diversity error, got: {errors}",
+            )
+
+    def test_g7_fake_task_diversity_with_real_code_passes(self):
+        """G7: validator_test_hardening WITH real code changes should count toward task diversity"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            # Create 4 comparable runs:
+            # - run-001: test_task_a
+            # - run-002: test_task_b
+            # - run-003: validator_test_hardening (with real code changes in scripts/)
+            # - run-004: validator_test_hardening (with real code changes in tests/)
+            # Total distinct: 3 (test_task_a, test_task_b, validator_test_hardening) → G7 should pass
+            
+            _make_minimal_run(
+                base,
+                "run-001",
+                comparability_verdict="comparable",
+                task_class="test_task_a",
+                outcome_upgrade_allowed=True,  # Set upgrade flag
+                independence_status="full",
+                provenance_level="external",
+            )
+            _make_minimal_run(
+                base,
+                "run-002",
+                comparability_verdict="comparable",
+                task_class="test_task_b",
+                independence_status="full",
+                provenance_level="external",
+            )
+            # validator_test_hardening with real code changes (scripts/)
+            _make_minimal_run(
+                base,
+                "run-003",
+                comparability_verdict="comparable",
+                task_class="validator_test_hardening",
+                independence_status="independent_review",
+                provenance_level="external",
+                changed_files_content="A\tscripts/docmeta/validator_test.py\nM\texperiments/fixture/artifacts/run-003/run.yml\n",
+            )
+            # validator_test_hardening with real code changes (tests/)
+            _make_minimal_run(
+                base,
+                "run-004",
+                comparability_verdict="comparable",
+                task_class="validator_test_hardening",
+                independence_status="independent_review",
+                provenance_level="external",
+                changed_files_content="M\ttests/fixtures/test_data.yml\n",
+            )
+            # Add negative control
+            _make_minimal_run(
+                base,
+                "run-005",
+                comparability_verdict="comparable",
+                task_class="task_control",
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+            )
+            errors = validate_series(base)
+            g7_errors = [e for e in errors if "G7" in e]
+            self.assertEqual(g7_errors, [], f"Should not get G7 error with real code changes: {errors}")
+
+
     def test_no_artifacts_dir_returns_error(self):
         with tempfile.TemporaryDirectory() as d:
             errors = validate_series(Path(d))

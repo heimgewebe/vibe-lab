@@ -428,11 +428,21 @@ def validate_series(series_dir: Path) -> list[str]:
             )
         
         # Check distinct task classes
+        # For validator_test_hardening, only count if it has real code changes
         distinct_task_classes = set()
-        for _, run_info in comparable_runs:
+        for run_dir, run_info in comparable_runs:
             task_class = run_info.get("task_class", "").strip()
-            if task_class:
-                distinct_task_classes.add(task_class)
+            if not task_class:
+                continue
+            
+            # Validator test runs only count if they have real code changes
+            if task_class == "validator_test_hardening":
+                changed_files = run_dir / "changed-files.txt"
+                if not _changed_files_has_real_code(changed_files):
+                    # Skip this run as it doesn't contribute real task diversity
+                    continue
+            
+            distinct_task_classes.add(task_class)
         
         if len(distinct_task_classes) < 3:
             errors.append(
