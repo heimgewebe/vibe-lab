@@ -94,7 +94,6 @@ FULL_INDEPENDENCE_VALUES = {
     "full",
     "full_independence",
     "FULL_BY_MODEL_FAMILY",
-    "full_by_model_family_for_this_audit",
 }
 
 # Independence values that count as independent review (excludes partial)

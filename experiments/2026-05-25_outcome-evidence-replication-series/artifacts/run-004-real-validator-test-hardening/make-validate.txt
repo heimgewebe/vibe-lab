@@ -1,128 +1,59 @@
 📜 Validating generated-artifact contract (v2)...
-✅ Generated-artifact contract valid (/tmp/workspace/heimgewebe/vibe-lab/.vibe/generated-artifacts.yml).
+✅ Generated-artifact contract valid ($REPO_ROOT/.vibe/generated-artifacts.yml).
 🧪 Running generated-artifact contract regression tests...
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 0.001s
+
+OK
 📋 Validating artifact taxonomy contract...
-✅ Artifact taxonomy valid (/tmp/workspace/heimgewebe/vibe-lab/.vibe/artifact-taxonomy.yml).
+✅ Artifact taxonomy valid ($REPO_ROOT/.vibe/artifact-taxonomy.yml).
 🧪 Running artifact taxonomy generator regression tests...
+.......................................................................................................................................
+----------------------------------------------------------------------
+Ran 135 tests in 0.165s
+
+OK
 🧪 Running artifact taxonomy contract validator regression tests...
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK
 🔍 Validating schemas...
 🔍 Schema Validation
 
 Experiment Manifests:
-  ✅ experiments/2026-04-14_tdd-vibe/manifest.yml
-  ✅ experiments/2026-04-15_agent-task-validity/manifest.yml
-  ✅ experiments/2026-04-14_incremental-debuggability/manifest.yml
-  ✅ experiments/2026-04-14_prompt-length-control/manifest.yml
   ✅ experiments/2026-04-23_agent-failure-surface/manifest.yml
+  ✅ experiments/2026-04-14_incremental-debuggability/manifest.yml
+  ✅ experiments/2026-04-14_upfront-structuring-replication/manifest.yml
+  ✅ experiments/2026-04-14_upfront-structuring/manifest.yml
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/manifest.yml
+  ✅ experiments/2026-04-14_tdd-vibe/manifest.yml
   ✅ experiments/2026-04-11_yolo-vs-spec-first/manifest.yml
   ✅ experiments/2026-04-14_incremental-refinement/manifest.yml
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
-  ✅ experiments/2026-04-14_upfront-structuring-replication/manifest.yml
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
+  ✅ experiments/2026-04-12_spec-first-legacy/manifest.yml
   ✅ experiments/2026-04-14_premortem-prompting/manifest.yml
   ✅ experiments/2026-04-08_spec-first/manifest.yml
-  ✅ experiments/2026-04-14_upfront-structuring/manifest.yml
-  ✅ experiments/2026-04-12_spec-first-legacy/manifest.yml
+  ✅ experiments/2026-04-14_prompt-length-control/manifest.yml
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/manifest.yml
   ✅ experiments/2026-04-23_phase-1-drift-injection/manifest.yml
+  ✅ experiments/2026-04-15_agent-task-validity/manifest.yml
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
 
 Catalog Entries:
-  ✅ catalog/combos/spec-first-constraint-control.md
-  ✅ catalog/combos/spec-first-anti-pattern-awareness.md
   ✅ catalog/styles/structured-specification.md
   ✅ catalog/styles/constraint-first.md
-  ✅ catalog/workflows/spec-first-api-generation.md
-  ✅ catalog/workflows/causal-control-study.md
+  ✅ catalog/anti-patterns/vague-prompt-and-fix.md
+  ✅ catalog/anti-patterns/token-bloat-as-quality-proxy.md
   ✅ catalog/techniques/prompt-length-control.md
   ✅ catalog/techniques/spec-first-prompting.md
-  ✅ catalog/anti-patterns/token-bloat-as-quality-proxy.md
-  ✅ catalog/anti-patterns/vague-prompt-and-fix.md
+  ✅ catalog/combos/spec-first-constraint-control.md
+  ✅ catalog/combos/spec-first-anti-pattern-awareness.md
+  ✅ catalog/workflows/causal-control-study.md
+  ✅ catalog/workflows/spec-first-api-generation.md
 
 Evidence Files:
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:2 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:4 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:6 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:8 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:9 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:10 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:11 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:12 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:13 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:14 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:15 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:16 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:17 (measurement)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:18 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:19 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:20 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:21 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:22 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:23 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:24 (observation)
-  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:25 (decision)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:1 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:5 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:6 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:7 (decision)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:8 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:9 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:10 (run)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:11 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:12 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:13 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:14 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:15 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:16 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:17 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:18 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:19 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:20 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:21 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:22 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:23 (measurement)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:24 (decision)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:25 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:26 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:27 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:28 (observation)
-  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:29 (decision)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:2 (observation)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:3 (observation)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:4 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:6 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:8 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:9 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:10 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:11 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:12 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:13 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:14 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:15 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:16 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:17 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:18 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:19 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:20 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:21 (measurement)
-  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:22 (decision)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:6 (run)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:8 (decision)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:2 (measurement)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:3 (observation)
@@ -153,6 +84,42 @@ Evidence Files:
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:28 (observation)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:29 (run)
   ✅ experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl:30 (run)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:2 (observation)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:4 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:6 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:8 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:9 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:10 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:11 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:12 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:13 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:14 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:15 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:16 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:17 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:18 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:19 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:20 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:21 (measurement)
+  ✅ experiments/2026-04-14_incremental-debuggability/results/evidence.jsonl:22 (decision)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:6 (run)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:8 (decision)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:4 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:6 (decision)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:2 (run)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:3 (measurement)
@@ -230,6 +197,31 @@ Evidence Files:
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:75 (measurement)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:76 (measurement)
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/results/evidence.jsonl:77 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:2 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:4 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:6 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:8 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:9 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:10 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:11 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:12 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:13 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:14 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:15 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:16 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:17 (measurement)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:18 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:19 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:20 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:21 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:22 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:23 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:24 (observation)
+  ✅ experiments/2026-04-14_tdd-vibe/results/evidence.jsonl:25 (decision)
   ✅ experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl:1 (observation)
   ✅ experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl:2 (observation)
   ✅ experiments/2026-04-11_yolo-vs-spec-first/results/evidence.jsonl:3 (observation)
@@ -268,33 +260,11 @@ Evidence Files:
   ✅ experiments/2026-04-14_incremental-refinement/results/evidence.jsonl:31 (observation)
   ✅ experiments/2026-04-14_incremental-refinement/results/evidence.jsonl:32 (observation)
   ✅ experiments/2026-04-14_incremental-refinement/results/evidence.jsonl:33 (decision)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:3 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:5 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:6 (observation)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:7 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:8 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:9 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:10 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:11 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:12 (run)
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:13 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:6 (run)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:7 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring-replication/results/evidence.jsonl:8 (decision)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:3 (observation)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:4 (run)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:5 (run)
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:6 (run)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:2 (observation)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:4 (measurement)
+  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:5 (run)
   ✅ experiments/2026-04-14_premortem-prompting/results/evidence.jsonl:1 (run)
   ✅ experiments/2026-04-14_premortem-prompting/results/evidence.jsonl:2 (measurement)
   ✅ experiments/2026-04-14_premortem-prompting/results/evidence.jsonl:3 (measurement)
@@ -319,17 +289,27 @@ Evidence Files:
   ✅ experiments/2026-04-08_spec-first/results/evidence.jsonl:11 (measurement)
   ✅ experiments/2026-04-08_spec-first/results/evidence.jsonl:12 (measurement)
   ✅ experiments/2026-04-08_spec-first/results/evidence.jsonl:13 (decision)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:2 (run)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:3 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:4 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:5 (measurement)
-  ✅ experiments/2026-04-14_upfront-structuring/results/evidence.jsonl:6 (decision)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:1 (observation)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:2 (observation)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:3 (observation)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:4 (measurement)
-  ✅ experiments/2026-04-12_spec-first-legacy/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:5 (measurement)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:6 (run)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:7 (measurement)
+  ✅ experiments/2026-04-14_prompt-length-control/results/evidence.jsonl:8 (decision)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:3 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:6 (observation)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:7 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:8 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:9 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:10 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:11 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:12 (run)
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl:13 (run)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:1 (run)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:2 (observation)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:3 (observation)
@@ -337,6 +317,41 @@ Evidence Files:
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:5 (observation)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:6 (observation)
   ✅ experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl:7 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:1 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:3 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:6 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:7 (decision)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:8 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:9 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:10 (run)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:11 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:12 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:13 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:14 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:15 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:16 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:17 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:18 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:19 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:20 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:21 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:22 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:23 (measurement)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:24 (decision)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:25 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:26 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:27 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:28 (observation)
+  ✅ experiments/2026-04-15_agent-task-validity/results/evidence.jsonl:29 (decision)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:1 (observation)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:2 (run)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:3 (observation)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:4 (run)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:5 (run)
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl:6 (run)
 
 Decision Files:
   ✅ experiments/2026-04-08_spec-first/results/decision.yml (result_assessment)
@@ -478,6 +493,33 @@ Docmeta Frontmatter:
 
 ✅ All schema validations passed.
 🧪 Running counterevidence P2-rule regression tests...
+test_confirms_plus_counterevidence_false_is_error (__main__.P2CounterevidenceRuleTests)
+Fall 1: verdict=confirms + counterevidence_checked=False → Fehler. ... ok
+test_confirms_plus_found_and_confirming_is_error (__main__.P2CounterevidenceRuleTests)
+Fall 3: verdict=confirms + counter_hypothesis_outcome=found_and_confirming → Fehler. ... ok
+test_counterevidence_true_plus_confirms_is_allowed (__main__.P2CounterevidenceRuleTests)
+Fall 8: counterevidence_checked=True + verdict=confirms → erlaubt (Normalfall). ... ok
+test_error_message_contains_rel_path (__main__.P2CounterevidenceRuleTests)
+Der Fehlertext enthält den relativen Pfad zur Datei. ... ok
+test_inconclusive_is_always_allowed (__main__.P2CounterevidenceRuleTests)
+Zusatz: inconclusive mit counterevidence_checked=False → erlaubt. ... ok
+test_mixed_plus_counterevidence_false_is_allowed (__main__.P2CounterevidenceRuleTests)
+Fall 2: verdict=mixed + counterevidence_checked=False → erlaubt. ... ok
+test_mixed_plus_found_and_confirming_is_allowed (__main__.P2CounterevidenceRuleTests)
+Fall 4: verdict=mixed + counter_hypothesis_outcome=found_and_confirming → erlaubt. ... ok
+test_no_new_fields_is_allowed (__main__.P2CounterevidenceRuleTests)
+Fall 5: result_assessment ohne neue Felder → kein Fehler (keine Pflicht). ... ok
+test_none_verdict_with_counterevidence_false_is_allowed (__main__.P2CounterevidenceRuleTests)
+Kein verdict gesetzt + counterevidence_checked=False → kein Fehler (fehlerhaftes YAML ... ok
+test_other_decision_type_is_not_checked (__main__.P2CounterevidenceRuleTests)
+Fall 6: adoption_assessment → P2-Regel greift nicht, auch wenn Felder gesetzt sind. ... ok
+test_refutes_plus_counterevidence_false_is_allowed (__main__.P2CounterevidenceRuleTests)
+Fall 7: verdict=refutes + counterevidence_checked=False → erlaubt. ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.000s
+
+OK
 🔍 Validating execution proof...
 🔍 Execution-Proof Validation
 
@@ -490,39 +532,39 @@ run_meta.json proofs:
   ✅ experiments/2026-04-14_tdd-vibe/artifacts/run-tdd-vibe/run_meta.json
   ✅ experiments/2026-04-14_upfront-structuring/artifacts/run-reconstructed/run_meta.json
   ✅ experiments/2026-04-14_upfront-structuring-replication/artifacts/run-reconstructed/run_meta.json
-  ✅ experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/run_meta.json
   ✅ experiments/2026-04-15_agent-task-validity/artifacts/run-004-treatment/run_meta.json
+  ✅ experiments/2026-04-15_agent-task-validity/artifacts/run-003-control/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-004-pr63/run_meta.json
-  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/run_meta.json
+  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-005-pr64/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-003-pr62/run_meta.json
-  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-001-pr58/run_meta.json
   ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-006-pr67/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase2/run_meta.json
+  ✅ experiments/2026-04-19_generated-artifact-contract-validation/artifacts/run-002-pr61/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg02-real/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/run_meta.json
-  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg03-real-02/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase2/run_meta.json
   ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase3/run_meta.json
+  ✅ experiments/2026-04-23_agent-failure-surface/artifacts/run-phase5/run_meta.json
   ✅ experiments/2026-04-23_phase-1-drift-injection/artifacts/run-2026-04-24-phase1-001/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-011-external-outcome-audit-prep/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-001-promotion-readiness-prepared-without-measurement/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json
   ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-002-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-004-controlled-agent-skill-run/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/run_meta.json
-  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/run_meta.json
+  ✅ experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/run_meta.json
+  ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run_meta.json
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/run_meta.json
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run_meta.json
-  ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run_meta.json
   ✅ experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run_meta.json
 
 adoption_basis:
@@ -531,6 +573,11 @@ adoption_basis:
 
 ✅ All execution-proof checks passed.
 🧪 Running run-bundle validator regression tests...
+...................................................................................................................................................
+----------------------------------------------------------------------
+Ran 147 tests in 6.882s
+
+OK
 🧷 Validating experiment run bundles...
 🧷 Validating experiment run bundles...
 ✅ All run bundles consistent.
@@ -823,11 +870,106 @@ adoption_basis:
 Scanned 231 markdown files.
 ✅ All relations valid.
 🧪 Running relations validator regression tests...
+test_blank_string_target_is_reported_as_empty (__main__.ValidateRelationsTests)
+Whitespace-only ``target`` must be rejected as empty, not resolved as a directory. ... ok
+test_blank_string_type_is_reported_as_empty (__main__.ValidateRelationsTests)
+Whitespace-only ``type`` must be rejected as empty. ... ok
+test_false_target_is_reported_as_type_error (__main__.ValidateRelationsTests)
+``target: false`` must produce a type-error, not a 'missing' diagnostic. ... ok
+test_fragment_target_resolves_against_file (__main__.ValidateRelationsTests)
+``file.md#anchor`` should validate the underlying file, not a non-existent path. ... ok
+test_fragment_target_with_missing_file_is_reported (__main__.ValidateRelationsTests)
+``missing.md#anchor`` should report the file as missing, not silently pass. ... ok
+test_issue_reference_is_skipped (__main__.ValidateRelationsTests) ... ok
+test_missing_target_is_reported (__main__.ValidateRelationsTests) ... ok
+test_missing_type_or_target_is_reported (__main__.ValidateRelationsTests) ... ok
+test_non_list_relations_is_reported (__main__.ValidateRelationsTests) ... ok
+test_non_mapping_relation_entry_is_reported (__main__.ValidateRelationsTests) ... ok
+test_non_string_target_is_reported (__main__.ValidateRelationsTests)
+Non-string target (e.g. integer 42) must produce a type-error, not a crash. ... ok
+test_non_string_type_is_reported (__main__.ValidateRelationsTests)
+``type: false`` must produce a type-error for 'type', not a 'missing' diagnostic. ... ok
+test_path_escape_is_reported (__main__.ValidateRelationsTests) ... ok
+test_repeated_calls_do_not_accumulate_errors (__main__.ValidateRelationsTests)
+Guards against the previous global ``errors = []`` bug. ... ok
+test_target_with_leading_trailing_whitespace_is_rejected (__main__.ValidateRelationsTests)
+``target: " target.md "`` must fail even if the underlying file exists. ... ok
+test_type_with_leading_trailing_whitespace_is_rejected (__main__.ValidateRelationsTests)
+``type: " references "`` must fail as a distinct whitespace fault. ... ok
+test_valid_relation_to_existing_file (__main__.ValidateRelationsTests) ... ok
+test_zero_target_is_reported_as_type_error (__main__.ValidateRelationsTests)
+``target: 0`` must produce a type-error, not a 'missing' diagnostic. ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.024s
+
+OK
 🧪 Running backlinks generator regression tests...
+test_fragment_target_backlink_recorded_under_file_not_fragment (__main__.GenerateBacklinksTests)
+``target.md#section`` must produce a backlink under ``target.md``, ... ok
+test_path_escape_target_is_skipped (__main__.GenerateBacklinksTests)
+Targets that escape the repo root must be silently dropped. ... ok
+test_plain_target_produces_backlink (__main__.GenerateBacklinksTests)
+A plain ``target: target.md`` produces a backlink under ``docs/target.md``. ... ok
+test_pure_fragment_target_is_skipped (__main__.GenerateBacklinksTests)
+``#issue`` targets must not produce any backlink entry. ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.012s
+
+OK
 🧪 Running orphans generator regression tests...
+test_fragment_target_counts_as_reference_to_file (__main__.GenerateOrphansTests)
+``target.md#section`` must count as a reference to ``target.md`` ... ok
+test_path_escape_target_does_not_affect_orphan_set (__main__.GenerateOrphansTests)
+Targets that escape the repo root must be silently dropped. ... ok
+test_plain_target_removes_file_from_orphan_set (__main__.GenerateOrphansTests)
+A file that is a plain relation target must not appear in orphans. ... ok
+test_pure_fragment_does_not_count_as_file_reference (__main__.GenerateOrphansTests)
+``#issue`` targets must not count as a reference to any file. ... ok
+test_unreferenced_file_is_orphan (__main__.GenerateOrphansTests)
+A file with no incoming references is reported as an orphan. ... ok
+test_double_star_matches_multiple_segments (__main__.OrphanPolicyTests)
+'exports/**/*.md' matches zero, one, and multiple intermediate segments. ... ok
+test_empty_reason_raises_value_error (__main__.OrphanPolicyTests)
+A policy entry with an empty reason string must be rejected. ... ok
+test_expected_orphan_classified_with_reason (__main__.OrphanPolicyTests)
+An orphan matched by a policy rule appears in expected, not unexpected. ... ok
+test_expected_orphans_empty_string_raises_value_error (__main__.OrphanPolicyTests)
+expected_orphans as an empty string must be rejected. ... ok
+test_expected_orphans_not_a_list_raises_value_error (__main__.OrphanPolicyTests)
+expected_orphans must be a list; a mapping or scalar must be rejected. ... ok
+test_expected_orphans_null_raises_value_error (__main__.OrphanPolicyTests)
+expected_orphans as null must be rejected. ... ok
+test_invalid_yaml_raises_value_error (__main__.OrphanPolicyTests)
+A policy file with invalid YAML must raise ValueError mentioning 'invalid YAML'. ... ok
+test_missing_policy_file_returns_empty_rules (__main__.OrphanPolicyTests)
+When .vibe/orphan-policy.yml does not exist, rules list is empty. ... ok
+test_missing_reason_raises_value_error (__main__.OrphanPolicyTests)
+A policy entry without a reason field must be rejected. ... ok
+test_pattern_is_root_anchored (__main__.OrphanPolicyTests)
+'experiments/*/CONTEXT.md' must NOT match a path that merely ends with it. ... ok
+test_single_star_does_not_cross_path_segments (__main__.OrphanPolicyTests)
+'experiments/*/CONTEXT.md' matches one level but not two. ... ok
+test_toplevel_list_raises_value_error (__main__.OrphanPolicyTests)
+A policy file whose top-level is a YAML list must be rejected. ... ok
+test_unmatched_orphan_stays_unexpected (__main__.OrphanPolicyTests)
+An orphan that matches no policy rule remains in the unexpected list. ... ok
+test_whitespace_only_reason_raises_value_error (__main__.OrphanPolicyTests)
+A reason that is only whitespace must be rejected. ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.025s
+
+OK
 🧠 Validating interpretation budget...
 ✅ Interpretation Budget: 2 adopted Experiment(e) valide.
 🧪 Running interpretation budget regression tests...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.009s
+
+OK
 🤝 Validating agent handoff fixtures...
 🔍 Agent Handoff Validation
   ✅ tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json (expected contract_invalid)
@@ -844,6 +986,11 @@ Scanned 231 markdown files.
 
 ✅ Agent handoff validation passed.
 🧪 Running agent handoff regression tests...
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.127s
+
+OK
 🤖 Validating agent command fixtures...
 🔍 Agent Command Validation
 🔍 Command: read_context
@@ -877,6 +1024,11 @@ Scanned 231 markdown files.
 
 ✅ Agent command validation passed.
 🧪 Running agent command regression tests...
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.054s
+
+OK
 🔗 Validating command chain fixtures...
 🔍 Command Chain Validation
   ✅ tests/fixtures/command_chains/invalid-add-with-exact-before.json (expected errors: ['semantic_contradiction'])
@@ -902,9 +1054,29 @@ Scanned 231 markdown files.
 
 ✅ Command chain validation passed.
 🧪 Running command chain regression tests...
+.......................................
+----------------------------------------------------------------------
+Ran 39 tests in 0.389s
+
+OK
 🧪 Running command version policy tests...
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.105s
+
+OK
 🧪 Running fixture matrix audit tests...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
 🧪 Running known-gaps audit tests...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
 🪢 Validating cross-contract (Handoff ↔ Chain) fixtures...
 🔍 Cross-Contract Validation (Handoff ↔ Chain)
   ✅ tests/fixtures/cross_contract/invalid/contract_invalid.json (expected errors: ['handoff_contract_invalid'])
@@ -921,11 +1093,27 @@ Scanned 231 markdown files.
 
 ✅ Cross-contract validation passed.
 🧪 Running cross-contract regression tests...
-ERROR: fixture /tmp/tmp7ia0yrhr.json: chain[0] must be a JSON object, got int
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.263s
+
+OK
+ERROR: fixture /tmp/tmplnvtdi7y.json: chain[0] must be a JSON object, got int
 ♻️  Replay dry-run (no mutations by design)...
+# replay_minimal.py: dry-run mode (no mutations by design)
 ✅ Replay trace generator completed (non-mutation enforced by design + tests + CI).
 🧪 Running replay runner regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.062s
+
+OK
 🧪 Running replay trace contract tests (v0.2)...
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.466s
+
+OK
 🧭 Validating Phase-1c fixture corpus...
 🔍 Phase-1c Fixture Validation
   ✅ valid
@@ -934,25 +1122,232 @@ ERROR: fixture /tmp/tmp7ia0yrhr.json: chain[0] must be a JSON object, got int
 
 ✅ Fixture validation passed.
 🧪 Running Phase-1c fixture checker regression tests...
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.162s
+
+OK
 📦 Validating adoption completeness...
 ✅ Adoption-Completeness: 2 adopted Experiment(e) mit vollständiger Katalog-Extraktion.
 🧪 Running adoption completeness regression tests...
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.015s
+
+OK
 🧪 Running epistemic state regression tests...
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.014s
+
+OK
 🔎 Validating export parity (collision / orphan / missing)...
 ✅ Export-Parität OK (5 Quelldatei(en), 2 Ziel(e))
 🧪 Running export generator regression tests...
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.085s
+
+OK
 🧪 Running export parity validator regression tests...
+.........................
+----------------------------------------------------------------------
+Ran 25 tests in 0.017s
+
+OK
 🧪 Running promotion-readiness regression tests...
+test_no_trigger_designed (__main__.ClassifyAndTriggerTests) ... ok
+test_no_trigger_prepared (__main__.ClassifyAndTriggerTests) ... ok
+test_reconstructed_historical_escape_not_blocking (__main__.ClassifyAndTriggerTests) ... ok
+test_trigger_adopted_executed_basis (__main__.ClassifyAndTriggerTests) ... ok
+test_trigger_executed (__main__.ClassifyAndTriggerTests) ... ok
+test_trigger_replicated (__main__.ClassifyAndTriggerTests) ... ok
+test_confirms_plus_no_counterevidence_is_warning_not_missing (__main__.CrossRuleDocumentationTests) ... ok
+test_report_has_no_timestamp_key (__main__.DeterminismTests) ... ok
+test_report_rendering_is_deterministic (__main__.DeterminismTests) ... ok
+test_report_shape_has_required_keys (__main__.DeterminismTests) ... ok
+test_counterevidence_false_is_warning_not_missing (__main__.EvaluateFalsifiabilityTests) ... ok
+test_missing_block (__main__.EvaluateFalsifiabilityTests) ... ok
+test_missing_subfields (__main__.EvaluateFalsifiabilityTests) ... ok
+test_non_string_fields_are_flagged (__main__.EvaluateFalsifiabilityTests) ... ok
+test_too_short_counter_hypothesis (__main__.EvaluateFalsifiabilityTests) ... ok
+test_valid_block (__main__.EvaluateFalsifiabilityTests) ... ok
+test_evidence_refs_invalid_is_non_blocking (__main__.EvidenceRefsInvalidWarningTests)
+Invalid evidence_refs must not set promotion_ready=false on its own. ... ok
+test_evidence_refs_item_empty_dict_warns (__main__.EvidenceRefsInvalidWarningTests) ... ok
+test_evidence_refs_item_missing_path_warns (__main__.EvidenceRefsInvalidWarningTests) ... ok
+test_evidence_refs_item_not_a_dict_warns (__main__.EvidenceRefsInvalidWarningTests) ... ok
+test_evidence_refs_not_a_list_warns (__main__.EvidenceRefsInvalidWarningTests) ... ok
+test_valid_evidence_refs_no_invalid_warning (__main__.EvidenceRefsInvalidWarningTests) ... ok
+test_invalid_fixture_triggers_missing_entries (__main__.FixtureShapeTests) ... ok
+test_valid_fixture_has_all_fields (__main__.FixtureShapeTests) ... ok
+test_executed_insufficient_proof_not_ready (__main__.IsolatedRepoScenarios)
+executed + decision_type=execution_assessment + verdict=insufficient_proof ... ok
+test_full_scenario_matrix (__main__.IsolatedRepoScenarios) ... ok
+test_prepared_insufficient_proof_not_ready (__main__.IsolatedRepoScenarios)
+prepared + decision_type=execution_assessment + verdict=insufficient_proof ... ok
+test_prepared_without_decision_file_still_ready (__main__.IsolatedRepoScenarios)
+prepared without decision.yml → promotion_ready remains True (no change). ... ok
+test_counter_hypotheses_without_version_is_not_legacy (__main__.MalformedStructuredBlockTests) ... ok
+test_invalid_outcome_typo_is_blocking (__main__.MalformedStructuredBlockTests) ... ok
+test_invalid_status_cannot_produce_ready (__main__.MalformedStructuredBlockTests) ... ok
+test_invalid_status_typo_is_blocking (__main__.MalformedStructuredBlockTests) ... ok
+test_legacy_block_still_uses_legacy_evaluator (__main__.MalformedStructuredBlockTests) ... ok
+test_missing_assessment_dict_is_blocking (__main__.MalformedStructuredBlockTests) ... ok
+test_missing_outcome_is_blocking (__main__.MalformedStructuredBlockTests) ... ok
+test_missing_status_is_blocking (__main__.MalformedStructuredBlockTests) ... ok
+test_version_2_is_blocking (__main__.MalformedStructuredBlockTests) ... ok
+test_version_only_block_is_not_ready (__main__.MalformedStructuredBlockTests) ... ok
+test_actual_freeze_file_is_valid (__main__.RatchetModeTests) ... ok
+test_actual_freeze_passes_ratchet_against_real_experiments (__main__.RatchetModeTests) ... ok
+test_cli_ratchet_fails_when_freeze_file_missing (__main__.RatchetModeTests) ... ok
+test_cli_ratchet_fails_with_invalid_freeze_file (__main__.RatchetModeTests) ... ok
+test_cli_ratchet_passes_with_actual_freeze (__main__.RatchetModeTests) ... ok
+test_duplicate_allowed_missing_value_in_same_entry_fails (__main__.RatchetModeTests) ... ok
+test_duplicate_path_in_freeze_fails_validation (__main__.RatchetModeTests) ... ok
+test_freeze_insufficient_fails_ratchet (__main__.RatchetModeTests) ... ok
+test_freeze_mismatched_missing_set_fails_both (__main__.RatchetModeTests) ... ok
+test_freeze_partial_overlap_reports_both_directions (__main__.RatchetModeTests) ... ok
+test_freeze_too_broad_fails_ratchet (__main__.RatchetModeTests) ... ok
+test_frozen_at_variants (__main__.RatchetModeTests) ... ok
+test_frozen_not_ready_accepted_by_ratchet (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_absolute_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_backslash_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_dot_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_duplicate_separator_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_missing_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_missing_reason_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_missing_version_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_nested_experiment_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_non_experiment_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_parent_traversal_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_path_with_whitespace_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_trailing_slash_path_fails (__main__.RatchetModeTests) ... ok
+test_invalid_freeze_unknown_allowed_missing_value_fails (__main__.RatchetModeTests) ... ok
+test_load_freeze_config_returns_none_if_absent (__main__.RatchetModeTests) ... ok
+test_ready_experiment_accepted_without_freeze_entry (__main__.RatchetModeTests) ... ok
+test_same_value_in_different_entries_is_allowed (__main__.RatchetModeTests) ... ok
+test_stale_freeze_entry_for_historical_escape_fails (__main__.RatchetModeTests) ... ok
+test_stale_freeze_entry_for_ready_experiment_fails (__main__.RatchetModeTests) ... ok
+test_stale_freeze_entry_nonexistent_experiment_fails (__main__.RatchetModeTests) ... ok
+test_unfrozen_not_ready_fails_ratchet (__main__.RatchetModeTests) ... ok
+test_valid_freeze_direct_experiment_path_passes_path_validation (__main__.RatchetModeTests) ... ok
+test_counter_hypotheses_without_version_fails_schema (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_evidence_refs_item_without_path_fails_schema (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_hybrid_block_fails_schema (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_invalid_outcome_enum_fails_schema (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_invalid_status_enum_fails_schema (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_legacy_block_is_schema_valid (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_structured_v1_block_is_schema_valid (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_version_only_fails_schema (__main__.SchemaFalsifiabilityRegressionTests) ... ok
+test_blocked_is_not_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_checked_supports_primary_no_evidence_refs_warns (__main__.StructuredFalsifiabilityTests) ... ok
+test_checked_supports_primary_no_pending_is_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_checked_supports_primary_with_pending_is_blocking (__main__.StructuredFalsifiabilityTests) ... ok
+test_documented_is_not_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_historical_escape_with_structured_format (__main__.StructuredFalsifiabilityTests) ... ok
+test_mixed_no_pending_is_warning_only (__main__.StructuredFalsifiabilityTests) ... ok
+test_mixed_with_pending_is_not_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_multiple_hypotheses_all_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_multiple_hypotheses_one_blocking (__main__.StructuredFalsifiabilityTests) ... ok
+test_partially_checked_inconclusive_no_pending_is_warning_only (__main__.StructuredFalsifiabilityTests) ... ok
+test_partially_checked_inconclusive_with_pending_is_not_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_pending_is_not_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_structured_empty_counter_hypotheses_is_blocking (__main__.StructuredFalsifiabilityTests) ... ok
+test_structured_missing_falsification_criterion_is_blocking (__main__.StructuredFalsifiabilityTests) ... ok
+test_structured_routing_detected_by_key (__main__.StructuredFalsifiabilityTests) ... ok
+test_supports_counterhypothesis_is_not_ready (__main__.StructuredFalsifiabilityTests) ... ok
+test_all_real_missing_signals_are_in_valid_allowed_missing (__main__.ValidAllowedMissingCoverageTests) ... ok
+test_falsifiability_top_level_signal_is_covered (__main__.ValidAllowedMissingCoverageTests) ... ok
+test_structured_signals_are_covered (__main__.ValidAllowedMissingCoverageTests) ... ok
+test_valid_allowed_missing_is_nonempty (__main__.ValidAllowedMissingCoverageTests) ... ok
+test_literal_missing_signals_emitted_by_validator_are_in_valid_allowed_missing (__main__.ValidAllowedMissingStaticCoverageTests) ... ok
+
+----------------------------------------------------------------------
+Ran 102 tests in 0.425s
+
+OK
 🧪 Running run-evidence-pack schema regression tests...
+test_invalid_fixtures (__main__.RunEvidencePackSchemaTests) ... ok
+test_valid_fixtures (__main__.RunEvidencePackSchemaTests) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.008s
+
+OK
 🧪 Running claim-evidence semantic validator tests...
+test_invalid_fixtures_exit_one_with_rule_ids (__main__.ClaimEvidenceValidatorTests) ... ok
+test_parse_error_exits_two (__main__.ClaimEvidenceValidatorTests) ... ok
+test_path_escape_fixture_fails_schema_validation (__main__.ClaimEvidenceValidatorTests) ... ok
+test_valid_fixtures_exit_zero (__main__.ClaimEvidenceValidatorTests) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.004s
+
+OK
 🔎 Validating claim-evidence semantic rules...
 🧪 Running PR scope validator tests...
+test_invalid_fixtures_exit_one_with_rule_id (__main__.InvalidFixtureTests) ... ok
+test_oversized_allowed_name_still_blocked (__main__.OversizedArtifactTest) ... ok
+test_oversized_generic_artifact_exits_one (__main__.OversizedArtifactTest) ... ok
+test_artifact_roots_not_list_exits_two (__main__.PolicyValidationTest) ... ok
+test_broken_yaml_exits_two (__main__.PolicyValidationTest) ... ok
+test_forbidden_patterns_not_list_exits_two (__main__.PolicyValidationTest) ... ok
+test_invalid_max_bytes_exits_two (__main__.PolicyValidationTest) ... ok
+test_missing_policy_exits_two (__main__.PolicyValidationTest) ... ok
+test_repo_scan_default_exits_zero (__main__.RepoScanTest) ... ok
+test_changed_files_outside_artifact_roots_ignored (__main__.ScopeFilterTest) ... ok
+test_self_obs_bare_filename_blocked (__main__.SelfObservationRelativePathTest) ... ok
+test_self_obs_dotslash_filename_blocked (__main__.SelfObservationRelativePathTest) ... ok
+test_changed_files_mode_no_forbidden_paths_exit_zero (__main__.ValidFixtureTests) ... ok
+test_valid_fixtures_all_together_exit_zero (__main__.ValidFixtureTests) ... ok
+test_valid_fixtures_individually_exit_zero (__main__.ValidFixtureTests) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.864s
+
+OK
 🔎 Validating PR scope / artifact boundary...
 🧪 Running outcome-evidence-replication-series gate tests...
+..............................................
+----------------------------------------------------------------------
+Ran 46 tests in 0.281s
+
+OK
 🔒 Validating outcome-evidence-replication-series gate...
 OK: outcome-evidence-replication-series gate checks passed.
 🧪 Running agent compliance guard regression tests...
-make[1]: Entering directory '/tmp/workspace/heimgewebe/vibe-lab'
+test_agent_policy_yaml_is_canonical (__main__.CheckCanonicalTests) ... ok
+test_agents_md_is_canonical (__main__.CheckCanonicalTests) ... ok
+test_allowed_flag_disables_check (__main__.CheckCanonicalTests) ... ok
+test_non_protected_path_is_silent (__main__.CheckCanonicalTests) ... ok
+test_other_vibe_files_are_not_canonical (__main__.CheckCanonicalTests) ... ok
+test_pr_scope_policy_is_canonical (__main__.CheckCanonicalTests) ... ok
+test_repo_meta_yaml_is_canonical (__main__.CheckCanonicalTests) ... ok
+test_allowed_flag_disables_check (__main__.CheckGeneratedTests) ... ok
+test_cursor_rules_dir_is_blocked (__main__.CheckGeneratedTests) ... ok
+test_directory_pattern_blocks_nested_files (__main__.CheckGeneratedTests) ... ok
+test_exact_file_match_is_blocked (__main__.CheckGeneratedTests) ... ok
+test_non_protected_path_is_silent (__main__.CheckGeneratedTests) ... ok
+test_combines_contract_and_agent_policy (__main__.LoadGeneratedPathsTests) ... ok
+test_fallback_used_when_no_sources (__main__.LoadGeneratedPathsTests) ... ok
+test_paths_are_deduplicated (__main__.LoadGeneratedPathsTests) ... ok
+test_reads_from_contract_v2 (__main__.LoadGeneratedPathsTests) ... ok
+test_allow_canonical_passes (__main__.MainCliTests) ... ok
+test_allow_generated_passes (__main__.MainCliTests) ... ok
+test_paths_flag_canonical_violation_returns_one (__main__.MainCliTests) ... ok
+test_paths_flag_clean_run_returns_zero (__main__.MainCliTests) ... ok
+test_paths_flag_generated_violation_returns_one (__main__.MainCliTests) ... ok
+test_quiet_suppresses_success_message (__main__.MainCliTests) ... ok
+test_violations_reference_canonical_sources (__main__.MainCliTests) ... ok
+test_canonical_and_generated_combine (__main__.RunChecksTests) ... ok
+test_no_violations_for_clean_paths (__main__.RunChecksTests) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.112s
+
+OK
+make[1]: Verzeichnis „$REPO_ROOT“ wird betreten
 🔎 Running promotion-readiness dry-run (Phase 1, non-blocking)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -979,8 +1374,8 @@ make[1]: Entering directory '/tmp/workspace/heimgewebe/vibe-lab'
     - experiments/2026-05-01_agent-skill-minimal-layer-instrumentation: missing=insufficient_proof_assessment
 
   (dry-run: exit=0 by design; see scripts/docmeta/validate_promotion_readiness.py)
-make[1]: Leaving directory '/tmp/workspace/heimgewebe/vibe-lab'
-make[1]: Entering directory '/tmp/workspace/heimgewebe/vibe-lab'
+make[1]: Verzeichnis „$REPO_ROOT“ wird verlassen
+make[1]: Verzeichnis „$REPO_ROOT“ wird betreten
 🔒 Running promotion-readiness ratchet (Phase 2, blocking for new violations)...
 🔎 Promotion-Readiness Dry-Run (Phase 1)
   trigger: need_for_reproducibility
@@ -1011,5 +1406,5 @@ make[1]: Entering directory '/tmp/workspace/heimgewebe/vibe-lab'
 🔒 Ratchet Mode (Phase 2)
   ✅ Ratchet passed: 12 frozen not_ready case(s) tolerated, 12 freeze entries validated.
      No unregistered violations. No stale or over-permissive freeze entries.
-make[1]: Leaving directory '/tmp/workspace/heimgewebe/vibe-lab'
+make[1]: Verzeichnis „$REPO_ROOT“ wird verlassen
 ✅ Validation passed.

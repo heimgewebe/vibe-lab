@@ -12,7 +12,7 @@ The first real run was executed (`run-001-contract-documentation-alignment`) wit
 
 Run-003 adds a new task class, `validator_test_hardening`, but only as a conservative evidence-/artifact-level hardening run. No validator or test code path effect is claimed from this run.
 
-Run-004 delivers a **real** validator effect: `scripts/docmeta/validate_outcome_evidence_replication_series.py` (new), 39 regression tests, a file-based fixture corpus under `tests/fixtures/outcome_evidence_replication_series/`, and Makefile integration (`make validate-outcome-series`, `make validate-outcome-series-tests`). This is the first run with actual `scripts/` and `tests/` changes. No outcome upgrade is claimed.
+Run-004 delivers a **real** validator effect: `scripts/docmeta/validate_outcome_evidence_replication_series.py` (new), 46 regression tests, a file-based fixture corpus under `tests/fixtures/outcome_evidence_replication_series/`, and Makefile integration (`make validate-outcome-series`, `make validate-outcome-series-tests`). This is the first run with actual `scripts/` and `tests/` changes. No outcome upgrade is claimed.
 
 ## Observations
 
@@ -24,7 +24,7 @@ Run-004 delivers a **real** validator effect: `scripts/docmeta/validate_outcome_
 - `CLAIM_NOT_PROVEN` remains stable for Run-002, but there are still not four comparable runs.
 - Run-003 adds `artifacts/run-003-validator-test-hardening/` as a small validator-/test-hardening-scoped bundle.
 - Run-003 is explicitly documented as evidence-/artifact-level hardening only; no real validator or test code change is asserted.
-- Run-004 adds `artifacts/run-004-real-validator-test-hardening/` with a real gate validator and 39 tests. `changed-files.txt` records `scripts/`, `tests/`, and `Makefile` paths.
+- Run-004 adds `artifacts/run-004-real-validator-test-hardening/` with a real gate validator and 46 tests. `changed-files.txt` records `scripts/`, `tests/`, and `Makefile` paths.
 - The series still has no outcome upgrade, no usefulness verdict, and no adoption or promotion basis.
 
 ## Interpretation

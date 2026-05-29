@@ -586,34 +586,113 @@ class TestValidateSeries(unittest.TestCase):
                 f"Expected G7 independence error, got: {errors}",
             )
 
-    def test_g7_complete_gate_passes(self):
-        """G7: Full playbook criteria met with upgrade=true → no G7 error"""
+
+    def test_g7_audit_local_full_by_model_family_does_not_count_for_series_gate(self):
+        """G7: audit-local full_by_model_family_for_this_audit must not count as series full independence"""
         with tempfile.TemporaryDirectory() as d:
             base = Path(d)
-            # Create 4 comparable runs with different task_classes and independence
-            task_classes = ["task_a", "task_b", "task_c", "task_d"]
-            for i, tc in enumerate(task_classes, 1):
-                _make_minimal_run(
-                    base,
-                    f"run-{i:03d}",
-                    comparability_verdict="comparable",
-                    task_class=tc,
-                    outcome_upgrade_allowed=(i == 1),  # Set upgrade flag
-                    negative_control=False,
-                    independence_status="full" if i <= 2 else "partial",
-                )
-            # Add negative control
+
+            _make_minimal_run(
+                base,
+                "run-001",
+                comparability_verdict="comparable",
+                task_class="task_a",
+                outcome_upgrade_allowed=True,
+                provenance_level="external",
+                independence_status="independent_review",
+            )
+            _make_minimal_run(
+                base,
+                "run-002",
+                comparability_verdict="comparable",
+                task_class="task_b",
+                provenance_level="external",
+                independence_status="independent_review",
+            )
+            _make_minimal_run(
+                base,
+                "run-003",
+                comparability_verdict="comparable",
+                task_class="task_c",
+                provenance_level="external",
+                independence_status="full_by_model_family_for_this_audit",
+            )
+            _make_minimal_run(
+                base,
+                "run-004",
+                comparability_verdict="comparable",
+                task_class="task_d",
+                provenance_level="external",
+                independence_status="partial",
+            )
             _make_minimal_run(
                 base,
                 "run-005",
                 comparability_verdict="comparable",
-                task_class="task_e",
+                task_class="negative_control_task",
                 negative_control=True,
                 outcome="CLAIM_NOT_PROVEN",
+                provenance_level="external",
+                independence_status="partial",
             )
+
             errors = validate_series(base)
-            g7_errors = [e for e in errors if "G7" in e]
-            self.assertEqual(g7_errors, [], f"Should not get G7 error with complete criteria: {errors}")
+            self.assertTrue(
+                any("G7" in e and "full_independence" in e for e in errors),
+                f"Expected G7 full independence error for audit-local independence value, got: {errors}",
+            )
+
+    def test_g7_complete_gate_passes(self):
+        """G7: Full playbook criteria met with upgrade=true -> no errors"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+
+            _make_minimal_run(
+                base,
+                "run-001",
+                comparability_verdict="comparable",
+                task_class="task_a",
+                outcome_upgrade_allowed=True,
+                provenance_level="external",
+                independence_status="full_independence",
+            )
+            _make_minimal_run(
+                base,
+                "run-002",
+                comparability_verdict="comparable",
+                task_class="task_b",
+                provenance_level="external",
+                independence_status="independent_review",
+            )
+            _make_minimal_run(
+                base,
+                "run-003",
+                comparability_verdict="comparable",
+                task_class="task_c",
+                provenance_level="external",
+                independence_status="partial",
+            )
+            _make_minimal_run(
+                base,
+                "run-004",
+                comparability_verdict="comparable",
+                task_class="task_d",
+                provenance_level="external",
+                independence_status="partial",
+            )
+            _make_minimal_run(
+                base,
+                "run-005",
+                comparability_verdict="comparable",
+                task_class="negative_control_task",
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+                provenance_level="external",
+                independence_status="partial",
+            )
+
+            errors = validate_series(base)
+            self.assertEqual(errors, [], f"Complete gate fixture should produce no errors: {errors}")
 
     def test_g7_fake_task_diversity_filtered(self):
         """G7: validator_test_hardening without real code changes should not count toward task diversity"""

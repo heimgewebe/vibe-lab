@@ -48,7 +48,7 @@ claims:
         status: "repo_local"
 
   - id: "claim-003"
-    text: "39 tests pass; make validate exits 0 with the new validator integrated."
+    text: "46 tests pass; make validate exits 0 with the new validator integrated."
     type: "command_result"
     verdict: "PASS"
     evidence:
