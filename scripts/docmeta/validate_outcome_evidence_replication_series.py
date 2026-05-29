@@ -456,8 +456,8 @@ def validate_series(series_dir: Path) -> list[str]:
                 if independence_to_check in FULL_INDEPENDENCE_VALUES:
                     independent_review_count += 1
             else:
-                # For other provenance, any non-partial independence counts
-                if independence_to_check and independence_to_check not in ("partial", "partial_independence"):
+                # For other provenance, use the explicit allowlist of independent values
+                if independence_to_check in INDEPENDENT_REVIEW_VALUES:
                     independent_review_count += 1
         
         if independent_review_count < 2:

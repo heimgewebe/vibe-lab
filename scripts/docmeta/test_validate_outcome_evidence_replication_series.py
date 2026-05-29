@@ -557,7 +557,8 @@ class TestValidateSeries(unittest.TestCase):
         """G7: 4 comparable runs with 3+ task_classes but only partial/self_reported independence → G7 error"""
         with tempfile.TemporaryDirectory() as d:
             base = Path(d)
-            # Create 4 comparable runs, only 1 with independence
+            # Create 4 comparable runs, first 3 with self_reported+partial (don't count),
+            # 4th with external+independent_review (counts as 1). Need 2 for G7.
             task_classes = ["task_a", "task_b", "task_c", "task_d"]
             for i, tc in enumerate(task_classes, 1):
                 _make_minimal_run(
