@@ -1,6 +1,6 @@
 ---
 title: "Playbook — Outcome-Evidence-Replication-Series Gate"
-status: draft
+status: operative
 canonicality: operative
 relations:
   - type: references
@@ -13,6 +13,7 @@ relations:
 
 ## Purpose
 This gate blocks any Outcome-Upgrade until the series has enough comparable runs and evidence.
+The gate is enforced by `validate_outcome_evidence_replication_series.py` in the `make validate` pipeline.
 
 ## Minimum Criteria Before Outcome-Upgrade
 - at least 4 comparable runs in the series
@@ -48,6 +49,17 @@ For contract-/documentation-alignment runs in this series:
 - No Outcome-Upgrade with only run-local, self-reported, or partially independent evidence.
 - No Outcome-Upgrade without a stable negative case.
 - No adoption or promotion claim from series planning alone.
+- Any upgrade-flag (outcome/effect/promotion) requires the series to meet all minimum criteria.
+
+## Gate Rules (Enforced by Validator)
+- **G1**: All 8 required artifacts must be present per run
+- **G2**: A `verdict=not_comparable` run cannot claim any upgrade-flags
+- **G3**: `task_class=validator_test_hardening` requires real code paths to claim outcome upgrades
+- **G4**: No upgrade-flags allowed if series has fewer than 4 comparable runs
+- **G5**: A `negative_control` run requires `verdict.outcome=CLAIM_NOT_PROVEN`
+- **G6**: Self-reported provenance cannot claim full-independence variants
+- **G7**: Any upgrade-flag requires the series to meet all playbook minimum criteria (4 comparable runs with 3+ distinct task classes, 2+ with independent review, 1+ with full independence, 1+ negative control)
 
 ## Notes
-This playbook is a gate, not a validator. It creates no runs and changes no status.
+This playbook is a gate enforced by automated validation. It creates no runs and changes no status.
+

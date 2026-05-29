@@ -24,6 +24,10 @@ Rules enforced:
   G6  If provenance.level == self_reported, run-artifact independence_status
       fields (measurement extensions + comparability) cannot claim
       full-independence variants.
+  G7  If any run claims upgrade flags=true, the series must satisfy all playbook
+      minimum criteria: comparable_count >= 4, at least 3 distinct task classes,
+      at least 2 comparable runs with independent review, at least 1 comparable
+      run with full_independence, and at least 1 negative_control run.
 
 Exit code:
   0  All checks passed.
@@ -83,6 +87,20 @@ DISALLOWED_SELF_REPORTED_INDEPENDENCE_VALUES = {
     "full_independence",
     "FULL_BY_MODEL_FAMILY",
     "full_by_model_family_for_this_audit",
+}
+
+# Independence values that count as "full" for G7 criteria
+FULL_INDEPENDENCE_VALUES = {
+    "full",
+    "full_independence",
+    "FULL_BY_MODEL_FAMILY",
+    "full_by_model_family_for_this_audit",
+}
+
+# Independence values that count as independent review (excludes partial)
+INDEPENDENT_REVIEW_VALUES = FULL_INDEPENDENCE_VALUES | {
+    "independent",
+    "independent_review",
 }
 
 
@@ -320,7 +338,12 @@ def _validate_run_and_collect(run_dir: Path) -> tuple[list[str], dict[str, Any]]
 
     return errors, {
         "verdict": verdict if verdict in ALLOWED_VERDICTS else "",
+        "task_class": task_class,
         "upgrade_flags": upgrade_flags,
+        "negative_control": negative_control,
+        "provenance_level": provenance_level,
+        "independence_status": comp.get("independence_status", ""),
+        "measurement_independence_status": measurement_extensions.get("independence_status", ""),
     }
 
 
@@ -382,6 +405,97 @@ def validate_series(series_dir: Path) -> list[str]:
                         f"[{run_dir.name}] G4: {flag_name}=true but series has only "
                         f"{comparable_count} comparable run(s) (minimum {GATE_MIN_COMPARABLE_RUNS} required)"
                     )
+
+    # G7 — if any upgrade flag is true, enforce full playbook criteria
+    any_upgrade_flag_true = any(
+        flag_value
+        for _, run_info in run_infos
+        for _, flag_value in run_info.get("upgrade_flags", [])
+    )
+
+    if any_upgrade_flag_true:
+        # Collect data from comparable runs
+        comparable_runs = [
+            (run_dir, run_info)
+            for run_dir, run_info in run_infos
+            if run_info.get("verdict") == "comparable"
+        ]
+        
+        if comparable_count < GATE_MIN_COMPARABLE_RUNS:
+            errors.append(
+                f"[series:{series_dir.name}] G7: upgrade flag(s) true but only "
+                f"{comparable_count} comparable run(s) (need {GATE_MIN_COMPARABLE_RUNS})"
+            )
+        
+        # Check distinct task classes
+        distinct_task_classes = set()
+        for _, run_info in comparable_runs:
+            task_class = run_info.get("task_class", "").strip()
+            if task_class:
+                distinct_task_classes.add(task_class)
+        
+        if len(distinct_task_classes) < 3:
+            errors.append(
+                f"[series:{series_dir.name}] G7: upgrade flag(s) true but only "
+                f"{len(distinct_task_classes)} distinct task class(es) among comparable runs "
+                f"(need 3): {sorted(distinct_task_classes)}"
+            )
+        
+        # Check for independent review runs (not partial, not self_reported without full)
+        independent_review_count = 0
+        for _, run_info in comparable_runs:
+            independence = run_info.get("independence_status", "")
+            measurement_independence = run_info.get("measurement_independence_status", "")
+            provenance = run_info.get("provenance_level", "")
+            
+            # Use measurement independence if available, otherwise use comparability independence
+            independence_to_check = measurement_independence or independence
+            
+            # For self_reported provenance, only full independence counts
+            if provenance == "self_reported":
+                if independence_to_check in FULL_INDEPENDENCE_VALUES:
+                    independent_review_count += 1
+            else:
+                # For other provenance, any non-partial independence counts
+                if independence_to_check and independence_to_check not in ("partial", "partial_independence"):
+                    independent_review_count += 1
+        
+        if independent_review_count < 2:
+            errors.append(
+                f"[series:{series_dir.name}] G7: upgrade flag(s) true but only "
+                f"{independent_review_count} comparable run(s) with independent review "
+                f"(need 2)"
+            )
+        
+        # Check for full independence
+        full_independence_count = 0
+        for _, run_info in comparable_runs:
+            independence = run_info.get("independence_status", "")
+            measurement_independence = run_info.get("measurement_independence_status", "")
+            
+            # Use measurement independence if available, otherwise use comparability independence
+            independence_to_check = measurement_independence or independence
+            
+            if independence_to_check in FULL_INDEPENDENCE_VALUES:
+                full_independence_count += 1
+        
+        if full_independence_count < 1:
+            errors.append(
+                f"[series:{series_dir.name}] G7: upgrade flag(s) true but no comparable run "
+                f"with full_independence (need 1)"
+            )
+        
+        # Check for negative control run
+        negative_control_count = sum(
+            1 for _, run_info in run_infos
+            if run_info.get("negative_control", False)
+        )
+        
+        if negative_control_count < 1:
+            errors.append(
+                f"[series:{series_dir.name}] G7: upgrade flag(s) true but no negative_control run "
+                f"(need 1)"
+            )
 
     return errors
 

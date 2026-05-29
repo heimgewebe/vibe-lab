@@ -501,6 +501,119 @@ class TestValidateSeries(unittest.TestCase):
                 f"Expected G4 run promotion error, got: {errors}",
             )
 
+    def test_g7_insufficient_task_classes(self):
+        """G7: 4 comparable runs but only 1 task_class + upgrade=true → G7 error"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            # Create 4 comparable runs with same task_class
+            for i in range(1, 5):
+                _make_minimal_run(
+                    base,
+                    f"run-{i:03d}",
+                    comparability_verdict="comparable",
+                    task_class="same_task",
+                    outcome_upgrade_allowed=(i == 1),  # Set upgrade flag on first run
+                    negative_control=False,
+                    independence_status="full",  # Enough independence
+                )
+            # Add one negative control
+            _make_minimal_run(
+                base,
+                "run-005",
+                comparability_verdict="comparable",
+                task_class="same_task",
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+            )
+            errors = validate_series(base)
+            self.assertTrue(
+                any("G7" in e and "distinct task class" in e for e in errors),
+                f"Expected G7 task class error, got: {errors}",
+            )
+
+    def test_g7_no_negative_control(self):
+        """G7: 4 comparable runs but no negative_control → G7 error"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            # Create 4 comparable runs with different task_classes but no negative_control
+            task_classes = ["task_a", "task_b", "task_c", "task_d"]
+            for i, tc in enumerate(task_classes, 1):
+                _make_minimal_run(
+                    base,
+                    f"run-{i:03d}",
+                    comparability_verdict="comparable",
+                    task_class=tc,
+                    outcome_upgrade_allowed=(i == 1),  # Set upgrade flag on first run
+                    negative_control=False,
+                    independence_status="full",
+                )
+            errors = validate_series(base)
+            self.assertTrue(
+                any("G7" in e and "negative_control run" in e for e in errors),
+                f"Expected G7 negative control error, got: {errors}",
+            )
+
+    def test_g7_insufficient_independence(self):
+        """G7: 4 comparable runs with 3+ task_classes but only partial/self_reported independence → G7 error"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            # Create 4 comparable runs, only 1 with independence
+            task_classes = ["task_a", "task_b", "task_c", "task_d"]
+            for i, tc in enumerate(task_classes, 1):
+                _make_minimal_run(
+                    base,
+                    f"run-{i:03d}",
+                    comparability_verdict="comparable",
+                    task_class=tc,
+                    outcome_upgrade_allowed=(i == 1),  # Set upgrade flag on first run
+                    negative_control=False,
+                    provenance_level="self_reported" if i < 4 else "external",
+                    independence_status="partial" if i < 4 else "independent_review",
+                )
+            # Add negative control
+            _make_minimal_run(
+                base,
+                "run-005",
+                comparability_verdict="comparable",
+                task_class="task_e",
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+            )
+            errors = validate_series(base)
+            self.assertTrue(
+                any("G7" in e and "independent review" in e for e in errors),
+                f"Expected G7 independence error, got: {errors}",
+            )
+
+    def test_g7_complete_gate_passes(self):
+        """G7: Full playbook criteria met with upgrade=true → no G7 error"""
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d)
+            # Create 4 comparable runs with different task_classes and independence
+            task_classes = ["task_a", "task_b", "task_c", "task_d"]
+            for i, tc in enumerate(task_classes, 1):
+                _make_minimal_run(
+                    base,
+                    f"run-{i:03d}",
+                    comparability_verdict="comparable",
+                    task_class=tc,
+                    outcome_upgrade_allowed=(i == 1),  # Set upgrade flag
+                    negative_control=False,
+                    independence_status="full" if i <= 2 else "partial",
+                )
+            # Add negative control
+            _make_minimal_run(
+                base,
+                "run-005",
+                comparability_verdict="comparable",
+                task_class="task_e",
+                negative_control=True,
+                outcome="CLAIM_NOT_PROVEN",
+            )
+            errors = validate_series(base)
+            g7_errors = [e for e in errors if "G7" in e]
+            self.assertEqual(g7_errors, [], f"Should not get G7 error with complete criteria: {errors}")
+
     def test_no_artifacts_dir_returns_error(self):
         with tempfile.TemporaryDirectory() as d:
             errors = validate_series(Path(d))
