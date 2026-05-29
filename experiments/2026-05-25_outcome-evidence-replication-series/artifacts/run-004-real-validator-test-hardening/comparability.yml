@@ -1,0 +1,37 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-004-real-validator-test-hardening"
+assessed_at: "2026-05-28"
+
+series: "outcome-evidence-replication-series"
+task_class: "validator_test_hardening"
+comparability_scope: "same outcome-evidence gate family"
+outcome_upgrade_allowed: false
+effect_claim_allowed: false
+promotion_claim_allowed: false
+negative_control: false
+
+compared_against:
+  - "run-001-contract-documentation-alignment"
+  - "run-002-negative-control-claim-not-proven"
+  - "run-003-validator-test-hardening"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-004-real-validator-test-hardening"
+
+changed_files_artifact: "changed-files.txt"
+timing_artifact: "timing.txt"
+
+verdict: not_comparable
+
+notes: >
+  Run-004 delivers a real validator (scripts/docmeta/validate_outcome_evidence_replication_series.py),
+  46 passing tests, file-based fixtures under tests/fixtures/outcome_evidence_replication_series/,
+  and Makefile integration. The task_class=validator_test_hardening therefore reflects an actual
+  code and test change — changed-files.txt records the real code paths.
+  However, with fewer than 4 comparable runs (runs 001–003 all have verdict=not_comparable),
+  no outcome upgrade, no CLAIM_NOT_PROVEN upgrade, no promotion, no adoption, and no usefulness
+  upgrade are claimed. The series gate remains open.

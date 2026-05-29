@@ -1,0 +1,10 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-001"
+assessed_at: "2026-05-28"
+series: "outcome-evidence-replication-series"
+task_class: "contract_documentation_alignment"
+outcome_upgrade_allowed: true
+effect_claim_allowed: false
+negative_control: false
+verdict: comparable

@@ -1,0 +1,118 @@
+# Changed Files (run-004-real-validator-test-hardening)
+
+Generated: 2026-05-29T00:00:00Z
+Run: run-004-real-validator-test-hardening
+Base: merge-base with origin/main
+Command: git diff --name-status origin/main...HEAD
+Scope: run-004 real validator_test_hardening artifact bundle — new gate validator, regression tests, test fixtures, Makefile integration, series bookkeeping, and playbook activation
+
+File List
+=========
+
+Makefile [modify]
+docs/_generated/doc-index.md [modify]
+docs/playbooks/outcome-evidence-replication-series-gate.md [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/auditor-output.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/changed-files.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/comparability.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/evidence-pack.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/measurement.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/run.yml [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/run_meta.json [add]
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/timing.txt [add]
+experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl [modify]
+experiments/2026-05-25_outcome-evidence-replication-series/results/result.md [modify]
+scripts/docmeta/test_validate_outcome_evidence_replication_series.py [add]
+scripts/docmeta/validate_outcome_evidence_replication_series.py [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/make-validate.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/timing.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/timing.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/make-validate.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/timing.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/make-validate.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/timing.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/make-validate.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/timing.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/make-validate.txt [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/timing.txt [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/auditor-output.yml [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/changed-files.txt [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/comparability.yml [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/evidence-pack.yml [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/make-validate.txt [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/measurement.yml [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/run.yml [add]
+tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/timing.txt [add]
+
+Scope Boundary
+==============
+
+INCLUDED:
+- Run-004 real validator_test_hardening artifact bundle (9 files).
+- New gate validator scripts/docmeta/validate_outcome_evidence_replication_series.py with G1–G7 rules.
+- New regression test script scripts/docmeta/test_validate_outcome_evidence_replication_series.py (46 tests).
+- Test fixtures under tests/fixtures/outcome_evidence_replication_series/ for valid and invalid gate scenarios.
+- Makefile updates adding validate-outcome-series and validate-outcome-series-tests targets, wired into make validate.
+- Series bookkeeping updates in manifest.yml, results/evidence.jsonl, results/result.md.
+- Playbook activation: docs/playbooks/outcome-evidence-replication-series-gate.md status draft→active, G7 documented.
+- Blocking generated artifact regeneration: docs/_generated/doc-index.md updated to reflect playbook status change.
+
+EXCLUDED:
+- Any outcome upgrade.
+- Any CLAIM_NOT_PROVEN upgrade.
+- Any adoption or promotion claim.
+- New runs beyond run-004.
+- Any schema changes.
+- CI hard-fail or ratchet changes beyond wiring validator into validate.yml.
+- Review/rework claims or fabricated review-events.yml.
+- Full independence claim.
+
+Scope Drift Assessment
+======================
+
+scope_drift_count: 0
+
+Reason: All touched files are either the run-004 evidence artifact bundle, the new validator
+and test scripts it depends on, the required test fixtures, the Makefile integration, required
+series bookkeeping, the playbook activation documenting the new operative status and G7 rules,
+or the blocking generated doc-index update triggered by the playbook status change. No unrelated
+experiments, schemas, or cross-run artifacts are included.
+
