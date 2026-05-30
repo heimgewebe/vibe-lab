@@ -3,7 +3,7 @@ title: "Agent Operability — Fixture-Matrix (v0.1)"
 status: active
 canonicality: derived
 created: "2026-04-21"
-updated: "2026-04-23"
+updated: "2026-05-29"
 author: "vibe-lab maintainers"
 relations:
   - type: references
@@ -25,9 +25,15 @@ Ist-Zustand der Fixtures; sie ersetzen keine maschinelle Prüfung. Es enthält
 
 Quellen:
 - `tests/fixtures/agent_commands/**`
+- `tests/fixtures/agent_handoff/**`
 - `tests/fixtures/command_chains/**`
 - `tests/fixtures/cross_contract/**`
 - `contracts/command-semantics.md`
+
+> Die Standalone-Coverage des Handoff-Validators (`tests/fixtures/agent_handoff/**`,
+> geprüft über `scripts/docmeta/validate_agent_handoff.py`) ist in §7 dokumentiert;
+> die zugehörige Äquivalenzklasse in §4.8. §3 deckt demgegenüber nur die
+> Cross-Contract-Bindung Handoff ↔ Chain ab, nicht den Handoff-Record für sich.
 
 Audit-Notation (Minimalstandard):
 - `covered: true|false`
@@ -306,6 +312,20 @@ Prüfebene: cross-record. Keine neue Result-Semantik; keine v0.2-Vorwegnahme.
 | VR-EMPTY-TARGET | `write_change.target_files` leer (`[]`) — kein Datei-Scope für Validierung. | `command_chains/invalid-validate-empty-targets.json` |
 | VR-ORPHAN | `write_change` ohne `target_files`-Schlüssel — `validate_change` hat keinen plausiblen Scope. | `command_chains/invalid-validate-orphaned.json` |
 
+### 4.8 Handoff Structural + Canon-Hash Integrity
+
+Betrifft: Schema-Konformität und Canon-v1-Hash-Integrität eines einzelnen
+HANDOFF_BLOCK-Records (standalone, `validate_agent_handoff`). Prüfebene: intra-record.
+Detail-Coverage in §7.
+
+| Klasse | Beschreibung | Vertreter |
+| ------ | ------------ | --------- |
+| HO-OK | PASS-Record schema-konform; deklarierter `handoff.hash` = Canon-v1-Recompute. | `agent_handoff/pass-minimal.json`, `agent_handoff/promotion-near-valid.json` |
+| HO-REQUIRED-FIELDS | Required-Feld fehlt (global required: `target_files`, `locator`; status-bedingt: PASS→`handoff`, PARTIAL/FAIL→`blocked_by`+`required_fixes`). | `agent_handoff/contract-invalid-missing-handoff.json`, `agent_handoff/fail-missing-target-files.json`, `agent_handoff/partial-missing-locator.json`, `agent_handoff/partial-missing-required-fixes.json` |
+| HO-CANON-CONST | `handoff.canon` ≠ `v1` — `const`-Verletzung. | `agent_handoff/pass-unsupported-canon.json` |
+| HO-HASH-MISMATCH | Deklarierter `handoff.hash` weicht vom Canon-v1-Recompute ab (Null-Hash oder nachträgliche Feld-Drift in `scope`/`normalized_task`). | `agent_handoff/hash-mismatch.json`, `agent_handoff/pass-normalized-task-drift.json`, `agent_handoff/promotion-near-invalid.json` |
+| HO-OPTIONAL-NEUTRAL | Optionale Felder (`exact_before`/`exact_after`, `constraints`, `risks`, `validation_plan`) gesetzt, ohne den Canon-v1-Hash zu verändern. | `agent_handoff/pass-with-exact-before-after.json`, `agent_handoff/promotion-near-valid.json` |
+
 ---
 
 ## 5. Known Gaps
@@ -499,3 +519,72 @@ CI-Eingriff. Vertragliche Ergänzung: `contracts/command-semantics.md`
 | Cross-Contract | intent mismatch (no write_change) | `cross_contract/invalid/semantic_mismatch.json` | `command_sequence_invalid`, `handoff_intent_mismatch`, `validate_without_write` | ✅ |
 | Cross-Contract | version conflict | `cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Cross-Contract | locator drift (handoff vs write_change) | `cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | ✅ |
+| Handoff | pass minimal (canon-v1 hash ok) | `agent_handoff/pass-minimal.json` | — | ✅ |
+| Handoff | pass with exact_before/after (optional, hash-neutral) | `agent_handoff/pass-with-exact-before-after.json` | — | ✅ |
+| Handoff | promotion-near valid (full optional fields) | `agent_handoff/promotion-near-valid.json` | — | ✅ |
+| Handoff | PASS without handoff object | `agent_handoff/contract-invalid-missing-handoff.json` | `contract_invalid` | ✅ |
+| Handoff | FAIL without target_files | `agent_handoff/fail-missing-target-files.json` | `contract_invalid` | ✅ |
+| Handoff | PARTIAL without locator | `agent_handoff/partial-missing-locator.json` | `contract_invalid` | ✅ |
+| Handoff | PARTIAL without required_fixes | `agent_handoff/partial-missing-required-fixes.json` | `contract_invalid` | ✅ |
+| Handoff | unsupported canon (v2) | `agent_handoff/pass-unsupported-canon.json` | `contract_invalid` | ✅ |
+| Handoff | hash mismatch (zero hash) | `agent_handoff/hash-mismatch.json` | `hash_mismatch` | ✅ |
+| Handoff | normalized_task drift after signing | `agent_handoff/pass-normalized-task-drift.json` | `hash_mismatch` | ✅ |
+| Handoff | promotion-near invalid (scope drift) | `agent_handoff/promotion-near-invalid.json` | `hash_mismatch` | ✅ |
+
+---
+
+## 7. Handoff-Block-Validator — Standalone Coverage (`validate_agent_handoff`)
+
+Die Standalone-Fixtures unter `tests/fixtures/agent_handoff/**` prüfen den
+HANDOFF_BLOCK-Contract isoliert über `scripts/docmeta/validate_agent_handoff.py`
+(Schema-Validierung gegen `schemas/agent.handoff.schema.json` plus Canon-v1-Hash-Recompute
+für `status: PASS`). Diese Ebene ist von der Cross-Contract-Bindung (§3) getrennt:
+§3 bindet einen Handoff an eine Chain, §7 prüft den Handoff-Record für sich.
+
+Der Validator kennt genau zwei Fehlerklassen: `contract_invalid`
+(Schema-/Required-/`const`-Verletzung) und `hash_mismatch` (recomputeter Canon-v1-Hash
+weicht vom deklarierten `handoff.hash` ab). Fixtures mit `expected_error`-Marker werden
+im Default-Modus (`--mode assert-fixtures`) als erwartete Negativfälle geführt; Fixtures
+ohne Marker müssen fehlerfrei validieren.
+
+**Audit-Oberflaeche**
+
+| Pruefbereich | Audit |
+| ------------ | ----- |
+| PASS-Baseline inkl. Canon-v1-Hash-Recompute | `covered: true; test_ref: tests/fixtures/agent_handoff/pass-minimal.json, scripts/docmeta/test_validate_agent_handoff.py::test_validate_one_pass_fixture` |
+| Required-Felder (global: `target_files`, `locator`; status-bedingt: PASS→`handoff`, PARTIAL/FAIL→`blocked_by`+`required_fixes`) | `covered: true; test_ref: tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json, tests/fixtures/agent_handoff/fail-missing-target-files.json, tests/fixtures/agent_handoff/partial-missing-locator.json, tests/fixtures/agent_handoff/partial-missing-required-fixes.json` |
+| Canon-`const`-Guard (`handoff.canon`) | `covered: true; test_ref: tests/fixtures/agent_handoff/pass-unsupported-canon.json` |
+| Hash-Integrität (deklariert vs. recomputet) | `covered: true; test_ref: tests/fixtures/agent_handoff/hash-mismatch.json, tests/fixtures/agent_handoff/pass-normalized-task-drift.json, tests/fixtures/agent_handoff/promotion-near-invalid.json` |
+| Optionale Präzisionsfelder ohne Hash-Wirkung | `covered: true; test_ref: tests/fixtures/agent_handoff/pass-with-exact-before-after.json, tests/fixtures/agent_handoff/promotion-near-valid.json` |
+
+**Gültige Fixtures**
+
+| Fixture | Beschreibung |
+| ------- | ------------ |
+| `tests/fixtures/agent_handoff/pass-minimal.json` | Minimaler `status: PASS` mit `handoff{algo,canon,hash}`; `hash` entspricht dem Canon-v1-Recompute. PASS-Baseline. |
+| `tests/fixtures/agent_handoff/pass-with-exact-before-after.json` | `status: PASS` mit gesetzten `exact_before`/`exact_after`. Beleg, dass optionale Felder NICHT in den Canon-v1-Hash eingehen (`hash` bleibt gültig). |
+| `tests/fixtures/agent_handoff/promotion-near-valid.json` | Promotion-naher PASS mit voller Optionalnutzung (`exact_before`/`exact_after`, `constraints`, `risks`, `validation_plan`); `hash` gültig. Positiver Kontrast zu `promotion-near-invalid.json`. |
+
+**Ungültige Fixtures**
+
+| Fixture | Fehlerklasse | Was getestet wird |
+| ------- | ------------ | ----------------- |
+| `tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json` | `contract_invalid` | `status: PASS` ohne `handoff`-Objekt — verletzt `allOf`-`if/then` (PASS ⇒ `handoff` required). |
+| `tests/fixtures/agent_handoff/fail-missing-target-files.json` | `contract_invalid` | `status: FAIL` ohne `target_files` — verletzt Required-Feld (Drift-Fall „FAIL ohne target_files"). |
+| `tests/fixtures/agent_handoff/partial-missing-locator.json` | `contract_invalid` | `status: PARTIAL` ohne `locator` — verletzt Required-Feld (Drift-Fall „PARTIAL ohne Locator"). |
+| `tests/fixtures/agent_handoff/partial-missing-required-fixes.json` | `contract_invalid` | `status: PARTIAL` mit `blocked_by`, aber ohne `required_fixes` — verletzt `allOf`-`if/then` (PARTIAL/FAIL ⇒ beide required). |
+| `tests/fixtures/agent_handoff/pass-unsupported-canon.json` | `contract_invalid` | `handoff.canon: "v2"` — verletzt `const: "v1"` (Drift-Fall „unsupported_canon"). |
+| `tests/fixtures/agent_handoff/hash-mismatch.json` | `hash_mismatch` | `handoff.hash` ist Null-Hash und weicht vom Canon-v1-Recompute ab. |
+| `tests/fixtures/agent_handoff/pass-normalized-task-drift.json` | `hash_mismatch` | `normalized_task` nach dem Signieren gedriftet — Integritäts-Mismatch (Drift-Fall „normalized_task integrity"). |
+| `tests/fixtures/agent_handoff/promotion-near-invalid.json` | `hash_mismatch` | `scope` nach dem Signieren gedriftet — promotion-naher Hash-Mismatch. |
+
+**Phase-E-Drift-Abdeckung (Blueprint Phase 1c §Phase E):** Die in Phase E geforderten
+Mindestfälle für den Handoff-Validator sind durch obige Fixtures abgedeckt — PASS
+(`pass-minimal`), FAIL ohne `target_files` (`fail-missing-target-files`), PARTIAL ohne
+Locator (`partial-missing-locator`), `hash_mismatch` (`hash-mismatch`), `unsupported_canon`
+(`pass-unsupported-canon`), `normalized_task`-Integritäts-Mismatch
+(`pass-normalized-task-drift`), optional `exact_before`/`exact_after`
+(`pass-with-exact-before-after`) sowie promotion-naher Fall
+(`promotion-near-valid`/`promotion-near-invalid`). Reproduzierbar geprüft über
+`make validate-agent-handoff` und `make validate-agent-handoff-tests`
+(`scripts/docmeta/test_validate_agent_handoff.py`, Abschnitt „Phase E: Drift-Fixtures").
