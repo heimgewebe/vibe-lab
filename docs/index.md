@@ -20,6 +20,8 @@ relations:
   - type: references
     target: policies/agent-compliance.md
   - type: references
+    target: policies/model-lab-control-minimum.md
+  - type: references
     target: playbooks/reconciliation.md
   - type: references
     target: playbooks/build-reliable-prompt.md
@@ -129,6 +131,7 @@ relations:
 | [policies/pr-run-evidence-policy.md](policies/pr-run-evidence-policy.md) | Normative Claim/Evidence-Grenzen für PR-Runs (policy-only, nicht enforced) |
 | [policies/artifact-boundary-policy.md](policies/artifact-boundary-policy.md) | Artefaktgrenzen für repo-lokale Evidence (policy-only, nicht enforced) |
 | [policies/agent-compliance.md](policies/agent-compliance.md) | Agent-Compliance: Anker-Dateien, lokaler Guard, Durchsetzungs-Map |
+| [policies/model-lab-control-minimum.md](policies/model-lab-control-minimum.md) | Lab-Control-Minimum fuer opt-in Model-Lab-Runs (AP-1, Validator-Vorbau) |
 
 ## Diagnose (Generiert)
 
