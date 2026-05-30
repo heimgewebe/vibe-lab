@@ -79,7 +79,7 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 
 ## Phase 3 — Agent-Operability Phase E (parallel mit Phase 1)
 
-- [x] Fixture-Erweiterung auf 6–8 Fälle je Command (`hash_mismatch`, `unsupported_canon`, `integrity_mismatch`, promotion-nah) — Command-Fixtures auf 7/9/9 ausgebaut; Handoff-Drift-Fälle über 11 Fixtures in `tests/fixtures/agent_handoff/` abgedeckt (Coverage-Kartierung: `docs/reference/agent-operability-fixture-matrix.md` §7); reproduzierbar geprüft via `make validate-agent-handoff` + `make validate-agent-handoff-tests`
+- [x] Fixture-Erweiterung auf 6–8 Fälle je Command (`hash_mismatch`, `unsupported_canon`, `integrity_mismatch`, promotion-nah) — Command-Fixtures auf 7/9/9 ausgebaut; Handoff-Drift-Fälle über 11 Fixtures in `tests/fixtures/agent_handoff/` abgedeckt (Coverage-Kartierung: `docs/reference/agent-operability-fixture-matrix.md` §7); reproduzierbar geprüft via `make validate-agent-commands` + `make validate-agent-commands-tests` + `make validate-agent-handoff` + `make validate-agent-handoff-tests`
 
 ## Phase 4 — Stub-Zonen hart entscheiden
 

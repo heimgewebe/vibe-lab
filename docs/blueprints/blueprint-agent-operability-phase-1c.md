@@ -234,7 +234,7 @@ Nicht nur Theorie prüfen, sondern Vollzugssituationen.
 ### Phase E Umsetzung
 
 - [x] Minimal-Fixtures pro Command vorhanden (je Positiv + mindestens 2 Negativfälle) unter `tests/fixtures/agent_commands/`
-- [x] Fixture-Sammlung auf 6–8 Fälle pro Command ausgebaut (Ist-Stand: `read_context`=7, `write_change`=9, `validate_change`=9; ≥ Zielkorridor 6–8, geprüft über `make validate-agent-commands` + `make validate-agent-commands-tests`)
+- [x] Fixture-Sammlung auf 6–8 Fälle pro Command ausgebaut (Ist-Stand: `read_context`=7, `write_change`=9, `validate_change`=9; Mindestziel 6–8 erreicht/überschritten, geprüft über `make validate-agent-commands` + `make validate-agent-commands-tests`)
 - [x] Folgende Fälle für den Handoff-Validator mindestens abdecken:
       PASS, FAIL ohne `target_files`, PARTIAL ohne Locator, `hash_mismatch`,
       `unsupported_canon`, Integrity-Mismatch bei `normalized_task`,
