@@ -10,6 +10,8 @@ relations:
   - type: references
     target: blueprints/blueprint-evidence-control-plane-v1.md
   - type: references
+    target: blueprints/blueprint-model-lab-control-plane-v1.md
+  - type: references
     target: policies/interpretation-budget.md
   - type: references
     target: policies/pr-run-evidence-policy.md
@@ -172,6 +174,7 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 - [Minimaler Agent-Operability-Kern](blueprints/blueprint-agent-operability.md)
 - [Phase 1c: Systemverankerung des Agent-Operability-Kerns](blueprints/blueprint-agent-operability-phase-1c.md)
 - [Evidence-Control-Plane v1](blueprints/blueprint-evidence-control-plane-v1.md)
+- [Model-Lab Control Plane v1](blueprints/blueprint-model-lab-control-plane-v1.md)
 
 ## Konzepte (latent)
 
