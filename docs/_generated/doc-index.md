@@ -223,9 +223,9 @@
 | `instruction-blocks/validate-against-spec.md` | Validate-Against-Spec | adopted | operative |
 | `prompts/adopted/prompt-length-control.md` | Prompt-Length-Control Prompt | adopted | operative |
 | `prompts/adopted/spec-first-api.md` | Spec-First API Prompt | adopted | operative |
-| `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md` | Challenge — REST API | active | operative |
-| `tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md` | Challenge — REST API v1 | active | operative |
-| `tests/fixtures/challenge_versions/valid/challenges/rest-api-v1.md` | Challenge — REST API v1 | active | operative |
+| `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md` | Challenge — REST API | testing | derived |
+| `tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md` | Challenge — REST API v1 | testing | derived |
+| `tests/fixtures/challenge_versions/valid/challenges/rest-api-v1.md` | Challenge — REST API v1 | testing | derived |
 | `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md` | CONTEXT | — | — |
 | `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md` | INITIAL | — | — |
 | `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md` | Phase-1c Inconsistent Fixture | draft | operative |

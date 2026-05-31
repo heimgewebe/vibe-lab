@@ -1,7 +1,7 @@
 ---
 title: "Challenge — REST API"
-status: active
-canonicality: operative
+status: testing
+canonicality: derived
 challenge_id: "rest-api"
 task_family: "api_generation"
 expected_outputs:
