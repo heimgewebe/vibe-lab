@@ -18,7 +18,9 @@ provenance:
     Run-005 executes a real repo-local slice in a distinct task class:
     one agent_handoff fixture, one regression test, and fixture-matrix documentation
     update. No outcome upgrade, no CLAIM_NOT_PROVEN->PASS upgrade, no promotion,
-    and no adoption are claimed.
+    and no adoption are claimed. Only run-005 currently counts as comparable in
+    this series; earlier runs are contextual baselines and remain not_comparable
+    unless separately reconciled.
 
 artifacts:
   auditor_output:

@@ -21,7 +21,7 @@ metrics:
   unsupported_claim_count:
     value: 1
     evidence_status: "derived_from_auditor_output"
-    notes: "Outcome upgrade claim remains intentionally CLAIM_NOT_PROVEN in this run."
+    notes: "Derived from auditor-output non-PASS claim count; this is not an outcome-upgrade assertion."
 
   missing_locator_count:
     value: 0
@@ -57,6 +57,7 @@ interpretation_limits:
   - "This run adds evidence to the replication series but does not claim any outcome upgrade."
   - "This run does not claim promotion, adoption, or causal effectiveness."
   - "Full independence is not claimed; independence remains partial."
+  - "Executor provenance is self_reported, while validation transcript evidence is repo_local (make-validate.txt)."
 
 extensions:
   series: "outcome-evidence-replication-series"

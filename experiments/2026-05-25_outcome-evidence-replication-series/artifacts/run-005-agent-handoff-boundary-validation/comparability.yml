@@ -30,7 +30,9 @@ timing_artifact: "timing.txt"
 verdict: comparable
 
 notes: >
-  Run-005 is in the same outcome-evidence gate family and uses the required artifact
-  structure, while adding a distinct task class (agent_handoff_boundary_validation).
-  The run remains conservative: all upgrade flags are false, independence is partial,
-  and no outcome/promotion/adoption upgrade is claimed.
+  Run-005 is the first run in this series marked comparable under the gate's
+  artifact-level definition. Earlier runs in compared_against are contextual
+  baselines and do not count as comparable unless their own comparability verdict
+  is changed in a separate reconciliation. The run remains conservative: all
+  upgrade flags are false, independence is partial, and no
+  outcome/promotion/adoption upgrade is claimed.
