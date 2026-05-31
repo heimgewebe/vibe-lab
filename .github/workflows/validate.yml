@@ -38,6 +38,12 @@ jobs:
       - name: Validate experiment run bundles
         run: python3 scripts/docmeta/validate_run_bundle.py
 
+      - name: Test Model-Lab control minimum validator
+        run: python3 scripts/docmeta/test_validate_model_lab_control.py
+
+      - name: Validate Model-Lab control minimum
+        run: python3 scripts/docmeta/validate_model_lab_control.py
+
       - name: Test claim-evidence semantic validator
         run: python3 scripts/docmeta/test_validate_claim_evidence.py
 

@@ -1,0 +1,27 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-001-model-lab-fixture",
+  "generated_at": "2026-05-30T00:00:00Z",
+  "executor": "fixture:test",
+  "command": "python3 -m pytest",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-model-lab-fixture/test-output.txt",
+  "provenance_level": "machine_verified",
+  "model_lab_control": true,
+  "model_provider": "fixture-provider",
+  "model_version_or_date": "2026-05-30",
+  "tooling": "fixture-cli@0.1.0",
+  "agent_mode": "controlled-fixture",
+  "challenge_id": "rest-api",
+  "challenge_version": "rest-api-v1",
+  "condition": "treatment",
+  "control_condition": "baseline",
+  "temperature_or_sampling": "temperature=0",
+  "run_started_at": "2026-05-30T00:00:00Z",
+  "run_finished_at": "2026-05-30T00:05:00Z",
+  "human_intervention_level": "none_after_start",
+  "evidence_artifacts": [
+    "artifacts/run-001-model-lab-fixture/run.yml",
+    "artifacts/run-001-model-lab-fixture/evidence-pack.yml"
+  ]
+}

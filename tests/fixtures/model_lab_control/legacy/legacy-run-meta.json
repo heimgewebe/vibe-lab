@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-legacy-fixture",
+  "generated_at": "2026-05-30T00:00:00Z",
+  "executor": "fixture:test",
+  "command": "echo legacy",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-legacy-fixture/test-output.txt",
+  "provenance_level": "self_reported"
+}

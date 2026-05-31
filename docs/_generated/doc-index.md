@@ -60,6 +60,7 @@
 | `docs/policies/agent-compliance.md` | Policy — Agent Compliance | active | operative |
 | `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | active | exploratory |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
+| `docs/policies/model-lab-control-minimum.md` | Policy — Model-Lab Control Minimum | active | operative |
 | `docs/policies/pr-run-evidence-policy.md` | Policy — PR Run Evidence | draft | exploratory |
 | `docs/policies/privacy-and-ethics.md` | Privacy- und Ethik-Policy | active | operative |
 | `docs/reference/agent-operability-fixture-matrix.md` | Agent Operability — Fixture-Matrix (v0.1) | active | derived |
