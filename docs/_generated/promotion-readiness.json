@@ -13,6 +13,7 @@
         "not_counted_against_promotion_readiness"
       ],
       "path": "experiments/2026-04-08_spec-first",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "adopted",
       "warnings": [
@@ -27,6 +28,7 @@
       "missing": [],
       "notes": [],
       "path": "experiments/2026-04-11_yolo-vs-spec-first",
+      "pre_execution_hold": false,
       "promotion_ready": true,
       "status": "designed",
       "warnings": []
@@ -41,6 +43,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-12_spec-first-legacy",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -55,6 +58,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-14_incremental-debuggability",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -69,6 +73,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-14_incremental-refinement",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "inconclusive",
       "warnings": []
@@ -83,6 +88,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-14_premortem-prompting",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -95,6 +101,7 @@
       "missing": [],
       "notes": [],
       "path": "experiments/2026-04-14_prompt-length-control",
+      "pre_execution_hold": false,
       "promotion_ready": true,
       "status": "adopted",
       "warnings": []
@@ -109,6 +116,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-14_tdd-vibe",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "inconclusive",
       "warnings": []
@@ -123,6 +131,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-14_upfront-structuring",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -137,6 +146,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-14_upfront-structuring-replication",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -152,6 +162,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-15_agent-task-validity",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -166,6 +177,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-19_generated-artifact-contract-validation",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "inconclusive",
       "warnings": []
@@ -180,6 +192,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-23_agent-failure-surface",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -194,6 +207,7 @@
       ],
       "notes": [],
       "path": "experiments/2026-04-23_phase-1-drift-injection",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
@@ -210,6 +224,7 @@
         "insufficient_proof_assessment"
       ],
       "path": "experiments/2026-05-01_agent-skill-minimal-layer-instrumentation",
+      "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "testing",
       "warnings": [
@@ -224,19 +239,39 @@
       "missing": [],
       "notes": [],
       "path": "experiments/2026-05-25_outcome-evidence-replication-series",
+      "pre_execution_hold": false,
       "promotion_ready": true,
       "status": "testing",
       "warnings": [
         "falsifiability_assessment_inconclusive"
       ]
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "prepared",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [
+        "prepared_not_executed"
+      ],
+      "notes": [
+        "falsifiability_voluntary",
+        "prepared_not_executed"
+      ],
+      "path": "experiments/2026-05-31_model-lab-replication-series",
+      "pre_execution_hold": true,
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 16,
+    "experiments_checked": 17,
     "historical_escape": 1,
     "not_ready": 12,
+    "pre_execution_hold": 1,
     "ready": 3,
     "warnings": 3
   },

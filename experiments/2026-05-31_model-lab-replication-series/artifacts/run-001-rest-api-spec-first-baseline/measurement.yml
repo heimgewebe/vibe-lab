@@ -1,0 +1,57 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-001-rest-api-spec-first-baseline"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "skeleton:manual"
+  note: "No real agent execution; this is an AP-4 structural skeleton baseline."
+
+metrics:
+  scope_drift_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Skeleton only; nothing was executed, so scope drift is not measured."
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "Derived: the single auditor claim is CLAIM_NOT_PROVEN (one non-PASS claim)."
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All referenced skeleton artifacts resolve as repo-local files."
+  validation_gap_count:
+    value: 0
+    evidence_status: "derived_from_auditor_output"
+    notes: "Derived: no MISSING_EVIDENCE command/validator claims in the auditor output."
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review or rework was performed for this skeleton."
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review or rework was performed for this skeleton."
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block observed while assembling the skeleton."
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Skeleton only; no execution timing is claimed."
+
+interpretation_limits:
+  - "Skeleton only: no executed run, no comparative outcome, no model-quality verdict."
+  - "AP-1/AP-2 validators are exercised on the metadata and challenge-version surface only."
+
+extensions:
+  series: "model-lab-replication-series"
+  challenge_id: "rest-api"
+  challenge_version: "rest-api-v1"
+  condition: "spec_first_baseline"
+  control_condition: "future_control_pending"
+  measurement_status: "skeleton_only"
+  outcome_upgrade_allowed: false

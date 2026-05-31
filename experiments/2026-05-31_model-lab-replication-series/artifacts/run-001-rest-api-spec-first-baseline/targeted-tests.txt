@@ -1,0 +1,11 @@
+Skeleton only. No implementation tests executed.
+
+This file is the run_meta.test_output_file for the AP-4 Model-Lab
+replication-series baseline skeleton (run-001-rest-api-spec-first-baseline).
+
+Validation targets (run from repo root):
+- make validate-model-lab-control
+- make validate-challenge-versions
+- make validate
+
+No model-quality, outcome, adoption, or promotion claim is made.

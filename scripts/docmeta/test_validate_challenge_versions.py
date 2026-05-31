@@ -90,8 +90,10 @@ class ChallengeVersionValidatorTests(unittest.TestCase):
 
         self.assertTrue(result.ok, result.errors)
         self.assertGreaterEqual(result.checked_challenges, 3)
-        # No historical decision opts in, so none are enforced.
-        self.assertEqual(result.activated_decisions, 0)
+        # The AP-4 Model-Lab replication-series skeleton introduces the first
+        # explicitly activated Model-Lab decision; historical decisions still do
+        # not opt in, so the repo-wide run stays green with >= 1 activated.
+        self.assertGreaterEqual(result.activated_decisions, 1)
 
     def test_activation_rule_is_narrow(self) -> None:
         self.assertTrue(
