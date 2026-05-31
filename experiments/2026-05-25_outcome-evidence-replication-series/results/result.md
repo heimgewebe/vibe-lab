@@ -14,6 +14,19 @@ Run-003 adds a new task class, `validator_test_hardening`, but only as a conserv
 
 Run-004 delivers a **real** validator effect: `scripts/docmeta/validate_outcome_evidence_replication_series.py` (new), 46 regression tests, a file-based fixture corpus under `tests/fixtures/outcome_evidence_replication_series/`, and Makefile integration (`make validate-outcome-series`, `make validate-outcome-series-tests`). This is the first run with actual `scripts/` and `tests/` changes. No outcome upgrade is claimed.
 
+## Run-005 — Agent Handoff Boundary Validation
+
+Run-005 adds one repo-local real task in the `agent_handoff_boundary_validation` task class.
+
+Evidence status:
+- validation evidence: repo_local
+- independence: partial
+- outcome upgrade: not claimed
+- promotion/adoption: not claimed
+
+Result:
+This run improves replication-series coverage and task diversity, but it does not close RM-002/RM-005 and does not justify EP-002.
+
 ## Observations
 
 - Run-001 artifacts are present under `artifacts/run-001-contract-documentation-alignment/`.
@@ -25,6 +38,7 @@ Run-004 delivers a **real** validator effect: `scripts/docmeta/validate_outcome_
 - Run-003 adds `artifacts/run-003-validator-test-hardening/` as a small validator-/test-hardening-scoped bundle.
 - Run-003 is explicitly documented as evidence-/artifact-level hardening only; no real validator or test code change is asserted.
 - Run-004 adds `artifacts/run-004-real-validator-test-hardening/` with a real gate validator and 46 tests. `changed-files.txt` records `scripts/`, `tests/`, and `Makefile` paths.
+- Run-005 adds `artifacts/run-005-agent-handoff-boundary-validation/` with a real handoff-boundary fixture/test/documentation slice and conservative CLAIM_NOT_PROVEN verdict discipline.
 - The series still has no outcome upgrade, no usefulness verdict, and no adoption or promotion basis.
 
 ## Interpretation

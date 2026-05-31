@@ -1,0 +1,16 @@
+docs/reference/agent-operability-fixture-matrix.md
+docs/roadmap.md
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/auditor-output.yml
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/changed-files.txt
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/comparability.yml
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/evidence-pack.yml
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/make-validate.txt
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/measurement.yml
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/run.yml
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/run_meta.json
+experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/timing.txt
+experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml
+experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl
+experiments/2026-05-25_outcome-evidence-replication-series/results/result.md
+scripts/docmeta/test_validate_agent_handoff.py
+tests/fixtures/agent_handoff/pass-target-files-normalized.json

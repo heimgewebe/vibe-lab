@@ -105,6 +105,12 @@ class ValidateAgentHandoffTests(unittest.TestCase):
         errors = vah.validate_one(path, self.validator)
         self.assertEqual(errors, [])
 
+    def test_validate_one_pass_target_files_normalized(self) -> None:
+        """PASS fixture with duplicate/space-padded target_files must pass after canonicalization."""
+        path = self.fixture_dir / "pass-target-files-normalized.json"
+        errors = vah.validate_one(path, self.validator)
+        self.assertEqual(errors, [])
+
     def test_validate_one_promotion_near_valid(self) -> None:
         """Promotion-near-valid PASS with all optional fields must pass."""
         path = self.fixture_dir / "promotion-near-valid.json"

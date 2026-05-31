@@ -1,0 +1,36 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-005-agent-handoff-boundary-validation"
+assessed_at: "2026-05-31"
+
+series: "outcome-evidence-replication-series"
+task_class: "agent_handoff_boundary_validation"
+comparability_scope: "same outcome-evidence gate family"
+outcome_upgrade_allowed: false
+effect_claim_allowed: false
+promotion_claim_allowed: false
+negative_control: false
+
+compared_against:
+  - "run-001-contract-documentation-alignment"
+  - "run-002-negative-control-claim-not-proven"
+  - "run-003-validator-test-hardening"
+  - "run-004-real-validator-test-hardening"
+
+same_experiment_path: true
+same_metric_structure: true
+same_claim_evidence_discipline: true
+
+independent_task_or_pr_ref: "task:run-005-agent-handoff-boundary-validation"
+independence_status: "partial"
+
+changed_files_artifact: "changed-files.txt"
+timing_artifact: "timing.txt"
+
+verdict: comparable
+
+notes: >
+  Run-005 is in the same outcome-evidence gate family and uses the required artifact
+  structure, while adding a distinct task class (agent_handoff_boundary_validation).
+  The run remains conservative: all upgrade flags are false, independence is partial,
+  and no outcome/promotion/adoption upgrade is claimed.

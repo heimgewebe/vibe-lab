@@ -1,0 +1,69 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-005-agent-handoff-boundary-validation"
+
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "self_reported:copilot-task-agent"
+  executor: "copilot-task-agent"
+  role: >
+    Real repo-local handoff boundary validation slice: fixture + regression test +
+    fixture-matrix documentation update, with strict non-upgrade discipline.
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Changed file scope is archived in changed-files.txt and limited to approved target areas plus run bookkeeping."
+
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "Outcome upgrade claim remains intentionally CLAIM_NOT_PROVEN in this run."
+
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All evidence references are repo-local and resolvable."
+
+  validation_gap_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Required make validation commands are archived in make-validate.txt with exit code 0."
+
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim is made in this run."
+
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No review/rework claim is made in this run."
+
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block observed in the run output."
+
+  task_completion_time_observed:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "timing.txt records elapsed runtime metadata only; no strong timing claim is made."
+
+interpretation_limits:
+  - "This run adds evidence to the replication series but does not claim any outcome upgrade."
+  - "This run does not claim promotion, adoption, or causal effectiveness."
+  - "Full independence is not claimed; independence remains partial."
+
+extensions:
+  series: "outcome-evidence-replication-series"
+  task_class: "agent_handoff_boundary_validation"
+  comparability_scope: "same outcome-evidence gate family"
+  outcome_upgrade_allowed: false
+  effect_claim_allowed: false
+  promotion_claim_allowed: false
+  independence_status: "partial"
+  negative_control: false

@@ -520,6 +520,7 @@ CI-Eingriff. Vertragliche Ergänzung: `contracts/command-semantics.md`
 | Cross-Contract | version conflict | `cross_contract/invalid/version_conflict.json` | `command_sequence_invalid`, `contract_invalid` | ✅ |
 | Cross-Contract | locator drift (handoff vs write_change) | `cross_contract/invalid/handoff_locator_drift/locator_drift.json` | `handoff_locator_drift` | ✅ |
 | Handoff | pass minimal (canon-v1 hash ok) | `agent_handoff/pass-minimal.json` | — | ✅ |
+| Handoff | pass target_files normalized (dedupe + trim + sort) | `agent_handoff/pass-target-files-normalized.json` | — | ✅ |
 | Handoff | pass with exact_before/after (optional, hash-neutral) | `agent_handoff/pass-with-exact-before-after.json` | — | ✅ |
 | Handoff | promotion-near valid (full optional fields) | `agent_handoff/promotion-near-valid.json` | — | ✅ |
 | Handoff | PASS without handoff object | `agent_handoff/contract-invalid-missing-handoff.json` | `contract_invalid` | ✅ |
@@ -551,7 +552,7 @@ ohne Marker müssen fehlerfrei validieren.
 
 | Pruefbereich | Audit |
 | ------------ | ----- |
-| PASS-Baseline inkl. Canon-v1-Hash-Recompute | `covered: true; test_ref: tests/fixtures/agent_handoff/pass-minimal.json, scripts/docmeta/test_validate_agent_handoff.py::test_validate_one_pass_fixture` |
+| PASS-Baseline inkl. Canon-v1-Hash-Recompute | `covered: true; test_ref: tests/fixtures/agent_handoff/pass-minimal.json, tests/fixtures/agent_handoff/pass-target-files-normalized.json, scripts/docmeta/test_validate_agent_handoff.py::test_validate_one_pass_fixture, scripts/docmeta/test_validate_agent_handoff.py::test_validate_one_pass_target_files_normalized` |
 | Required-Felder (global: `target_files`, `locator`; status-bedingt: PASS→`handoff`, PARTIAL/FAIL→`blocked_by`+`required_fixes`) | `covered: true; test_ref: tests/fixtures/agent_handoff/contract-invalid-missing-handoff.json, tests/fixtures/agent_handoff/fail-missing-target-files.json, tests/fixtures/agent_handoff/partial-missing-locator.json, tests/fixtures/agent_handoff/partial-missing-required-fixes.json` |
 | Canon-`const`-Guard (`handoff.canon`) | `covered: true; test_ref: tests/fixtures/agent_handoff/pass-unsupported-canon.json` |
 | Hash-Integrität (deklariert vs. recomputet) | `covered: true; test_ref: tests/fixtures/agent_handoff/hash-mismatch.json, tests/fixtures/agent_handoff/pass-normalized-task-drift.json, tests/fixtures/agent_handoff/promotion-near-invalid.json` |
@@ -562,6 +563,7 @@ ohne Marker müssen fehlerfrei validieren.
 | Fixture | Beschreibung |
 | ------- | ------------ |
 | `tests/fixtures/agent_handoff/pass-minimal.json` | Minimaler `status: PASS` mit `handoff{algo,canon,hash}`; `hash` entspricht dem Canon-v1-Recompute. PASS-Baseline. |
+| `tests/fixtures/agent_handoff/pass-target-files-normalized.json` | `status: PASS` mit duplizierten und whitespace-gepaddeten `target_files` und gepaddetem `locator`; der Canon-v1-Recompute normalisiert auf deduplizierte, getrimmte Pfade und validiert den Hash boundary-konform. |
 | `tests/fixtures/agent_handoff/pass-with-exact-before-after.json` | `status: PASS` mit gesetzten `exact_before`/`exact_after`. Beleg, dass optionale Felder NICHT in den Canon-v1-Hash eingehen (`hash` bleibt gültig). |
 | `tests/fixtures/agent_handoff/promotion-near-valid.json` | Promotion-naher PASS mit voller Optionalnutzung (`exact_before`/`exact_after`, `constraints`, `risks`, `validation_plan`); `hash` gültig. Positiver Kontrast zu `promotion-near-invalid.json`. |
 
