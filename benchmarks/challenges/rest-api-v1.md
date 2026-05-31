@@ -2,6 +2,23 @@
 title: "REST-API CRUD Challenge v1"
 status: active
 canonicality: operative
+challenge_id: "rest-api"
+version: "v1"
+task_family: "api_generation"
+expected_outputs:
+  - "REST API implementation"
+  - "Input validation"
+  - "Error handling"
+  - "Executable tests or verification evidence"
+evaluation_criteria:
+  - "Completeness against requested endpoints"
+  - "Correct validation and error behavior"
+  - "Maintainable structure"
+  - "Reproducible evidence artifacts"
+known_confounders:
+  - "Framework-specific defaults"
+  - "Implicit assumptions about persistence"
+  - "Ambiguous validation requirements"
 ---
 
 # Benchmark Challenge: REST-API CRUD (v1)

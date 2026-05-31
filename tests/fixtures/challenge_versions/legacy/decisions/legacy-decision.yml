@@ -1,0 +1,4 @@
+# Validator-specific fixture (not validated against schemas/decision.schema.json).
+# No Model-Lab activation key -> ignored by the challenge-version validator.
+decision_type: process_boundary
+verdict: proposed

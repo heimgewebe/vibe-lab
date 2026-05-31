@@ -44,6 +44,12 @@ jobs:
       - name: Validate Model-Lab control minimum
         run: python3 scripts/docmeta/validate_model_lab_control.py
 
+      - name: Test challenge-version validator
+        run: python3 scripts/docmeta/test_validate_challenge_versions.py
+
+      - name: Validate challenge versions
+        run: python3 scripts/docmeta/validate_challenge_versions.py
+
       - name: Test claim-evidence semantic validator
         run: python3 scripts/docmeta/test_validate_claim_evidence.py
 

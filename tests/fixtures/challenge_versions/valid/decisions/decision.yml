@@ -1,0 +1,5 @@
+# Validator-specific fixture (not validated against schemas/decision.schema.json).
+# Activated via decision_type=model_lab_comparison; references a known version.
+decision_type: model_lab_comparison
+verdict: insufficient_proof
+challenge_version: rest-api-v1

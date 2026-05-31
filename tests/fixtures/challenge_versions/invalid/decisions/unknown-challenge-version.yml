@@ -1,0 +1,5 @@
+# Validator-specific fixture (not validated against schemas/decision.schema.json).
+# Activated, but references a challenge_version that is not in the registry.
+decision_type: model_lab_comparison
+verdict: insufficient_proof
+challenge_version: unknown-v1
