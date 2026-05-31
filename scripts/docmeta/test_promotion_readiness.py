@@ -11,6 +11,8 @@ Covers:
   6. designed/prepared experiments without blocking decision signals remain ready with notes=[].
      prepared + execution_assessment + insufficient_proof is a narrow exception:
      it is not promotion-ready and carries the prepared_without_measurement signal.
+     prepared + execution_assessment + not_executed is also not promotion-ready
+     and carries prepared_not_executed + pre_execution_hold.
      executed + execution_assessment + insufficient_proof carries insufficient_proof_assessment.
   7. Two runs produce identical output (determinism / write_if_changed).
   8. Falsifiability block loaded from the valid/invalid fixtures shows expected structure.
@@ -385,6 +387,45 @@ class IsolatedRepoScenarios(unittest.TestCase):
 
             self.assertTrue(entry["promotion_ready"])
             self.assertNotIn("prepared_without_measurement", entry["notes"])
+
+    def test_prepared_not_executed_not_ready(self) -> None:
+        """prepared + execution_assessment + not_executed is not promotion-ready."""
+        import yaml as _yaml
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            exp_dir = root / "exp-prepared-not-executed"
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="testing", execution_status="prepared"),
+            )
+            decision_path = exp_dir / "results" / "decision.yml"
+            decision_path.parent.mkdir(parents=True, exist_ok=True)
+            decision_path.write_text(
+                _yaml.safe_dump(
+                    {
+                        "decision_type": "execution_assessment",
+                        "verdict": "not_executed",
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entries = self._evaluate_dir(root)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            by_name = {Path(e["path"]).name: e for e in entries}
+            entry = by_name["exp-prepared-not-executed"]
+
+            self.assertFalse(entry["promotion_ready"])
+            self.assertIn("prepared_not_executed", entry["missing"])
+            self.assertIn("prepared_not_executed", entry["notes"])
+            self.assertTrue(entry["pre_execution_hold"])
 
     def test_executed_insufficient_proof_not_ready(self) -> None:
         """executed + decision_type=execution_assessment + verdict=insufficient_proof
@@ -1319,6 +1360,7 @@ class RatchetModeTests(unittest.TestCase):
             "adoption_basis": "",
             "falsifiability_triggered": True,
             "historical_escape": False,
+            "pre_execution_hold": False,
             "promotion_ready": False,
             "missing": missing if missing is not None else ["falsifiability"],
             "warnings": [],
@@ -1333,6 +1375,7 @@ class RatchetModeTests(unittest.TestCase):
             "adoption_basis": "",
             "falsifiability_triggered": True,
             "historical_escape": False,
+            "pre_execution_hold": False,
             "promotion_ready": True,
             "missing": [],
             "warnings": [],
@@ -1347,10 +1390,26 @@ class RatchetModeTests(unittest.TestCase):
             "adoption_basis": "reconstructed",
             "falsifiability_triggered": False,
             "historical_escape": True,
+            "pre_execution_hold": False,
             "promotion_ready": False,
             "missing": [],
             "warnings": [],
             "notes": ["historical_escape", "not_counted_against_promotion_readiness"],
+        }
+
+    def _make_pre_execution_hold_entry(self, path: str) -> dict:
+        return {
+            "path": path,
+            "status": "testing",
+            "execution_status": "prepared",
+            "adoption_basis": "",
+            "falsifiability_triggered": False,
+            "historical_escape": False,
+            "pre_execution_hold": True,
+            "promotion_ready": False,
+            "missing": ["prepared_not_executed"],
+            "warnings": [],
+            "notes": ["prepared_not_executed"],
         }
 
     def _make_freeze_config(self, experiments: list[dict]) -> dict:
@@ -1390,6 +1449,12 @@ class RatchetModeTests(unittest.TestCase):
 
     def test_ready_experiment_accepted_without_freeze_entry(self) -> None:
         entry = self._make_ready_entry("experiments/exp-ready")
+        freeze = self._make_freeze_config([])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertEqual(errors, [], msg=f"Expected no errors, got: {errors}")
+
+    def test_pre_execution_hold_experiment_accepted_without_freeze_entry(self) -> None:
+        entry = self._make_pre_execution_hold_entry("experiments/exp-prepared-not-executed")
         freeze = self._make_freeze_config([])
         errors, _ = vpr.ratchet_check([entry], freeze)
         self.assertEqual(errors, [], msg=f"Expected no errors, got: {errors}")

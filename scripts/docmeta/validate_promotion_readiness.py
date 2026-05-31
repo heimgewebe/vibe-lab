@@ -445,6 +445,7 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
     missing: list[str] = []
     warnings: list[str] = []
     notes: list[str] = []
+    pre_execution_hold = False
 
     if historical:
         notes.append("historical_escape")
@@ -476,6 +477,15 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         ):
             missing.append("prepared_without_measurement")
             notes.append("prepared_without_measurement")
+            pre_execution_hold = True
+        if (
+            decision is not None
+            and decision.get("decision_type") == "execution_assessment"
+            and decision.get("verdict") == "not_executed"
+        ):
+            missing.append("prepared_not_executed")
+            notes.append("prepared_not_executed")
+            pre_execution_hold = True
 
     # Allgemeine Regel: execution_assessment + insufficient_proof bei executed/replicated
     # → Messwerte vorhanden, aber Bewertung ergibt unzureichende Evidenz.
@@ -507,6 +517,7 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         "adoption_basis": state["adoption_basis"],
         "falsifiability_triggered": triggered,
         "historical_escape": historical,
+        "pre_execution_hold": pre_execution_hold,
         "promotion_ready": promotion_ready,
         "missing": sorted(missing),
         "warnings": sorted(warnings),
@@ -521,9 +532,14 @@ def build_report(experiment_entries: list[dict[str, Any]]) -> dict[str, Any]:
     checked = len(entries_sorted)
     ready = sum(1 for e in entries_sorted if e["promotion_ready"])
     historical = sum(1 for e in entries_sorted if e["historical_escape"])
+    pre_execution = sum(1 for e in entries_sorted if e.get("pre_execution_hold", False))
     not_ready = sum(
         1 for e in entries_sorted
-        if not e["promotion_ready"] and not e["historical_escape"]
+        if (
+            not e["promotion_ready"]
+            and not e["historical_escape"]
+            and not e.get("pre_execution_hold", False)
+        )
     )
     warnings_total = sum(len(e["warnings"]) for e in entries_sorted)
 
@@ -536,6 +552,7 @@ def build_report(experiment_entries: list[dict[str, Any]]) -> dict[str, Any]:
             "ready": ready,
             "not_ready": not_ready,
             "historical_escape": historical,
+            "pre_execution_hold": pre_execution,
             "warnings": warnings_total,
         },
         "experiments": entries_sorted,
@@ -584,6 +601,7 @@ VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
     "falsifiability.assessment_counterhypothesis_supported",
     "falsifiability.assessment_blocked",
     "prepared_without_measurement",
+    "prepared_not_executed",
     "insufficient_proof_assessment",
 })
 
@@ -729,7 +747,11 @@ def ratchet_check(
     entry_by_path: dict[str, dict] = {e["path"]: e for e in entries}
 
     for entry in entries:
-        if entry["promotion_ready"] or entry["historical_escape"]:
+        if (
+            entry["promotion_ready"]
+            or entry["historical_escape"]
+            or entry.get("pre_execution_hold", False)
+        ):
             continue
         path = entry["path"]
         actual_missing = set(entry["missing"])
@@ -765,6 +787,11 @@ def ratchet_check(
             errors.append(
                 f"ratchet.obsolete_freeze_entry: {path!r} is now promotion_ready; "
                 "remove it from .vibe/promotion-readiness-freeze.yml"
+            )
+        elif entry.get("pre_execution_hold", False):
+            errors.append(
+                f"ratchet.obsolete_freeze_entry: {path!r} is a pre_execution_hold; "
+                "pre-execution holds do not need a freeze entry"
             )
         elif entry["historical_escape"]:
             errors.append(
