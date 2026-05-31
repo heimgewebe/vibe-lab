@@ -477,7 +477,6 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         ):
             missing.append("prepared_without_measurement")
             notes.append("prepared_without_measurement")
-            pre_execution_hold = True
         if (
             decision is not None
             and decision.get("decision_type") == "execution_assessment"

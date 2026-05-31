@@ -363,6 +363,7 @@ class IsolatedRepoScenarios(unittest.TestCase):
             self.assertFalse(entry["promotion_ready"])
             self.assertIn("prepared_without_measurement", entry["missing"])
             self.assertIn("prepared_without_measurement", entry["notes"])
+            self.assertFalse(entry["pre_execution_hold"])
             self.assertFalse(entry["falsifiability_triggered"])
             self.assertFalse(entry["historical_escape"])
 
