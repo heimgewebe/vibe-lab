@@ -205,6 +205,11 @@
 | `experiments/2026-05-25_outcome-evidence-replication-series/failure_modes.md` | Outcome-Evidence-Replication-Series — Failure Modes | designed | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/method.md` | Outcome-Evidence-Replication-Series — Method | designed | operative |
 | `experiments/2026-05-25_outcome-evidence-replication-series/results/result.md` | Outcome-Evidence-Replication-Series — Results | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/CONTEXT.md` | Model-Lab Replication-Series — Context | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/INITIAL.md` | Model-Lab Replication-Series — Initial State | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` | Model-Lab Replication-Series — Failure Modes | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/method.md` | Model-Lab Replication-Series — Method | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/results/result.md` | Model-Lab Replication-Series — Results | designed | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

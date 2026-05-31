@@ -1,0 +1,30 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-001-rest-api-spec-first-baseline"
+auditor:
+  name: "skeleton:manual"
+  date: "2026-05-31"
+auditor_date: "2026-05-31"
+overall_verdict: "CLAIM_NOT_PROVEN"
+
+claims:
+  - id: "claim-001-baseline-not-proven"
+    text: >
+      This AP-4 skeleton run provides opt-in Model-Lab control metadata and a
+      challenge-version reference to rest-api-v1, but it contains no executed
+      comparative evidence, so no model or tool outcome is proven.
+    type: "model_lab_comparative_baseline"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run_meta.json"
+        status: "repo_local"
+    notes: >
+      Skeleton only. No outcome, effect, promotion, or adoption claim is made.
+
+required_next_proof:
+  - "Execute a real baseline run for rest-api-v1 and capture machine-verifiable evidence."
+  - "Add a second run with a different condition, model, or tool to enable comparison."
+
+extensions:
+  series: "model-lab-replication-series"
+  scope: "AP-4 skeleton; no outcome upgrade."

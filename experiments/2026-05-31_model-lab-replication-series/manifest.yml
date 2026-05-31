@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "model-lab-replication-series"
+  hypothesis: >
+    A small Model-Lab replication series can exercise the AP-1 Lab-Control-Minimum
+    validator and the AP-2 challenge-version validator against a real, opt-in
+    activated run and decision, without producing any model-quality verdict,
+    outcome upgrade, adoption, or promotion.
+  status: testing
+  category: workflow
+  execution_status: prepared
+  evidence_level: experimental
+  created: "2026-05-31"
+  updated: "2026-05-31"
+  author: "vibe-lab maintainers"
+  iteration: 1
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The skeleton would fail its purpose if the AP-1/AP-2 validators did not
+      actually engage on the activated run_meta.json and decision.yml, or if the
+      repo-conform structure could only be satisfied by asserting a model-quality,
+      outcome, adoption, or promotion claim.
+    counter_hypotheses:
+      - id: skeleton_is_oracle
+        statement: >
+          The skeleton silently smuggles a comparative verdict (an oracle) instead
+          of staying a purely structural laboratory anchor.
+        assessment:
+          status: pending
+          outcome: not_checked
+          limitations:
+            - "No run has been executed yet; only the activated structure exists."
+
+context:
+  tools: ["model-lab-control-plane", "AP-1 model-lab-control validator", "AP-2 challenge-version validator"]
+  language: "YAML/JSON"
+  environment: "vibe-lab repository"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

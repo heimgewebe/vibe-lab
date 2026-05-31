@@ -1,0 +1,27 @@
+schema_version: "1.0.0"
+run_id: "run-001-rest-api-spec-first-baseline"
+claims:
+  - claim_id: "ev-001-skeleton-surface"
+    text: >
+      The AP-4 skeleton run provides opt-in Model-Lab control metadata and a
+      challenge-version reference to rest-api-v1, but contains no executed
+      comparative evidence; therefore no model or tool outcome is proven.
+    type: "model_lab_control_surface"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run_meta.json"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/measurement.yml"
+        status: "repo_local"
+
+  - claim_id: "ev-002-no-outcome-upgrade"
+    text: >
+      No outcome upgrade, model-quality verdict, adoption, or promotion is
+      asserted for this skeleton baseline run.
+    type: "scope_adhered_to"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/comparability.yml"
+        status: "repo_local"

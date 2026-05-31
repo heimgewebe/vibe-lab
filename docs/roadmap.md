@@ -194,6 +194,21 @@ Ergaenzung 2026-05-31 zu RM-008 (AP-2 Validator-Vorbau, ohne globale Decision-Ha
 - Neuer Validator `scripts/docmeta/validate_challenge_versions.py` prueft Challenge-Registry und nur explizit aktivierte Model-Lab-/Vergleichs-Decisions.
 - Keine globale Pflicht fuer alle historischen `decision.yml`; AP-4 Replication-Series-Skeleton bleibt offen.
 
+Ergaenzung 2026-05-31 zu RM-008 (AP-4 Skeleton begonnen, ohne Outcome-/Adoption-/Promotion-Hochstufung):
+- AP-1 vorhanden; AP-2 vorhanden.
+- Neues Skeleton: `experiments/2026-05-31_model-lab-replication-series/`.
+- Enthaelt ersten **aktivierten** Model-Lab-Baseline-Run
+  (`run-001-rest-api-spec-first-baseline`) gegen `challenge_version` rest-api-v1
+  mit `model_lab_control: true`.
+- AP-1/AP-2-Validatoren pruefen die Metadaten- und Challenge-Version-Surface des
+  aktivierten Runs und der aktivierten Decision.
+- Execution-Status `prepared`, Execution-Verdikt `not_executed`: kein echter Run
+  ausgefuehrt; `verdict.outcome` des Run-Bundles ist `CLAIM_NOT_PROVEN`.
+- Keine Modellqualitaetsaussage, keine Promotion, keine Adoption, keine
+  Staleness-Reaktivierung und kein globales Schema-Hardening.
+- Naechster Schritt danach: erster echter Ausfuehrungsrun oder zweiter
+  Vergleichsrun gegen rest-api-v1.
+
 ---
 
 ## 3. Entscheidungspunkte

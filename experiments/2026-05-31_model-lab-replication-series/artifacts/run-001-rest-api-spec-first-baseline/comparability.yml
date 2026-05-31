@@ -1,0 +1,28 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-001-rest-api-spec-first-baseline"
+assessed_at: "2026-05-31"
+
+series: "model-lab-replication-series"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+task_class: "rest_api_spec_first_baseline"
+comparability_scope: "single activated Model-Lab baseline; no second run yet"
+
+outcome_upgrade_allowed: false
+effect_claim_allowed: false
+promotion_claim_allowed: false
+independence_status: "not_applicable_skeleton"
+
+compared_against: []
+
+verdict: not_comparable
+missing_changed_files_reason: >
+  Skeleton only: the baseline run was not executed and produced no code changes,
+  so there is no changed-files artifact and nothing to compare yet. A changed-files
+  artifact will be added when a real run is executed.
+
+notes: >
+  First activated Model-Lab baseline surface for AP-4. It is intentionally not
+  comparable until at least one further run exists. No outcome, effect, or
+  promotion claim is derived.

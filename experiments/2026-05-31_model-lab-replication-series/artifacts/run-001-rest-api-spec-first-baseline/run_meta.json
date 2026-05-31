@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-001-rest-api-spec-first-baseline",
+  "generated_at": "2026-05-31T00:00:00Z",
+  "executor": "skeleton:manual",
+  "command": "not executed; skeleton only",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-rest-api-spec-first-baseline/targeted-tests.txt",
+  "provenance_level": "self_reported",
+  "notes": "AP-4 Model-Lab replication-series baseline skeleton. Opt-in Model-Lab control metadata is set so the AP-1 validator engages. No run was executed; no model-quality, outcome, adoption, or promotion claim is made.",
+
+  "model_lab_control": true,
+  "model_id": "pending-baseline-model",
+  "model_provider": "pending-provider",
+  "model_version_or_date": "pending",
+  "tooling": "pending-agent-tooling",
+  "agent_mode": "skeleton-baseline",
+  "challenge_id": "rest-api",
+  "challenge_version": "rest-api-v1",
+  "condition": "spec_first_baseline",
+  "control_condition": "future_control_pending",
+  "temperature_or_sampling": "pending",
+  "run_started_at": "2026-05-31T00:00:00Z",
+  "run_finished_at": "2026-05-31T00:00:00Z",
+  "human_intervention_level": "skeleton_only",
+  "evidence_artifacts": [
+    "artifacts/run-001-rest-api-spec-first-baseline/run.yml",
+    "artifacts/run-001-rest-api-spec-first-baseline/auditor-output.yml",
+    "artifacts/run-001-rest-api-spec-first-baseline/measurement.yml",
+    "artifacts/run-001-rest-api-spec-first-baseline/evidence-pack.yml",
+    "artifacts/run-001-rest-api-spec-first-baseline/comparability.yml",
+    "artifacts/run-001-rest-api-spec-first-baseline/targeted-tests.txt"
+  ]
+}
