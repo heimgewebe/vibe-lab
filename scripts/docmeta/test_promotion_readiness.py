@@ -1413,6 +1413,21 @@ class RatchetModeTests(unittest.TestCase):
             "notes": ["prepared_not_executed"],
         }
 
+    def _make_prepared_without_measurement_entry(self, path: str) -> dict:
+        return {
+            "path": path,
+            "status": "testing",
+            "execution_status": "prepared",
+            "adoption_basis": "",
+            "falsifiability_triggered": False,
+            "historical_escape": False,
+            "pre_execution_hold": False,
+            "promotion_ready": False,
+            "missing": ["prepared_without_measurement"],
+            "warnings": [],
+            "notes": ["prepared_without_measurement"],
+        }
+
     def _make_freeze_config(self, experiments: list[dict]) -> dict:
         return {
             "promotion_readiness_freeze": {
@@ -1459,6 +1474,22 @@ class RatchetModeTests(unittest.TestCase):
         freeze = self._make_freeze_config([])
         errors, _ = vpr.ratchet_check([entry], freeze)
         self.assertEqual(errors, [], msg=f"Expected no errors, got: {errors}")
+
+    def test_prepared_without_measurement_blocker_requires_freeze(self) -> None:
+        """prepared_without_measurement is NOT a pre_execution_hold;
+        it's a blocker and must still require freeze enforcement.
+        """
+        entry = self._make_prepared_without_measurement_entry("experiments/exp-prepared-blocker")
+        freeze = self._make_freeze_config([])
+        errors, _ = vpr.ratchet_check([entry], freeze)
+        self.assertTrue(
+            any("unregistered_violation" in e for e in errors),
+            msg=f"Expected unregistered_violation error (blocker must be frozen), got: {errors}",
+        )
+        # Verify that the entry is NOT a pre_execution_hold
+        self.assertFalse(entry["pre_execution_hold"])
+        # Verify it's not promotion_ready
+        self.assertFalse(entry["promotion_ready"])
 
     def test_stale_freeze_entry_for_ready_experiment_fails(self) -> None:
         entry = self._make_ready_entry("experiments/exp-now-ready")
