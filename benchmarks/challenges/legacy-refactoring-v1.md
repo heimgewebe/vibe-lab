@@ -2,6 +2,22 @@
 title: "Legacy Refactoring Challenge v1"
 status: active
 canonicality: operative
+challenge_id: "legacy-refactoring"
+version: "v1"
+task_family: "legacy_refactoring"
+expected_outputs:
+  - "Behavior-preserving refactor"
+  - "Regression tests or verification evidence"
+  - "Reduced complexity or documented structure improvement"
+evaluation_criteria:
+  - "Behavior preservation"
+  - "Readable decomposition"
+  - "Minimal unintended surface change"
+  - "Reproducible evidence artifacts"
+known_confounders:
+  - "Incomplete legacy behavior specification"
+  - "Hidden coupling"
+  - "Ambiguous acceptable refactor scope"
 ---
 
 # Benchmark Challenge: Legacy Refactoring (v1)

@@ -2,6 +2,23 @@
 title: "Kanban Board UI/State Challenge v1"
 status: active
 canonicality: operative
+challenge_id: "kanban-board"
+version: "v1"
+task_family: "ui_state_management"
+expected_outputs:
+  - "Kanban board implementation"
+  - "Task creation and movement behavior"
+  - "State persistence or documented non-persistence"
+  - "Executable tests or verification evidence"
+evaluation_criteria:
+  - "Correct state transitions"
+  - "Usable interaction model"
+  - "Clear component boundaries"
+  - "Reproducible evidence artifacts"
+known_confounders:
+  - "UI framework differences"
+  - "Drag-and-drop implementation variance"
+  - "Persistence assumptions"
 ---
 
 # Benchmark Challenge: Kanban Board (v1)
