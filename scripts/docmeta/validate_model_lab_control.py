@@ -76,9 +76,9 @@ def iter_run_meta_files(paths: Iterable[Path]) -> Iterable[Path]:
             candidates = set(path.rglob("run_meta.json"))
             candidates.update(path.rglob("*run-meta.json"))
             yield from sorted(candidates)
-        elif path.name == "run_meta.json" or path.name.endswith("run-meta.json"):
-            yield path
         else:
+            # Direct file arguments are yielded as-is so tests and ad-hoc checks can
+            # validate scenario-named fixtures such as missing-model-id.json.
             yield path
 
 
