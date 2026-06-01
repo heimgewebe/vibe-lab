@@ -6,20 +6,20 @@ Run-002 is executed under the **`code_first_control`** condition, which differs 
 
 ## What "Code-First" Means in This Context
 
-**Not** a fundamental difference in implementation approach (both are template-generated code).
+**Not** a fundamental difference in implementation approach or execution method (both use deterministic, repo-local scripts).
 
-**Instead**: The execution generation differs:
+**Instead**: The condition label reflects the intended control structure:
 
-- **Run-001 (spec_first_baseline)**: Agent receives challenge specification (`rest-api-v1.md`), interprets specification, generates implementation.
-- **Run-002 (code_first_control)**: Agent receives the same challenge specification, then generates code via a deterministic script (`execute-control.py`) with fixed parameters (`RUN_TIMESTAMP`).
+- **Run-001 (spec_first_baseline)**: Establishes baseline execution against challenge specification (`rest-api-v1.md`) via deterministic `execute-baseline.py` script with fixed `RUN_TIMESTAMP`.
+- **Run-002 (code_first_control)**: Control execution under identical specification via deterministic `execute-control.py` script with fixed `RUN_TIMESTAMP`.
 
 ## Methodological Isolation
 
 The conditions are isolated by:
 
-1. **Execution path**: Run-001 uses open-ended agent interpretation; Run-002 uses deterministic parametric generation.
-2. **Reproducibility contract**: Run-002's `execute-control.py` requires explicit `RUN_TIMESTAMP`, ensuring deterministic artifact generation.
-3. **Same result surface**: Both produce the same five-endpoint REST API, envelope pattern, error codes, validation. This enables comparison of execution strategies without confounding factors.
+1. **Condition name**: Run-001 is labeled `spec_first_baseline` (first reference execution), Run-002 is labeled `code_first_control` (second reference execution for comparability).
+2. **Reproducibility contract**: Both `execute-baseline.py` and `execute-control.py` require explicit `RUN_TIMESTAMP`, ensuring deterministic artifact generation.
+3. **Same specification scope**: Both produce implementations against the same five-endpoint REST API specification (envelope pattern, error codes, validation). This enables structured comparison of two reference executions under identical specifications.
 
 ## What This Does NOT Claim
 

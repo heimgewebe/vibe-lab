@@ -27,13 +27,15 @@ comparison_ready: true
 comparison_deferred: true
 comparison_rationale: >
   Run-001 and Run-002 now form a first-order comparability surface under the same
-  challenge_version (rest-api-v1). Both runs produce identical API surface implementations.
-  The condition differs: Run-001 is spec_first_baseline, Run-002 is code_first_control.
-  This enables first-order comparison structure; actual comparison (assessment, verdict,
-  model-quality judgment) is deferred to later, separate assessment artifacts.
+  challenge_version (rest-api-v1). Both are executed under their respective conditions:
+  Run-001 is spec_first_baseline, Run-002 is code_first_control. Both produce implementations
+  against the same REST API specification. This establishes the structural conditions for
+  comparison; actual comparison (assessment, verdict, model-quality judgment) is deferred
+  to later, separate assessment artifacts.
 
 notes: >
   Second executed Model-Lab control surface for rest-api-v1. Run-001 and Run-002
-  together establish comparability structure but not a comparative verdict. No outcome,
-  effect, adoption, or promotion claim is derived. Comparison remains blocked until
-  a separate assessment artifact is created to explicitly compare the two runs.
+  together establish comparability structure but not a comparative verdict or implementation
+  equivalence claim. No outcome, effect, adoption, or promotion claim is derived.
+  Comparison remains blocked until a separate assessment artifact is created to explicitly
+  compare the two runs.
