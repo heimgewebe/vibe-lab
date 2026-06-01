@@ -33,7 +33,7 @@ This artifact indexes a repo-local baseline response for the `rest-api-v1` bench
 - [x] The envelope response pattern is represented for success and failure.
 - [x] Required HTTP status codes are mapped to implementation paths: 200, 201, 400, 404, 409, 422, and 500; 500 remains unforced by the current test specification.
 - [x] Pagination via `page` and `limit` is represented.
-- [x] Verification evidence is represented by an executed repo-local static verifier plus an executable but unexecuted Vitest specification for later runtime validation.
+- [x] Verification evidence is represented by a repo-local static verifier script plus an executable but unexecuted Vitest specification for later runtime validation.
 - [x] The artifact avoids comparative or model-quality claims.
 
 ## Interpretation Limit

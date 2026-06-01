@@ -129,5 +129,10 @@ export function buildServer() {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const app = buildServer();
-  app.listen({ port: Number(process.env.PORT ?? 3000), host: '0.0.0.0' });
+  app
+    .listen({ port: Number(process.env.PORT ?? 3000), host: '0.0.0.0' })
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    });
 }

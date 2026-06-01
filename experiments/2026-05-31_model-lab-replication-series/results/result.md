@@ -22,8 +22,8 @@ bound to `challenge_version: rest-api-v1`.
 - AP-2 (`validate_challenge_versions`) challenge-version metadata remains bound
   to `rest-api-v1` through the activated decision path.
 - The run-local baseline output records a spec-first response artifact for the
-  REST API task, including TypeScript/Fastify implementation shape, an executed
-  repo-local static verifier, and an executable but unrun Vitest specification
+  REST API task, including TypeScript/Fastify implementation shape, a
+  repo-local static verifier script, and an executable but unrun Vitest specification
   under `implementation/`.
 
 ## What this does NOT establish
