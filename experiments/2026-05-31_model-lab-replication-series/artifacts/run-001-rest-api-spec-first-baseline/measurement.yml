@@ -6,46 +6,47 @@ auditor_verdict: "CLAIM_NOT_PROVEN"
 auditor_ref: "auditor-output.yml"
 
 agent_layer_used:
-  agent: "skeleton:manual"
-  note: "No real agent execution; this is an AP-4 structural skeleton baseline."
+  agent: "agent:codex-cli"
+  note: "Repo-local baseline execution against benchmarks/challenges/rest-api-v1.md."
 
 metrics:
   scope_drift_count:
-    value: null
-    evidence_status: "missing_evidence"
-    notes: "Skeleton only; nothing was executed, so scope drift is not measured."
+    value: 0
+    evidence_status: "repo_local"
+    notes: "execution.txt confirms the run read rest-api-v1 and wrote run-local baseline implementation evidence artifacts."
   unsupported_claim_count:
     value: 1
     evidence_status: "derived_from_auditor_output"
-    notes: "Derived: the single auditor claim is CLAIM_NOT_PROVEN (one non-PASS claim)."
+    notes: "Derived from auditor-output.yml: one conservative CLAIM_NOT_PROVEN claim remains because no second run exists for comparison."
   missing_locator_count:
     value: 0
     evidence_status: "repo_local"
-    notes: "All referenced skeleton artifacts resolve as repo-local files."
+    notes: "All required run-local artifacts resolve in the run-001 artifact directory."
   validation_gap_count:
     value: 0
-    evidence_status: "derived_from_auditor_output"
-    notes: "Derived: no MISSING_EVIDENCE command/validator claims in the auditor output."
+    evidence_status: "repo_local"
+    notes: "execution.txt records successful challenge preflight and baseline-output creation; validation transcript is archived separately in make-validate.txt."
   review_friction_count:
     value: null
     evidence_status: "missing_evidence"
-    notes: "No review or rework was performed for this skeleton."
+    notes: "No human review or rework cycle was measured for this baseline run."
   rework_count:
     value: null
     evidence_status: "missing_evidence"
-    notes: "No review or rework was performed for this skeleton."
+    notes: "No post-review rework cycle was measured for this baseline run."
   false_block_count:
     value: 0
     evidence_status: "repo_local"
-    notes: "No false validator block observed while assembling the skeleton."
+    notes: "No false validator block was observed while executing and validating the baseline evidence."
   task_completion_time_observed:
-    value: null
-    evidence_status: "missing_evidence"
-    notes: "Skeleton only; no execution timing is claimed."
+    value: 0.728
+    evidence_status: "self_reported"
+    notes: "timing.txt records wall-clock capture around the repo-local command, but no performance or model-quality claim is made."
 
 interpretation_limits:
-  - "Skeleton only: no executed run, no comparative outcome, no model-quality verdict."
-  - "AP-1/AP-2 validators are exercised on the metadata and challenge-version surface only."
+  - "Executed baseline only: no comparative outcome and no model-quality verdict."
+  - "AP-1/AP-2 validators are exercised on a real run metadata and challenge-version surface."
+  - "Timing is a weak repo-local observation, not a performance metric."
 
 extensions:
   series: "model-lab-replication-series"
@@ -53,5 +54,6 @@ extensions:
   challenge_version: "rest-api-v1"
   condition: "spec_first_baseline"
   control_condition: "future_control_pending"
-  measurement_status: "skeleton_only"
+  measurement_status: "executed_baseline_only"
+  triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
   outcome_upgrade_allowed: false

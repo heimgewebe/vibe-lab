@@ -1,0 +1,10 @@
+Run-001 provenance note
+Captured: 2026-06-01T06:05:00Z
+
+model_provider=OpenAI
+model_id=unknown_codex_cli_session
+model_version_or_date=2026-06-01
+tooling=codex-cli local shell
+provenance_level=self_reported
+human_intervention_level=agent_executed_user_requested_scope
+notes=The precise backend model identifier was not available from a repo-local command during the run. The run therefore uses a conservative self-reported Codex CLI session identity rather than asserting a specific model id.

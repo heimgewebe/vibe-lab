@@ -2,29 +2,47 @@ schema_version: "1.0.0"
 contract: "auditor_output"
 run_id: "run-001-rest-api-spec-first-baseline"
 auditor:
-  name: "skeleton:manual"
-  date: "2026-05-31"
-auditor_date: "2026-05-31"
+  name: "agent:codex-cli"
+  date: "2026-06-01"
+auditor_date: "2026-06-01"
 overall_verdict: "CLAIM_NOT_PROVEN"
 
 claims:
-  - id: "claim-001-baseline-not-proven"
-    text: >
-      This AP-4 skeleton run provides opt-in Model-Lab control metadata and a
-      challenge-version reference to rest-api-v1, but it contains no executed
-      comparative evidence, so no model or tool outcome is proven.
-    type: "model_lab_comparative_baseline"
+  - id: "claim-001"
+    text: "Run-001 contains a real execution artifact."
+    type: "execution_artifact_presence"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/execution.txt"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation/src/server.ts"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation/tests/users.test.ts"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Run-001 remains not comparable because no second run exists."
+    type: "single_run_comparability_limit"
     verdict: "CLAIM_NOT_PROVEN"
     evidence:
-      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run_meta.json"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/comparability.yml"
         status: "repo_local"
-    notes: >
-      Skeleton only. No outcome, effect, promotion, or adoption claim is made.
+
+  - id: "claim-003"
+    text: "Outcome, adoption, and promotion upgrades are not claimed."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/results/result.md"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/results/decision.yml"
+        status: "repo_local"
 
 required_next_proof:
-  - "Execute a real baseline run for rest-api-v1 and capture machine-verifiable evidence."
-  - "Add a second run with a different condition, model, or tool to enable comparison."
+  - "Add a second executed run with a different condition, model, or tool under rest-api-v1 before any comparative assessment."
 
 extensions:
   series: "model-lab-replication-series"
-  scope: "AP-4 skeleton; no outcome upgrade."
+  scope: "Executed baseline only; no outcome upgrade."

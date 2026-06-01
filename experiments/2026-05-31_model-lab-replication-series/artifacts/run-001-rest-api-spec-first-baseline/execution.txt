@@ -1,0 +1,14 @@
+Run-001 rest-api-v1 baseline execution
+run_timestamp=2026-06-01T06:05:00Z
+challenge_path=benchmarks/challenges/rest-api-v1.md
+output_path=experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md
+implementation_dir=experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation
+challenge_file_read=True
+baseline_output_written=True
+package_json_written=True
+server_ts_written=True
+test_spec_written=True
+static_verifier_written=True
+all_required_challenge_tokens_present=True
+no_comparison_claim_intended=True
+exit_code=0

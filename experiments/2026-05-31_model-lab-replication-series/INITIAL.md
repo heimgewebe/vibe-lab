@@ -1,6 +1,7 @@
 ---
 title: "Model-Lab Replication-Series — Initial State"
 status: designed
+triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
 canonicality: operative
 ---
 
@@ -21,7 +22,7 @@ canonicality: operative
   `challenge_version`, so the AP-2 decision path was never exercised on a real
   experiment.
 
-## Goal of this skeleton
+## Initial goal of the skeleton
 
 Provide the first **minimal, activated** baseline run as a structural anchor:
 
@@ -30,5 +31,9 @@ Provide the first **minimal, activated** baseline run as a structural anchor:
 - one activated `decision.yml` against `rest-api-v1` so AP-2 engages;
 - no executed comparison and no comparative verdict.
 
-The execution status is `prepared` and the execution verdict is `not_executed`:
-the structure exists, but nothing was actually run.
+## State after Run-001 execution
+
+Run-001 has since been executed repo-locally against `rest-api-v1`. The run now
+has execution, changed-files, timing, and baseline-output artifacts, while still
+deriving no model-quality verdict, comparative verdict, outcome upgrade,
+adoption, promotion, or staleness reactivation.

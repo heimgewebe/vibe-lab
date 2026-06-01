@@ -1,10 +1,10 @@
 schema_version: "0.1.0"
 
 decision_type: "execution_assessment"
-verdict: "not_executed"
-confidence: "low"
-date: "2026-05-31"
-reviewer: "skeleton:manual"
+verdict: "executed"
+confidence: "medium"
+date: "2026-06-01"
+reviewer: "agent:codex-cli"
 
 challenge_id: "rest-api"
 challenge_version: "rest-api-v1"
@@ -12,15 +12,14 @@ model_lab_control: true
 challenge_version_required: true
 
 rationale: |
-  AP-4 skeleton only. This activated Model-Lab decision establishes the first
-  AP-1/AP-2 comparison surface against challenge_version rest-api-v1, but the
-  baseline run was not executed and contains no comparative evidence. The
-  execution verdict is therefore not_executed and no model or tool outcome is
-  asserted. No outcome upgrade, no adoption, no promotion, and no staleness
-  reactivation are derived.
+  Run-001 now contains a real repo-local baseline execution artifact for
+  rest-api-v1. This changes the execution assessment from a skeleton-only anchor
+  to an executed baseline. The run still has no second executed comparison run,
+  so it does not support a model-quality verdict, comparative verdict, outcome
+  upgrade, adoption, promotion, or staleness reactivation.
 
 outcome_upgrade_allowed: false
 
 next_steps: |
-  Execute a real baseline run for rest-api-v1, then add a second run with a
-  different condition, model, or tool before any comparative assessment.
+  Add run-002 with a different condition, model, or tool under rest-api-v1 before
+  any comparative assessment.

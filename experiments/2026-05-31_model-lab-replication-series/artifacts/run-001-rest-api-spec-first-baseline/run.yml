@@ -8,13 +8,14 @@ run:
   sequence: 1
 
 provenance:
-  level: "self_reported"
-  executor: "skeleton:manual"
+  level: "repo_local"
+  executor: "agent:codex-cli"
+  triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
   source_status: "repo_local"
   notes: >
-    AP-4 Model-Lab replication-series baseline skeleton. The run envelope is
-    prepared as a structural anchor; it was not executed. No outcome, effect,
-    or promotion claim is derived.
+    Run-001 is now a real repo-local baseline execution for rest-api-v1.
+    It produced execution, changed-files, timing, and baseline-output artifacts.
+    No outcome, effect, adoption, or promotion claim is derived.
 
 artifacts:
   auditor_output:
@@ -30,6 +31,10 @@ artifacts:
     contract: "run_meta"
     canonical: false
     compatibility: true
+  markdown_projection:
+    path: "baseline-output.md"
+    canonical: false
+    role: "human_projection"
   evidence_pack:
     path: "evidence-pack.yml"
     contract: "run-evidence-pack.v1"
@@ -42,6 +47,6 @@ verdict:
 
 interpretation_limits:
   min_comparable_runs_required: 2
-  # First activated baseline only; not yet comparable to anything.
+  # First executed baseline only; not yet comparable to a second run.
   current_comparable_runs: 0
   causal_claim_allowed: false
