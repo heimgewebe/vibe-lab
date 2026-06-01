@@ -6,6 +6,8 @@ confidence: "high"
 date: "2026-06-01"
 reviewer: "agent:user-request"
 
+model_lab_control: true
+challenge_id: "rest-api"
 challenge_version: "rest-api-v1"
 
 rationale: |

@@ -20,13 +20,13 @@
 - Verifies POST 409 (email conflict), GET 400 (bad pagination)
 - Verifies 500 error handler path via Fastify setErrorHandler
 
-## Static Verification Status
+## Static Verification Script Status
 
 **File**: `implementation/verify-control.py`
-**Status**: SYNTAX VALID, STATIC TOKENS VERIFIED (not runtime-executed)
-**Method**: Static token matching against implementation/src/server.ts
+**Status**: PRESENT, NOT EXECUTED
+**Method**: Script file is archived for later execution.
 
-**Evidence of Token Verification**:
+**Declared Coverage in Script (not executed in this run)**:
 - Endpoints verified present: POST /users, GET /users/:id, PUT /users/:id, DELETE /users/:id, GET /users
 - Response codes verified: 200, 201, 400, 404, 409, 422, 500
 - Envelope structure verified: data, error, meta fields present
@@ -40,7 +40,7 @@ Run-002 bundle does not include:
 - Vitest test runner invocation
 - Individual test pass/fail output
 
-Reason: Test execution requires external runtime environment (Node.js, npm, Vitest) not archived in the repository-local bundle. Static verification (syntax validation + token presence checks) serves as surrogate evidence of test-specification fidelity.
+Reason: Test execution requires external runtime environment (Node.js, npm, Vitest) not archived in the repository-local bundle. The static verifier script is present but not executed in this bundle.
 
 ## Coverage Mapping
 
@@ -59,10 +59,10 @@ All challenge-required surface elements are represented:
 
 ## Conclusion
 
-The test specification is **complete and representationally aligned** with the challenge surface contract. Static verification confirms that:
-1. Test specification syntax is valid
-2. All required challenge tokens are present in the implementation
+The test specification is **complete and representationally aligned** with the challenge surface contract. This artifact confirms only that:
+1. Test specification and static verifier script files are present
+2. Runtime execution is deferred
 
-For bundle archival purposes: Test specification presence + static verification of token presence together constitute sufficient evidence that the control implementation surface meets the challenge contract.
+For bundle archival purposes: Test specification and verifier-script presence are archived as preparation evidence only; execution evidence remains deferred.
 
 Note: Runtime test execution (if desired later) is out of scope for this bundle and would require separate CI execution step.

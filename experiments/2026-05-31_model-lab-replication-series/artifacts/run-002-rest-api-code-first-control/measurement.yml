@@ -12,9 +12,9 @@ metrics:
     notes: "Run-002 scope is limited to the run-local control bundle. No scope drift detected."
 
   unsupported_claim_count:
-    value: 1
+    value: 4
     evidence_status: "derived_from_auditor_output"
-    notes: "Comparative verdict remains not proven (auditor claim-012 is CLAIM_NOT_PROVEN)"
+    notes: "Derived from auditor-output.yml: four non-PASS claims remain (claim-008, claim-009, claim-010, claim-012)."
 
   missing_locator_count:
     value: 0

@@ -12,7 +12,7 @@ experiment:
   execution_status: executed
   evidence_level: experimental
   created: "2026-05-31"
-  updated: "2026-06-01T06:15:00Z"
+  updated: "2026-06-01"
   author: "vibe-lab maintainers"
   triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
   iteration: 3
