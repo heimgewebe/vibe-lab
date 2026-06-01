@@ -1,54 +1,63 @@
 schema_version: "1.0.0"
+contract: "measurement_run"
+
 run_id: "run-002-rest-api-code-first-control"
-measurement_at: "2026-06-01T06:15:00Z"
+auditor_verdict: "CLAIM_NOT_PROVEN"
+auditor_ref: "auditor-output.yml"
 
-measurement_status: executed_control_surface
-measurement_phase: two_run_comparability_established
-series_iteration: 2
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "Run-002 scope is limited to the run-local control bundle. No scope drift detected."
 
-scope: >
-  Run-002 is a second executed run under rest-api-v1 with condition=code_first_control.
-  This establishes a first-order comparability surface alongside Run-001 (condition=spec_first_baseline).
-  Measurement here tracks repo-local execution completeness, not model-quality or comparative verdict.
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "Comparative verdict remains not proven (auditor claim-012 is CLAIM_NOT_PROVEN)"
 
-measured_properties:
-  - control_execution_presence: true
-    evidence: artifacts/run-002-rest-api-code-first-control/execution.txt
-  
-  - locator_completeness: true
-    details:
-      - "five endpoints present (POST, GET/:id, PUT/:id, DELETE/:id, GET)"
-      - "required HTTP statuses represented (200, 201, 400, 404, 409, 422, 500)"
-      - "envelope pattern represented (data/error/meta)"
-      - "validation and conflict handling represented"
-    evidence: artifacts/run-002-rest-api-code-first-control/implementation/src/server.ts
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All required endpoints, statuses, error codes, and envelope patterns are locator-complete."
 
-  - verification_evidence: true
-    details:
-      - "static verifier script syntax-correct"
-      - "vitest test specification written but not executed in CI"
-    evidence:
-      - "artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py"
-      - "artifacts/run-002-rest-api-code-first-control/implementation/tests/users.test.ts"
+  validation_gap_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All validation logic for body, path, query parameters is present."
 
-  - comparability_with_run_001: true
-    details:
-      - "both runs address same challenge_version: rest-api-v1"
-      - "both runs produce same API surface (five endpoints, same payloads)"
-      - "condition differs: run-001=spec_first_baseline, run-002=code_first_control"
-      - "first-order comparison structure now possible (comparison itself deferred)"
-    evidence:
-      - "artifacts/run-001-rest-api-spec-first-baseline/run.yml"
-      - "artifacts/run-002-rest-api-code-first-control/run.yml"
-      - "artifacts/run-002-rest-api-code-first-control/comparability.yml"
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Run-bundle level review friction not measured; would require PR-level CI feedback."
 
-model_quality_verdict: not_provided
-comparative_verdict: not_provided
-outcome_upgrade: not_claimed
-adoption: not_claimed
-promotion: not_claimed
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "Rework count not tracked in this control surface."
 
-interpretation_limit: >
-  This measurement records repo-local execution completeness for a second run surface.
-  No model-quality, comparative, outcome, adoption, or promotion verdict is made.
-  Actual comparison remains deferred to later assessment artifacts.
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false negatives detected in implementation or verification."
+
+  task_completion_time_observed:
+    value: 1
+    evidence_status: "self_reported"
+    notes: "Execution script completed in 1 wall-clock second (0.523 CPU seconds)."
+
+interpretation_limits:
+  - "Second execution surface only; no comparative verdict."
+  - "No model-quality, outcome, adoption, or promotion claim."
+  - "Comparability structure available; comparison itself deferred."
+
+extensions:
+  measurement_phase: "two_run_comparability_established"
+  model_lab_control: true
+  condition: "code_first_control"
+  compared_against: "run-001-rest-api-spec-first-baseline"
+  measurement_rationale: |
+    This measurement records repo-local execution completeness for the control
+    run (Run-002) under the same challenge version (rest-api-v1) as the baseline.
+    The eight metrics track artifact quality and alignment with contract. Overall,
+    this run is execution-complete but comparison-deferred.

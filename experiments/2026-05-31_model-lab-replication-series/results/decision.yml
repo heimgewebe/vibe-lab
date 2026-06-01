@@ -1,33 +1,20 @@
-schema_version: "0.1.0"
+schema_version: "1.0.0"
 
 decision_type: "execution_assessment"
-verdict: "two_run_comparability_surface_established"
+verdict: "executed"
 confidence: "high"
-date: "2026-06-01T06:15:00Z"
+date: "2026-06-01"
 reviewer: "agent:user-request"
 
-challenge_id: "rest-api"
 challenge_version: "rest-api-v1"
-model_lab_control: true
-challenge_version_required: true
 
 rationale: |
-  Run-001 (spec_first_baseline) and Run-002 (code_first_control) are now both
-  executed repo-locally for rest-api-v1. This establishes a first-order
+  Run-002 (code_first_control) is executed repo-locally for rest-api-v1,
+  parallel to Run-001 (spec_first_baseline). Both runs now form a first-order
   comparability structure: two distinct conditions under the same challenge
-  enable comparison. However, the comparison itself remains deferred to a
-  later, separate assessment artifact. No model-quality, comparative, outcome,
-  adoption, or promotion verdict is made here. Comparability structure is
-  infrastructure for later comparison, not a judgment.
-
-outcome_upgrade_allowed: false
-adoption_allowed: false
-promotion_allowed: false
-
-next_steps: |
-  1. Create explicit comparison artifact (separate from run bundles) to compare
-     Run-001 and Run-002 side-by-side.
-  2. Later: optionally add Run-003+ with additional conditions for multi-run
-     comparison patterns.
-  3. Never: auto-upgrade outcome, adoption, or promotion without explicit
-     separate assessment artifact with clear rationale.
+  enable structured comparison. However, comparison itself remains explicitly
+  deferred to a later, separate assessment artifact (decision_type=result_assessment).
+  No model-quality, comparative, outcome, adoption, or promotion verdict is
+  made within this execution assessment. This verdict only confirms execution
+  completion, not comparative truth or claim validity. Comparability structure
+  is infrastructure for later comparison, not a judgment.
