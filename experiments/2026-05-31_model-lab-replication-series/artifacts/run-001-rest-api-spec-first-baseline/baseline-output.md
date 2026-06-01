@@ -6,13 +6,13 @@ Condition: `spec_first_baseline`
 
 ## Scope
 
-This artifact indexes a repo-local baseline response for the `rest-api-v1` benchmark challenge. The response includes a TypeScript/Fastify implementation shape, validation and error-handling behavior, and an executable Vitest verification specification under `implementation/`. It is not a model-quality verdict, comparative result, outcome upgrade, adoption, promotion, or staleness reactivation.
+This artifact indexes a repo-local baseline response for the `rest-api-v1` benchmark challenge. The response includes a TypeScript/Fastify implementation shape, validation and error-handling behavior, a repo-local static verifier, and an executable but unexecuted Vitest specification under `implementation/`. It is not a model-quality verdict, comparative result, outcome upgrade, adoption, promotion, or staleness reactivation.
 
 ## Produced implementation bundle
 
 - `implementation/package.json` — Node/TypeScript/Fastify dependency and script surface.
 - `implementation/src/server.ts` — CRUD users API with envelope responses, validation schemas, conflict handling, not-found handling, pagination, and error envelope handling.
-- `implementation/tests/users.test.ts` — executable Vitest specification for create/read/update/delete/list behavior plus validation, conflict, malformed-id, missing-user, and pagination-error cases.
+- `implementation/tests/users.test.ts` — executable but unexecuted Vitest specification for create/read/update/delete/list behavior plus validation, conflict, malformed-id, missing-user, and pagination-error cases.
 - `implementation/verify-baseline.py` — repo-local static verifier for required endpoint/status/verification tokens.
 
 ## API Surface
@@ -31,9 +31,9 @@ This artifact indexes a repo-local baseline response for the `rest-api-v1` bench
 - [x] All five required endpoints are represented.
 - [x] Input validation is represented for body, path, and query inputs.
 - [x] The envelope response pattern is represented for success and failure.
-- [x] Required HTTP status codes are mapped to observable behaviors: 200, 201, 400, 404, 409, 422, and 500.
+- [x] Required HTTP status codes are mapped to implementation paths: 200, 201, 400, 404, 409, 422, and 500; 500 remains unforced by the current test specification.
 - [x] Pagination via `page` and `limit` is represented.
-- [x] Executable verification evidence is represented as a Vitest test specification plus a repo-local static verifier.
+- [x] Verification evidence is represented by an executed repo-local static verifier plus an executable but unexecuted Vitest specification for later runtime validation.
 - [x] The artifact avoids comparative or model-quality claims.
 
 ## Interpretation Limit

@@ -43,7 +43,7 @@ describe('rest-api-v1 users baseline', () => {
     expect((await app.inject({ method: 'POST', url: '/users', payload: { name: 'Other', email: 'grace@example.test' } })).statusCode).toBe(409);
     expect((await app.inject({ method: 'GET', url: '/users?page=0&limit=10' })).statusCode).toBe(400);
 
-    // Fastify's setErrorHandler maps unexpected errors to the documented 500 envelope.
-    // A later executable environment can add a forced throwing route to exercise this path.
+    // Fastify's setErrorHandler represents the documented 500 envelope implementation path.
+    // This baseline does not force that path; a later runtime validation step can add a throwing route.
   }));
 });

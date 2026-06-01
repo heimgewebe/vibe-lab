@@ -24,9 +24,6 @@ type UserInputBody = {
 
 type UserUpdateBody = Partial<UserInputBody>;
 
-const users = new Map<string, User>();
-let nextId = 1;
-
 function ok<T>(data: T, meta: Record<string, unknown> | null = null) {
   return { data, error: null, meta };
 }
@@ -39,11 +36,11 @@ function isValidId(id: string) {
   return /^\d+$/.test(id);
 }
 
-function findByEmail(email: string, exceptId?: string) {
-  return [...users.values()].find((user) => user.email === email && user.id !== exceptId);
-}
-
 export function buildServer() {
+  const users = new Map<string, User>();
+  let nextId = 1;
+  const findByEmail = (email: string, exceptId?: string) =>
+    [...users.values()].find((user) => user.email === email && user.id !== exceptId);
   const app = Fastify({ logger: false }).withTypeProvider<TypeBoxTypeProvider>();
 
   app.setErrorHandler((error, _request, reply) => {
