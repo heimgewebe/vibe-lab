@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-005-agent-handoff-boundary-validation",
+  "generated_at": "2026-05-31T19:26:59Z",
+  "executor": "copilot-task-agent",
+  "command": "make validate-agent-handoff && make validate-agent-handoff-tests && make validate-outcome-series-tests && make validate-outcome-series && make validate",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-005-agent-handoff-boundary-validation/make-validate.txt",
+  "provenance_level": "self_reported"
+}

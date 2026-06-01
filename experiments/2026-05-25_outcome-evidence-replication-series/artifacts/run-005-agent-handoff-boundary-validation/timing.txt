@@ -1,0 +1,5 @@
+start: 2026-05-31T19:27:06Z
+end: 2026-05-31T19:27:24Z
+duration_seconds: 18
+capture_mode: repo_local
+notes: "Timing captured around required make validation command sequence for run-005."

@@ -209,6 +209,12 @@ Ergaenzung 2026-05-31 zu RM-008 (AP-4 Skeleton begonnen, ohne Outcome-/Adoption-
 - Naechster Schritt danach: erster echter Ausfuehrungsrun oder zweiter
   Vergleichsrun gegen rest-api-v1.
 
+Ergaenzung 2026-05-31 ohne Outcome-/Promotion-/Adoption-Hochstufung:
+- `run-005-agent-handoff-boundary-validation` ergänzt die Outcome-Evidence-Replication-Series um eine weitere echte Task-Klasse.
+- Evidence bleibt run-lokal; independence_status bleibt partial, sofern kein harter Full-Independence-Beleg vorliegt.
+- RM-002, RM-005 und EP-002 bleiben offen.
+- Kein Outcome-Upgrade, keine Promotion, keine Adoption.
+
 ---
 
 ## 3. Entscheidungspunkte

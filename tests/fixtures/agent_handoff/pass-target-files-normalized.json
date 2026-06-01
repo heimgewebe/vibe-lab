@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "target_files": [
+    "  docs/reference/agent-operability-fixture-matrix.md  ",
+    "tests/fixtures/agent_handoff/pass-minimal.json",
+    "docs/reference/agent-operability-fixture-matrix.md"
+  ],
+  "locator": " docs/reference/agent-operability-fixture-matrix.md#7 ",
+  "change_type": "modify",
+  "scope": "Clarify handoff boundary coverage for whitespace and duplicate target_files handling",
+  "normalized_task": "Add fixture proving canonical target_files normalization in handoff hash verification",
+  "critic_signature": "experiment-critic/v1",
+  "handoff": {
+    "algo": "sha256",
+    "canon": "v1",
+    "hash": "59267549d0332cb0973c496f73d61c4170c1f6ac284b7ec5ce77a66ea26ff3e4"
+  }
+}

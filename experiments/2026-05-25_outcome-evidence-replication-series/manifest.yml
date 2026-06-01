@@ -17,11 +17,13 @@ experiment:
     - artifacts/run-003-validator-test-hardening/make-validate.txt
     - artifacts/run-004-real-validator-test-hardening/run.yml
     - artifacts/run-004-real-validator-test-hardening/make-validate.txt
+    - artifacts/run-005-agent-handoff-boundary-validation/run.yml
+    - artifacts/run-005-agent-handoff-boundary-validation/make-validate.txt
     - results/evidence.jsonl
   created: "2026-05-25"
-  updated: "2026-05-28"
+  updated: "2026-05-31"
   author: "GitHub Copilot"
-  iteration: 6
+  iteration: 7
   evidence_level: experimental
   falsifiability:
     version: 1
