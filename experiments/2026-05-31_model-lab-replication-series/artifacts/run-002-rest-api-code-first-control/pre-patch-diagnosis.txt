@@ -1,0 +1,51 @@
+DIAGNOSIS: Phase 0 - Run-002 Patch Eligibility
+Generated: 2026-06-01
+Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+## Current State
+
+### Run-001 Status
+- Exists: YES
+- Executed: YES
+- Path: artifacts/run-001-rest-api-spec-first-baseline/
+- Condition: spec_first_baseline
+- Challenge: rest-api-v1
+- Model-Lab Control: TRUE
+- Comparability: NOT_COMPARABLE (reason: no second run yet)
+
+### Run-002 Status
+- Exists: NO
+- Location Expected: artifacts/run-002-rest-api-code-first-control/
+- Planned Condition: code_first_control
+- Planned Challenge: rest-api-v1 (same)
+
+### Series State
+- Current iteration: 2 (will increment to 3)
+- Current execution_status: executed
+- execution_refs: contains only run-001
+- falsifiability: partially_checked (limited by single-run constraint)
+
+### Comparability Verdict
+- Current verdict: not_comparable
+- Reason: no second executed run
+- Missing comparison reason: "Run-001 is now an executed baseline, but no second executed run exists yet."
+
+## Validation Checks (make validate-model-lab-control, make validate-challenge-versions)
+Ready to be re-run after Run-002 is added.
+Current state: single-run only; no comparative schema violations expected.
+
+## Patch Authorization
+✓ ALLOWED
+
+Rationale:
+1. Run-001 exists and is executed (baseline anchor secured)
+2. Run-002 does not yet exist (no duplication risk)
+3. Challenge version rest-api-v1 is established
+4. Method clearly states "future_control_pending"
+5. No promotion, adoption, or outcome-upgrade claims yet in circulation
+6. Iteration counter can be incremented
+7. Comparability schema will remain "not_comparable" until second run exists
+
+## Next Phase
+Proceed with Phase 1: Run-002-Bundle structure creation.
+Target: code_first_control condition under same rest-api-v1 challenge.

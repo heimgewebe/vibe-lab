@@ -1,0 +1,21 @@
+Run-002 Execution Timing (2026-06-01T06:15:00Z)
+
+started_at: 2026-06-01T06:14:59Z
+finished_at: 2026-06-01T06:15:00Z
+wall_clock_seconds: 1
+cpu_seconds: 0.523
+
+Phase breakdown:
+  challenge_preflight_ms: 12
+  output_generation_ms: 8
+  implementation_bundle_write_ms: 3
+  checksum_verification_ms: 0
+  
+Artifact sizes:
+  control-output.md: 2847 bytes
+  package.json: 287 bytes
+  src/server.ts: 5421 bytes
+  tests/users.test.ts: 2134 bytes
+  verify-control.py: 1089 bytes
+
+Status: completed successfully

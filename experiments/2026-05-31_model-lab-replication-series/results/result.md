@@ -9,42 +9,49 @@ canonicality: operative
 
 ## Status
 
-Run-001 is now an executed baseline for `rest-api-v1`. The run
-`run-001-rest-api-spec-first-baseline` contains repo-local execution evidence,
-keeps opt-in Model-Lab control metadata (`model_lab_control: true`), and remains
-bound to `challenge_version: rest-api-v1`.
+Run-001 and Run-002 are now executed runs for `rest-api-v1`. The baseline
+`run-001-rest-api-spec-first-baseline` (condition: `spec_first_baseline`) and
+the control `run-002-rest-api-code-first-control` (condition: `code_first_control`)
+together form a **first-order comparability surface**. Both runs contain repo-local
+execution evidence, keep opt-in Model-Lab control metadata (`model_lab_control: true`),
+and remain bound to `challenge_version: rest-api-v1`.
 
 ## What this establishes
 
-- A real baseline execution artifact exists for Run-001.
-- AP-1 (`validate_model_lab_control`) Model-Lab metadata is exercised on a real
-  run metadata file.
+- Two real execution artifacts now exist for `rest-api-v1`.
+- AP-1 (`validate_model_lab_control`) Model-Lab metadata is exercised on both executed run metadata files.
 - AP-2 (`validate_challenge_versions`) challenge-version metadata remains bound
-  to `rest-api-v1` through the activated decision path.
-- The run-local baseline output records a spec-first response artifact for the
-  REST API task, including TypeScript/Fastify implementation shape, a
-  repo-local static verifier script, and an executable but unrun Vitest specification
-  under `implementation/`.
+  to `rest-api-v1` through both activated decision paths.
+- Both runs produce TypeScript/Fastify implementation shapes, repo-local static verifier scripts,
+  and executable (but unrun) Vitest specifications under `implementation/`.
+- **Comparability structure is now available:** Run-001 and Run-002 address the same challenge
+  version with isolated, different conditions, enabling a first-order comparison surface.
 
 ## What this does NOT establish
 
 - No model-quality verdict.
-- No comparative verdict.
+- No comparative verdict (e.g., "code-first is better" or "spec-first is confirmed").
 - No outcome upgrade.
 - No adoption.
 - No promotion.
 - No staleness reactivation.
+- **No automatic verdict from the presence of two runs alone.** Comparison structure ≠ comparison result.
 
 ## Interpretation limit
 
-This establishes the first executed baseline artifact. Comparability remains
-blocked until a second executed run exists. No model-quality, outcome, adoption,
-or promotion claim is derived.
+This establishes two executed baseline + control artifacts under the same challenge.
+The structure supports comparison, but the comparison itself remains blocked until
+an **explicit, separate comparison artifact** is created. Comparability structure
+is a prerequisite for comparison, not a verdict.
+
 Promotion-readiness in `docs/_generated/promotion-readiness.json` denotes
 metadata/gate readiness only. It does not authorize outcome upgrade, adoption,
 promotion, or model-quality claims.
 
 ## Next step
 
-Add `run-002` with a different condition, model, or tool under the same
-`rest-api-v1` challenge version to enable the first genuine comparison.
+Create an explicit, separate comparison artifact that places Run-001 and Run-002
+side-by-side, comparing their implementation, verification coverage, and behavior
+without automatic quality/outcome judgment. This artifact should remain separate
+from the run bundles, allowing future runs (third, fourth, etc.) to be added
+without disrupting the comparison structure.

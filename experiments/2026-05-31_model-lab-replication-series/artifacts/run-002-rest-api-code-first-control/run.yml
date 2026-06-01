@@ -1,0 +1,42 @@
+run_id: run-002-rest-api-code-first-control
+generated_at: "2026-06-01T06:15:00Z"
+executor: "agent:user-request"
+
+series_name: model-lab-replication-series
+series_iteration: 2
+challenge_id: rest-api
+challenge_version: rest-api-v1
+
+condition: code_first_control
+compared_against:
+  - run_id: run-001-rest-api-spec-first-baseline
+    condition: spec_first_baseline
+
+model_lab_control: true
+model_lab_control_required: true
+
+measurement_status: executed_control_surface
+measurement_phase: two_run_comparability_established
+
+execution_timing:
+  started_at: "2026-06-01T06:14:59Z"
+  finished_at: "2026-06-01T06:15:00Z"
+  wall_clock_seconds: 1
+
+artifact_manifest:
+  implementation_dir: "implementation/"
+  verification_script: "implementation/verify-control.py"
+  output_markdown: "control-output.md"
+  execution_transcript: "execution.txt"
+  changed_files: "changed-files.txt"
+  timing_log: "timing.txt"
+  provenance: "provenance.txt"
+  evidence_pack: "evidence-pack.yml"
+  comparability: "comparability.yml"
+  measurement: "measurement.yml"
+
+notes: |
+  Run-002 is a second executed run under the same challenge_version (rest-api-v1)
+  but with condition=code_first_control, enabling first-order comparability surface.
+  No model-quality verdict, comparative verdict, outcome, adoption, or promotion
+  claim is made inside this run. Comparison is deferred to later assessment artifacts.

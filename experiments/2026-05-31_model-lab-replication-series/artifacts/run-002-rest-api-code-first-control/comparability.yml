@@ -1,0 +1,39 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-002-rest-api-code-first-control"
+assessed_at: "2026-06-01T06:15:00Z"
+
+series: "model-lab-replication-series"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+task_class: "rest_api_code_first_control"
+comparability_scope: "two executed Model-Lab runs; first-order comparison surface established"
+
+outcome_upgrade_allowed: false
+effect_claim_allowed: false
+promotion_claim_allowed: false
+independence_status: "comparable_second_surface"
+
+compared_against:
+  - run_id: "run-001-rest-api-spec-first-baseline"
+    condition: "spec_first_baseline"
+    relationship: "both address rest-api-v1 with different conditions"
+
+changed_files_artifact: "changed-files.txt"
+timing_artifact: "timing.txt"
+
+verdict: comparable_surface_available
+comparison_ready: true
+comparison_deferred: true
+comparison_rationale: >
+  Run-001 and Run-002 now form a first-order comparability surface under the same
+  challenge_version (rest-api-v1). Both runs produce identical API surface implementations.
+  The condition differs: Run-001 is spec_first_baseline, Run-002 is code_first_control.
+  This enables first-order comparison structure; actual comparison (assessment, verdict,
+  model-quality judgment) is deferred to later, separate assessment artifacts.
+
+notes: >
+  Second executed Model-Lab control surface for rest-api-v1. Run-001 and Run-002
+  together establish comparability structure but not a comparative verdict. No outcome,
+  effect, adoption, or promotion claim is derived. Comparison remains blocked until
+  a separate assessment artifact is created to explicitly compare the two runs.

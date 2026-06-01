@@ -1,0 +1,85 @@
+schema_version: "1.0.0"
+evidence_pack_id: "run-002-rest-api-code-first-control-evidence-pack"
+created_at: "2026-06-01T06:15:00Z"
+
+run_id: "run-002-rest-api-code-first-control"
+series: "model-lab-replication-series"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+
+core_evidence_artifacts:
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run_meta.json"
+    type: "run_metadata"
+    description: "Run-002 execution metadata; model_lab_control=true, challenge_version=rest-api-v1, condition=code_first_control"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run.yml"
+    type: "run_configuration"
+    description: "Run-002 configuration; compared_against run-001"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execution.txt"
+    type: "execution_transcript"
+    description: "Run-002 execution transcript; all checks passed, exit_code=0"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md"
+    type: "run_output"
+    description: "Control output index; documents API surface, verification checklist, no comparative/model-quality claims"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/package.json"
+    type: "implementation_manifest"
+    description: "TypeScript/Fastify dependency surface"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/src/server.ts"
+    type: "implementation_code"
+    description: "Fastify REST API implementation; POST/GET/:id/PUT/:id/DELETE/:id/GET /users endpoints with envelope pattern, validation, error handling"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/tests/users.test.ts"
+    type: "test_specification"
+    description: "Vitest test specification (unexecuted); covers CRUD, validation, conflict, malformed-id, not-found, pagination-error cases"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py"
+    type: "static_verifier"
+    description: "Repository-local static verifier; checks for required endpoint/status/error tokens"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/comparability.yml"
+    type: "comparability_assessment"
+    description: "Comparability verdict: comparable_surface_available; compared against run-001; comparison deferred"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/measurement.yml"
+    type: "measurement_record"
+    description: "Measurement status: executed_control_surface; two-run comparability established; no model-quality or comparative verdict"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/timing.txt"
+    type: "execution_timing"
+    description: "Run-002 execution timing; 1 wall-clock second total"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/changed-files.txt"
+    type: "changed_files_manifest"
+    description: "17 files created for run-002 bundle"
+
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/provenance.txt"
+    type: "provenance_record"
+    description: "Run-002 provenance; deterministic execution via execute-control.py with fixed RUN_TIMESTAMP"
+
+reference_evidence:
+  - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run.yml"
+    type: "comparable_run"
+    description: "Run-001 configuration for reference"
+
+  - path: "benchmarks/challenges/rest-api-v1.md"
+    type: "challenge_specification"
+    description: "Challenge source; all required tokens verified present in Run-002"
+
+claims_not_made:
+  - no_model_quality_verdict: "True"
+  - no_comparative_verdict: "True"
+  - no_outcome_upgrade: "True"
+  - no_adoption: "True"
+  - no_promotion: "True"
+  - no_staleness_reactivation: "True"
+
+interpretation:
+  Run-002 establishes a second executed surface for the Model-Lab series. Together
+  with Run-001, a first-order comparability structure now exists. Actual comparison
+  (assessment, verdict, model-quality judgment) is deferred to later, separate
+  assessment artifacts. This pack documents what evidence supports that deferred
+  comparison, but does not itself perform or authorize comparison.

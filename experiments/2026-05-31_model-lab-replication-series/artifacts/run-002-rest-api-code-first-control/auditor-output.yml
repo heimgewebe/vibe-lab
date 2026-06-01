@@ -1,0 +1,122 @@
+schema_version: "1.0.0"
+auditor_output_id: "run-002-rest-api-code-first-control-auditor"
+audited_at: "2026-06-01T06:15:00Z"
+
+run_id: "run-002-rest-api-code-first-control"
+series: "model-lab-replication-series"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+
+## Validation Results
+
+validation_status: PASS
+
+checks:
+  - check_id: "run_meta_json_valid"
+    status: "PASS"
+    description: "run_meta.json is present, valid JSON, contains model_lab_control=true"
+    artifact: "run_meta.json"
+
+  - check_id: "challenge_version_binding"
+    status: "PASS"
+    description: "run_meta.json binds to challenge_version=rest-api-v1 (same as Run-001)"
+    artifact: "run_meta.json"
+
+  - check_id: "condition_recorded"
+    status: "PASS"
+    description: "run_meta.json records condition=code_first_control (different from Run-001)"
+    artifact: "run_meta.json"
+
+  - check_id: "compared_against_recorded"
+    status: "PASS"
+    description: "run.yml and run_meta.json record compared_against: run-001-rest-api-spec-first-baseline"
+    artifact: "run.yml, run_meta.json"
+
+  - check_id: "implementation_bundle_present"
+    status: "PASS"
+    description: "implementation/ directory contains package.json, src/server.ts, tests/users.test.ts, verify-control.py"
+    artifact: "implementation/*"
+
+  - check_id: "api_surface_complete"
+    status: "PASS"
+    description: "All five required endpoints present: POST /users, GET /users/:id, PUT /users/:id, DELETE /users/:id, GET /users"
+    artifact: "implementation/src/server.ts"
+
+  - check_id: "envelope_pattern_present"
+    status: "PASS"
+    description: "Responses use envelope pattern: {data, error, meta}"
+    artifact: "implementation/src/server.ts"
+
+  - check_id: "required_status_codes_present"
+    status: "PASS"
+    description: "Implementation paths for 200, 201, 400, 404, 409, 422, 500 are present (500 via error handler)"
+    artifact: "implementation/src/server.ts"
+
+  - check_id: "validation_present"
+    status: "PASS"
+    description: "Input validation for body, path, and query parameters present"
+    artifact: "implementation/src/server.ts"
+
+  - check_id: "static_verifier_executable"
+    status: "PASS"
+    description: "verify-control.py syntax valid, contains required token checks"
+    artifact: "implementation/verify-control.py"
+
+  - check_id: "test_specification_present"
+    status: "PASS"
+    description: "tests/users.test.ts contains Vitest test specification (unexecuted but present)"
+    artifact: "implementation/tests/users.test.ts"
+
+  - check_id: "execution_transcript_present"
+    status: "PASS"
+    description: "execution.txt documents run completion, all checks passed, exit_code=0"
+    artifact: "execution.txt"
+
+  - check_id: "comparability_yml_present"
+    status: "PASS"
+    description: "comparability.yml present, verdict=comparable_surface_available, outcome_upgrade_allowed=false"
+    artifact: "comparability.yml"
+
+  - check_id: "measurement_yml_present"
+    status: "PASS"
+    description: "measurement.yml present, no model_quality_verdict, outcome_upgrade=not_claimed"
+    artifact: "measurement.yml"
+
+  - check_id: "no_overclaim_in_outputs"
+    status: "PASS"
+    description: "control-output.md, comparability.yml, measurement.yml, evidence-pack.yml contain no 'better', 'worse', 'confirmed', 'adopted', 'promoted', or 'outcome_upgrade' claims"
+    artifact: "control-output.md, comparability.yml, measurement.yml, evidence-pack.yml"
+
+  - check_id: "two_run_comparability_established"
+    status: "PASS"
+    description: "Run-001 and Run-002 both executed under rest-api-v1; first-order comparability surface now available"
+    artifact: "run_meta.json, comparability.yml"
+
+## Assessment Summary
+
+overall_status: PASS
+ready_for_comparison: true
+comparison_deferred: true
+model_quality_verdict_made: false
+outcome_upgrade_made: false
+adoption_made: false
+promotion_made: false
+
+narrative: |
+  Run-002 is a complete, executed control surface for the Model-Lab series. All
+  artifacts are present and valid. The run binds correctly to the same challenge
+  version (rest-api-v1) as Run-001 but with a different condition (code_first_control).
+  The implementation represents the required API surface completely. Verification
+  evidence (static verifier, test specification) is present. Comparability structure
+  is documented in comparability.yml and measurement.yml. Crucially, no model-quality,
+  comparative, outcome, adoption, or promotion claims are made or invited. Actual
+  comparison is deferred to later assessment artifacts.
+
+next_steps: |
+  1. Update series manifest.yml to reflect new iteration and run-002 execution.
+  2. Update series method.md to document control run and comparability structure.
+  3. Update series results/result.md to reflect two-run surface.
+  4. Update series results/decision.yml with execution_assessment verdict.
+  5. Add Run-002 entry to results/evidence.jsonl.
+  6. Later: create explicit comparison artifact (separate from this run bundle)
+     to compare run-001 and run-002 without automatic quality/outcome judgment.

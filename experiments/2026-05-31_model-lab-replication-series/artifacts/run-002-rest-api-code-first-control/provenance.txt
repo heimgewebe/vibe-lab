@@ -1,0 +1,32 @@
+Run-002 Provenance (2026-06-01T06:15:00Z)
+
+run_id: run-002-rest-api-code-first-control
+generated_by: agent-assisted user request
+challenge_source: benchmarks/challenges/rest-api-v1.md
+challenge_version: rest-api-v1
+condition: code_first_control
+
+Execution context:
+  repo: heimgewebe/vibe-lab
+  branch: experiment/run-002-negative-control-claim-not-proven
+  user: alex (agent:user-request)
+  timestamp: 2026-06-01T06:15:00Z
+
+Implementation strategy:
+  language: TypeScript
+  framework: Fastify 5.0
+  validation: TypeBox
+  testing: Vitest (specification not executed in CI)
+  source_control: repo-local, committed
+
+Determinism:
+  run_timestamp: fixed via RUN_TIMESTAMP=2026-06-01T06:15:00Z
+  seeded: no random seeds used; fixed challenge source
+  reproducible: yes, via execute-control.py with same RUN_TIMESTAMP
+
+Quality gates applied:
+  challenge_preflight: PASS (all required tokens found)
+  implementation_shape: PASS (all five endpoints represented)
+  verification_syntax: PASS (static verifier script syntax-checked)
+  comparability_setup: PASS (structured to compare against run-001)
+  no_overclaim_guard: PASS (control output avoids model-quality, comparative, or adoption claims)

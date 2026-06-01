@@ -1,0 +1,54 @@
+schema_version: "1.0.0"
+run_id: "run-002-rest-api-code-first-control"
+measurement_at: "2026-06-01T06:15:00Z"
+
+measurement_status: executed_control_surface
+measurement_phase: two_run_comparability_established
+series_iteration: 2
+
+scope: >
+  Run-002 is a second executed run under rest-api-v1 with condition=code_first_control.
+  This establishes a first-order comparability surface alongside Run-001 (condition=spec_first_baseline).
+  Measurement here tracks repo-local execution completeness, not model-quality or comparative verdict.
+
+measured_properties:
+  - control_execution_presence: true
+    evidence: artifacts/run-002-rest-api-code-first-control/execution.txt
+  
+  - locator_completeness: true
+    details:
+      - "five endpoints present (POST, GET/:id, PUT/:id, DELETE/:id, GET)"
+      - "required HTTP statuses represented (200, 201, 400, 404, 409, 422, 500)"
+      - "envelope pattern represented (data/error/meta)"
+      - "validation and conflict handling represented"
+    evidence: artifacts/run-002-rest-api-code-first-control/implementation/src/server.ts
+
+  - verification_evidence: true
+    details:
+      - "static verifier script syntax-correct"
+      - "vitest test specification written but not executed in CI"
+    evidence:
+      - "artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py"
+      - "artifacts/run-002-rest-api-code-first-control/implementation/tests/users.test.ts"
+
+  - comparability_with_run_001: true
+    details:
+      - "both runs address same challenge_version: rest-api-v1"
+      - "both runs produce same API surface (five endpoints, same payloads)"
+      - "condition differs: run-001=spec_first_baseline, run-002=code_first_control"
+      - "first-order comparison structure now possible (comparison itself deferred)"
+    evidence:
+      - "artifacts/run-001-rest-api-spec-first-baseline/run.yml"
+      - "artifacts/run-002-rest-api-code-first-control/run.yml"
+      - "artifacts/run-002-rest-api-code-first-control/comparability.yml"
+
+model_quality_verdict: not_provided
+comparative_verdict: not_provided
+outcome_upgrade: not_claimed
+adoption: not_claimed
+promotion: not_claimed
+
+interpretation_limit: >
+  This measurement records repo-local execution completeness for a second run surface.
+  No model-quality, comparative, outcome, adoption, or promotion verdict is made.
+  Actual comparison remains deferred to later assessment artifacts.
