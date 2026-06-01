@@ -40,6 +40,9 @@ bound to `challenge_version: rest-api-v1`.
 This establishes the first executed baseline artifact. Comparability remains
 blocked until a second executed run exists. No model-quality, outcome, adoption,
 or promotion claim is derived.
+Promotion-readiness in `docs/_generated/promotion-readiness.json` denotes
+metadata/gate readiness only. It does not authorize outcome upgrade, adoption,
+promotion, or model-quality claims.
 
 ## Next step
 

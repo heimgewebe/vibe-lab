@@ -1,3 +1,5 @@
+docs/_generated/doc-index.md
+docs/_generated/promotion-readiness.json
 docs/roadmap.md
 experiments/2026-05-31_model-lab-replication-series/INITIAL.md
 experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/auditor-output.yml
