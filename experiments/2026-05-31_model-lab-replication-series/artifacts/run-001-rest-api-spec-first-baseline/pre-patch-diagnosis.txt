@@ -1,0 +1,19 @@
+DIAGNOSIS
+Captured before patching run-001 in this working session.
+
+1. Current state:
+   - run-001 execution_status: prepared
+   - run_meta.command: not executed; skeleton only
+   - run_meta.exit_code: 0
+   - measurement_status: skeleton_only
+   - comparability verdict: not_comparable
+   - current_comparable_runs: 0
+   - decision verdict: not_executed
+2. Confirmed gap:
+   - real execution artifact present? no
+   - changed-files artifact present? no
+   - run output present? no
+   - timing artifact present? no
+   - model-quality claim present? no
+3. Patch permission:
+   - Patch is allowed only if run-001 is still skeleton/not_executed and no real execution artifact exists: allowed

@@ -1,10 +1,11 @@
 ---
 title: "Roadmap — Koordination offener Arbeitsstränge"
 status: active
+triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-05-30"
+updated: "2026-06-01"
 relations:
   - type: references
     target: masterplan.md
@@ -208,6 +209,12 @@ Ergaenzung 2026-05-31 zu RM-008 (AP-4 Skeleton begonnen, ohne Outcome-/Adoption-
   Staleness-Reaktivierung und kein globales Schema-Hardening.
 - Naechster Schritt danach: erster echter Ausfuehrungsrun oder zweiter
   Vergleichsrun gegen rest-api-v1.
+
+Ergaenzung 2026-06-01 zu RM-008 (Run-001 Baseline ausgefuehrt, ohne Vergleichs-/Outcome-/Adoption-/Promotion-Hochstufung):
+- Run-001 der Model-Lab Replication-Series wurde als erster echter Baseline-Run gegen `rest-api-v1` ausgefuehrt.
+- Evidence bleibt run-lokal in `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/`.
+- Kein Modellqualitaetsverdikt, kein Vergleichsverdikt, kein Outcome-Upgrade, keine Adoption und keine Promotion.
+- Naechster Schritt: Run-002 mit anderer Bedingung, anderem Modell oder anderem Tool unter `rest-api-v1`, um Vergleichbarkeit herzustellen.
 
 Ergaenzung 2026-05-31 ohne Outcome-/Promotion-/Adoption-Hochstufung:
 - `run-005-agent-handoff-boundary-validation` ergänzt die Outcome-Evidence-Replication-Series um eine weitere echte Task-Klasse.

@@ -9,29 +9,43 @@ experiment:
     outcome upgrade, adoption, or promotion.
   status: testing
   category: workflow
-  execution_status: prepared
+  execution_status: executed
   evidence_level: experimental
   created: "2026-05-31"
-  updated: "2026-05-31"
+  updated: "2026-06-01"
   author: "vibe-lab maintainers"
-  iteration: 1
+  triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
+  iteration: 2
   falsifiability:
     version: 1
     falsification_criterion: >
-      The skeleton would fail its purpose if the AP-1/AP-2 validators did not
-      actually engage on the activated run_meta.json and decision.yml, or if the
-      repo-conform structure could only be satisfied by asserting a model-quality,
-      outcome, adoption, or promotion claim.
+      The run would fail its purpose if the AP-1/AP-2 validators did not
+      engage on the executed run_meta.json and decision.yml, if the repo-local
+      execution artifacts were missing, or if the structure could only be
+      satisfied by asserting a model-quality, outcome, adoption, or promotion
+      claim.
     counter_hypotheses:
-      - id: skeleton_is_oracle
+      - id: baseline_execution_is_oracle
         statement: >
-          The skeleton silently smuggles a comparative verdict (an oracle) instead
-          of staying a purely structural laboratory anchor.
+          The executed baseline silently smuggles a comparative verdict (an oracle)
+          instead of staying a single-run execution-evidence artifact.
         assessment:
-          status: pending
-          outcome: not_checked
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: "results/evidence.jsonl"
+            - path: "artifacts/run-001-rest-api-spec-first-baseline/execution.txt"
+            - path: "artifacts/run-001-rest-api-spec-first-baseline/comparability.yml"
           limitations:
-            - "No run has been executed yet; only the activated structure exists."
+            - "Only one baseline run has been executed; no second comparable run exists yet."
+
+  execution_refs:
+    - "artifacts/run-001-rest-api-spec-first-baseline/run.yml"
+    - "results/evidence.jsonl"
+    - "artifacts/run-001-rest-api-spec-first-baseline/execution.txt"
+    - "artifacts/run-001-rest-api-spec-first-baseline/changed-files.txt"
+    - "artifacts/run-001-rest-api-spec-first-baseline/timing.txt"
+    - "artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md"
 
 context:
   tools: ["model-lab-control-plane", "AP-1 model-lab-control validator", "AP-2 challenge-version validator"]

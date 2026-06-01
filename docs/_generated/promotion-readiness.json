@@ -248,21 +248,18 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "prepared",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [
-        "prepared_not_executed"
-      ],
-      "notes": [
-        "falsifiability_voluntary",
-        "prepared_not_executed"
-      ],
+      "missing": [],
+      "notes": [],
       "path": "experiments/2026-05-31_model-lab-replication-series",
-      "pre_execution_hold": true,
-      "promotion_ready": false,
+      "pre_execution_hold": false,
+      "promotion_ready": true,
       "status": "testing",
-      "warnings": []
+      "warnings": [
+        "falsifiability_assessment_inconclusive"
+      ]
     }
   ],
   "mode": "dry_run",
@@ -271,9 +268,9 @@
     "experiments_checked": 17,
     "historical_escape": 1,
     "not_ready": 12,
-    "pre_execution_hold": 1,
-    "ready": 3,
-    "warnings": 3
+    "pre_execution_hold": 0,
+    "ready": 4,
+    "warnings": 4
   },
   "trigger": "need_for_reproducibility"
 }

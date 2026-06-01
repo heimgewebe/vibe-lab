@@ -1,11 +1,11 @@
-Skeleton only. No implementation tests executed.
+Superseded validation note for run-001-rest-api-spec-first-baseline.
 
-This file is the run_meta.test_output_file for the AP-4 Model-Lab
-replication-series baseline skeleton (run-001-rest-api-spec-first-baseline).
+Run-001 is no longer skeleton-only. The baseline execution transcript is stored
+in execution.txt, and the validation transcript is stored in make-validate.txt.
 
 Validation targets (run from repo root):
 - make validate-model-lab-control
 - make validate-challenge-versions
 - make validate
 
-No model-quality, outcome, adoption, or promotion claim is made.
+No model-quality, comparative, outcome, adoption, or promotion claim is made.

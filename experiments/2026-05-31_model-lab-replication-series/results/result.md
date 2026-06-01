@@ -1,6 +1,7 @@
 ---
 title: "Model-Lab Replication-Series — Results"
-status: designed
+status: testing
+triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
 canonicality: operative
 ---
 
@@ -8,25 +9,42 @@ canonicality: operative
 
 ## Status
 
-Skeleton only. The AP-4 Model-Lab replication-series structure exists with one
-**activated** baseline run (`run-001-rest-api-spec-first-baseline`) carrying
-opt-in Model-Lab control metadata (`model_lab_control: true`) and a challenge
-reference to `rest-api-v1`.
+Run-001 is now an executed baseline for `rest-api-v1`. The run
+`run-001-rest-api-spec-first-baseline` contains repo-local execution evidence,
+keeps opt-in Model-Lab control metadata (`model_lab_control: true`), and remains
+bound to `challenge_version: rest-api-v1`.
 
 ## What this establishes
 
-- AP-1 (`validate_model_lab_control`) now has a real activated `run_meta.json`
-  metadata surface to check.
-- AP-2 (`validate_challenge_versions`) now has a real activated `decision.yml` to
-  check against the `rest-api-v1` challenge version.
+- A real baseline execution artifact exists for Run-001.
+- AP-1 (`validate_model_lab_control`) Model-Lab metadata is exercised on a real
+  run metadata file.
+- AP-2 (`validate_challenge_versions`) challenge-version metadata remains bound
+  to `rest-api-v1` through the activated decision path.
+- The run-local baseline output records a spec-first response artifact for the
+  REST API task, including TypeScript/Fastify implementation shape, a
+  repo-local static verifier script, and an executable but unrun Vitest specification
+  under `implementation/`.
 
 ## What this does NOT establish
 
-- No model-quality or comparative verdict ("Model X is better" is **not** claimed).
-- No outcome upgrade, no adoption, no promotion, no staleness reactivation.
-- The execution verdict is `not_executed`; nothing was actually run.
+- No model-quality verdict.
+- No comparative verdict.
+- No outcome upgrade.
+- No adoption.
+- No promotion.
+- No staleness reactivation.
 
-## Next step (later, out of scope here)
+## Interpretation limit
 
-Execute a real baseline run for `rest-api-v1`, then add a second run with a
-different condition, model, or tool to enable a first genuine comparison.
+This establishes the first executed baseline artifact. Comparability remains
+blocked until a second executed run exists. No model-quality, outcome, adoption,
+or promotion claim is derived.
+Promotion-readiness in `docs/_generated/promotion-readiness.json` denotes
+metadata/gate readiness only. It does not authorize outcome upgrade, adoption,
+promotion, or model-quality claims.
+
+## Next step
+
+Add `run-002` with a different condition, model, or tool under the same
+`rest-api-v1` challenge version to enable the first genuine comparison.

@@ -1,0 +1,5 @@
+run_started_at=2026-06-01T06:04:59Z
+run_finished_at=2026-06-01T06:05:00Z
+duration_seconds=0.728
+timing_source=date -u wall-clock capture around: RUN_TIMESTAMP=2026-06-01T06:05:00Z python3 experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/execute-baseline.py
+notes=Wall-clock capture is repo-local timing evidence only; no performance or model-quality claim is derived.
