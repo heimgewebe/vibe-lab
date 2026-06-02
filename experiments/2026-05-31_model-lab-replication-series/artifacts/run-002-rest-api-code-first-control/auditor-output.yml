@@ -1,0 +1,126 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+
+run_id: "run-002-rest-api-code-first-control"
+auditor:
+  name: "agent:user-request"
+  date: "2026-06-01"
+auditor_date: "2026-06-01"
+
+overall_verdict: "CLAIM_NOT_PROVEN"
+
+claims:
+  - id: "claim-001"
+    text: "Run-002 implementation bundle is present and complete."
+    type: "generated_artifact_updated"
+    verdict: "PASS"
+    evidence:
+      - "implementation/src/server.ts exists and implements full REST API"
+      - "implementation/package.json with correct dependencies"
+      - "implementation/tests/users.test.ts test specification present"
+
+  - id: "claim-002"
+    text: "All five required REST API endpoints are implemented."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - "POST /users → 201"
+      - "GET /users/:id → 200/400/404"
+      - "PUT /users/:id → 200/404/409"
+      - "DELETE /users/:id → 200/404"
+      - "GET /users → 200/400 with pagination"
+
+  - id: "claim-003"
+    text: "Envelope pattern {data, error, meta} is implemented correctly."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - "All responses follow envelope pattern"
+      - "Error codes: VALIDATION_ERROR, EMAIL_CONFLICT, BAD_ID, NOT_FOUND, BAD_PAGINATION, INTERNAL_ERROR"
+
+  - id: "claim-004"
+    text: "Run-002 binds to the same challenge version (rest-api-v1) as Run-001."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - "run_meta.json: challenge_version=rest-api-v1"
+      - "Same as Run-001"
+
+  - id: "claim-005"
+    text: "Run-002 uses a different condition (code_first_control) than Run-001 (spec_first_baseline)."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - "run_meta.json: condition=code_first_control"
+      - "Enables isolated condition comparison"
+
+  - id: "claim-006"
+    text: "Execution transcript and timing evidence are present and valid."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - "execution.txt documents successful completion (exit_code=0)"
+      - "timing.txt reports 1 wall-clock second, 0.523 CPU seconds"
+
+  - id: "claim-007"
+    text: "No model-quality verdict is made in this run bundle."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - "measurement.yml: no model_quality_verdict field"
+      - "comparability.yml: verdict=comparable_surface_available (not a quality judgment)"
+      - "control-output.md states: no model-quality verdict"
+
+  - id: "claim-008"
+    text: "No comparative verdict is made in this run bundle."
+    type: "scope_adhered_to"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - "Comparison is explicitly deferred to a later assessment artifact"
+      - "No claim that code-first is better/worse than spec-first"
+
+  - id: "claim-009"
+    text: "No outcome upgrade is claimed."
+    type: "scope_adhered_to"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - "run.yml verdict: outcome_upgrade_allowed=false"
+      - "measurement.yml: outcome_upgrade not claimed"
+
+  - id: "claim-010"
+    text: "No adoption or promotion claim is made."
+    type: "scope_adhered_to"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - "run.yml verdict: promotion_claim_allowed=false"
+      - "No adoption_allowed field set true"
+
+  - id: "claim-011"
+    text: "Comparability structure (two runs, same challenge, different conditions) is established."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - "Run-001 and Run-002 both executed under rest-api-v1"
+      - "Isolated conditions enable structured comparison"
+      - "comparability.yml documents structure"
+
+  - id: "claim-012"
+    text: "Comparison itself is deferred to later assessment artifacts (not proven here)."
+    type: "scope_adhered_to"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - "method.md: comparison remains future work"
+      - "comparability.yml: comparison_deferred=true"
+
+out_of_scope_claims:
+  - id: "out-of-scope-001"
+    text: "Run-002 is better, worse, or equivalent in model quality to Run-001."
+    type: "validator_succeeded"
+    verdict: "OUT_OF_SCOPE"
+    evidence:
+      - "No model-quality assessment performed"
+      - "Comparison deferred to later assessment"
+
+required_next_proof:
+  - "Explicit comparison artifact (separate from this run bundle) must be created for Run-001 vs Run-002 assessment"
+  - "Decision artifact with decision_type=result_assessment required for comparative verdict"

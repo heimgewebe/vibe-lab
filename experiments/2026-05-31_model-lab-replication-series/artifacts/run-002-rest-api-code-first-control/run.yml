@@ -1,0 +1,49 @@
+schema_version: "1.0.0"
+contract: "experiment_run_bundle"
+
+run:
+  id: "run-002-rest-api-code-first-control"
+  experiment_path: "experiments/2026-05-31_model-lab-replication-series"
+  created_at: "2026-06-01T06:15:00Z"
+  sequence: 2
+
+provenance:
+  level: "repo_local"
+  executor: "agent:user-request"
+  triggered_by: "user:explicit-rework-request"
+  source_status: "repo_local"
+  notes: |
+    Run-002 is a second executed run under the same challenge_version (rest-api-v1)
+    as Run-001 (spec_first_baseline), but with condition=code_first_control,
+    enabling first-order comparability surface. Deterministic execution via
+    execute-control.py with fixed RUN_TIMESTAMP. No model-quality, comparative,
+    outcome, adoption, or promotion claim is made inside this run bundle.
+    Comparison is deferred to later, separate assessment artifacts.
+
+artifacts:
+  auditor_output:
+    path: "auditor-output.yml"
+    contract: "auditor_output"
+    canonical: true
+  measurement:
+    path: "measurement.yml"
+    contract: "measurement_run"
+    canonical: true
+  run_meta:
+    path: "run_meta.json"
+    contract: "run_meta"
+    canonical: false
+    compatibility: true
+  markdown_projection:
+    path: "control-output.md"
+    canonical: false
+    role: "human_projection"
+  evidence_pack:
+    path: "evidence-pack.yml"
+    contract: "run-evidence-pack.v1"
+    canonical: true
+
+verdict:
+  outcome: "CLAIM_NOT_PROVEN"
+  effect_claim_allowed: false
+  promotion_claim_allowed: false
