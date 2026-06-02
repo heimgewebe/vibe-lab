@@ -18,7 +18,7 @@
 **Test Case 2**: Validation, errors, conflicts, pagination errors, server-error guard
 - Verifies POST 422 (validation error), GET 400 (bad ID), GET 404 (not found)
 - Verifies POST 409 (email conflict), GET 400 (bad pagination)
-- Verifies 500 error handler path via Fastify setErrorHandler
+- Documents the 500 error-handler code path as present; runtime assertion is deferred because no throwing route is executed in this bundle.
 
 ## Static Verification Script Status
 
@@ -55,7 +55,7 @@ All challenge-required surface elements are represented:
 - [x] Not found → 404 — code + test specification
 - [x] Bad ID format → 400 — code + test specification
 - [x] Bad pagination → 400 — code + test specification
-- [x] Server error envelope → 500 — code + error handler present
+- [x] Server error envelope → 500 — code-only/deferred; error handler is present, but no runtime 500 assertion is executed in this bundle.
 
 ## Conclusion
 

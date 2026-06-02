@@ -1,20 +1,19 @@
-Files changed by Run-002 execution (2026-06-01T06:15:00Z):
-
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run_meta.json
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run.yml
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execute-control.py
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execution.txt
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/package.json
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/src/server.ts
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/tests/users.test.ts
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/changed-files.txt (this file)
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/timing.txt
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/comparability.yml
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/measurement.yml
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/evidence-pack.yml
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/auditor-output.yml
-+ experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/targeted-tests.txt
-
-Total: 17 files created (run-002 bundle)
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/auditor-output.yml
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/changed-files.txt
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/comparability.yml
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/condition-input.md
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/evidence-pack.yml
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execute-control.py
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execution.txt
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/package.json
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/src/server.ts
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/tests/users.test.ts
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/measurement.yml
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/pre-patch-diagnosis.txt
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/provenance.txt
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run.yml
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run_meta.json
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/targeted-tests.txt
+experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/timing.txt

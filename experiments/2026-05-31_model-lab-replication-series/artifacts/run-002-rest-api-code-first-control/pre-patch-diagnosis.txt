@@ -1,6 +1,6 @@
 DIAGNOSIS: Phase 0 - Run-002 Patch Eligibility
 Generated: 2026-06-01
-Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+Timestamp: 2026-06-01T06:15:00Z
 
 ## Current State
 
