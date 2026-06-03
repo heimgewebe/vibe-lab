@@ -7,8 +7,7 @@ metrics:
   scope_drift_count:
     value: 0
     evidence_status: derived_from_auditor_output
-    notes: Run-002 scope is limited to the run-local control bundle. No scope drift
-      detected.
+    notes: Run-002 scope is limited to the archived Run-002 artifact bundle plus required Model-Lab series registration/generated-index updates. No unexpected scope drift detected within that declared boundary.
   unsupported_claim_count:
     value: 5
     evidence_status: derived_from_auditor_output
