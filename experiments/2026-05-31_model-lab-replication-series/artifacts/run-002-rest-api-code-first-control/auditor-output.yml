@@ -84,7 +84,7 @@ claims:
     type: "scope_adhered_to"
     verdict: "CLAIM_NOT_PROVEN"
     evidence:
-      - "run.yml verdict.outcome=CLAIM_NOT_PROVEN"
+      - "run.yml verdict.outcome=MISSING_EVIDENCE, which is not an outcome-upgrade or promotion verdict"
       - "comparability.yml: outcome_upgrade_allowed=false"
       - "control-output.md states that no outcome upgrade is claimed"
       - "measurement.yml: outcome_upgrade not claimed"
