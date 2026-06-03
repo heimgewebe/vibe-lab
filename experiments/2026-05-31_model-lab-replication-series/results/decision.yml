@@ -1,4 +1,4 @@
-schema_version: "1.0.0"
+schema_version: "0.1.0"
 
 decision_type: "execution_assessment"
 verdict: "executed"
@@ -9,6 +9,8 @@ reviewer: "agent:user-request"
 model_lab_control: true
 challenge_id: "rest-api"
 challenge_version: "rest-api-v1"
+challenge_version_required: true
+outcome_upgrade_allowed: false
 
 rationale: |
   Run-002 (code_first_control) is executed repo-locally for rest-api-v1,

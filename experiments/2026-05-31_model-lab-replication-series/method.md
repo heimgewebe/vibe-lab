@@ -37,8 +37,8 @@ deferred to later assessment artifacts.
   the command wrote `control-output.md`, an `implementation/` bundle with
   TypeScript/Fastify source plus Vitest verification specification, and archived
   `execution.txt`, `changed-files.txt`, and `timing.txt`.
-- **Activation:** `run_meta.json` sets `model_lab_control: true` (AP-1),
-  `compared_against: run-001`, and the control run links to the same `rest-api-v1`
+- **Activation:** `run_meta.json` sets `model_lab_control: true` (AP-1), while `comparability.yml` records
+  `compared_against: run-001`. The control run links to the same `rest-api-v1`
   challenge version, enabling first-order comparability structure.
 - **Comparability:** `comparability.yml` in Run-002 records
   `verdict: comparable_surface_available`, but comparison remains deferred.
