@@ -60,6 +60,10 @@ verification evidence, and comparability structure availability. No model compar
 is performed inside the runs. Actual comparison (assessment, verdict, model-quality
 judgment) is deferred to later, separate assessment artifacts.
 
+## Methodological Strength Note
+
+Methodological strength: weak structural control. The condition `code_first_control` in Run-002 establishes a second execution surface under the same challenge, but does not by itself prove a materially different generation method. Comparative claims remain blocked until a separate assessment artifact evaluates the actual differences.
+
 ## Later extension (out of scope for this series update)
 
 - Create an explicit comparison artifact that places Run-001 and Run-002 side-by-side

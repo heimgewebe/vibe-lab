@@ -37,7 +37,7 @@ claims:
   - claim_id: "evc-004"
     text: "Verification and test scripts are present but not runtime-executed in this bundle."
     type: "scope_adhered_to"
-    verdict: "CLAIM_NOT_PROVEN"
+    verdict: "PASS"
     evidence:
       - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py"
         status: "repo_local"
@@ -68,4 +68,12 @@ claims:
       - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/measurement.yml"
         status: "repo_local"
       - path: "experiments/2026-05-31_model-lab-replication-series/results/decision.yml"
+        status: "repo_local"
+
+  - claim_id: "evc-007"
+    text: "Runtime validation for forced 500 path is not evidenced."
+    type: "scope_adhered_to"
+    verdict: "MISSING_EVIDENCE"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/targeted-tests.txt"
         status: "repo_local"
