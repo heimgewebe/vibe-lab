@@ -1,63 +1,63 @@
-schema_version: "1.0.0"
-contract: "measurement_run"
-
-run_id: "run-002-rest-api-code-first-control"
-auditor_verdict: "CLAIM_NOT_PROVEN"
-auditor_ref: "auditor-output.yml"
-
+schema_version: 1.0.0
+contract: measurement_run
+run_id: run-002-rest-api-code-first-control
+auditor_verdict: MISSING_EVIDENCE
+auditor_ref: auditor-output.yml
 metrics:
   scope_drift_count:
     value: 0
-    evidence_status: "repo_local"
-    notes: "Run-002 scope is limited to the run-local control bundle. No scope drift detected."
-
+    evidence_status: derived_from_auditor_output
+    notes: Run-002 scope is limited to the run-local control bundle. No scope drift
+      detected.
   unsupported_claim_count:
-    value: 4
-    evidence_status: "derived_from_auditor_output"
-    notes: "Derived from auditor-output.yml: four non-PASS claims remain (claim-008, claim-009, claim-010, claim-012)."
-
+    value: 5
+    evidence_status: derived_from_auditor_output
+    notes: 'Derived from auditor-output.yml: five non-PASS claims remain (claim-008,
+      claim-009, claim-010, claim-012, claim-013).'
   missing_locator_count:
     value: 0
-    evidence_status: "repo_local"
-    notes: "All required endpoints, statuses, error codes, and envelope patterns are locator-complete."
-
+    evidence_status: derived_from_auditor_output
+    notes: All required endpoints, statuses, error codes, and envelope patterns are
+      locator-complete.
   validation_gap_count:
-    value: 0
-    evidence_status: "repo_local"
-    notes: "All validation logic for body, path, query parameters is present."
-
+    value: 1
+    evidence_status: derived_from_auditor_output
+    notes: 'Derived from auditor-output.yml: one MISSING_EVIDENCE validator claim
+      remains for the unexecuted forced 500 runtime assertion.'
   review_friction_count:
     value: null
-    evidence_status: "missing_evidence"
-    notes: "Run-bundle level review friction not measured; would require PR-level CI feedback."
-
+    evidence_status: missing_evidence
+    notes: Run-bundle level review friction not measured; would require PR-level CI
+      feedback.
   rework_count:
     value: null
-    evidence_status: "missing_evidence"
-    notes: "Rework count not tracked in this control surface."
-
+    evidence_status: missing_evidence
+    notes: Rework count not tracked in this control surface.
   false_block_count:
-    value: 0
-    evidence_status: "repo_local"
-    notes: "No false negatives detected in implementation or verification."
-
+    value: null
+    evidence_status: missing_evidence
+    notes: False-block behavior is not measured because the static verifier and Vitest
+      specification are present but not executed in this run bundle.
   task_completion_time_observed:
     value: 1
-    evidence_status: "self_reported"
-    notes: "Execution script completed in 1 wall-clock second (0.523 CPU seconds)."
-
+    evidence_status: self_reported
+    notes: Execution script completed in 1 wall-clock second (0.523 CPU seconds).
 interpretation_limits:
-  - "Second execution surface only; no comparative verdict."
-  - "No model-quality, outcome, adoption, or promotion claim."
-  - "Comparability structure available; comparison itself deferred."
-
+- Second execution surface only; no comparative verdict.
+- No model-quality, outcome, adoption, or promotion claim.
+- Comparability structure available; comparison itself deferred.
 extensions:
-  measurement_phase: "two_run_comparability_established"
+  measurement_phase: two_run_comparability_established
   model_lab_control: true
-  condition: "code_first_control"
-  compared_against: "run-001-rest-api-spec-first-baseline"
-  measurement_rationale: |
-    This measurement records repo-local execution completeness for the control
+  condition: code_first_control
+  compared_against: run-001-rest-api-spec-first-baseline
+  measurement_rationale: 'This measurement records repo-local execution completeness
+    for the control
+
     run (Run-002) under the same challenge version (rest-api-v1) as the baseline.
+
     The eight metrics track artifact quality and alignment with contract. Overall,
+
     this run is execution-complete but comparison-deferred.
+
+    '

@@ -44,6 +44,6 @@ artifacts:
     canonical: true
 
 verdict:
-  outcome: "CLAIM_NOT_PROVEN"
+  outcome: "MISSING_EVIDENCE"
   effect_claim_allowed: false
   promotion_claim_allowed: false

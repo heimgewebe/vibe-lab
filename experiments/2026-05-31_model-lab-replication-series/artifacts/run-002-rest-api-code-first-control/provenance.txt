@@ -27,6 +27,7 @@ Determinism:
 Quality gates applied:
   challenge_preflight: PASS (all required tokens found)
   implementation_shape: PASS (all five endpoints represented)
-  verification_syntax: PASS (static verifier script syntax-checked)
+  static_verifier_present: PASS (static verifier script archived for later execution)
+  runtime_verification: DEFERRED (Vitest and static verifier not executed in this bundle)
   comparability_setup: PASS (structured to compare against run-001)
   no_overclaim_guard: PASS (control output avoids model-quality, comparative, or adoption claims)

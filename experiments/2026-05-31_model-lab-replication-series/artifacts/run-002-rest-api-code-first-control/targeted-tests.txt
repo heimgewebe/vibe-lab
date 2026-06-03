@@ -4,7 +4,7 @@
 - File: `implementation/tests/users.test.ts`
 - Status: **PRESENT, NOT EXECUTED**
 - Reason: Test runtime (Node.js, npm, Vitest) not invoked during Run-002 bundle creation
-- Coverage: Complete test specification covers all challenge surface requirements
+- Coverage: Test specification represents the challenge surface, with runtime execution and forced 500 assertion deferred
 
 ## Test Specification Summary
 
@@ -59,7 +59,7 @@ All challenge-required surface elements are represented:
 
 ## Conclusion
 
-The test specification is **complete and representationally aligned** with the challenge surface contract. This artifact confirms only that:
+The test specification is **representationally aligned** with the challenge surface contract, with runtime execution and forced 500 assertion deferred. This artifact confirms only that:
 1. Test specification and static verifier script files are present
 2. Runtime execution is deferred
 

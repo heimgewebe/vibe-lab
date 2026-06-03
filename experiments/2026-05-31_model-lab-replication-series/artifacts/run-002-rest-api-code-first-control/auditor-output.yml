@@ -7,21 +7,21 @@ auditor:
   date: "2026-06-01"
 auditor_date: "2026-06-01"
 
-overall_verdict: "CLAIM_NOT_PROVEN"
+overall_verdict: "MISSING_EVIDENCE"
 
 claims:
   - id: "claim-001"
-    text: "Run-002 implementation bundle is present and complete."
+    text: "Run-002 implementation bundle is present and scope-represented."
     type: "generated_artifact_updated"
     verdict: "PASS"
     evidence:
-      - "implementation/src/server.ts exists and implements full REST API"
+      - "implementation/src/server.ts exists and represents the required REST API surface"
       - "implementation/package.json with correct dependencies"
       - "implementation/tests/users.test.ts test specification present"
 
   - id: "claim-002"
-    text: "All five required REST API endpoints are implemented."
-    type: "validator_succeeded"
+    text: "All five required REST API endpoints are represented in the implementation bundle."
+    type: "scope_adhered_to"
     verdict: "PASS"
     evidence:
       - "POST /users → 201"
@@ -31,8 +31,8 @@ claims:
       - "GET /users → 200/400 with pagination"
 
   - id: "claim-003"
-    text: "Envelope pattern {data, error, meta} is implemented correctly."
-    type: "validator_succeeded"
+    text: "Envelope pattern {data, error, meta} is represented consistently in the implementation bundle."
+    type: "scope_adhered_to"
     verdict: "PASS"
     evidence:
       - "All responses follow envelope pattern"
@@ -99,7 +99,7 @@ claims:
 
   - id: "claim-011"
     text: "Comparability structure (two runs, same challenge, different conditions) is established."
-    type: "validator_succeeded"
+    type: "scope_adhered_to"
     verdict: "PASS"
     evidence:
       - "Run-001 and Run-002 both executed under rest-api-v1"
@@ -114,10 +114,23 @@ claims:
       - "method.md: comparison remains future work"
       - "comparability.yml: comparison_deferred=true"
 
+  - id: "claim-013"
+    text: "Runtime validation for the forced 500 error-handler path is not evidenced in this run bundle."
+    type: "validator_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence:
+      - "targeted-tests.txt: server error envelope is marked code-only/deferred"
+      - "implementation/tests/users.test.ts does not execute a throwing route or assert a 500 response"
+      - "No Vitest runtime output is archived for this bundle"
+    notes: >
+      The implementation contains an error handler path, but this run bundle does
+      not include runtime evidence that the 500 response path was exercised.
+      This is a validation evidence gap, not a failure of the implementation claim.
+
 out_of_scope_claims:
   - id: "out-of-scope-001"
     text: "Run-002 is better, worse, or equivalent in model quality to Run-001."
-    type: "validator_succeeded"
+    type: "scope_adhered_to"
     verdict: "OUT_OF_SCOPE"
     evidence:
       - "No model-quality assessment performed"
