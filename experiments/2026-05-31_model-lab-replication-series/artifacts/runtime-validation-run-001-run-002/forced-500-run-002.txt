@@ -1,0 +1,11 @@
+
+ RUN  v3.2.6 /app/experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation
+
+ ✓ tests/forced-500.test.ts (1 test) 200ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  14:50:31
+   Duration  856ms (transform 82ms, setup 0ms, collect 263ms, tests 200ms, environment 0ms, prepare 96ms)
+
+Exit Code: 0

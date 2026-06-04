@@ -1,0 +1,34 @@
+Files changed by Runtime Validation Run-001/Run-002
+Generated timestamp: 2026-06-04T12:00:00Z
+
+Scope Boundary:
+INCLUDED:
+- runtime validation artifacts for Run-001 and Run-002
+- cross-run assessment/result/method/roadmap documentation updates required to reference runtime evidence
+- generated doc index updates caused by new Markdown artifacts
+
+EXCLUDED:
+- production source code
+- benchmark challenge changes
+- schema/validator/policy changes
+- adoption, promotion, or outcome-upgrade changes
+- historical mutation of original Run-001/Run-002 evidence semantics
+
+File list:
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/changed-files.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500.test.ts
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-001.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-002.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-001.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-002.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/runtime-validation.yml
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-001.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-002.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-001.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-002.txt
+[modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
+[modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
+[modify] experiments/2026-05-31_model-lab-replication-series/method.md
+[modify] docs/roadmap.md
+[modify] docs/_generated/doc-index.md

@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 888
-- classified: 888
-  - of which fallback_classified (catch-all rule): 358
-  - fallback_share: 40.3% (358 / 888)
+- total: 1081
+- classified: 1081
+  - of which fallback_classified (catch-all rule): 515
+  - fallback_share: 47.6% (515 / 1081)
   - fallback_threshold: 50.0% — ok
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -31,42 +31,42 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | capture | 7 |
 | catalog | 12 |
 | contract | 29 |
-| docs | 36 |
-| experiment | 521 |
+| docs | 39 |
+| experiment | 636 |
 | export | 15 |
 | generated | 8 |
-| governance | 55 |
-| test | 170 |
+| governance | 58 |
+| test | 242 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 18 |
+| decision_record | 20 |
 | diagnostic_signal | 7 |
-| evidence_log | 16 |
+| evidence_log | 18 |
 | generated_projection | 10 |
-| historical_record | 316 |
+| historical_record | 405 |
 | implementation_behavior | 12 |
 | navigation_surface | 23 |
 | normative_contract | 16 |
-| procedure_contract | 102 |
-| raw_capture | 23 |
-| result_interpretation | 56 |
-| runtime_observation | 75 |
+| procedure_contract | 113 |
+| raw_capture | 25 |
+| result_interpretation | 62 |
+| runtime_observation | 84 |
 | schema_truth | 17 |
 | sovereign_source | 3 |
-| test_expectation | 170 |
+| test_expectation | 242 |
 | unknown | 24 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 375 |
-| handcrafted | 438 |
+| append_only | 468 |
+| handcrafted | 529 |
 | regenerated | 18 |
-| revision_with_reason | 55 |
+| revision_with_reason | 64 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -75,14 +75,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 286 |
+| ci_blocking | 367 |
 | diagnostic | 2 |
 | no_manual_edit | 18 |
-| no_rewrite | 375 |
+| no_rewrite | 468 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 244 |
+| review_required | 267 |
 
 ## Unknown artifacts
 
@@ -420,7 +420,103 @@ _none_
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/targeted-tests.txt`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/task-target-files.txt`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/timing.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/auditor-output.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/changed-files.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/comparability.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/evidence-pack.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.context.md`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.make-validate.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/make-validate.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/measurement.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/run.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/timing.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/auditor-output.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/changed-files.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/comparability.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/evidence-pack.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/make-validate.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/measurement.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/run.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-002-negative-control-claim-not-proven/timing.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/auditor-output.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/changed-files.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/comparability.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/evidence-pack.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/make-validate.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/measurement.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/run.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-003-validator-test-hardening/timing.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/auditor-output.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/changed-files.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/comparability.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/evidence-pack.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/make-validate.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/measurement.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/run.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-004-real-validator-test-hardening/timing.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/auditor-output.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/changed-files.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/comparability.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/evidence-pack.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/make-validate.txt`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/measurement.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/run.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-005-agent-handoff-boundary-validation/timing.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/auditor-output.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/changed-files.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/comparability.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/evidence-pack.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/execute-baseline.py`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation/package.json`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation/src/server.ts`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation/tests/users.test.ts`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation/verify-baseline.py`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/make-validate.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/measurement.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/pre-patch-diagnosis.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/provenance.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/targeted-tests.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/timing.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/auditor-output.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/changed-files.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/comparability.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/condition-input.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/evidence-pack.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execute-control.py`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/package.json`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/src/server.ts`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/tests/users.test.ts`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation/verify-control.py`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/measurement.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/pre-patch-diagnosis.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/provenance.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/targeted-tests.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/timing.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/changed-files.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-001.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-002.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500.test.ts`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-001.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-002.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/runtime-validation.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-001.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-002.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-001.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-002.txt`
 - `experiments/_template/artifacts/README.md`
+- `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
+- `tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md`
+- `tests/fixtures/challenge_versions/invalid/decisions/missing-challenge-version.yml`
+- `tests/fixtures/challenge_versions/invalid/decisions/unknown-challenge-version.yml`
+- `tests/fixtures/challenge_versions/legacy/decisions/legacy-decision.yml`
+- `tests/fixtures/challenge_versions/valid/challenges/rest-api-v1.md`
+- `tests/fixtures/challenge_versions/valid/decisions/decision.yml`
 - `tests/fixtures/claim_evidence/invalid/bad-schema-version.yml`
 - `tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml`
 - `tests/fixtures/claim_evidence/invalid/missing-run-id.yml`
@@ -447,6 +543,67 @@ _none_
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-external-verified.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/test-output.txt`
+- `tests/fixtures/model_lab_control/invalid/empty-evidence-artifacts.json`
+- `tests/fixtures/model_lab_control/invalid/missing-challenge-version.json`
+- `tests/fixtures/model_lab_control/invalid/missing-model-id.json`
+- `tests/fixtures/model_lab_control/invalid/non-string-model-id.json`
+- `tests/fixtures/model_lab_control/legacy/legacy-run-meta.json`
+- `tests/fixtures/model_lab_control/valid/minimal-run-meta.json`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/make-validate.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/timing.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/missing-artifact/artifacts/run-001/timing.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/make-validate.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001/timing.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/make-validate.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001/timing.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/make-validate.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001/timing.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/make-validate.txt`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/invalid/wrong-negative-control/artifacts/run-001/timing.txt`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/auditor-output.yml`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/changed-files.txt`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/comparability.yml`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/evidence-pack.yml`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/make-validate.txt`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/measurement.yml`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/run.yml`
+- `tests/fixtures/outcome_evidence_replication_series/valid/artifacts/run-001-valid/timing.txt`
 - `tests/fixtures/pr_scope/invalid/api-dump.json`
 - `tests/fixtures/pr_scope/invalid/full-pr-diff.patch`
 - `tests/fixtures/pr_scope/invalid/self-observation/evidence-pack.yml`
@@ -506,6 +663,10 @@ _none_
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
+- `experiments/2026-05-25_outcome-evidence-replication-series/results/decision.yml`
+- `experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl`
+- `experiments/2026-05-31_model-lab-replication-series/results/decision.yml`
+- `experiments/2026-05-31_model-lab-replication-series/results/evidence.jsonl`
 - `experiments/_template/results/decision.yml`
 - `experiments/_template/results/evidence.jsonl`
 - `instruction-blocks/constraint-before-code.md`
@@ -536,10 +697,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 295 | 82.4% |
-| `tests/fixtures/**` | 35 | 9.8% |
-| `experiments/**` | 21 | 5.9% |
-| `docs/**` | 7 | 2.0% |
+| `experiments/*/artifacts/**` | 384 | 74.6% |
+| `tests/fixtures/**` | 103 | 20.0% |
+| `experiments/**` | 21 | 4.1% |
+| `docs/**` | 7 | 1.4% |
 
 ## Residual fallback clusters
 
@@ -553,8 +714,8 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `tests/fixtures/**` | 35 | 35 | `evidence-pack.yml`=2, `test-output.txt`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/claim_evidence_semantic/valid`=6, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
-| `experiments/*/artifacts/**` | 295 | 0 | `refactored_processor.py`=15, `auditor-output.yml`=13, `evidence-pack.yml`=13, `measurement.yml`=13, `run.yml`=13 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot`=12, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation`=11, `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9 |
+| `tests/fixtures/**` | 103 | 103 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001`=8 |
+| `experiments/*/artifacts/**` | 384 | 0 | `auditor-output.yml`=20, `evidence-pack.yml`=20, `measurement.yml`=20, `run.yml`=20, `comparability.yml`=19 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot`=12, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=12 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
 
@@ -564,8 +725,8 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 295 | 0 | `refactored_processor.py`=15, `auditor-output.yml`=13, `evidence-pack.yml`=13, `measurement.yml`=13, `run.yml`=13 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot`=12, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation`=11, `experiments/2026-04-14_incremental-debuggability/artifacts/task2-incremental`=9, `experiments/2026-04-14_prompt-length-control/artifacts`=9 |
-| `tests/fixtures/**` | 35 | 35 | `evidence-pack.yml`=2, `test-output.txt`=2, `api-dump.json`=1, `bad-schema-version.yml`=1, `changed-files.txt`=1 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/claim_evidence_semantic/valid`=6, `tests/fixtures/claim_evidence/invalid`=5, `tests/fixtures/pr_scope/valid`=5, `tests/fixtures/claim_evidence/valid`=4 |
+| `experiments/*/artifacts/**` | 384 | 0 | `auditor-output.yml`=20, `evidence-pack.yml`=20, `measurement.yml`=20, `run.yml`=20, `comparability.yml`=19 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot`=12, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=12 |
+| `tests/fixtures/**` | 103 | 103 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001`=8 |
 | `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
 
@@ -575,6 +736,13 @@ Fallback classifications come from broad catch-all rules (low confidence). High-
 
 | Path | Layer | Kind | Authority | Risk | Matched pattern |
 | ---- | ----- | ---- | --------- | ---- | --------------- |
+| `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/challenge_versions/invalid/decisions/missing-challenge-version.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/challenge_versions/invalid/decisions/unknown-challenge-version.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/challenge_versions/legacy/decisions/legacy-decision.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/challenge_versions/valid/challenges/rest-api-v1.md` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
+| `tests/fixtures/challenge_versions/valid/decisions/decision.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence/invalid/bad-schema-version.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence/invalid/empty-evidence-path.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence/invalid/missing-run-id.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
@@ -588,13 +756,6 @@ Fallback classifications come from broad catch-all rules (low confidence). High-
 | `tests/fixtures/claim_evidence_semantic/invalid/external-verified-without-sha.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence_semantic/invalid/make-validate-pass-without-command-output.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 | `tests/fixtures/claim_evidence_semantic/invalid/make-validate-pass-without-exit-zero.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/missing-evidence-with-invalid-verdict.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/pass-with-external-unverified-only.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/pass-with-missing-evidence.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/pass-with-self-reported-only.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/repo-local-nonexistent-path.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/repo-local-path-escape.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
-| `tests/fixtures/claim_evidence_semantic/invalid/testcount-pass-without-test-output.yml` | test | test_fixture | test_expectation | high | `tests/fixtures/**` |
 
 ## Generated artifacts cross-check
 

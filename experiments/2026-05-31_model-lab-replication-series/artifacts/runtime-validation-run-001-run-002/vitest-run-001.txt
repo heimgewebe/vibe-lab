@@ -1,0 +1,15 @@
+
+> run-001-rest-api-v1-baseline@0.0.0 test
+> vitest run
+
+
+ RUN  v3.2.6 /app/experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation
+
+ ✓ tests/users.test.ts (2 tests) 213ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  14:48:57
+   Duration  869ms (transform 89ms, setup 0ms, collect 262ms, tests 213ms, environment 0ms, prepare 106ms)
+
+Exit Code: 0

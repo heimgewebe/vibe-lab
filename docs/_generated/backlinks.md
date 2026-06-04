@@ -200,11 +200,18 @@
 
 ## `docs/blueprints/blueprint-evidence-control-plane-v1.md`
 
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (derived_from)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
+- ← `docs/roadmap.md` (references)
+
+## `docs/blueprints/blueprint-model-lab-control-plane-v1.md`
+
+- ← `docs/index.md` (references)
+- ← `docs/policies/model-lab-control-minimum.md` (references)
 - ← `docs/roadmap.md` (references)
 
 ## `docs/blueprints/blueprint-v2-roadmap.md`
@@ -215,6 +222,7 @@
 ## `docs/blueprints/blueprint-v2.md`
 
 - ← `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` (derived_from)
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
 - ← `docs/blueprints/blueprint-v2-roadmap.md` (derived_from)
 - ← `docs/roadmap.md` (references)
 
@@ -257,6 +265,7 @@
 - ← `decisions/benchmark/README.md` (references)
 - ← `decisions/export/README.md` (references)
 - ← `decisions/policy/README.md` (references)
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (derived_from)
 - ← `docs/experiments/README.md` (references)
 - ← `docs/masterplan.md` (derived_from)
 - ← `docs/onboarding/README.md` (references)
@@ -267,6 +276,7 @@
 
 ## `docs/foundations/vision.md`
 
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (derived_from)
 - ← `docs/masterplan.md` (derived_from)
 - ← `docs/roadmap.md` (references)
 
@@ -294,11 +304,16 @@
 
 ## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
 
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
+- ← `docs/roadmap.md` (references)
+
+## `docs/playbooks/outcome-evidence-replication-series-gate.md`
+
 - ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/plan-execution-checklist.md`
@@ -337,6 +352,11 @@
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 - ← `docs/roadmap.md` (references)
 
+## `docs/policies/model-lab-control-minimum.md`
+
+- ← `docs/index.md` (references)
+- ← `docs/roadmap.md` (references)
+
 ## `docs/policies/pr-run-evidence-policy.md`
 
 - ← `docs/index.md` (references)
@@ -362,6 +382,8 @@
 
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
+- ← `docs/playbooks/outcome-evidence-replication-series-gate.md` (references)
+- ← `docs/policies/model-lab-control-minimum.md` (references)
 
 ## `docs/rules/README.md`
 
@@ -586,6 +608,42 @@
 
 - ← `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (references)
 
+## `experiments/2026-05-25_outcome-evidence-replication-series/manifest.yml`
+
+- ← `docs/playbooks/outcome-evidence-replication-series-gate.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/comparability.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/run.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/comparability.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/run.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/manifest.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/method.md`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/results/decision.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/results/result.md`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
@@ -633,11 +691,13 @@
 
 ## `schemas/decision.schema.json`
 
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `experiments/2026-04-23_phase-1-drift-injection/results/README.md` (references)
 
 ## `schemas/experiment.manifest.schema.json`
 
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `docs/reference/manifest-schema.md` (references)
 
@@ -648,7 +708,9 @@
 
 ## `schemas/run_meta.schema.json`
 
+- ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
 - ← `docs/blueprints/blueprint-v2.md` (references)
+- ← `docs/policies/model-lab-control-minimum.md` (references)
 - ← `experiments/2026-04-23_phase-1-drift-injection/artifacts/README.md` (references)
 
 ## `scripts/agents/check_agent_compliance.py`

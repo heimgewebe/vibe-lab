@@ -1,0 +1,46 @@
+schema_version: "1.0.0"
+contract: "runtime_validation_assessment"
+assessment_id: "runtime-validation-run-001-run-002"
+created_at: "2026-06-04"
+scope:
+  experiment: "experiments/2026-05-31_model-lab-replication-series"
+  runs:
+    - run-001-rest-api-spec-first-baseline
+    - run-002-rest-api-code-first-control
+claims:
+  - id: "rv-001"
+    text: "Run-001 static verifier executed."
+    verdict: PASS
+    evidence:
+      - "verifier-run-001.txt"
+  - id: "rv-002"
+    text: "Run-002 static verifier executed."
+    verdict: PASS
+    evidence:
+      - "verifier-run-002.txt"
+  - id: "rv-003"
+    text: "Run-001 Vitest specification executed."
+    verdict: PASS
+    evidence:
+      - "vitest-run-001.txt"
+  - id: "rv-004"
+    text: "Run-002 Vitest specification executed."
+    verdict: PASS
+    evidence:
+      - "vitest-run-002.txt"
+  - id: "rv-005"
+    text: "Run-001 forced 500 error-envelope behavior is runtime-evidenced."
+    verdict: PASS
+    evidence:
+      - "forced-500-run-001.txt"
+  - id: "rv-006"
+    text: "Run-002 forced 500 error-envelope behavior is runtime-evidenced."
+    verdict: PASS
+    evidence:
+      - "forced-500-run-002.txt"
+
+interpretation_limits:
+  - "This validates runtime behavior for existing archived implementations only."
+  - "This does not establish model-quality superiority."
+  - "This does not authorize adoption, promotion, outcome upgrade, or staleness reactivation."
+  - "Run-001 and Run-002 original bundle histories are not rewritten."
