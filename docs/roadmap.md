@@ -299,3 +299,11 @@ Beobachtungen, die eine menschliche Governance-Entscheidung erfordern. Diese Gap
 - `AGENTS.md`, `agent-policy.yaml`, `repo.meta.yaml` — nie durch Agents änderbar.
 - `docs/_generated/*` — nur durch Generatoren, nie manuell.
 - Status-Felder in Quell-Experimenten oder Decisions — nur durch Menschen oder belegte Prozesse.
+
+Ergaenzung 2026-06-04 zu RM-008 (Run-001/Run-002 Cross-Run-Assessment vorbereitet, ohne Vergleichs-/Outcome-/Adoption-/Promotion-Hochstufung):
+- Run-001 (`spec_first_baseline`) und Run-002 (`code_first_control`) der Model-Lab Replication-Series sind beide gegen `rest-api-v1` ausgefuehrt.
+- Die Vergleichbarkeitsstruktur ist vorhanden; sie begruendet aber noch kein Modellqualitaets-, Outcome-, Adoption- oder Promotion-Urteil.
+- Neues separates Assessment-Artefakt: `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md`.
+- Das Assessment bewertet Implementation Shape, Verification Coverage und Evidenzluecken nebeneinander.
+- Wesentliche Grenze bleibt: Runtime-Ausfuehrung der Vitest-Spezifikationen und forced 500 assertion sind nicht als Laufzeitbeleg archiviert.
+- Naechster methodisch staerkerer Schritt: entweder runtime-validierter Vergleich oder Run-003 mit staerkerem Condition-Kontrast.

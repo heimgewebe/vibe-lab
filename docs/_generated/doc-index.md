@@ -212,6 +212,7 @@
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md` | control-output | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` | Model-Lab Replication-Series — Failure Modes | designed | operative |
 | `experiments/2026-05-31_model-lab-replication-series/method.md` | Model-Lab Replication-Series — Method | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` | Cross-Run Assessment: Model-Lab Replication Series Run-001 vs Run-002 | draft | operative |
 | `experiments/2026-05-31_model-lab-replication-series/results/result.md` | Model-Lab Replication-Series — Results | testing | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
