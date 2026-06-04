@@ -15,7 +15,7 @@ experiment:
   updated: "2026-06-01"
   author: "vibe-lab maintainers"
   triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
-  iteration: 2
+  iteration: 3
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -36,16 +36,23 @@ experiment:
             - path: "results/evidence.jsonl"
             - path: "artifacts/run-001-rest-api-spec-first-baseline/execution.txt"
             - path: "artifacts/run-001-rest-api-spec-first-baseline/comparability.yml"
+            - path: "artifacts/run-002-rest-api-code-first-control/comparability.yml"
           limitations:
-            - "Only one baseline run has been executed; no second comparable run exists yet."
+            - "Two runs now executed under rest-api-v1; comparability structure established but no actual comparison performed."
+            - "Potential for hidden oracle: comparability.yml in both runs must remain deferred, not automatic verdict."
 
   execution_refs:
     - "artifacts/run-001-rest-api-spec-first-baseline/run.yml"
-    - "results/evidence.jsonl"
     - "artifacts/run-001-rest-api-spec-first-baseline/execution.txt"
     - "artifacts/run-001-rest-api-spec-first-baseline/changed-files.txt"
     - "artifacts/run-001-rest-api-spec-first-baseline/timing.txt"
     - "artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md"
+    - "artifacts/run-002-rest-api-code-first-control/run.yml"
+    - "artifacts/run-002-rest-api-code-first-control/execution.txt"
+    - "artifacts/run-002-rest-api-code-first-control/changed-files.txt"
+    - "artifacts/run-002-rest-api-code-first-control/timing.txt"
+    - "artifacts/run-002-rest-api-code-first-control/control-output.md"
+    - "results/evidence.jsonl"
 
 context:
   tools: ["model-lab-control-plane", "AP-1 model-lab-control validator", "AP-2 challenge-version validator"]

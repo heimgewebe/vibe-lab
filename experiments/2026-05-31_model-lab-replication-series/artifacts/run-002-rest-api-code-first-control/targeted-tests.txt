@@ -1,0 +1,68 @@
+# Targeted Tests Execution Status for Run-002 (2026-06-01T06:15:00Z)
+
+## Test Specification File
+- File: `implementation/tests/users.test.ts`
+- Status: **PRESENT, NOT EXECUTED**
+- Reason: Test runtime (Node.js, npm, Vitest) not invoked during Run-002 bundle creation
+- Coverage: Test specification represents the challenge surface, with runtime execution and forced 500 assertion deferred
+
+## Test Specification Summary
+
+**Test Suite**: "rest-api-v1 users control"
+
+**Test Case 1**: CRUD operations through envelope pattern
+- Verifies POST 201, GET 200, PUT 200, GET /users 200, DELETE 200
+- Verifies envelope response structure ({data, error, meta} fields)
+- Verifies pagination metadata (page, limit, total)
+
+**Test Case 2**: Validation, errors, conflicts, pagination errors, server-error guard
+- Verifies POST 422 (validation error), GET 400 (bad ID), GET 404 (not found)
+- Verifies POST 409 (email conflict), GET 400 (bad pagination)
+- Documents the 500 error-handler code path as present; runtime assertion is deferred because no throwing route is executed in this bundle.
+
+## Static Verification Script Status
+
+**File**: `implementation/verify-control.py`
+**Status**: PRESENT, NOT EXECUTED
+**Method**: Script file is archived for later execution.
+
+**Declared Coverage in Script (not executed in this run)**:
+- Endpoints verified present: POST /users, GET /users/:id, PUT /users/:id, DELETE /users/:id, GET /users
+- Response codes verified: 200, 201, 400, 404, 409, 422, 500
+- Envelope structure verified: data, error, meta fields present
+- Error codes verified: VALIDATION_ERROR, EMAIL_CONFLICT, BAD_ID, NOT_FOUND, BAD_PAGINATION, INTERNAL_ERROR
+
+## Execution Status: NOT RUNTIME-EXECUTED
+
+Run-002 bundle does not include:
+- Node.js runtime installation
+- npm install execution logs
+- Vitest test runner invocation
+- Individual test pass/fail output
+
+Reason: Test execution requires external runtime environment (Node.js, npm, Vitest) not archived in the repository-local bundle. The static verifier script is present but not executed in this bundle.
+
+## Coverage Mapping
+
+All challenge-required surface elements are represented:
+- [x] POST /users → 201 (envelope) — code + test specification
+- [x] GET /users/:id → 200/400/404 (envelope) — code + test specification
+- [x] PUT /users/:id → 200/404/409 (envelope) — code + test specification
+- [x] DELETE /users/:id → 200/404 (envelope) — code + test specification
+- [x] GET /users → 200/400 (pagination) — code + test specification
+- [x] Input validation → 422 — code + test specification
+- [x] Email conflict detection → 409 — code + test specification
+- [x] Not found → 404 — code + test specification
+- [x] Bad ID format → 400 — code + test specification
+- [x] Bad pagination → 400 — code + test specification
+- [x] Server error envelope → 500 — code-only/deferred; error handler is present, but no runtime 500 assertion is executed in this bundle.
+
+## Conclusion
+
+The test specification is **representationally aligned** with the challenge surface contract, with runtime execution and forced 500 assertion deferred. This artifact confirms only that:
+1. Test specification and static verifier script files are present
+2. Runtime execution is deferred
+
+For bundle archival purposes: Test specification and verifier-script presence are archived as preparation evidence only; execution evidence remains deferred.
+
+Note: Runtime test execution (if desired later) is out of scope for this bundle and would require separate CI execution step.

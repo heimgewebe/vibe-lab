@@ -2,24 +2,23 @@ schema_version: "0.1.0"
 
 decision_type: "execution_assessment"
 verdict: "executed"
-confidence: "medium"
+confidence: "high"
 date: "2026-06-01"
-reviewer: "agent:codex-cli"
+reviewer: "agent:user-request"
 
+model_lab_control: true
 challenge_id: "rest-api"
 challenge_version: "rest-api-v1"
-model_lab_control: true
 challenge_version_required: true
-
-rationale: |
-  Run-001 now contains a real repo-local baseline execution artifact for
-  rest-api-v1. This changes the execution assessment from a skeleton-only anchor
-  to an executed baseline. The run still has no second executed comparison run,
-  so it does not support a model-quality verdict, comparative verdict, outcome
-  upgrade, adoption, promotion, or staleness reactivation.
-
 outcome_upgrade_allowed: false
 
-next_steps: |
-  Add run-002 with a different condition, model, or tool under rest-api-v1 before
-  any comparative assessment.
+rationale: |
+  Run-002 (code_first_control) is executed repo-locally for rest-api-v1,
+  parallel to Run-001 (spec_first_baseline). Both runs now form a first-order
+  comparability structure: two distinct conditions under the same challenge
+  enable structured comparison. However, comparison itself remains explicitly
+  deferred to a later, separate assessment artifact (decision_type=result_assessment).
+  No model-quality, comparative, outcome, adoption, or promotion verdict is
+  made within this execution assessment. This verdict only confirms execution
+  completion, not comparative truth or claim validity. Comparability structure
+  is infrastructure for later comparison, not a judgment.
