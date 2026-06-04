@@ -4,7 +4,7 @@ This artifact provides runtime evidence for the implementations produced in `run
 
 The original run bundles successfully generated the implementations and test specifications, but left them as unexecuted artifacts (MISSING_EVIDENCE for runtime validation, particularly the forced 500 error-handling paths).
 
-This artifact closes that evidence gap by actually executing the tests and static verifiers against the archived code, proving that the existing `run-001` and `run-002` implementations are indeed fully executable and pass their assertions.
+This artifact closes that evidence gap by actually executing the tests and static verifiers against the archived code. It provides runtime evidence in this archived environment that the existing implementation test suites and forced-500 assertions executed successfully.
 
 ## Interpretation Limits
 - **No historical rewrite**: The original runs remain unchanged. This is a separate, post-hoc validation.

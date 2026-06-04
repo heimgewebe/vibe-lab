@@ -5,7 +5,7 @@ Scope Boundary:
 INCLUDED:
 - runtime validation artifacts for Run-001 and Run-002
 - cross-run assessment/result/method/roadmap documentation updates required to reference runtime evidence
-- generated doc index updates caused by new Markdown artifacts
+- generated documentation/index/taxonomy updates produced by repo generator
 
 EXCLUDED:
 - production source code
