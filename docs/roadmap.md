@@ -1,11 +1,11 @@
 ---
 title: "Roadmap — Koordination offener Arbeitsstränge"
 status: active
-triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
+triggered_by: "user-request-2026-06-04-cross-run-assessment"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-06-01"
+updated: "2026-06-04"
 relations:
   - type: references
     target: masterplan.md
