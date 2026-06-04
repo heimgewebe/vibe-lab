@@ -1,2 +1,13 @@
+Runtime Validation — Static Verifier Run-001
+
+timestamp: 2026-06-04T12:00:00Z
+cwd: /app/experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/implementation
+command: python3 verify-baseline.py
+
+stdout:
 baseline implementation static verification passed
-Exit Code: 0
+
+stderr:
+_none_
+
+exit_code: 0

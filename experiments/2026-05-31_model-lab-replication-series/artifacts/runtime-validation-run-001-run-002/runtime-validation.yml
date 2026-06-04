@@ -44,3 +44,15 @@ interpretation_limits:
   - "This does not establish model-quality superiority."
   - "This does not authorize adoption, promotion, outcome upgrade, or staleness reactivation."
   - "Run-001 and Run-002 original bundle histories are not rewritten."
+
+environment_risks:
+  - id: npm-audit-critical
+    status: observed_not_remediated
+    evidence:
+      - npm-install-run-001.txt
+      - npm-install-run-002.txt
+    interpretation: >
+      npm install reported a critical severity dependency vulnerability in the
+      archived runtime environment. This does not invalidate the repo-local
+      runtime validation evidence, but it prevents using this artifact as a
+      production security approval or dependency-health verdict.

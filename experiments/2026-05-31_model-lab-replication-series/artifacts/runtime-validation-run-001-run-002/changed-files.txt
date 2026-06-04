@@ -17,9 +17,9 @@ EXCLUDED:
 File list:
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/changed-files.txt
-[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500.test.ts
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-001.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-002.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500.test.ts
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-001.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-002.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/runtime-validation.yml
@@ -27,8 +27,11 @@ File list:
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-002.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-001.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-002.txt
-[modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
-[modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
-[modify] experiments/2026-05-31_model-lab-replication-series/method.md
-[modify] docs/roadmap.md
+[modify] docs/_generated/artifact-taxonomy.json
+[modify] docs/_generated/artifact-taxonomy.md
+[modify] docs/_generated/backlinks.md
 [modify] docs/_generated/doc-index.md
+[modify] docs/_generated/orphans.md
+[modify] docs/_generated/system-map.md
+[modify] experiments/2026-05-31_model-lab-replication-series/method.md
+[modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
