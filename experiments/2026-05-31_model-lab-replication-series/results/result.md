@@ -21,7 +21,9 @@ and remain bound to `challenge_version: rest-api-v1`.
 - Two real execution artifacts now exist for `rest-api-v1`.
 - AP-1 (`validate_model_lab_control`) Model-Lab metadata is exercised on both executed run metadata files.
 - AP-2 (`validate_challenge_versions`) challenge-version metadata remains bound
-  to `rest-api-v1` through both activated decision paths.
+  to `rest-api-v1` through the series-level execution decision, while Run-001
+  and Run-002 carry matching challenge-version metadata in their run-local
+  artifacts.
 - Both runs produce TypeScript/Fastify implementation shapes, repo-local static verifier scripts,
   and executable (but unrun) Vitest specifications under `implementation/`.
 - **Comparability structure is now available:** Run-001 and Run-002 address the same challenge
