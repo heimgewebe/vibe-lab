@@ -25,6 +25,7 @@ File list:
 [modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
 [modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
 [modify] experiments/2026-05-31_model-lab-replication-series/method.md
+[modify] experiments/2026-05-31_model-lab-replication-series/manifest.yml
 [modify] docs/roadmap.md
 [modify] docs/_generated/artifact-taxonomy.json
 [modify] docs/_generated/artifact-taxonomy.md
