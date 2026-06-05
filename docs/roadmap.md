@@ -1,11 +1,11 @@
 ---
 title: "Roadmap — Koordination offener Arbeitsstränge"
 status: active
-triggered_by: "user-request-2026-06-04-cross-run-assessment"
+triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-06-04"
+updated: "2026-06-05"
 relations:
   - type: references
     target: masterplan.md
@@ -305,5 +305,11 @@ Ergaenzung 2026-06-04 zu RM-008 (Run-001/Run-002 Cross-Run-Assessment vorbereite
 - Die Vergleichbarkeitsstruktur ist vorhanden; sie begruendet aber noch kein Modellqualitaets-, Outcome-, Adoption- oder Promotion-Urteil.
 - Neues separates Assessment-Artefakt: `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md`.
 - Das Assessment bewertet Implementation Shape, Verification Coverage und Evidenzluecken nebeneinander.
-- Wesentliche Grenze bleibt: Runtime-Ausfuehrung der Vitest-Spezifikationen und forced 500 assertion sind nicht als Laufzeitbeleg archiviert.
-- Naechster methodisch staerkerer Schritt: entweder runtime-validierter Vergleich oder Run-003 mit staerkerem Condition-Kontrast.
+- Runtime-Ausfuehrung der Vitest-Spezifikationen und forced 500 assertion sind inzwischen separat in `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/` archiviert.
+- Verbleibende wesentliche Grenze: Der Condition-Kontrast zwischen Run-001 und Run-002 ist methodisch schwach.
+
+Ergaenzung 2026-06-05 zu RM-008 (Run-003-Plan statt formaler Hochstufung):
+- Neues Plan-Artefakt: `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/`.
+- Naechster methodisch staerkerer Schritt: Run-003 erst ausfuehren, wenn ein konkreter anderer Tool-/Modell-/Condition-Rand dokumentiert ist.
+- Ein formales `decision_type=result_assessment` bleibt bis nach staerkerer Kontrast-Evidence zurueckgestellt.
+- Keine Modellqualitaets-, Outcome-, Adoption-, Promotion-, Production- oder Security-Hochstufung.

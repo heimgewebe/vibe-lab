@@ -1,0 +1,35 @@
+Files changed by Run-003 stronger-condition-contrast planning step
+Generated timestamp: 2026-06-05T09:58:52Z
+Triggered by: user-request-2026-06-05-model-lab-next-step-diagnosis
+
+Scope Boundary:
+INCLUDED:
+- Run-003 planning artifact for stronger Model-Lab condition contrast
+- Documentation reconciliation after existing Runtime Validation Run-001/Run-002 evidence
+- Generated documentation index/taxonomy updates if required by generators
+
+EXCLUDED:
+- execution of Run-003
+- implementation generation
+- mutation of original Run-001/Run-002 historical bundles
+- new runtime-validation artifact package
+- benchmark challenge changes
+- schema/validator/policy changes
+- dependency remediation
+- result_assessment decision artifact
+- model-quality, comparative-superiority, outcome-upgrade, adoption, promotion, production-readiness, or security-readiness claims
+
+File list:
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/plan.md
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/changed-files.txt
+[modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
+[modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
+[modify] experiments/2026-05-31_model-lab-replication-series/method.md
+[modify] experiments/2026-05-31_model-lab-replication-series/manifest.yml
+[modify] docs/roadmap.md
+[modify] docs/_generated/artifact-taxonomy.json
+[modify] docs/_generated/artifact-taxonomy.md
+[modify] docs/_generated/backlinks.md
+[modify] docs/_generated/doc-index.md
+[modify] docs/_generated/orphans.md
+[modify] docs/_generated/system-map.md

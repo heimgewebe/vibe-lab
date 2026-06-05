@@ -1,7 +1,7 @@
 ---
 title: "Model-Lab Replication-Series — Method"
 status: designed
-triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
+triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
 canonicality: operative
 ---
 
@@ -71,5 +71,5 @@ Methodological strength: weak structural control. The condition `code_first_cont
 - Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).
 - Runtime validation exists in `artifacts/runtime-validation-run-001-run-002`.
 - Comparative assessment has been structurally performed in the cross-run assessment, but no model-quality verdict is drawn.
-- If a third run is added (different tool, model, or condition), repeat the same pattern:
-  execute, document, defer comparison.
+- A Run-003 planning artifact exists at `artifacts/run-003-plan-stronger-condition-contrast/`.
+- If a third run is executed, it must use a concretely documented different tool, model, or condition, then repeat the same pattern: execute, document, runtime-validate separately, and defer stronger comparison.

@@ -12,9 +12,9 @@ experiment:
   execution_status: executed
   evidence_level: experimental
   created: "2026-05-31"
-  updated: "2026-06-01"
+  updated: "2026-06-05"
   author: "vibe-lab maintainers"
-  triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
+  triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
   iteration: 3
   falsifiability:
     version: 1
@@ -53,6 +53,13 @@ experiment:
     - "artifacts/run-002-rest-api-code-first-control/timing.txt"
     - "artifacts/run-002-rest-api-code-first-control/control-output.md"
     - "results/evidence.jsonl"
+
+  planning_refs:
+    - "artifacts/run-003-plan-stronger-condition-contrast/plan.md"
+    - "artifacts/run-003-plan-stronger-condition-contrast/changed-files.txt"
+  limitations:
+    - "Run-003 planning artifact exists; no Run-003 execution bundle has been created."
+    - "No result_assessment, model-quality verdict, comparative-superiority claim, adoption, promotion, production-readiness, security-readiness, or outcome upgrade is derived."
 
 context:
   tools: ["model-lab-control-plane", "AP-1 model-lab-control validator", "AP-2 challenge-version validator"]

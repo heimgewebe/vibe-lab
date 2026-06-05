@@ -1,7 +1,7 @@
 ---
 title: "Model-Lab Replication-Series — Results"
 status: testing
-triggered_by: "user-request-2026-06-01-execute-real-model-lab-baseline-run"
+triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
 canonicality: operative
 ---
 
@@ -25,9 +25,9 @@ and remain bound to `challenge_version: rest-api-v1`.
   and Run-002 carry matching challenge-version metadata in their run-local
   artifacts.
 - Both runs produce TypeScript/Fastify implementation shapes, repo-local static verifier scripts,
-  and executable (but unrun) Vitest specifications under `implementation/`.
-- **Comparability structure is now available:** Run-001 and Run-002 address the same challenge
-  version with isolated, different conditions, enabling a first-order comparison surface.
+  and Vitest specifications under `implementation/`.
+- A separate runtime-validation artifact now records static verifier execution, Vitest runtime execution, and forced 500 error-envelope assertions for both archived implementations.
+- **Comparability structure is now runtime-validated but still inconclusive:** Run-001 and Run-002 address the same challenge version with isolated conditions, but their condition contrast remains too weak for a model-quality or condition-effect verdict.
 
 ## What this does NOT establish
 
@@ -41,10 +41,7 @@ and remain bound to `challenge_version: rest-api-v1`.
 
 ## Interpretation limit
 
-This establishes two executed baseline + control artifacts under the same challenge.
-The structure supports comparison, but the comparison itself remains blocked until
-an **explicit, separate comparison artifact** is created. Comparability structure
-is a prerequisite for comparison, not a verdict.
+This establishes two executed baseline + control artifacts under the same challenge plus separate runtime validation for their archived implementation test surfaces. The structure supports comparison, but the comparison remains inconclusive because the condition contrast is weak and no independent/external auditor comparison exists. Comparability structure and runtime contact are prerequisites for stronger assessment, not a verdict.
 
 Promotion-readiness in `docs/_generated/promotion-readiness.json` denotes
 metadata/gate readiness only. It does not authorize outcome upgrade, adoption,
@@ -52,8 +49,4 @@ promotion, or model-quality claims.
 
 ## Next step
 
-Create an explicit, separate comparison artifact that places Run-001 and Run-002
-side-by-side, comparing their implementation, verification coverage, and behavior
-without automatic quality/outcome judgment. This artifact should remain separate
-from the run bundles, allowing future runs (third, fourth, etc.) to be added
-without disrupting the comparison structure.
+A cross-run assessment and runtime-validation addendum now exist. The next bounded step is the Run-003 planning artifact at `artifacts/run-003-plan-stronger-condition-contrast/`, which keeps execution deferred until a concrete model/tool/condition boundary is recorded. A formal `decision_type=result_assessment` remains deferred until stronger contrast evidence exists.
