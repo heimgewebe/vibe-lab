@@ -68,8 +68,8 @@ Methodological strength: weak structural control. The condition `code_first_cont
 
 ## Later extension (out of scope for this series update)
 
-- Create an explicit comparison artifact that places Run-001 and Run-002 side-by-side
-  without automatic quality/outcome judgment.
-- Only then consider any comparative assessment — never inside the run bundles themselves.
+- Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).
+- Runtime validation exists in `artifacts/runtime-validation-run-001-run-002`.
+- Comparative assessment has been structurally performed in the cross-run assessment, but no model-quality verdict is drawn.
 - If a third run is added (different tool, model, or condition), repeat the same pattern:
   execute, document, defer comparison.
