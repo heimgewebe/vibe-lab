@@ -22,6 +22,7 @@ File list:
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500.test.ts
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-001.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/npm-install-run-002.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/replay-commands.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/runtime-validation.yml
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-001.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-002.txt

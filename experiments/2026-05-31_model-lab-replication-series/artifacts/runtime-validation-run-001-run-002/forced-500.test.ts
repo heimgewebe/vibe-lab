@@ -4,7 +4,8 @@ import { buildServer } from '../src/server';
 test('forced 500 error envelope is correct', async () => {
   const app = buildServer();
 
-  app.get('/__force_500', async () => {
+  try {
+    app.get('/__force_500', async () => {
     throw new Error('Forced Internal Server Error');
   });
 
@@ -20,4 +21,7 @@ test('forced 500 error envelope is correct', async () => {
   expect(payload.error.code).toBe('INTERNAL_ERROR');
   expect(payload.error.message).toBeDefined();
   expect(payload.meta).toBeNull();
+  } finally {
+    await app.close();
+  }
 });
