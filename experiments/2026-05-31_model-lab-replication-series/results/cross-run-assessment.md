@@ -73,7 +73,9 @@ Beide Implementationen zeigen ein TypeScript/Fastify Shape mit Envelope Pattern.
 * Beide haben Vitest specs.
 * Diese Specs sind nach aktueller Run-Bundle-Lage executable, aber unrun.
 * Bei Run-002 ist forced 500 runtime assertion explizit MISSING_EVIDENCE / code-only/deferred.
+* Update (Runtime Validation): The forced 500 runtime assertion has now been validated via an external test artifact (`artifacts/runtime-validation-run-001-run-002`), closing this gap without altering the original bundle.
 * Run-001 hat identische Laufzeitbeweislücken bezüglich npm/Vitest und 500 runtime assertions.
+* Update (Runtime Validation): Both Vitest specs and 500 assertions for Run-001 and Run-002 have been successfully executed and archived in the separate runtime validation artifact.
 
 ## 6. Verhalten / Statuscodes / Error Envelope
 
@@ -83,6 +85,7 @@ Kein tatsächliches Runtime-Verhalten kann aus diesen Bundles abgeleitet werden,
 
 * Runtime execution of Vitest specs is not evidenced in the run bundles.
 * Forced 500 path runtime assertion is not evidenced.
+* Update: The runtime behavior of the 500 path has been evidenced separately in `runtime-validation-run-001-run-002`.
 * Condition contrast is weak structural control.
 * No external/independent auditor comparison exists for this pair.
 * No model-quality or causal outcome conclusion can be drawn.
@@ -101,7 +104,7 @@ Assessment verdict: comparison_surface_assessed_with_inconclusive_quality_result
 
 ## 10. Next Steps
 
-1. Optional runtime validation run for both implementations, including forced 500 assertion.
+1. ~~Optional runtime validation run for both implementations, including forced 500 assertion.~~ (Completed: `artifacts/runtime-validation-run-001-run-002`)
 2. Optional Run-003 with genuinely stronger condition contrast.
 3. Only after that: consider a formal `decision_type=result_assessment`.
 4. Continue to block model-quality/adoption/promotion claims until stronger evidence exists.

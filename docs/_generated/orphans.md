@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (55 found):
+Unexpected orphans (64 found):
 
 - `.vibe/intent.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
@@ -49,8 +49,17 @@ Unexpected orphans (55 found):
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-005-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-006-controlled-agent-skill-run/agent-output.md`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md`
+- `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/external-audit-claude-opus-4-7.context.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/condition-input.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md`
+- `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
+- `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
+- `tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md`
+- `tests/fixtures/challenge_versions/valid/challenges/rest-api-v1.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/CONTEXT.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/INITIAL.md`
 - `tests/fixtures/experiment_structure_phase1c/inconsistent/results/result.md`
@@ -61,7 +70,7 @@ Unexpected orphans (55 found):
 - `tests/fixtures/experiment_structure_phase1c/valid/results/result.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
 
-Expected orphans (77 found):
+Expected orphans (85 found):
 
 - `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
@@ -130,6 +139,14 @@ Expected orphans (77 found):
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence/review-source.md` — run_local_review_source_archive
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/failure_modes.md` — experiment_bundle_local_analysis
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/method.md` — experiment_bundle_method
+- `experiments/2026-05-25_outcome-evidence-replication-series/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-05-25_outcome-evidence-replication-series/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-05-25_outcome-evidence-replication-series/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-05-25_outcome-evidence-replication-series/method.md` — experiment_bundle_method
+- `experiments/2026-05-25_outcome-evidence-replication-series/results/result.md` — experiment_result_local_surface
+- `experiments/2026-05-31_model-lab-replication-series/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-05-31_model-lab-replication-series/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` — experiment_bundle_local_analysis
 - `exports/copilot/constraint-before-code.md` — generated_export_surface
 - `exports/copilot/edge-case-enumeration.md` — generated_export_surface
 - `exports/copilot/no-vague-prompts.md` — generated_export_surface

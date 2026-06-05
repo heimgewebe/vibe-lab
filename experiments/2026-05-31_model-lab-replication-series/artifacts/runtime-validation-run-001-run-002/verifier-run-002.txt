@@ -1,0 +1,13 @@
+Runtime Validation — Static Verifier Run-002
+
+timestamp: 2026-06-04T12:00:00Z
+cwd: /app/experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation
+command: python3 verify-control.py
+
+stdout:
+control implementation static verification passed
+
+stderr:
+_none_
+
+exit_code: 0

@@ -1,0 +1,15 @@
+
+> run-002-rest-api-v1-code-first-control@0.0.0 test
+> vitest run
+
+
+ RUN  v3.2.6 /app/experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/implementation
+
+ ✓ tests/users.test.ts (2 tests) 196ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  14:49:08
+   Duration  772ms (transform 79ms, setup 0ms, collect 258ms, tests 196ms, environment 0ms, prepare 94ms)
+
+Exit Code: 0

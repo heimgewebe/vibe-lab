@@ -60,14 +60,16 @@ verification evidence, and comparability structure availability. No model compar
 is performed inside the runs. Actual comparison (assessment, verdict, model-quality
 judgment) is deferred to later, separate assessment artifacts.
 
+* **Note on Runtime Validation**: Following the creation of the run bundles, a distinct phase was executed to runtime-validate the implementations without mutating the original artifacts. The logs and verification metrics for these executions are isolated in the `runtime-validation-run-001-run-002` directory.
+
 ## Methodological Strength Note
 
 Methodological strength: weak structural control. The condition `code_first_control` in Run-002 establishes a second execution surface under the same challenge, but does not by itself prove a materially different generation method. Comparative claims remain blocked until a separate assessment artifact evaluates the actual differences.
 
 ## Later extension (out of scope for this series update)
 
-- Create an explicit comparison artifact that places Run-001 and Run-002 side-by-side
-  without automatic quality/outcome judgment.
-- Only then consider any comparative assessment — never inside the run bundles themselves.
+- Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).
+- Runtime validation exists in `artifacts/runtime-validation-run-001-run-002`.
+- Comparative assessment has been structurally performed in the cross-run assessment, but no model-quality verdict is drawn.
 - If a third run is added (different tool, model, or condition), repeat the same pattern:
   execute, document, defer comparison.
