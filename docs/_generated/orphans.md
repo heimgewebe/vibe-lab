@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (64 found):
+Unexpected orphans (63 found):
 
 - `.vibe/intent.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
@@ -54,7 +54,6 @@ Unexpected orphans (64 found):
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/condition-input.md`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md`
-- `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
