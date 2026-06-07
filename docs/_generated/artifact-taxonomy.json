@@ -12069,6 +12069,22 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/targeted-tests.txt",
       "status": "classified"
     },
@@ -18083,6 +18099,7 @@
     "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/provenance.txt",
     "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md",
     "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run.yml",
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt",
     "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/targeted-tests.txt",
     "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/timing.txt",
     "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md",
@@ -18205,19 +18222,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 424,
+      "historical_record": 425,
       "navigation_surface": 7,
       "test_expectation": 103
     },
     "by_layer": {
       "docs": 7,
-      "experiment": 424,
+      "experiment": 425,
       "test": 103
     },
     "by_matched_pattern": {
       "docs/**": 7,
       "experiments/**": 21,
-      "experiments/*/artifacts/**": 403,
+      "experiments/*/artifacts/**": 404,
       "tests/fixtures/**": 103
     },
     "high_risk_count": 103,
@@ -18276,10 +18293,10 @@
             "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment": 11,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control": 13,
-            "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition": 12,
+            "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13
           },
-          "total": 403
+          "total": 404
         },
         {
           "high_risk_count": 0,
@@ -18350,10 +18367,10 @@
             "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment": 11,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control": 13,
-            "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition": 12,
+            "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13
           },
-          "total": 403
+          "total": 404
         },
         {
           "high_risk_count": 103,
@@ -18483,10 +18500,10 @@
           "experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment": 11,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline": 13,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control": 13,
-          "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition": 12,
+          "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition": 13,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13
         },
-        "total": 403
+        "total": 404
       },
       {
         "high_risk_count": 0,
@@ -18706,7 +18723,7 @@
       "diagnostic_signal": 7,
       "evidence_log": 18,
       "generated_projection": 10,
-      "historical_record": 424,
+      "historical_record": 425,
       "implementation_behavior": 12,
       "navigation_surface": 23,
       "normative_contract": 16,
@@ -18725,7 +18742,7 @@
       "ci_blocking": 367,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 488,
+      "no_rewrite": 489,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
@@ -18738,26 +18755,26 @@
       "catalog": 12,
       "contract": 29,
       "docs": 39,
-      "experiment": 657,
+      "experiment": 658,
       "export": 15,
       "generated": 8,
       "governance": 58,
       "test": 242
     },
     "by_lifecycle": {
-      "append_only": 488,
+      "append_only": 489,
       "handcrafted": 529,
       "regenerated": 18,
       "revision_with_reason": 65,
       "superseded_not_rewritten": 2
     },
-    "classified": 1102,
+    "classified": 1103,
     "conflict": 0,
-    "fallback_classified": 534,
-    "fallback_share": 0.484573502722323,
+    "fallback_classified": 535,
+    "fallback_share": 0.485040797824116,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "ok",
-    "total": 1102,
+    "total": 1103,
     "unknown": 0
   },
   "transition_risk_hints": [],
