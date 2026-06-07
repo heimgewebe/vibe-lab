@@ -108,7 +108,12 @@ Assessment verdict: comparison_surface_runtime_validated_with_inconclusive_quali
 ## 10. Next Steps
 
 1. ~~Optional runtime validation run for both implementations, including forced 500 assertion.~~ (Completed: `artifacts/runtime-validation-run-001-run-002`)
-2. Run-003 planning for genuinely stronger condition contrast is now captured in `artifacts/run-003-plan-stronger-condition-contrast/`.
-3. Execute Run-003 only after the concrete model/tool/condition boundary is recorded.
-4. Only after stronger contrast evidence exists: consider a formal `decision_type=result_assessment`.
-5. Continue to block model-quality/adoption/promotion claims until stronger evidence exists.
+2. Run-003 execution exists under the retained condition label, calibrated as `self_reported_different_agent_tool_context` with `external_attestation: false`.
+3. Runtime-validate Run-003 in a separate artifact.
+4. Only after Run-003 runtime-validation evidence exists: consider a formal `decision_type=result_assessment`.
+5. Continue to block model-quality/adoption/promotion/readiness claims until stronger evidence exists.
+
+## Run-003 execution addendum
+
+Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed. The retained condition label is calibrated as a self-reported different agent/tool/session boundary, not externally attested model independence.
+

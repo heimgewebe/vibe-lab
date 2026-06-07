@@ -1,0 +1,50 @@
+schema_version: "1.0.0"
+run_id: "run-003-rest-api-independent-model-or-tool-condition"
+claims:
+  - claim_id: "ev3-001"
+    text: "Run-003 metadata and run-bundle contracts are present."
+    type: "file_changed"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run_meta.json"
+        status: "repo_local"
+
+  - claim_id: "ev3-002"
+    text: "Run-003 self-reported different agent/tool/session boundary is recorded before comparative claims; external model-independence attestation is absent."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md"
+        status: "repo_local"
+
+  - claim_id: "ev3-003"
+    text: "Run-003 implementation and declared challenge surface are present."
+    type: "generated_artifact_updated"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/src/server.ts"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/tests/users.test.ts"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/verify-run-003.py"
+        status: "repo_local"
+
+  - claim_id: "ev3-004"
+    text: "Runtime validation for Run-003 remains deferred."
+    type: "validator_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/auditor-output.yml"
+        status: "repo_local"
+
+  - claim_id: "ev3-005"
+    text: "No result assessment or readiness upgrade is made."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/comparability.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/results/result.md"
+        status: "repo_local"

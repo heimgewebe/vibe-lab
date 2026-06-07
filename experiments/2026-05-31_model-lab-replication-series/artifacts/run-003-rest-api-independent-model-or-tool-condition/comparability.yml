@@ -1,0 +1,42 @@
+schema_version: "1.0.0"
+contract: "run_comparability_assessment"
+run_id: "run-003-rest-api-independent-model-or-tool-condition"
+assessed_at: "2026-06-05T19:40:00Z"
+
+series: "model-lab-replication-series"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+condition: "independent_model_or_tool_condition"
+independence_status: "self_reported_different_agent_tool_context"
+external_attestation: false
+changed_files_artifact: "changed-files.txt"
+timing_artifact: "timing.txt"
+
+compared_against:
+  - run_id: "run-001-rest-api-spec-first-baseline"
+    condition: "spec_first_baseline"
+  - run_id: "run-002-rest-api-code-first-control"
+    condition: "code_first_control"
+
+verdict: "third_surface_available_no_comparative_verdict"
+comparison_ready: false
+comparison_deferred: true
+runtime_validation_required: true
+
+surface_counts:
+  current_executed_surfaces: 3
+  current_runtime_validated_surfaces: 2
+  current_result_assessment_ready_surfaces: 0
+counting_semantics: "current_comparable_runs in run.yml counts result-assessment-ready comparable runs, not raw executed surfaces."
+status_summary: "Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed."
+semantic_rework_triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
+
+limits:
+  no_externally_attested_model_independence_claim: true
+  no_model_quality_verdict: true
+  no_comparative_superiority_claim: true
+  no_outcome_upgrade: true
+  no_adoption_claim: true
+  no_promotion_claim: true
+  no_production_readiness_claim: true
+  no_security_readiness_claim: true

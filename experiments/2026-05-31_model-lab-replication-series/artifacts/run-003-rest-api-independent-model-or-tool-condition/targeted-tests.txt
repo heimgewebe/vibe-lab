@@ -1,0 +1,12 @@
+Run-003 targeted tests and deferred runtime-validation boundary
+
+Spec/Static artifacts present in this bundle:
+- implementation/verify-run-003.py checks required route, status-code, envelope, pagination, and error-handler tokens.
+- implementation/tests/users.test.ts contains Vitest cases for create, read, update, delete, pagination, 400, 404, 409, and 422 surfaces.
+
+Runtime validation intentionally deferred:
+- Do not treat this bundle as archived Vitest runtime evidence.
+- Do not treat this bundle as archived forced-500 assertion evidence.
+- A later runtime-validation-run-003 artifact should execute the static verifier, Vitest, forced-500 assertion, and dependency-risk observations.
+
+Status summary: Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.

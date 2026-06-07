@@ -1,0 +1,67 @@
+schema_version: "1.0.0"
+contract: "auditor_output"
+run_id: "run-003-rest-api-independent-model-or-tool-condition"
+auditor:
+  name: "agent:gpt-5.5-api-assistant"
+  executor: "agent:gpt-5.5-api-assistant"
+  date: "2026-06-05"
+auditor_date: "2026-06-05"
+overall_verdict: "MISSING_EVIDENCE"
+
+extensions:
+  auditor_independence_status: "NONE"
+  condition_independence_status: "self_reported_different_agent_tool_context"
+  external_attestation: false
+  semantic_rework_triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
+
+claims:
+  - id: "claim-001"
+    text: "Run-003 implementation bundle is present."
+    type: "generated_artifact_updated"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/src/server.ts"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/package.json"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/tests/users.test.ts"
+        status: "repo_local"
+
+  - id: "claim-002"
+    text: "Run-003 binds to rest-api-v1."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run_meta.json"
+        status: "repo_local"
+
+  - id: "claim-003"
+    text: "Run-003 self-reported different agent/tool/session boundary is documented without claiming externally attested model independence."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md"
+        status: "repo_local"
+
+  - id: "claim-004"
+    text: "Runtime validation for Run-003 is archived."
+    type: "validator_succeeded"
+    verdict: "MISSING_EVIDENCE"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/targeted-tests.txt"
+        status: "repo_local"
+    notes: "No runtime-validation-run-003 artifact exists in this run bundle; Vitest and forced-500 runtime execution are deferred to a separate post-run artifact."
+
+out_of_scope_claims:
+  - id: "out-of-scope-001"
+    text: "Run-003 is better, worse, or equivalent in model quality to Run-001/Run-002."
+    type: "scope_adhered_to"
+    verdict: "OUT_OF_SCOPE"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/comparability.yml"
+        status: "repo_local"
+    notes: "No result_assessment performed."
+
+required_next_proof:
+  - "Create a separate runtime-validation artifact for Run-003, including static verifier execution, Vitest runtime execution, forced-500 assertion, and dependency-risk observations."
+  - "Only after runtime validation should a separate decision_type=result_assessment be considered."

@@ -632,7 +632,16 @@
 
 ## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/plan.md`
 
+- ← `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` (references)
 - ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/method.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/method.md` (references)
 
 ## `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/runtime-validation.yml`
 
@@ -649,6 +658,7 @@
 ## `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md`
 
 - ← `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/plan.md` (references)
+- ← `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` (references)
 
 ## `experiments/2026-05-31_model-lab-replication-series/results/decision.yml`
 

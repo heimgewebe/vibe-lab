@@ -1,0 +1,58 @@
+Files changed by Run-003 execution
+Generated timestamp: 2026-06-05T19:40:00Z
+Triggered by: user-request-2026-06-05-run-003-execution
+
+Scope Boundary:
+INCLUDED:
+- Run-003 execution bundle for rest-api-v1 under independent_model_or_tool_condition
+- Series documentation reconciliation to reference Run-003 as executed but not runtime-validated
+- Generated documentation index/taxonomy updates if required by generators
+
+EXCLUDED:
+- mutation of Run-001/Run-002 historical bundles
+- mutation of Runtime Validation Run-001/Run-002 artifacts
+- Run-003 post-run runtime-validation artifact
+- benchmark challenge changes
+- schema/validator/policy changes
+- dependency remediation
+- result_assessment decision artifact
+- model-quality, comparative-superiority, outcome-upgrade, adoption, promotion, production-readiness, or security-readiness claims
+
+File list:
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run.yml
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run_meta.json
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/execution.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/changed-files.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/timing.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/measurement.yml
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/comparability.yml
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/auditor-output.yml
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/evidence-pack.yml
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/execute-run-003.py
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/package.json
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/src/server.ts
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/tests/users.test.ts
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/verify-run-003.py
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/targeted-tests.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/provenance.txt
+[modify] experiments/2026-05-31_model-lab-replication-series/method.md
+[modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
+[modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
+[modify] experiments/2026-05-31_model-lab-replication-series/manifest.yml
+[modify] docs/roadmap.md
+
+Semantic calibration amendment
+Triggered by: user-request-2026-06-06-run-003-semantic-rework
+- Clarifies independence_status=self_reported_different_agent_tool_context.
+- Records external_attestation=false.
+- Explains that current_comparable_runs counts result-assessment-ready comparable runs, not raw executed surfaces.
+- Reconciles series documentation to: Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
+- Does not add Run-003 runtime validation or a result_assessment.
+Generated reconciliation files:
+- docs/_generated/doc-index.md
+- docs/_generated/artifact-taxonomy.json
+- docs/_generated/artifact-taxonomy.md
+- docs/_generated/backlinks.md
+- docs/_generated/system-map.md

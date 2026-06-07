@@ -211,6 +211,8 @@
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/condition-input.md` | condition-input | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md` | control-output | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/plan.md` | Run-003 Plan — Stronger Condition Contrast | designed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` | Run-003 Condition Input — Independent Model/Tool Condition | executed | operative |
+| `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md` | run-output | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md` | README | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` | Model-Lab Replication-Series — Failure Modes | designed | operative |
 | `experiments/2026-05-31_model-lab-replication-series/method.md` | Model-Lab Replication-Series — Method | designed | operative |

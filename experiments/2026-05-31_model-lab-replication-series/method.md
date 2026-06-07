@@ -1,19 +1,20 @@
 ---
 title: "Model-Lab Replication-Series — Method"
 status: designed
-triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
+triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
 canonicality: operative
+relations:
+  - type: references
+    target: "artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md"
+  - type: references
+    target: "artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md"
 ---
 
 # Model-Lab Replication-Series — Method
 
 ## Shape of the series
 
-A small, controlled series that grows one run at a time. Two runs are now
-executed under `rest-api-v1`: a baseline anchor (spec-first) and a control
-run (code-first). They form a first-order comparability structure. No comparative
-or model-quality evaluation is performed inside this bundle; comparison remains
-deferred to later assessment artifacts.
+A small, controlled series that grows one run at a time. Three execution surfaces now exist under `rest-api-v1`: a baseline anchor (spec-first), a control run (code-first), and Run-003 under `independent_model_or_tool_condition`. Run-001 and Run-002 have separate runtime-validation evidence; Run-003 does not. No result assessment or model-quality evaluation is performed by the Run-003 bundle.
 
 ## Run-001 (executed baseline)
 
@@ -43,17 +44,28 @@ deferred to later assessment artifacts.
 - **Comparability:** `comparability.yml` in Run-002 records
   `verdict: comparable_surface_available`, but comparison remains deferred.
 
+## Run-003 (executed, self-reported different agent/tool/session condition)
+
+Run-003 executes the same `rest-api-v1` challenge under the retained label `independent_model_or_tool_condition`. Its calibrated independence status is `self_reported_different_agent_tool_context`; `external_attestation` is false, so the label does not establish model independence.
+
+The concrete condition boundary is recorded in `artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md`.
+
+Run-003 adds a third execution surface but does not establish model quality, comparative superiority, outcome upgrade, adoption, promotion, production readiness, or security readiness.
+
+Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
+
 ## What is measured now
 
-Two executed run surfaces exist under the same challenge version. The series
+Three executed run surfaces now exist under the same challenge version. The series
 tracks repo-local observations:
 
-- Run-001 and Run-002 both execute deterministically.
-- Both target `rest-api-v1` with identical API surface requirements.
-- Both produce implementation and verification artifacts.
-- Neither makes model-quality, comparative, outcome, adoption, or promotion claims.
+- Run-001 and Run-002 both execute deterministically and have separate runtime validation evidence.
+- Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
+- All three target `rest-api-v1` with identical API surface requirements.
+- All three produce implementation and verification artifacts.
+- None makes model-quality, comparative, outcome, adoption, promotion, production-readiness, or security-readiness claims.
 
-**Measurement status:** `executed_two_run_surface`.
+**Measurement status:** `executed_three_surface_run003_runtime_validation_deferred`.
 
 `measurement.yml` in each run records execution completeness, locator presence,
 verification evidence, and comparability structure availability. No model comparison
@@ -66,10 +78,10 @@ judgment) is deferred to later, separate assessment artifacts.
 
 Methodological strength: weak structural control. The condition `code_first_control` in Run-002 establishes a second execution surface under the same challenge, but does not by itself prove a materially different generation method. Comparative claims remain blocked until a separate assessment artifact evaluates the actual differences.
 
-## Later extension (out of scope for this series update)
+## Next extension
 
 - Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).
-- Runtime validation exists in `artifacts/runtime-validation-run-001-run-002`.
-- Comparative assessment has been structurally performed in the cross-run assessment, but no model-quality verdict is drawn.
-- A Run-003 planning artifact exists at `artifacts/run-003-plan-stronger-condition-contrast/`.
-- If a third run is executed, it must use a concretely documented different tool, model, or condition, then repeat the same pattern: execute, document, runtime-validate separately, and defer stronger comparison.
+- Runtime validation for Run-001 and Run-002 exists in `artifacts/runtime-validation-run-001-run-002`.
+- Run-003 execution exists with a self-reported different agent/tool/session boundary; externally attested model independence is not established.
+- Next, runtime-validate Run-003 in a separate artifact. Only after that should a formal `decision_type=result_assessment` be considered.
+- Model-quality, comparative-superiority, outcome, adoption, promotion, production-readiness, and security-readiness claims remain blocked.

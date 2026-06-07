@@ -1,7 +1,7 @@
 ---
 title: "Model-Lab Replication-Series — Results"
 status: testing
-triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
+triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
 canonicality: operative
 ---
 
@@ -49,4 +49,8 @@ promotion, or model-quality claims.
 
 ## Next step
 
-A cross-run assessment and runtime-validation addendum now exist. The next bounded step is the Run-003 planning artifact at `artifacts/run-003-plan-stronger-condition-contrast/`, which keeps execution deferred until a concrete model/tool/condition boundary is recorded. A formal `decision_type=result_assessment` remains deferred until stronger contrast evidence exists.
+Run-003 execution now exists with `independence_status: self_reported_different_agent_tool_context` and `external_attestation: false`. The next bounded step is a separate Run-003 runtime-validation artifact. A formal `decision_type=result_assessment` remains deferred until that evidence exists.
+
+## Run-003 addendum
+
+Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed. The boundary is a self-reported different agent/tool/session context, not externally attested model independence. The series remains inconclusive for model-quality or condition-effect claims.
