@@ -48,3 +48,11 @@ claims:
         status: "repo_local"
       - path: "experiments/2026-05-31_model-lab-replication-series/results/result.md"
         status: "repo_local"
+
+  - claim_id: "ev3-006"
+    text: "Run-003 static verifier was executed and archived as static surface evidence (not runtime validation, not Vitest, not forced-500, not dependency-risk, not result assessment, not readiness)."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt"
+        status: "repo_local"

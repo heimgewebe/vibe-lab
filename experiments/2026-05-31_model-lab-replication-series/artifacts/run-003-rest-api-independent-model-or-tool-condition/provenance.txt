@@ -13,3 +13,7 @@ Prior-run contrast evidence: Run-001 self-reports agent:codex-cli / unknown_code
 Known limitations: self-reported different agent/tool/session boundary, not externally attested model independence; no runtime-validation, model-quality, comparative-superiority, outcome, adoption, promotion, production-readiness, or security-readiness claim.
 Run-003 status formula: Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
 Semantic rework triggered by: user-request-2026-06-06-run-003-semantic-rework
+
+Exit-code scope note:
+The `run_meta.json.exit_code: 0` records the generator execution (execute-run-003.py) only. It does not imply that the static verifier, Vitest runtime tests, forced-500 runtime assertion, npm audit, dependency-risk observations, or any result assessment were executed.
+Static verifier execution is archived separately in `static-verify-run-003.txt`; this is static surface evidence only and does not upgrade Run-003 to runtime-validated.

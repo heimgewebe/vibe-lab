@@ -56,3 +56,4 @@ Generated reconciliation files:
 - docs/_generated/artifact-taxonomy.md
 - docs/_generated/backlinks.md
 - docs/_generated/system-map.md
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt

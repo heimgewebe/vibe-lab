@@ -9,7 +9,10 @@ auditor_date: "2026-06-05"
 overall_verdict: "MISSING_EVIDENCE"
 
 extensions:
-  auditor_independence_status: "NONE"
+  auditor_independence_status: "not_applicable_no_external_auditor_attestation"
+  auditor_independence_note: >
+    No external auditor attestation is claimed for Run-003; independence remains
+    self_reported_different_agent_tool_context.
   condition_independence_status: "self_reported_different_agent_tool_context"
   external_attestation: false
   semantic_rework_triggered_by: "user-request-2026-06-06-run-003-semantic-rework"

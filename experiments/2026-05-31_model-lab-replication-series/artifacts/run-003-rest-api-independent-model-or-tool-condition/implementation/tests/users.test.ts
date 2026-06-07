@@ -74,7 +74,7 @@ describe('rest-api-v1 run-003 surface', () => {
     });
   });
 
-  it('documents the 500 error handler path without archiving forced runtime assertion here', async () => {
+  it('documents that forced-500 runtime assertion is intentionally not archived in this bundle', async () => {
     await withServer(async (app) => {
       expect(app).toBeDefined();
     });
