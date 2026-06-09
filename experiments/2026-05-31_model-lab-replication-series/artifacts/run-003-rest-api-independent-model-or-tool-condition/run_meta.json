@@ -9,6 +9,7 @@
   "exit_code": 0,
   "test_output_file": "artifacts/run-003-rest-api-independent-model-or-tool-condition/execution.txt",
   "provenance_level": "self_reported",
+  "command_scope": "initial_run_surface_generator_only",
   "model_lab_control": true,
   "model_id": "gpt-5.5-api-assistant-session",
   "model_provider": "OpenAI",
