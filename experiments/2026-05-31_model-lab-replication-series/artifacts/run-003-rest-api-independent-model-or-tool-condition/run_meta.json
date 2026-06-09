@@ -36,6 +36,7 @@
     "implementation/package.json",
     "implementation/src/server.ts",
     "implementation/tests/users.test.ts",
-    "implementation/verify-run-003.py"
+    "implementation/verify-run-003.py",
+    "static-verify-run-003.txt"
   ]
 }

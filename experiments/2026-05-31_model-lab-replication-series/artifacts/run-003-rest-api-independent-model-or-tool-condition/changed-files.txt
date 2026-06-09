@@ -37,6 +37,7 @@ File list:
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation/verify-run-003.py
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/targeted-tests.txt
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/provenance.txt
+[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt
 [modify] experiments/2026-05-31_model-lab-replication-series/method.md
 [modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
 [modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
@@ -56,4 +57,3 @@ Generated reconciliation files:
 - docs/_generated/artifact-taxonomy.md
 - docs/_generated/backlinks.md
 - docs/_generated/system-map.md
-[add] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt
