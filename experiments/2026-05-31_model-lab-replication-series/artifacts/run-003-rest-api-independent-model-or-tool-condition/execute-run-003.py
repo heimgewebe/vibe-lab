@@ -944,7 +944,7 @@ This run generated the implementation bundle, static verifier script, and Vitest
         "exit_code": 0,
         "test_output_file": f"artifacts/{RUN_ID}/execution.txt",
         "provenance_level": "self_reported",
-        "command_scope": "initial_run_surface_generator_only",
+        "command_scope": "initial_run_bundle_generator_without_static_verifier_followup",
         "model_lab_control": True,
         "model_id": "gpt-5.5-api-assistant-session",
         "model_provider": "OpenAI",
@@ -972,8 +972,10 @@ This run generated the implementation bundle, static verifier script, and Vitest
             "implementation/package.json",
             "implementation/src/server.ts",
             "implementation/tests/users.test.ts",
-            "implementation/verify-run-003.py",
-            "static-verify-run-003.txt",
+            "implementation/verify-run-003.py"
+        ],
+        "review_followup_artifacts": [
+            "static-verify-run-003.txt"
         ],
     }
     write(RUN_DIR / "run_meta.json", json.dumps(meta, indent=2) + "\n")

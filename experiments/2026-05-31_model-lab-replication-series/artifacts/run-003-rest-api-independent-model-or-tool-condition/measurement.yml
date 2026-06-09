@@ -13,7 +13,7 @@ metrics:
   scope_drift_count:
     value: 0
     evidence_status: "repo_local"
-    notes: "changed-files.txt and comparability.yml constrain the change to the Run-003 bundle plus minimal series documentation reconciliation."
+    notes: "changed-files.txt enumerates all files in the PR diff and constrains the change to the Run-003 bundle plus series/generated reconciliation."
   unsupported_claim_count:
     value: 1
     evidence_status: "derived_from_auditor_output"

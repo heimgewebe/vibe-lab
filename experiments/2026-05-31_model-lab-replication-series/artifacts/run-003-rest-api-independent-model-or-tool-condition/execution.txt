@@ -7,6 +7,7 @@ Required tokens checked: 15
 Implementation bundle written: PASS
 Static verifier script present: PASS
 Vitest spec present: PASS
+Bundle metadata artifacts written: PASS (run.yml, measurement.yml, comparability.yml, auditor-output.yml, evidence-pack.yml, condition-input.md, provenance.txt, targeted-tests.txt)
 Independence status: self_reported_different_agent_tool_context
 External attestation: false
 Runtime validation archived: NO - deferred to separate post-run artifact
