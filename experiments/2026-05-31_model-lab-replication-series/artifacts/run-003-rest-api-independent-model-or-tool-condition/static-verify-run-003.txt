@@ -1,0 +1,41 @@
+Static verifier execution for run-003
+Generated timestamp: 2026-06-07T12:47:59Z
+Triggered by: review-followup-pr223-static-verifier
+
+Command:
+  python3 verify-run-003.py
+Working directory:
+  experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation
+Exit code: 0
+
+stdout:
+run-003 static verifier: PASS (spec surface present; runtime validation deferred)
+
+stderr: (empty)
+
+Scope of this verifier (deliberately narrow, intentionally NOT a runtime validation):
+- Asserts presence of required token substrings in implementation/src/server.ts
+  (route registrations, status-code reply calls, envelope fields, pagination params).
+- Asserts presence of required token substrings in implementation/tests/users.test.ts
+  (HTTP methods, status codes, error codes).
+- Asserts presence of implementation/package.json.
+
+What this verifier does NOT do (and is not claimed to do here):
+- Does not execute Vitest, npm install, npm audit, or any node runtime.
+- Does not execute a forced-500 error-handler path assertion.
+- Does not establish runtime validation, model independence, model quality,
+  comparative superiority, outcome upgrade, adoption, promotion,
+  production readiness, or security readiness.
+
+Result for this bundle:
+- Static verifier: executed, exit 0.
+- Vitest runtime execution: not executed; remains deferred to a separate post-run artifact.
+- Forced-500 runtime assertion: not executed; remains deferred to a separate post-run artifact.
+- npm install / audit / dependency-risk observation: not executed; remains deferred to a separate post-run artifact.
+- Result assessment: not performed.
+
+Series-level note:
+- run_meta.json.exit_code continues to refer to the exit code of execute-run-003.py
+  (the bundle generator), not to this static verifier or to any runtime validation.
+- This output file documents the static-verifier outcome separately and does not
+  re-attribute it to run_meta.json.

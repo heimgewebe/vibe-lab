@@ -1,0 +1,75 @@
+schema_version: "1.0.0"
+contract: "measurement_run"
+run_id: "run-003-rest-api-independent-model-or-tool-condition"
+
+auditor_verdict: "MISSING_EVIDENCE"
+auditor_ref: "auditor-output.yml"
+
+agent_layer_used:
+  agent: "agent:gpt-5.5-api-assistant"
+  note: "Repo-local Run-003 generation after explicit condition-boundary gate."
+
+metrics:
+  scope_drift_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "changed-files.txt enumerates all files in the PR diff and constrains the change to the Run-003 bundle plus series/generated reconciliation."
+  unsupported_claim_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "Derived from auditor-output.yml: exactly one non-PASS claim remains, the deferred runtime-validation evidence claim."
+  missing_locator_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "All required run-local artifacts resolve in the run-003 artifact directory."
+  validation_gap_count:
+    value: 1
+    evidence_status: "derived_from_auditor_output"
+    notes: "Runtime validation for Run-003 is not yet archived; separate post-run validation is required."
+  review_friction_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No human review or rework cycle was measured for this Run-003 execution bundle."
+  rework_count:
+    value: null
+    evidence_status: "missing_evidence"
+    notes: "No post-review rework cycle was measured for this Run-003 execution bundle."
+  false_block_count:
+    value: 0
+    evidence_status: "repo_local"
+    notes: "No false validator block was observed while creating the Run-003 bundle."
+  task_completion_time_observed:
+    value: 0.800
+    evidence_status: "repo_local"
+    notes: "timing.txt records wall-clock capture around the repo-local execute-run-003.py command, but no performance or model-quality claim is made."
+
+missing_evidence:
+  - metric: "review_friction_count"
+    reason: "No review/rework loop was part of this execution scope."
+  - metric: "rework_count"
+    reason: "No review/rework loop was part of this execution scope."
+  - metric: "validation_gap_count"
+    reason: "Run-003 runtime validation is intentionally deferred to a separate post-run artifact."
+
+interpretation_limits:
+  - "Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed."
+  - "No model-quality, comparative-superiority, outcome, adoption, promotion, production-readiness, or security-readiness claim is made."
+
+extensions:
+  series: "model-lab-replication-series"
+  challenge_id: "rest-api"
+  challenge_version: "rest-api-v1"
+  condition: "independent_model_or_tool_condition"
+  control_condition: "independent_model_or_tool_condition"
+  measurement_status: "executed_third_surface_runtime_validation_deferred"
+  independence_status: "self_reported_different_agent_tool_context"
+  external_attestation: false
+  current_executed_surfaces: 3
+  current_runtime_validated_surfaces: 2
+  current_result_assessment_ready_surfaces: 0
+  comparable_run_counting_semantics: "result-assessment-ready comparable runs, not raw executed surfaces"
+  semantic_rework_triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
+  triggered_by: "user-request-2026-06-05-run-003-execution"
+  outcome_upgrade_allowed: false
+  adoption_claim_allowed: false
+  promotion_claim_allowed: false

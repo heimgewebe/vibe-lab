@@ -3,22 +3,22 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-05-13T13:26:59Z
+Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 
 ## Gate Snapshot
 
-- Total events: **292**
+- Total events: **305**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **15**
+- Source evidence files: **17**
 
 ## Event Type Counts
 
 | event_type | events |
 | --- | ---: |
-| decision | 18 |
+| decision | 19 |
 | measurement | 133 |
-| observation | 107 |
-| run | 34 |
+| observation | 111 |
+| run | 42 |
 
 ## Metric Aggregates
 
@@ -28,6 +28,8 @@ Latest Evidence Timestamp: 2026-05-13T13:26:59Z
 | M0_task_validity_rate_iteration2 | 1 | 1 | 1 | 1 | 1 |
 | abort_rate_control | 1 | 1 | 0 | 0 | 0 |
 | abort_rate_treatment | 1 | 1 | 0 | 0 | 0 |
+| ap4_execution_verdict | 1 | 0 | - | - | - |
+| ap4_skeleton_status | 1 | 0 | - | - | - |
 | append_only_integrity_check | 1 | 0 | - | - | - |
 | apt_install_python3_yaml | 1 | 0 | - | - | - |
 | architecture-incremental | 1 | 0 | - | - | - |
@@ -87,6 +89,7 @@ Latest Evidence Timestamp: 2026-05-13T13:26:59Z
 | exotic_blindspot_count | 2 | 2 | 0 | 1 | 0.5 |
 | experiment-setup | 2 | 0 | - | - | - |
 | experiment-verdict | 1 | 0 | - | - | - |
+| external_cross_family_audit_status | 1 | 0 | - | - | - |
 | first_failing_input_index | 1 | 0 | - | - | - |
 | fix-verification | 1 | 0 | - | - | - |
 | fix_duration_seconds | 2 | 2 | 36 | 241 | 138 |
@@ -118,6 +121,9 @@ Latest Evidence Timestamp: 2026-05-13T13:26:59Z
 | make_validate | 1 | 0 | - | - | - |
 | manual_regen_steps | 6 | 5 | 0 | 2 | 1 |
 | measurement_object_alignment | 1 | 1 | 1 | 1 | 1 |
+| model_lab_baseline_execution_status | 1 | 0 | - | - | - |
+| model_lab_control_execution_status | 1 | 0 | - | - | - |
+| model_lab_run003_execution_status | 1 | 0 | - | - | - |
 | outcome_evidence_negative_case_recorded | 1 | 0 | - | - | - |
 | outcome_evidence_pilot_recorded | 1 | 0 | - | - | - |
 | patch_size | 1 | 1 | 7 | 7 | 7 |
@@ -170,12 +176,19 @@ Latest Evidence Timestamp: 2026-05-13T13:26:59Z
 | rework_test_isolation | 1 | 0 | - | - | - |
 | rrg01_rrg02_cross_diagnosis | 1 | 0 | - | - | - |
 | run_002_availability | 1 | 0 | - | - | - |
+| run_003_condition_semantic_calibration | 1 | 0 | - | - | - |
 | run_010_post_audit_reconciliation_recorded | 1 | 0 | - | - | - |
 | run_artifacts_written | 1 | 0 | - | - | - |
 | run_started | 2 | 2 | 1 | 1 | 1 |
 | scaffold_created | 1 | 1 | 1 | 1 | 1 |
 | scope_drift_control | 1 | 1 | 0 | 0 | 0 |
 | scope_drift_treatment | 1 | 1 | 0 | 0 | 0 |
+| series_agent_handoff_boundary_validation_status | 1 | 0 | - | - | - |
+| series_negative_control_status | 1 | 0 | - | - | - |
+| series_real_validator_effect | 1 | 0 | - | - | - |
+| series_run_status | 1 | 0 | - | - | - |
+| series_scaffold_status | 1 | 0 | - | - | - |
+| series_task_diversity_status | 1 | 0 | - | - | - |
 | setup | 3 | 3 | 1 | 1 | 1 |
 | single-shot-input1 | 1 | 0 | - | - | - |
 | single-shot-input2 | 1 | 0 | - | - | - |
@@ -248,3 +261,5 @@ Latest Evidence Timestamp: 2026-05-13T13:26:59Z
 - `experiments/2026-04-23_agent-failure-surface/results/evidence.jsonl`
 - `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
+- `experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl`
+- `experiments/2026-05-31_model-lab-replication-series/results/evidence.jsonl`

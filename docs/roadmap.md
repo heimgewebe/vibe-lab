@@ -313,3 +313,10 @@ Ergaenzung 2026-06-05 zu RM-008 (Run-003-Plan statt formaler Hochstufung):
 - Naechster methodisch staerkerer Schritt: Run-003 erst ausfuehren, wenn ein konkreter anderer Tool-/Modell-/Condition-Rand dokumentiert ist.
 - Ein formales `decision_type=result_assessment` bleibt bis nach staerkerer Kontrast-Evidence zurueckgestellt.
 - Keine Modellqualitaets-, Outcome-, Adoption-, Promotion-, Production- oder Security-Hochstufung.
+
+Ergaenzung 2026-06-05 zu RM-008 (Run-003 ausgefuehrt, ohne formales Result Assessment):
+- Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
+- Run-003 wurde gegen `rest-api-v1` unter `independent_model_or_tool_condition` als dritter Execution Surface archiviert; die Runtime-Validation fuer Run-003 ist zurueckgestellt und es gibt kein Result Assessment.
+- Der Rand ist als `self_reported_different_agent_tool_context` mit `external_attestation: false` kalibriert; eine extern attestierte Modellunabhaengigkeit ist nicht belegt. Die Details sind in `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` dokumentiert.
+- Kein Modellqualitaets-, Outcome-, Adoption-, Promotion-, Production- oder Security-Readiness-Urteil.
+- Naechster Schritt: separate Runtime-Validation fuer Run-003, danach erst formales `decision_type=result_assessment` pruefen.

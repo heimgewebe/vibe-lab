@@ -14,8 +14,8 @@ experiment:
   created: "2026-05-31"
   updated: "2026-06-05"
   author: "vibe-lab maintainers"
-  triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
-  iteration: 3
+  triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
+  iteration: 4
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -37,9 +37,11 @@ experiment:
             - path: "artifacts/run-001-rest-api-spec-first-baseline/execution.txt"
             - path: "artifacts/run-001-rest-api-spec-first-baseline/comparability.yml"
             - path: "artifacts/run-002-rest-api-code-first-control/comparability.yml"
+            - path: "artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md"
+            - path: "artifacts/run-003-rest-api-independent-model-or-tool-condition/comparability.yml"
           limitations:
-            - "Two runs now executed under rest-api-v1; comparability structure established but no actual comparison performed."
-            - "Potential for hidden oracle: comparability.yml in both runs must remain deferred, not automatic verdict."
+            - "Three runs now executed under rest-api-v1; Run-003 adds a condition-gated third surface but no actual comparison is performed."
+            - "Run-003 runtime validation is deferred; comparability.yml in all runs must remain deferred, not automatic verdict."
 
   execution_refs:
     - "artifacts/run-001-rest-api-spec-first-baseline/run.yml"
@@ -52,13 +54,25 @@ experiment:
     - "artifacts/run-002-rest-api-code-first-control/changed-files.txt"
     - "artifacts/run-002-rest-api-code-first-control/timing.txt"
     - "artifacts/run-002-rest-api-code-first-control/control-output.md"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/run.yml"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/execution.txt"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/changed-files.txt"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/timing.txt"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/run_meta.json"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/measurement.yml"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/auditor-output.yml"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/evidence-pack.yml"
+    - "artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt"
     - "results/evidence.jsonl"
 
   planning_refs:
     - "artifacts/run-003-plan-stronger-condition-contrast/plan.md"
     - "artifacts/run-003-plan-stronger-condition-contrast/changed-files.txt"
   limitations:
-    - "Run-003 planning artifact exists; no Run-003 execution bundle has been created."
+    - "Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed."
+    - "Run-003 independence_status is self_reported_different_agent_tool_context; external_attestation is false, so model independence is not established."
     - "No result_assessment, model-quality verdict, comparative-superiority claim, adoption, promotion, production-readiness, security-readiness, or outcome upgrade is derived."
 
 context:
