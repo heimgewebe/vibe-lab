@@ -428,6 +428,45 @@ class IsolatedRepoScenarios(unittest.TestCase):
             self.assertIn("prepared_not_executed", entry["notes"])
             self.assertTrue(entry["pre_execution_hold"])
 
+    def test_designed_not_executed_not_ready(self) -> None:
+        """designed + execution_assessment + not_executed is not promotion-ready."""
+        import yaml as _yaml
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            exp_dir = root / "exp-designed-not-executed"
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="designed", execution_status="designed"),
+            )
+            decision_path = exp_dir / "results" / "decision.yml"
+            decision_path.parent.mkdir(parents=True, exist_ok=True)
+            decision_path.write_text(
+                _yaml.safe_dump(
+                    {
+                        "decision_type": "execution_assessment",
+                        "verdict": "not_executed",
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entries = self._evaluate_dir(root)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            by_name = {Path(e["path"]).name: e for e in entries}
+            entry = by_name["exp-designed-not-executed"]
+
+            self.assertFalse(entry["promotion_ready"])
+            self.assertIn("designed_not_executed", entry["missing"])
+            self.assertIn("designed_not_executed", entry["notes"])
+            self.assertTrue(entry["pre_execution_hold"])
+
     def test_executed_insufficient_proof_not_ready(self) -> None:
         """executed + decision_type=execution_assessment + verdict=insufficient_proof
         → promotion_ready must be False with signal 'insufficient_proof_assessment'.

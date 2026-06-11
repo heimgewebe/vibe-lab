@@ -463,11 +463,11 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         warnings.extend(w)
         notes.append("falsifiability_voluntary")
 
-    # Enge Sonderregel: prepared + execution_assessment + insufficient_proof
+    # Enge Sonderregel: prepared/designed + execution_assessment + insufficient_proof
     # → kein Messwert vorhanden, daher nicht promotion-ready.
     if (
         not historical
-        and state["execution_status"] == "prepared"
+        and state["execution_status"] in {"prepared", "designed"}
     ):
         decision = load_decision_file(exp_dir)
         if (
@@ -477,15 +477,16 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         ):
             missing.append("prepared_without_measurement")
             notes.append("prepared_without_measurement")
-        # Only explicit prepared + not_executed skeletons are pre_execution_hold.
+        # Only explicit prepared/designed + not_executed skeletons are pre_execution_hold.
         # prepared_without_measurement remains ratchet-enforced.
         if (
             decision is not None
             and decision.get("decision_type") == "execution_assessment"
             and decision.get("verdict") == "not_executed"
         ):
-            missing.append("prepared_not_executed")
-            notes.append("prepared_not_executed")
+            sig = "designed_not_executed" if state["execution_status"] == "designed" else "prepared_not_executed"
+            missing.append(sig)
+            notes.append(sig)
             pre_execution_hold = True
 
     # Allgemeine Regel: execution_assessment + insufficient_proof bei executed/replicated
@@ -603,6 +604,7 @@ VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
     "falsifiability.assessment_blocked",
     "prepared_without_measurement",
     "prepared_not_executed",
+    "designed_not_executed",
     "insufficient_proof_assessment",
 })
 
