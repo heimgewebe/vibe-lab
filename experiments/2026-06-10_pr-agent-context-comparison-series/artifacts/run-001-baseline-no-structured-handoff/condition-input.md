@@ -9,6 +9,8 @@
 - The user request.
 - The PR review comment or task text.
 - Any code/diff/log snippets explicitly pasted into the task.
+- Autonomous workspace access (opening the repo, viewing the PR diff, inspecting relevant files).
+- Using standard development tools (tests, logs, checks).
 
 ## Disallowed context
 
