@@ -9,7 +9,7 @@
 - The user request.
 - The PR review comment or task text.
 - Any code/diff/log snippets explicitly pasted into the task.
-- Autonomous workspace access (opening the repo, viewing the PR diff, inspecting relevant files).
+- Ordinary PR-workflow workspace access (opening the repo, viewing the PR diff, inspecting relevant files).
 - Using standard development tools (tests, logs, checks).
 
 ## Disallowed context
@@ -17,6 +17,7 @@
 - Vibe-Lab-specific handoff structure.
 - Lenskit/repoLens dump or Agent Reading Pack.
 - Pre-filled measurement rubric.
+- Cross-condition artifacts, instructions, or rubrics from other runs.
 
 ## Output request
 
