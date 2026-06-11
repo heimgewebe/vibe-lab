@@ -1,0 +1,82 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "pr-agent-context-comparison-series"
+  hypothesis: >
+    A controlled series of real PR-review and PR-rework tasks can determine
+    whether structured Vibe-Lab handoffs, and structured handoffs combined with
+    Lenskit/repoLens context, improve agent usefulness per unit of review effort
+    compared with an unstructured baseline. The series may also show that a
+    smaller decision-first checklist captures most of the benefit with less
+    ceremony.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  evidence_level: experimental
+  created: "2026-06-10"
+  updated: "2026-06-10"
+  author: "vibe-lab maintainers"
+  triggered_by: "user-request-2026-06-10-create-pr-agent-context-comparison-series"
+  iteration: 1
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The primary hypothesis is weakened or refuted if comparable PR tasks show
+      no reduction in unsupported claims, missing locators, scope drift, review
+      friction, or rework count under structured handoff conditions, or if the
+      structured conditions increase effort without improving evidence quality.
+    counter_hypotheses:
+      - id: task_difficulty_dominates_context
+        statement: >
+          Differences between tasks and PRs dominate any effect from handoff or
+          repository context, making the observed differences non-attributable.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Use at least three comparable task classes before result assessment."
+            - "Record task class, PR size, changed-file count, and required domain context per run."
+          limitations:
+            - "Early runs may remain descriptive until enough comparable cases exist."
+          confidence: low
+      - id: ceremony_cost_exceeds_context_gain
+        statement: >
+          Vibe-Lab or Lenskit context may improve formal evidence quality but cost
+          more preparation and review effort than it saves in actual PR work.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Capture preparation time, review time, and correction rounds for each condition."
+            - "Compare high-ceremony conditions against the minimal decision-first checklist holdout."
+          limitations:
+            - "Manual timing may be noisy unless command logs or session logs are attached."
+          confidence: low
+      - id: reviewer_learning_confounds_series
+        statement: >
+          The reviewer becomes better over the sequence, so later conditions look
+          better because of learning rather than because of the context package.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Rotate condition order where possible."
+            - "Mark repeated task domains and exclude obvious rehearsal effects from strong claims."
+          limitations:
+            - "A small human-operated series cannot fully blind reviewer learning."
+          confidence: low
+
+context:
+  tools:
+    - "ChatGPT or coding agent"
+    - "Vibe-Lab handoff artifacts"
+    - "Lenskit/repoLens dump or agent reading pack"
+    - "GitHub PR review comments"
+    - "repo-local validation commands"
+  language: "mixed: Markdown, YAML, Python, TypeScript, shell"
+  environment: "vibe-lab repository; real PR-review and PR-rework workflow"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
