@@ -25,11 +25,15 @@
       "execution_status": "designed",
       "falsifiability_triggered": false,
       "historical_escape": false,
-      "missing": [],
-      "notes": [],
+      "missing": [
+        "designed_not_executed"
+      ],
+      "notes": [
+        "designed_not_executed"
+      ],
       "path": "experiments/2026-04-11_yolo-vs-spec-first",
-      "pre_execution_hold": false,
-      "promotion_ready": true,
+      "pre_execution_hold": true,
+      "promotion_ready": false,
       "status": "designed",
       "warnings": []
     },
@@ -260,16 +264,34 @@
       "warnings": [
         "falsifiability_assessment_inconclusive"
       ]
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "designed",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [
+        "designed_not_executed"
+      ],
+      "notes": [
+        "designed_not_executed",
+        "falsifiability_voluntary"
+      ],
+      "path": "experiments/2026-06-10_pr-agent-context-comparison-series",
+      "pre_execution_hold": true,
+      "promotion_ready": false,
+      "status": "designed",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 17,
+    "experiments_checked": 18,
     "historical_escape": 1,
     "not_ready": 12,
-    "pre_execution_hold": 0,
-    "ready": 4,
+    "pre_execution_hold": 2,
+    "ready": 3,
     "warnings": 4
   },
   "trigger": "need_for_reproducibility"

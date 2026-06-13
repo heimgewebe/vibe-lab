@@ -218,6 +218,19 @@
 | `experiments/2026-05-31_model-lab-replication-series/method.md` | Model-Lab Replication-Series — Method | designed | operative |
 | `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` | Cross-Run Assessment: Model-Lab Replication Series Run-001 vs Run-002 | draft | operative |
 | `experiments/2026-05-31_model-lab-replication-series/results/result.md` | Model-Lab Replication-Series — Results | testing | operative |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/AGENT_INSTRUCTION.md` | AGENT_INSTRUCTION | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/CONTEXT.md` | Context — PR Agent Context Comparison Series | designed | operative |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/INITIAL.md` | Initial — PR Agent Context Comparison Series | designed | operative |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/README.md` | README | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-001-baseline-no-structured-handoff/condition-input.md` | condition-input | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-002-vibe-lab-handoff/condition-input.md` | condition-input | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-003-lenskit-plus-vibe-lab-handoff/condition-input.md` | condition-input | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-004-minimal-decision-first-checklist/condition-input.md` | condition-input | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-template.md` | run-template | — | — |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/failure_modes.md` | Failure Modes — PR Agent Context Comparison Series | designed | operative |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` | Method — PR Agent Context Comparison Series | designed | operative |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/results/cross-run-assessment.md` | Cross-Run Assessment — PR Agent Context Comparison Series | draft | operative |
+| `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` | Results — PR Agent Context Comparison Series | draft | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
