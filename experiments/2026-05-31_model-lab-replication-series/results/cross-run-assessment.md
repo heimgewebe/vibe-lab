@@ -155,9 +155,9 @@ To prevent silent drift between `current_comparable_runs` and the run-bundle int
 - `min_comparable_runs_required` and `current_comparable_runs` are series-level thresholds for *result-assessment-ready comparable runs*, not for raw executed surfaces.
 - The series currently has 0 result-assessment-ready comparable runs, regardless of how many executed surfaces exist.
 - The series-level minimum is 3, reflecting that any comparative condition-effect claim involving the self-reported different agent/tool boundary would require at least 3 independent comparable runs. The older Run-001/Run-002 run-bundles retain their pre-Run-003 run-local `min_comparable_runs_required: 2` as a historical snapshot, not as a current series-level threshold. This avoids rewriting historical run-bundles while keeping the series-level meaning explicit.
-- Concrete surface counts (kept on Run-003's run.yml/measurement.yml/comparability.yml extensions, not on the prior runs):
+- Concrete machine-readable surface counts on Run-003's run.yml/measurement.yml/comparability.yml are intentionally **not** back-written by this runtime-validation pass (mirroring the non-mutating `runtime-validation-run-001-run-002` pattern, which also left the original bundles untouched):
   - `current_executed_surfaces: 3`
-  - `current_runtime_validated_surfaces: 3` (Run-001, Run-002, and now Run-003 via `artifacts/runtime-validation-run-003/`; each carries its own dependency-risk caveat). This counts archived functional runtime evidence and is not a comparison-readiness signal.
+  - `current_runtime_validated_surfaces: 2` — retained as a pre-Run-003 snapshot in `measurement.yml` and `comparability.yml`. Run-003 now also has functional runtime evidence, but it is archived separately in `artifacts/runtime-validation-run-003/` (gate `validation_status: partial`; see section 11.6) rather than written back into the historical Run-003 metadata. The historical count therefore stays at 2 by design; it is not a comparison-readiness signal.
   - `current_result_assessment_ready_surfaces: 0`
 
 ### 11.5 Next concrete step

@@ -67,7 +67,7 @@
         "type": "string",
         "minLength": 1
       },
-      "$comment": "Mandatory anti-overclaim list. Must include the baseline disclaimers enforced by the validator: model_quality, comparative_superiority, adoption_readiness, production_correctness, absence_of_regressions."
+      "$comment": "Mandatory anti-overclaim list. Must include the baseline disclaimers enforced by the validator: model_quality, comparative_superiority, adoption_readiness, production_correctness, absence_of_regressions, security_readiness, promotion_readiness, outcome_assessment, external_model_independence."
     },
     "known_limitations": {
       "type": "array",

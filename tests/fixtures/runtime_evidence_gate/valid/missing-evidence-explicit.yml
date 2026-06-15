@@ -27,5 +27,9 @@ does_not_establish:
   - "adoption_readiness"
   - "production_correctness"
   - "absence_of_regressions"
+  - "security_readiness"
+  - "promotion_readiness"
+  - "outcome_assessment"
+  - "external_model_independence"
 known_limitations:
   - "forced-500 runtime assertion was not executed in this environment; recorded as missing evidence."

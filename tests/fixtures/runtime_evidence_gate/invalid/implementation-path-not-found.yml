@@ -1,26 +1,19 @@
 schema_version: "v1"
 series_id: "fixture-series"
-run_id: "fixture-run-partial"
+run_id: "fixture-run-implementation-path-not-found"
 challenge_id: "rest-api"
 challenge_version: "rest-api-v1"
-implementation_path: "tests/fixtures/runtime_evidence_gate/_evidence"
+implementation_path: "tests/fixtures/runtime_evidence_gate/_does_not_exist"
 validation_status: "partial"
 commands:
   - id: "static-verifier"
     command: "python3 verify.py"
     exit_code: 0
     output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
-  - id: "dependency-audit"
-    command: "npm audit --audit-level=moderate"
-    exit_code: 1
-    output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/audit-partial.txt"
 checks:
   - id: "static-verifier"
     status: "pass"
     evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
-  - id: "dependency-audit"
-    status: "partial"
-    evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/audit-partial.txt"
 does_not_establish:
   - "model_quality"
   - "comparative_superiority"
@@ -32,4 +25,4 @@ does_not_establish:
   - "outcome_assessment"
   - "external_model_independence"
 known_limitations:
-  - "Dependency audit reported unremediated advisories; this gate is not a security approval."
+  - "Intentionally references a non-existent implementation_path to exercise the implementation-path guard."

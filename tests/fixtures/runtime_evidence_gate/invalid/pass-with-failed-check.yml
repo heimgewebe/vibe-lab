@@ -12,7 +12,7 @@ commands:
     output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
   - id: "vitest"
     command: "npm test"
-    exit_code: 1
+    exit_code: 0
     output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/vitest-ok.txt"
 checks:
   - id: "static-verifier"
@@ -27,4 +27,8 @@ does_not_establish:
   - "adoption_readiness"
   - "production_correctness"
   - "absence_of_regressions"
+  - "security_readiness"
+  - "promotion_readiness"
+  - "outcome_assessment"
+  - "external_model_independence"
 known_limitations: []

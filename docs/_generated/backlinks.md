@@ -668,23 +668,6 @@
 
 - ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
 
-## `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-template.md`
-
-- ← `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` (references)
-
-## `experiments/2026-06-10_pr-agent-context-comparison-series/results/cross-run-assessment.md`
-
-- ← `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` (references)
-- ← `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` (references)
-
-## `experiments/2026-06-10_pr-agent-context-comparison-series/results/decision.yml`
-
-- ← `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` (references)
-
-## `experiments/2026-06-10_pr-agent-context-comparison-series/results/evidence.jsonl`
-
-- ← `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` (references)
-
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)

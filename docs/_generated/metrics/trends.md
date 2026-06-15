@@ -3,13 +3,13 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-06-14T00:00:00Z
+Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 
 ## Gate Snapshot
 
-- Total events: **307**
+- Total events: **305**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **18**
+- Source evidence files: **17**
 
 ## Event Type Counts
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-06-14T00:00:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 113 |
+| observation | 111 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -89,7 +89,6 @@ Latest Evidence Timestamp: 2026-06-14T00:00:00Z
 | exotic_blindspot_count | 2 | 2 | 0 | 1 | 0.5 |
 | experiment-setup | 2 | 0 | - | - | - |
 | experiment-verdict | 1 | 0 | - | - | - |
-| experiment_series_scaffold_status | 1 | 0 | - | - | - |
 | external_cross_family_audit_status | 1 | 0 | - | - | - |
 | first_failing_input_index | 1 | 0 | - | - | - |
 | fix-verification | 1 | 0 | - | - | - |
@@ -178,7 +177,6 @@ Latest Evidence Timestamp: 2026-06-14T00:00:00Z
 | rrg01_rrg02_cross_diagnosis | 1 | 0 | - | - | - |
 | run_002_availability | 1 | 0 | - | - | - |
 | run_003_condition_semantic_calibration | 1 | 0 | - | - | - |
-| run_003_runtime_validation_status | 1 | 0 | - | - | - |
 | run_010_post_audit_reconciliation_recorded | 1 | 0 | - | - | - |
 | run_artifacts_written | 1 | 0 | - | - | - |
 | run_started | 2 | 2 | 1 | 1 | 1 |
@@ -265,4 +263,3 @@ Latest Evidence Timestamp: 2026-06-14T00:00:00Z
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
 - `experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl`
 - `experiments/2026-05-31_model-lab-replication-series/results/evidence.jsonl`
-- `experiments/2026-06-10_pr-agent-context-comparison-series/results/evidence.jsonl`

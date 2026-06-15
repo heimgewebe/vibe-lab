@@ -45,6 +45,10 @@ does_not_establish:
   - "adoption_readiness"
   - "production_correctness"
   - "absence_of_regressions"
+  - "security_readiness"
+  - "promotion_readiness"
+  - "outcome_assessment"
+  - "external_model_independence"
 known_limitations:
   - "npm audit --audit-level=moderate exited 1: 5 high-severity advisories in the dev toolchain (esbuild/vite/vitest/@vitest/mocker/vite-node), observed and not remediated. This gate is therefore not a security or production approval (validation_status=partial)."
   - "Runtime reproducibility may vary across environments. This run used node v22.22.2 / npm 10.9.7 (see environment.txt) and resolved dependencies without a committed lockfile (package-lock.json is gitignored)."
