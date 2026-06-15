@@ -134,16 +134,19 @@ Scope note: This addendum records a third executed surface for the series, calib
 
 ### 11.3 What Run-003 does NOT establish
 
-This addendum does not establish any of the following, and any of these would contradict the run-bundle claims:
+Vitest runtime execution, the forced-500 error-handler assertion, and dependency-risk
+observation are no longer deferred: they are now evidenced separately in
+`artifacts/runtime-validation-run-003/` (see section 11.6; gate `validation_status: partial`).
+The following remain explicitly NOT established, by either the Run-003 bundle or the
+runtime-validation artifact:
 
-- Vitest runtime execution evidence for Run-003.
-- Forced-500 error-handler runtime assertion evidence for Run-003.
-- npm install / audit / dependency-risk observation evidence for Run-003.
 - A `decision_type=result_assessment` for Run-003 or for the series.
 - A comparative outcome claim between Run-003 and any prior run.
 - A model-quality verdict, condition-effect verdict, or comparative-superiority claim.
 - An adoption, promotion, production-readiness, or security-readiness claim.
 - An externally attested model independence.
+- A security or production dependency-health approval (the dependency audit observed
+  unremediated high-severity dev-toolchain advisories).
 
 ### 11.4 Series-level comparability semantics
 
@@ -154,10 +157,20 @@ To prevent silent drift between `current_comparable_runs` and the run-bundle int
 - The series-level minimum is 3, reflecting that any comparative condition-effect claim involving the self-reported different agent/tool boundary would require at least 3 independent comparable runs. The older Run-001/Run-002 run-bundles retain their pre-Run-003 run-local `min_comparable_runs_required: 2` as a historical snapshot, not as a current series-level threshold. This avoids rewriting historical run-bundles while keeping the series-level meaning explicit.
 - Concrete surface counts (kept on Run-003's run.yml/measurement.yml/comparability.yml extensions, not on the prior runs):
   - `current_executed_surfaces: 3`
-  - `current_runtime_validated_surfaces: 2` (Run-001 and Run-002 only)
+  - `current_runtime_validated_surfaces: 3` (Run-001, Run-002, and now Run-003 via `artifacts/runtime-validation-run-003/`; each carries its own dependency-risk caveat). This counts archived functional runtime evidence and is not a comparison-readiness signal.
   - `current_result_assessment_ready_surfaces: 0`
 
 ### 11.5 Next concrete step
 
-Runtime-validate Run-003 in a separate post-run artifact (static verifier already archived here; Vitest, forced-500, dependency-risk remain deferred). Only after that artifact exists should a formal `decision_type=result_assessment` be considered for any combination of Run-001 / Run-002 / Run-003.
+Run-003 runtime validation is now archived in `artifacts/runtime-validation-run-003/` (gate `validation_status: partial`). Only after dependency-risk remediation is considered out of scope and the methodological weaknesses in sections 3, 7, and 8 are addressed should a formal `decision_type=result_assessment` be considered for any combination of Run-001 / Run-002 / Run-003. Runtime contact across three surfaces is a prerequisite for stronger assessment, not a comparison result; `comparison_ready` remains false.
+
+### 11.6 Run-003 runtime-validation closure
+
+A separate runtime-validation artifact now closes the Run-003 runtime-evidence gap without rewriting the historical Run-003 bundle:
+
+- Artifact: `artifacts/runtime-validation-run-003/` (mirrors `runtime-validation-run-001-run-002`).
+- Machine-readable gate: `runtime-evidence-gate.yml` (`runtime-evidence-gate.v1`), validated by `scripts/docmeta/validate_runtime_evidence_gate.py` in `make validate`.
+- Reused evidence ledger: `evidence-pack.yml` (`run-evidence-pack.v1`), validated by the existing `validate_claim_evidence.py`.
+- Result: `validation_status: partial`. Static verifier, Vitest suite, and forced-500 error-envelope assertion passed (exit code 0); `npm audit --audit-level=moderate` exited 1 with 5 high-severity dev-toolchain advisories (esbuild/vite/vitest), observed and not remediated.
+- This closure is runtime evidence only and changes none of the non-claims in section 11.3.
 

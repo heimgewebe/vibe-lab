@@ -1,0 +1,2 @@
+fixture vitest output
+Exit Code: 0

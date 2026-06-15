@@ -1,0 +1,53 @@
+schema_version: "v1"
+series_id: "2026-05-31_model-lab-replication-series"
+run_id: "run-003-rest-api-independent-model-or-tool-condition"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+implementation_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation"
+validation_status: "partial"
+commands:
+  - id: "npm-install"
+    command: "npm install --ignore-scripts"
+    exit_code: 0
+    output_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/npm-install-run-003.txt"
+  - id: "static-verifier"
+    command: "python3 verify-run-003.py"
+    exit_code: 0
+    output_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/static-verifier-run-003.txt"
+  - id: "vitest"
+    command: "npm test"
+    exit_code: 0
+    output_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/vitest-run-003.txt"
+  - id: "forced-500"
+    command: "npx vitest run tests/forced-500.test.ts"
+    exit_code: 0
+    output_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/forced-500-run-003.txt"
+  - id: "dependency-audit"
+    command: "npm audit --audit-level=moderate"
+    exit_code: 1
+    output_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
+checks:
+  - id: "static-verifier"
+    status: "pass"
+    evidence_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/static-verifier-run-003.txt"
+  - id: "runtime-tests"
+    status: "pass"
+    evidence_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/vitest-run-003.txt"
+  - id: "forced-500"
+    status: "pass"
+    evidence_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/forced-500-run-003.txt"
+  - id: "dependency-audit"
+    status: "partial"
+    evidence_artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
+does_not_establish:
+  - "model_quality"
+  - "comparative_superiority"
+  - "adoption_readiness"
+  - "production_correctness"
+  - "absence_of_regressions"
+known_limitations:
+  - "npm audit --audit-level=moderate exited 1: 5 high-severity advisories in the dev toolchain (esbuild/vite/vitest/@vitest/mocker/vite-node), observed and not remediated. This gate is therefore not a security or production approval (validation_status=partial)."
+  - "Runtime reproducibility may vary across environments. This run used node v22.22.2 / npm 10.9.7 (see environment.txt) and resolved dependencies without a committed lockfile (package-lock.json is gitignored)."
+  - "Evidence covers only the archived Run-003 implementation. It does not establish externally attested model independence; independence_status remains self_reported_different_agent_tool_context with external_attestation=false."
+  - "forced-500.test.ts was copied into implementation/tests for execution and removed afterwards to avoid mutating the historical Run-003 bundle. Its output is archived in forced-500-run-003.txt."
+  - "npm install used --ignore-scripts (mirrors the runtime-validation-run-001-run-002 replay) to avoid executing package install scripts."

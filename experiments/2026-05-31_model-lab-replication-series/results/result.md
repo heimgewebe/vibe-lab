@@ -49,8 +49,8 @@ promotion, or model-quality claims.
 
 ## Next step
 
-Run-003 execution now exists with `independence_status: self_reported_different_agent_tool_context` and `external_attestation: false`. The next bounded step is a separate Run-003 runtime-validation artifact. A formal `decision_type=result_assessment` remains deferred until that evidence exists.
+Run-003 execution now exists with `independence_status: self_reported_different_agent_tool_context` and `external_attestation: false`. The separate Run-003 runtime-validation artifact now exists (`artifacts/runtime-validation-run-003/`, gate `validation_status: partial`). A formal `decision_type=result_assessment` remains deferred: runtime contact alone is not a comparison result.
 
 ## Run-003 addendum
 
-Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed. The boundary is a self-reported different agent/tool/session context, not externally attested model independence. The series remains inconclusive for model-quality or condition-effect claims.
+Run-003 execution surface exists; Run-003 runtime validation is now archived separately in `artifacts/runtime-validation-run-003/` as a machine-readable runtime-evidence gate (`validation_status: partial`). The functional runtime checks (static verifier, Vitest suite, forced-500 error envelope) passed; `npm audit` observed unremediated high-severity dev-toolchain advisories, so the gate is partial, not pass. This is runtime evidence only. No result assessment is performed. The boundary is a self-reported different agent/tool/session context, not externally attested model independence. The series remains inconclusive for model-quality or condition-effect claims, and `comparison_ready` remains false.

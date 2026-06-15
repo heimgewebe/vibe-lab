@@ -1,0 +1,20 @@
+schema_version: "v1"
+series_id: "fixture-series"
+run_id: "fixture-run-missing-disclaimers"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+implementation_path: "tests/fixtures/runtime_evidence_gate/_evidence"
+validation_status: "partial"
+commands:
+  - id: "static-verifier"
+    command: "python3 verify.py"
+    exit_code: 0
+    output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
+checks:
+  - id: "static-verifier"
+    status: "pass"
+    evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
+does_not_establish:
+  - "model_quality"
+known_limitations:
+  - "Incomplete does_not_establish list to exercise the mandatory-disclaimer guard."

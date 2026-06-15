@@ -56,6 +56,12 @@ jobs:
       - name: Validate claim-evidence packs
         run: make validate-claim-evidence
 
+      - name: Test runtime-evidence-gate validator
+        run: python3 scripts/docmeta/test_validate_runtime_evidence_gate.py
+
+      - name: Validate runtime-evidence gates
+        run: python3 scripts/docmeta/validate_runtime_evidence_gate.py
+
       - name: Test PR scope validator
         run: python3 scripts/docmeta/test_validate_pr_scope.py
 

@@ -21,15 +21,26 @@ compared_against:
 verdict: "third_surface_available_no_comparative_verdict"
 comparison_ready: false
 comparison_deferred: true
-runtime_validation_required: true
+runtime_validation_required: false
+
+runtime_validation:
+  status: "partial"
+  artifact: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
+  note: >
+    Run-003 functional runtime validation (static verifier, Vitest suite, forced-500
+    error-envelope assertion) now exists and passed; npm audit reported unremediated
+    high-severity dev-toolchain advisories, so the gate is partial, not pass. This is
+    runtime evidence only: no model-quality, comparative-superiority, outcome,
+    adoption, promotion, production-readiness, or security-readiness claim follows.
 
 surface_counts:
   current_executed_surfaces: 3
-  current_runtime_validated_surfaces: 2
+  current_runtime_validated_surfaces: 3
   current_result_assessment_ready_surfaces: 0
-counting_semantics: "current_comparable_runs in run.yml counts result-assessment-ready comparable runs, not raw executed surfaces."
-status_summary: "Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed."
+counting_semantics: "current_comparable_runs in run.yml counts result-assessment-ready comparable runs, not raw executed surfaces. current_runtime_validated_surfaces counts surfaces with archived functional runtime evidence (each with its own dependency-risk caveat); it is not a comparison-readiness signal."
+status_summary: "Run-003 execution surface exists; Run-003 runtime validation is now archived separately (partial: functional runtime checks pass, dependency audit observed unremediated advisories); comparison remains deferred and no result assessment is performed."
 semantic_rework_triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
+runtime_validation_triggered_by: "user-request-runtime-evidence-gate-run-003"
 
 limits:
   no_externally_attested_model_independence_claim: true

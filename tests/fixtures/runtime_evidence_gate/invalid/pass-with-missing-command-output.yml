@@ -1,0 +1,30 @@
+schema_version: "v1"
+series_id: "fixture-series"
+run_id: "fixture-run-pass-missing-output"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+implementation_path: "tests/fixtures/runtime_evidence_gate/_evidence"
+validation_status: "pass"
+commands:
+  - id: "static-verifier"
+    command: "python3 verify.py"
+    exit_code: 0
+    output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
+  - id: "vitest"
+    command: "npm test"
+    exit_code: 0
+    output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/vitest-missing.txt"
+checks:
+  - id: "static-verifier"
+    status: "pass"
+    evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
+  - id: "runtime-tests"
+    status: "pass"
+    evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/vitest-ok.txt"
+does_not_establish:
+  - "model_quality"
+  - "comparative_superiority"
+  - "adoption_readiness"
+  - "production_correctness"
+  - "absence_of_regressions"
+known_limitations: []

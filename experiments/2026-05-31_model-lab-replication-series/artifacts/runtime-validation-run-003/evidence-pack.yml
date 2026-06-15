@@ -1,0 +1,44 @@
+schema_version: "1.0.0"
+run_id: "runtime-validation-run-003"
+claims:
+  - claim_id: "rv3-001"
+    text: "Run-003 static verifier executed successfully (exit code 0) in this archived environment; full output archived."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/static-verifier-run-003.txt"
+        status: "repo_local"
+
+  - claim_id: "rv3-002"
+    text: "Run-003 Vitest suite executed successfully (exit code 0) against the archived implementation; full output archived."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/vitest-run-003.txt"
+        status: "repo_local"
+
+  - claim_id: "rv3-003"
+    text: "Run-003 forced-500 error-envelope behavior is runtime-evidenced (the reused forced-500 assertion executed against the archived server with exit code 0); full output archived."
+    type: "validator_succeeded"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/forced-500-run-003.txt"
+        status: "repo_local"
+
+  - claim_id: "rv3-004"
+    text: "Run-003 dependency tree is NOT established as free of moderate-or-higher advisories: npm audit reported 5 high-severity dev-toolchain advisories (observed, not remediated). No security or production-readiness approval is claimed."
+    type: "scope_adhered_to"
+    verdict: "CLAIM_NOT_PROVEN"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
+        status: "repo_local"
+
+  - claim_id: "rv3-005"
+    text: "This runtime validation makes no model-quality, comparative-superiority, adoption, promotion, production-correctness, or absence-of-regressions claim; the runtime-evidence gate records validation_status=partial."
+    type: "scope_adhered_to"
+    verdict: "PASS"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
+        status: "repo_local"
+      - path: "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
+        status: "repo_local"

@@ -1,0 +1,2 @@
+fixture npm install output
+Exit Code: 0

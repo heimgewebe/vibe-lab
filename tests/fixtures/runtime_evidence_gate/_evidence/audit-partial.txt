@@ -1,0 +1,2 @@
+fixture dependency audit output
+Exit Code: 1

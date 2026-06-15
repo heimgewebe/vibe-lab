@@ -1,0 +1,31 @@
+schema_version: "v1"
+series_id: "fixture-series"
+run_id: "fixture-run-missing-evidence"
+challenge_id: "rest-api"
+challenge_version: "rest-api-v1"
+implementation_path: "tests/fixtures/runtime_evidence_gate/_evidence"
+validation_status: "missing_evidence"
+commands:
+  - id: "static-verifier"
+    command: "python3 verify.py"
+    exit_code: 0
+    output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
+  - id: "forced-500"
+    command: "npx vitest run tests/forced-500.test.ts"
+    exit_code: null
+    output_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/forced-500-not-run.txt"
+checks:
+  - id: "static-verifier"
+    status: "pass"
+    evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt"
+  - id: "forced-500"
+    status: "missing_evidence"
+    evidence_artifact: "tests/fixtures/runtime_evidence_gate/_evidence/missing-explained.txt"
+does_not_establish:
+  - "model_quality"
+  - "comparative_superiority"
+  - "adoption_readiness"
+  - "production_correctness"
+  - "absence_of_regressions"
+known_limitations:
+  - "forced-500 runtime assertion was not executed in this environment; recorded as missing evidence."

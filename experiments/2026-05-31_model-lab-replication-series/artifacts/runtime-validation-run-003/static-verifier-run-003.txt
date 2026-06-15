@@ -1,0 +1,7 @@
+Runtime Validation — python3 verify-run-003.py (Run-003)
+captured_at=2026-06-14T20:04:18+00:00
+command: python3 verify-run-003.py
+----- stdout+stderr -----
+run-003 static verifier: PASS (spec surface present; runtime validation deferred)
+
+Exit Code: 0
