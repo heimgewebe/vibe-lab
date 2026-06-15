@@ -14,7 +14,7 @@ relations:
 
 ## Shape of the series
 
-A small, controlled series that grows one run at a time. Three execution surfaces now exist under `rest-api-v1`: a baseline anchor (spec-first), a control run (code-first), and Run-003 under `independent_model_or_tool_condition`. All three runs now have separate runtime-validation evidence (Run-003's gate is `partial`). No result assessment or model-quality evaluation is performed.
+A small, controlled series that grows one run at a time. Three execution surfaces now exist under `rest-api-v1`: a baseline anchor (spec-first), a control run (code-first), and Run-003 under `independent_model_or_tool_condition`. All three runs now have separate runtime-validation artifacts; Run-003's machine-readable gate is `partial`. No result assessment or model-quality evaluation is performed.
 
 ## Run-001 (executed baseline)
 

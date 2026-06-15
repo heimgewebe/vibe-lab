@@ -34,7 +34,7 @@ claims:
         status: "repo_local"
 
   - claim_id: "rv3-005"
-    text: "This runtime validation makes no model-quality, comparative-superiority, adoption, promotion, production-correctness, or absence-of-regressions claim; the runtime-evidence gate records validation_status=partial."
+    text: "This runtime validation makes no model-quality, comparative-superiority, adoption-readiness, production-correctness, absence-of-regressions, security-readiness, promotion-readiness, outcome-assessment, or externally-attested-model-independence claim; the runtime-evidence gate records validation_status=partial."
     type: "scope_adhered_to"
     verdict: "PASS"
     evidence:

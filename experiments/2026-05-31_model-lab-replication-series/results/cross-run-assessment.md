@@ -162,7 +162,7 @@ To prevent silent drift between `current_comparable_runs` and the run-bundle int
 
 ### 11.5 Next concrete step
 
-Run-003 runtime validation is now archived in `artifacts/runtime-validation-run-003/` (gate `validation_status: partial`). Only after dependency-risk remediation is considered out of scope and the methodological weaknesses in sections 3, 7, and 8 are addressed should a formal `decision_type=result_assessment` be considered for any combination of Run-001 / Run-002 / Run-003. Runtime contact across three surfaces is a prerequisite for stronger assessment, not a comparison result; `comparison_ready` remains false.
+Run-003 runtime validation is archived in `artifacts/runtime-validation-run-003/` (gate `validation_status: partial`; see section 11.6). A formal `decision_type=result_assessment` remains deferred until the dependency-risk caveat and the methodological weaknesses in sections 3, 7, and 8 are explicitly handled. Runtime contact across three surfaces is a prerequisite for stronger assessment, not a comparison result; `comparison_ready` remains false.
 
 ### 11.6 Run-003 runtime-validation closure
 

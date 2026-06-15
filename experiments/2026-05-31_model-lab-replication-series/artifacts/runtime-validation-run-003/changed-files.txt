@@ -5,13 +5,13 @@ Scope boundary:
 INCLUDED:
 - runtime validation artifacts for Run-003 (this directory)
 - a minimal, additive runtime-evidence-gate.v1 contract (schema + validator + tests + fixtures)
-- Makefile + CI wiring for the new validator (no double-validation, no CI bypass)
+- Makefile + CI wiring for the new validator (one validator target + one test target)
 - series documentation updates required to reference the new runtime evidence
-- regenerated docs/_generated diagnostics produced by `make generate`
+- the blocking docs/_generated/doc-index.md entry required by generated-doc freshness
 
 EXCLUDED:
 - mutation of the historical Run-003 run bundle (run.yml/run_meta.json/auditor-output.yml/
-  measurement.yml/evidence-pack.yml of run-003-... are left unchanged)
+  measurement.yml/evidence-pack.yml/comparability.yml of run-003-... are left unchanged)
 - production source code changes
 - benchmark challenge changes
 - changes to canonical control documents (repo.meta.yaml, AGENTS.md, agent-policy.yaml,
@@ -28,9 +28,8 @@ Primary file list (see the PR diff for the authoritative, complete set):
 [add] experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/ (this directory)
 [modify] Makefile
 [modify] .github/workflows/validate.yml
-[modify] experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/comparability.yml
 [modify] experiments/2026-05-31_model-lab-replication-series/results/result.md
 [modify] experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md
 [modify] experiments/2026-05-31_model-lab-replication-series/method.md
 [modify] experiments/2026-05-31_model-lab-replication-series/results/evidence.jsonl
-[modify] docs/_generated/ (regenerated diagnostics)
+[modify] docs/_generated/doc-index.md
