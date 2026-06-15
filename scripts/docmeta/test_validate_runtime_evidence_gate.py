@@ -20,7 +20,7 @@ VALID_FIXTURES = [
     "valid/missing-evidence-explicit.yml",
 ]
 
-# Each invalid fixture isolates a single semantic rule (the value below).
+# Each invalid fixture must report at least a single semantic rule (the value below).
 INVALID_FIXTURES = {
     "invalid/pass-with-missing-command-output.yml": "PASS_WITH_MISSING_COMMAND_OUTPUT",
     "invalid/pass-with-failed-check.yml": "PASS_WITH_NON_PASS_CHECK",

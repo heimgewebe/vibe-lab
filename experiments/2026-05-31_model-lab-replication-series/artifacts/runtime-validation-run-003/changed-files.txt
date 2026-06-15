@@ -16,8 +16,9 @@ EXCLUDED:
 - benchmark challenge changes
 - changes to canonical control documents (repo.meta.yaml, AGENTS.md, agent-policy.yaml,
   .vibe/pr-scope-policy.yml)
-- any model-quality, comparative-superiority, outcome-upgrade, adoption, promotion,
-  production-readiness, or security-readiness claim
+- any model-quality, comparative-superiority, adoption-readiness, production-correctness,
+  absence-of-regressions, security-readiness, promotion-readiness, outcome-assessment,
+  or external-model-independence claim
 - comparison_ready upgrade (remains false)
 
 Primary file list (see the PR diff for the authoritative, complete set):
