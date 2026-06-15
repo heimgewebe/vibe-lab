@@ -14,7 +14,7 @@ relations:
 
 ## Shape of the series
 
-A small, controlled series that grows one run at a time. Three execution surfaces now exist under `rest-api-v1`: a baseline anchor (spec-first), a control run (code-first), and Run-003 under `independent_model_or_tool_condition`. Run-001 and Run-002 have separate runtime-validation evidence; Run-003 does not. No result assessment or model-quality evaluation is performed by the Run-003 bundle.
+A small, controlled series that grows one run at a time. Three execution surfaces now exist under `rest-api-v1`: a baseline anchor (spec-first), a control run (code-first), and Run-003 under `independent_model_or_tool_condition`. All three runs now have separate runtime-validation artifacts; Run-003's machine-readable gate is `partial`. No result assessment or model-quality evaluation is performed.
 
 ## Run-001 (executed baseline)
 
@@ -52,7 +52,7 @@ The concrete condition boundary is recorded in `artifacts/run-003-rest-api-indep
 
 Run-003 adds a third execution surface but does not establish model quality, comparative superiority, outcome upgrade, adoption, promotion, production readiness, or security readiness.
 
-Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
+Run-003 execution surface exists; Run-003 runtime validation is now archived separately in `artifacts/runtime-validation-run-003/` (machine-readable gate, `validation_status: partial`); no result assessment is performed.
 
 ## What is measured now
 
@@ -60,19 +60,19 @@ Three executed run surfaces now exist under the same challenge version. The seri
 tracks repo-local observations:
 
 - Run-001 and Run-002 both execute deterministically and have separate runtime validation evidence.
-- Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
+- Run-003 execution surface exists; Run-003 runtime validation is now archived separately (gate `validation_status: partial`); no result assessment is performed.
 - All three target `rest-api-v1` with identical API surface requirements.
 - All three produce implementation and verification artifacts.
 - None makes model-quality, comparative, outcome, adoption, promotion, production-readiness, or security-readiness claims.
 
-**Measurement status:** `executed_three_surface_run003_runtime_validation_deferred`.
+**Measurement status:** `executed_three_surface_run003_runtime_validation_partial`.
 
 `measurement.yml` in each run records execution completeness, locator presence,
 verification evidence, and comparability structure availability. No model comparison
 is performed inside the runs. Actual comparison (assessment, verdict, model-quality
 judgment) is deferred to later, separate assessment artifacts.
 
-* **Note on Runtime Validation**: Following the creation of the run bundles, a distinct phase was executed to runtime-validate the implementations without mutating the original artifacts. The logs and verification metrics for these executions are isolated in the `runtime-validation-run-001-run-002` directory.
+* **Note on Runtime Validation**: Following the creation of the run bundles, a distinct phase was executed to runtime-validate the implementations without mutating the original artifacts. The logs and verification metrics for these executions are isolated in the `runtime-validation-run-001-run-002` directory. Run-003 is runtime-validated in the same way in `runtime-validation-run-003`, expressed as a machine-readable runtime-evidence gate (`validation_status: partial`).
 
 ## Methodological Strength Note
 
@@ -83,5 +83,5 @@ Methodological strength: weak structural control. The condition `code_first_cont
 - Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).
 - Runtime validation for Run-001 and Run-002 exists in `artifacts/runtime-validation-run-001-run-002`.
 - Run-003 execution exists with a self-reported different agent/tool/session boundary; externally attested model independence is not established.
-- Next, runtime-validate Run-003 in a separate artifact. Only after that should a formal `decision_type=result_assessment` be considered.
+- Run-003 is now runtime-validated in a separate artifact (`runtime-validation-run-003`, gate `validation_status: partial`). A formal `decision_type=result_assessment` remains deferred; runtime contact is a prerequisite, not a result.
 - Model-quality, comparative-superiority, outcome, adoption, promotion, production-readiness, and security-readiness claims remain blocked.

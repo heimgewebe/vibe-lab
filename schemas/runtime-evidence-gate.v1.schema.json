@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/runtime-evidence-gate.v1.schema.json",
+  "title": "Runtime Evidence Gate v1",
+  "description": "Machine-readable runtime-evidence gate for a single experiment run. Records which runtime commands were executed, where their outputs are archived, and a per-check rollup (validation_status). The mandatory does_not_establish list keeps the artifact bounded: a runtime-evidence gate documents execution, not model quality. Form is validated here; semantic rules (path existence/escape, pass-consistency, mandatory disclaimers) are enforced by scripts/docmeta/validate_runtime_evidence_gate.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "series_id",
+    "run_id",
+    "challenge_id",
+    "challenge_version",
+    "implementation_path",
+    "validation_status",
+    "commands",
+    "checks",
+    "does_not_establish",
+    "known_limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "implementation_path": {
+      "$ref": "#/$defs/repoRelativePath"
+    },
+    "validation_status": {
+      "$ref": "#/$defs/status",
+      "$comment": "Rollup over checks[]. Semantic rule: 'pass' is only legal when every check is 'pass' with existing evidence; otherwise use partial / fail / missing_evidence."
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/command"
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/check"
+      }
+    },
+    "does_not_establish": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "$comment": "Mandatory anti-overclaim list. Must include the baseline disclaimers enforced by the validator: model_quality, comparative_superiority, adoption_readiness, production_correctness, absence_of_regressions, security_readiness, promotion_readiness, outcome_assessment, external_model_independence."
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "$comment": "May be empty only when validation_status == pass. Non-pass statuses require at least one explicit limitation."
+    }
+  },
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "partial",
+        "missing_evidence"
+      ]
+    },
+    "repoRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\).+$",
+      "$comment": "Repo-relative POSIX path. Absolute paths, drive letters and backslashes are rejected here; parent-escape ('..' that resolves outside the repo) is rejected semantically by the validator with a stable rule id."
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "command",
+        "exit_code",
+        "output_artifact"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exit_code": {
+          "type": ["integer", "null"],
+          "$comment": "null means the command was not executed (no runtime evidence captured)."
+        },
+        "output_artifact": {
+          "$ref": "#/$defs/repoRelativePath"
+        }
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "evidence_artifact"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "evidence_artifact": {
+          "$ref": "#/$defs/repoRelativePath"
+        }
+      }
+    }
+  }
+}

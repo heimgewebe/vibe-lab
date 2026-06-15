@@ -1,0 +1,16 @@
+Runtime Validation — npx vitest run tests/forced-500.test.ts (Run-003)
+captured_at=2026-06-14T20:04:19+00:00
+command: npx vitest run tests/forced-500.test.ts
+----- stdout+stderr -----
+
+ RUN  v3.2.6 /home/user/vibe-lab/experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/implementation
+
+ ✓ tests/forced-500.test.ts (1 test) 81ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  20:04:19
+   Duration  471ms (transform 45ms, setup 0ms, collect 135ms, tests 81ms, environment 0ms, prepare 51ms)
+
+
+Exit Code: 0
