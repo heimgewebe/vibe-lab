@@ -1,0 +1,4 @@
+# Fixture stub standing in for a runtime-evidence gate whose rollup is not 'pass'.
+# Only validation_status is read by validate_result_assessment_readiness.py when
+# enforcing PARTIAL_RUNTIME_GATE_BLOCKS_READY.
+validation_status: "partial"

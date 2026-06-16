@@ -1,0 +1,42 @@
+schema_version: "v1"
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false
+
+summary: >
+  Minimal valid blocked readiness gate. Runtime contact exists but a formal
+  result_assessment remains blocked. References a partial runtime gate, which is
+  fine while readiness_status=blocked.
+
+blockers:
+  - id: "example_open_blocker"
+    status: "open"
+    severity: "blocking"
+    note: "Example open blocker keeping result_assessment blocked."
+    evidence:
+      - "tests/fixtures/result_assessment_readiness/_evidence/runtime-gate-partial.yml"
+
+allowed_claims:
+  - "result_assessment_is_blocked"
+
+disallowed_claims:
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+  - "production_readiness"
+  - "security_readiness"
+  - "external_model_independence"
+
+evidence:
+  - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
+  - "tests/fixtures/result_assessment_readiness/_evidence/runtime-gate-partial.yml"
+
+next_actions:
+  - "Keep comparison_ready=false until blockers are closed."

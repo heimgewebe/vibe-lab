@@ -1,0 +1,33 @@
+schema_version: "v1"
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+
+# Invalid: claims ready / result_assessment_allowed=true while referencing a
+# runtime gate whose validation_status is not 'pass' (partial here).
+# Expected rule: PARTIAL_RUNTIME_GATE_BLOCKS_READY
+readiness_status: "ready"
+result_assessment_allowed: true
+comparison_ready: true
+
+blockers: []
+
+allowed_claims:
+  - "result_assessment_is_allowed"
+
+disallowed_claims:
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+  - "production_readiness"
+  - "security_readiness"
+  - "external_model_independence"
+
+evidence:
+  - "tests/fixtures/result_assessment_readiness/_evidence/runtime-gate-partial.yml"
+
+next_actions:
+  - "Do not declare readiness while a referenced runtime gate is partial."

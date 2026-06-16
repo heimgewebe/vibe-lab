@@ -22,6 +22,8 @@ relations:
     target: ../artifacts/run-002-rest-api-code-first-control/comparability.yml
   - type: references
     target: ../artifacts/run-003-plan-stronger-condition-contrast/plan.md
+  - type: references
+    target: result-assessment-readiness.yml
 ---
 
 # Cross-Run Assessment — Model-Lab Replication Series Run-001 vs Run-002
@@ -173,4 +175,19 @@ A separate runtime-validation artifact now closes the Run-003 runtime-evidence g
 - Reused evidence ledger: `evidence-pack.yml` (`run-evidence-pack.v1`), validated by the existing `validate_claim_evidence.py`.
 - Result: `validation_status: partial`. Static verifier, Vitest suite, and forced-500 error-envelope assertion passed (exit code 0); `npm audit --audit-level=moderate` exited 1 with 5 high-severity dev-toolchain advisories (esbuild/vite/vitest), observed and not remediated.
 - This closure is runtime evidence only and changes none of the non-claims in section 11.3.
+
+### 11.7 Result-assessment readiness gate
+
+A separate machine-readable result-assessment-readiness gate
+(`results/result-assessment-readiness.yml`, contract `result-assessment-readiness.v1`,
+validated by `scripts/docmeta/validate_result_assessment_readiness.py` in `make validate`)
+now records that a formal `result_assessment` remains blocked. Runtime contact exists
+across three execution surfaces, but the dependency-risk caveat (Run-003 gate is partial),
+the weak Run-001-vs-Run-002 condition contrast, the absence of an external independent
+auditor comparison, and the self-reported (not externally attested) Run-003 independence
+keep `result_assessment_allowed=false` and `comparison_ready=false`.
+
+Runtime evidence is a prerequisite, not a comparison result. The gate derives no
+model-quality, comparative-superiority, condition-effect, outcome, adoption, promotion,
+production-readiness, or security-readiness claim, and does not modify the section 9 verdict.
 

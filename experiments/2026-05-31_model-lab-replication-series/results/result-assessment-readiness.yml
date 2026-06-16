@@ -1,0 +1,88 @@
+schema_version: "v1"
+artifact_type: "result_assessment_readiness"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false
+
+summary: >
+  Runtime contact now exists for three execution surfaces, but a formal
+  result_assessment remains blocked. Runtime evidence is a prerequisite,
+  not a comparison result.
+
+basis:
+  executed_surfaces: 3
+  functional_runtime_evidence_surfaces: 3
+  result_assessment_ready_comparable_runs: 0
+  runtime_gate_status:
+    run_001_run_002: "separate_runtime_validation_artifact_present"
+    run_003: "partial"
+
+blockers:
+  - id: "dependency_risk_caveat_unhandled"
+    status: "open"
+    severity: "blocking"
+    evidence:
+      - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
+      - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
+    note: >
+      Run-003 functional runtime checks passed, but npm audit observed
+      unremediated high-severity dev-toolchain advisories. This blocks
+      security-readiness and production-readiness interpretation.
+
+  - id: "weak_condition_contrast"
+    status: "open"
+    severity: "blocking"
+    evidence:
+      - "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
+    note: >
+      Run-001 vs Run-002 condition contrast remains weak. The existing
+      comparison surface is inconclusive and cannot support model-quality
+      or condition-effect claims.
+
+  - id: "external_independence_not_attested"
+    status: "open"
+    severity: "blocking"
+    evidence:
+      - "experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md"
+      - "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
+    note: >
+      Run-003's independent_model_or_tool_condition boundary remains
+      self-reported. external_attestation=false.
+
+  - id: "no_external_independent_auditor_comparison"
+    status: "open"
+    severity: "blocking"
+    evidence:
+      - "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
+    note: >
+      No external or independent auditor comparison exists for the series.
+
+allowed_claims:
+  - "three_execution_surfaces_exist"
+  - "run003_functional_runtime_checks_passed"
+  - "run003_runtime_gate_status_partial"
+  - "result_assessment_is_blocked"
+
+disallowed_claims:
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+  - "production_readiness"
+  - "security_readiness"
+  - "external_model_independence"
+
+evidence:
+  - "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
+  - "experiments/2026-05-31_model-lab-replication-series/results/result.md"
+  - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
+
+next_actions:
+  - "Explicitly scope dependency-risk caveat for assessment purposes or remediate in a separate PR."
+  - "Design a stronger condition contrast or external independent assessment."
+  - "Keep comparison_ready=false until blockers are closed."

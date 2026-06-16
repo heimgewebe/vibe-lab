@@ -1,0 +1,6 @@
+Fixture evidence stub for result-assessment-readiness validator tests.
+
+Stands in for a cross-run assessment / result note. Content is irrelevant to the
+validator, which only checks that referenced evidence paths exist and stay inside
+the repo. Kept as .txt (not .md) so it is not pulled into the generated doc-index
+or relations scans.
