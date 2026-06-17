@@ -46,6 +46,10 @@ does_not_establish:
   - "outcome_upgrade"
   - "adoption_readiness"
   - "promotion_readiness"
+  - "absence_of_regressions"
+  - "external_model_independence"
+  - "production_correctness"
+  - "outcome_assessment"
 
 remaining_blockers:
   - "dependency_risk_remediation_not_performed"

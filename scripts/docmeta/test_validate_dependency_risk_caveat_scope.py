@@ -37,6 +37,7 @@ INVALID_FIXTURES = {
     "invalid/nonzero-audit-result-assessment-allowed.yml": "AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED",
     "invalid/nonzero-audit-comparison-ready.yml": "AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED",
     "invalid/remediated-out-of-scope.yml": "DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE",
+    "invalid/remediation-performed-out-of-scope.yml": "REMEDIATION_PERFORMED_OUT_OF_SCOPE",
     "invalid/unknown-challenge-version.yml": "UNKNOWN_CHALLENGE_VERSION",
 }
 
@@ -68,15 +69,15 @@ class DependencyRiskCaveatScopeValidatorTests(unittest.TestCase):
                 )
                 self.assertIn(rule_id, completed.stdout)
 
-    def test_nonzero_audit_marked_safe_isolates_audit_rule(self) -> None:
-        # scope_status=not_applicable keeps the scoped_not_remediated rules silent,
-        # so this fixture isolates the audit-exit coupling rule.
+    def test_nonzero_audit_marked_safe_reports_audit_rule(self) -> None:
+        # v1 has a single scope_status (scoped_not_remediated), so this fixture may
+        # co-report a SCOPED_NOT_REMEDIATED_* rule. Contract coherence outweighs
+        # artificial rule isolation; assert only that the audit rule is reported.
         completed = self.run_validator(
             FIXTURE_ROOT / "invalid/nonzero-audit-marked-safe.yml"
         )
         self.assertEqual(completed.returncode, 1, completed.stdout + completed.stderr)
         self.assertIn("AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED", completed.stdout)
-        self.assertNotIn("SCOPED_NOT_REMEDIATED_", completed.stdout)
 
     def test_schema_violation_exits_two(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

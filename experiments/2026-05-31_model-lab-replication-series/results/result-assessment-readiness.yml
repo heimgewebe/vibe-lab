@@ -21,7 +21,7 @@ basis:
     run_003: "partial"
 
 blockers:
-  - id: "dependency_risk_caveat_unhandled"
+  - id: "dependency_risk_caveat_scoped_not_remediated"
     status: "open"
     severity: "blocking"
     evidence:
@@ -29,9 +29,9 @@ blockers:
       - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
       - "experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml"
     note: >
-      The dependency-risk caveat is now scoped, not remediated. The scope records
-      that functional runtime evidence is not invalidated by the dev-toolchain
-      audit, while security-readiness, production-readiness, result_assessment, and
+      The dependency-risk caveat is scoped, not remediated. The scope records that
+      functional runtime evidence is not invalidated by the dev-toolchain audit,
+      while security-readiness, production-readiness, result_assessment, and
       comparison_ready remain blocked.
 
   - id: "weak_condition_contrast"
@@ -84,6 +84,7 @@ evidence:
   - "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
   - "experiments/2026-05-31_model-lab-replication-series/results/result.md"
   - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
+  - "experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml"
 
 next_actions:
   - "Remediate dependency risk in a separate PR if security or production readiness is needed."

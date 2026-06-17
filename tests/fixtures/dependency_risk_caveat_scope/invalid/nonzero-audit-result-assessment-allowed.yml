@@ -5,10 +5,9 @@ challenge_version: "rest-api-v1"
 
 # Invalid: a non-zero audit exit code coexists with a result_assessment allowance.
 # A non-zero audit must keep result_assessment blocked too, not only security/production.
-# scope_status=not_applicable keeps the scoped_not_remediated rules silent, isolating
-# the audit-coupling rule.
 # Expected rule: AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED
-scope_status: "not_applicable"
+# (also co-reports SCOPED_NOT_REMEDIATED_BLOCKS_RESULT_ASSESSMENT — co-occurrence is expected).
+scope_status: "scoped_not_remediated"
 dependency_risk_remediated: false
 result_assessment_allowed_after_scope: true
 comparison_ready_after_scope: false
@@ -48,6 +47,10 @@ does_not_establish:
   - "outcome_upgrade"
   - "adoption_readiness"
   - "promotion_readiness"
+  - "absence_of_regressions"
+  - "external_model_independence"
+  - "production_correctness"
+  - "outcome_assessment"
 
 remaining_blockers:
   - "dependency_risk_remediation_not_performed"

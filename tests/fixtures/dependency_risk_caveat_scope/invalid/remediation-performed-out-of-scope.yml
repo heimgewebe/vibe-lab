@@ -3,8 +3,10 @@ artifact_type: "dependency_risk_caveat_scope"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: a source_evidence path is repo-internal but does not exist.
-# Expected rule: SOURCE_EVIDENCE_PATH_NOT_FOUND
+# Invalid: audit_observation.remediation_performed=true asserts remediation by the
+# side door. v1 scopes unresolved caveats only; remediation belongs in a future
+# separate contract/PR. All other fields are valid so this isolates the rule.
+# Expected rule: REMEDIATION_PERFORMED_OUT_OF_SCOPE
 scope_status: "scoped_not_remediated"
 dependency_risk_remediated: false
 result_assessment_allowed_after_scope: false
@@ -12,7 +14,6 @@ comparison_ready_after_scope: false
 
 source_evidence:
   - "tests/fixtures/dependency_risk_caveat_scope/_evidence/dependency-audit-nonzero.txt"
-  - "tests/fixtures/dependency_risk_caveat_scope/_evidence/does-not-exist.txt"
 
 audit_observation:
   observed: true
@@ -20,8 +21,8 @@ audit_observation:
   audit_exit_code: 1
   vulnerability_severity_observed:
     - "high"
-  remediation_performed: false
-  remediation_scope: "out_of_scope_for_this_pr"
+  remediation_performed: true
+  remediation_scope: "claimed_but_out_of_scope"
   affected_surface: "fixture_dev_toolchain"
 
 assessment_interpretation:
@@ -55,4 +56,4 @@ remaining_blockers:
   - "dependency_risk_remediation_not_performed"
 
 next_actions:
-  - "Use a repo-relative path that points to an existing evidence file."
+  - "Represent remediation in a future separate contract/PR, not in this scope artifact."

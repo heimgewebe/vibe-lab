@@ -3,12 +3,12 @@ artifact_type: "dependency_risk_caveat_scope"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: dependency_risk_remediated=true is out of scope for v1, regardless of
-# scope_status. v1 models only not-yet-remediated caveats; remediation belongs in a
-# future separate contract/PR. scope_status=not_applicable and audit_exit_code=0 keep
-# the scoped_not_remediated and audit-coupling rules silent, isolating this rule.
+# Invalid: dependency_risk_remediated=true is out of scope for v1. v1 models only
+# not-yet-remediated caveats; remediation belongs in a future separate contract/PR.
+# audit_exit_code=0 keeps the audit-coupling rule silent.
 # Expected rule: DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE
-scope_status: "not_applicable"
+# (also co-reports SCOPED_NOT_REMEDIATED_REQUIRES_FALSE_REMEDIATED — co-occurrence is expected).
+scope_status: "scoped_not_remediated"
 dependency_risk_remediated: true
 result_assessment_allowed_after_scope: false
 comparison_ready_after_scope: false
@@ -47,6 +47,10 @@ does_not_establish:
   - "outcome_upgrade"
   - "adoption_readiness"
   - "promotion_readiness"
+  - "absence_of_regressions"
+  - "external_model_independence"
+  - "production_correctness"
+  - "outcome_assessment"
 
 remaining_blockers: []
 

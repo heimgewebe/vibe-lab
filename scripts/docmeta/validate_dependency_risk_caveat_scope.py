@@ -24,6 +24,10 @@ Enforced semantic rules (exit 1):
                                    not-yet-remediated caveats; remediation belongs in
                                    a future separate contract/PR. Fires for any
                                    scope_status.
+  REMEDIATION_PERFORMED_OUT_OF_SCOPE
+                                   audit_observation.remediation_performed is true. v1
+                                   scopes unresolved caveats only; remediation belongs
+                                   in a future separate contract/PR.
   SCOPED_NOT_REMEDIATED_REQUIRES_FALSE_REMEDIATED
                                    scope_status=scoped_not_remediated but
                                    dependency_risk_remediated is true.
@@ -102,6 +106,10 @@ MANDATORY_DOES_NOT_ESTABLISH = (
     "outcome_upgrade",
     "adoption_readiness",
     "promotion_readiness",
+    "absence_of_regressions",
+    "external_model_independence",
+    "production_correctness",
+    "outcome_assessment",
 )
 
 # Subset that the "functional runtime evidence is not invalidated by the
@@ -265,6 +273,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
 
     audit = data.get("audit_observation", {}) or {}
     audit_exit_code = audit.get("audit_exit_code") if isinstance(audit, dict) else None
+    remediation_performed = bool(audit.get("remediation_performed", False)) if isinstance(audit, dict) else False
 
     interp = data.get("assessment_interpretation", {}) or {}
     functional_runtime = _str_field(interp, "functional_runtime_evidence")
@@ -285,6 +294,20 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                 "dependency_risk_remediated=true is out of scope for "
                 "dependency-risk-caveat-scope v1; use a future remediation "
                 "contract/PR.",
+            )
+        )
+
+    # --- remediation_performed is the same claim by the side door -------------
+    # audit_observation.remediation_performed=true asserts remediation just like
+    # dependency_risk_remediated=true; v1 scopes unresolved caveats only.
+    if remediation_performed:
+        errors.append(
+            format_error(
+                "REMEDIATION_PERFORMED_OUT_OF_SCOPE",
+                path,
+                "audit_observation.remediation_performed=true is out of scope for "
+                "dependency-risk-caveat-scope v1; remediation belongs in a future "
+                "separate contract/PR.",
             )
         )
 
@@ -517,7 +540,7 @@ def main(argv: list[str] | None = None) -> int:
     checked = len(paths)
     print(
         f"Dependency-risk-caveat-scope artifacts: checked={checked}, passed={passed}, "
-        f"errors={checked - passed}"
+        f"failed={checked - passed}"
     )
     return highest_exit_code
 
