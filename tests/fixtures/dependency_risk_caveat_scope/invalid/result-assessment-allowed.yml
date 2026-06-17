@@ -1,0 +1,57 @@
+schema_version: "v1"
+artifact_type: "dependency_risk_caveat_scope"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+
+# Invalid: scope_status=scoped_not_remediated but result_assessment_allowed_after_scope=true.
+# Expected rule: SCOPED_NOT_REMEDIATED_BLOCKS_RESULT_ASSESSMENT
+scope_status: "scoped_not_remediated"
+dependency_risk_remediated: false
+result_assessment_allowed_after_scope: true
+comparison_ready_after_scope: false
+
+source_evidence:
+  - "tests/fixtures/dependency_risk_caveat_scope/_evidence/dependency-audit-nonzero.txt"
+
+audit_observation:
+  observed: true
+  audit_command: "npm audit --audit-level=moderate"
+  audit_exit_code: 1
+  vulnerability_severity_observed:
+    - "high"
+  remediation_performed: false
+  remediation_scope: "out_of_scope_for_this_pr"
+  affected_surface: "fixture_dev_toolchain"
+
+assessment_interpretation:
+  functional_runtime_evidence: "not_invalidated_by_dev_toolchain_audit"
+  security_readiness: "blocked"
+  production_readiness: "blocked"
+  result_assessment: "still_blocked"
+  comparison_ready: "false"
+
+does_not_establish:
+  - "security_readiness"
+  - "production_readiness"
+  - "absence_of_vulnerabilities"
+  - "dependency_risk_remediated"
+  - "dependency_tree_safe"
+  - "supply_chain_safety"
+  - "production_dependency_health"
+  - "security_approval"
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+  - "absence_of_regressions"
+  - "external_model_independence"
+  - "production_correctness"
+  - "outcome_assessment"
+
+remaining_blockers:
+  - "dependency_risk_remediation_not_performed"
+
+next_actions:
+  - "Keep result_assessment_allowed=false until methodological blockers are closed."

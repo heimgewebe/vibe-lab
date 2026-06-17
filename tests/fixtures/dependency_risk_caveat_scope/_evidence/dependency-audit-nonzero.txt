@@ -1,0 +1,4 @@
+Fixture evidence: npm audit (non-zero) capture.
+command: npm audit --audit-level=moderate
+5 high severity vulnerabilities (dev toolchain), observed and not remediated.
+Exit Code: 1

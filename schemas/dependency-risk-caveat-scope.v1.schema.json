@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/dependency-risk-caveat-scope.v1.schema.json",
+  "title": "Dependency Risk Caveat Scope v1",
+  "description": "Machine-readable artifact that scopes an unresolved dependency-risk caveat for assessment interpretation. It deliberately does NOT remediate the risk and does NOT grant security/production readiness or a result_assessment. It records scope_status, that the risk is not remediated, whether result_assessment/comparison are allowed after scoping, an audit observation, an assessment interpretation, and an anti-overclaim does_not_establish boundary. v1 models exactly one real scope_status, scoped_not_remediated; no other status is permitted, and remediation (dependency_risk_remediated=true or audit_observation.remediation_performed=true) is out of scope and must be represented by a future separate contract/PR. Form is validated here; semantic rules (scoped_not_remediated coupling, remediation out-of-scope, audit-exit coupling incl. result_assessment/comparison, mandatory does_not_establish, source-evidence existence/escape, challenge_version existence) are enforced by scripts/docmeta/validate_dependency_risk_caveat_scope.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "series_id",
+    "challenge_version",
+    "scope_status",
+    "dependency_risk_remediated",
+    "result_assessment_allowed_after_scope",
+    "comparison_ready_after_scope",
+    "source_evidence",
+    "audit_observation",
+    "assessment_interpretation",
+    "does_not_establish",
+    "remaining_blockers",
+    "next_actions"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "dependency_risk_caveat_scope"
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope_status": {
+      "type": "string",
+      "enum": [
+        "scoped_not_remediated"
+      ],
+      "$comment": "v1 models exactly one real status: scoped_not_remediated, the only enum member. No other status is permitted; if there is no dependency-risk caveat to scope, no dependency-risk-caveat-scope artifact should be emitted. Semantic rules: 'scoped_not_remediated' requires dependency_risk_remediated=false, security/production readiness 'blocked', result_assessment_allowed_after_scope=false, comparison_ready_after_scope=false, and the matching assessment_interpretation strings. dependency_risk_remediated=true and audit_observation.remediation_performed=true are rejected (DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE / REMEDIATION_PERFORMED_OUT_OF_SCOPE)."
+    },
+    "dependency_risk_remediated": {
+      "type": "boolean",
+      "$comment": "In v1 this must be false. true is rejected by the validator (DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE) regardless of scope_status; remediation belongs in a future separate contract/PR."
+    },
+    "result_assessment_allowed_after_scope": {
+      "type": "boolean"
+    },
+    "comparison_ready_after_scope": {
+      "type": "boolean"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "source_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repoRelativePath"
+      }
+    },
+    "audit_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed",
+        "audit_exit_code",
+        "remediation_performed"
+      ],
+      "properties": {
+        "observed": {
+          "type": "boolean"
+        },
+        "audit_command": {
+          "type": "string"
+        },
+        "audit_exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "$comment": "A non-zero integer is semantically coupled (validator) to dependency_risk_remediated=false and blocked security/production readiness."
+        },
+        "vulnerability_severity_observed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "remediation_performed": {
+          "type": "boolean",
+          "$comment": "In v1 this must be false. true is rejected by the validator (REMEDIATION_PERFORMED_OUT_OF_SCOPE); remediation belongs in a future separate contract/PR."
+        },
+        "remediation_scope": {
+          "type": "string"
+        },
+        "affected_surface": {
+          "type": "string"
+        }
+      }
+    },
+    "assessment_interpretation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "functional_runtime_evidence",
+        "security_readiness",
+        "production_readiness",
+        "result_assessment",
+        "comparison_ready"
+      ],
+      "properties": {
+        "functional_runtime_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "security_readiness": {
+          "type": "string",
+          "minLength": 1
+        },
+        "production_readiness": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result_assessment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparison_ready": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "String, not boolean. Under scope_status=scoped_not_remediated the validator requires the literal string 'false'."
+        }
+      }
+    },
+    "does_not_establish": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "$comment": "Mandatory anti-overclaim list. Must include the baseline non-claims enforced by the validator: security_readiness, production_readiness, absence_of_vulnerabilities, dependency_risk_remediated, dependency_tree_safe, supply_chain_safety, production_dependency_health, security_approval, model_quality, comparative_superiority, condition_effect, outcome_upgrade, adoption_readiness, promotion_readiness, absence_of_regressions, external_model_independence, production_correctness, outcome_assessment."
+    },
+    "remaining_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "repoRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\).+$",
+      "$comment": "Repo-relative POSIX path. Absolute paths, drive letters and backslashes are rejected here; parent-escape ('..') and symlink-out-of-repo are rejected semantically by the validator with a stable rule id."
+    }
+  }
+}

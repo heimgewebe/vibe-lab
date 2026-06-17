@@ -68,6 +68,12 @@ jobs:
       - name: Validate result-assessment-readiness gates
         run: make validate-result-assessment-readiness
 
+      - name: Test dependency-risk-caveat-scope validator
+        run: make validate-dependency-risk-caveat-scope-tests
+
+      - name: Validate dependency-risk-caveat-scope artifacts
+        run: make validate-dependency-risk-caveat-scope
+
       - name: Test PR scope validator
         run: python3 scripts/docmeta/test_validate_pr_scope.py
 
