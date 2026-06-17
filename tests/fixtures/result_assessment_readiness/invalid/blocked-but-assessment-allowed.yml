@@ -1,0 +1,38 @@
+schema_version: "v1"
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+
+# Invalid: readiness_status=blocked but result_assessment_allowed/comparison_ready=true.
+# Expected rule: READINESS_BLOCKED_REQUIRES_FALSE_ALLOWED
+readiness_status: "blocked"
+result_assessment_allowed: true
+comparison_ready: true
+
+blockers:
+  - id: "open_blocker"
+    status: "open"
+    severity: "blocking"
+    evidence:
+      - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
+
+allowed_claims:
+  - "result_assessment_is_blocked"
+
+disallowed_claims:
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+  - "production_readiness"
+  - "security_readiness"
+  - "absence_of_regressions"
+  - "external_model_independence"
+
+evidence:
+  - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
+
+next_actions:
+  - "Set result_assessment_allowed=false and comparison_ready=false."

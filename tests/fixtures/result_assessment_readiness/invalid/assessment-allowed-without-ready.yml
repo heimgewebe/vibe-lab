@@ -1,0 +1,33 @@
+schema_version: "v1"
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+
+# Invalid: result_assessment_allowed=true but readiness_status is not "ready".
+# Expected rule: ASSESSMENT_ALLOWED_REQUIRES_READY
+readiness_status: "not_applicable"
+result_assessment_allowed: true
+comparison_ready: false
+
+blockers: []
+
+allowed_claims:
+  - "result_assessment_is_allowed"
+
+disallowed_claims:
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+  - "production_readiness"
+  - "security_readiness"
+  - "absence_of_regressions"
+  - "external_model_independence"
+
+evidence:
+  - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
+
+next_actions:
+  - "Set readiness_status=ready before allowing a result assessment."

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/result-assessment-readiness.v1.schema.json",
+  "title": "Result Assessment Readiness v1",
+  "description": "Machine-readable readiness gate that records whether a formal result_assessment is currently allowed for an experiment/series. It deliberately does NOT decide which model or approach is better; it only records readiness_status, result_assessment_allowed, comparison_ready, the open blockers, and an anti-overclaim allowed/disallowed claim boundary. Form is validated here; semantic rules (blocked/ready consistency, three-flag boolean coupling, open/blocking blocker evidence, mandatory disallowed claims incl. absence_of_regressions, claim overlap, evidence path existence/escape, partial-runtime-gate coupling, challenge_version existence) are enforced by scripts/docmeta/validate_result_assessment_readiness.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "series_id",
+    "challenge_version",
+    "readiness_status",
+    "result_assessment_allowed",
+    "comparison_ready",
+    "blockers",
+    "allowed_claims",
+    "disallowed_claims",
+    "evidence",
+    "next_actions"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "result_assessment_readiness"
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "readiness_status": {
+      "type": "string",
+      "enum": [
+        "blocked",
+        "ready",
+        "not_applicable"
+      ],
+      "$comment": "Semantic rules: 'blocked' requires result_assessment_allowed=false and comparison_ready=false; 'ready' requires result_assessment_allowed=true, no open/blocking blocker, and no referenced partial runtime gate; comparison_ready=true requires readiness_status=ready and result_assessment_allowed=true."
+    },
+    "result_assessment_allowed": {
+      "type": "boolean"
+    },
+    "comparison_ready": {
+      "type": "boolean"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "basis": {
+      "type": "object",
+      "additionalProperties": true,
+      "$comment": "Free-form supporting counts/context. Not semantically enforced here."
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/blocker"
+      },
+      "$comment": "May be empty only when readiness_status != blocked. A blocked artifact must carry at least one open blocker (enforced by the validator)."
+    },
+    "allowed_claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "disallowed_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "$comment": "Mandatory anti-overclaim list. Must include the baseline non-claims enforced by the validator: model_quality, comparative_superiority, condition_effect, outcome_upgrade, adoption_readiness, promotion_readiness, production_readiness, security_readiness, absence_of_regressions, external_model_independence."
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repoRelativePath"
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "repoRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\).+$",
+      "$comment": "Repo-relative POSIX path. Absolute paths, drive letters and backslashes are rejected here; parent-escape ('..') and symlink-out-of-repo are rejected semantically by the validator with a stable rule id."
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "severity"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "non_blocking"
+          ]
+        },
+        "note": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repoRelativePath"
+          }
+        }
+      }
+    }
+  }
+}
