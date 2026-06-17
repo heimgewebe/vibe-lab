@@ -57,7 +57,7 @@ Run-003 execution surface exists; Run-003 runtime validation is now archived sep
 
 ## Result-assessment readiness
 
-A machine-readable result-assessment-readiness artifact (`results/result-assessment-readiness.yml`) records that a formal `result_assessment` is currently blocked. The series has runtime contact across three execution surfaces, but `result_assessment_allowed=false` and `comparison_ready=false`: the open blockers are the scoped-but-unremediated dependency-risk caveat, the weak condition contrast, the missing external independent auditor comparison, and Run-003's self-reported (not externally attested) independence. No model-quality, comparative-superiority, condition-effect, outcome, adoption, promotion, production-readiness, security-readiness, absence-of-regressions, or externally-attested model independence claim is derived. Runtime evidence is a prerequisite for assessment, not a comparison result.
+A machine-readable result-assessment-readiness artifact (`results/result-assessment-readiness.yml`) records that a formal `result_assessment` is currently blocked. The series has runtime contact across three execution surfaces, but `result_assessment_allowed=false` and `comparison_ready=false`: the open blockers are the scoped-but-unremediated dependency-risk caveat, the weak condition contrast, the missing external independent auditor comparison, and Run-003's self-reported (not externally attested) independence. No model-quality, comparative-superiority, condition-effect, outcome-upgrade, outcome-assessment, adoption-readiness, promotion-readiness, production-readiness, production-correctness, security-readiness, absence-of-regressions, absence-of-vulnerabilities, dependency-risk-remediated, dependency-tree-safe, supply-chain-safety, production-dependency-health, security-approval, or externally-attested model independence claim is derived. Runtime evidence is a prerequisite for assessment, not a comparison result.
 
 ## Dependency-risk caveat scope
 
@@ -65,4 +65,7 @@ A machine-readable dependency-risk-caveat-scope artifact
 (`results/dependency-risk-caveat-scope.yml`) records that the Run-003 npm audit
 finding is scoped but not remediated. The scope preserves the limited functional
 runtime evidence while keeping security-readiness, production-readiness,
-result_assessment, and comparison_ready blocked.
+result_assessment, and comparison_ready blocked. It does not establish
+absence-of-vulnerabilities, dependency-risk-remediated, dependency-tree-safe,
+supply-chain-safety, production-dependency-health, security-approval,
+production-correctness, outcome-assessment, or absence-of-regressions.

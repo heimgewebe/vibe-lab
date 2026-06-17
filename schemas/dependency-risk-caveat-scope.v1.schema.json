@@ -70,7 +70,8 @@
       "additionalProperties": false,
       "required": [
         "observed",
-        "audit_exit_code"
+        "audit_exit_code",
+        "remediation_performed"
       ],
       "properties": {
         "observed": {

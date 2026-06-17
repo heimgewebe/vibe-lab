@@ -205,7 +205,10 @@ dev-toolchain dependency audit does not retroactively invalidate the archived
 functional runtime checks, but security-readiness, production-readiness,
 absence-of-vulnerabilities, dependency-risk-remediated, result_assessment, and
 comparison_ready remain blocked.
-No model-quality, comparative-superiority, condition-effect, outcome, adoption,
-promotion, production-readiness, security-readiness, absence-of-regressions, or
+No model-quality, comparative-superiority, condition-effect, outcome-upgrade,
+outcome-assessment, adoption-readiness, promotion-readiness, production-readiness,
+production-correctness, security-readiness, absence-of-regressions,
+absence-of-vulnerabilities, dependency-risk-remediated, dependency-tree-safe,
+supply-chain-safety, production-dependency-health, security-approval, or
 externally-attested model independence claim is derived.
 

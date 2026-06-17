@@ -17,7 +17,6 @@ summary: >
 source_evidence:
   - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
   - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
-  - "experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml"
 
 audit_observation:
   observed: true
