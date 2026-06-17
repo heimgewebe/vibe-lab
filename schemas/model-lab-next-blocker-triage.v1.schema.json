@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-next-blocker-triage.v1.schema.json",
+  "title": "Model-Lab Next Blocker Triage v1",
+  "description": "Machine-readable artifact that prioritizes the remaining result-assessment blockers of a Model-Lab series and recommends which blocker to address next. It is a methodological prioritization only: it deliberately does NOT resolve any blocker, does NOT remediate dependency risk, does NOT start a new run, does NOT allow a result_assessment, and does NOT make the series comparison-ready. It records triage_status, that result_assessment/comparison stay blocked after triage, the source evidence it is anchored to, the prioritized remaining blockers, a recommended next task, and an anti-overclaim does_not_establish boundary. Form is validated here; semantic rules (referenced readiness gate must confirm a blocked assessment, result_assessment/comparison must stay false, recommended next task present, all known blockers covered, source-evidence existence/escape, mandatory does_not_establish) are enforced by scripts/docmeta/validate_model_lab_next_blocker_triage.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "series_id",
+    "scope",
+    "triage_status",
+    "result_assessment_allowed_after_triage",
+    "comparison_ready_after_triage",
+    "source_evidence",
+    "remaining_blockers",
+    "does_not_establish"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "model_lab_next_blocker_triage"
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "triage_status": {
+      "type": "string",
+      "enum": [
+        "complete"
+      ],
+      "$comment": "v1 models exactly one real status: complete. A triage artifact is only emitted once the prioritization is done. Semantic rules keep result_assessment_allowed_after_triage=false and comparison_ready_after_triage=false; triage prioritizes, it does not unblock."
+    },
+    "result_assessment_allowed_after_triage": {
+      "type": "boolean",
+      "$comment": "In v1 this must be false. true is rejected by the validator (TRIAGE_REQUIRES_FALSE_RESULT_ASSESSMENT_ALLOWED); a triage prioritizes blockers, it does not authorize a result assessment."
+    },
+    "comparison_ready_after_triage": {
+      "type": "boolean",
+      "$comment": "In v1 this must be false. true is rejected by the validator (TRIAGE_REQUIRES_FALSE_COMPARISON_READY); a triage does not make the series comparison-ready."
+    },
+    "summary": {
+      "type": "string"
+    },
+    "source_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/sourceEvidence"
+      },
+      "$comment": "At least one entry must be a readiness_gate that the validator can read and that confirms result_assessment is still blocked (TRIAGE_REQUIRES_BLOCKED_ASSESSMENT)."
+    },
+    "triage_criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "remaining_blockers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/blocker"
+      },
+      "$comment": "Must cover every known remaining blocker id (TRIAGE_REQUIRES_ALL_KNOWN_BLOCKERS): dependency_risk_remediation_not_performed, weak_condition_contrast, external_independence_not_attested, no_external_independent_auditor_comparison."
+    },
+    "recommended_next_task": {
+      "type": "object",
+      "additionalProperties": false,
+      "$comment": "Schema-optional so that an omitted task is reported as a stable semantic rule (TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK) rather than a raw schema error. When present, id and target_blocker must be non-empty (validator).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_blocker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string"
+        },
+        "expected_output": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "forbidden_output": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "does_not_establish": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "$comment": "Mandatory anti-overclaim list. Must include the baseline non-claims enforced by the validator: result_assessment_allowed, comparison_ready, security_readiness, production_readiness, model_quality, comparative_superiority, condition_effect, external_model_independence, external_auditor_comparison_completed, dependency_risk_remediated."
+    }
+  },
+  "$defs": {
+    "repoRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\).+$",
+      "$comment": "Repo-relative POSIX path. Absolute paths, drive letters and backslashes are rejected here; parent-escape ('..') and symlink-out-of-repo are rejected semantically by the validator with a stable rule id."
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repoRelativePath"
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "Provenance label, e.g. readiness_gate, dependency_risk_scope, assessment_context, result_summary. The validator special-cases 'readiness_gate' to confirm the assessment is still blocked."
+        }
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "recommended_position",
+        "rationale",
+        "next_task_shape"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        },
+        "recommended_position": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_task_shape": {
+          "type": "string",
+          "minLength": 1
+        },
+        "must_not_mix_with": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

@@ -85,8 +85,9 @@ evidence:
   - "experiments/2026-05-31_model-lab-replication-series/results/result.md"
   - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
   - "experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml"
+  - "experiments/2026-05-31_model-lab-replication-series/results/next-blocker-triage.yml"
 
 next_actions:
+  - "Next recommended step (results/next-blocker-triage.yml): address weak_condition_contrast via a condition_contrast_design_gate before Run-004 or any formal assessment."
   - "Remediate dependency risk in a separate PR if security or production readiness is needed."
-  - "Design a stronger condition contrast or external independent assessment."
-  - "Keep comparison_ready=false until blockers are closed."
+  - "Keep comparison_ready=false until blockers are closed. The triage prioritizes blockers; it does not unblock result assessment."

@@ -212,3 +212,17 @@ absence-of-vulnerabilities, dependency-risk-remediated, dependency-tree-safe,
 supply-chain-safety, production-dependency-health, security-approval, or
 externally-attested model independence claim is derived.
 
+### 11.9 Next-blocker triage
+
+A separate machine-readable next-blocker-triage artifact
+(`results/next-blocker-triage.yml`, contract `model-lab-next-blocker-triage.v1`,
+validated by `scripts/docmeta/validate_model_lab_next_blocker_triage.py` in
+`make validate`) prioritizes the four remaining result-assessment blockers.
+
+Triage durchgeführt. Nächster empfohlener methodischer Schritt:
+`condition_contrast_design_gate` (Ziel-Blocker: `weak_condition_contrast`). Kein
+Run-004 vor klarerem Condition-Kontrast. Keine Freigabe durch Triage: Result
+Assessment bleibt blockiert, `comparison_ready` bleibt false, und der Verdict in
+Abschnitt 9 ist unverändert. Die Triage priorisiert nur; sie löst keinen Blocker,
+remediiert keine Dependency-Risiken und trifft kein Qualitätsurteil.
+

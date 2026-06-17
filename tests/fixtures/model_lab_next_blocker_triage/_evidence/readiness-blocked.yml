@@ -1,0 +1,7 @@
+# Minimal readiness-gate-shaped evidence for triage fixtures. Only the two fields
+# the triage validator reads (readiness_status, result_assessment_allowed) need to
+# be present and confirm a blocked assessment. This is intentionally not a full
+# result-assessment-readiness gate.
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false

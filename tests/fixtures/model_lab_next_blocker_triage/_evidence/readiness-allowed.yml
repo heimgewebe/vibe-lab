@@ -1,0 +1,6 @@
+# Readiness-gate-shaped evidence that does NOT confirm a blocked assessment
+# (result_assessment_allowed=true, readiness_status=ready). Used by the
+# readiness-gate-not-blocked invalid fixture to trip TRIAGE_REQUIRES_BLOCKED_ASSESSMENT.
+readiness_status: "ready"
+result_assessment_allowed: true
+comparison_ready: true

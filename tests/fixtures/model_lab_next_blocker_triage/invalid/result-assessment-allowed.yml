@@ -1,0 +1,53 @@
+schema_version: "v1"
+artifact_type: "model_lab_next_blocker_triage"
+series_id: "fixture-series"
+scope: "remaining_result_assessment_blockers"
+
+# Invalid: a triage must not authorize a result assessment.
+# Expected rule: TRIAGE_REQUIRES_FALSE_RESULT_ASSESSMENT_ALLOWED
+triage_status: "complete"
+result_assessment_allowed_after_triage: true
+comparison_ready_after_triage: false
+
+source_evidence:
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
+    kind: "readiness_gate"
+
+remaining_blockers:
+  - id: "weak_condition_contrast"
+    status: "open"
+    recommended_position: 1
+    rationale: "Most directly affects future comparability."
+    next_task_shape: "condition_contrast_design_gate"
+  - id: "external_independence_not_attested"
+    status: "open"
+    recommended_position: 2
+    rationale: "Attestation target is clearer after the contrast is specified."
+    next_task_shape: "external_independence_attestation_plan"
+  - id: "dependency_risk_remediation_not_performed"
+    status: "open"
+    recommended_position: 3
+    rationale: "Separate technical/security track."
+    next_task_shape: "dependency_remediation_planning_or_targeted_patch"
+  - id: "no_external_independent_auditor_comparison"
+    status: "open"
+    recommended_position: 4
+    rationale: "Operationally larger; should follow contrast design."
+    next_task_shape: "external_auditor_comparison_protocol"
+
+recommended_next_task:
+  id: "condition_contrast_design_gate"
+  target_blocker: "weak_condition_contrast"
+  reason: "Closest to the methodological core of future comparability."
+
+does_not_establish:
+  - "result_assessment_allowed"
+  - "comparison_ready"
+  - "security_readiness"
+  - "production_readiness"
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "external_model_independence"
+  - "external_auditor_comparison_completed"
+  - "dependency_risk_remediated"
