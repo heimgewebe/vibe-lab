@@ -3,21 +3,20 @@ artifact_type: "result_assessment_readiness"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: readiness_status=ready but a blocker is still open/blocking.
-# Expected rule: READINESS_READY_REQUIRES_NO_OPEN_BLOCKERS
-readiness_status: "ready"
-result_assessment_allowed: true
-comparison_ready: true
+# Invalid: an open/blocking blocker carries no evidence.
+# Expected rule: OPEN_OR_BLOCKING_BLOCKER_REQUIRES_EVIDENCE
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false
 
 blockers:
-  - id: "still_open_blocker"
+  - id: "open_blocker_without_evidence"
     status: "open"
     severity: "blocking"
-    evidence:
-      - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
+    note: "No evidence attached — must be rejected."
 
 allowed_claims:
-  - "result_assessment_is_allowed"
+  - "result_assessment_is_blocked"
 
 disallowed_claims:
   - "model_quality"
@@ -35,4 +34,4 @@ evidence:
   - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
 
 next_actions:
-  - "Resolve the open blocker before declaring readiness_status=ready."
+  - "Attach evidence to every open or blocking blocker."

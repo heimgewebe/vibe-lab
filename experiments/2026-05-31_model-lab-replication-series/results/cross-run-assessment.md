@@ -189,5 +189,6 @@ keep `result_assessment_allowed=false` and `comparison_ready=false`.
 
 Runtime evidence is a prerequisite, not a comparison result. The gate derives no
 model-quality, comparative-superiority, condition-effect, outcome, adoption, promotion,
-production-readiness, or security-readiness claim, and does not modify the section 9 verdict.
+production-readiness, security-readiness, absence-of-regressions, or external-model-independence
+claim, and does not modify the section 9 verdict.
 

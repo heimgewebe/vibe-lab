@@ -1,23 +1,24 @@
 schema_version: "v1"
 artifact_type: "result_assessment_readiness"
 series_id: "fixture-series"
-challenge_version: "rest-api-v1"
 
-# Invalid: readiness_status=ready but a blocker is still open/blocking.
-# Expected rule: READINESS_READY_REQUIRES_NO_OPEN_BLOCKERS
-readiness_status: "ready"
-result_assessment_allowed: true
-comparison_ready: true
+# Invalid: challenge_version has no benchmarks/challenges/<version>.md file.
+# Expected rule: UNKNOWN_CHALLENGE_VERSION
+challenge_version: "nonexistent-challenge-v9"
+
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false
 
 blockers:
-  - id: "still_open_blocker"
+  - id: "open_blocker"
     status: "open"
     severity: "blocking"
     evidence:
       - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
 
 allowed_claims:
-  - "result_assessment_is_allowed"
+  - "result_assessment_is_blocked"
 
 disallowed_claims:
   - "model_quality"
@@ -35,4 +36,4 @@ evidence:
   - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
 
 next_actions:
-  - "Resolve the open blocker before declaring readiness_status=ready."
+  - "Point challenge_version at an existing benchmarks/challenges/<version>.md file."

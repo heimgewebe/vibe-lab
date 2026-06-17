@@ -28,6 +28,11 @@ INVALID_FIXTURES = {
     "invalid/evidence-path-not-found.yml": "EVIDENCE_PATH_NOT_FOUND",
     "invalid/evidence-path-escape.yml": "EVIDENCE_PATH_ESCAPE",
     "invalid/ready-with-partial-runtime-gate.yml": "PARTIAL_RUNTIME_GATE_BLOCKS_READY",
+    "invalid/assessment-allowed-without-ready.yml": "ASSESSMENT_ALLOWED_REQUIRES_READY",
+    "invalid/ready-without-assessment-allowed.yml": "READINESS_READY_REQUIRES_ASSESSMENT_ALLOWED",
+    "invalid/comparison-ready-without-assessment-allowed.yml": "COMPARISON_READY_REQUIRES_ASSESSMENT_ALLOWED",
+    "invalid/open-blocker-without-evidence.yml": "OPEN_OR_BLOCKING_BLOCKER_REQUIRES_EVIDENCE",
+    "invalid/unknown-challenge-version.yml": "UNKNOWN_CHALLENGE_VERSION",
 }
 
 

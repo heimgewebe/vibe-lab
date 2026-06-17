@@ -30,6 +30,7 @@ disallowed_claims:
   - "promotion_readiness"
   - "production_readiness"
   - "security_readiness"
+  - "absence_of_regressions"
   - "external_model_independence"
 
 evidence:

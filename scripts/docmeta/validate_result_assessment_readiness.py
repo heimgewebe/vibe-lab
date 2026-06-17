@@ -28,6 +28,15 @@ Enforced semantic rules (exit 1):
   PARTIAL_RUNTIME_GATE_BLOCKS_READY
                                    a referenced runtime gate is not pass (e.g. partial),
                                    but this artifact claims ready / result_assessment_allowed.
+  ASSESSMENT_ALLOWED_REQUIRES_READY
+                                   result_assessment_allowed=true but readiness_status != ready.
+  READINESS_READY_REQUIRES_ASSESSMENT_ALLOWED
+                                   readiness_status=ready but result_assessment_allowed != true.
+  COMPARISON_READY_REQUIRES_ASSESSMENT_ALLOWED
+                                   comparison_ready=true but readiness is not ready + allowed.
+  OPEN_OR_BLOCKING_BLOCKER_REQUIRES_EVIDENCE
+                                   an open or blocking blocker carries no evidence.
+  UNKNOWN_CHALLENGE_VERSION        challenge_version has no benchmarks/challenges/<v>.md file.
 
 Exit codes:
   0  valid
@@ -74,10 +83,12 @@ MANDATORY_DISALLOWED_CLAIMS = (
     "promotion_readiness",
     "production_readiness",
     "security_readiness",
+    "absence_of_regressions",
     "external_model_independence",
 )
 
 READINESS_GLOB = "*/results/result-assessment-readiness.yml"
+BENCHMARK_CHALLENGES_DIRNAME = ("benchmarks", "challenges")
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 RUNTIME_GATE_STATUS_KEY = "validation_status"
 
@@ -218,6 +229,32 @@ def _runtime_gate_status(resolved: Path) -> str | None:
     return status if isinstance(status, str) else None
 
 
+def challenge_version_error(data: dict, path: Path, repo_root: Path) -> str | None:
+    """Return an UNKNOWN_CHALLENGE_VERSION error string, or None.
+
+    Existence check only: ``benchmarks/challenges/<challenge_version>.md`` must
+    exist (no frontmatter matching in this contract). A path-escape guard keeps a
+    crafted challenge_version from pointing outside benchmarks/challenges/.
+    """
+    challenge_version = str(data.get("challenge_version", "")).strip()
+    if not challenge_version:
+        return None  # schema already requires a non-empty value
+    challenges_dir = (repo_root / Path(*BENCHMARK_CHALLENGES_DIRNAME)).resolve()
+    candidate = challenges_dir / f"{challenge_version}.md"
+    try:
+        inside = _inside(candidate.resolve(strict=False), challenges_dir)
+    except (OSError, RuntimeError):
+        inside = False
+    if not inside or not candidate.is_file():
+        return format_error(
+            "UNKNOWN_CHALLENGE_VERSION",
+            path,
+            f"challenge_version '{challenge_version}' has no challenge file at "
+            f"benchmarks/challenges/{challenge_version}.md.",
+        )
+    return None
+
+
 def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     errors: list[str] = []
 
@@ -271,6 +308,64 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                     )
                 )
 
+    # --- boolean coupling: the three readiness flags must not contradict ------
+    if result_assessment_allowed and readiness_status != "ready":
+        errors.append(
+            format_error(
+                "ASSESSMENT_ALLOWED_REQUIRES_READY",
+                path,
+                "result_assessment_allowed=true requires readiness_status=ready "
+                f"(got readiness_status={readiness_status!r}).",
+            )
+        )
+    if readiness_status == "ready" and not result_assessment_allowed:
+        errors.append(
+            format_error(
+                "READINESS_READY_REQUIRES_ASSESSMENT_ALLOWED",
+                path,
+                "readiness_status=ready requires result_assessment_allowed=true.",
+            )
+        )
+    if comparison_ready and not (readiness_status == "ready" and result_assessment_allowed):
+        errors.append(
+            format_error(
+                "COMPARISON_READY_REQUIRES_ASSESSMENT_ALLOWED",
+                path,
+                "comparison_ready=true requires readiness_status=ready and "
+                f"result_assessment_allowed=true (got readiness_status={readiness_status!r}, "
+                f"result_assessment_allowed={str(result_assessment_allowed).lower()}).",
+            )
+        )
+
+    # --- open / blocking blockers must carry evidence ------------------------
+    for blocker in blockers:
+        if not isinstance(blocker, dict):
+            continue
+        status = str(blocker.get("status", ""))
+        severity = str(blocker.get("severity", ""))
+        if status != "open" and severity != "blocking":
+            continue
+        blocker_id = str(blocker.get("id", "<missing>"))
+        blocker_evidence = blocker.get("evidence", []) or []
+        has_evidence = any(
+            isinstance(item, str) and item.strip() for item in blocker_evidence
+        )
+        if not has_evidence:
+            errors.append(
+                format_error(
+                    "OPEN_OR_BLOCKING_BLOCKER_REQUIRES_EVIDENCE",
+                    path,
+                    f"blocker '{blocker_id}' is open/blocking "
+                    f"(status={status or '<missing>'}, severity={severity or '<missing>'}) "
+                    "but carries no evidence.",
+                )
+            )
+
+    # --- challenge_version is anchored to a real benchmark challenge ----------
+    challenge_error = challenge_version_error(data, path, repo_root)
+    if challenge_error is not None:
+        errors.append(challenge_error)
+
     # --- mandatory disallowed claims -----------------------------------------
     declared_disallowed = {str(item).strip().lower() for item in disallowed_claims}
     missing_disallowed = [d for d in MANDATORY_DISALLOWED_CLAIMS if d not in declared_disallowed]
@@ -297,9 +392,11 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- evidence path escape + existence ------------------------------------
+    # --- evidence path escape + existence (resolved once, reused below) -------
+    resolved_refs: list[tuple[str, str, Path | None, str | None]] = []
     for label, rel in _iter_evidence_refs(data):
         resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
+        resolved_refs.append((label, rel, resolved, code))
         if code == "ESCAPE":
             errors.append(
                 format_error(
@@ -320,10 +417,10 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     # --- partial runtime gate must not be read as ready ----------------------
     # A referenced runtime-evidence gate that is not 'pass' (e.g. partial) cannot
     # back a ready / result_assessment_allowed=true claim. Runtime contact is a
-    # prerequisite, not a comparison result.
+    # prerequisite, not a comparison result. Reuses the resolution above; only
+    # already-resolved, existing files are inspected.
     if readiness_status == "ready" or result_assessment_allowed:
-        for label, rel in _iter_evidence_refs(data):
-            resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=False)
+        for label, rel, resolved, code in resolved_refs:
             if code is not None or resolved is None or not resolved.is_file():
                 continue
             gate_status = _runtime_gate_status(resolved)

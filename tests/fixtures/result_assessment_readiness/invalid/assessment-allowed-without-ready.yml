@@ -3,18 +3,13 @@ artifact_type: "result_assessment_readiness"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: readiness_status=ready but a blocker is still open/blocking.
-# Expected rule: READINESS_READY_REQUIRES_NO_OPEN_BLOCKERS
-readiness_status: "ready"
+# Invalid: result_assessment_allowed=true but readiness_status is not "ready".
+# Expected rule: ASSESSMENT_ALLOWED_REQUIRES_READY
+readiness_status: "not_applicable"
 result_assessment_allowed: true
-comparison_ready: true
+comparison_ready: false
 
-blockers:
-  - id: "still_open_blocker"
-    status: "open"
-    severity: "blocking"
-    evidence:
-      - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
+blockers: []
 
 allowed_claims:
   - "result_assessment_is_allowed"
@@ -35,4 +30,4 @@ evidence:
   - "tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt"
 
 next_actions:
-  - "Resolve the open blocker before declaring readiness_status=ready."
+  - "Set readiness_status=ready before allowing a result assessment."
