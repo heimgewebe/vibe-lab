@@ -3,7 +3,7 @@ artifact_type: "result_assessment_readiness"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: disallowed_claims omits the mandatory non-claim "security_readiness".
+# Invalid: disallowed_claims omits mandatory non-claims.
 # Expected rule: MISSING_MANDATORY_DISALLOWED_CLAIM
 readiness_status: "blocked"
 result_assessment_allowed: false
