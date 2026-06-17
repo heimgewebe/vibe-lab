@@ -1,0 +1,4 @@
+# Fixture evidence: a minimal partial runtime-evidence gate.
+# Existence-only target for dependency-risk-caveat-scope source_evidence checks.
+schema_version: "v1"
+validation_status: "partial"

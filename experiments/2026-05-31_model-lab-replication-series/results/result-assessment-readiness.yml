@@ -27,10 +27,12 @@ blockers:
     evidence:
       - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
       - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt"
+      - "experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml"
     note: >
-      Run-003 functional runtime checks passed, but npm audit observed
-      unremediated high-severity dev-toolchain advisories. This blocks
-      security-readiness and production-readiness interpretation.
+      The dependency-risk caveat is now scoped, not remediated. The scope records
+      that functional runtime evidence is not invalidated by the dev-toolchain
+      audit, while security-readiness, production-readiness, result_assessment, and
+      comparison_ready remain blocked.
 
   - id: "weak_condition_contrast"
     status: "open"
@@ -84,6 +86,6 @@ evidence:
   - "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml"
 
 next_actions:
-  - "Explicitly scope dependency-risk caveat for assessment purposes or remediate in a separate PR."
+  - "Remediate dependency risk in a separate PR if security or production readiness is needed."
   - "Design a stronger condition contrast or external independent assessment."
   - "Keep comparison_ready=false until blockers are closed."

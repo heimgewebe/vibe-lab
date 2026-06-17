@@ -24,6 +24,8 @@ relations:
     target: ../artifacts/run-003-plan-stronger-condition-contrast/plan.md
   - type: references
     target: result-assessment-readiness.yml
+  - type: references
+    target: dependency-risk-caveat-scope.yml
 ---
 
 # Cross-Run Assessment — Model-Lab Replication Series Run-001 vs Run-002
@@ -191,4 +193,19 @@ Runtime evidence is a prerequisite, not a comparison result. The gate derives no
 model-quality, comparative-superiority, condition-effect, outcome, adoption, promotion,
 production-readiness, security-readiness, absence-of-regressions, or externally-attested model independence
 claim, and does not modify the section 9 verdict.
+
+### 11.8 Dependency-risk caveat scope
+
+A separate machine-readable dependency-risk-caveat-scope artifact
+(`results/dependency-risk-caveat-scope.yml`, contract
+`dependency-risk-caveat-scope.v1`) now scopes the Run-003 dependency-risk caveat
+for assessment interpretation.
+The scope does not remediate the npm audit finding. It records that the
+dev-toolchain dependency audit does not retroactively invalidate the archived
+functional runtime checks, but security-readiness, production-readiness,
+absence-of-vulnerabilities, dependency-risk-remediated, result_assessment, and
+comparison_ready remain blocked.
+No model-quality, comparative-superiority, condition-effect, outcome, adoption,
+promotion, production-readiness, security-readiness, absence-of-regressions, or
+externally-attested model independence claim is derived.
 

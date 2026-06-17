@@ -1,0 +1,7 @@
+# Fixture evidence: a minimal blocked result-assessment-readiness snapshot.
+# Existence-only target for dependency-risk-caveat-scope source_evidence checks.
+schema_version: "v1"
+artifact_type: "result_assessment_readiness"
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false

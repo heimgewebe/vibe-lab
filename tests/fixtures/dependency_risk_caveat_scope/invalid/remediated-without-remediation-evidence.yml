@@ -1,0 +1,54 @@
+schema_version: "v1"
+artifact_type: "dependency_risk_caveat_scope"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+
+# Invalid: scope_status=remediated (and dependency_risk_remediated=true) but no
+# remediation_evidence is provided. This guards against a future false release that
+# claims remediation without proof. audit_exit_code=0 keeps the audit-coupling rule
+# from also firing, isolating the remediation-evidence rule.
+# Expected rule: REMEDIATED_REQUIRES_REMEDIATION_EVIDENCE
+scope_status: "remediated"
+dependency_risk_remediated: true
+result_assessment_allowed_after_scope: false
+comparison_ready_after_scope: false
+
+source_evidence:
+  - "tests/fixtures/dependency_risk_caveat_scope/_evidence/dependency-audit-nonzero.txt"
+
+audit_observation:
+  observed: true
+  audit_command: "npm audit --audit-level=moderate"
+  audit_exit_code: 0
+  vulnerability_severity_observed: []
+  remediation_performed: true
+  remediation_scope: "claimed_but_unproven"
+  affected_surface: "fixture_dev_toolchain"
+
+assessment_interpretation:
+  functional_runtime_evidence: "not_invalidated_by_dev_toolchain_audit"
+  security_readiness: "ready"
+  production_readiness: "ready"
+  result_assessment: "still_blocked"
+  comparison_ready: "false"
+
+does_not_establish:
+  - "security_readiness"
+  - "production_readiness"
+  - "absence_of_vulnerabilities"
+  - "dependency_risk_remediated"
+  - "dependency_tree_safe"
+  - "supply_chain_safety"
+  - "production_dependency_health"
+  - "security_approval"
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "outcome_upgrade"
+  - "adoption_readiness"
+  - "promotion_readiness"
+
+remaining_blockers: []
+
+next_actions:
+  - "Provide remediation_evidence paths that exist before marking remediated."
