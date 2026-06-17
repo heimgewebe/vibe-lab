@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/dependency-risk-caveat-scope.v1.schema.json",
   "title": "Dependency Risk Caveat Scope v1",
-  "description": "Machine-readable artifact that scopes a dependency-risk caveat for assessment interpretation. It deliberately does NOT remediate the risk and does NOT grant security/production readiness or a result_assessment. It records scope_status, whether the risk was remediated, whether result_assessment/comparison are allowed after scoping, an audit observation, an assessment interpretation, and an anti-overclaim does_not_establish boundary. Form is validated here; semantic rules (scoped_not_remediated coupling, audit-exit coupling, remediated-requires-evidence, mandatory does_not_establish, source-evidence existence/escape, challenge_version existence) are enforced by scripts/docmeta/validate_dependency_risk_caveat_scope.py.",
+  "description": "Machine-readable artifact that scopes an unresolved dependency-risk caveat for assessment interpretation. It deliberately does NOT remediate the risk and does NOT grant security/production readiness or a result_assessment. It records scope_status, that the risk is not remediated, whether result_assessment/comparison are allowed after scoping, an audit observation, an assessment interpretation, and an anti-overclaim does_not_establish boundary. v1 scopes only not-yet-remediated caveats: it does NOT model remediation. A remediated state must be represented by a future separate contract/PR; dependency_risk_remediated=true is out of scope for v1. Form is validated here; semantic rules (scoped_not_remediated coupling, dependency_risk_remediated out-of-scope, audit-exit coupling incl. result_assessment/comparison, mandatory does_not_establish, source-evidence existence/escape, challenge_version existence) are enforced by scripts/docmeta/validate_dependency_risk_caveat_scope.py.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -42,13 +42,13 @@
       "type": "string",
       "enum": [
         "scoped_not_remediated",
-        "remediated",
         "not_applicable"
       ],
-      "$comment": "Semantic rules: 'scoped_not_remediated' requires dependency_risk_remediated=false, security/production readiness 'blocked', result_assessment_allowed_after_scope=false, comparison_ready_after_scope=false, and the matching assessment_interpretation strings. 'remediated' (or dependency_risk_remediated=true) requires a non-empty remediation_evidence list whose paths exist."
+      "$comment": "v1 models only not-yet-remediated caveats; there is deliberately no 'remediated' state. Semantic rules: 'scoped_not_remediated' requires dependency_risk_remediated=false, security/production readiness 'blocked', result_assessment_allowed_after_scope=false, comparison_ready_after_scope=false, and the matching assessment_interpretation strings. dependency_risk_remediated=true is rejected for any scope_status (DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE)."
     },
     "dependency_risk_remediated": {
-      "type": "boolean"
+      "type": "boolean",
+      "$comment": "In v1 this must be false. true is rejected by the validator (DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE) regardless of scope_status; remediation belongs in a future separate contract/PR."
     },
     "result_assessment_allowed_after_scope": {
       "type": "boolean"
@@ -154,13 +154,6 @@
         "type": "string",
         "minLength": 1
       }
-    },
-    "remediation_evidence": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/repoRelativePath"
-      },
-      "$comment": "Required (non-empty, existing paths) only when scope_status=remediated or dependency_risk_remediated=true; enforced semantically by the validator."
     },
     "next_actions": {
       "type": "array",

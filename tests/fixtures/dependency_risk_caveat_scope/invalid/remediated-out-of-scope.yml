@@ -3,12 +3,12 @@ artifact_type: "dependency_risk_caveat_scope"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: scope_status=scoped_not_remediated but dependency_risk_remediated=true.
-# Scoping a risk is not remediating it.
-# Expected rule: SCOPED_NOT_REMEDIATED_REQUIRES_FALSE_REMEDIATED
-# (also co-reports DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE and
-#  AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED — co-occurrence is expected).
-scope_status: "scoped_not_remediated"
+# Invalid: dependency_risk_remediated=true is out of scope for v1, regardless of
+# scope_status. v1 models only not-yet-remediated caveats; remediation belongs in a
+# future separate contract/PR. scope_status=not_applicable and audit_exit_code=0 keep
+# the scoped_not_remediated and audit-coupling rules silent, isolating this rule.
+# Expected rule: DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE
+scope_status: "not_applicable"
 dependency_risk_remediated: true
 result_assessment_allowed_after_scope: false
 comparison_ready_after_scope: false
@@ -19,9 +19,8 @@ source_evidence:
 audit_observation:
   observed: true
   audit_command: "npm audit --audit-level=moderate"
-  audit_exit_code: 1
-  vulnerability_severity_observed:
-    - "high"
+  audit_exit_code: 0
+  vulnerability_severity_observed: []
   remediation_performed: false
   remediation_scope: "out_of_scope_for_this_pr"
   affected_surface: "fixture_dev_toolchain"
@@ -49,8 +48,7 @@ does_not_establish:
   - "adoption_readiness"
   - "promotion_readiness"
 
-remaining_blockers:
-  - "dependency_risk_remediation_not_performed"
+remaining_blockers: []
 
 next_actions:
-  - "Remediate dependency risk in a separate PR if security or production readiness is needed."
+  - "Represent remediation in a future separate contract/PR, not in this scope artifact."

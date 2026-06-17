@@ -3,14 +3,14 @@ artifact_type: "dependency_risk_caveat_scope"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: scope_status=remediated (and dependency_risk_remediated=true) but no
-# remediation_evidence is provided. This guards against a future false release that
-# claims remediation without proof. audit_exit_code=0 keeps the audit-coupling rule
-# from also firing, isolating the remediation-evidence rule.
-# Expected rule: REMEDIATED_REQUIRES_REMEDIATION_EVIDENCE
-scope_status: "remediated"
-dependency_risk_remediated: true
-result_assessment_allowed_after_scope: false
+# Invalid: a non-zero audit exit code coexists with a result_assessment allowance.
+# A non-zero audit must keep result_assessment blocked too, not only security/production.
+# scope_status=not_applicable keeps the scoped_not_remediated rules silent, isolating
+# the audit-coupling rule.
+# Expected rule: AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED
+scope_status: "not_applicable"
+dependency_risk_remediated: false
+result_assessment_allowed_after_scope: true
 comparison_ready_after_scope: false
 
 source_evidence:
@@ -19,16 +19,17 @@ source_evidence:
 audit_observation:
   observed: true
   audit_command: "npm audit --audit-level=moderate"
-  audit_exit_code: 0
-  vulnerability_severity_observed: []
-  remediation_performed: true
-  remediation_scope: "claimed_but_unproven"
+  audit_exit_code: 1
+  vulnerability_severity_observed:
+    - "high"
+  remediation_performed: false
+  remediation_scope: "out_of_scope_for_this_pr"
   affected_surface: "fixture_dev_toolchain"
 
 assessment_interpretation:
   functional_runtime_evidence: "not_invalidated_by_dev_toolchain_audit"
-  security_readiness: "ready"
-  production_readiness: "ready"
+  security_readiness: "blocked"
+  production_readiness: "blocked"
   result_assessment: "still_blocked"
   comparison_ready: "false"
 
@@ -48,7 +49,8 @@ does_not_establish:
   - "adoption_readiness"
   - "promotion_readiness"
 
-remaining_blockers: []
+remaining_blockers:
+  - "dependency_risk_remediation_not_performed"
 
 next_actions:
-  - "Provide remediation_evidence paths that exist before marking remediated."
+  - "Keep result_assessment_allowed_after_scope=false while npm audit exits non-zero."

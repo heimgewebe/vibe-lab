@@ -3,15 +3,15 @@ artifact_type: "dependency_risk_caveat_scope"
 series_id: "fixture-series"
 challenge_version: "rest-api-v1"
 
-# Invalid: scope_status=scoped_not_remediated but dependency_risk_remediated=true.
-# Scoping a risk is not remediating it.
-# Expected rule: SCOPED_NOT_REMEDIATED_REQUIRES_FALSE_REMEDIATED
-# (also co-reports DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE and
-#  AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED — co-occurrence is expected).
-scope_status: "scoped_not_remediated"
-dependency_risk_remediated: true
+# Invalid: a non-zero audit exit code coexists with a comparison allowance.
+# A non-zero audit must keep comparison_ready blocked too.
+# scope_status=not_applicable keeps the scoped_not_remediated rules silent, isolating
+# the audit-coupling rule.
+# Expected rule: AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED
+scope_status: "not_applicable"
+dependency_risk_remediated: false
 result_assessment_allowed_after_scope: false
-comparison_ready_after_scope: false
+comparison_ready_after_scope: true
 
 source_evidence:
   - "tests/fixtures/dependency_risk_caveat_scope/_evidence/dependency-audit-nonzero.txt"
@@ -53,4 +53,4 @@ remaining_blockers:
   - "dependency_risk_remediation_not_performed"
 
 next_actions:
-  - "Remediate dependency risk in a separate PR if security or production readiness is needed."
+  - "Keep comparison_ready_after_scope=false while npm audit exits non-zero."

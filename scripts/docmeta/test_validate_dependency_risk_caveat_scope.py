@@ -34,7 +34,9 @@ INVALID_FIXTURES = {
     "invalid/source-evidence-missing.yml": "SOURCE_EVIDENCE_PATH_NOT_FOUND",
     "invalid/source-evidence-escape.yml": "SOURCE_EVIDENCE_PATH_ESCAPE",
     "invalid/nonzero-audit-marked-safe.yml": "AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED",
-    "invalid/remediated-without-remediation-evidence.yml": "REMEDIATED_REQUIRES_REMEDIATION_EVIDENCE",
+    "invalid/nonzero-audit-result-assessment-allowed.yml": "AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED",
+    "invalid/nonzero-audit-comparison-ready.yml": "AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED",
+    "invalid/remediated-out-of-scope.yml": "DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE",
     "invalid/unknown-challenge-version.yml": "UNKNOWN_CHALLENGE_VERSION",
 }
 

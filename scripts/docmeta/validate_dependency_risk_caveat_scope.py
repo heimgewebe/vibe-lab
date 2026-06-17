@@ -19,6 +19,11 @@ dependency-risk caveat has been *classified* (not solved) for that interpretatio
 Scoping a risk is not remediating it.
 
 Enforced semantic rules (exit 1):
+  DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE
+                                   dependency_risk_remediated is true. v1 models only
+                                   not-yet-remediated caveats; remediation belongs in
+                                   a future separate contract/PR. Fires for any
+                                   scope_status.
   SCOPED_NOT_REMEDIATED_REQUIRES_FALSE_REMEDIATED
                                    scope_status=scoped_not_remediated but
                                    dependency_risk_remediated is true.
@@ -42,12 +47,9 @@ Enforced semantic rules (exit 1):
   UNKNOWN_CHALLENGE_VERSION        challenge_version has no benchmarks/challenges/<v>.md file.
   AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED
                                    audit_observation.audit_exit_code is a non-zero
-                                   integer but the artifact marks the risk
-                                   remediated or unblocks security/production.
-  REMEDIATED_REQUIRES_REMEDIATION_EVIDENCE
-                                   scope_status=remediated (or
-                                   dependency_risk_remediated=true) but no existing
-                                   remediation_evidence paths are present.
+                                   integer but the artifact marks the risk remediated,
+                                   unblocks security/production, or allows
+                                   result_assessment/comparison.
 
 Exit codes:
   0  valid
@@ -260,7 +262,6 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     comparison_ready_after_scope = bool(data.get("comparison_ready_after_scope", False))
     does_not_establish = data.get("does_not_establish", []) or []
     source_evidence = data.get("source_evidence", []) or []
-    remediation_evidence = data.get("remediation_evidence", []) or []
 
     audit = data.get("audit_observation", {}) or {}
     audit_exit_code = audit.get("audit_exit_code") if isinstance(audit, dict) else None
@@ -271,6 +272,21 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     production_readiness = _str_field(interp, "production_readiness")
     result_assessment = _str_field(interp, "result_assessment")
     comparison_ready = _str_field(interp, "comparison_ready")
+
+    # --- remediation is out of scope for v1 (global, any scope_status) --------
+    # v1 models only not-yet-remediated caveats. A remediated state must be
+    # represented by a future separate contract/PR, never inside this scope-only
+    # artifact.
+    if dependency_risk_remediated:
+        errors.append(
+            format_error(
+                "DEPENDENCY_RISK_REMEDIATED_OUT_OF_SCOPE",
+                path,
+                "dependency_risk_remediated=true is out of scope for "
+                "dependency-risk-caveat-scope v1; use a future remediation "
+                "contract/PR.",
+            )
+        )
 
     # --- scoped_not_remediated: must stay un-remediated -----------------------
     if scope_status == "scoped_not_remediated":
@@ -363,8 +379,8 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
 
     # --- audit exit code coupling --------------------------------------------
     # A non-zero audit exit code is an observed (unremediated) finding: it must
-    # not coexist with a remediated flag or an unblocked security/production
-    # reading.
+    # not coexist with a remediated flag, an unblocked security/production
+    # reading, or any result_assessment / comparison allowance.
     if isinstance(audit_exit_code, int) and not isinstance(audit_exit_code, bool) and audit_exit_code != 0:
         audit_violations = []
         if dependency_risk_remediated:
@@ -373,53 +389,30 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             audit_violations.append(f"security_readiness={security_readiness!r}")
         if production_readiness != "blocked":
             audit_violations.append(f"production_readiness={production_readiness!r}")
+        if result_assessment_allowed:
+            audit_violations.append("result_assessment_allowed_after_scope=true")
+        if comparison_ready_after_scope:
+            audit_violations.append("comparison_ready_after_scope=true")
+        if result_assessment not in ("", "still_blocked"):
+            audit_violations.append(
+                f"assessment_interpretation.result_assessment={result_assessment!r}"
+            )
+        if comparison_ready not in ("", "false"):
+            audit_violations.append(
+                f"assessment_interpretation.comparison_ready={comparison_ready!r}"
+            )
         if audit_violations:
             errors.append(
                 format_error(
                     "AUDIT_EXIT_NONZERO_REQUIRES_NOT_REMEDIATED",
                     path,
                     f"audit_observation.audit_exit_code={audit_exit_code} (non-zero) "
-                    "requires dependency_risk_remediated=false and blocked "
-                    "security/production readiness; offending: "
+                    "requires dependency_risk_remediated=false, blocked "
+                    "security/production readiness, and no result_assessment/comparison "
+                    "allowance; offending: "
                     + ", ".join(audit_violations),
                 )
             )
-
-    # --- remediated requires remediation evidence -----------------------------
-    if scope_status == "remediated" or dependency_risk_remediated:
-        existing_remediation = [
-            item for item in remediation_evidence if isinstance(item, str) and item.strip()
-        ]
-        if not existing_remediation:
-            errors.append(
-                format_error(
-                    "REMEDIATED_REQUIRES_REMEDIATION_EVIDENCE",
-                    path,
-                    "scope_status=remediated or dependency_risk_remediated=true "
-                    "requires a non-empty remediation_evidence list.",
-                )
-            )
-        else:
-            for rel in existing_remediation:
-                resolved, code = resolve_repo_relative_path(
-                    rel.strip(), repo_root, must_exist=True
-                )
-                if code == "ESCAPE":
-                    errors.append(
-                        format_error(
-                            "SOURCE_EVIDENCE_PATH_ESCAPE",
-                            path,
-                            f"remediation_evidence path '{rel}' resolves outside the repo root.",
-                        )
-                    )
-                elif code == "NOT_FOUND":
-                    errors.append(
-                        format_error(
-                            "REMEDIATED_REQUIRES_REMEDIATION_EVIDENCE",
-                            path,
-                            f"remediation_evidence path '{rel}' does not exist.",
-                        )
-                    )
 
     # --- challenge_version anchored to a real benchmark challenge -------------
     challenge_error = challenge_version_error(data, path, repo_root)
