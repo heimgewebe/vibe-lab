@@ -42,6 +42,10 @@ INVALID_FIXTURES = {
     "invalid/source-evidence-missing.yml": "SOURCE_EVIDENCE_PATH_NOT_FOUND",
     "invalid/source-evidence-escape.yml": "SOURCE_EVIDENCE_PATH_ESCAPE",
     "invalid/missing-does-not-establish.yml": "MISSING_MANDATORY_DOES_NOT_ESTABLISH",
+    "invalid/recommended-next-task-missing-reason.yml": "TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK",
+    "invalid/multiple-readiness-gates.yml": "TRIAGE_REQUIRES_SINGLE_READINESS_GATE_SOURCE",
+    "invalid/multiple-dependency-risk-scopes.yml": "TRIAGE_REQUIRES_SINGLE_DEPENDENCY_RISK_SCOPE_SOURCE",
+    "invalid/dependency-risk-scope-invalid-remaining-blockers.yml": "TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS",
 }
 
 

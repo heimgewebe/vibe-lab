@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-next-blocker-triage.v1.schema.json",
   "title": "Model-Lab Next Blocker Triage v1",
-  "description": "Machine-readable artifact that prioritizes the remaining result-assessment blockers of a Model-Lab series and recommends which blocker to address next. It is a methodological prioritization only: it deliberately does NOT resolve any blocker, does NOT remediate dependency risk, does NOT start a new run, does NOT allow a result_assessment, and does NOT make the series comparison-ready. It records triage_status, that result_assessment/comparison stay blocked after triage, the source evidence it is anchored to, the prioritized remaining blockers, a recommended next task, and an anti-overclaim does_not_establish boundary. Form is validated here; semantic rules (referenced readiness gate must confirm a blocked assessment, result_assessment/comparison must stay false, recommended next task present, all known blockers covered, source-evidence existence/escape, mandatory does_not_establish) are enforced by scripts/docmeta/validate_model_lab_next_blocker_triage.py.",
+  "description": "Machine-readable artifact that prioritizes the remaining result-assessment blockers of a Model-Lab series and recommends which blocker to address next. It is a methodological prioritization only: it deliberately does NOT resolve any blocker, does NOT remediate dependency risk, does NOT start a new run, does NOT allow a result_assessment, and does NOT make the series comparison-ready. It records triage_status, that result_assessment/comparison stay blocked after triage, the source evidence it is anchored to, the prioritized remaining blockers, a recommended next task, and an anti-overclaim does_not_establish boundary. Form is validated here; semantic rules (referenced readiness gate must confirm a blocked assessment, result_assessment/comparison must stay false, recommended next task present, the remaining_blockers id set must match the dependency-risk-scope remaining_blockers, source-evidence existence/escape, mandatory does_not_establish) are enforced by scripts/docmeta/validate_model_lab_next_blocker_triage.py.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -95,7 +95,7 @@
     "recommended_next_task": {
       "type": "object",
       "additionalProperties": false,
-      "$comment": "Schema-optional so that an omitted task is reported as a stable semantic rule (TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK) rather than a raw schema error. When present, id and target_blocker must be non-empty (validator).",
+      "$comment": "Schema-optional so that an omitted task is reported as a stable semantic rule (TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK) rather than a raw schema error. When present, id, target_blocker, and reason must be non-empty (validator).",
       "properties": {
         "id": {
           "type": "string",
@@ -106,7 +106,8 @@
           "minLength": 1
         },
         "reason": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "expected_output": {
           "type": "array",

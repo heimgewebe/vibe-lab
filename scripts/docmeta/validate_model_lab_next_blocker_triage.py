@@ -40,7 +40,7 @@ Enforced semantic rules (exit 1):
                                    does not make the series comparison-ready.
   TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK
                                    recommended_next_task is missing or lacks a
-                                   non-empty id / target_blocker.
+                                   non-empty id / target_blocker / reason.
   TRIAGE_REQUIRES_RECOMMENDED_TARGET_BLOCKER
                                    recommended_next_task.target_blocker is non-empty
                                    but is not one of the triage's open remaining_blockers
@@ -53,6 +53,12 @@ Enforced semantic rules (exit 1):
                                    no readable source_evidence of kind
                                    'dependency_risk_scope' was found, so the expected
                                    remaining-blocker set cannot be derived.
+  TRIAGE_REQUIRES_SINGLE_READINESS_GATE_SOURCE
+                                   source_evidence contains more than one readiness_gate.
+  TRIAGE_REQUIRES_SINGLE_DEPENDENCY_RISK_SCOPE_SOURCE
+                                   source_evidence contains more than one dependency_risk_scope.
+  TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS
+                                   dependency_risk_scope remaining_blockers is not a list.
   TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE
                                    a dependency_risk_scope source loaded but is not a
                                    dependency_risk_caveat_scope artifact for the
@@ -314,8 +320,8 @@ def _readiness_blocked_confirmed(resolutions: list[SourceEvidenceResolution]) ->
 
 def _scope_blocker_ids(
     resolutions: list[SourceEvidenceResolution],
-) -> tuple[set[str], bool]:
-    """Return (expected_blocker_ids, scope_source_found).
+) -> tuple[set[str], bool, list[str]]:
+    """Return (expected_blocker_ids, scope_source_found, problems).
 
     ``scope_source_found`` is True if at least one kind 'dependency_risk_scope'
     resolution loaded as a YAML mapping. The ids are read tolerantly: each
@@ -325,11 +331,18 @@ def _scope_blocker_ids(
     """
     found = False
     ids: set[str] = set()
+    problems: list[str] = []
     for res in resolutions:
         if res.kind != DEPENDENCY_RISK_SCOPE_KIND or res.loaded_yaml is None:
             continue
         found = True
-        for item in res.loaded_yaml.get(REMAINING_BLOCKERS_KEY, []) or []:
+        raw_blockers = res.loaded_yaml.get(REMAINING_BLOCKERS_KEY)
+        if not isinstance(raw_blockers, list):
+            problems.append(
+                f"{res.rel_path}: {REMAINING_BLOCKERS_KEY} must be a list"
+            )
+            continue
+        for item in raw_blockers:
             if isinstance(item, str):
                 blocker_id = item.strip()
             elif isinstance(item, dict):
@@ -338,7 +351,7 @@ def _scope_blocker_ids(
                 blocker_id = ""
             if blocker_id:
                 ids.add(blocker_id)
-    return ids, found
+    return ids, found, problems
 
 
 def _source_type_series_mismatches(
@@ -387,6 +400,26 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     # Resolve every source_evidence path (and load referenced YAML) exactly once;
     # the readiness, dependency-risk-scope, and path checks all reuse this list.
     resolutions = resolve_source_evidence_entries(data, repo_root)
+
+    readiness_count = sum(1 for r in resolutions if r.kind == READINESS_GATE_KIND)
+    if readiness_count != 1:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_SINGLE_READINESS_GATE_SOURCE",
+                path,
+                "source_evidence must contain exactly one readiness_gate source; foundational readiness evidence must be unambiguous."
+            )
+        )
+
+    scope_count = sum(1 for r in resolutions if r.kind == DEPENDENCY_RISK_SCOPE_KIND)
+    if scope_count != 1:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_SINGLE_DEPENDENCY_RISK_SCOPE_SOURCE",
+                path,
+                "source_evidence must contain exactly one dependency_risk_scope source; foundational dependency-risk scope evidence must be unambiguous."
+            )
+        )
 
     # --- a triage requires a blocked result assessment -----------------------
     if not _readiness_blocked_confirmed(resolutions):
@@ -442,16 +475,17 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     # --- triage must name a recommended next task ----------------------------
     task_id = ""
     target_blocker = ""
+    reason = ""
     if isinstance(recommended_next_task, dict):
         task_id = str(recommended_next_task.get("id", "")).strip()
         target_blocker = str(recommended_next_task.get("target_blocker", "")).strip()
-    if not task_id or not target_blocker:
+        reason = str(recommended_next_task.get("reason", "")).strip()
+    if not task_id or not target_blocker or not reason:
         errors.append(
             format_error(
                 "TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK",
                 path,
-                "recommended_next_task must be present with a non-empty id and "
-                "target_blocker; a triage's purpose is to name the next step.",
+                "recommended_next_task must be present with non-empty id, target_blocker, and reason; a triage must name and justify the next step.",
             )
         )
 
@@ -503,7 +537,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
         for b in remaining_blockers
         if isinstance(b, dict) and str(b.get("id", "")).strip()
     }
-    expected_blocker_ids, scope_source_found = _scope_blocker_ids(resolutions)
+    expected_blocker_ids, scope_source_found, scope_blocker_problems = _scope_blocker_ids(resolutions)
     if not scope_source_found:
         errors.append(
             format_error(
@@ -514,6 +548,15 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                 "dependency-risk-caveat-scope artifact and cannot be checked without it.",
             )
         )
+    elif scope_blocker_problems:
+        for problem in scope_blocker_problems:
+            errors.append(
+                format_error(
+                    "TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS",
+                    path,
+                    f"dependency_risk_scope artifact must have a valid remaining_blockers list; {problem}",
+                )
+            )
     else:
         missing = sorted(expected_blocker_ids - declared_blocker_ids)
         unexpected = sorted(declared_blocker_ids - expected_blocker_ids)
