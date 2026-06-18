@@ -17,6 +17,8 @@ summary: >
 source_evidence:
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
     kind: "readiness_gate"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
+    kind: "dependency_risk_scope"
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md"
     kind: "assessment_context"
 

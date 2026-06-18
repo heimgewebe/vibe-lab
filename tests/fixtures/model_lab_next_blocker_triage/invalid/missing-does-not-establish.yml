@@ -13,6 +13,8 @@ comparison_ready_after_triage: false
 source_evidence:
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
     kind: "readiness_gate"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
+    kind: "dependency_risk_scope"
 
 remaining_blockers:
   - id: "weak_condition_contrast"

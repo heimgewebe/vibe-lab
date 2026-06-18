@@ -9,6 +9,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import yaml
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 VALIDATOR_PATH = (
@@ -28,7 +30,10 @@ INVALID_FIXTURES = {
     "invalid/result-assessment-allowed.yml": "TRIAGE_REQUIRES_FALSE_RESULT_ASSESSMENT_ALLOWED",
     "invalid/comparison-ready.yml": "TRIAGE_REQUIRES_FALSE_COMPARISON_READY",
     "invalid/missing-recommended-next-task.yml": "TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK",
-    "invalid/missing-known-blocker.yml": "TRIAGE_REQUIRES_ALL_KNOWN_BLOCKERS",
+    "invalid/resolved-remaining-blocker.yml": "TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS",
+    "invalid/missing-dependency-risk-scope-source.yml": "TRIAGE_REQUIRES_DEPENDENCY_RISK_SCOPE_SOURCE",
+    "invalid/missing-scope-blocker.yml": "TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS",
+    "invalid/unexpected-scope-blocker.yml": "TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS",
     "invalid/source-evidence-missing.yml": "SOURCE_EVIDENCE_PATH_NOT_FOUND",
     "invalid/source-evidence-escape.yml": "SOURCE_EVIDENCE_PATH_ESCAPE",
     "invalid/missing-does-not-establish.yml": "MISSING_MANDATORY_DOES_NOT_ESTABLISH",
@@ -45,21 +50,21 @@ class ModelLabNextBlockerTriageValidatorTests(unittest.TestCase):
             check=False,
         )
 
+    def assert_exit_code(
+        self, completed: subprocess.CompletedProcess[str], expected: int
+    ) -> None:
+        self.assertEqual(expected, completed.returncode, completed.stdout + completed.stderr)
+
     def test_valid_fixtures_exit_zero(self) -> None:
         for rel_path in VALID_FIXTURES:
             with self.subTest(rel_path=rel_path):
-                completed = self.run_validator(FIXTURE_ROOT / rel_path)
-                self.assertEqual(
-                    completed.returncode, 0, completed.stdout + completed.stderr
-                )
+                self.assert_exit_code(self.run_validator(FIXTURE_ROOT / rel_path), 0)
 
     def test_invalid_fixtures_exit_one_with_rule_ids(self) -> None:
         for rel_path, rule_id in INVALID_FIXTURES.items():
             with self.subTest(rel_path=rel_path):
                 completed = self.run_validator(FIXTURE_ROOT / rel_path)
-                self.assertEqual(
-                    completed.returncode, 1, completed.stdout + completed.stderr
-                )
+                self.assert_exit_code(completed, 1)
                 self.assertIn(rule_id, completed.stdout)
 
     def test_schema_violation_exits_two(self) -> None:
@@ -70,33 +75,23 @@ class ModelLabNextBlockerTriageValidatorTests(unittest.TestCase):
                 'schema_version: "v1"\nartifact_type: "model_lab_next_blocker_triage"\n',
                 encoding="utf-8",
             )
-            completed = self.run_validator(bad)
-            self.assertEqual(
-                completed.returncode, 2, completed.stdout + completed.stderr
-            )
+            self.assert_exit_code(self.run_validator(bad), 2)
 
     def test_wrong_schema_version_exits_two(self) -> None:
-        # Start from an otherwise-valid fixture and change ONLY schema_version,
-        # so this isolates the schema_version const check.
-        base = (FIXTURE_ROOT / "valid/basic.yml").read_text(encoding="utf-8")
-        mutated = base.replace('schema_version: "v1"', 'schema_version: "1.0.0"', 1)
-        self.assertIn('schema_version: "1.0.0"', mutated)
+        # Start from an otherwise-valid fixture and change ONLY schema_version via a
+        # real YAML round-trip (robust to formatting), isolating the const check.
+        data = yaml.safe_load((FIXTURE_ROOT / "valid/basic.yml").read_text(encoding="utf-8"))
+        data["schema_version"] = "1.0.0"
         with tempfile.TemporaryDirectory() as temp_dir:
             bad = Path(temp_dir) / "wrong-version.yml"
-            bad.write_text(mutated, encoding="utf-8")
-            completed = self.run_validator(bad)
-            self.assertEqual(
-                completed.returncode, 2, completed.stdout + completed.stderr
-            )
+            bad.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+            self.assert_exit_code(self.run_validator(bad), 2)
 
     def test_parse_error_exits_two(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             bad = Path(temp_dir) / "bad.yml"
             bad.write_text("source_evidence: [\n", encoding="utf-8")
-            completed = self.run_validator(bad)
-            self.assertEqual(
-                completed.returncode, 2, completed.stdout + completed.stderr
-            )
+            self.assert_exit_code(self.run_validator(bad), 2)
 
 
 if __name__ == "__main__":

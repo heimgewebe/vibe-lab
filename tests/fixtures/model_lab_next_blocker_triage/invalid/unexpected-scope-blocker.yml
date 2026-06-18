@@ -3,21 +3,18 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: the only readiness_gate reference points to a gate that says the
-# assessment is allowed/ready, so no referenced readiness gate confirms a blocked
-# assessment.
-# Expected rule: TRIAGE_REQUIRES_BLOCKED_ASSESSMENT
+# Invalid: remaining_blockers includes an extra id that is not in the
+# dependency-risk-caveat-scope remaining_blockers, so the id set does not match.
+# Expected rule: TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS (unexpected case)
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
 
 source_evidence:
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-allowed.yml"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
     kind: "readiness_gate"
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
     kind: "dependency_risk_scope"
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md"
-    kind: "assessment_context"
 
 remaining_blockers:
   - id: "weak_condition_contrast"
@@ -40,6 +37,11 @@ remaining_blockers:
     recommended_position: 4
     rationale: "Operationally larger; should follow contrast design."
     next_task_shape: "external_auditor_comparison_protocol"
+  - id: "phantom_blocker_not_in_scope"
+    status: "open"
+    recommended_position: 5
+    rationale: "Not present in the dependency-risk-caveat-scope remaining_blockers."
+    next_task_shape: "should_not_exist"
 
 recommended_next_task:
   id: "condition_contrast_design_gate"

@@ -37,13 +37,26 @@ Enforced semantic rules (exit 1):
   TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK
                                    recommended_next_task is missing or lacks a
                                    non-empty id / target_blocker.
-  TRIAGE_REQUIRES_ALL_KNOWN_BLOCKERS
-                                   remaining_blockers omits a known remaining
-                                   blocker id.
+  TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
+                                   a remaining_blockers entry has status != open. A
+                                   triage prioritizes unresolved blockers; it must
+                                   not mark a blocker resolved.
+  TRIAGE_REQUIRES_DEPENDENCY_RISK_SCOPE_SOURCE
+                                   no readable source_evidence of kind
+                                   'dependency_risk_scope' was found, so the expected
+                                   remaining-blocker set cannot be derived.
+  TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS
+                                   the remaining_blockers id set does not exactly
+                                   match the dependency-risk-caveat-scope artifact's
+                                   remaining_blockers (reports missing and unexpected).
   SOURCE_EVIDENCE_PATH_NOT_FOUND   a referenced source_evidence path does not exist.
   SOURCE_EVIDENCE_PATH_ESCAPE      a referenced source_evidence path resolves outside the repo.
   MISSING_MANDATORY_DOES_NOT_ESTABLISH
                                    does_not_establish omits a mandatory non-claim.
+
+The expected remaining-blocker set is read from the dependency-risk-caveat-scope
+artifact (state lives in artifacts, not in this validator); only the normative
+MANDATORY_DOES_NOT_ESTABLISH non-claims stay hardcoded here.
 
 Exit codes:
   0  valid
@@ -59,6 +72,7 @@ import argparse
 import json
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
 try:
@@ -77,16 +91,11 @@ except ImportError as exc:
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMA_PATH = REPO_ROOT / "schemas" / "model-lab-next-blocker-triage.v1.schema.json"
 
-# The canonical remaining Model-Lab result-assessment blockers. Source of truth:
-# experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml
-# (remaining_blockers). A triage must cover every one of them so no open blocker
-# silently drops out of the prioritization.
-KNOWN_BLOCKERS = (
-    "dependency_risk_remediation_not_performed",
-    "weak_condition_contrast",
-    "external_independence_not_attested",
-    "no_external_independent_auditor_comparison",
-)
+# The set of remaining blockers a triage must cover is NOT hardcoded here: it is
+# state, and state lives in the dependency-risk-caveat-scope artifact. The triage
+# must reference that artifact (kind: dependency_risk_scope) and cover exactly its
+# remaining_blockers (see TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS). Only the normative
+# non-claims below stay hardcoded.
 
 # Baseline anti-overclaim non-claims every triage must carry. A triage prioritizes
 # blockers; it must never imply that a result assessment is allowed, that the
@@ -108,8 +117,10 @@ MANDATORY_DOES_NOT_ESTABLISH = (
 
 TRIAGE_GLOB = "*/results/next-blocker-triage.yml"
 READINESS_GATE_KIND = "readiness_gate"
+DEPENDENCY_RISK_SCOPE_KIND = "dependency_risk_scope"
 READINESS_STATUS_KEY = "readiness_status"
 RESULT_ASSESSMENT_ALLOWED_KEY = "result_assessment_allowed"
+REMAINING_BLOCKERS_KEY = "remaining_blockers"
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 
 
@@ -215,37 +226,99 @@ def _source_evidence_entries(data: dict) -> list[dict]:
     return [item for item in (data.get("source_evidence", []) or []) if isinstance(item, dict)]
 
 
-def _readiness_blocked_confirmed(data: dict, repo_root: Path) -> bool:
-    """Return True if a referenced readiness_gate confirms a blocked assessment.
+@dataclass(frozen=True)
+class SourceEvidenceResolution:
+    """One source_evidence entry, resolved exactly once.
 
-    Reads each source_evidence entry of kind 'readiness_gate' that resolves to an
-    existing, readable YAML document and confirms readiness_status=blocked with
-    result_assessment_allowed not true. Mirrors the cross-artifact read in
-    validate_result_assessment_readiness.py (which inspects a referenced runtime
-    gate's validation_status); here we inspect a referenced readiness gate.
+    ``code`` is "ESCAPE" / "NOT_FOUND" / None (ok). ``loaded_yaml`` is the parsed
+    document when the resolved file exists and is a YAML mapping, else None. The
+    parsed YAML is reused by the readiness-gate and dependency-risk-scope checks so
+    each referenced file is read at most once.
     """
+
+    rel_path: str
+    kind: str
+    resolved: Path | None
+    code: str | None
+    loaded_yaml: dict | None
+
+
+def resolve_source_evidence_entries(
+    data: dict, repo_root: Path
+) -> list[SourceEvidenceResolution]:
+    """Resolve every source_evidence entry once (path safety + optional YAML load)."""
+    resolutions: list[SourceEvidenceResolution] = []
     for entry in _source_evidence_entries(data):
-        if str(entry.get("kind", "")) != READINESS_GATE_KIND:
-            continue
         rel = str(entry.get("path", "")).strip()
         if not rel:
             continue
+        kind = str(entry.get("kind", "")).strip()
         resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
-        if code is not None or resolved is None or not resolved.is_file():
+        loaded: dict | None = None
+        if (
+            code is None
+            and resolved is not None
+            and resolved.is_file()
+            and resolved.suffix.lower() in (".yml", ".yaml")
+        ):
+            try:
+                doc = yaml.safe_load(resolved.read_text(encoding="utf-8"))
+            except (OSError, yaml.YAMLError):
+                doc = None
+            if isinstance(doc, dict):
+                loaded = doc
+        resolutions.append(
+            SourceEvidenceResolution(
+                rel_path=rel, kind=kind, resolved=resolved, code=code, loaded_yaml=loaded
+            )
+        )
+    return resolutions
+
+
+def _readiness_blocked_confirmed(resolutions: list[SourceEvidenceResolution]) -> bool:
+    """True if a referenced readiness_gate confirms a blocked assessment.
+
+    Inspects each kind 'readiness_gate' resolution that loaded as a YAML mapping and
+    confirms readiness_status=blocked with result_assessment_allowed not true.
+    Mirrors the cross-artifact read in validate_result_assessment_readiness.py.
+    """
+    for res in resolutions:
+        if res.kind != READINESS_GATE_KIND or res.loaded_yaml is None:
             continue
-        if resolved.suffix.lower() not in (".yml", ".yaml"):
-            continue
-        try:
-            loaded = yaml.safe_load(resolved.read_text(encoding="utf-8"))
-        except (OSError, yaml.YAMLError):
-            continue
-        if not isinstance(loaded, dict):
-            continue
-        allowed = bool(loaded.get(RESULT_ASSESSMENT_ALLOWED_KEY, False))
-        status = str(loaded.get(READINESS_STATUS_KEY, ""))
+        allowed = bool(res.loaded_yaml.get(RESULT_ASSESSMENT_ALLOWED_KEY, False))
+        status = str(res.loaded_yaml.get(READINESS_STATUS_KEY, ""))
         if not allowed and status == "blocked":
             return True
     return False
+
+
+def _scope_blocker_ids(
+    resolutions: list[SourceEvidenceResolution],
+) -> tuple[set[str], bool]:
+    """Return (expected_blocker_ids, scope_source_found).
+
+    ``scope_source_found`` is True if at least one kind 'dependency_risk_scope'
+    resolution loaded as a YAML mapping. The ids are read tolerantly: each
+    remaining_blockers item may be a plain string (the canonical
+    dependency-risk-caveat-scope.v1 form) or a mapping with an 'id' field. Empty
+    ids are ignored.
+    """
+    found = False
+    ids: set[str] = set()
+    for res in resolutions:
+        if res.kind != DEPENDENCY_RISK_SCOPE_KIND or res.loaded_yaml is None:
+            continue
+        found = True
+        for item in res.loaded_yaml.get(REMAINING_BLOCKERS_KEY, []) or []:
+            if isinstance(item, str):
+                blocker_id = item.strip()
+            elif isinstance(item, dict):
+                blocker_id = str(item.get("id", "")).strip()
+            else:
+                blocker_id = ""
+            if blocker_id:
+                ids.add(blocker_id)
+    return ids, found
 
 
 def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
@@ -257,8 +330,12 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     remaining_blockers = data.get("remaining_blockers", []) or []
     does_not_establish = data.get("does_not_establish", []) or []
 
+    # Resolve every source_evidence path (and load referenced YAML) exactly once;
+    # the readiness, dependency-risk-scope, and path checks all reuse this list.
+    resolutions = resolve_source_evidence_entries(data, repo_root)
+
     # --- a triage requires a blocked result assessment -----------------------
-    if not _readiness_blocked_confirmed(data, repo_root):
+    if not _readiness_blocked_confirmed(resolutions):
         errors.append(
             format_error(
                 "TRIAGE_REQUIRES_BLOCKED_ASSESSMENT",
@@ -308,22 +385,61 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- triage must cover every known remaining blocker ---------------------
+    # --- remaining_blockers must stay open -----------------------------------
+    non_open = [
+        (str(b.get("id", "")).strip() or "<missing-id>")
+        for b in remaining_blockers
+        if isinstance(b, dict) and str(b.get("status", "")).strip() != "open"
+    ]
+    if non_open:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS",
+                path,
+                "remaining_blockers entries must stay open; a next-blocker triage "
+                "prioritizes unresolved blockers and must not mark any blocker as "
+                "resolved. Offending: " + ", ".join(non_open),
+            )
+        )
+
+    # --- remaining_blockers must match the dependency-risk-scope artifact -----
+    # The expected set is read from the dependency-risk-caveat-scope artifact (state
+    # in artifacts, not in this validator), so a future blocker change there does not
+    # require editing the validator.
     declared_blocker_ids = {
         str(b.get("id", "")).strip()
         for b in remaining_blockers
-        if isinstance(b, dict)
+        if isinstance(b, dict) and str(b.get("id", "")).strip()
     }
-    missing_blockers = [b for b in KNOWN_BLOCKERS if b not in declared_blocker_ids]
-    if missing_blockers:
+    expected_blocker_ids, scope_source_found = _scope_blocker_ids(resolutions)
+    if not scope_source_found:
         errors.append(
             format_error(
-                "TRIAGE_REQUIRES_ALL_KNOWN_BLOCKERS",
+                "TRIAGE_REQUIRES_DEPENDENCY_RISK_SCOPE_SOURCE",
                 path,
-                "remaining_blockers must cover every known remaining blocker; "
-                "missing: " + ", ".join(missing_blockers),
+                "no readable source_evidence of kind 'dependency_risk_scope' was "
+                "found; the expected remaining-blocker set is derived from the "
+                "dependency-risk-caveat-scope artifact and cannot be checked without it.",
             )
         )
+    else:
+        missing = sorted(expected_blocker_ids - declared_blocker_ids)
+        unexpected = sorted(declared_blocker_ids - expected_blocker_ids)
+        if missing or unexpected:
+            detail = []
+            if missing:
+                detail.append("missing: " + ", ".join(missing))
+            if unexpected:
+                detail.append("unexpected: " + ", ".join(unexpected))
+            errors.append(
+                format_error(
+                    "TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS",
+                    path,
+                    "remaining_blockers ids must exactly match the "
+                    "dependency-risk-caveat-scope remaining_blockers; "
+                    + "; ".join(detail),
+                )
+            )
 
     # --- mandatory anti-overclaim non-claims ---------------------------------
     declared = {str(item).strip().lower() for item in does_not_establish}
@@ -338,26 +454,22 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- source_evidence path escape + existence -----------------------------
-    for entry in _source_evidence_entries(data):
-        rel = str(entry.get("path", "")).strip()
-        if not rel:
-            continue
-        _resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
-        if code == "ESCAPE":
+    # --- source_evidence path escape + existence (reuses the single pass) -----
+    for res in resolutions:
+        if res.code == "ESCAPE":
             errors.append(
                 format_error(
                     "SOURCE_EVIDENCE_PATH_ESCAPE",
                     path,
-                    f"source_evidence path '{rel}' resolves outside the repo root.",
+                    f"source_evidence path '{res.rel_path}' resolves outside the repo root.",
                 )
             )
-        elif code == "NOT_FOUND":
+        elif res.code == "NOT_FOUND":
             errors.append(
                 format_error(
                     "SOURCE_EVIDENCE_PATH_NOT_FOUND",
                     path,
-                    f"source_evidence path '{rel}' does not exist.",
+                    f"source_evidence path '{res.rel_path}' does not exist.",
                 )
             )
 

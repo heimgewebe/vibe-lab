@@ -55,6 +55,7 @@
     "source_evidence": {
       "type": "array",
       "minItems": 1,
+      "uniqueItems": true,
       "items": {
         "$ref": "#/$defs/sourceEvidence"
       },
@@ -62,6 +63,7 @@
     },
     "triage_criteria": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -84,10 +86,11 @@
     "remaining_blockers": {
       "type": "array",
       "minItems": 1,
+      "uniqueItems": true,
       "items": {
         "$ref": "#/$defs/blocker"
       },
-      "$comment": "Must cover every known remaining blocker id (TRIAGE_REQUIRES_ALL_KNOWN_BLOCKERS): dependency_risk_remediation_not_performed, weak_condition_contrast, external_independence_not_attested, no_external_independent_auditor_comparison."
+      "$comment": "Each entry must stay status=open (TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS). The id set must exactly match the dependency-risk-caveat-scope artifact's remaining_blockers (TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS); the expected ids are read from that artifact, not hardcoded here."
     },
     "recommended_next_task": {
       "type": "object",
@@ -107,6 +110,8 @@
         },
         "expected_output": {
           "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "minLength": 1
@@ -114,6 +119,8 @@
         },
         "forbidden_output": {
           "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "minLength": 1
@@ -124,6 +131,7 @@
     "does_not_establish": {
       "type": "array",
       "minItems": 1,
+      "uniqueItems": true,
       "items": {
         "type": "string",
         "minLength": 1
@@ -176,7 +184,8 @@
           "enum": [
             "open",
             "resolved"
-          ]
+          ],
+          "$comment": "'resolved' is form-valid but semantically rejected by the validator (TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS) so the rejection emits a stable rule id rather than a raw schema error."
         },
         "recommended_position": {
           "type": "integer",
@@ -192,6 +201,7 @@
         },
         "must_not_mix_with": {
           "type": "array",
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "minLength": 1

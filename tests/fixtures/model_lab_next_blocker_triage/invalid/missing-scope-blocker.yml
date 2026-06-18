@@ -4,8 +4,8 @@ series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
 # Invalid: remaining_blockers drops dependency_risk_remediation_not_performed, so
-# a known open blocker silently disappears from the prioritization.
-# Expected rule: TRIAGE_REQUIRES_ALL_KNOWN_BLOCKERS
+# the id set no longer matches the dependency-risk-caveat-scope remaining_blockers.
+# Expected rule: TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS (missing case)
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
@@ -13,6 +13,8 @@ comparison_ready_after_triage: false
 source_evidence:
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
     kind: "readiness_gate"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
+    kind: "dependency_risk_scope"
 
 remaining_blockers:
   - id: "weak_condition_contrast"

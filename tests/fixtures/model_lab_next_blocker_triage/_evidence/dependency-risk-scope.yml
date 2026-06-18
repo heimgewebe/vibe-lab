@@ -1,0 +1,9 @@
+# Minimal dependency-risk-caveat-scope-shaped evidence. The triage validator reads
+# remaining_blockers from here to derive the expected blocker-id set (tolerant of
+# both the canonical string form and an object/id form). Only remaining_blockers is
+# needed for the cross-artifact check.
+remaining_blockers:
+  - id: "dependency_risk_remediation_not_performed"
+  - id: "weak_condition_contrast"
+  - id: "external_independence_not_attested"
+  - id: "no_external_independent_auditor_comparison"

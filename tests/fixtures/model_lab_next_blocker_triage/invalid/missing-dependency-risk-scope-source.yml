@@ -3,21 +3,16 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: the only readiness_gate reference points to a gate that says the
-# assessment is allowed/ready, so no referenced readiness gate confirms a blocked
-# assessment.
-# Expected rule: TRIAGE_REQUIRES_BLOCKED_ASSESSMENT
+# Invalid: no source_evidence of kind dependency_risk_scope, so the expected
+# remaining-blocker set cannot be derived from the scope artifact.
+# Expected rule: TRIAGE_REQUIRES_DEPENDENCY_RISK_SCOPE_SOURCE
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
 
 source_evidence:
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-allowed.yml"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
     kind: "readiness_gate"
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
-    kind: "dependency_risk_scope"
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md"
-    kind: "assessment_context"
 
 remaining_blockers:
   - id: "weak_condition_contrast"
