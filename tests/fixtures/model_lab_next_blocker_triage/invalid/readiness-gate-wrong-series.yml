@@ -3,25 +3,25 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: a remaining blocker is marked resolved. A triage prioritizes unresolved
-# blockers and must not mark any as resolved (the id set still matches the scope, so
-# only the open-blocker rule fires).
-# Expected rule: TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
+# Invalid: the readiness_gate source is a result_assessment_readiness artifact but
+# for a different series than this triage. It is still blocked, so only the matching
+# rule fires.
+# Expected rule: TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
 
 source_evidence:
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-wrong-series.yml"
     kind: "readiness_gate"
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
     kind: "dependency_risk_scope"
 
 remaining_blockers:
   - id: "weak_condition_contrast"
-    status: "resolved"
+    status: "open"
     recommended_position: 1
-    rationale: "Marked resolved — which a triage must not do."
+    rationale: "Most directly affects future comparability."
     next_task_shape: "condition_contrast_design_gate"
   - id: "external_independence_not_attested"
     status: "open"
@@ -40,11 +40,9 @@ remaining_blockers:
     next_task_shape: "external_auditor_comparison_protocol"
 
 recommended_next_task:
-  # Targets a still-open blocker so this fixture stays isolated to the open-blocker
-  # rule (weak_condition_contrast is the one marked resolved above).
-  id: "external_independence_attestation_plan"
-  target_blocker: "external_independence_not_attested"
-  reason: "Targets an open blocker; isolates the resolved-status violation."
+  id: "condition_contrast_design_gate"
+  target_blocker: "weak_condition_contrast"
+  reason: "Closest to the methodological core of future comparability."
 
 does_not_establish:
   - "result_assessment_allowed"

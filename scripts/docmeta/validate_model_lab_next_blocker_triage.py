@@ -27,6 +27,10 @@ Enforced semantic rules (exit 1):
                                    result_assessment_allowed not true). A triage of
                                    "what is still blocking" requires that the
                                    assessment is, in fact, still blocked.
+  TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE
+                                   a readiness_gate source loaded but is not a
+                                   result_assessment_readiness artifact for the
+                                   triage's own series_id (wrong artifact or series).
   TRIAGE_REQUIRES_FALSE_RESULT_ASSESSMENT_ALLOWED
                                    result_assessment_allowed_after_triage is true. A
                                    triage prioritizes blockers; it does not authorize
@@ -37,6 +41,10 @@ Enforced semantic rules (exit 1):
   TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK
                                    recommended_next_task is missing or lacks a
                                    non-empty id / target_blocker.
+  TRIAGE_REQUIRES_RECOMMENDED_TARGET_BLOCKER
+                                   recommended_next_task.target_blocker is non-empty
+                                   but is not one of the triage's open remaining_blockers
+                                   ids.
   TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
                                    a remaining_blockers entry has status != open. A
                                    triage prioritizes unresolved blockers; it must
@@ -45,6 +53,10 @@ Enforced semantic rules (exit 1):
                                    no readable source_evidence of kind
                                    'dependency_risk_scope' was found, so the expected
                                    remaining-blocker set cannot be derived.
+  TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE
+                                   a dependency_risk_scope source loaded but is not a
+                                   dependency_risk_caveat_scope artifact for the
+                                   triage's own series_id (wrong artifact or series).
   TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS
                                    the remaining_blockers id set does not exactly
                                    match the dependency-risk-caveat-scope artifact's
@@ -121,6 +133,14 @@ DEPENDENCY_RISK_SCOPE_KIND = "dependency_risk_scope"
 READINESS_STATUS_KEY = "readiness_status"
 RESULT_ASSESSMENT_ALLOWED_KEY = "result_assessment_allowed"
 REMAINING_BLOCKERS_KEY = "remaining_blockers"
+ARTIFACT_TYPE_KEY = "artifact_type"
+SERIES_ID_KEY = "series_id"
+# Expected artifact_type for each cross-referenced source kind. A readiness_gate
+# source must be a result_assessment_readiness artifact, and a dependency_risk_scope
+# source must be a dependency_risk_caveat_scope artifact, both for the triage's own
+# series — otherwise the triage is anchored to the wrong (or a stale) artifact.
+READINESS_GATE_ARTIFACT_TYPE = "result_assessment_readiness"
+DEPENDENCY_RISK_SCOPE_ARTIFACT_TYPE = "dependency_risk_caveat_scope"
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 
 
@@ -321,6 +341,39 @@ def _scope_blocker_ids(
     return ids, found
 
 
+def _source_type_series_mismatches(
+    resolutions: list[SourceEvidenceResolution],
+    kind: str,
+    expected_artifact_type: str,
+    expected_series_id: str,
+) -> list[str]:
+    """Describe each loaded source of ``kind`` whose artifact_type/series_id is wrong.
+
+    Only inspects resolutions of the given kind that loaded as a YAML mapping (a
+    missing/unreadable source is handled by the kind-specific presence rules). A
+    source must be the expected artifact_type and carry the triage's own series_id,
+    so the triage cannot anchor to the wrong artifact or a different series.
+    """
+    problems: list[str] = []
+    for res in resolutions:
+        if res.kind != kind or res.loaded_yaml is None:
+            continue
+        actual_type = str(res.loaded_yaml.get(ARTIFACT_TYPE_KEY, "")).strip()
+        actual_series = str(res.loaded_yaml.get(SERIES_ID_KEY, "")).strip()
+        issues: list[str] = []
+        if actual_type != expected_artifact_type:
+            issues.append(
+                f"artifact_type={actual_type!r} (expected {expected_artifact_type!r})"
+            )
+        if not expected_series_id or actual_series != expected_series_id:
+            issues.append(
+                f"series_id={actual_series!r} (expected {expected_series_id!r})"
+            )
+        if issues:
+            problems.append(f"{res.rel_path}: " + ", ".join(issues))
+    return problems
+
+
 def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     errors: list[str] = []
 
@@ -329,6 +382,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     recommended_next_task = data.get("recommended_next_task")
     remaining_blockers = data.get("remaining_blockers", []) or []
     does_not_establish = data.get("does_not_establish", []) or []
+    triage_series_id = str(data.get("series_id", "")).strip()
 
     # Resolve every source_evidence path (and load referenced YAML) exactly once;
     # the readiness, dependency-risk-scope, and path checks all reuse this list.
@@ -344,6 +398,22 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                 f"assessment ({READINESS_STATUS_KEY}=blocked and "
                 f"{RESULT_ASSESSMENT_ALLOWED_KEY} not true). A next-blocker triage "
                 "is only coherent while a formal result assessment is still blocked.",
+            )
+        )
+
+    # --- readiness_gate source must be the right artifact for this series -----
+    readiness_mismatches = _source_type_series_mismatches(
+        resolutions, READINESS_GATE_KIND, READINESS_GATE_ARTIFACT_TYPE, triage_series_id
+    )
+    if readiness_mismatches:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE",
+                path,
+                "a source_evidence of kind 'readiness_gate' must be a "
+                f"'{READINESS_GATE_ARTIFACT_TYPE}' artifact for this triage's series "
+                f"(series_id={triage_series_id!r}); offending: "
+                + "; ".join(readiness_mismatches),
             )
         )
 
@@ -402,6 +472,28 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
+    # --- recommended target_blocker must be a listed, open blocker ------------
+    # Non-empty target_blocker only (an empty one is already reported by
+    # TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK); it must point at a blocker the triage
+    # itself lists as still open.
+    open_blocker_ids = {
+        str(b.get("id", "")).strip()
+        for b in remaining_blockers
+        if isinstance(b, dict)
+        and str(b.get("status", "")).strip() == "open"
+        and str(b.get("id", "")).strip()
+    }
+    if target_blocker and target_blocker not in open_blocker_ids:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_RECOMMENDED_TARGET_BLOCKER",
+                path,
+                "recommended_next_task.target_blocker must reference one of the open "
+                f"remaining_blockers ids; got {target_blocker!r}, open ids: "
+                + (", ".join(sorted(open_blocker_ids)) or "<none>") + ".",
+            )
+        )
+
     # --- remaining_blockers must match the dependency-risk-scope artifact -----
     # The expected set is read from the dependency-risk-caveat-scope artifact (state
     # in artifacts, not in this validator), so a future blocker change there does not
@@ -440,6 +532,25 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                     + "; ".join(detail),
                 )
             )
+
+    # --- dependency_risk_scope source must be the right artifact for this series
+    scope_mismatches = _source_type_series_mismatches(
+        resolutions,
+        DEPENDENCY_RISK_SCOPE_KIND,
+        DEPENDENCY_RISK_SCOPE_ARTIFACT_TYPE,
+        triage_series_id,
+    )
+    if scope_mismatches:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE",
+                path,
+                "a source_evidence of kind 'dependency_risk_scope' must be a "
+                f"'{DEPENDENCY_RISK_SCOPE_ARTIFACT_TYPE}' artifact for this triage's "
+                f"series (series_id={triage_series_id!r}); offending: "
+                + "; ".join(scope_mismatches),
+            )
+        )
 
     # --- mandatory anti-overclaim non-claims ---------------------------------
     declared = {str(item).strip().lower() for item in does_not_establish}

@@ -1,7 +1,9 @@
-# Minimal readiness-gate-shaped evidence for triage fixtures. Only the two fields
-# the triage validator reads (readiness_status, result_assessment_allowed) need to
-# be present and confirm a blocked assessment. This is intentionally not a full
-# result-assessment-readiness gate.
+# Minimal readiness-gate-shaped evidence: a result_assessment_readiness artifact
+# for the fixture series, blocked. The triage validator reads artifact_type +
+# series_id (cross-artifact match) and readiness_status + result_assessment_allowed
+# (blocked confirmation). Not a full result-assessment-readiness gate.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
 readiness_status: "blocked"
 result_assessment_allowed: false
 comparison_ready: false

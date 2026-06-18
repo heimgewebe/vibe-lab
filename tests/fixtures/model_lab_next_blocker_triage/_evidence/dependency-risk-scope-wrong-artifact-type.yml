@@ -1,0 +1,11 @@
+# Correct series and the full blocker set, but the WRONG artifact_type for a
+# dependency_risk_scope source -> trips
+# TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE (ids still match, so
+# TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS stays quiet).
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+remaining_blockers:
+  - id: "dependency_risk_remediation_not_performed"
+  - id: "weak_condition_contrast"
+  - id: "external_independence_not_attested"
+  - id: "no_external_independent_auditor_comparison"

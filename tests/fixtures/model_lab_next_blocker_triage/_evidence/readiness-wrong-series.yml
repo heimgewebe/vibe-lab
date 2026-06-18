@@ -1,0 +1,8 @@
+# Blocked readiness gate, but for a DIFFERENT series than the triage. Correct
+# artifact_type, wrong series_id -> trips TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE
+# (while still being "blocked", so TRIAGE_REQUIRES_BLOCKED_ASSESSMENT stays quiet).
+artifact_type: "result_assessment_readiness"
+series_id: "some-other-series"
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false

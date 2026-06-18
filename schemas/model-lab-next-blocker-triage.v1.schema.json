@@ -160,7 +160,7 @@
         "kind": {
           "type": "string",
           "minLength": 1,
-          "$comment": "Provenance label, e.g. readiness_gate, dependency_risk_scope, assessment_context, result_summary. The validator special-cases 'readiness_gate' to confirm the assessment is still blocked."
+          "$comment": "Provenance label, e.g. readiness_gate, dependency_risk_scope, assessment_context, result_summary. The validator cross-checks 'readiness_gate' (must be a blocked result_assessment_readiness artifact for this series) and 'dependency_risk_scope' (must be a dependency_risk_caveat_scope artifact for this series, source of the expected blocker set)."
         }
       }
     },

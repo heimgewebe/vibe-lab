@@ -3,10 +3,10 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: a remaining blocker is marked resolved. A triage prioritizes unresolved
-# blockers and must not mark any as resolved (the id set still matches the scope, so
-# only the open-blocker rule fires).
-# Expected rule: TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
+# Invalid: recommended_next_task.target_blocker names an id that is not one of the
+# listed open remaining_blockers (id + target_blocker are non-empty, so the
+# next-task presence rule stays quiet).
+# Expected rule: TRIAGE_REQUIRES_RECOMMENDED_TARGET_BLOCKER
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
@@ -19,9 +19,9 @@ source_evidence:
 
 remaining_blockers:
   - id: "weak_condition_contrast"
-    status: "resolved"
+    status: "open"
     recommended_position: 1
-    rationale: "Marked resolved — which a triage must not do."
+    rationale: "Most directly affects future comparability."
     next_task_shape: "condition_contrast_design_gate"
   - id: "external_independence_not_attested"
     status: "open"
@@ -40,11 +40,9 @@ remaining_blockers:
     next_task_shape: "external_auditor_comparison_protocol"
 
 recommended_next_task:
-  # Targets a still-open blocker so this fixture stays isolated to the open-blocker
-  # rule (weak_condition_contrast is the one marked resolved above).
-  id: "external_independence_attestation_plan"
-  target_blocker: "external_independence_not_attested"
-  reason: "Targets an open blocker; isolates the resolved-status violation."
+  id: "condition_contrast_design_gate"
+  target_blocker: "not_a_listed_blocker"
+  reason: "Points at a blocker that the triage does not list as open."
 
 does_not_establish:
   - "result_assessment_allowed"

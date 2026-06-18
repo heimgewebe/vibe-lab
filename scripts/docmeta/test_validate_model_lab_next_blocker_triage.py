@@ -27,11 +27,16 @@ VALID_FIXTURES = [
 # the listed rule is present, not that it is isolated.
 INVALID_FIXTURES = {
     "invalid/readiness-gate-not-blocked.yml": "TRIAGE_REQUIRES_BLOCKED_ASSESSMENT",
+    "invalid/readiness-gate-wrong-series.yml": "TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE",
+    "invalid/readiness-gate-wrong-artifact-type.yml": "TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE",
     "invalid/result-assessment-allowed.yml": "TRIAGE_REQUIRES_FALSE_RESULT_ASSESSMENT_ALLOWED",
     "invalid/comparison-ready.yml": "TRIAGE_REQUIRES_FALSE_COMPARISON_READY",
     "invalid/missing-recommended-next-task.yml": "TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK",
+    "invalid/recommended-target-blocker-not-listed.yml": "TRIAGE_REQUIRES_RECOMMENDED_TARGET_BLOCKER",
     "invalid/resolved-remaining-blocker.yml": "TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS",
     "invalid/missing-dependency-risk-scope-source.yml": "TRIAGE_REQUIRES_DEPENDENCY_RISK_SCOPE_SOURCE",
+    "invalid/dependency-risk-scope-wrong-series.yml": "TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE",
+    "invalid/dependency-risk-scope-wrong-artifact-type.yml": "TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE",
     "invalid/missing-scope-blocker.yml": "TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS",
     "invalid/unexpected-scope-blocker.yml": "TRIAGE_REQUIRES_ALL_SCOPE_BLOCKERS",
     "invalid/source-evidence-missing.yml": "SOURCE_EVIDENCE_PATH_NOT_FOUND",
