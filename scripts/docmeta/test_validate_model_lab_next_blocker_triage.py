@@ -134,7 +134,20 @@ class ModelLabNextBlockerTriageValidatorTests(unittest.TestCase):
         data["remaining_blockers"][0]["must_not_mix_with"] = []
         completed = self._run_on_data(data)
         self.assert_exit_code(completed, 2)
-        self.assertIn("must_not_mix_with", completed.stdout)
+        self.assertIn(
+            "instance_path=remaining_blockers.0.must_not_mix_with", completed.stdout
+        )
+
+    def test_blocked_assessment_diagnostic_names_all_required_signals(self) -> None:
+        completed = self.run_validator(
+            FIXTURE_ROOT / "invalid/readiness-comparison-ready-true.yml"
+        )
+        self.assert_exit_code(completed, 1)
+        self.assertIn("TRIAGE_REQUIRES_BLOCKED_ASSESSMENT", completed.stdout)
+        self.assertIn("readiness_status=blocked", completed.stdout)
+        self.assertIn("result_assessment_allowed=false", completed.stdout)
+        self.assertIn("comparison_ready=false", completed.stdout)
+        self.assertIn("missing fields do not count as false", completed.stdout)
 
     def test_scope_missing_remaining_blockers_diagnostic(self) -> None:
         completed = self.run_validator(

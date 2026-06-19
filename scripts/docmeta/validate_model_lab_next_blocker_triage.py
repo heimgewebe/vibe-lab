@@ -467,10 +467,11 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             format_error(
                 "TRIAGE_REQUIRES_BLOCKED_ASSESSMENT",
                 path,
-                "no source_evidence of kind 'readiness_gate' confirms a blocked "
-                f"assessment ({READINESS_STATUS_KEY}=blocked and "
-                f"{RESULT_ASSESSMENT_ALLOWED_KEY} not true). A next-blocker triage "
-                "is only coherent while a formal result assessment is still blocked.",
+                "no source_evidence of kind 'readiness_gate' explicitly confirms a "
+                "blocked assessment (readiness_status=blocked, "
+                "result_assessment_allowed=false, and comparison_ready=false; missing "
+                "fields do not count as false). A next-blocker triage is only coherent "
+                "while a formal result assessment is still blocked.",
             )
         )
 

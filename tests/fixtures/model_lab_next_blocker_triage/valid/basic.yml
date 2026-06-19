@@ -5,7 +5,8 @@ scope: "remaining_result_assessment_blockers"
 
 # Minimal valid triage: anchored to a readiness gate that confirms a blocked
 # assessment, keeps result_assessment/comparison blocked, names a recommended next
-# task, covers every known blocker, and carries the mandatory non-claims.
+# task, covers every dependency-risk-scope remaining blocker, and carries the
+# mandatory non-claims.
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
