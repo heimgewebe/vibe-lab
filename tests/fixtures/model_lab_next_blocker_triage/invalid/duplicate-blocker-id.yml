@@ -3,10 +3,10 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: a remaining blocker is marked resolved. A triage prioritizes unresolved
-# blockers and must not mark any as resolved (the id set still matches the scope, so
-# only the open-blocker rule fires).
-# Expected rule: TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
+# Invalid: two remaining_blockers entries share the id weak_condition_contrast
+# (with different metadata, so schema uniqueItems does not catch it). The id set
+# still matches the scope, so only the uniqueness rule fires.
+# Expected rule: TRIAGE_REQUIRES_UNIQUE_BLOCKER_IDS
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
@@ -23,6 +23,11 @@ remaining_blockers:
     recommended_position: 1
     rationale: "Most directly affects future comparability."
     next_task_shape: "condition_contrast_design_gate"
+  - id: "weak_condition_contrast"
+    status: "open"
+    recommended_position: 5
+    rationale: "Duplicate id with different metadata."
+    next_task_shape: "condition_contrast_design_gate"
   - id: "external_independence_not_attested"
     status: "open"
     recommended_position: 2
@@ -34,15 +39,12 @@ remaining_blockers:
     rationale: "Separate technical/security track."
     next_task_shape: "dependency_remediation_planning_or_targeted_patch"
   - id: "no_external_independent_auditor_comparison"
-    status: "resolved"
+    status: "open"
     recommended_position: 4
-    rationale: "Marked resolved — which a triage must not do."
+    rationale: "Operationally larger; should follow contrast design."
     next_task_shape: "external_auditor_comparison_protocol"
 
 recommended_next_task:
-  # The top-priority blocker (weak_condition_contrast, position 1) stays open and is
-  # the target, so this fixture isolates the resolved-status violation: only a
-  # non-top, non-target blocker is (wrongly) resolved.
   id: "condition_contrast_design_gate"
   target_blocker: "weak_condition_contrast"
   reason: "Closest to the methodological core of future comparability."

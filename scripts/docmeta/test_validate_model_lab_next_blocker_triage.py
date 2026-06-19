@@ -46,6 +46,15 @@ INVALID_FIXTURES = {
     "invalid/multiple-readiness-gates.yml": "TRIAGE_REQUIRES_SINGLE_READINESS_GATE_SOURCE",
     "invalid/multiple-dependency-risk-scopes.yml": "TRIAGE_REQUIRES_SINGLE_DEPENDENCY_RISK_SCOPE_SOURCE",
     "invalid/dependency-risk-scope-invalid-remaining-blockers.yml": "TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS",
+    "invalid/readiness-missing-result-assessment-allowed.yml": "TRIAGE_REQUIRES_BLOCKED_ASSESSMENT",
+    "invalid/readiness-comparison-ready-true.yml": "TRIAGE_REQUIRES_BLOCKED_ASSESSMENT",
+    "invalid/readiness-missing-comparison-ready.yml": "TRIAGE_REQUIRES_BLOCKED_ASSESSMENT",
+    "invalid/task-shape-mismatch.yml": "TRIAGE_REQUIRES_RECOMMENDED_TASK_SHAPE_MATCH",
+    "invalid/target-not-top-priority.yml": "TRIAGE_REQUIRES_TOP_PRIORITY_TARGET",
+    "invalid/duplicate-blocker-id.yml": "TRIAGE_REQUIRES_UNIQUE_BLOCKER_IDS",
+    "invalid/duplicate-recommended-position.yml": "TRIAGE_REQUIRES_UNIQUE_RECOMMENDED_POSITIONS",
+    "invalid/duplicate-triage-criteria-id.yml": "TRIAGE_REQUIRES_UNIQUE_TRIAGE_CRITERIA_IDS",
+    "invalid/scope-missing-remaining-blockers.yml": "TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS",
 }
 
 
@@ -101,6 +110,45 @@ class ModelLabNextBlockerTriageValidatorTests(unittest.TestCase):
             bad = Path(temp_dir) / "bad.yml"
             bad.write_text("source_evidence: [\n", encoding="utf-8")
             self.assert_exit_code(self.run_validator(bad), 2)
+
+    def _basic_data(self) -> dict:
+        return yaml.safe_load((FIXTURE_ROOT / "valid/basic.yml").read_text(encoding="utf-8"))
+
+    def _run_on_data(self, data: dict) -> subprocess.CompletedProcess[str]:
+        # Repo-relative source_evidence paths resolve against the repo root, so the
+        # mutated file may live in a temp dir.
+        with tempfile.TemporaryDirectory() as temp_dir:
+            mutated = Path(temp_dir) / "mutated.yml"
+            mutated.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+            return self.run_validator(mutated)
+
+    def test_empty_triage_criteria_is_schema_error(self) -> None:
+        data = self._basic_data()
+        data["triage_criteria"] = []
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 2)
+        self.assertIn("instance_path=triage_criteria", completed.stdout)
+
+    def test_empty_must_not_mix_with_is_schema_error(self) -> None:
+        data = self._basic_data()
+        data["remaining_blockers"][0]["must_not_mix_with"] = []
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 2)
+        self.assertIn("must_not_mix_with", completed.stdout)
+
+    def test_scope_missing_remaining_blockers_diagnostic(self) -> None:
+        completed = self.run_validator(
+            FIXTURE_ROOT / "invalid/scope-missing-remaining-blockers.yml"
+        )
+        self.assert_exit_code(completed, 1)
+        self.assertIn("'remaining_blockers' is missing", completed.stdout)
+
+    def test_scope_wrong_type_remaining_blockers_diagnostic(self) -> None:
+        completed = self.run_validator(
+            FIXTURE_ROOT / "invalid/dependency-risk-scope-invalid-remaining-blockers.yml"
+        )
+        self.assert_exit_code(completed, 1)
+        self.assertIn("'remaining_blockers' must be a list", completed.stdout)
 
 
 if __name__ == "__main__":

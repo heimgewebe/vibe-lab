@@ -1,0 +1,8 @@
+# Readiness gate that is blocked but OMITS result_assessment_allowed. Under the
+# strict readiness rule a missing field is not treated as False, so this must not
+# count as a confirmed blocked assessment. artifact_type + series_id are correct so
+# only TRIAGE_REQUIRES_BLOCKED_ASSESSMENT fires for the fixture using it.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+readiness_status: "blocked"
+comparison_ready: false

@@ -3,10 +3,10 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: a remaining blocker is marked resolved. A triage prioritizes unresolved
-# blockers and must not mark any as resolved (the id set still matches the scope, so
-# only the open-blocker rule fires).
-# Expected rule: TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
+# Invalid: the dependency_risk_scope source omits the remaining_blockers key, so
+# the expected blocker set cannot be derived. Distinct diagnostic from the
+# wrong-type case ("must be a list").
+# Expected rule: TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
@@ -14,7 +14,7 @@ comparison_ready_after_triage: false
 source_evidence:
   - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml"
     kind: "readiness_gate"
-  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml"
+  - path: "tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope-missing-remaining-blockers.yml"
     kind: "dependency_risk_scope"
 
 remaining_blockers:
@@ -34,15 +34,12 @@ remaining_blockers:
     rationale: "Separate technical/security track."
     next_task_shape: "dependency_remediation_planning_or_targeted_patch"
   - id: "no_external_independent_auditor_comparison"
-    status: "resolved"
+    status: "open"
     recommended_position: 4
-    rationale: "Marked resolved — which a triage must not do."
+    rationale: "Operationally larger; should follow contrast design."
     next_task_shape: "external_auditor_comparison_protocol"
 
 recommended_next_task:
-  # The top-priority blocker (weak_condition_contrast, position 1) stays open and is
-  # the target, so this fixture isolates the resolved-status violation: only a
-  # non-top, non-target blocker is (wrongly) resolved.
   id: "condition_contrast_design_gate"
   target_blocker: "weak_condition_contrast"
   reason: "Closest to the methodological core of future comparability."

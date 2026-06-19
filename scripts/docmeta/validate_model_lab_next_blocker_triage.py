@@ -22,11 +22,13 @@ resolving it, and a triage never unblocks a result assessment.
 Enforced semantic rules (exit 1):
   TRIAGE_REQUIRES_BLOCKED_ASSESSMENT
                                    no referenced source_evidence of kind
-                                   'readiness_gate' is readable and confirms a
-                                   blocked assessment (readiness_status=blocked and
-                                   result_assessment_allowed not true). A triage of
-                                   "what is still blocking" requires that the
-                                   assessment is, in fact, still blocked.
+                                   'readiness_gate' is readable and explicitly confirms
+                                   a blocked assessment: readiness_status=blocked,
+                                   result_assessment_allowed is literally False, and
+                                   comparison_ready is literally False (a missing field
+                                   is NOT treated as False). A triage of "what is still
+                                   blocking" requires that the assessment is, in fact,
+                                   still blocked.
   TRIAGE_REQUIRES_MATCHING_READINESS_GATE_SOURCE
                                    a readiness_gate source loaded but is not a
                                    result_assessment_readiness artifact for the
@@ -45,20 +47,40 @@ Enforced semantic rules (exit 1):
                                    recommended_next_task.target_blocker is non-empty
                                    but is not one of the triage's open remaining_blockers
                                    ids.
+  TRIAGE_REQUIRES_RECOMMENDED_TASK_SHAPE_MATCH
+                                   recommended_next_task.id does not equal the
+                                   next_task_shape declared by its (open, listed)
+                                   target_blocker.
+  TRIAGE_REQUIRES_TOP_PRIORITY_TARGET
+                                   the (open, listed) target_blocker does not have
+                                   recommended_position == 1; the recommendation must
+                                   follow the triage's own ranking.
   TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
                                    a remaining_blockers entry has status != open. A
                                    triage prioritizes unresolved blockers; it must
                                    not mark a blocker resolved.
+  TRIAGE_REQUIRES_UNIQUE_BLOCKER_IDS
+                                   two remaining_blockers entries share an id
+                                   (uniqueItems only blocks identical objects).
+  TRIAGE_REQUIRES_UNIQUE_RECOMMENDED_POSITIONS
+                                   two remaining_blockers entries share a
+                                   recommended_position.
+  TRIAGE_REQUIRES_UNIQUE_TRIAGE_CRITERIA_IDS
+                                   two triage_criteria entries share an id (only
+                                   checked when triage_criteria is present).
   TRIAGE_REQUIRES_DEPENDENCY_RISK_SCOPE_SOURCE
                                    no readable source_evidence of kind
                                    'dependency_risk_scope' was found, so the expected
                                    remaining-blocker set cannot be derived.
   TRIAGE_REQUIRES_SINGLE_READINESS_GATE_SOURCE
-                                   source_evidence contains more than one readiness_gate.
+                                   source_evidence does not contain exactly one
+                                   readiness_gate.
   TRIAGE_REQUIRES_SINGLE_DEPENDENCY_RISK_SCOPE_SOURCE
-                                   source_evidence contains more than one dependency_risk_scope.
+                                   source_evidence does not contain exactly one
+                                   dependency_risk_scope.
   TRIAGE_REQUIRES_VALID_DEPENDENCY_RISK_SCOPE_BLOCKERS
-                                   dependency_risk_scope remaining_blockers is not a list.
+                                   a dependency_risk_scope remaining_blockers is
+                                   missing or not a list.
   TRIAGE_REQUIRES_MATCHING_DEPENDENCY_RISK_SCOPE_SOURCE
                                    a dependency_risk_scope source loaded but is not a
                                    dependency_risk_caveat_scope artifact for the
@@ -138,6 +160,7 @@ READINESS_GATE_KIND = "readiness_gate"
 DEPENDENCY_RISK_SCOPE_KIND = "dependency_risk_scope"
 READINESS_STATUS_KEY = "readiness_status"
 RESULT_ASSESSMENT_ALLOWED_KEY = "result_assessment_allowed"
+COMPARISON_READY_KEY = "comparison_ready"
 REMAINING_BLOCKERS_KEY = "remaining_blockers"
 ARTIFACT_TYPE_KEY = "artifact_type"
 SERIES_ID_KEY = "series_id"
@@ -302,18 +325,22 @@ def resolve_source_evidence_entries(
 
 
 def _readiness_blocked_confirmed(resolutions: list[SourceEvidenceResolution]) -> bool:
-    """True if a referenced readiness_gate confirms a blocked assessment.
+    """True if a referenced readiness_gate explicitly confirms a blocked assessment.
 
     Inspects each kind 'readiness_gate' resolution that loaded as a YAML mapping and
-    confirms readiness_status=blocked with result_assessment_allowed not true.
-    Mirrors the cross-artifact read in validate_result_assessment_readiness.py.
+    requires all three signals to be present and explicit: readiness_status=blocked,
+    result_assessment_allowed is literally False, and comparison_ready is literally
+    False. A missing field is NOT treated as False — an under-specified gate must not
+    pass for a blocked assessment. Mirrors the cross-artifact read in
+    validate_result_assessment_readiness.py.
     """
     for res in resolutions:
         if res.kind != READINESS_GATE_KIND or res.loaded_yaml is None:
             continue
-        allowed = bool(res.loaded_yaml.get(RESULT_ASSESSMENT_ALLOWED_KEY, False))
-        status = str(res.loaded_yaml.get(READINESS_STATUS_KEY, ""))
-        if not allowed and status == "blocked":
+        status = res.loaded_yaml.get(READINESS_STATUS_KEY)
+        allowed = res.loaded_yaml.get(RESULT_ASSESSMENT_ALLOWED_KEY)
+        comparison = res.loaded_yaml.get(COMPARISON_READY_KEY)
+        if status == "blocked" and allowed is False and comparison is False:
             return True
     return False
 
@@ -336,11 +363,12 @@ def _scope_blocker_ids(
         if res.kind != DEPENDENCY_RISK_SCOPE_KIND or res.loaded_yaml is None:
             continue
         found = True
-        raw_blockers = res.loaded_yaml.get(REMAINING_BLOCKERS_KEY)
+        if REMAINING_BLOCKERS_KEY not in res.loaded_yaml:
+            problems.append(f"{res.rel_path}: '{REMAINING_BLOCKERS_KEY}' is missing")
+            continue
+        raw_blockers = res.loaded_yaml[REMAINING_BLOCKERS_KEY]
         if not isinstance(raw_blockers, list):
-            problems.append(
-                f"{res.rel_path}: {REMAINING_BLOCKERS_KEY} must be a list"
-            )
+            problems.append(f"{res.rel_path}: '{REMAINING_BLOCKERS_KEY}' must be a list")
             continue
         for item in raw_blockers:
             if isinstance(item, str):
@@ -385,6 +413,18 @@ def _source_type_series_mismatches(
         if issues:
             problems.append(f"{res.rel_path}: " + ", ".join(issues))
     return problems
+
+
+def _duplicates(values: list) -> list:
+    """Return the distinct values that appear more than once, ordered by str()."""
+    seen: set = set()
+    dups: set = set()
+    for value in values:
+        if value in seen:
+            dups.add(value)
+        else:
+            seen.add(value)
+    return sorted(dups, key=str)
 
 
 def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
@@ -506,6 +546,68 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
+    # --- blocker ids must be semantically unique ------------------------------
+    # uniqueItems in the schema only blocks fully identical objects; two entries
+    # with the same id but different metadata would slip through, so check ids here.
+    duplicate_blocker_ids = _duplicates(
+        [
+            str(b.get("id", "")).strip()
+            for b in remaining_blockers
+            if isinstance(b, dict) and str(b.get("id", "")).strip()
+        ]
+    )
+    if duplicate_blocker_ids:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_UNIQUE_BLOCKER_IDS",
+                path,
+                "remaining_blockers ids must be unique; duplicated: "
+                + ", ".join(duplicate_blocker_ids),
+            )
+        )
+
+    # --- recommended_position values must be unique ---------------------------
+    duplicate_positions = _duplicates(
+        [
+            b.get("recommended_position")
+            for b in remaining_blockers
+            if isinstance(b, dict)
+            and isinstance(b.get("recommended_position"), int)
+            and not isinstance(b.get("recommended_position"), bool)
+        ]
+    )
+    if duplicate_positions:
+        errors.append(
+            format_error(
+                "TRIAGE_REQUIRES_UNIQUE_RECOMMENDED_POSITIONS",
+                path,
+                "remaining_blockers recommended_position values must be unique; "
+                "duplicated: " + ", ".join(str(p) for p in duplicate_positions),
+            )
+        )
+
+    # --- triage_criteria ids must be unique (only when criteria are present) --
+    # Presence of triage_criteria is NOT required here (an open contract decision);
+    # this only constrains uniqueness when the optional block is supplied.
+    triage_criteria = data.get("triage_criteria")
+    if isinstance(triage_criteria, list):
+        duplicate_criteria_ids = _duplicates(
+            [
+                str(c.get("id", "")).strip()
+                for c in triage_criteria
+                if isinstance(c, dict) and str(c.get("id", "")).strip()
+            ]
+        )
+        if duplicate_criteria_ids:
+            errors.append(
+                format_error(
+                    "TRIAGE_REQUIRES_UNIQUE_TRIAGE_CRITERIA_IDS",
+                    path,
+                    "triage_criteria ids must be unique; duplicated: "
+                    + ", ".join(duplicate_criteria_ids),
+                )
+            )
+
     # --- recommended target_blocker must be a listed, open blocker ------------
     # Non-empty target_blocker only (an empty one is already reported by
     # TRIAGE_REQUIRES_RECOMMENDED_NEXT_TASK); it must point at a blocker the triage
@@ -527,6 +629,45 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                 + (", ".join(sorted(open_blocker_ids)) or "<none>") + ".",
             )
         )
+
+    # The next two checks only apply when target_blocker is an otherwise-valid
+    # open, listed blocker (an invalid target is already reported above), so they
+    # stay isolated to genuine task/priority inconsistencies.
+    target_block = next(
+        (
+            b
+            for b in remaining_blockers
+            if isinstance(b, dict) and str(b.get("id", "")).strip() == target_blocker
+        ),
+        None,
+    )
+    if target_blocker in open_blocker_ids and target_block is not None:
+        # --- recommended task must match the target blocker's next_task_shape -
+        target_shape = str(target_block.get("next_task_shape", "")).strip()
+        if task_id and target_shape and task_id != target_shape:
+            errors.append(
+                format_error(
+                    "TRIAGE_REQUIRES_RECOMMENDED_TASK_SHAPE_MATCH",
+                    path,
+                    "recommended_next_task.id must match the next_task_shape declared "
+                    f"by its target_blocker; got id={task_id!r}, target_blocker "
+                    f"{target_blocker!r} next_task_shape={target_shape!r}.",
+                )
+            )
+
+        # --- target blocker must be the top priority (recommended_position 1) -
+        position = target_block.get("recommended_position")
+        if not (isinstance(position, int) and not isinstance(position, bool) and position == 1):
+            errors.append(
+                format_error(
+                    "TRIAGE_REQUIRES_TOP_PRIORITY_TARGET",
+                    path,
+                    "recommended_next_task.target_blocker must reference the "
+                    "top-priority open blocker (recommended_position == 1); "
+                    f"target_blocker {target_blocker!r} has recommended_position="
+                    f"{position!r}.",
+                )
+            )
 
     # --- remaining_blockers must match the dependency-risk-scope artifact -----
     # The expected set is read from the dependency-risk-caveat-scope artifact (state

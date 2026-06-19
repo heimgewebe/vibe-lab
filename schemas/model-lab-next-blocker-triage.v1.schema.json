@@ -59,10 +59,11 @@
       "items": {
         "$ref": "#/$defs/sourceEvidence"
       },
-      "$comment": "At least one entry must be a readiness_gate that the validator can read and that confirms result_assessment is still blocked (TRIAGE_REQUIRES_BLOCKED_ASSESSMENT)."
+      "$comment": "Semantically: exactly one readiness_gate and exactly one dependency_risk_scope are required (TRIAGE_REQUIRES_SINGLE_READINESS_GATE_SOURCE / TRIAGE_REQUIRES_SINGLE_DEPENDENCY_RISK_SCOPE_SOURCE). The readiness_gate must explicitly confirm readiness_status=blocked, result_assessment_allowed=false, and comparison_ready=false (TRIAGE_REQUIRES_BLOCKED_ASSESSMENT); the dependency_risk_scope supplies the expected remaining-blocker set. Additional non-foundational evidence kinds may occur multiple times."
     },
     "triage_criteria": {
       "type": "array",
+      "minItems": 1,
       "uniqueItems": true,
       "items": {
         "type": "object",
@@ -202,6 +203,7 @@
         },
         "must_not_mix_with": {
           "type": "array",
+          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "type": "string",

@@ -1,0 +1,8 @@
+# Readiness gate that is blocked with result_assessment_allowed=false but
+# comparison_ready=true. The strict readiness rule requires comparison_ready=false,
+# so this must not count as a confirmed blocked assessment.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: true

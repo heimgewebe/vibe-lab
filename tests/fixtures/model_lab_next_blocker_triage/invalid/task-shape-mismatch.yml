@@ -3,10 +3,9 @@ artifact_type: "model_lab_next_blocker_triage"
 series_id: "fixture-series"
 scope: "remaining_result_assessment_blockers"
 
-# Invalid: a remaining blocker is marked resolved. A triage prioritizes unresolved
-# blockers and must not mark any as resolved (the id set still matches the scope, so
-# only the open-blocker rule fires).
-# Expected rule: TRIAGE_REQUIRES_OPEN_REMAINING_BLOCKERS
+# Invalid: recommended_next_task.id does not equal the next_task_shape of its
+# (open, listed, top-priority) target_blocker.
+# Expected rule: TRIAGE_REQUIRES_RECOMMENDED_TASK_SHAPE_MATCH
 triage_status: "complete"
 result_assessment_allowed_after_triage: false
 comparison_ready_after_triage: false
@@ -34,18 +33,15 @@ remaining_blockers:
     rationale: "Separate technical/security track."
     next_task_shape: "dependency_remediation_planning_or_targeted_patch"
   - id: "no_external_independent_auditor_comparison"
-    status: "resolved"
+    status: "open"
     recommended_position: 4
-    rationale: "Marked resolved — which a triage must not do."
+    rationale: "Operationally larger; should follow contrast design."
     next_task_shape: "external_auditor_comparison_protocol"
 
 recommended_next_task:
-  # The top-priority blocker (weak_condition_contrast, position 1) stays open and is
-  # the target, so this fixture isolates the resolved-status violation: only a
-  # non-top, non-target blocker is (wrongly) resolved.
-  id: "condition_contrast_design_gate"
+  id: "unrelated_task"
   target_blocker: "weak_condition_contrast"
-  reason: "Closest to the methodological core of future comparability."
+  reason: "Non-empty but inconsistent with the target blocker's next_task_shape."
 
 does_not_establish:
   - "result_assessment_allowed"
