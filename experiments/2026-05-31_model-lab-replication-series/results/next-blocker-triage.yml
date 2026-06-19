@@ -1,0 +1,128 @@
+schema_version: "v1"
+artifact_type: "model_lab_next_blocker_triage"
+series_id: "2026-05-31_model-lab-replication-series"
+scope: "remaining_result_assessment_blockers"
+
+triage_status: "complete"
+result_assessment_allowed_after_triage: false
+comparison_ready_after_triage: false
+
+summary: >
+  Triage of the remaining Model-Lab result-assessment blockers after the
+  dependency-risk caveat was scoped (not remediated). This artifact prioritizes
+  the four open blockers and recommends handling weak_condition_contrast next
+  through a condition_contrast_design_gate. It is a methodological prioritization
+  only: it does not resolve any blocker, does not perform dependency remediation,
+  does not start Run-004, does not allow a result assessment, and does not make
+  the series comparison-ready. Result assessment stays blocked.
+
+source_evidence:
+  - path: "experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml"
+    kind: "readiness_gate"
+  - path: "experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml"
+    kind: "dependency_risk_scope"
+  - path: "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
+    kind: "assessment_context"
+  - path: "experiments/2026-05-31_model-lab-replication-series/results/result.md"
+    kind: "result_summary"
+
+triage_criteria:
+  - id: "unblocks_result_assessment"
+    description: "Whether resolving this blocker materially moves the series toward a formal result assessment."
+  - id: "implementation_blast_radius"
+    description: "Expected code, dependency, lockfile, CI, workflow, or organizational impact of addressing the blocker."
+  - id: "evidence_gain"
+    description: "Expected improvement in evidential quality from addressing the blocker."
+  - id: "claim_discipline_risk"
+    description: "Risk that addressing the blocker accidentally produces an overclaim (model quality, comparative superiority, condition effect, readiness)."
+  - id: "sequencing_dependency"
+    description: "Whether this blocker should precede the others to keep later work well-defined."
+
+remaining_blockers:
+  - id: "weak_condition_contrast"
+    status: "open"
+    recommended_position: 1
+    rationale: >
+      The condition contrast between spec_first_baseline and code_first_control is
+      methodologically weak and most directly limits future comparability. A
+      stronger, explicitly criteria-bound condition contrast should be designed
+      before any further run or any formal assessment, otherwise more runs only
+      add material with the same methodological weakness.
+    next_task_shape: "condition_contrast_design_gate"
+    must_not_mix_with:
+      - "run_execution"
+      - "dependency_remediation"
+      - "result_assessment"
+      - "comparative_claims"
+
+  - id: "external_independence_not_attested"
+    status: "open"
+    recommended_position: 2
+    rationale: >
+      External independence matters for evidential quality, but the attestation
+      target is clearer once the condition contrast is specified: what is being
+      attested as independent depends on the conditions being compared.
+    next_task_shape: "external_independence_attestation_plan"
+    must_not_mix_with:
+      - "self_attested_external_audit"
+      - "result_assessment"
+      - "model_quality_claims"
+
+  - id: "dependency_risk_remediation_not_performed"
+    status: "open"
+    recommended_position: 3
+    rationale: >
+      The dependency risk is real and remains unremediated, but remediation is a
+      separate technical/security track (lockfile, toolchain, possible breaking
+      changes). It should not be mixed with method design and is not a
+      precondition for methodological comparability.
+    next_task_shape: "dependency_remediation_planning_or_targeted_patch"
+    must_not_mix_with:
+      - "result_assessment"
+      - "run_004"
+      - "model_quality_claims"
+      - "condition_effect_claims"
+
+  - id: "no_external_independent_auditor_comparison"
+    status: "open"
+    recommended_position: 4
+    rationale: >
+      A true independent auditor comparison is valuable but operationally larger
+      and should follow a clearer contrast design and an independence-attestation
+      plan, so that what the auditor compares is well-defined.
+    next_task_shape: "external_auditor_comparison_protocol"
+    must_not_mix_with:
+      - "internal_result_assessment"
+      - "run_004_without_protocol"
+      - "comparative_superiority_claims"
+
+recommended_next_task:
+  id: "condition_contrast_design_gate"
+  target_blocker: "weak_condition_contrast"
+  reason: >
+    The weak condition contrast is closest to the methodological core of future
+    comparability. It should be clarified before Run-004, before a formal
+    assessment, and before an external comparison.
+  expected_output:
+    - "documented or machine-readable criteria for a stronger condition contrast"
+    - "explicit non-claims for the design gate"
+    - "an explicit decision on whether a Run-004 may be designed only after contrast criteria exist"
+  forbidden_output:
+    - "run_execution"
+    - "result_assessment"
+    - "comparative_superiority"
+    - "model_quality_claims"
+    - "security_readiness"
+    - "production_readiness"
+
+does_not_establish:
+  - "result_assessment_allowed"
+  - "comparison_ready"
+  - "security_readiness"
+  - "production_readiness"
+  - "model_quality"
+  - "comparative_superiority"
+  - "condition_effect"
+  - "external_model_independence"
+  - "external_auditor_comparison_completed"
+  - "dependency_risk_remediated"

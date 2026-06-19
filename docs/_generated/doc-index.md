@@ -261,4 +261,5 @@
 | `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md` | CONTEXT | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md` | INITIAL | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | Phase-1c Valid Fixture | draft | operative |
+| `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md` | assessment-context | — | — |
 | `tests/fixtures/pr_scope/valid/summary.md` | summary | — | — |

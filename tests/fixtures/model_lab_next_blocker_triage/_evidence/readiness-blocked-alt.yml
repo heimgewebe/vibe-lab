@@ -1,0 +1,5 @@
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false

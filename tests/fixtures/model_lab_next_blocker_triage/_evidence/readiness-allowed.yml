@@ -1,0 +1,8 @@
+# Readiness-gate-shaped evidence that does NOT confirm a blocked assessment
+# (result_assessment_allowed=true, readiness_status=ready). Correct artifact_type +
+# series_id, so only TRIAGE_REQUIRES_BLOCKED_ASSESSMENT fires for the fixture using it.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+readiness_status: "ready"
+result_assessment_allowed: true
+comparison_ready: true

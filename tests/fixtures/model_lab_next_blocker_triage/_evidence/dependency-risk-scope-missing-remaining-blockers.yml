@@ -1,0 +1,5 @@
+# dependency_risk_scope artifact that OMITS the remaining_blockers key entirely.
+# Distinct from the wrong-type case (remaining_blockers present but not a list):
+# this triggers the "'remaining_blockers' is missing" diagnostic.
+artifact_type: "dependency_risk_caveat_scope"
+series_id: "fixture-series"

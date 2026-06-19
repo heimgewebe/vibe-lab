@@ -69,3 +69,12 @@ result_assessment, and comparison_ready blocked. It does not establish
 absence-of-vulnerabilities, dependency-risk-remediated, dependency-tree-safe,
 supply-chain-safety, production-dependency-health, security-approval,
 production-correctness, outcome-assessment, or absence-of-regressions.
+
+## Next-blocker triage
+
+A machine-readable next-blocker-triage artifact (`results/next-blocker-triage.yml`)
+names the next methodological step: address `weak_condition_contrast` via a
+`condition_contrast_design_gate` before Run-004 or any formal assessment. This is
+a prioritization only — no result assessment, no dependency remediation, and no
+change to the blocked status. `result_assessment_allowed` stays false and
+`comparison_ready` stays false.

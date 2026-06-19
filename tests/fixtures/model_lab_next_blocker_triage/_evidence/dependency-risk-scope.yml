@@ -1,0 +1,10 @@
+# Minimal dependency-risk-caveat-scope-shaped evidence for the fixture series. The
+# triage validator reads artifact_type + series_id (cross-artifact match) and
+# remaining_blockers (expected blocker-id set, tolerant of string or object/id form).
+artifact_type: "dependency_risk_caveat_scope"
+series_id: "fixture-series"
+remaining_blockers:
+  - id: "dependency_risk_remediation_not_performed"
+  - id: "weak_condition_contrast"
+  - id: "external_independence_not_attested"
+  - id: "no_external_independent_auditor_comparison"

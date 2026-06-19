@@ -1,0 +1,7 @@
+# Readiness gate that is blocked with result_assessment_allowed=false but OMITS
+# comparison_ready. A missing field is not treated as False, so this must not count
+# as a confirmed blocked assessment.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+readiness_status: "blocked"
+result_assessment_allowed: false
