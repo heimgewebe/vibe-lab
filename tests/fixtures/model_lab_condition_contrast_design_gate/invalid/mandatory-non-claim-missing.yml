@@ -1,0 +1,123 @@
+# Auto-generated invalid fixture (one field mutated from valid/basic.yml).
+schema_version: v1
+artifact_type: model_lab_condition_contrast_design_gate
+triggered_by: results/next-blocker-triage.yml#recommended_next_task
+series_id: fixture-series
+challenge_version: rest-api-v1
+gate_status: criteria_defined
+target_blocker: weak_condition_contrast
+blocker_status_after_gate: open
+run_004_design_allowed: true
+run_004_execution_allowed: false
+result_assessment_allowed_after_gate: false
+comparison_ready_after_gate: false
+summary: Fixture gate. Defines the criteria for a stronger future condition contrast without selecting
+  an axis, selecting a condition, executing a run, or unblocking assessment.
+source_evidence:
+- path: tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage.yml
+  kind: next_blocker_triage
+- path: tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/readiness.yml
+  kind: readiness_gate
+- path: tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/assessment-context.txt
+  kind: assessment_context
+- path: tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/method-context.txt
+  kind: method_context
+contrast_policy:
+  primary_intervention_axis_required: true
+  required_primary_intervention_axis_count: 1
+  primary_axis_selection_phase: run_004_design
+  materiality_evidence_required: true
+invariant_dimensions:
+- id: challenge_contract
+  requirement: Keep rest-api-v1 unchanged.
+- id: acceptance_surface
+  requirement: Keep functional requirements and acceptance criteria unchanged.
+- id: evaluation_criteria
+  requirement: Use the same evaluation criteria for every condition.
+- id: verification_surface
+  requirement: Use functionally equivalent tests and runtime checks.
+- id: evidence_capture
+  requirement: Use equivalent provenance and evidence-capture requirements.
+controlled_secondary_dimensions:
+- id: model_identity_and_version
+  control_requirement: hold_constant_or_record_and_justify
+  requirement: Do not allow unrecorded model drift.
+- id: tool_and_agent_mode
+  control_requirement: hold_constant_or_record_and_justify
+  requirement: Record tool, agent mode and relevant permissions.
+- id: sampling_configuration
+  control_requirement: hold_constant_or_record_and_justify
+  requirement: Record relevant generation settings.
+- id: human_intervention
+  control_requirement: equivalent_surface
+  requirement: Apply equivalent intervention and rework rules.
+- id: dependency_and_runtime_environment
+  control_requirement: hold_constant_or_record_and_justify
+  requirement: Pin or explicitly document relevant environment differences.
+- id: test_harness
+  control_requirement: equivalent_surface
+  requirement: Do not manufacture contrast through different tests.
+materiality_criteria:
+- id: single_primary_intervention_axis
+  requirement: A future design must select exactly one primary experimental difference.
+  evidence_required:
+  - pre-execution declaration of the selected axis
+- id: operationally_verifiable_difference
+  requirement: The selected difference must be observable before execution.
+  evidence_required:
+  - condition input or equivalent pre-run artifact
+- id: no_cosmetic_relabeling
+  requirement: A changed label or minor prose variation is insufficient.
+  evidence_required:
+  - concrete operational distinction
+- id: fixed_outcome_surface
+  requirement: Challenge, acceptance and evaluation surfaces remain fixed.
+  evidence_required:
+  - shared challenge and verification references
+- id: provenance_before_execution
+  requirement: Condition provenance must be captured before any future run.
+  evidence_required:
+  - timestamped pre-run provenance
+confounder_controls:
+- id: multi_axis_drift
+  trigger: More than one primary experimental difference changes.
+  required_control: Select one primary axis and classify every other difference as controlled or reported.
+  effect_if_uncontrolled: blocks_design
+- id: acceptance_or_test_drift
+  trigger: Challenge, acceptance criteria or tests differ between conditions.
+  required_control: Freeze the challenge and verification surface.
+  effect_if_uncontrolled: blocks_design
+- id: unequal_human_intervention
+  trigger: One condition receives different manual correction or rework.
+  required_control: Define equivalent intervention rules before execution.
+  effect_if_uncontrolled: blocks_design
+- id: dependency_or_runtime_drift
+  trigger: Relevant dependencies or runtime environments differ.
+  required_control: Hold constant or document and justify the difference.
+  effect_if_uncontrolled: must_be_reported
+- id: post_hoc_condition_rework
+  trigger: A condition is altered after observing its result.
+  required_control: Freeze the condition before execution.
+  effect_if_uncontrolled: blocks_design
+- id: self_reported_independence_as_external_proof
+  trigger: Self-reported context separation is described as external independence.
+  required_control: Keep external attestation as a separate later evidence track.
+  effect_if_uncontrolled: must_be_reported
+decision:
+  status: criteria_defined
+  next_step: run_004_design_may_begin
+  reason: The criteria are complete enough for a separate design task. They do not select or execute a
+    condition and do not authorize result assessment.
+does_not_establish:
+- weak_condition_contrast_resolved
+- run_004_execution_allowed
+- run_004_executed
+- result_assessment_allowed
+- comparison_ready
+- model_quality
+- comparative_superiority
+- external_model_independence
+- external_auditor_comparison_completed
+- security_readiness
+- production_readiness
+- dependency_risk_remediated

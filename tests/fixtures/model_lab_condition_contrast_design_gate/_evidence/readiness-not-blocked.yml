@@ -1,0 +1,10 @@
+# Readiness gate that is not blocked. Isolates CONTRAST_GATE_REQUIRES_BLOCKED_READINESS.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+readiness_status: "ready"
+result_assessment_allowed: false
+comparison_ready: false
+blockers:
+  - id: "weak_condition_contrast"
+    status: "open"

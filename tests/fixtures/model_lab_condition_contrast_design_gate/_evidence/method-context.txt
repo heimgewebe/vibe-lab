@@ -1,0 +1,2 @@
+Fixture method context. The gate validator checks only that this path exists and is
+repo-internal; its prose is never parsed. Kept as .txt to avoid a doc-index diff.

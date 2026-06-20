@@ -1,0 +1,10 @@
+# Triage that recommends a different next task (wrong recommended_next_task.id) while
+# still listing weak_condition_contrast open. Isolates CONTRAST_GATE_REQUIRES_TRIAGE_RECOMMENDATION.
+artifact_type: "model_lab_next_blocker_triage"
+series_id: "fixture-series"
+recommended_next_task:
+  id: "external_independence_attestation_plan"
+  target_blocker: "weak_condition_contrast"
+remaining_blockers:
+  - id: "weak_condition_contrast"
+    status: "open"

@@ -80,6 +80,12 @@ jobs:
       - name: Validate model-lab-next-blocker-triage artifacts
         run: make validate-model-lab-next-blocker-triage
 
+      - name: Test Model-Lab condition-contrast-design-gate validator
+        run: make validate-model-lab-condition-contrast-design-gate-tests
+
+      - name: Validate Model-Lab condition-contrast-design-gate artifacts
+        run: make validate-model-lab-condition-contrast-design-gate
+
       - name: Test PR scope validator
         run: python3 scripts/docmeta/test_validate_pr_scope.py
 

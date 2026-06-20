@@ -1,0 +1,10 @@
+# Triage for a different series. Isolates CONTRAST_GATE_REQUIRES_MATCHING_SOURCE_IDENTITY
+# (the recommendation and target-open content are otherwise valid).
+artifact_type: "model_lab_next_blocker_triage"
+series_id: "other-series"
+recommended_next_task:
+  id: "condition_contrast_design_gate"
+  target_blocker: "weak_condition_contrast"
+remaining_blockers:
+  - id: "weak_condition_contrast"
+    status: "open"
