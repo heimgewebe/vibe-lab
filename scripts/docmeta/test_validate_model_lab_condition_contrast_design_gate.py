@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import json
+import runpy
 import subprocess
 import sys
 import tempfile
@@ -10,6 +12,7 @@ import unittest
 from pathlib import Path
 
 import yaml
+from jsonschema import Draft202012Validator
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -18,6 +21,9 @@ VALIDATOR_PATH = (
     / "scripts"
     / "docmeta"
     / "validate_model_lab_condition_contrast_design_gate.py"
+)
+SCHEMA_PATH = (
+    REPO_ROOT / "schemas" / "model-lab-condition-contrast-design-gate.v1.schema.json"
 )
 FIXTURE_ROOT = REPO_ROOT / "tests" / "fixtures" / "model_lab_condition_contrast_design_gate"
 EV = "tests/fixtures/model_lab_condition_contrast_design_gate/_evidence"
@@ -245,6 +251,12 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
             ("blank", "   "),
             ("leading_whitespace", " tests/example.yml"),
             ("trailing_whitespace", "tests/example.yml "),
+            ("nul", "a\x00b"),
+            ("tab", "a\tb"),
+            ("line_feed", "a\nb"),
+            ("carriage_return", "a\rb"),
+            ("delete", "a\x7fb"),
+            ("lone_surrogate", "a\ud800b"),
         )
         for label, value in cases:
             with self.subTest(case=label):
@@ -253,6 +265,29 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
                 completed = self._run_on_data(data)
                 self.assert_exit_code(completed, 2)
                 self.assertIn("instance_path=source_evidence.2.path", completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_resolver_rejects_control_and_surrogate_codepoints(self) -> None:
+        # The resolver must stay fail-closed (ESCAPE) on these values even without
+        # the upstream schema check — NUL/surrogate otherwise crash pathlib.
+        module = runpy.run_path(
+            str(VALIDATOR_PATH), run_name="condition_contrast_validator_module"
+        )
+        resolve = module["resolve_repo_relative_path"]
+        for value in ("a\x00b", "a\tb", "a\nb", "a\rb", "a\x7fb", "a\ud800b"):
+            with self.subTest(value=ascii(value)):
+                resolved, code = resolve(value, REPO_ROOT, must_exist=True)
+                self.assertIsNone(resolved)
+                self.assertEqual("ESCAPE", code)
+
+    def test_valid_unicode_source_paths_pass_schema_form(self) -> None:
+        # Guard against over-rejection: non-ASCII path characters stay valid form.
+        validator = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
+        for value in ("äöü/datei.yml", "日本語/file.yml", "dir/file name.yml"):
+            with self.subTest(value=value):
+                data = self._basic_data()
+                data["source_evidence"][2]["path"] = value
+                self.assertEqual([], list(validator.iter_errors(data)))
 
     # --- mandatory sets ------------------------------------------------------
 

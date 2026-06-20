@@ -154,8 +154,8 @@
     "repoRelativePath": {
       "type": "string",
       "minLength": 1,
-      "pattern": "^(?!\\s)(?!/)(?![A-Za-z]:)(?!.*\\\\)(?:.*\\S)?$",
-      "$comment": "Repo-relative POSIX path. Rejected here as form errors: empty, whitespace-only, leading/trailing whitespace, absolute POSIX paths, Windows drive letters, and backslashes. Parent-escape ('..'), symlink-out-of-repo, and non-regular-file targets are rejected semantically by the validator with a stable rule id."
+      "pattern": "^(?!.*[\\u0000-\\u001F\\u007F\\uD800-\\uDFFF])(?!\\s)(?!/)(?![A-Za-z]:)(?!.*\\\\)(?:.*\\S)?$",
+      "$comment": "Repo-relative POSIX path. Rejected here as form errors: C0 control characters (U+0000-U+001F, incl. NUL/tab/CR/LF), DEL (U+007F), lone UTF-16 surrogates (U+D800-U+DFFF), empty, whitespace-only, leading/trailing whitespace, absolute POSIX paths, Windows drive letters, and backslashes. Parent-escape ('..'), symlink-out-of-repo, and filesystem resolution remain semantic resolver concerns. This is not a general Unicode/Bidi naming policy."
     },
     "sourceEvidence": {
       "type": "object",

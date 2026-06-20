@@ -212,6 +212,20 @@ READABILITY_MESSAGES = {
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 
 
+def _has_forbidden_path_codepoint(text: str) -> bool:
+    """True if text contains a C0 control char, DEL, or a lone UTF-16 surrogate.
+
+    These are rejected as form errors (the repoRelativePath schema pattern blocks
+    them too) and keep the resolver fail-closed before pathlib: NUL raises
+    ValueError and lone surrogates raise UnicodeError during filesystem resolution.
+    This is a narrow crash-surface guard, not a general Unicode/Bidi naming policy.
+    """
+    return any(
+        ord(char) <= 0x1F or ord(char) == 0x7F or 0xD800 <= ord(char) <= 0xDFFF
+        for char in text
+    )
+
+
 def display_path(path: Path) -> str:
     try:
         return str(path.resolve().relative_to(REPO_ROOT))
@@ -298,14 +312,20 @@ def resolve_repo_relative_path(
 
     Returns ``(resolved_path, None)`` when the path is repo-internal (and, when
     ``must_exist`` is True, exists after symlink resolution). On failure returns
-    ``(None, code)`` where ``code`` is "ESCAPE" (absolute / drive-letter /
-    backslash / lexical ``..`` / symlink leading out of repo / otherwise resolves
-    outside root) or "NOT_FOUND" (repo-internal but missing).
+    ``(None, code)`` where ``code`` is "ESCAPE" (forbidden C0/DEL/surrogate
+    codepoint / absolute / drive-letter / backslash / lexical ``..`` / symlink
+    leading out of repo / a value pathlib cannot safely resolve / otherwise
+    resolves outside root) or "NOT_FOUND" (repo-internal but missing).
 
     Mirrors the helper in validate_model_lab_next_blocker_triage.py; kept small and
     local rather than shared to avoid coupling the validators.
     """
-    text = str(rel_path).strip()
+    raw_text = str(rel_path)
+    # Reject forbidden codepoints on the raw value (before strip) so an edge tab or
+    # control character cannot be normalized away; the schema pattern also blocks these.
+    if _has_forbidden_path_codepoint(raw_text):
+        return None, "ESCAPE"
+    text = raw_text.strip()
     if not text:
         return None, "ESCAPE"
     # Lexical rejections (defense-in-depth; the schema pattern also blocks these).
@@ -319,9 +339,12 @@ def resolve_repo_relative_path(
     try:
         resolved = candidate.resolve(strict=must_exist)
     except FileNotFoundError:
-        lax = candidate.resolve(strict=False)
+        try:
+            lax = candidate.resolve(strict=False)
+        except (OSError, RuntimeError, ValueError, UnicodeError):
+            return None, "ESCAPE"
         return (None, "NOT_FOUND") if _inside(lax, root) else (None, "ESCAPE")
-    except (OSError, RuntimeError):
+    except (OSError, RuntimeError, ValueError, UnicodeError):
         return None, "ESCAPE"
 
     if not _inside(resolved, root):
