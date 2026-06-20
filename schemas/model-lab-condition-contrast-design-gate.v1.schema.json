@@ -154,8 +154,8 @@
     "repoRelativePath": {
       "type": "string",
       "minLength": 1,
-      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\).+$",
-      "$comment": "Repo-relative POSIX path. Absolute paths, drive letters and backslashes are rejected here; parent-escape ('..'), symlink-out-of-repo, and non-regular-file targets are rejected semantically by the validator with a stable rule id."
+      "pattern": "^(?!\\s)(?!/)(?![A-Za-z]:)(?!.*\\\\)(?:.*\\S)?$",
+      "$comment": "Repo-relative POSIX path. Rejected here as form errors: empty, whitespace-only, leading/trailing whitespace, absolute POSIX paths, Windows drive letters, and backslashes. Parent-escape ('..'), symlink-out-of-repo, and non-regular-file targets are rejected semantically by the validator with a stable rule id."
     },
     "sourceEvidence": {
       "type": "object",

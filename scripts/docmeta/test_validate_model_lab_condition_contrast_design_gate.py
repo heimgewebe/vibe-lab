@@ -76,14 +76,15 @@ SCHEMA_CONST_MUTATIONS = [
     ("unknown_control_requirement", lambda d: d["controlled_secondary_dimensions"][0].update(control_requirement="bogus"), "controlled_secondary_dimensions.0.control_requirement"),
 ]
 
-# (label, foundational kind, replacement path) — each points a declared foundational
-# source at a non-mapping/non-file target; the gate must not pass.
+# (label, foundational kind, replacement path, expected diagnostic) — each points a
+# declared foundational source at a non-mapping/non-file target; the gate must exit 1
+# with READABLE_FOUNDATIONAL_SOURCES and the matching diagnostic.
 READABILITY_MUTATIONS = [
-    ("triage_wrong_extension", "next_blocker_triage", f"{EV}/foundation-not-yaml.txt"),
-    ("triage_invalid_yaml", "next_blocker_triage", f"{EV}/foundation-invalid.yml"),
-    ("triage_not_mapping", "next_blocker_triage", f"{EV}/foundation-list.yml"),
-    ("readiness_wrong_extension", "readiness_gate", f"{EV}/foundation-not-yaml.txt"),
-    ("triage_directory", "next_blocker_triage", f"{EV}/source-directory"),
+    ("triage_wrong_extension", "next_blocker_triage", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
+    ("triage_invalid_yaml", "next_blocker_triage", f"{EV}/foundation-invalid.yml", "is not valid YAML"),
+    ("triage_not_mapping", "next_blocker_triage", f"{EV}/foundation-list.yml", "is not a YAML mapping"),
+    ("readiness_wrong_extension", "readiness_gate", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
+    ("triage_directory", "next_blocker_triage", f"{EV}/source-directory", "is not a regular file"),
 ]
 
 
@@ -191,16 +192,18 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
         self.assert_exit_code(completed, 1)
         self.assertIn("CONTRAST_GATE_REQUIRES_SINGLE_READINESS_SOURCE", completed.stdout)
 
-    def test_unreadable_foundational_sources_never_pass(self) -> None:
-        for label, kind, new_path in READABILITY_MUTATIONS:
+    def test_unreadable_foundational_sources_are_readability_errors(self) -> None:
+        for label, kind, new_path, expected_message in READABILITY_MUTATIONS:
             with self.subTest(case=label):
                 data = self._basic_data()
                 self._set_source_path(data, kind, new_path)
                 completed = self._run_on_data(data)
-                self.assertNotEqual(0, completed.returncode, completed.stdout)
+                self.assert_exit_code(completed, 1)
                 self.assertIn(
                     "CONTRAST_GATE_REQUIRES_READABLE_FOUNDATIONAL_SOURCES", completed.stdout
                 )
+                self.assertIn(expected_message, completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
 
     def test_context_source_directory_is_unsafe_path(self) -> None:
         data = self._basic_data()
@@ -208,6 +211,48 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
         completed = self._run_on_data(data)
         self.assert_exit_code(completed, 1)
         self.assertIn("CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS", completed.stdout)
+
+    def test_invalid_utf8_foundational_source_is_readability_error(self) -> None:
+        # Create the invalid-UTF-8 source inside the repo fixture tree (so its
+        # repo-relative path resolves) and remove it immediately after the run.
+        evidence_dir = FIXTURE_ROOT / "_evidence"
+        with tempfile.TemporaryDirectory(dir=evidence_dir) as temp_dir:
+            invalid_source = Path(temp_dir) / "invalid-utf8.yml"
+            invalid_source.write_bytes(b"\xff\xfe\xfa")
+            data = self._basic_data()
+            self._set_source_path(
+                data,
+                "next_blocker_triage",
+                invalid_source.relative_to(REPO_ROOT).as_posix(),
+            )
+            completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 1)
+        self.assertIn("CONTRAST_GATE_REQUIRES_READABLE_FOUNDATIONAL_SOURCES", completed.stdout)
+        self.assertIn("could not be read as UTF-8 text", completed.stdout)
+        self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_invalid_utf8_gate_exits_two_without_traceback(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            invalid_gate = Path(temp_dir) / "invalid-utf8.yml"
+            invalid_gate.write_bytes(b"\xff\xfe\xfa")
+            completed = self.run_validator(invalid_gate)
+        self.assert_exit_code(completed, 2)
+        self.assertIn("not valid UTF-8", completed.stdout)
+        self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_invalid_source_path_forms_are_schema_errors(self) -> None:
+        cases = (
+            ("blank", "   "),
+            ("leading_whitespace", " tests/example.yml"),
+            ("trailing_whitespace", "tests/example.yml "),
+        )
+        for label, value in cases:
+            with self.subTest(case=label):
+                data = self._basic_data()
+                data["source_evidence"][2]["path"] = value
+                completed = self._run_on_data(data)
+                self.assert_exit_code(completed, 2)
+                self.assertIn("instance_path=source_evidence.2.path", completed.stdout)
 
     # --- mandatory sets ------------------------------------------------------
 

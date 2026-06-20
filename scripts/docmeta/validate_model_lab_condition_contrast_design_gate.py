@@ -204,7 +204,7 @@ MANDATORY_DOES_NOT_ESTABLISH = (
 READABILITY_MESSAGES = {
     "NOT_FILE": "is not a regular file",
     "UNSUPPORTED_YAML_EXTENSION": "is not a .yml/.yaml file",
-    "READ_ERROR": "could not be read",
+    "READ_ERROR": "could not be read as UTF-8 text",
     "YAML_PARSE_ERROR": "is not valid YAML",
     "YAML_NOT_MAPPING": "is not a YAML mapping",
 }
@@ -221,9 +221,20 @@ def display_path(path: Path) -> str:
 
 def load_schema_validator() -> Draft202012Validator:
     try:
-        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        raw = SCHEMA_PATH.read_text(encoding="utf-8")
     except FileNotFoundError as exc:
         raise RuntimeError(f"schema file missing: {display_path(SCHEMA_PATH)}") from exc
+    except UnicodeDecodeError as exc:
+        raise RuntimeError(
+            f"schema file is not valid UTF-8: {display_path(SCHEMA_PATH)}"
+        ) from exc
+    except OSError as exc:
+        raise RuntimeError(
+            f"schema file could not be read: {display_path(SCHEMA_PATH)}: {exc}"
+        ) from exc
+
+    try:
+        schema = json.loads(raw)
     except json.JSONDecodeError as exc:
         raise RuntimeError(
             f"schema file invalid JSON: {display_path(SCHEMA_PATH)}: {exc}"
@@ -240,9 +251,16 @@ def load_schema_validator() -> Draft202012Validator:
 
 def load_yaml(path: Path) -> dict:
     try:
-        loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
+        raw = path.read_text(encoding="utf-8")
     except FileNotFoundError as exc:
         raise FileNotFoundError(f"file missing: {display_path(path)}") from exc
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"file is not valid UTF-8: {display_path(path)}") from exc
+    except OSError as exc:
+        raise ValueError(f"file could not be read: {display_path(path)}: {exc}") from exc
+
+    try:
+        loaded = yaml.safe_load(raw)
     except yaml.YAMLError as exc:
         raise ValueError(f"YAML parse error in {display_path(path)}: {exc}") from exc
 
@@ -350,9 +368,8 @@ def resolve_source_evidence_entries(
     """
     resolutions: list[SourceEvidenceResolution] = []
     for entry in _source_evidence_entries(data):
-        rel = str(entry.get("path", "")).strip()
-        if not rel:
-            continue
+        raw_rel = str(entry.get("path", ""))
+        rel = raw_rel.strip()
         kind = str(entry.get("kind", "")).strip()
         resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
         readability_error: str | None = None
@@ -366,7 +383,7 @@ def resolve_source_evidence_entries(
                 else:
                     try:
                         raw = resolved.read_text(encoding="utf-8")
-                    except OSError:
+                    except (OSError, UnicodeError):
                         readability_error = "READ_ERROR"
                     else:
                         try:
