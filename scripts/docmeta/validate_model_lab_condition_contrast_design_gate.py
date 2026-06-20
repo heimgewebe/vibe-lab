@@ -4,20 +4,22 @@
 A condition-contrast design-gate artifact
 (``experiments/<series>/results/condition-contrast-design-gate.yml``) defines the
 machine-readable criteria a *future* Run-004 condition-contrast design must
-satisfy. It is a design-criteria gate only: it does NOT select a primary
-intervention axis, does NOT select a concrete condition, does NOT execute
-Run-004, does NOT allow a result_assessment, does NOT make the series
+satisfy. v1 has exactly one honest state: a fully defined criteria gate
+(gate_status=criteria_defined). It is a design-criteria gate only: it does NOT
+select a primary intervention axis, does NOT select a concrete condition, does
+NOT execute Run-004, does NOT allow a result_assessment, does NOT make the series
 comparison-ready, and does NOT resolve weak_condition_contrast.
 
-This validator complements — it does not replace — the runtime-evidence gate
-(``validate_runtime_evidence_gate.py``), the result-assessment-readiness gate
-(``validate_result_assessment_readiness.py``), the dependency-risk-caveat scope
-(``validate_dependency_risk_caveat_scope.py``), and the next-blocker triage
-(``validate_model_lab_next_blocker_triage.py``). The triage records which
-still-open blocker to handle next; this gate records what a future design for the
-top-ranked blocker (weak_condition_contrast) must satisfy. Defining criteria is
-not selecting an axis, not selecting a condition, and never authorizes execution
-or assessment.
+The fixed v1 status, permissions, contrast policy, source kinds, control
+vocabulary, and structural materiality evidence are pinned in the JSON schema as
+const / enum / required, so this validator only enforces the genuinely semantic,
+cross-artifact and completeness rules.
+
+This validator complements — it does not replace — the runtime-evidence gate,
+the result-assessment-readiness gate, the dependency-risk-caveat scope, and the
+next-blocker triage. The triage records which still-open blocker to handle next;
+this gate records what a future design for the top-ranked blocker
+(weak_condition_contrast) must satisfy.
 
 Enforced semantic rules (exit 1):
   CONTRAST_GATE_REQUIRES_SINGLE_TRIAGE_SOURCE
@@ -26,39 +28,36 @@ Enforced semantic rules (exit 1):
   CONTRAST_GATE_REQUIRES_SINGLE_READINESS_SOURCE
                                    source_evidence does not contain exactly one
                                    readiness_gate source.
+  CONTRAST_GATE_REQUIRES_READABLE_FOUNDATIONAL_SOURCES
+                                   a declared foundational source (next_blocker_triage
+                                   or readiness_gate) is not a readable YAML mapping
+                                   (not a regular file, wrong extension, unreadable,
+                                   invalid YAML, or not a mapping). The gate must never
+                                   pass while a declared foundational source could not
+                                   be read.
   CONTRAST_GATE_REQUIRES_MATCHING_SOURCE_IDENTITY
                                    a triage source is not a
                                    model_lab_next_blocker_triage for this gate's
                                    series, or a readiness source is not a
                                    result_assessment_readiness for this gate's
-                                   series and challenge_version (wrong artifact,
-                                   series, or challenge).
+                                   series and challenge_version.
   CONTRAST_GATE_REQUIRES_TRIAGE_RECOMMENDATION
-                                   no readable triage recommends this gate
-                                   (recommended_next_task.id == the design-gate
-                                   task id) for the gate's own target_blocker.
+                                   the readable triage does not recommend this gate
+                                   (recommended_next_task.id == the design-gate task
+                                   id) for the gate's own target_blocker.
   CONTRAST_GATE_REQUIRES_BLOCKED_READINESS
-                                   no readable readiness_gate explicitly confirms
-                                   a blocked assessment (readiness_status=blocked,
+                                   no readable readiness_gate explicitly confirms a
+                                   blocked assessment (readiness_status=blocked,
                                    result_assessment_allowed is literally False,
                                    comparison_ready is literally False; a missing
                                    field is NOT treated as False).
   CONTRAST_GATE_REQUIRES_OPEN_TARGET_BLOCKER
                                    the gate's target_blocker is not listed as open
-                                   in a referenced triage's remaining_blockers
-                                   and/or in a referenced readiness gate's
-                                   blockers. Defining criteria for an already-closed
-                                   blocker would be incoherent.
-  CONTRAST_GATE_REQUIRES_SINGLE_PRIMARY_AXIS_POLICY
-                                   contrast_policy does not require exactly one
-                                   primary intervention axis
-                                   (primary_intervention_axis_required != true or
-                                   required_primary_intervention_axis_count != 1).
+                                   in the referenced triage's remaining_blockers
+                                   and/or the referenced readiness gate's blockers.
   CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA
-                                   invariant_dimensions or materiality_criteria
-                                   omit a mandatory id, materiality evidence is not
-                                   required, or a materiality criterion lacks a
-                                   non-empty evidence_required list.
+                                   invariant_dimensions, controlled_secondary_dimensions,
+                                   or materiality_criteria omit a mandatory id.
   CONTRAST_GATE_REQUIRES_UNIQUE_SEMANTIC_IDS
                                    two entries within invariant_dimensions,
                                    controlled_secondary_dimensions,
@@ -66,27 +65,21 @@ Enforced semantic rules (exit 1):
                                    share an id (uniqueItems only blocks identical
                                    objects).
   CONTRAST_GATE_REQUIRES_COMPLETE_CONFOUNDER_CONTROLS
-                                   confounder_controls omit a mandatory id.
-  CONTRAST_GATE_REQUIRES_STATUS_PERMISSION_CONSISTENCY
-                                   gate_status and run_004_design_allowed disagree
-                                   (criteria_defined => true, blocked => false), or
-                                   decision.status != gate_status.
-  CONTRAST_GATE_FORBIDS_EXECUTION_AND_ASSESSMENT
-                                   run_004_execution_allowed,
-                                   result_assessment_allowed_after_gate, or
-                                   comparison_ready_after_gate is true. A
-                                   design-criteria gate never authorizes execution,
-                                   result assessment, or comparison.
+                                   confounder_controls omit a mandatory id or carry
+                                   an effect_if_uncontrolled other than the declared
+                                   one for that id.
   CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS
                                    does_not_establish omits a mandatory non-claim.
   CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS
                                    a referenced source_evidence path resolves
-                                   outside the repo (escape) or does not exist.
+                                   outside the repo (escape), does not exist, or
+                                   exists but is not a regular file.
 
-The mandatory invariant/materiality/confounder ids and the mandatory non-claims
-stay hardcoded here as the normative minimum; the expected target_blocker, the
-blocked readiness state, and the recommendation are read from the source
-artifacts (state lives in artifacts, not in this validator).
+The mandatory invariant / controlled-secondary / materiality / confounder ids,
+the confounder id->effect mapping, and the mandatory non-claims stay hardcoded
+here as the normative minimum; the expected target_blocker, the blocked readiness
+state, and the recommendation are read from the source artifacts (state lives in
+artifacts, not in this validator).
 
 Exit codes:
   0  valid
@@ -125,15 +118,16 @@ SCHEMA_PATH = (
 
 GATE_GLOB = "*/results/condition-contrast-design-gate.yml"
 
-# Source kinds. Exactly one of each foundational kind is required; the context
-# kinds are checked only for existence and path safety, never for prose content.
+# Source kinds. Exactly one of each foundational kind is required and must be a
+# readable YAML mapping; the context kinds are checked only for existence as safe
+# regular files, never for prose content.
 TRIAGE_KIND = "next_blocker_triage"
 READINESS_KIND = "readiness_gate"
+FOUNDATIONAL_KINDS = (TRIAGE_KIND, READINESS_KIND)
 
 # Cross-referenced artifact identities. A next_blocker_triage source must be a
 # model_lab_next_blocker_triage artifact, and a readiness_gate source must be a
-# result_assessment_readiness artifact, both for this gate's own series — otherwise
-# the gate is anchored to the wrong (or a stale) artifact.
+# result_assessment_readiness artifact, both for this gate's own series.
 TRIAGE_ARTIFACT_TYPE = "model_lab_next_blocker_triage"
 READINESS_ARTIFACT_TYPE = "result_assessment_readiness"
 
@@ -149,8 +143,7 @@ READINESS_STATUS_KEY = "readiness_status"
 RESULT_ASSESSMENT_ALLOWED_KEY = "result_assessment_allowed"
 COMPARISON_READY_KEY = "comparison_ready"
 
-# Outcome surfaces a future design must keep fixed. The whole point of the gate is
-# that these stay constant across conditions, so all must be declared.
+# Outcome surfaces a future design must keep fixed.
 MANDATORY_INVARIANT_DIMENSIONS = (
     "challenge_contract",
     "acceptance_surface",
@@ -159,9 +152,17 @@ MANDATORY_INVARIANT_DIMENSIONS = (
     "evidence_capture",
 )
 
-# Minimum materiality criteria a future design must satisfy. Each must carry
-# concrete pre-execution evidence requirements (materiality must be observable
-# before any run, never asserted after the fact).
+# Secondary dimensions a future design must control or record.
+MANDATORY_CONTROLLED_SECONDARY_DIMENSIONS = (
+    "model_identity_and_version",
+    "tool_and_agent_mode",
+    "sampling_configuration",
+    "human_intervention",
+    "dependency_and_runtime_environment",
+    "test_harness",
+)
+
+# Minimum materiality criteria a future design must satisfy.
 MANDATORY_MATERIALITY_CRITERIA = (
     "single_primary_intervention_axis",
     "operationally_verifiable_difference",
@@ -170,22 +171,19 @@ MANDATORY_MATERIALITY_CRITERIA = (
     "provenance_before_execution",
 )
 
-# Minimum confounder controls. A future design must classify each of these as
-# controlled or reported before it can claim a material contrast.
-MANDATORY_CONFOUNDER_CONTROLS = (
-    "multi_axis_drift",
-    "acceptance_or_test_drift",
-    "unequal_human_intervention",
-    "dependency_or_runtime_drift",
-    "post_hoc_condition_rework",
-    "self_reported_independence_as_external_proof",
-)
+# Minimum confounder controls and the effect each is required to declare. The
+# effect describes the future design's reaction to the confounder, not a confounder
+# that has already occurred, so a 'blocks_design' entry does not block this gate.
+EXPECTED_CONFOUNDER_EFFECTS = {
+    "multi_axis_drift": "blocks_design",
+    "acceptance_or_test_drift": "blocks_design",
+    "unequal_human_intervention": "blocks_design",
+    "dependency_or_runtime_drift": "must_be_reported",
+    "post_hoc_condition_rework": "blocks_design",
+    "self_reported_independence_as_external_proof": "must_be_reported",
+}
 
-# Baseline anti-overclaim non-claims every gate must carry. Defining criteria must
-# never imply the blocker is resolved, a run was executed, a result assessment is
-# allowed, the series is comparison-ready, or that quality/comparison/condition
-# effect/external independence/auditor comparison/security/production/dependency
-# remediation have been achieved.
+# Baseline anti-overclaim non-claims every gate must carry.
 MANDATORY_DOES_NOT_ESTABLISH = (
     "weak_condition_contrast_resolved",
     "run_004_execution_allowed",
@@ -201,6 +199,15 @@ MANDATORY_DOES_NOT_ESTABLISH = (
     "production_readiness",
     "dependency_risk_remediated",
 )
+
+# Human-readable descriptions for foundational-source readability failures.
+READABILITY_MESSAGES = {
+    "NOT_FILE": "is not a regular file",
+    "UNSUPPORTED_YAML_EXTENSION": "is not a .yml/.yaml file",
+    "READ_ERROR": "could not be read",
+    "YAML_PARSE_ERROR": "is not valid YAML",
+    "YAML_NOT_MAPPING": "is not a YAML mapping",
+}
 
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 
@@ -223,6 +230,7 @@ def load_schema_validator() -> Draft202012Validator:
         ) from exc
 
     try:
+        Draft202012Validator.check_schema(schema)
         return Draft202012Validator(schema)
     except SchemaError as exc:
         raise RuntimeError(
@@ -311,25 +319,35 @@ def _source_evidence_entries(data: dict) -> list[dict]:
 
 @dataclass(frozen=True)
 class SourceEvidenceResolution:
-    """One source_evidence entry, resolved exactly once.
+    """One source_evidence entry, resolved (path safety + content) exactly once.
 
-    ``code`` is "ESCAPE" / "NOT_FOUND" / None (ok). ``loaded_yaml`` is the parsed
-    document when the resolved file exists and is a YAML mapping, else None. The
-    parsed YAML is reused by the triage and readiness checks so each referenced
-    file is read at most once.
+    ``code`` is "ESCAPE" / "NOT_FOUND" / None (path safety + existence).
+    ``readability_error`` is one of NOT_FILE / UNSUPPORTED_YAML_EXTENSION /
+    READ_ERROR / YAML_PARSE_ERROR / YAML_NOT_MAPPING / None and captures the
+    content-level outcome (YAML extension/parse/mapping checks run only for
+    foundational kinds; NOT_FILE can apply to any kind). ``loaded_yaml`` is the
+    parsed mapping for a readable foundational source, else None. Parse failures
+    are recorded explicitly, never swallowed into loaded_yaml=None.
     """
 
     rel_path: str
     kind: str
     resolved: Path | None
     code: str | None
+    readability_error: str | None
     loaded_yaml: dict | None
 
 
 def resolve_source_evidence_entries(
     data: dict, repo_root: Path
 ) -> list[SourceEvidenceResolution]:
-    """Resolve every source_evidence entry once (path safety + optional YAML load)."""
+    """Resolve every source_evidence entry once (path safety + content readability).
+
+    Each referenced file is touched at most once: the path is resolved safely, its
+    existence and regular-file status checked, and — only for foundational kinds —
+    the YAML extension verified, the content read, parsed, and required to be a
+    mapping. The result is reused by every later check.
+    """
     resolutions: list[SourceEvidenceResolution] = []
     for entry in _source_evidence_entries(data):
         rel = str(entry.get("path", "")).strip()
@@ -337,31 +355,40 @@ def resolve_source_evidence_entries(
             continue
         kind = str(entry.get("kind", "")).strip()
         resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
+        readability_error: str | None = None
         loaded: dict | None = None
-        if (
-            code is None
-            and resolved is not None
-            and resolved.is_file()
-            and resolved.suffix.lower() in (".yml", ".yaml")
-        ):
-            try:
-                doc = yaml.safe_load(resolved.read_text(encoding="utf-8"))
-            except (OSError, yaml.YAMLError):
-                doc = None
-            if isinstance(doc, dict):
-                loaded = doc
+        if code is None and resolved is not None:
+            if not resolved.is_file():
+                readability_error = "NOT_FILE"
+            elif kind in FOUNDATIONAL_KINDS:
+                if resolved.suffix.lower() not in (".yml", ".yaml"):
+                    readability_error = "UNSUPPORTED_YAML_EXTENSION"
+                else:
+                    try:
+                        raw = resolved.read_text(encoding="utf-8")
+                    except OSError:
+                        readability_error = "READ_ERROR"
+                    else:
+                        try:
+                            doc = yaml.safe_load(raw)
+                        except yaml.YAMLError:
+                            readability_error = "YAML_PARSE_ERROR"
+                        else:
+                            if not isinstance(doc, dict):
+                                readability_error = "YAML_NOT_MAPPING"
+                            else:
+                                loaded = doc
         resolutions.append(
             SourceEvidenceResolution(
-                rel_path=rel, kind=kind, resolved=resolved, code=code, loaded_yaml=loaded
+                rel_path=rel,
+                kind=kind,
+                resolved=resolved,
+                code=code,
+                readability_error=readability_error,
+                loaded_yaml=loaded,
             )
         )
     return resolutions
-
-
-def _loaded_docs_of_kind(
-    resolutions: list[SourceEvidenceResolution], kind: str
-) -> list[dict]:
-    return [r.loaded_yaml for r in resolutions if r.kind == kind and r.loaded_yaml is not None]
 
 
 def _readiness_blocked_confirmed(readiness_docs: list[dict]) -> bool:
@@ -369,9 +396,8 @@ def _readiness_blocked_confirmed(readiness_docs: list[dict]) -> bool:
 
     Requires all three signals to be present and explicit: readiness_status=blocked,
     result_assessment_allowed is literally False, and comparison_ready is literally
-    False. A missing field is NOT treated as False — an under-specified gate must not
-    pass for a blocked assessment. Mirrors the cross-artifact read in
-    validate_model_lab_next_blocker_triage.py.
+    False. A missing field is NOT treated as False. Mirrors the cross-artifact read
+    in validate_model_lab_next_blocker_triage.py.
     """
     for doc in readiness_docs:
         status = doc.get(READINESS_STATUS_KEY)
@@ -383,11 +409,7 @@ def _readiness_blocked_confirmed(readiness_docs: list[dict]) -> bool:
 
 
 def _triage_recommends_gate(triage_docs: list[dict], target_blocker: str) -> bool:
-    """True if a referenced triage recommends this design gate for the target blocker.
-
-    The recommended_next_task.id must equal the design-gate task id and its
-    target_blocker must equal the gate's own target_blocker.
-    """
+    """True if a referenced triage recommends this design gate for the target blocker."""
     for doc in triage_docs:
         task = doc.get("recommended_next_task")
         if not isinstance(task, dict):
@@ -463,28 +485,29 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     gate_series_id = str(data.get("series_id", "")).strip()
     gate_challenge = str(data.get("challenge_version", "")).strip()
     target_blocker = str(data.get("target_blocker", "")).strip()
-    gate_status = str(data.get("gate_status", "")).strip()
-    design_allowed = data.get("run_004_design_allowed")
-    execution_allowed = bool(data.get("run_004_execution_allowed", False))
-    assessment_allowed = bool(data.get("result_assessment_allowed_after_gate", False))
-    comparison_ready = bool(data.get("comparison_ready_after_gate", False))
-    contrast_policy = data.get("contrast_policy") or {}
     invariant_dimensions = data.get("invariant_dimensions", []) or []
     controlled_dimensions = data.get("controlled_secondary_dimensions", []) or []
     materiality_criteria = data.get("materiality_criteria", []) or []
     confounder_controls = data.get("confounder_controls", []) or []
-    decision = data.get("decision") or {}
     does_not_establish = data.get("does_not_establish", []) or []
 
-    # Resolve every source_evidence path (and load referenced YAML) exactly once;
-    # the triage, readiness, and path checks all reuse this list.
+    # Resolve every source_evidence path (and read foundational YAML) exactly once;
+    # the triage, readiness, identity, and path checks all reuse this list.
     resolutions = resolve_source_evidence_entries(data, repo_root)
-    triage_paths = [(r.rel_path, r.loaded_yaml) for r in resolutions if r.kind == TRIAGE_KIND and r.loaded_yaml is not None]
-    readiness_paths = [(r.rel_path, r.loaded_yaml) for r in resolutions if r.kind == READINESS_KIND and r.loaded_yaml is not None]
+    triage_paths = [
+        (r.rel_path, r.loaded_yaml)
+        for r in resolutions
+        if r.kind == TRIAGE_KIND and r.loaded_yaml is not None
+    ]
+    readiness_paths = [
+        (r.rel_path, r.loaded_yaml)
+        for r in resolutions
+        if r.kind == READINESS_KIND and r.loaded_yaml is not None
+    ]
     triage_docs = [doc for _, doc in triage_paths]
     readiness_docs = [doc for _, doc in readiness_paths]
 
-    # --- exactly one foundational triage source ------------------------------
+    # --- exactly one foundational triage / readiness source ------------------
     triage_count = sum(1 for r in resolutions if r.kind == TRIAGE_KIND)
     if triage_count != 1:
         errors.append(
@@ -496,7 +519,6 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- exactly one foundational readiness source ---------------------------
     readiness_count = sum(1 for r in resolutions if r.kind == READINESS_KIND)
     if readiness_count != 1:
         errors.append(
@@ -505,6 +527,25 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
                 path,
                 "source_evidence must contain exactly one readiness_gate source; "
                 f"foundational readiness evidence must be unambiguous (found {readiness_count}).",
+            )
+        )
+
+    # --- foundational sources must be readable YAML mappings -----------------
+    # A declared foundational source that is unsafe/missing is reported by the path
+    # rule; one that exists but is not a readable YAML mapping is reported here, so
+    # the gate can never pass while its foundational evidence could not be read.
+    readable_problems = [
+        f"{r.rel_path} ({r.kind}) {READABILITY_MESSAGES.get(r.readability_error, r.readability_error)}"
+        for r in resolutions
+        if r.kind in FOUNDATIONAL_KINDS and r.code is None and r.readability_error is not None
+    ]
+    if readable_problems:
+        errors.append(
+            format_error(
+                "CONTRAST_GATE_REQUIRES_READABLE_FOUNDATIONAL_SOURCES",
+                path,
+                "each foundational source (next_blocker_triage, readiness_gate) must be a "
+                "readable YAML mapping; offending: " + "; ".join(readable_problems),
             )
         )
 
@@ -545,7 +586,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
         )
 
     # --- readiness must remain blocked ---------------------------------------
-    if not _readiness_blocked_confirmed(readiness_docs):
+    if readiness_docs and not _readiness_blocked_confirmed(readiness_docs):
         errors.append(
             format_error(
                 "CONTRAST_GATE_REQUIRES_BLOCKED_READINESS",
@@ -577,60 +618,29 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- contrast policy must require exactly one primary intervention axis ---
-    axis_required = contrast_policy.get("primary_intervention_axis_required")
-    axis_count = contrast_policy.get("required_primary_intervention_axis_count")
-    axis_count_ok = isinstance(axis_count, int) and not isinstance(axis_count, bool) and axis_count == 1
-    if axis_required is not True or not axis_count_ok:
-        errors.append(
-            format_error(
-                "CONTRAST_GATE_REQUIRES_SINGLE_PRIMARY_AXIS_POLICY",
-                path,
-                "contrast_policy must require exactly one primary intervention axis "
-                "(primary_intervention_axis_required=true and "
-                "required_primary_intervention_axis_count=1); got "
-                f"primary_intervention_axis_required={axis_required!r}, "
-                f"required_primary_intervention_axis_count={axis_count!r}.",
-            )
-        )
-
-    # --- invariant + materiality criteria must be complete -------------------
+    # --- invariant + controlled-secondary + materiality criteria complete ----
     criteria_problems: list[str] = []
-    invariant_ids = set(_ids(invariant_dimensions))
-    missing_invariants = [d for d in MANDATORY_INVARIANT_DIMENSIONS if d not in invariant_ids]
-    if missing_invariants:
-        criteria_problems.append("missing invariant_dimensions: " + ", ".join(missing_invariants))
-
-    materiality_ids = set(_ids(materiality_criteria))
-    missing_materiality = [m for m in MANDATORY_MATERIALITY_CRITERIA if m not in materiality_ids]
-    if missing_materiality:
-        criteria_problems.append("missing materiality_criteria: " + ", ".join(missing_materiality))
-
-    if contrast_policy.get("materiality_evidence_required") is not True:
-        criteria_problems.append("contrast_policy.materiality_evidence_required must be true")
-    else:
-        for crit in materiality_criteria:
-            if not isinstance(crit, dict):
-                continue
-            crit_id = str(crit.get("id", "")).strip() or "<missing-id>"
-            evidence = crit.get("evidence_required")
-            if not isinstance(evidence, list) or not [e for e in evidence if str(e).strip()]:
-                criteria_problems.append(
-                    f"materiality criterion {crit_id!r} lacks a non-empty evidence_required list"
-                )
+    for label, mandatory, items in (
+        ("invariant_dimensions", MANDATORY_INVARIANT_DIMENSIONS, invariant_dimensions),
+        ("controlled_secondary_dimensions", MANDATORY_CONTROLLED_SECONDARY_DIMENSIONS, controlled_dimensions),
+        ("materiality_criteria", MANDATORY_MATERIALITY_CRITERIA, materiality_criteria),
+    ):
+        present = set(_ids(items))
+        missing = [m for m in mandatory if m not in present]
+        if missing:
+            criteria_problems.append(f"{label}: " + ", ".join(missing))
     if criteria_problems:
         errors.append(
             format_error(
                 "CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA",
                 path,
-                "invariant_dimensions and materiality_criteria must be complete and "
-                "evidence-bound; " + "; ".join(criteria_problems),
+                "invariant_dimensions, controlled_secondary_dimensions and "
+                "materiality_criteria must each cover their mandatory id set; missing — "
+                + "; ".join(criteria_problems),
             )
         )
 
     # --- semantic ids must be unique within each list ------------------------
-    # uniqueItems in the schema only blocks fully identical objects; two entries
-    # with the same id but different prose would slip through, so check ids here.
     duplicate_id_problems: list[str] = []
     for label, items in (
         ("invariant_dimensions", invariant_dimensions),
@@ -651,59 +661,27 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- confounder controls must be complete --------------------------------
-    confounder_ids = set(_ids(confounder_controls))
-    missing_confounders = [c for c in MANDATORY_CONFOUNDER_CONTROLS if c not in confounder_ids]
-    if missing_confounders:
+    # --- confounder controls must be complete with their declared effects ----
+    confounder_effects = {
+        str(c.get("id", "")).strip(): str(c.get("effect_if_uncontrolled", "")).strip()
+        for c in confounder_controls
+        if isinstance(c, dict) and str(c.get("id", "")).strip()
+    }
+    confounder_problems: list[str] = []
+    for cid, expected_effect in EXPECTED_CONFOUNDER_EFFECTS.items():
+        if cid not in confounder_effects:
+            confounder_problems.append(f"missing: {cid}")
+        elif confounder_effects[cid] != expected_effect:
+            confounder_problems.append(
+                f"{cid}: effect_if_uncontrolled={confounder_effects[cid]!r} (expected {expected_effect!r})"
+            )
+    if confounder_problems:
         errors.append(
             format_error(
                 "CONTRAST_GATE_REQUIRES_COMPLETE_CONFOUNDER_CONTROLS",
                 path,
-                "confounder_controls must cover the mandatory set; missing: "
-                + ", ".join(missing_confounders),
-            )
-        )
-
-    # --- gate_status / permission / decision consistency ---------------------
-    consistency_problems: list[str] = []
-    if gate_status == "criteria_defined" and design_allowed is not True:
-        consistency_problems.append(
-            f"gate_status=criteria_defined requires run_004_design_allowed=true (got {design_allowed!r})"
-        )
-    if gate_status == "blocked" and design_allowed is not False:
-        consistency_problems.append(
-            f"gate_status=blocked requires run_004_design_allowed=false (got {design_allowed!r})"
-        )
-    decision_status = str(decision.get("status", "")).strip()
-    if decision_status != gate_status:
-        consistency_problems.append(
-            f"decision.status={decision_status!r} must equal gate_status={gate_status!r}"
-        )
-    if consistency_problems:
-        errors.append(
-            format_error(
-                "CONTRAST_GATE_REQUIRES_STATUS_PERMISSION_CONSISTENCY",
-                path,
-                "gate status, design permission, and decision must be consistent; "
-                + "; ".join(consistency_problems),
-            )
-        )
-
-    # --- gate must forbid execution, result assessment, and comparison -------
-    forbidden_problems: list[str] = []
-    if execution_allowed:
-        forbidden_problems.append("run_004_execution_allowed must be false")
-    if assessment_allowed:
-        forbidden_problems.append("result_assessment_allowed_after_gate must be false")
-    if comparison_ready:
-        forbidden_problems.append("comparison_ready_after_gate must be false")
-    if forbidden_problems:
-        errors.append(
-            format_error(
-                "CONTRAST_GATE_FORBIDS_EXECUTION_AND_ASSESSMENT",
-                path,
-                "a design-criteria gate must not authorize execution, result "
-                "assessment, or comparison; " + "; ".join(forbidden_problems),
+                "confounder_controls must cover the mandatory set, each with its declared "
+                "effect_if_uncontrolled; " + "; ".join(confounder_problems),
             )
         )
 
@@ -720,24 +698,27 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- source_evidence path escape + existence (reuses the single pass) -----
+    # --- source_evidence path escape / existence / regular-file --------------
+    # ESCAPE and NOT_FOUND are path-safety problems for any source kind. A
+    # non-regular-file target is reported here for context sources; for foundational
+    # sources it is a readability failure (reported above), so it is not duplicated.
+    safe_problems: list[str] = []
     for res in resolutions:
         if res.code == "ESCAPE":
-            errors.append(
-                format_error(
-                    "CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS",
-                    path,
-                    f"source_evidence path '{res.rel_path}' resolves outside the repo root.",
-                )
-            )
+            safe_problems.append(f"{res.rel_path}: resolves outside the repo root")
         elif res.code == "NOT_FOUND":
-            errors.append(
-                format_error(
-                    "CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS",
-                    path,
-                    f"source_evidence path '{res.rel_path}' does not exist.",
-                )
+            safe_problems.append(f"{res.rel_path}: does not exist")
+        elif res.readability_error == "NOT_FILE" and res.kind not in FOUNDATIONAL_KINDS:
+            safe_problems.append(f"{res.rel_path}: exists but is not a regular file")
+    if safe_problems:
+        errors.append(
+            format_error(
+                "CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS",
+                path,
+                "every source_evidence path must be a safe, existing, regular repo file; "
+                "offending: " + "; ".join(safe_problems),
             )
+        )
 
     return errors
 

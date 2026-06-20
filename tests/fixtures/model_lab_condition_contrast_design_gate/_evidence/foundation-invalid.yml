@@ -1,0 +1,4 @@
+# Syntactically invalid YAML (unclosed flow sequence) to assert that a foundational
+# source which does not parse is rejected by READABLE_FOUNDATIONAL_SOURCES.
+foo: [1, 2
+bar: : :

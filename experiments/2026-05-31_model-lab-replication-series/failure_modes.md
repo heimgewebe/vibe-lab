@@ -35,3 +35,10 @@ canonicality: operative
   `weak_condition_contrast` stays open.
 - **Historical run-bundle rewrite.** The archived Run-001/Run-002/Run-003 bundles
   and historical evidence must not be rewritten to manufacture a stronger contrast.
+- **Ambiguous challenge version.** Every future design must stay pinned to
+  `rest-api-v1`; silent task drift destroys comparability.
+- **Missing evidence artifacts.** A declared contrast or run without resolvable,
+  repo-local evidence cannot support later assessment.
+- **Retroactive hardening of historical experiments.** This gate must not be used
+  to rewrite historical Run-001/Run-002/Run-003 bundles or to make opt-in AP-1/AP-2
+  controls retroactively mandatory for unrelated historical experiments.

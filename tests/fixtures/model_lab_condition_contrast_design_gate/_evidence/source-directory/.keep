@@ -1,0 +1,2 @@
+# Keeps an empty directory in git so a test can point a source_evidence path at a
+# directory and assert the "exists but is not a regular file" rejection.
