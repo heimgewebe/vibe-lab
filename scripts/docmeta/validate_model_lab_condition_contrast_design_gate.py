@@ -69,17 +69,20 @@ Enforced semantic rules (exit 1):
                                    an effect_if_uncontrolled other than the declared
                                    one for that id.
   CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS
-                                   does_not_establish omits a mandatory non-claim.
+                                   does_not_establish omits a static baseline
+                                   non-claim or the dynamic <target_blocker>_resolved
+                                   non-claim derived from this gate's target_blocker.
   CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS
                                    a referenced source_evidence path resolves
                                    outside the repo (escape), does not exist, or
                                    exists but is not a regular file.
 
 The mandatory invariant / controlled-secondary / materiality / confounder ids,
-the confounder id->effect mapping, and the mandatory non-claims stay hardcoded
-here as the normative minimum; the expected target_blocker, the blocked readiness
-state, and the recommendation are read from the source artifacts (state lives in
-artifacts, not in this validator).
+the confounder id->effect mapping, and the STATIC baseline non-claims stay
+hardcoded here as the normative minimum. The <target_blocker>_resolved non-claim
+is derived dynamically from this gate's target_blocker, which (with the blocked
+readiness state and the recommendation) is read from the source artifacts (state
+lives in artifacts, not in this validator).
 
 Exit codes:
   0  valid
@@ -183,9 +186,11 @@ EXPECTED_CONFOUNDER_EFFECTS = {
     "self_reported_independence_as_external_proof": "must_be_reported",
 }
 
-# Baseline anti-overclaim non-claims every gate must carry.
-MANDATORY_DOES_NOT_ESTABLISH = (
-    "weak_condition_contrast_resolved",
+# Static baseline anti-overclaim non-claims every gate must carry, regardless of
+# target_blocker. The <target_blocker>_resolved non-claim is required additionally and
+# derived dynamically (see _required_non_claims), not listed here, because
+# target_blocker is source-derived from triage/readiness, not fixed in this validator.
+STATIC_MANDATORY_DOES_NOT_ESTABLISH = (
     "run_004_execution_allowed",
     "run_004_executed",
     "result_assessment_allowed",
@@ -199,6 +204,20 @@ MANDATORY_DOES_NOT_ESTABLISH = (
     "production_readiness",
     "dependency_risk_remediated",
 )
+
+
+def _required_non_claims(target_blocker: str) -> set[str]:
+    """Static baseline non-claims plus the dynamic <target_blocker>_resolved non-claim.
+
+    The resolution non-claim is derived from the gate's own (source-derived)
+    target_blocker rather than hardcoded, so no blocker name is fixed in this
+    validator. Normalization stays case-insensitive, matching the declared-set check.
+    """
+    required = set(STATIC_MANDATORY_DOES_NOT_ESTABLISH)
+    normalized_target = target_blocker.strip().lower()
+    if normalized_target:
+        required.add(f"{normalized_target}_resolved")
+    return required
 
 # Human-readable descriptions for foundational-source readability failures.
 READABILITY_MESSAGES = {
@@ -394,7 +413,9 @@ def resolve_source_evidence_entries(
         raw_rel = str(entry.get("path", ""))
         rel = raw_rel.strip()
         kind = str(entry.get("kind", "")).strip()
-        resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
+        # Pass the raw (unstripped) path so the resolver can independently reject edge
+        # control characters; rel stays the normalized display form for diagnostics.
+        resolved, code = resolve_repo_relative_path(raw_rel, repo_root, must_exist=True)
         readability_error: str | None = None
         loaded: dict | None = None
         if code is None and resolved is not None:
@@ -726,14 +747,18 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
         )
 
     # --- mandatory anti-overclaim non-claims ---------------------------------
+    # Static baseline non-claims plus the dynamic <target_blocker>_resolved non-claim,
+    # derived from this gate's source-derived target_blocker. Declared entries are
+    # normalized case-insensitively, matching the required set.
     declared = {str(item).strip().lower() for item in does_not_establish}
-    missing_mandatory = [d for d in MANDATORY_DOES_NOT_ESTABLISH if d not in declared]
+    missing_mandatory = sorted(_required_non_claims(target_blocker) - declared)
     if missing_mandatory:
         errors.append(
             format_error(
                 "CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS",
                 path,
-                "does_not_establish must include the mandatory non-claims; missing: "
+                "does_not_establish must include all static anti-overclaim non-claims "
+                "and the dynamic <target_blocker>_resolved non-claim; missing: "
                 + ", ".join(missing_mandatory),
             )
         )

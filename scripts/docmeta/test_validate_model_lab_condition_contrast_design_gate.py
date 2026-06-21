@@ -289,6 +289,45 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
                 data["source_evidence"][2]["path"] = value
                 self.assertEqual([], list(validator.iter_errors(data)))
 
+    def test_target_blocker_resolution_non_claim_is_required(self) -> None:
+        # The <target_blocker>_resolved non-claim is required for the real target.
+        data = self._basic_data()
+        data["does_not_establish"].remove("weak_condition_contrast_resolved")
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 1)
+        self.assertIn("CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS", completed.stdout)
+        self.assertIn("weak_condition_contrast_resolved", completed.stdout)
+
+    def test_required_non_claims_derive_resolution_from_target(self) -> None:
+        # The resolution non-claim is derived from target_blocker, not hardcoded;
+        # the static anti-overclaim baseline is preserved.
+        module = runpy.run_path(
+            str(VALIDATOR_PATH), run_name="condition_contrast_validator_module"
+        )
+        required_non_claims = module["_required_non_claims"]
+        required = required_non_claims("external_independence_not_attested")
+        self.assertIn("external_independence_not_attested_resolved", required)
+        self.assertNotIn("weak_condition_contrast_resolved", required)
+        self.assertIn("model_quality", required)
+        self.assertIn("run_004_executed", required)
+
+    def test_source_resolution_passes_raw_path_to_resolver(self) -> None:
+        # Defense-in-depth: the caller hands the resolver the unmodified raw path, so an
+        # edge control character is rejected even without upstream schema validation.
+        module = runpy.run_path(
+            str(VALIDATOR_PATH), run_name="condition_contrast_validator_module"
+        )
+        resolve_entries = module["resolve_source_evidence_entries"]
+        data = self._basic_data()
+        data["source_evidence"][2]["path"] = (
+            "\ttests/fixtures/model_lab_condition_contrast_design_gate/"
+            "_evidence/assessment-context.txt"
+        )
+        resolutions = resolve_entries(data, REPO_ROOT)
+        context_resolution = resolutions[2]
+        self.assertEqual("ESCAPE", context_resolution.code)
+        self.assertIsNone(context_resolution.resolved)
+
     # --- mandatory sets ------------------------------------------------------
 
     def test_missing_controlled_secondary_dimension_is_incomplete(self) -> None:
