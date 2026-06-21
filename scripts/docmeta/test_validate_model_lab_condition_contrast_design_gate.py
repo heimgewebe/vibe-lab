@@ -66,6 +66,11 @@ INVALID_FIXTURES = {
 # disallowed one and must surface as a schema error (exit 2) at a stable path. The
 # exact jsonschema prose is intentionally not asserted.
 SCHEMA_CONST_MUTATIONS = [
+    (
+        "target_blocker",
+        lambda d: d.update(target_blocker="external_independence_not_attested"),
+        "target_blocker",
+    ),
     ("gate_status", lambda d: d.update(gate_status="blocked"), "gate_status"),
     ("run_004_design_allowed", lambda d: d.update(run_004_design_allowed=False), "run_004_design_allowed"),
     ("run_004_execution_allowed", lambda d: d.update(run_004_execution_allowed=True), "run_004_execution_allowed"),
@@ -89,8 +94,11 @@ READABILITY_MUTATIONS = [
     ("triage_wrong_extension", "next_blocker_triage", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
     ("triage_invalid_yaml", "next_blocker_triage", f"{EV}/foundation-invalid.yml", "is not valid YAML"),
     ("triage_not_mapping", "next_blocker_triage", f"{EV}/foundation-list.yml", "is not a YAML mapping"),
-    ("readiness_wrong_extension", "readiness_gate", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
     ("triage_directory", "next_blocker_triage", f"{EV}/source-directory", "is not a regular file"),
+    ("readiness_wrong_extension", "readiness_gate", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
+    ("readiness_invalid_yaml", "readiness_gate", f"{EV}/foundation-invalid.yml", "is not valid YAML"),
+    ("readiness_not_mapping", "readiness_gate", f"{EV}/foundation-list.yml", "is not a YAML mapping"),
+    ("readiness_directory", "readiness_gate", f"{EV}/source-directory", "is not a regular file"),
 ]
 
 
@@ -289,27 +297,13 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
                 data["source_evidence"][2]["path"] = value
                 self.assertEqual([], list(validator.iter_errors(data)))
 
-    def test_target_blocker_resolution_non_claim_is_required(self) -> None:
-        # The <target_blocker>_resolved non-claim is required for the real target.
+    def test_weak_condition_contrast_resolution_non_claim_is_required(self) -> None:
         data = self._basic_data()
         data["does_not_establish"].remove("weak_condition_contrast_resolved")
         completed = self._run_on_data(data)
         self.assert_exit_code(completed, 1)
         self.assertIn("CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS", completed.stdout)
         self.assertIn("weak_condition_contrast_resolved", completed.stdout)
-
-    def test_required_non_claims_derive_resolution_from_target(self) -> None:
-        # The resolution non-claim is derived from target_blocker, not hardcoded;
-        # the static anti-overclaim baseline is preserved.
-        module = runpy.run_path(
-            str(VALIDATOR_PATH), run_name="condition_contrast_validator_module"
-        )
-        required_non_claims = module["_required_non_claims"]
-        required = required_non_claims("external_independence_not_attested")
-        self.assertIn("external_independence_not_attested_resolved", required)
-        self.assertNotIn("weak_condition_contrast_resolved", required)
-        self.assertIn("model_quality", required)
-        self.assertIn("run_004_executed", required)
 
     def test_source_resolution_passes_raw_path_to_resolver(self) -> None:
         # Defense-in-depth: the caller hands the resolver the unmodified raw path, so an

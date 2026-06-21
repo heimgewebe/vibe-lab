@@ -31,7 +31,7 @@ canonicality: operative
   separation is not external attestation; external independence stays a separate
   later evidence track.
 - **Design gate mistaken for execution permission.** Defining contrast criteria
-  does not authorize a Run-004, a result assessment, or a comparison;
+  does not authorize Run-004 execution, a result assessment, or a comparison;
   `weak_condition_contrast` stays open.
 - **Historical run-bundle rewrite.** The archived Run-001/Run-002/Run-003 bundles
   and historical evidence must not be rewritten to manufacture a stronger contrast.
