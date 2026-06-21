@@ -42,3 +42,11 @@ canonicality: operative
 - **Retroactive hardening of historical experiments.** This gate must not be used
   to rewrite historical Run-001/Run-002/Run-003 bundles or to make opt-in AP-1/AP-2
   controls retroactively mandatory for unrelated historical experiments.
+- **Pseudo-comparison without a materially distinct control condition.**
+  Multiple run surfaces do not by themselves create a meaningful comparison.
+  Without a predeclared, materially distinct and controlled intervention axis,
+  no condition-effect or comparative-quality claim is supported.
+- **Skeleton or design gate mistaken for a result.**
+  A schema-valid gate, design artifact, execution scaffold, or green validator
+  establishes structural compliance only. It does not establish an executed
+  comparison, empirical result, condition effect, or outcome upgrade.

@@ -72,6 +72,7 @@ SCHEMA_CONST_MUTATIONS = [
         "target_blocker",
     ),
     ("gate_status", lambda d: d.update(gate_status="blocked"), "gate_status"),
+    ("triggered_by_provenance", lambda d: d.update(triggered_by="spontaneous_manual_decision"), "triggered_by"),
     ("run_004_design_allowed", lambda d: d.update(run_004_design_allowed=False), "run_004_design_allowed"),
     ("run_004_execution_allowed", lambda d: d.update(run_004_execution_allowed=True), "run_004_execution_allowed"),
     ("result_assessment_allowed_after_gate", lambda d: d.update(result_assessment_allowed_after_gate=True), "result_assessment_allowed_after_gate"),
@@ -163,6 +164,22 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
                 completed = self._run_on_data(data)
                 self.assert_exit_code(completed, 2)
                 self.assertIn(f"instance_path={instance_path}", completed.stdout)
+
+    def test_schema_controlled_dimension_mappings_are_schema_errors(self) -> None:
+        cases = [
+            ("human_intervention", "hold_constant_or_record_and_justify"),
+            ("test_harness", "hold_constant_or_record_and_justify"),
+            ("model_identity_and_version", "equivalent_surface"),
+        ]
+        for target_id, wrong_req in cases:
+            with self.subTest(case=target_id):
+                data = self._basic_data()
+                idx = next(i for i, dim in enumerate(data["controlled_secondary_dimensions"]) if dim.get("id") == target_id)
+                data["controlled_secondary_dimensions"][idx]["control_requirement"] = wrong_req
+                completed = self._run_on_data(data)
+                self.assert_exit_code(completed, 2)
+                self.assertIn(f"instance_path=controlled_secondary_dimensions.{idx}.control_requirement", completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
 
     def test_schema_violation_exits_two(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -285,6 +302,17 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
         for value in ("a\x00b", "a\tb", "a\nb", "a\rb", "a\x7fb", "a\ud800b"):
             with self.subTest(value=ascii(value)):
                 resolved, code = resolve(value, REPO_ROOT, must_exist=True)
+                self.assertIsNone(resolved)
+                self.assertEqual("ESCAPE", code)
+
+    def test_resolver_rejects_ordinary_whitespace(self) -> None:
+        module = runpy.run_path(
+            str(VALIDATOR_PATH), run_name="condition_contrast_validator_module"
+        )
+        resolve = module["resolve_repo_relative_path"]
+        for value in (" tests/example.yml", "tests/example.yml ", " tests/example.yml "):
+            with self.subTest(value=ascii(value)):
+                resolved, code = resolve(value, REPO_ROOT, must_exist=False)
                 self.assertIsNone(resolved)
                 self.assertEqual("ESCAPE", code)
 

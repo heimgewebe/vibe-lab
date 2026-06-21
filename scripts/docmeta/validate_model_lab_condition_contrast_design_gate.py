@@ -326,7 +326,9 @@ def resolve_repo_relative_path(
     # control character cannot be normalized away; the schema pattern also blocks these.
     if _has_forbidden_path_codepoint(raw_text):
         return None, "ESCAPE"
-    text = raw_text.strip()
+    if raw_text != raw_text.strip():
+        return None, "ESCAPE"
+    text = raw_text
     if not text:
         return None, "ESCAPE"
     # Lexical rejections (defense-in-depth; the schema pattern also blocks these).

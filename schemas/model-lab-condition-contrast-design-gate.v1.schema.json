@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-condition-contrast-design-gate.v1.schema.json",
   "title": "Model-Lab Condition-Contrast Design Gate v1",
-  "description": "Machine-readable criteria gate that defines what a future Model-Lab Run-004 condition-contrast design must satisfy. v1 describes exactly one honest state: a fully defined criteria gate (gate_status=criteria_defined) specifically for weak_condition_contrast. It is a design-criteria gate only: criteria_defined allows only the start of a separate Run-004 design task; no primary intervention axis and no concrete condition is selected, no run is executed, no result assessment is allowed, the series is not comparison-ready, and weak_condition_contrast is not resolved. The fixed v1 permissions (run_004_design_allowed=true; run_004_execution_allowed / result_assessment_allowed_after_gate / comparison_ready_after_gate=false; target_blocker=weak_condition_contrast; blocker_status_after_gate=open; decision.status=criteria_defined; decision.next_step=run_004_design_may_begin) and the fixed contrast policy (exactly one required primary intervention axis, selected only in run_004_design, with materiality evidence required) are pinned here as const so they cannot drift. Semantic validation (scripts/docmeta/validate_model_lab_condition_contrast_design_gate.py) additionally requires the foundational sources to be safe, regular, readable YAML mappings: exactly one next_blocker_triage (recommending this gate for the open target_blocker) and exactly one result_assessment_readiness gate that remains blocked, both for this series (and challenge_version for readiness); the target_blocker must stay open in both; the invariant / controlled-secondary / materiality id sets must be complete with unique ids; the confounder controls must be complete with their declared effects; and the static baseline non-claims (including weak_condition_contrast_resolved) must be present.",
+  "description": "Machine-readable criteria gate that defines what a future Model-Lab Run-004 condition-contrast design must satisfy. v1 describes exactly one honest state: a fully defined criteria gate (gate_status=criteria_defined) specifically for weak_condition_contrast. It is a design-criteria gate only: criteria_defined allows only the start of a separate Run-004 design task; no primary intervention axis and no concrete condition is selected, no run is executed, no result assessment is allowed, the series is not comparison-ready, and weak_condition_contrast is not resolved. The fixed v1 permissions (run_004_design_allowed=true; run_004_execution_allowed / result_assessment_allowed_after_gate / comparison_ready_after_gate=false; target_blocker=weak_condition_contrast; blocker_status_after_gate=open; decision.status=criteria_defined; decision.next_step=run_004_design_may_begin), the triggered_by provenance, the known controlled-secondary dimension control_requirements, and the fixed contrast policy (exactly one required primary intervention axis, selected only in run_004_design, with materiality evidence required) are pinned here as const so they cannot drift. Semantic validation (scripts/docmeta/validate_model_lab_condition_contrast_design_gate.py) additionally requires the foundational sources to be safe, regular, readable YAML mappings: exactly one next_blocker_triage (recommending this gate for the open target_blocker) and exactly one result_assessment_readiness gate that remains blocked, both for this series (and challenge_version for readiness); the target_blocker must stay open in both; the invariant / controlled-secondary / materiality id sets must be complete with unique ids; the confounder controls must be complete with their declared effects; and the static baseline non-claims (including weak_condition_contrast_resolved) must be present.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -39,7 +39,8 @@
     },
     "triggered_by": {
       "type": "string",
-      "minLength": 1
+      "const": "results/next-blocker-triage.yml#recommended_next_task",
+      "$comment": "v1 is triggered exclusively by the designated next_blocker_triage recommendation."
     },
     "series_id": {
       "type": "string",
@@ -116,7 +117,7 @@
       "items": {
         "$ref": "#/$defs/controlledDimension"
       },
-      "$comment": "The validator requires the mandatory ids (model_identity_and_version, tool_and_agent_mode, sampling_configuration, human_intervention, dependency_and_runtime_environment, test_harness) to all be present (CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA)."
+      "$comment": "The validator requires the mandatory ids (model_identity_and_version, tool_and_agent_mode, sampling_configuration, human_intervention, dependency_and_runtime_environment, test_harness) to all be present (CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA). The schema structurally enforces the normative control_requirement for these known ids."
     },
     "materiality_criteria": {
       "type": "array",
@@ -251,7 +252,33 @@
           "type": "string",
           "minLength": 1
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "id": { "const": "model_identity_and_version" } }, "required": [ "id" ] },
+          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+        },
+        {
+          "if": { "properties": { "id": { "const": "tool_and_agent_mode" } }, "required": [ "id" ] },
+          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+        },
+        {
+          "if": { "properties": { "id": { "const": "sampling_configuration" } }, "required": [ "id" ] },
+          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+        },
+        {
+          "if": { "properties": { "id": { "const": "human_intervention" } }, "required": [ "id" ] },
+          "then": { "properties": { "control_requirement": { "const": "equivalent_surface" } } }
+        },
+        {
+          "if": { "properties": { "id": { "const": "dependency_and_runtime_environment" } }, "required": [ "id" ] },
+          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+        },
+        {
+          "if": { "properties": { "id": { "const": "test_harness" } }, "required": [ "id" ] },
+          "then": { "properties": { "control_requirement": { "const": "equivalent_surface" } } }
+        }
+      ]
     },
     "materialityCriterion": {
       "type": "object",
