@@ -192,6 +192,69 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
             )
             self.assert_exit_code(self.run_validator(bad), 2)
 
+    def test_schema_non_blank_fields_reject_whitespace_only(self) -> None:
+        mutations = [
+            ("series_id", lambda d: d.update(series_id="   "), "series_id"),
+            ("challenge_version", lambda d: d.update(challenge_version="   "), "challenge_version"),
+            ("summary", lambda d: d.update(summary="   "), "summary"),
+            ("invariant_id", lambda d: d["invariant_dimensions"][0].update(id="   "), "invariant_dimensions.0.id"),
+            ("invariant_requirement", lambda d: d["invariant_dimensions"][0].update(requirement="   "), "invariant_dimensions.0.requirement"),
+            ("controlled_id", lambda d: d["controlled_secondary_dimensions"][0].update(id="   "), "controlled_secondary_dimensions.0.id"),
+            ("controlled_requirement_text", lambda d: d["controlled_secondary_dimensions"][0].update(requirement="   "), "controlled_secondary_dimensions.0.requirement"),
+            ("materiality_id", lambda d: d["materiality_criteria"][0].update(id="   "), "materiality_criteria.0.id"),
+            ("materiality_requirement", lambda d: d["materiality_criteria"][0].update(requirement="   "), "materiality_criteria.0.requirement"),
+            ("materiality_evidence", lambda d: d["materiality_criteria"][0]["evidence_required"].__setitem__(0, "   "), "materiality_criteria.0.evidence_required.0"),
+            ("confounder_id", lambda d: d["confounder_controls"][0].update(id="   "), "confounder_controls.0.id"),
+            ("confounder_trigger", lambda d: d["confounder_controls"][0].update(trigger="   "), "confounder_controls.0.trigger"),
+            ("confounder_required_control", lambda d: d["confounder_controls"][0].update(required_control="   "), "confounder_controls.0.required_control"),
+            ("decision_reason", lambda d: d["decision"].update(reason="   "), "decision.reason"),
+            ("does_not_establish_item", lambda d: d["does_not_establish"].__setitem__(0, "   "), "does_not_establish.0"),
+        ]
+        for label, mutate, instance_path in mutations:
+            with self.subTest(case=label):
+                data = self._basic_data()
+                mutate(data)
+                completed = self._run_on_data(data)
+                self.assert_exit_code(completed, 2)
+                self.assertIn(f"instance_path={instance_path}", completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_schema_non_blank_string_rejects_various_whitespace_classes(self) -> None:
+        for ws in ("", " ", "   ", "\t", "\n", " \t\r\n "):
+            with self.subTest(ws=ascii(ws)):
+                data = self._basic_data()
+                data["summary"] = ws
+                completed = self._run_on_data(data)
+                self.assert_exit_code(completed, 2)
+                self.assertIn("instance_path=summary", completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_schema_non_blank_token_rejects_internal_whitespace_and_padding(self) -> None:
+        for val in (" fixture-series", "fixture-series ", "fixture series", "\tfixture-series"):
+            with self.subTest(val=ascii(val)):
+                data = self._basic_data()
+                data["series_id"] = val
+                completed = self._run_on_data(data)
+                self.assert_exit_code(completed, 2)
+                self.assertIn("instance_path=series_id", completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_schema_non_blank_fields_accept_valid_text(self) -> None:
+        validator = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
+        # nonBlankString cases
+        for text in ("Valid text.", "Text with internal spaces.", "Mehrzeiliger\nText mit Inhalt.", "日本語の説明"):
+            with self.subTest(text=text):
+                data = self._basic_data()
+                data["summary"] = text
+                self.assertEqual([], list(validator.iter_errors(data)))
+
+        # nonBlankToken cases
+        for token in ("fixture-series", "rest-api-v1", "überprüfung_v1"):
+            with self.subTest(token=token):
+                data = self._basic_data()
+                data["series_id"] = token
+                self.assertEqual([], list(validator.iter_errors(data)))
+
     def test_wrong_schema_version_exits_two(self) -> None:
         data = self._basic_data()
         data["schema_version"] = "1.0.0"
