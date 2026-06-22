@@ -240,10 +240,39 @@ def display_path(path: Path) -> str:
         return str(path)
 
 
+def _escape_source_path_char(char: str) -> str:
+    codepoint = ord(char)
+    if codepoint <= 0x1F or codepoint == 0x7F:
+        if char == '\t': return r'\t'
+        if char == '\n': return r'\n'
+        if char == '\r': return r'\r'
+        if char == '\f': return r'\f'
+        if char == '\v': return r'\v'
+        return f"\\x{codepoint:02x}"
+    if 0xD800 <= codepoint <= 0xDFFF:
+        return f"\\u{codepoint:04x}"
+    if char.isspace() and char != ' ':
+        if codepoint <= 0xFFFF:
+            return f"\\u{codepoint:04x}"
+        return f"\\U{codepoint:08x}"
+    return char
+
+
 def display_source_path(raw: str) -> str:
-    if not raw or raw != raw.strip() or _has_forbidden_path_codepoint(raw):
-        return ascii(raw)
-    return raw
+    if not isinstance(raw, str):
+        return str(raw)
+
+    leading_count = len(raw) - len(raw.lstrip())
+    trailing_start = len(raw.rstrip())
+
+    res = []
+    for i, char in enumerate(raw):
+        if char == ' ' and (i < leading_count or i >= trailing_start):
+            res.append(r'\x20')
+        else:
+            res.append(_escape_source_path_char(char))
+
+    return "".join(res)
 
 
 def load_schema_validator() -> Draft202012Validator:

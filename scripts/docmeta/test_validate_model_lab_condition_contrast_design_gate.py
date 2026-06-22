@@ -609,19 +609,34 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
                 self.assertEqual(test_path, res)
 
     def test_source_path_escape_displays_raw_diagnostics(self) -> None:
+        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_contrast_validator_module")
+        display_func = module["display_source_path"]
+
+        cases = (
+            ("normal_ascii", "tests/example.yml", "tests/example.yml"),
+            ("unicode", "日本語/file.yml", "日本語/file.yml"),
+            ("internal_space", "dir/file name.yml", "dir/file name.yml"),
+            ("leading_tab_unicode", "\t日本語/file.yml", r"\t日本語/file.yml"),
+            ("trailing_space_unicode", "日本語/file.yml ", r"日本語/file.yml\x20"),
+            ("delete", "a\x7fb", r"a\x7fb"),
+            ("surrogate", "a\ud800b", r"a\ud800b"),
+        )
+
+        for label, raw_input, expected in cases:
+            with self.subTest(case=label):
+                self.assertEqual(expected, display_func(raw_input))
+
+        # Semantic integration test
         raw_path = "\ttests/example.yml"
         data = self._basic_data()
         data["source_evidence"][2]["path"] = raw_path
 
-        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_contrast_validator_module")
         semantic_errors_func = module["semantic_errors"]
-
         errors = semantic_errors_func(data, FIXTURE_ROOT / "valid/basic.yml", REPO_ROOT)
 
         safe_path_err = [e for e in errors if "CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS" in e]
         self.assertTrue(safe_path_err, "Expected SAFE_EXISTING_SOURCE_PATHS error")
-        self.assertIn(ascii(raw_path), safe_path_err[0])
-
+        self.assertIn(r"\ttests/example.yml", safe_path_err[0])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
