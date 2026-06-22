@@ -4,11 +4,12 @@ triggered_by: "results/next-blocker-triage.yml#recommended_next_task"
 series_id: "2026-05-31_model-lab-replication-series"
 challenge_version: "rest-api-v1"
 
-# Criteria gate only. The minimum criteria for designing a materially stronger
-# future condition contrast are defined here. A separate Run-004 design task may
-# begin, but no primary intervention axis and no concrete condition is selected,
-# no run is executed, no result assessment is allowed, and weak_condition_contrast
-# stays open.
+# Criteria gate only. It defines the minimum criteria for designing a materially
+# stronger future condition contrast and the control treatment of dimensions that
+# are not selected as the single primary intervention axis by a later design. It
+# does not decide eligibility, select a primary axis, select a concrete condition,
+# execute a run, or allow result assessment. A separate Run-004 design task may
+# begin, but no axis/condition is selected and weak_condition_contrast stays open.
 gate_status: "criteria_defined"
 target_blocker: "weak_condition_contrast"
 blocker_status_after_gate: "open"
@@ -50,24 +51,24 @@ invariant_dimensions:
   - id: "evidence_capture"
     requirement: "Use equivalent provenance and evidence-capture requirements."
 
-controlled_secondary_dimensions:
+dimensions_to_control_when_not_primary:
   - id: "model_identity_and_version"
-    control_requirement: "hold_constant_or_record_and_justify"
+    control_requirement_when_not_primary: "hold_constant_or_record_and_justify"
     requirement: "Do not allow unrecorded model drift."
   - id: "tool_and_agent_mode"
-    control_requirement: "hold_constant_or_record_and_justify"
+    control_requirement_when_not_primary: "hold_constant_or_record_and_justify"
     requirement: "Record tool, agent mode and relevant permissions."
   - id: "sampling_configuration"
-    control_requirement: "hold_constant_or_record_and_justify"
+    control_requirement_when_not_primary: "hold_constant_or_record_and_justify"
     requirement: "Record relevant generation settings."
   - id: "human_intervention"
-    control_requirement: "equivalent_surface"
+    control_requirement_when_not_primary: "equivalent_surface"
     requirement: "Apply equivalent intervention and rework rules."
   - id: "dependency_and_runtime_environment"
-    control_requirement: "hold_constant_or_record_and_justify"
+    control_requirement_when_not_primary: "hold_constant_or_record_and_justify"
     requirement: "Pin or explicitly document relevant environment differences."
   - id: "test_harness"
-    control_requirement: "equivalent_surface"
+    control_requirement_when_not_primary: "equivalent_surface"
     requirement: "Do not manufacture contrast through different tests."
 
 materiality_criteria:
@@ -127,6 +128,8 @@ decision:
 
 does_not_establish:
   - "weak_condition_contrast_resolved"
+  - "primary_intervention_axis_selected"
+  - "concrete_condition_selected"
   - "run_004_execution_allowed"
   - "run_004_executed"
   - "result_assessment_allowed"

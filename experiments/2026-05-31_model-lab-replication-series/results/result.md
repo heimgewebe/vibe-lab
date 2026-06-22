@@ -91,3 +91,5 @@ Run-004 condition-contrast design must satisfy.
 - `weak_condition_contrast` remains open
 - result assessment remains blocked
 - `comparison_ready` remains false
+- no primary intervention axis or concrete condition has been selected
+- the gate defines only criteria and the control treatment of non-primary dimensions

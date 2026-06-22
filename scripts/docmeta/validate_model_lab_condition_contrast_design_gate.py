@@ -56,11 +56,11 @@ Enforced semantic rules (exit 1):
                                    in the referenced triage's remaining_blockers
                                    and/or the referenced readiness gate's blockers.
   CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA
-                                   invariant_dimensions, controlled_secondary_dimensions,
+                                   invariant_dimensions, dimensions_to_control_when_not_primary,
                                    or materiality_criteria omit a mandatory id.
   CONTRAST_GATE_REQUIRES_UNIQUE_SEMANTIC_IDS
                                    two entries within invariant_dimensions,
-                                   controlled_secondary_dimensions,
+                                   dimensions_to_control_when_not_primary,
                                    materiality_criteria, or confounder_controls
                                    share an id (uniqueItems only blocks identical
                                    objects).
@@ -153,8 +153,10 @@ MANDATORY_INVARIANT_DIMENSIONS = (
     "evidence_capture",
 )
 
-# Secondary dimensions a future design must control or record.
-MANDATORY_CONTROLLED_SECONDARY_DIMENSIONS = (
+# Dimensions a future design must control or document whenever they are not the
+# single primary intervention axis. This gate does not select the axis or decide
+# eligibility; it only fixes the control treatment for the non-primary case.
+MANDATORY_DIMENSIONS_TO_CONTROL_WHEN_NOT_PRIMARY = (
     "model_identity_and_version",
     "tool_and_agent_mode",
     "sampling_configuration",
@@ -185,8 +187,12 @@ EXPECTED_CONFOUNDER_EFFECTS = {
 }
 
 # Static baseline anti-overclaim non-claims every condition-contrast gate must carry.
+# The gate defines criteria only: it never selects a primary axis or a concrete
+# condition, so those are mandatory non-claims too.
 MANDATORY_DOES_NOT_ESTABLISH = (
     "weak_condition_contrast_resolved",
+    "primary_intervention_axis_selected",
+    "concrete_condition_selected",
     "run_004_execution_allowed",
     "run_004_executed",
     "result_assessment_allowed",
@@ -529,7 +535,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     gate_challenge = str(data.get("challenge_version", "")).strip()
     target_blocker = str(data.get("target_blocker", "")).strip()
     invariant_dimensions = data.get("invariant_dimensions", []) or []
-    controlled_dimensions = data.get("controlled_secondary_dimensions", []) or []
+    dimensions_to_control = data.get("dimensions_to_control_when_not_primary", []) or []
     materiality_criteria = data.get("materiality_criteria", []) or []
     confounder_controls = data.get("confounder_controls", []) or []
     does_not_establish = data.get("does_not_establish", []) or []
@@ -665,7 +671,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     criteria_problems: list[str] = []
     for label, mandatory, items in (
         ("invariant_dimensions", MANDATORY_INVARIANT_DIMENSIONS, invariant_dimensions),
-        ("controlled_secondary_dimensions", MANDATORY_CONTROLLED_SECONDARY_DIMENSIONS, controlled_dimensions),
+        ("dimensions_to_control_when_not_primary", MANDATORY_DIMENSIONS_TO_CONTROL_WHEN_NOT_PRIMARY, dimensions_to_control),
         ("materiality_criteria", MANDATORY_MATERIALITY_CRITERIA, materiality_criteria),
     ):
         present = set(_ids(items))
@@ -677,7 +683,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             format_error(
                 "CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA",
                 path,
-                "invariant_dimensions, controlled_secondary_dimensions and "
+                "invariant_dimensions, dimensions_to_control_when_not_primary and "
                 "materiality_criteria must each cover their mandatory id set; missing — "
                 + "; ".join(criteria_problems),
             )
@@ -687,7 +693,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     duplicate_id_problems: list[str] = []
     for label, items in (
         ("invariant_dimensions", invariant_dimensions),
-        ("controlled_secondary_dimensions", controlled_dimensions),
+        ("dimensions_to_control_when_not_primary", dimensions_to_control),
         ("materiality_criteria", materiality_criteria),
         ("confounder_controls", confounder_controls),
     ):

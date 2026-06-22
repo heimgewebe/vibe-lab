@@ -83,6 +83,7 @@ Methodological strength: weak structural control. The condition `code_first_cont
 - Condition-contrast design criteria now exist (`results/condition-contrast-design-gate.yml`, contract `model-lab-condition-contrast-design-gate.v1`).
 - Run-004 design may begin as a separate task.
 - No primary axis or concrete condition has been selected.
+- The gate fixes how secondary dimensions must be controlled or documented when they are not the single later primary axis; it does not decide which dimensions are eligible to be the primary axis.
 - No Run-004 execution is allowed.
 - Methodological strength remains weak until a compliant contrast is designed, executed and assessed.
 

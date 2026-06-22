@@ -40,24 +40,24 @@ invariant_dimensions:
   requirement: Use functionally equivalent tests and runtime checks.
 - id: evidence_capture
   requirement: Use equivalent provenance and evidence-capture requirements.
-controlled_secondary_dimensions:
+dimensions_to_control_when_not_primary:
 - id: model_identity_and_version
-  control_requirement: hold_constant_or_record_and_justify
+  control_requirement_when_not_primary: hold_constant_or_record_and_justify
   requirement: Do not allow unrecorded model drift.
 - id: tool_and_agent_mode
-  control_requirement: hold_constant_or_record_and_justify
+  control_requirement_when_not_primary: hold_constant_or_record_and_justify
   requirement: Record tool, agent mode and relevant permissions.
 - id: sampling_configuration
-  control_requirement: hold_constant_or_record_and_justify
+  control_requirement_when_not_primary: hold_constant_or_record_and_justify
   requirement: Record relevant generation settings.
 - id: human_intervention
-  control_requirement: equivalent_surface
+  control_requirement_when_not_primary: equivalent_surface
   requirement: Apply equivalent intervention and rework rules.
 - id: dependency_and_runtime_environment
-  control_requirement: hold_constant_or_record_and_justify
+  control_requirement_when_not_primary: hold_constant_or_record_and_justify
   requirement: Pin or explicitly document relevant environment differences.
 - id: test_harness
-  control_requirement: equivalent_surface
+  control_requirement_when_not_primary: equivalent_surface
   requirement: Do not manufacture contrast through different tests.
 materiality_criteria:
 - id: single_primary_intervention_axis
@@ -112,6 +112,8 @@ decision:
     condition and do not authorize result assessment.
 does_not_establish:
 - weak_condition_contrast_resolved
+- primary_intervention_axis_selected
+- concrete_condition_selected
 - run_004_execution_allowed
 - run_004_executed
 - result_assessment_allowed

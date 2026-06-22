@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-condition-contrast-design-gate.v1.schema.json",
   "title": "Model-Lab Condition-Contrast Design Gate v1",
-  "description": "Machine-readable criteria gate that defines what a future Model-Lab Run-004 condition-contrast design must satisfy. v1 describes exactly one honest state: a fully defined criteria gate (gate_status=criteria_defined) specifically for weak_condition_contrast. It is a design-criteria gate only: criteria_defined allows only the start of a separate Run-004 design task; no primary intervention axis and no concrete condition is selected, no run is executed, no result assessment is allowed, the series is not comparison-ready, and weak_condition_contrast is not resolved. The fixed v1 permissions (run_004_design_allowed=true; run_004_execution_allowed / result_assessment_allowed_after_gate / comparison_ready_after_gate=false; target_blocker=weak_condition_contrast; blocker_status_after_gate=open; decision.status=criteria_defined; decision.next_step=run_004_design_may_begin), the triggered_by provenance, the known controlled-secondary dimension control_requirements, and the fixed contrast policy (exactly one required primary intervention axis, selected only in run_004_design, with materiality evidence required) are pinned here as const so they cannot drift. Semantic validation (scripts/docmeta/validate_model_lab_condition_contrast_design_gate.py) additionally requires the foundational sources to be safe, regular, readable YAML mappings: exactly one next_blocker_triage (recommending this gate for the open target_blocker) and exactly one result_assessment_readiness gate that remains blocked, both for this series (and challenge_version for readiness); the target_blocker must stay open in both; the invariant / controlled-secondary / materiality id sets must be complete with unique ids; the confounder controls must be complete with their declared effects; and the static baseline non-claims (including weak_condition_contrast_resolved) must be present.",
+  "description": "Machine-readable criteria gate that defines what a future Model-Lab Run-004 condition-contrast design must satisfy. v1 describes exactly one honest state: a fully defined criteria gate (gate_status=criteria_defined) specifically for weak_condition_contrast. It is a design-criteria gate only: criteria_defined allows only the start of a separate Run-004 design task; no primary intervention axis and no concrete condition is selected, no run is executed, no result assessment is allowed, the series is not comparison-ready, and weak_condition_contrast is not resolved. The fixed v1 permissions (run_004_design_allowed=true; run_004_execution_allowed / result_assessment_allowed_after_gate / comparison_ready_after_gate=false; target_blocker=weak_condition_contrast; blocker_status_after_gate=open; decision.status=criteria_defined; decision.next_step=run_004_design_may_begin), the known non-primary dimension control_requirement_when_not_primary values, and the fixed contrast policy (exactly one required primary intervention axis, selected only in run_004_design, with materiality evidence required) are pinned here as const so they cannot drift; triggered_by is a non-blank task/instruction reference (not const). Semantic validation (scripts/docmeta/validate_model_lab_condition_contrast_design_gate.py) additionally requires the foundational sources to be safe, regular, readable YAML mappings: exactly one next_blocker_triage (recommending this gate for the open target_blocker) and exactly one result_assessment_readiness gate that remains blocked, both for this series (and challenge_version for readiness); the target_blocker must stay open in both; the invariant / dimensions-to-control-when-not-primary / materiality id sets must be complete with unique ids; the confounder controls must be complete with their declared effects; and the static baseline non-claims (including weak_condition_contrast_resolved, primary_intervention_axis_selected, and concrete_condition_selected) must be present. The gate defines criteria and the control treatment of non-primary dimensions; it does not decide dimension eligibility, select a primary axis, select a concrete condition, execute a run, or allow result assessment.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -22,7 +22,7 @@
     "source_evidence",
     "contrast_policy",
     "invariant_dimensions",
-    "controlled_secondary_dimensions",
+    "dimensions_to_control_when_not_primary",
     "materiality_criteria",
     "confounder_controls",
     "decision",
@@ -38,9 +38,8 @@
       "const": "model_lab_condition_contrast_design_gate"
     },
     "triggered_by": {
-      "type": "string",
-      "const": "results/next-blocker-triage.yml#recommended_next_task",
-      "$comment": "v1 is triggered exclusively by the designated next_blocker_triage recommendation."
+      "$ref": "#/$defs/nonBlankString",
+      "$comment": "Task or instruction reference that caused this gate artifact to be created. Source provenance and the concrete next-blocker-triage artifact are represented separately through source_evidence and semantic cross-artifact validation, so this is a non-blank reference, not a fixed const."
     },
     "series_id": {
       "$ref": "#/$defs/nonBlankToken"
@@ -107,14 +106,14 @@
       },
       "$comment": "Outcome surfaces a future design must keep fixed. The validator requires the mandatory ids (challenge_contract, acceptance_surface, evaluation_criteria, verification_surface, evidence_capture) to all be present (CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA)."
     },
-    "controlled_secondary_dimensions": {
+    "dimensions_to_control_when_not_primary": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
       "items": {
-        "$ref": "#/$defs/controlledDimension"
+        "$ref": "#/$defs/dimensionControlWhenNotPrimary"
       },
-      "$comment": "The validator requires the mandatory ids (model_identity_and_version, tool_and_agent_mode, sampling_configuration, human_intervention, dependency_and_runtime_environment, test_harness) to all be present (CONTRAST_GATE_REQUIRES_COMPLETE_CRITERIA). The schema structurally enforces the normative control_requirement for these known ids."
+      "$comment": "These dimensions must be controlled or explicitly documented whenever they are not the single primary intervention axis selected by a later Run-004 design. This criteria gate does not decide which dimensions are eligible and does not select a primary axis. The validator requires the mandatory ids (model_identity_and_version, tool_and_agent_mode, sampling_configuration, human_intervention, dependency_and_runtime_environment, test_harness); the schema structurally enforces the normative control_requirement_when_not_primary for these known ids."
     },
     "materiality_criteria": {
       "type": "array",
@@ -144,7 +143,7 @@
       "items": {
         "$ref": "#/$defs/nonBlankToken"
       },
-      "$comment": "Mandatory anti-overclaim list. The validator requires the static baseline non-claims (weak_condition_contrast_resolved, run_004_execution_allowed, run_004_executed, result_assessment_allowed, comparison_ready, model_quality, comparative_superiority, condition_effect, external_model_independence, external_auditor_comparison_completed, security_readiness, production_readiness, dependency_risk_remediated)."
+      "$comment": "Mandatory anti-overclaim list. The validator requires the static baseline non-claims (weak_condition_contrast_resolved, primary_intervention_axis_selected, concrete_condition_selected, run_004_execution_allowed, run_004_executed, result_assessment_allowed, comparison_ready, model_quality, comparative_superiority, condition_effect, external_model_independence, external_auditor_comparison_completed, security_readiness, production_readiness, dependency_risk_remediated)."
     }
   },
   "$defs": {
@@ -157,8 +156,8 @@
     "nonBlankToken": {
       "type": "string",
       "minLength": 1,
-      "pattern": "^\\S+$",
-      "$comment": "Token must be non-empty and contain no whitespace."
+      "pattern": "^(?!.*\\s).+$",
+      "$comment": "Token must be non-empty and contain no whitespace at all, including no leading, internal, or trailing whitespace (e.g. a trailing newline). '^\\S+$' is intentionally avoided because Python regex '$' also matches just before a trailing newline, so it would accept a trailing LF."
     },
     "repoRelativePath": {
       "type": "string",
@@ -234,19 +233,19 @@
         }
       }
     },
-    "controlledDimension": {
+    "dimensionControlWhenNotPrimary": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "id",
-        "control_requirement",
+        "control_requirement_when_not_primary",
         "requirement"
       ],
       "properties": {
         "id": {
           "$ref": "#/$defs/nonBlankToken"
         },
-        "control_requirement": {
+        "control_requirement_when_not_primary": {
           "type": "string",
           "enum": [
             "hold_constant_or_record_and_justify",
@@ -260,27 +259,27 @@
       "allOf": [
         {
           "if": { "properties": { "id": { "const": "model_identity_and_version" } }, "required": [ "id" ] },
-          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+          "then": { "properties": { "control_requirement_when_not_primary": { "const": "hold_constant_or_record_and_justify" } } }
         },
         {
           "if": { "properties": { "id": { "const": "tool_and_agent_mode" } }, "required": [ "id" ] },
-          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+          "then": { "properties": { "control_requirement_when_not_primary": { "const": "hold_constant_or_record_and_justify" } } }
         },
         {
           "if": { "properties": { "id": { "const": "sampling_configuration" } }, "required": [ "id" ] },
-          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+          "then": { "properties": { "control_requirement_when_not_primary": { "const": "hold_constant_or_record_and_justify" } } }
         },
         {
           "if": { "properties": { "id": { "const": "human_intervention" } }, "required": [ "id" ] },
-          "then": { "properties": { "control_requirement": { "const": "equivalent_surface" } } }
+          "then": { "properties": { "control_requirement_when_not_primary": { "const": "equivalent_surface" } } }
         },
         {
           "if": { "properties": { "id": { "const": "dependency_and_runtime_environment" } }, "required": [ "id" ] },
-          "then": { "properties": { "control_requirement": { "const": "hold_constant_or_record_and_justify" } } }
+          "then": { "properties": { "control_requirement_when_not_primary": { "const": "hold_constant_or_record_and_justify" } } }
         },
         {
           "if": { "properties": { "id": { "const": "test_harness" } }, "required": [ "id" ] },
-          "then": { "properties": { "control_requirement": { "const": "equivalent_surface" } } }
+          "then": { "properties": { "control_requirement_when_not_primary": { "const": "equivalent_surface" } } }
         }
       ]
     },

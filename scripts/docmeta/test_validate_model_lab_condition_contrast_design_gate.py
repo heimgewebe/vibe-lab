@@ -72,7 +72,6 @@ SCHEMA_CONST_MUTATIONS = [
         "target_blocker",
     ),
     ("gate_status", lambda d: d.update(gate_status="blocked"), "gate_status"),
-    ("triggered_by_provenance", lambda d: d.update(triggered_by="spontaneous_manual_decision"), "triggered_by"),
     ("run_004_design_allowed", lambda d: d.update(run_004_design_allowed=False), "run_004_design_allowed"),
     ("run_004_execution_allowed", lambda d: d.update(run_004_execution_allowed=True), "run_004_execution_allowed"),
     ("result_assessment_allowed_after_gate", lambda d: d.update(result_assessment_allowed_after_gate=True), "result_assessment_allowed_after_gate"),
@@ -85,7 +84,7 @@ SCHEMA_CONST_MUTATIONS = [
     ("materiality_evidence_required", lambda d: d["contrast_policy"].update(materiality_evidence_required=False), "contrast_policy.materiality_evidence_required"),
     ("evidence_required_missing", lambda d: d["materiality_criteria"][0].pop("evidence_required"), "materiality_criteria.0"),
     ("unknown_source_kind", lambda d: d["source_evidence"][0].update(kind="bogus_kind"), "source_evidence.0.kind"),
-    ("unknown_control_requirement", lambda d: d["controlled_secondary_dimensions"][0].update(control_requirement="bogus"), "controlled_secondary_dimensions.0.control_requirement"),
+    ("unknown_control_requirement_when_not_primary", lambda d: d["dimensions_to_control_when_not_primary"][0].update(control_requirement_when_not_primary="bogus"), "dimensions_to_control_when_not_primary.0.control_requirement_when_not_primary"),
 ]
 
 # (label, foundational kind, replacement path, expected diagnostic) — each points a
@@ -167,18 +166,21 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
 
     def test_schema_controlled_dimension_mappings_are_schema_errors(self) -> None:
         cases = [
-            ("human_intervention", "hold_constant_or_record_and_justify"),
-            ("test_harness", "hold_constant_or_record_and_justify"),
             ("model_identity_and_version", "equivalent_surface"),
+            ("tool_and_agent_mode", "equivalent_surface"),
+            ("sampling_configuration", "equivalent_surface"),
+            ("human_intervention", "hold_constant_or_record_and_justify"),
+            ("dependency_and_runtime_environment", "equivalent_surface"),
+            ("test_harness", "hold_constant_or_record_and_justify"),
         ]
         for target_id, wrong_req in cases:
             with self.subTest(case=target_id):
                 data = self._basic_data()
-                idx = next(i for i, dim in enumerate(data["controlled_secondary_dimensions"]) if dim.get("id") == target_id)
-                data["controlled_secondary_dimensions"][idx]["control_requirement"] = wrong_req
+                idx = next(i for i, dim in enumerate(data["dimensions_to_control_when_not_primary"]) if dim.get("id") == target_id)
+                data["dimensions_to_control_when_not_primary"][idx]["control_requirement_when_not_primary"] = wrong_req
                 completed = self._run_on_data(data)
                 self.assert_exit_code(completed, 2)
-                self.assertIn(f"instance_path=controlled_secondary_dimensions.{idx}.control_requirement", completed.stdout)
+                self.assertIn(f"instance_path=dimensions_to_control_when_not_primary.{idx}.control_requirement_when_not_primary", completed.stdout)
                 self.assertNotIn("Traceback", completed.stdout + completed.stderr)
 
     def test_schema_violation_exits_two(self) -> None:
@@ -199,8 +201,8 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
             ("summary", lambda d: d.update(summary="   "), "summary"),
             ("invariant_id", lambda d: d["invariant_dimensions"][0].update(id="   "), "invariant_dimensions.0.id"),
             ("invariant_requirement", lambda d: d["invariant_dimensions"][0].update(requirement="   "), "invariant_dimensions.0.requirement"),
-            ("controlled_id", lambda d: d["controlled_secondary_dimensions"][0].update(id="   "), "controlled_secondary_dimensions.0.id"),
-            ("controlled_requirement_text", lambda d: d["controlled_secondary_dimensions"][0].update(requirement="   "), "controlled_secondary_dimensions.0.requirement"),
+            ("controlled_id", lambda d: d["dimensions_to_control_when_not_primary"][0].update(id="   "), "dimensions_to_control_when_not_primary.0.id"),
+            ("controlled_requirement_text", lambda d: d["dimensions_to_control_when_not_primary"][0].update(requirement="   "), "dimensions_to_control_when_not_primary.0.requirement"),
             ("materiality_id", lambda d: d["materiality_criteria"][0].update(id="   "), "materiality_criteria.0.id"),
             ("materiality_requirement", lambda d: d["materiality_criteria"][0].update(requirement="   "), "materiality_criteria.0.requirement"),
             ("materiality_evidence", lambda d: d["materiality_criteria"][0]["evidence_required"].__setitem__(0, "   "), "materiality_criteria.0.evidence_required.0"),
@@ -417,8 +419,8 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
 
     def test_missing_controlled_secondary_dimension_is_incomplete(self) -> None:
         data = self._basic_data()
-        data["controlled_secondary_dimensions"] = [
-            x for x in data["controlled_secondary_dimensions"] if x.get("id") != "test_harness"
+        data["dimensions_to_control_when_not_primary"] = [
+            x for x in data["dimensions_to_control_when_not_primary"] if x.get("id") != "test_harness"
         ]
         completed = self._run_on_data(data)
         self.assert_exit_code(completed, 1)
@@ -432,6 +434,76 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
         completed = self._run_on_data(data)
         self.assert_exit_code(completed, 1)
         self.assertIn("CONTRAST_GATE_REQUIRES_COMPLETE_CONFOUNDER_CONTROLS", completed.stdout)
+
+    # --- token / non-claim / identity coherence ------------------------------
+
+    def test_non_blank_token_rejects_trailing_line_breaks(self) -> None:
+        # The concrete nonBlankToken bug: '^\\S+$' accepts a trailing newline because
+        # Python '$' matches just before a trailing LF. Cover several token locations.
+        for loc in ("series_id", "challenge_version"):
+            for label, val in (
+                ("lf", "fixture-series\n"),
+                ("cr", "fixture-series\r"),
+                ("crlf", "fixture-series\r\n"),
+                ("tab", "fixture\tseries"),
+            ):
+                with self.subTest(loc=loc, case=label):
+                    data = self._basic_data()
+                    data[loc] = val
+                    completed = self._run_on_data(data)
+                    self.assert_exit_code(completed, 2)
+                    self.assertIn(f"instance_path={loc}", completed.stdout)
+                    self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+        # A token list item and a dimension id must reject a trailing newline too.
+        data = self._basic_data()
+        data["does_not_establish"][0] = data["does_not_establish"][0] + "\n"
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 2)
+        self.assertIn("instance_path=does_not_establish.0", completed.stdout)
+        data = self._basic_data()
+        data["dimensions_to_control_when_not_primary"][0]["id"] = "model_identity_and_version\n"
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 2)
+        self.assertIn(
+            "instance_path=dimensions_to_control_when_not_primary.0.id", completed.stdout
+        )
+
+    def test_new_mandatory_non_claims_required(self) -> None:
+        for claim in ("primary_intervention_axis_selected", "concrete_condition_selected"):
+            with self.subTest(claim=claim):
+                data = self._basic_data()
+                data["does_not_establish"].remove(claim)
+                completed = self._run_on_data(data)
+                self.assert_exit_code(completed, 1)
+                self.assertIn("CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS", completed.stdout)
+                self.assertIn(claim, completed.stdout)
+
+    def test_non_claim_normalization_is_case_insensitive(self) -> None:
+        # Repo convention: does_not_establish is normalized with strip().lower(),
+        # so an upper-cased mandatory non-claim still counts as present.
+        data = self._basic_data()
+        data["does_not_establish"] = [
+            "MODEL_QUALITY" if item == "model_quality" else item
+            for item in data["does_not_establish"]
+        ]
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 0)
+        self.assertNotIn("CONTRAST_GATE_REQUIRES_MANDATORY_NON_CLAIMS", completed.stdout)
+
+    def test_triggered_by_accepts_non_blank_reference(self) -> None:
+        # triggered_by is a non-blank task/instruction reference, not a fixed const.
+        data = self._basic_data()
+        data["triggered_by"] = "results/next-blocker-triage.yml#some_other_anchor"
+        self.assert_exit_code(self._run_on_data(data), 0)
+
+    def test_unknown_top_level_property_is_schema_error(self) -> None:
+        # The gate defines criteria only: a selection/eligibility field is rejected
+        # by additionalProperties:false, proving no axis/condition selection leaks in.
+        data = self._basic_data()
+        data["selected_primary_axis"] = "tool_and_agent_mode"
+        completed = self._run_on_data(data)
+        self.assert_exit_code(completed, 2)
+        self.assertNotIn("Traceback", completed.stdout + completed.stderr)
 
     # --- diagnostics ---------------------------------------------------------
 
