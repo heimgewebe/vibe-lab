@@ -236,8 +236,14 @@ def _has_forbidden_path_codepoint(text: str) -> bool:
 def display_path(path: Path) -> str:
     try:
         return str(path.resolve().relative_to(REPO_ROOT))
-    except ValueError:
+    except (OSError, RuntimeError, ValueError, UnicodeError):
         return str(path)
+
+
+def display_source_path(raw: str) -> str:
+    if not raw or raw != raw.strip() or _has_forbidden_path_codepoint(raw):
+        return ascii(raw)
+    return raw
 
 
 def load_schema_validator() -> Draft202012Validator:
@@ -380,6 +386,7 @@ class SourceEvidenceResolution:
     are recorded explicitly, never swallowed into loaded_yaml=None.
     """
 
+    raw_rel_path: str
     rel_path: str
     kind: str
     resolved: Path | None
@@ -429,6 +436,7 @@ def resolve_source_evidence_entries(
                                 loaded = doc
         resolutions.append(
             SourceEvidenceResolution(
+                raw_rel_path=raw_rel,
                 rel_path=rel,
                 kind=kind,
                 resolved=resolved,
@@ -489,7 +497,7 @@ def _source_identity_mismatches(
 ) -> list[str]:
     """Describe each loaded source whose artifact_type/series_id/challenge differs."""
     problems: list[str] = []
-    for rel_path, doc in docs_with_paths:
+    for raw_rel_path, doc in docs_with_paths:
         actual_type = str(doc.get(ARTIFACT_TYPE_KEY, "")).strip()
         actual_series = str(doc.get(SERIES_ID_KEY, "")).strip()
         issues: list[str] = []
@@ -504,7 +512,7 @@ def _source_identity_mismatches(
                     f"challenge_version={actual_challenge!r} (expected {expected_challenge_version!r})"
                 )
         if issues:
-            problems.append(f"{rel_path}: " + ", ".join(issues))
+            problems.append(f"{display_source_path(raw_rel_path)}: " + ", ".join(issues))
     return problems
 
 
@@ -544,12 +552,12 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     # the triage, readiness, identity, and path checks all reuse this list.
     resolutions = resolve_source_evidence_entries(data, repo_root)
     triage_paths = [
-        (r.rel_path, r.loaded_yaml)
+        (r.raw_rel_path, r.loaded_yaml)
         for r in resolutions
         if r.kind == TRIAGE_KIND and r.loaded_yaml is not None
     ]
     readiness_paths = [
-        (r.rel_path, r.loaded_yaml)
+        (r.raw_rel_path, r.loaded_yaml)
         for r in resolutions
         if r.kind == READINESS_KIND and r.loaded_yaml is not None
     ]
@@ -584,7 +592,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     # rule; one that exists but is not a readable YAML mapping is reported here, so
     # the gate can never pass while its foundational evidence could not be read.
     readable_problems = [
-        f"{r.rel_path} ({r.kind}) {READABILITY_MESSAGES.get(r.readability_error, r.readability_error)}"
+        f"{display_source_path(r.raw_rel_path)} ({r.kind}) {READABILITY_MESSAGES.get(r.readability_error, r.readability_error)}"
         for r in resolutions
         if r.kind in FOUNDATIONAL_KINDS and r.code is None and r.readability_error is not None
     ]
@@ -650,12 +658,12 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
 
     # --- target blocker must stay open in both foundational sources ----------
     open_problems: list[str] = []
-    for rel_path, doc in triage_paths:
+    for raw_rel_path, doc in triage_paths:
         if target_blocker and not _blocker_open_in(doc, "remaining_blockers", target_blocker):
-            open_problems.append(f"{rel_path}: not open in triage remaining_blockers")
-    for rel_path, doc in readiness_paths:
+            open_problems.append(f"{display_source_path(raw_rel_path)}: not open in triage remaining_blockers")
+    for raw_rel_path, doc in readiness_paths:
         if target_blocker and not _blocker_open_in(doc, "blockers", target_blocker):
-            open_problems.append(f"{rel_path}: not open in readiness blockers")
+            open_problems.append(f"{display_source_path(raw_rel_path)}: not open in readiness blockers")
     if open_problems:
         errors.append(
             format_error(
@@ -667,7 +675,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             )
         )
 
-    # --- invariant + controlled-secondary + materiality criteria complete ----
+    # --- invariant + non-primary-control + materiality criteria complete ----
     criteria_problems: list[str] = []
     for label, mandatory, items in (
         ("invariant_dimensions", MANDATORY_INVARIANT_DIMENSIONS, invariant_dimensions),
@@ -757,11 +765,11 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     safe_problems: list[str] = []
     for res in resolutions:
         if res.code == "ESCAPE":
-            safe_problems.append(f"{res.rel_path}: resolves outside the repo root")
+            safe_problems.append(f"{display_source_path(res.raw_rel_path)}: resolves outside the repo root")
         elif res.code == "NOT_FOUND":
-            safe_problems.append(f"{res.rel_path}: does not exist")
+            safe_problems.append(f"{display_source_path(res.raw_rel_path)}: does not exist")
         elif res.readability_error == "NOT_FILE" and res.kind not in FOUNDATIONAL_KINDS:
-            safe_problems.append(f"{res.rel_path}: exists but is not a regular file")
+            safe_problems.append(f"{display_source_path(res.raw_rel_path)}: exists but is not a regular file")
     if safe_problems:
         errors.append(
             format_error(

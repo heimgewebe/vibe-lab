@@ -417,7 +417,7 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
 
     # --- mandatory sets ------------------------------------------------------
 
-    def test_missing_controlled_secondary_dimension_is_incomplete(self) -> None:
+    def test_missing_dimension_to_control_when_not_primary_is_incomplete(self) -> None:
         data = self._basic_data()
         data["dimensions_to_control_when_not_primary"] = [
             x for x in data["dimensions_to_control_when_not_primary"] if x.get("id") != "test_harness"
@@ -517,6 +517,110 @@ class ModelLabConditionContrastDesignGateValidatorTests(unittest.TestCase):
         self.assertIn("result_assessment_allowed=false", completed.stdout)
         self.assertIn("comparison_ready=false", completed.stdout)
         self.assertIn("missing fields do not count as false", completed.stdout)
+
+
+    def test_foundational_source_identity_mismatches(self) -> None:
+        evidence_dir = FIXTURE_ROOT / "_evidence"
+        cases = [
+            ("triage_wrong_type", "next_blocker_triage", "triage.yml", "artifact_type", "wrong_type", "artifact_type"),
+            ("readiness_wrong_type", "readiness_gate", "readiness.yml", "artifact_type", "wrong_type", "artifact_type"),
+            ("readiness_wrong_series", "readiness_gate", "readiness.yml", "series_id", "wrong_series", "series_id"),
+            ("readiness_wrong_challenge", "readiness_gate", "readiness.yml", "challenge_version", "wrong_challenge", "challenge_version"),
+            ("readiness_missing_challenge", "readiness_gate", "readiness.yml", "challenge_version", None, "challenge_version"),
+        ]
+        for label, kind, source_file, key, mut_val, diagnostic in cases:
+            with self.subTest(case=label):
+                data = self._basic_data()
+                with tempfile.TemporaryDirectory(dir=evidence_dir) as temp_dir:
+                    mutated = Path(temp_dir) / "mutated_source.yml"
+                    source_doc = yaml.safe_load((evidence_dir / source_file).read_text(encoding="utf-8"))
+                    if mut_val is None:
+                        source_doc.pop(key, None)
+                    else:
+                        source_doc[key] = mut_val
+                    mutated.write_text(yaml.safe_dump(source_doc, sort_keys=False), encoding="utf-8")
+
+                    self._set_source_path(
+                        data,
+                        kind,
+                        mutated.relative_to(REPO_ROOT).as_posix(),
+                    )
+                    completed = self._run_on_data(data)
+
+                self.assert_exit_code(completed, 1)
+                self.assertIn("CONTRAST_GATE_REQUIRES_MATCHING_SOURCE_IDENTITY", completed.stdout)
+                self.assertIn(mutated.relative_to(REPO_ROOT).as_posix(), completed.stdout)
+                self.assertIn(diagnostic, completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_readiness_target_blocker_not_open(self) -> None:
+        evidence_dir = FIXTURE_ROOT / "_evidence"
+        cases = [
+            ("resolved_status", "weak_condition_contrast", "resolved", "not open in readiness blockers"),
+            ("missing_blocker", None, None, "not open in readiness blockers"),
+        ]
+        for label, blocker_id, status, diagnostic in cases:
+            with self.subTest(case=label):
+                data = self._basic_data()
+                with tempfile.TemporaryDirectory(dir=evidence_dir) as temp_dir:
+                    mutated = Path(temp_dir) / "mutated_readiness.yml"
+                    source_doc = yaml.safe_load((evidence_dir / "readiness.yml").read_text(encoding="utf-8"))
+
+                    if blocker_id is None:
+                        source_doc["blockers"] = [b for b in source_doc.get("blockers", []) if b.get("id") != "weak_condition_contrast"]
+                    else:
+                        for b in source_doc.get("blockers", []):
+                            if b.get("id") == blocker_id:
+                                b["status"] = status
+
+                    mutated.write_text(yaml.safe_dump(source_doc, sort_keys=False), encoding="utf-8")
+
+                    self._set_source_path(
+                        data,
+                        "readiness_gate",
+                        mutated.relative_to(REPO_ROOT).as_posix(),
+                    )
+                    completed = self._run_on_data(data)
+
+                self.assert_exit_code(completed, 1)
+                self.assertIn("CONTRAST_GATE_REQUIRES_OPEN_TARGET_BLOCKER", completed.stdout)
+                self.assertIn(mutated.relative_to(REPO_ROOT).as_posix(), completed.stdout)
+                self.assertIn(diagnostic, completed.stdout)
+                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_display_path_exception_fallback(self) -> None:
+        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_contrast_validator_module")
+        display_path_func = module["display_path"]
+
+        class FailingPath:
+            def __init__(self, path_str: str, exc: Exception):
+                self.path_str = path_str
+                self.exc = exc
+            def resolve(self):
+                raise self.exc
+            def __str__(self):
+                return self.path_str
+
+        test_path = "failing/path.yml"
+        for exc_type in (OSError, RuntimeError, ValueError, UnicodeError):
+            with self.subTest(exc=exc_type.__name__):
+                fp = FailingPath(test_path, exc_type("mock error"))
+                res = display_path_func(fp)
+                self.assertEqual(test_path, res)
+
+    def test_source_path_escape_displays_raw_diagnostics(self) -> None:
+        raw_path = "\ttests/example.yml"
+        data = self._basic_data()
+        data["source_evidence"][2]["path"] = raw_path
+
+        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_contrast_validator_module")
+        semantic_errors_func = module["semantic_errors"]
+
+        errors = semantic_errors_func(data, FIXTURE_ROOT / "valid/basic.yml", REPO_ROOT)
+
+        safe_path_err = [e for e in errors if "CONTRAST_GATE_REQUIRES_SAFE_EXISTING_SOURCE_PATHS" in e]
+        self.assertTrue(safe_path_err, "Expected SAFE_EXISTING_SOURCE_PATHS error")
+        self.assertIn(ascii(raw_path), safe_path_err[0])
 
 
 if __name__ == "__main__":
