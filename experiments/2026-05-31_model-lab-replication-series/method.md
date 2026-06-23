@@ -87,6 +87,24 @@ Methodological strength: weak structural control. The condition `code_first_cont
 - No Run-004 execution is allowed.
 - Methodological strength remains weak until a compliant contrast is designed, executed and assessed.
 
+## Run-004 condition design (frozen, not executed)
+
+- A frozen condition design now exists (`artifacts/run-004-condition-contrast-design/`, contract `model-lab-condition-design.v1`).
+- The single primary intervention axis is `workflow_protocol`; the two future arms are
+  `control: direct_implementation` and `treatment: spec_first`.
+- The arms differ operationally only along `workflow_protocol`: the control arm may begin
+  implementation immediately with no required upfront specification, while the treatment arm
+  forbids implementation before a complete structured specification.
+- All other experimentally relevant dimensions are bound identically across arms; runtime
+  values (model, tooling, sampling, dependency/runtime environment) are deferred to a single
+  shared execution-readiness binding.
+- Historical Run-001/002/003 bundles are context only and are not a clean control arm: they
+  differ on more than one uncontrolled dimension (e.g. generation method and self-reported
+  model identity).
+- The design is frozen before execution via a SHA-256 freeze manifest. No Run-004 arm is
+  executed, no runtime environment is bound, and no result is assessed. `weak_condition_contrast`
+  remains open; the only permitted next step is a separate execution-readiness / authorization check.
+
 ## Next extension
 
 - Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).

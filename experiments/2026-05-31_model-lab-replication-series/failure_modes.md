@@ -50,3 +50,9 @@ canonicality: operative
   A schema-valid gate, design artifact, execution scaffold, or green validator
   establishes structural compliance only. It does not establish an executed
   comparison, empirical result, condition effect, or outcome upgrade.
+- **Frozen condition design mistaken for execution-readiness or a result.**
+  A frozen, validated condition design (one primary axis, two arms, controlled
+  bindings, SHA-256 freeze) selects and freezes a contrast before execution only.
+  It does not bind the runtime environment, authorize Run-004 execution, perform a
+  measurement, or assess a result; runtime values stay deferred to a separate
+  execution-readiness check and `weak_condition_contrast` stays open.

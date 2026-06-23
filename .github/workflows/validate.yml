@@ -86,6 +86,12 @@ jobs:
       - name: Validate Model-Lab condition-contrast-design-gate artifacts
         run: make validate-model-lab-condition-contrast-design-gate
 
+      - name: Test Model-Lab condition-design validator
+        run: make validate-model-lab-condition-design-tests
+
+      - name: Validate Model-Lab condition-design artifacts
+        run: make validate-model-lab-condition-design
+
       - name: Test PR scope validator
         run: python3 scripts/docmeta/test_validate_pr_scope.py
 

@@ -1,0 +1,11 @@
+# Gate for a different series: must fail MATCHING_SOURCE_IDENTITY.
+artifact_type: "model_lab_condition_contrast_design_gate"
+series_id: "some-other-series"
+challenge_version: "rest-api-v1"
+gate_status: "criteria_defined"
+target_blocker: "weak_condition_contrast"
+blocker_status_after_gate: "open"
+run_004_design_allowed: true
+run_004_execution_allowed: false
+result_assessment_allowed_after_gate: false
+comparison_ready_after_gate: false

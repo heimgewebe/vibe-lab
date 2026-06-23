@@ -93,3 +93,19 @@ Run-004 condition-contrast design must satisfy.
 - `comparison_ready` remains false
 - no primary intervention axis or concrete condition has been selected
 - the gate defines only criteria and the control treatment of non-primary dimensions
+
+## Run-004 condition design (frozen, not executed)
+
+A machine-readable, frozen condition design now exists
+(`artifacts/run-004-condition-contrast-design/`, contract `model-lab-condition-design.v1`).
+It records only a design-state transition; it asserts no effect, quality, or comparison.
+
+- the single primary intervention axis is `workflow_protocol`
+- two future arms are concretised: `control: direct_implementation` and `treatment: spec_first`
+- the arms differ operationally only along `workflow_protocol`; all other dimensions are bound identically
+- the protocols (common condition, both workflow protocols, verification, measurement) are frozen via a SHA-256 freeze manifest
+- Run-004 execution remains blocked and no runtime environment is bound
+- no condition was executed, measured, or assessed
+- `weak_condition_contrast` remains open
+- result assessment remains blocked and `comparison_ready` remains false
+- the only permitted next step is a separate execution-readiness / authorization check

@@ -1,0 +1,2 @@
+# A directory (not a regular file) used to assert that a source pointing at a directory
+# is rejected.

@@ -1,0 +1,28 @@
+# Run-004 — Freeze Manifest (frozen design)
+#
+# SHA-256 over the condition design and every protocol artifact, computed before
+# execution. This manifest never hashes itself (no cycle). Any later change to a
+# frozen artifact requires a new freeze manifest.
+artifact_type: model_lab_condition_design_freeze_manifest
+design_id: run-004-condition-contrast
+series_id: 2026-05-31_model-lab-replication-series
+challenge_version: rest-api-v1
+created: '2026-06-23T00:00:00Z'
+frozen_before_execution: true
+change_rule: Any later change to a frozen artifact requires a new freeze manifest
+  with recomputed SHA-256 values. The freeze manifest never hashes itself, so the
+  hashes stay deterministically reproducible; condition-design.yml references this
+  manifest only by path.
+hashes:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  sha256: 6b4d9373b2acde8e88049fcca6a72faa6deaaf1a1f664fc4709a29f0226219a8
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+  sha256: aed68fe5531b9181f0958e29bf58b80821b5f5d53ce7ac565fe035bf4804364a
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md
+  sha256: 289728f651bfd8ad7d0d9263a0d72a64847c88aa04f54c3c5ba7c1ea166bab0d
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md
+  sha256: 47f7b12b329943a6c4758c42ac390085dd871bad8b7f39f4fc833e4d47970baa
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml
+  sha256: 333c1cb3694669dec8f2d3ae8a51b3e7477ce4206a80d32dc6be3a1dbeab7e36
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
+  sha256: 3d8a84e051634e7f87837dc33880ea4e45566c77c8f0f29b26612e9d01db272d

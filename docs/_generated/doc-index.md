@@ -213,6 +213,9 @@
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/plan.md` | Run-003 Plan — Stronger Condition Contrast | designed | operative |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` | Run-003 Condition Input — Independent Model/Tool Condition | executed | operative |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/run-output.md` | run-output | — | — |
+| `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md` | common-condition | — | — |
+| `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md` | control-workflow-protocol | — | — |
+| `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md` | treatment-workflow-protocol | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md` | README | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/README.md` | README | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` | Model-Lab Replication-Series — Failure Modes | designed | operative |
@@ -261,5 +264,8 @@
 | `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md` | CONTEXT | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md` | INITIAL | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | Phase-1c Valid Fixture | draft | operative |
+| `tests/fixtures/model_lab_condition_design/_evidence/common-condition.md` | common-condition | — | — |
+| `tests/fixtures/model_lab_condition_design/_evidence/control-workflow-protocol.md` | control-workflow-protocol | — | — |
+| `tests/fixtures/model_lab_condition_design/_evidence/treatment-workflow-protocol.md` | treatment-workflow-protocol | — | — |
 | `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md` | assessment-context | — | — |
 | `tests/fixtures/pr_scope/valid/summary.md` | summary | — | — |

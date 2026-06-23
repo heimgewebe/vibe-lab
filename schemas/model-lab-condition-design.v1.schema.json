@@ -1,0 +1,398 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-condition-design.v1.schema.json",
+  "title": "Model-Lab Condition Design v1",
+  "description": "Machine-readable, frozen condition-contrast design for a future Model-Lab Run-004. v1 models exactly one honest state: a frozen paired design (design_status=frozen) that selects a single primary intervention axis (workflow_protocol) and two future arms (control=direct_implementation, treatment=spec_first) for the open weak_condition_contrast blocker. It is a design-freeze only: no run is executed, the execution environment is not bound, no result assessment is allowed, the series is not comparison-ready, and weak_condition_contrast is not resolved. The fixed v1 values (design_status=frozen; target_blocker=weak_condition_contrast; target_blocker_status_after_design=open; run_004_execution_allowed / result_assessment_allowed_after_design / comparison_ready_after_design=false; primary_intervention_axis.id=workflow_protocol with selection_status=selected and required_axis_count=1; freeze.frozen_before_execution=true; decision.status=frozen; decision.next_step=run_004_execution_readiness_may_be_assessed) are pinned as const so they cannot drift. The genuinely cross-artifact semantics live in the validator (scripts/docmeta/validate_model_lab_condition_design.py): exactly one condition_contrast_design_gate source (criteria_defined, design allowed, execution blocked, target open) and one blocked readiness_gate source for this series/challenge; exactly one control and one treatment arm; a material, pre-execution-observable workflow_protocol contrast and no second operative difference; complete control bindings for every non-primary dimension; shared common-condition / verification / measurement / intervention surfaces across arms; a valid, acyclic SHA-256 freeze manifest; safe existing repo paths; no execution artifacts in the design path; and the mandatory anti-overclaim non-claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "triggered_by",
+    "design_id",
+    "design_status",
+    "design_artifact_path",
+    "series_id",
+    "challenge_version",
+    "target_blocker",
+    "target_blocker_status_after_design",
+    "primary_intervention_axis",
+    "arms",
+    "controlled_dimensions",
+    "confounder_controls",
+    "materiality_rationale",
+    "run_004_execution_allowed",
+    "result_assessment_allowed_after_design",
+    "comparison_ready_after_design",
+    "summary",
+    "source_evidence",
+    "freeze",
+    "decision",
+    "does_not_establish"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "model_lab_condition_design"
+    },
+    "triggered_by": {
+      "$ref": "#/$defs/nonBlankString",
+      "$comment": "Task or instruction reference that caused this design freeze. Non-blank reference, not const: provenance of the upstream gate is represented separately through source_evidence and semantic cross-artifact validation."
+    },
+    "design_id": {
+      "$ref": "#/$defs/nonBlankToken",
+      "$comment": "Stable identifier for this design (e.g. run-004-condition-contrast). An identity token, not a fixed const."
+    },
+    "design_status": {
+      "type": "string",
+      "const": "frozen",
+      "$comment": "v1 models exactly one honest state: a design frozen before execution. A draft/superseded state would need its own data model and is intentionally out of scope for v1."
+    },
+    "design_artifact_path": {
+      "$ref": "#/$defs/repoRelativePath",
+      "$comment": "Canonical repo-relative path of THIS condition-design artifact. The freeze manifest binds and hashes this canonical path, so the freeze stays deterministic and independent of where the file is read from during validation."
+    },
+    "series_id": {
+      "$ref": "#/$defs/nonBlankToken"
+    },
+    "challenge_version": {
+      "$ref": "#/$defs/nonBlankToken"
+    },
+    "target_blocker": {
+      "type": "string",
+      "const": "weak_condition_contrast",
+      "$comment": "v1 is specifically the condition design for weak_condition_contrast. The referenced gate and readiness artifacts must independently confirm this blocker is open."
+    },
+    "target_blocker_status_after_design": {
+      "type": "string",
+      "const": "open",
+      "$comment": "Freezing a design never closes the blocker: designing a contrast is not executing or assessing it."
+    },
+    "primary_intervention_axis": {
+      "$ref": "#/$defs/primaryInterventionAxis"
+    },
+    "arms": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/arm"
+      },
+      "$comment": "Exactly two future arms. The validator additionally requires exactly one control and one treatment role, a material workflow_protocol contrast, and no second operative difference."
+    },
+    "controlled_dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/controlledDimension"
+      },
+      "$comment": "Every non-primary experimentally relevant dimension, each bound identically across arms. The validator requires the mandatory id set and that same_value_across_arms_required stays true."
+    },
+    "confounder_controls": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/confounderControl"
+      },
+      "$comment": "Concrete confounder controls the frozen design commits to. The validator requires the mandatory ids, each carrying its declared effect_if_uncontrolled."
+    },
+    "materiality_rationale": {
+      "$ref": "#/$defs/nonBlankString",
+      "$comment": "Why the contrast is material and pre-execution observable, grounded in the arms' workflow_protocol_spec process rules. No effect or superiority is claimed."
+    },
+    "run_004_execution_allowed": {
+      "type": "boolean",
+      "const": false,
+      "$comment": "A design freeze never authorizes execution."
+    },
+    "result_assessment_allowed_after_design": {
+      "type": "boolean",
+      "const": false,
+      "$comment": "Freezing a design does not authorize a result assessment."
+    },
+    "comparison_ready_after_design": {
+      "type": "boolean",
+      "const": false,
+      "$comment": "Freezing a design does not make the series comparison-ready."
+    },
+    "summary": {
+      "$ref": "#/$defs/nonBlankString"
+    },
+    "source_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/sourceEvidence"
+      },
+      "$comment": "Semantically: exactly one condition_contrast_design_gate and exactly one readiness_gate source are required, both for this series (and challenge_version for readiness), and both must be safe, regular, readable YAML mappings. assessment_context and method_context are context-only: only their existence as safe regular files is checked, never their prose."
+    },
+    "freeze": {
+      "$ref": "#/$defs/freeze"
+    },
+    "decision": {
+      "$ref": "#/$defs/decision"
+    },
+    "does_not_establish": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonBlankToken"
+      },
+      "$comment": "Mandatory anti-overclaim list. The validator requires the static baseline non-claims and forbids primary_intervention_axis_selected / concrete_condition_selected (this PR establishes those, so they may not be listed as not-established)."
+    }
+  },
+  "$defs": {
+    "nonBlankString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S",
+      "$comment": "Text must contain at least one non-whitespace character."
+    },
+    "nonBlankToken": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*\\s).+$",
+      "$comment": "Token must be non-empty and contain no whitespace at all, including no leading, internal, or trailing whitespace (e.g. a trailing newline). '^\\S+$' is intentionally avoided because Python regex '$' also matches just before a trailing newline, so it would accept a trailing LF."
+    },
+    "repoRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*[\\u0000-\\u001F\\u007F\\uD800-\\uDFFF])(?!\\s)(?!/)(?![A-Za-z]:)(?!.*\\\\)(?:.*\\S)?$",
+      "$comment": "Repo-relative POSIX path. Rejected here as form errors: C0 control characters (U+0000-U+001F, incl. NUL/tab/CR/LF), DEL (U+007F), lone UTF-16 surrogates (U+D800-U+DFFF), empty, whitespace-only, leading/trailing whitespace, absolute POSIX paths, Windows drive letters, and backslashes. Parent-escape ('..'), symlink-out-of-repo, and filesystem resolution remain semantic resolver concerns. This is not a general Unicode/Bidi naming policy."
+    },
+    "primaryInterventionAxis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "selection_status",
+        "required_axis_count"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "workflow_protocol",
+          "$comment": "v1 selects exactly one primary axis: workflow_protocol. A different axis is out of scope for v1."
+        },
+        "selection_status": {
+          "type": "string",
+          "const": "selected"
+        },
+        "required_axis_count": {
+          "type": "integer",
+          "const": 1
+        }
+      }
+    },
+    "arm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "role",
+        "workflow_protocol",
+        "workflow_protocol_ref",
+        "workflow_protocol_spec",
+        "common_condition_ref",
+        "verification_protocol_ref",
+        "measurement_protocol_ref",
+        "intervention_profile"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonBlankToken"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "control",
+            "treatment"
+          ]
+        },
+        "workflow_protocol": {
+          "$ref": "#/$defs/nonBlankToken",
+          "$comment": "The condition value along the primary axis (e.g. direct_implementation or spec_first). Not const per-role here so that an operationally identical / cosmetic contrast is caught as a semantic violation (exit 1), not a schema error."
+        },
+        "workflow_protocol_ref": {
+          "$ref": "#/$defs/repoRelativePath"
+        },
+        "workflow_protocol_spec": {
+          "$ref": "#/$defs/workflowProtocolSpec"
+        },
+        "common_condition_ref": {
+          "$ref": "#/$defs/repoRelativePath"
+        },
+        "verification_protocol_ref": {
+          "$ref": "#/$defs/repoRelativePath"
+        },
+        "measurement_protocol_ref": {
+          "$ref": "#/$defs/repoRelativePath"
+        },
+        "intervention_profile": {
+          "$ref": "#/$defs/nonBlankToken"
+        }
+      }
+    },
+    "workflowProtocolSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pre_implementation_specification_required",
+        "implementation_may_begin_immediately",
+        "required_specification_sections"
+      ],
+      "properties": {
+        "pre_implementation_specification_required": {
+          "type": "boolean"
+        },
+        "implementation_may_begin_immediately": {
+          "type": "boolean"
+        },
+        "required_specification_sections": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonBlankToken"
+          },
+          "$comment": "Empty for an arm that requires no upfront specification. The validator requires the treatment arm to carry the mandatory section set and the control arm to require no upfront specification."
+        }
+      }
+    },
+    "controlledDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "control_method",
+        "binding_status",
+        "binding_source",
+        "same_value_across_arms_required",
+        "blocking_divergence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonBlankToken"
+        },
+        "control_method": {
+          "$ref": "#/$defs/nonBlankString"
+        },
+        "binding_status": {
+          "type": "string",
+          "enum": [
+            "bound_at_design",
+            "deferred_to_execution_readiness"
+          ],
+          "$comment": "deferred_to_execution_readiness marks runtime values that can only be pinned just before execution; they still require a single shared binding source and identical values across arms, and execution stays blocked until a separate readiness check."
+        },
+        "binding_source": {
+          "$ref": "#/$defs/nonBlankString"
+        },
+        "same_value_across_arms_required": {
+          "type": "boolean",
+          "const": true,
+          "$comment": "Every non-primary dimension must be bound identically across arms; differing values are forbidden."
+        },
+        "blocking_divergence": {
+          "$ref": "#/$defs/nonBlankString"
+        }
+      }
+    },
+    "confounderControl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "controlled_by",
+        "effect_if_uncontrolled"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonBlankToken"
+        },
+        "controlled_by": {
+          "$ref": "#/$defs/nonBlankString"
+        },
+        "effect_if_uncontrolled": {
+          "type": "string",
+          "enum": [
+            "blocks_design",
+            "must_be_reported"
+          ]
+        }
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repoRelativePath"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "condition_contrast_design_gate",
+            "readiness_gate",
+            "assessment_context",
+            "method_context"
+          ],
+          "$comment": "condition_contrast_design_gate and readiness_gate are foundational (cross-checked and required to be readable YAML mappings); assessment_context and method_context are context-only (existence + safe regular file)."
+        }
+      }
+    },
+    "freeze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frozen_before_execution",
+        "freeze_manifest_ref"
+      ],
+      "properties": {
+        "frozen_before_execution": {
+          "type": "boolean",
+          "const": true
+        },
+        "freeze_manifest_ref": {
+          "$ref": "#/$defs/repoRelativePath",
+          "$comment": "Path to the freeze manifest carrying the SHA-256 of this design and every protocol artifact. The manifest never hashes itself (no cycle); this design references the manifest only by path, so hashes stay deterministically reproducible."
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "next_step",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "const": "frozen"
+        },
+        "next_step": {
+          "type": "string",
+          "const": "run_004_execution_readiness_may_be_assessed"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonBlankString"
+        }
+      }
+    }
+  }
+}

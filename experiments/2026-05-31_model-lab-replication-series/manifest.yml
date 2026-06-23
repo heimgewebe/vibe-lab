@@ -12,10 +12,10 @@ experiment:
   execution_status: executed
   evidence_level: experimental
   created: "2026-05-31"
-  updated: "2026-06-19"
+  updated: "2026-06-23"
   author: "vibe-lab maintainers"
-  triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
-  iteration: 10
+  triggered_by: "user-request-2026-06-23-run-004-condition-design"
+  iteration: 11
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -71,10 +71,18 @@ experiment:
     - "artifacts/run-003-plan-stronger-condition-contrast/plan.md"
     - "artifacts/run-003-plan-stronger-condition-contrast/changed-files.txt"
     - "results/condition-contrast-design-gate.yml"
+    - "artifacts/run-004-condition-contrast-design/condition-design.yml"
+    - "artifacts/run-004-condition-contrast-design/common-condition.md"
+    - "artifacts/run-004-condition-contrast-design/control-workflow-protocol.md"
+    - "artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md"
+    - "artifacts/run-004-condition-contrast-design/verification-protocol.yml"
+    - "artifacts/run-004-condition-contrast-design/measurement-protocol.yml"
+    - "artifacts/run-004-condition-contrast-design/freeze-manifest.yml"
   limitations:
     - "Run-003 execution surface exists; Run-003 runtime validation is partial (separate runtime-evidence gate, validation_status: partial); no result assessment is performed."
     - "Run-003 independence_status is self_reported_different_agent_tool_context; external_attestation is false, so model independence is not established."
     - "No result_assessment, model-quality verdict, comparative-superiority claim, adoption, promotion, production-readiness, security-readiness, or outcome upgrade is derived."
+    - "Run-004 condition contrast is designed and frozen before execution (planning_refs only); no Run-004 arm is executed, no runtime environment is bound, and no result is assessed. weak_condition_contrast remains open."
 
 context:
   tools: ["model-lab-control-plane", "AP-1 model-lab-control validator", "AP-2 challenge-version validator"]

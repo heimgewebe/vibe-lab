@@ -1,0 +1,178 @@
+# Auto-generated invalid fixture (derived from valid/basic.yml; one rule).
+schema_version: v1
+artifact_type: model_lab_condition_design
+triggered_by: tests/fixtures/model_lab_condition_design
+design_id: fixture-condition-design
+design_status: frozen
+design_artifact_path: tests/fixtures/model_lab_condition_design/valid/basic.yml
+series_id: fixture-series
+challenge_version: rest-api-v1
+target_blocker: weak_condition_contrast
+target_blocker_status_after_design: open
+primary_intervention_axis:
+  id: workflow_protocol
+  selection_status: selected
+  required_axis_count: 1
+arms:
+- id: control
+  role: control
+  workflow_protocol: direct_implementation
+  workflow_protocol_ref: tests/fixtures/model_lab_condition_design/_evidence/control-workflow-protocol.md
+  workflow_protocol_spec:
+    pre_implementation_specification_required: false
+    implementation_may_begin_immediately: true
+    required_specification_sections: []
+  common_condition_ref: tests/fixtures/model_lab_condition_design/_evidence/common-condition.md
+  verification_protocol_ref: tests/fixtures/model_lab_condition_design/_evidence/verification-protocol.yml
+  measurement_protocol_ref: tests/fixtures/model_lab_condition_design/_evidence/measurement-protocol.yml
+  intervention_profile: shared-intervention-and-stop-rules-v1
+- id: treatment
+  role: treatment
+  workflow_protocol: spec_first
+  workflow_protocol_ref: tests/fixtures/model_lab_condition_design/_evidence/treatment-workflow-protocol.md
+  workflow_protocol_spec:
+    pre_implementation_specification_required: true
+    implementation_may_begin_immediately: false
+    required_specification_sections:
+    - endpoint_matrix
+    - request_response_schemas
+    - validation_rules
+    - http_status_codes
+    - error_cases
+    - edge_cases
+    - persistence_assumptions
+    - planned_implementation_order
+  common_condition_ref: tests/fixtures/model_lab_condition_design/_evidence/common-condition.md
+  verification_protocol_ref: tests/fixtures/model_lab_condition_design/_evidence/verification-protocol.yml
+  measurement_protocol_ref: tests/fixtures/model_lab_condition_design/_evidence/measurement-protocol.yml
+  intervention_profile: shared-intervention-and-stop-rules-v1
+controlled_dimensions:
+- id: challenge_contract
+  control_method: identical_shared_challenge
+  binding_status: bound_at_design
+  binding_source: common-condition.md challenge reference
+  same_value_across_arms_required: true
+  blocking_divergence: A different challenge between arms invalidates the design.
+- id: acceptance_surface
+  control_method: identical_shared_acceptance
+  binding_status: bound_at_design
+  binding_source: common-condition.md
+  same_value_across_arms_required: true
+  blocking_divergence: Different acceptance criteria break comparability.
+- id: evaluation_criteria
+  control_method: identical_shared_evaluation
+  binding_status: bound_at_design
+  binding_source: measurement-protocol.yml
+  same_value_across_arms_required: true
+  blocking_divergence: Different evaluation criteria break comparability.
+- id: verification_surface
+  control_method: identical_shared_verification
+  binding_status: bound_at_design
+  binding_source: verification-protocol.yml
+  same_value_across_arms_required: true
+  blocking_divergence: Different verification surfaces break comparability.
+- id: evidence_capture
+  control_method: identical_shared_capture
+  binding_status: bound_at_design
+  binding_source: common-condition.md
+  same_value_across_arms_required: true
+  blocking_divergence: Different evidence capture breaks comparability.
+- id: model_identity_and_version
+  control_method: hold_constant_single_source
+  binding_status: deferred_to_execution_readiness
+  binding_source: shared execution-readiness binding
+  same_value_across_arms_required: true
+  blocking_divergence: Different model identity between arms invalidates the design.
+- id: tool_and_agent_mode
+  control_method: hold_constant_single_source
+  binding_status: deferred_to_execution_readiness
+  binding_source: shared execution-readiness binding
+  same_value_across_arms_required: true
+  blocking_divergence: Different tooling between arms invalidates the design.
+- id: sampling_configuration
+  control_method: hold_constant_single_source
+  binding_status: deferred_to_execution_readiness
+  binding_source: shared execution-readiness binding
+  same_value_across_arms_required: true
+  blocking_divergence: Different sampling between arms invalidates the design.
+- id: human_intervention
+  control_method: equivalent_surface
+  binding_status: bound_at_design
+  binding_source: common-condition.md intervention rules
+  same_value_across_arms_required: true
+  blocking_divergence: Unequal intervention rules confound the contrast.
+- id: dependency_and_runtime_environment
+  control_method: hold_constant_single_source
+  binding_status: deferred_to_execution_readiness
+  binding_source: shared execution-readiness binding
+  same_value_across_arms_required: true
+  blocking_divergence: Different runtime environments between arms invalidate the
+    design.
+- id: test_harness
+  control_method: equivalent_surface
+  binding_status: bound_at_design
+  binding_source: verification-protocol.yml
+  same_value_across_arms_required: true
+  blocking_divergence: Different test harnesses manufacture false contrast.
+confounder_controls:
+- id: multi_axis_drift
+  controlled_by: Exactly one primary axis (workflow_protocol); all other dimensions
+    bound.
+  effect_if_uncontrolled: blocks_design
+- id: acceptance_or_test_drift
+  controlled_by: Shared common-condition and verification-protocol.
+  effect_if_uncontrolled: blocks_design
+- id: unequal_human_intervention
+  controlled_by: Shared intervention profile across arms.
+  effect_if_uncontrolled: blocks_design
+- id: dependency_or_runtime_drift
+  controlled_by: Single shared execution-readiness binding for runtime values.
+  effect_if_uncontrolled: must_be_reported
+- id: post_hoc_condition_rework
+  controlled_by: Design frozen before execution via the freeze manifest.
+  effect_if_uncontrolled: blocks_design
+- id: self_reported_independence_as_external_proof
+  controlled_by: External attestation kept as a separate later evidence track.
+  effect_if_uncontrolled: must_be_reported
+materiality_rationale: 'The contrast is material and observable before execution:
+  the control arm may begin implementation immediately with no required upfront specification,
+  while the treatment arm forbids implementation before a complete structured specification.
+  No effect or superiority is claimed.'
+run_004_execution_allowed: false
+result_assessment_allowed_after_design: false
+comparison_ready_after_design: false
+summary: Fixture frozen condition design. Selects workflow_protocol as the single
+  primary axis and two arms (direct_implementation vs spec_first) without executing,
+  binding the runtime environment, or unblocking assessment.
+source_evidence:
+- path: tests/fixtures/model_lab_condition_design/_evidence/gate.yml
+  kind: condition_contrast_design_gate
+- path: tests/fixtures/model_lab_condition_design/_evidence/readiness-target-resolved.yml
+  kind: readiness_gate
+- path: tests/fixtures/model_lab_condition_design/_evidence/assessment-context.txt
+  kind: assessment_context
+- path: tests/fixtures/model_lab_condition_design/_evidence/method-context.txt
+  kind: method_context
+freeze:
+  frozen_before_execution: true
+  freeze_manifest_ref: tests/fixtures/model_lab_condition_design/_evidence/freeze-manifest.yml
+decision:
+  status: frozen
+  next_step: run_004_execution_readiness_may_be_assessed
+  reason: The paired contrast is selected and frozen before execution. It does not
+    execute a run, bind the runtime environment, or authorize a result assessment.
+does_not_establish:
+- weak_condition_contrast_resolved
+- run_004_execution_allowed
+- run_004_executed
+- execution_environment_bound
+- result_assessment_allowed
+- comparison_ready
+- condition_effect
+- model_quality
+- comparative_superiority
+- external_model_independence
+- external_auditor_comparison_completed
+- dependency_risk_remediated
+- security_readiness
+- production_readiness

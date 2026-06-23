@@ -1,0 +1,62 @@
+# Run-004 — Shared Verification Protocol (frozen design)
+#
+# Defines the verification surface that will be applied IDENTICALLY to both arms in a
+# later, separate run. This file DESCRIBES the shared verification; it does NOT execute
+# it, and it contains no run verifier or implementation. Any arm-dependent test or
+# verifier drift invalidates the design.
+artifact_type: "model_lab_condition_design_verification_protocol"
+design_id: "run-004-condition-contrast"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+
+applies_equally_to_both_arms: true
+
+shared_functional_tests:
+  description: >
+    The same functional API tests are applied to both arms (endpoints, request/response
+    shapes, validation, pagination, persistence behaviour) as defined by rest-api-v1.
+  source: "rest-api-v1 acceptance surface (shared)"
+
+shared_error_case_tests:
+  description: >
+    The same error-case tests are applied to both arms (validation failures, not-found,
+    malformed input, error-envelope shape).
+
+shared_forced_500_check:
+  description: >
+    The same forced-500 error-handler assertion is applied to both arms: an induced
+    internal error must yield the rest-api-v1 error envelope with HTTP 500.
+
+shared_install_and_runtime_commands:
+  description: >
+    The same installation and runtime commands are used for both arms. Concrete commands
+    are bound from a single shared source at execution-readiness time and must be
+    identical across arms.
+  binding_status: "deferred_to_execution_readiness"
+
+timeout_rules:
+  description: >
+    The same per-step and total timeouts apply to both arms. Concrete values are bound
+    from a single shared source at execution-readiness time and must be identical across
+    arms.
+  binding_status: "deferred_to_execution_readiness"
+
+pass_fail_semantics:
+  pass: "All shared functional, error-case, and forced-500 checks succeed under the shared runtime."
+  fail: "Any shared check fails, or the runtime cannot be established."
+  note: "Pass/fail semantics are identical for both arms; no arm-specific leniency."
+
+later_shared_harness_binding:
+  description: >
+    The concrete executable harness (verifier scripts, test runner invocation) is bound
+    once, shared, at execution-readiness time. It is intentionally NOT created in this
+    design PR.
+  binding_status: "deferred_to_execution_readiness"
+
+abort_on_arm_dependent_drift:
+  description: >
+    If, at execution-readiness or execution time, the verification surface would differ
+    between arms (different tests, verifier, harness, or pass/fail rule), the design is
+    invalid and execution must not proceed.
+
+does_not_execute: true

@@ -1,0 +1,2 @@
+Not a .yml/.yaml file. Used to assert that a foundational source with the wrong
+extension is rejected by READABLE_FOUNDATIONAL_SOURCES.

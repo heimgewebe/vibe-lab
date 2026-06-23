@@ -1,0 +1,4 @@
+# Valid YAML, but a top-level sequence (not a mapping) to assert that a foundational
+# source which is not a YAML mapping is rejected by READABLE_FOUNDATIONAL_SOURCES.
+- one
+- two

@@ -1,0 +1,64 @@
+# Run-004 — Shared Measurement Protocol (frozen design)
+#
+# Pre-declares the metrics and measurement rules applied IDENTICALLY to both arms in a
+# later, separate run. This file contains NO measured values and NO hypotheses-as-
+# results. Metric selection is fixed before execution; post-hoc metric selection is
+# forbidden.
+artifact_type: "model_lab_condition_design_measurement_protocol"
+design_id: "run-004-condition-contrast"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+
+applies_equally_to_both_arms: true
+post_hoc_metric_selection_forbidden: true
+
+metrics:
+  - id: "functional_tests_passing"
+    unit: "count"
+    denominator: "total shared functional tests"
+    formula: "passing_shared_functional_tests / total_shared_functional_tests"
+  - id: "error_case_tests_passing"
+    unit: "count"
+    denominator: "total shared error-case tests"
+    formula: "passing_shared_error_case_tests / total_shared_error_case_tests"
+  - id: "forced_500_assertion_pass"
+    unit: "boolean"
+    denominator: "n/a"
+    formula: "1 if the shared forced-500 assertion passes else 0"
+  - id: "time_to_working_implementation"
+    unit: "seconds"
+    denominator: "n/a"
+    formula: "timer_end - timer_start"
+  - id: "rework_steps"
+    unit: "count"
+    denominator: "n/a"
+    formula: "number of rework steps as defined below"
+  - id: "human_interventions"
+    unit: "count"
+    denominator: "n/a"
+    formula: "number of human interventions as defined below"
+
+timing:
+  timer_start: "When the agent first receives the shared task input."
+  timer_end: "When the arm produces an implementation that the shared verification protocol can run, or a stop rule fires."
+
+definitions:
+  rework_step: >
+    A discrete revision of already-produced implementation made to fix a defect found
+    after that implementation existed (not the initial authoring of a component).
+  human_intervention: >
+    Any human-originated correction, hint, or steering beyond the shared task input and
+    the shared intervention profile.
+
+rules:
+  scope_drift: >
+    If an arm changes the challenge/acceptance surface, the arm is marked scope_drift and
+    its metrics are not comparable; this does not retroactively change the other arm.
+  aborted_arm: >
+    An arm that hits a stop rule before producing a runnable implementation is recorded
+    as aborted with the reason; its incomplete metrics are reported as such, not imputed.
+  missing_value: >
+    A metric that cannot be computed is recorded as missing (null), never as zero or a
+    guessed value.
+
+does_not_record_values: true
