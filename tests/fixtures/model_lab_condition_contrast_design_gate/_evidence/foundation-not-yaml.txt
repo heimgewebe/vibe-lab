@@ -1,0 +1,2 @@
+Arbitrary text, not a YAML mapping. Used to assert that a foundational source with
+a non-YAML extension is rejected by CONTRAST_GATE_REQUIRES_READABLE_FOUNDATIONAL_SOURCES.

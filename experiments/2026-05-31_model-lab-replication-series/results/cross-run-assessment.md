@@ -226,3 +226,9 @@ Assessment bleibt blockiert, `comparison_ready` bleibt false, und der Verdict in
 Abschnitt 9 ist unverändert. Die Triage priorisiert nur; sie löst keinen Blocker,
 remediiert keine Dependency-Risiken und trifft kein Qualitätsurteil.
 
+### 11.10 Condition-contrast design gate
+
+The criteria for designing a stronger future condition contrast now exist
+(`results/condition-contrast-design-gate.yml`). The existing assessment verdict in
+section 9 is unchanged. No stronger contrast has been executed or assessed.
+

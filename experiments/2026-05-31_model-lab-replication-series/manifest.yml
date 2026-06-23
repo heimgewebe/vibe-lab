@@ -12,10 +12,10 @@ experiment:
   execution_status: executed
   evidence_level: experimental
   created: "2026-05-31"
-  updated: "2026-06-05"
+  updated: "2026-06-19"
   author: "vibe-lab maintainers"
   triggered_by: "user-request-2026-06-06-run-003-semantic-rework"
-  iteration: 4
+  iteration: 10
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -41,7 +41,7 @@ experiment:
             - path: "artifacts/run-003-rest-api-independent-model-or-tool-condition/comparability.yml"
           limitations:
             - "Three runs now executed under rest-api-v1; Run-003 adds a condition-gated third surface but no actual comparison is performed."
-            - "Run-003 runtime validation is deferred; comparability.yml in all runs must remain deferred, not automatic verdict."
+            - "Run-003 runtime validation is partial (separate runtime-evidence gate, validation_status: partial); comparability.yml in all runs must remain deferred, not automatic verdict."
 
   execution_refs:
     - "artifacts/run-001-rest-api-spec-first-baseline/run.yml"
@@ -70,8 +70,9 @@ experiment:
   planning_refs:
     - "artifacts/run-003-plan-stronger-condition-contrast/plan.md"
     - "artifacts/run-003-plan-stronger-condition-contrast/changed-files.txt"
+    - "results/condition-contrast-design-gate.yml"
   limitations:
-    - "Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed."
+    - "Run-003 execution surface exists; Run-003 runtime validation is partial (separate runtime-evidence gate, validation_status: partial); no result assessment is performed."
     - "Run-003 independence_status is self_reported_different_agent_tool_context; external_attestation is false, so model independence is not established."
     - "No result_assessment, model-quality verdict, comparative-superiority claim, adoption, promotion, production-readiness, security-readiness, or outcome upgrade is derived."
 

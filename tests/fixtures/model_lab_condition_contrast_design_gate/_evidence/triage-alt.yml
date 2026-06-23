@@ -1,0 +1,10 @@
+# Second valid triage-shaped evidence (distinct path) so a fixture can reference two
+# next_blocker_triage sources and exercise CONTRAST_GATE_REQUIRES_SINGLE_TRIAGE_SOURCE.
+artifact_type: "model_lab_next_blocker_triage"
+series_id: "fixture-series"
+recommended_next_task:
+  id: "condition_contrast_design_gate"
+  target_blocker: "weak_condition_contrast"
+remaining_blockers:
+  - id: "weak_condition_contrast"
+    status: "open"

@@ -1,0 +1,11 @@
+# Second valid readiness-shaped evidence (distinct path) so a fixture can reference two
+# readiness_gate sources and exercise CONTRAST_GATE_REQUIRES_SINGLE_READINESS_SOURCE.
+artifact_type: "result_assessment_readiness"
+series_id: "fixture-series"
+challenge_version: "rest-api-v1"
+readiness_status: "blocked"
+result_assessment_allowed: false
+comparison_ready: false
+blockers:
+  - id: "weak_condition_contrast"
+    status: "open"

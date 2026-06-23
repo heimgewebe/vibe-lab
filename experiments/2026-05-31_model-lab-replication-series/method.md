@@ -78,6 +78,15 @@ judgment) is deferred to later, separate assessment artifacts.
 
 Methodological strength: weak structural control. The condition `code_first_control` in Run-002 establishes a second execution surface under the same challenge, but does not by itself prove a materially different generation method. Comparative claims remain blocked until a separate assessment artifact evaluates the actual differences.
 
+## Condition-contrast design gate
+
+- Condition-contrast design criteria now exist (`results/condition-contrast-design-gate.yml`, contract `model-lab-condition-contrast-design-gate.v1`).
+- Run-004 design may begin as a separate task.
+- No primary axis or concrete condition has been selected.
+- The gate fixes how dimensions must be controlled or documented whenever they are not selected as the single primary intervention axis by the later design; it does not decide which dimensions are eligible to become that primary axis.
+- No Run-004 execution is allowed.
+- Methodological strength remains weak until a compliant contrast is designed, executed and assessed.
+
 ## Next extension
 
 - Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).

@@ -78,3 +78,18 @@ names the next methodological step: address `weak_condition_contrast` via a
 a prioritization only — no result assessment, no dependency remediation, and no
 change to the blocked status. `result_assessment_allowed` stays false and
 `comparison_ready` stays false.
+
+## Condition-contrast design gate
+
+A machine-readable condition-contrast design gate
+(`results/condition-contrast-design-gate.yml`) now defines the criteria a future
+Run-004 condition-contrast design must satisfy.
+
+- condition-contrast criteria defined
+- Run-004 design may begin
+- Run-004 execution remains blocked
+- `weak_condition_contrast` remains open
+- result assessment remains blocked
+- `comparison_ready` remains false
+- no primary intervention axis or concrete condition has been selected
+- the gate defines only criteria and the control treatment of non-primary dimensions
