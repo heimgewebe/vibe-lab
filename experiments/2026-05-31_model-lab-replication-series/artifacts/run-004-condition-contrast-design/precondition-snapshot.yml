@@ -50,7 +50,7 @@ captured_sources:
 
   readiness:
     path: "experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml"
-    source_sha256: "55c4e1664366c5771ce2bcaa3e0e76ac4d6bcbf4840280a8519b3aae5c2c925c"
+    source_sha256: "612174708579bb438e6457e282963e2bb0f2edde2fb837df2f7540dc753acce1"
     artifact_type: "result_assessment_readiness"
     readiness_status_at_design: "blocked"
     result_assessment_allowed_at_design: false

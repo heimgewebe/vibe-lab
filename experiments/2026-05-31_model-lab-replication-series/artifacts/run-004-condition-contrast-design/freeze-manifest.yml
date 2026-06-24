@@ -29,4 +29,4 @@ hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
   sha256: d73bbc459408055849e277be7915467bf9bc28d8f8f850868ef2361b583f6725
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/precondition-snapshot.yml
-  sha256: be98cc6e40ba56fe4d02c7331f6c6a4d47157d2b43553a7d39a3b770b10cd10c
+  sha256: c34103a872ae115888802b7cd7b95c4dd6e0da2e6e39c7e4cad9e65a10ea6d82
