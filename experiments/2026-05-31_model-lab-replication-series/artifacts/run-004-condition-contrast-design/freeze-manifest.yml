@@ -7,7 +7,7 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: run-004-condition-contrast
 series_id: 2026-05-31_model-lab-replication-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-24T02:30:00Z'
+frozen_at: '2026-06-24T04:30:00Z'
 frozen_before_execution: true
 source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 change_rule: Any later change to a frozen artifact requires a new freeze manifest
@@ -15,13 +15,13 @@ change_rule: Any later change to a frozen artifact requires a new freeze manifes
   a final commit/tree/head SHA; only the historical source_base_commit_sha is recorded.
 hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  sha256: e51a00d6f219b3a0b81ab336fdac887691d8c9232144ce65c043048170529a07
+  sha256: 70ec52b020b1668cb7ab360cee903fa8413174882a0d98e2df324cd8e78d4a56
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
-  sha256: ce8afd3e4d56aa3a8466215c47842f4713d20460cf1953fa74f65778f678a7e5
+  sha256: 27fd1d3e11f899a353aed290b3849f3bd7744df00cd3229dc675057f8f713c50
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md
-  sha256: e5753cd6cc7148b257b0861420538e04105c6ffaebdc6da151cf73cce9ba0525
+  sha256: 07315417f9ff44ebdf788919e83983b2e7c6de10c79e21dfcee6f832fed33186
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md
-  sha256: 42cfa0cb0e5c70ddc8544fd5a019f41e94c6cb0197d9b087af1c513f82e44e55
+  sha256: ba03f2b979717d7fcca7328d49a811336b2aca2378bb85521582e15d00da355f
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml
   sha256: 8c617611003a0783e36e18b23d94c7fe310aed3050f3ad15087454409053ef21
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
@@ -29,7 +29,7 @@ hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/precondition-snapshot.yml
   sha256: 17219fe6272693d6c0e5d60b9ac9d8b9aa3ce9ff2bf666d3289ce63bcef359f7
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml
-  sha256: 5bfa6923b2f0dbfe7ef120ac8db691b57ed51a8193fc143b51fe5476e413590f
+  sha256: 4aa0d0f0de35d354d6abb290b3c6d5123b54cb16c8ec23966c8fca34cde55fed
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/condition-contrast-design-gate.snapshot
   sha256: 73aab9e2d10fcea061469a408591570a11ad9ef796cc5059fc9c8f9b6cfbbe3e
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/result-assessment-readiness.snapshot

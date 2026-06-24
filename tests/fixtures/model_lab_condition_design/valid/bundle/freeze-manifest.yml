@@ -2,20 +2,20 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: fixture-condition-design
 series_id: fixture-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-24T02:30:00Z'
+frozen_at: '2026-06-24T04:30:00Z'
 frozen_before_execution: true
-source_base_commit_sha: '0000000000000000000000000000000000000000'
+source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 change_rule: fixture freeze; never self-hashes; records no final commit/tree/head
   SHA.
 hashes:
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/condition-design.yml
-  sha256: 1db996ead355f9f61cca18683bf22bd6a8a3806edaf602bb21b056cf62477939
+  sha256: dc04c395b210e54266385e57e58fe6d714de59f28dde820c24c3b9c1d3f23461
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md
-  sha256: ce8afd3e4d56aa3a8466215c47842f4713d20460cf1953fa74f65778f678a7e5
+  sha256: 27fd1d3e11f899a353aed290b3849f3bd7744df00cd3229dc675057f8f713c50
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md
-  sha256: e5753cd6cc7148b257b0861420538e04105c6ffaebdc6da151cf73cce9ba0525
+  sha256: 07315417f9ff44ebdf788919e83983b2e7c6de10c79e21dfcee6f832fed33186
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md
-  sha256: 42cfa0cb0e5c70ddc8544fd5a019f41e94c6cb0197d9b087af1c513f82e44e55
+  sha256: ba03f2b979717d7fcca7328d49a811336b2aca2378bb85521582e15d00da355f
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/verification-protocol.yml
   sha256: ac2d7cb38e1fe4ab3c7e3111e8f74ebff17787eb7a1f61417979438b5c5dbf78
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/measurement-protocol.yml
@@ -23,7 +23,7 @@ hashes:
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/precondition-snapshot.yml
   sha256: 9a890457df9dda7e01bd03706296b63829550b4ea189132d865623d97ab14a72
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/workflow-instruction-protocol.yml
-  sha256: eddc8a1dd23f933a11b83056997c0c4a2174466c35d4b3f4cfeadd5c45733f9e
+  sha256: 8eef3e102d5f2bf577a35b2950cbe3d087b9ce42a223b799145b34544c701bd5
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/condition-contrast-design-gate.snapshot
   sha256: 73aab9e2d10fcea061469a408591570a11ad9ef796cc5059fc9c8f9b6cfbbe3e
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/result-assessment-readiness.snapshot

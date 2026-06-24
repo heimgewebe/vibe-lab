@@ -14,8 +14,8 @@ experiment:
   created: "2026-05-31"
   updated: "2026-06-24"
   author: "vibe-lab maintainers"
-  triggered_by: "user-request-2026-06-24-run-004-condition-design-source-binding"
-  iteration: 13
+  triggered_by: "user-request-2026-06-24-run-004-blinded-delivery-and-provenance-roles"
+  iteration: 14
   falsifiability:
     version: 1
     falsification_criterion: >

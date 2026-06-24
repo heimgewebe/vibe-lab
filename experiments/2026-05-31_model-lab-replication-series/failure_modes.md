@@ -81,3 +81,26 @@ canonicality: operative
 - **An aborted arm has no time-to-validated-change value.**
   The validated-change timer ends at the shared verification pass; an arm that stops earlier
   records a null time, never its abort time.
+- **Hash integrity mistaken for provenance-role correctness.**
+  A matching `source_sha256 == snapshot_sha256` proves only internal byte consistency. Each frozen
+  source must additionally come from its exact canonical historical path, carry the role's
+  `artifact_type`, and share the freeze `source_base_commit_sha`; otherwise a correctly-hashed file
+  could still be the wrong artifact in the wrong role.
+- **Experiment metadata leaking into the delivered prompt.**
+  Role names ("control"/"treatment"), the axis name, the hypothesis, or any "experiment"/"condition
+  contrast" framing must never reach the future agent. Such words bias the run. The delivered text
+  (shared condition + overlays) is blinded and scanned; the framing lives only in the design and the
+  non-delivered `control_metadata`.
+- **Control modeled as a negative instruction instead of an absence.**
+  Telling the control arm "do not write a specification" / "begin implementation immediately" is
+  itself an intervention and confounds the contrast. Control must be the literal ABSENCE of the
+  added Spec-First requirement (the neutral baseline); treatment is that baseline plus the positive
+  requirement, so the only delta is the added instruction.
+- **shared_condition or operative-file aliasing.**
+  The `shared_condition` component must be the bundle's `common-condition.md`, and the operative
+  bundle files must be pairwise distinct. A `shared_condition` pointed at the benchmark, or two
+  byte-identical operative files, would silently collapse the assembly the design claims to compose.
+- **Unnormalized delivered text.**
+  A delivered file with CRLF endings, a missing final newline, or non-UTF-8 bytes is not the byte
+  string the design claims to deliver. Decoding with `errors="replace"` would mask this; the
+  delivered files are decoded strictly and required to be UTF-8, LF-only, with a final newline.

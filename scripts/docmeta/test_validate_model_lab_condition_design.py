@@ -38,7 +38,11 @@ SRC_FILES = ["source-snapshots/condition-contrast-design-gate.snapshot",
 ALL_FILES = TOP_FILES + SRC_FILES
 REAL = (REPO_ROOT / "experiments" / "2026-05-31_model-lab-replication-series" / "artifacts"
         / "run-004-condition-contrast-design" / "condition-design.yml")
-_render = runpy.run_path(str(RENDERER), run_name="cd_renderer")["render_overlay"]
+BASE_COMMIT = "41fa2031160f6a7288f2c90eaccff60c7c1b50f2"
+_R = runpy.run_path(str(RENDERER), run_name="cd_renderer")
+_render_shared = _R["render_shared_condition"]
+_render_overlay = _R["render_arm_overlay"]
+_extract_body = _R["extract_instruction_body"]
 
 
 def _sha(p: Path) -> str:
@@ -92,8 +96,10 @@ class CD(unittest.TestCase):
 
         if rerender:
             wf = yaml.safe_load((tmp / "workflow-instruction-protocol.yml").read_text())
-            for role in ("control", "treatment"):
-                (tmp / f"{role}-workflow-protocol.md").write_text(_render(wf, role))
+            basis = (tmp / "source-snapshots" / "spec-first.snapshot").read_text()
+            (tmp / "common-condition.md").write_bytes(_render_shared(wf).encode("utf-8"))
+            (tmp / "control-workflow-protocol.md").write_bytes(_render_overlay(wf, "control").encode("utf-8"))
+            (tmp / "treatment-workflow-protocol.md").write_bytes(_render_overlay(wf, "treatment", basis).encode("utf-8"))
 
         s = yaml.safe_load((VB / "precondition-snapshot.yml").read_text().replace(FIX_PRE, pre))
         if recompute_snapshot_hashes:
@@ -110,7 +116,7 @@ class CD(unittest.TestCase):
             man = {"artifact_type": "model_lab_condition_design_freeze_manifest",
                    "design_id": ident["design_id"], "series_id": ident["series_id"],
                    "challenge_version": ident["challenge_version"], "frozen_at": "2026-06-24T02:30:00Z",
-                   "frozen_before_execution": True, "source_base_commit_sha": "0" * 40,
+                   "frozen_before_execution": True, "source_base_commit_sha": BASE_COMMIT,
                    "change_rule": "temp", "hashes": [{"path": pre + f, "sha256": _sha(tmp / f)} for f in ALL_FILES]}
             if freeze:
                 freeze(man, pre)
@@ -235,7 +241,7 @@ class CD(unittest.TestCase):
         self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_SINGLE_AXIS_RENDER")
 
     def test_workflow_unknown_arm_field_is_schema_error(self):
-        self.assert_exit(self.build(workflow=lambda w: w["arms"]["control"].update(extra_tool="x")), 2)
+        self.assert_exit(self.build(workflow=lambda w: w["control_metadata"]["arms"]["control"].update(extra_tool="x")), 2)
 
     def test_arms_same_protocol(self):
         self.assert_rule(self.build(design=lambda d: next(a for a in d["arms"] if a["role"] == "treatment").update(workflow_protocol="direct_implementation")),
@@ -250,9 +256,10 @@ class CD(unittest.TestCase):
 
     def test_material_contrast_treatment_no_spec(self):
         def mut(w):
-            w["arms"]["treatment"] = {"pre_implementation_specification_required": False,
+            w["control_metadata"]["arms"]["treatment"] = {
+                "pre_implementation_specification_required": False,
                 "implementation_may_begin_immediately": True,
-                "specification_completeness_check_required": False, "required_specification_sections": []}
+                "specification_completeness_check_required": False}
         self.assert_rule(self.build(workflow=mut), "CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST")
 
     # --- verification (schema-closed) ---
@@ -299,8 +306,11 @@ class CD(unittest.TestCase):
                          "CONDITION_DESIGN_REQUIRES_BUNDLE_BOUNDARY")
 
     def test_duplicate_arm_role(self):
-        self.assert_rule(self.build(design=lambda d: next(a for a in d["arms"] if a["role"] == "treatment").update(role="control")),
-                         "CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS")
+        def mut(d):
+            t = next(a for a in d["arms"] if a["role"] == "treatment")
+            t["role"] = "control"
+            t.pop("spec_first_basis", None)  # control role forbids grounding (else it's a schema error)
+        self.assert_rule(self.build(design=mut), "CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS")
 
     # --- recursive execution artifacts ---
     def test_nested_execution_artifacts(self):
@@ -380,6 +390,200 @@ class CD(unittest.TestCase):
             with self.subTest(v=ascii(val)):
                 r, code = resolve(val, REPO_ROOT, must_exist=False)
                 self.assertIsNone(r); self.assertEqual("ESCAPE", code)
+
+    # --- overwrite helper + render fixtures (boundary 3/4/§15) ---
+    def _overwrite(self, c, rel, content):
+        """Overwrite a built bundle file and refresh only its freeze hash, isolating content rules
+        (render/blinding/normalization/distinctness) from the freeze check."""
+        tmp = c.parent
+        p = tmp / rel
+        p.write_bytes(content if isinstance(content, bytes) else content.encode("utf-8"))
+        man = yaml.safe_load((tmp / "freeze-manifest.yml").read_text())
+        for h in man["hashes"]:
+            if Path(h["path"]).name == Path(rel).name:
+                h["sha256"] = _sha(p)
+        (tmp / "freeze-manifest.yml").write_text(yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
+        return c
+
+    def _wf(self):
+        return yaml.safe_load((VB / "workflow-instruction-protocol.yml").read_text())
+
+    def _basis(self):
+        return (VB / "source-snapshots" / "spec-first.snapshot").read_text()
+
+    def _treat(self, d):
+        return next(a for a in d["arms"] if a["role"] == "treatment")
+
+    def _ctl(self, d):
+        return next(a for a in d["arms"] if a["role"] == "control")
+
+    # === boundary 1: source role / provenance binding ===
+    def test_source_path_not_canonical(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["gate"].update(source_path="benchmarks/challenges/rest-api-v1.md")),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_readiness_source_path_not_canonical(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["readiness"].update(source_path="instruction-blocks/spec-first.md")),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_gate_artifact_type_wrong(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["gate"].update(artifact_type="instruction_block")),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_challenge_artifact_type_wrong(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["challenge"].update(artifact_type="instruction_block")),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_spec_first_artifact_type_wrong(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["spec_first"].update(artifact_type="benchmark_challenge")),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_challenge_path_incoherent_with_version(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["challenge"].update(source_path="benchmarks/challenges/other-v9.md")),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_source_commit_not_base(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["readiness"].update(source_commit_sha="0" * 40)),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    def test_base_commit_drift_breaks_sources(self):
+        self.assert_rule(self.build(freeze=lambda m, p: m.update(source_base_commit_sha="a" * 40)),
+                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+
+    # === boundary 2: prompt-component role binding ===
+    def test_shared_condition_not_common_condition(self):
+        self.assert_rule(self.build(design=lambda d: d["condition_input_assembly"]["components"]["shared_condition"].update(
+            ref=d["condition_input_assembly"]["components"]["benchmark"]["ref"])),
+            "CONDITION_DESIGN_REQUIRES_INPUT_ASSEMBLY")
+
+    def test_treatment_missing_spec_first_basis_is_schema_error(self):
+        self.assert_exit(self.build(design=lambda d: self._treat(d).pop("spec_first_basis", None)), 2)
+
+    def test_control_has_spec_first_basis_is_schema_error(self):
+        def mut(d):
+            self._ctl(d)["spec_first_basis"] = {"snapshot_ref": self._treat(d)["spec_first_basis"]["snapshot_ref"]}
+        self.assert_exit(self.build(design=mut), 2)
+
+    def test_treatment_grounding_wrong_snapshot(self):
+        def mut(d):
+            self._treat(d)["spec_first_basis"]["snapshot_ref"] = d["condition_input_assembly"]["components"]["benchmark"]["ref"]
+        self.assert_rule(self.build(design=mut), "CONDITION_DESIGN_REQUIRES_SPEC_FIRST_BASIS")
+
+    def test_arm_spec_first_basis_unknown_field_is_schema_error(self):
+        self.assert_exit(self.build(design=lambda d: self._treat(d)["spec_first_basis"].update(extra="x")), 2)
+
+    def test_operative_files_not_distinct(self):
+        c = self.build()
+        self._overwrite(c, "common-condition.md", (c.parent / "control-workflow-protocol.md").read_bytes())
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_OPERATIVE_FILE_DISTINCTNESS")
+
+    # === boundary 3: blinding the delivered prompt ===
+    def test_shared_condition_leaks_role_word(self):
+        c = self.build()
+        self._overwrite(c, "common-condition.md", "# Task\n\nThe control arm must do X.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_BLINDED_PROMPT")
+
+    def test_overlay_leaks_experiment_word(self):
+        c = self.build()
+        self._overwrite(c, "control-workflow-protocol.md", "# Procedure\n\nThis experiment proceeds now.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_BLINDED_PROMPT")
+
+    def test_overlay_leaks_axis_word(self):
+        c = self.build()
+        self._overwrite(c, "treatment-workflow-protocol.md",
+                        "# Procedure\n\nThe primary axis selects the specification.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_BLINDED_PROMPT")
+
+    def test_shared_condition_render_mismatch_clean(self):
+        # clean text (no leaks) that simply is not the deterministic render -> single-axis render rule
+        c = self.build()
+        self._overwrite(c, "common-condition.md", "# Task\n\nDo the task as described.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_SINGLE_AXIS_RENDER")
+
+    def test_treatment_overlay_render_mismatch_clean(self):
+        c = self.build()
+        self._overwrite(c, "treatment-workflow-protocol.md",
+                        "# Procedure\n\nCarry out the task using the materials provided above.\n\nProvide a specification.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_SINGLE_AXIS_RENDER")
+
+    # === boundary 4: control = absence of an added requirement ===
+    def test_control_overlay_mentions_specification(self):
+        c = self.build()
+        self._overwrite(c, "control-workflow-protocol.md", "# Procedure\n\nWrite a full specification first.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CONTROL_ABSENCE")
+
+    def test_control_overlay_negative_instruction(self):
+        c = self.build()
+        self._overwrite(c, "control-workflow-protocol.md",
+                        "# Procedure\n\nBegin implementation immediately and skip planning.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CONTROL_ABSENCE")
+
+    def test_treatment_overlay_without_specification(self):
+        c = self.build()
+        self._overwrite(c, "treatment-workflow-protocol.md",
+                        "# Procedure\n\nCarry out the task using the materials provided above.\n\nProceed now.\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CONTROL_ABSENCE")
+
+    # === §15: text normalization ===
+    def test_delivered_file_crlf(self):
+        c = self.build()
+        self._overwrite(c, "common-condition.md", b"# Task\r\n\r\nDo the task.\r\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_TEXT_NORMALIZATION")
+
+    def test_delivered_file_no_final_newline(self):
+        c = self.build()
+        self._overwrite(c, "control-workflow-protocol.md",
+                        b"# Procedure\n\nCarry out the task using the materials provided above.")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_TEXT_NORMALIZATION")
+
+    def test_delivered_file_invalid_utf8(self):
+        c = self.build()
+        self._overwrite(c, "common-condition.md", b"# Task\n\n\xff\xfe not utf8\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_TEXT_NORMALIZATION")
+
+    # === schema: new structure ===
+    def test_promptscope_missing_new_field_is_schema_error(self):
+        self.assert_exit(self._schema_mut(lambda d: d["prompt_scope"].pop("prompt_length_and_structure_are_part_of_bundled_axis")), 2)
+
+    def test_workflow_unknown_delivered_field_is_schema_error(self):
+        self.assert_exit(self.build(workflow=lambda w: w["delivered_shared_instructions"].update(extra="x")), 2)
+
+    def test_workflow_missing_control_metadata_is_schema_error(self):
+        self.assert_exit(self.build(workflow=lambda w: w.pop("control_metadata")), 2)
+
+    # === renderer unit tests ===
+    def test_render_control_is_pure_baseline(self):
+        out = _render_overlay(self._wf(), "control")
+        self.assertNotIn("specification", out.lower())
+        self.assertTrue(out.endswith("\n"))
+        self.assertNotIn("\r", out)
+
+    def test_render_treatment_extends_control(self):
+        wf = self._wf()
+        ctrl = _render_overlay(wf, "control")
+        treat = _render_overlay(wf, "treatment", self._basis())
+        self.assertTrue(treat.startswith(ctrl))
+        self.assertIn("specification", treat.lower())
+
+    def test_render_treatment_embeds_frozen_spec_first(self):
+        treat = _render_overlay(self._wf(), "treatment", self._basis())
+        self.assertIn("Before generating any code", treat)
+        self.assertIn("Never skip the specification step", treat)
+
+    def test_render_treatment_requires_basis(self):
+        with self.assertRaises(ValueError):
+            _render_overlay(self._wf(), "treatment", None)
+
+    def test_render_delivered_surface_is_blinded(self):
+        wf = self._wf()
+        for text in (_render_shared(wf), _render_overlay(wf, "control"), _render_overlay(wf, "treatment", self._basis())):
+            low = text.lower()
+            for bad in ("control", "treatment", "experiment", "axis", "hypothes", "primary", "overlay", "baseline", "contrast"):
+                self.assertNotIn(bad, low, f"{bad!r} leaked into delivered text")
+
+    def test_extract_instruction_body_strips_frontmatter(self):
+        self.assertEqual("Hello body", _extract_body("---\ntitle: x\n---\n\nHello body\n"))
+        self.assertEqual("No frontmatter", _extract_body("No frontmatter\n"))
 
 
 if __name__ == "__main__":

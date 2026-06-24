@@ -98,11 +98,21 @@
         "role": {"type": "string", "enum": ["control", "treatment"]},
         "workflow_protocol": {"$ref": "#/$defs/nonBlankToken"},
         "overlay_ref": {"$ref": "#/$defs/repoRelativePath"},
-        "derived_from": {
+        "spec_first_basis": {
           "type": "object", "additionalProperties": false, "required": ["snapshot_ref"],
           "properties": {"snapshot_ref": {"$ref": "#/$defs/repoRelativePath"}}
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"role": {"const": "treatment"}}, "required": ["role"]},
+          "then": {"required": ["spec_first_basis"]}
+        },
+        {
+          "if": {"properties": {"role": {"const": "control"}}, "required": ["role"]},
+          "then": {"not": {"required": ["spec_first_basis"]}}
+        }
+      ]
     },
     "conditionInputAssembly": {
       "type": "object", "additionalProperties": false,
@@ -156,10 +166,11 @@
       }
     },
     "promptScope": {
-      "type": "object", "additionalProperties": false, "required": ["primary_axis_is_bundled_workflow_instruction_protocol", "difference_not_attributable_to_ordering_length_structure_alone", "held_constant_across_arms"],
+      "type": "object", "additionalProperties": false, "required": ["primary_axis_is_bundled_workflow_instruction_protocol", "difference_not_attributable_to_ordering_length_structure_alone", "prompt_length_and_structure_are_part_of_bundled_axis", "held_constant_across_arms"],
       "properties": {
         "primary_axis_is_bundled_workflow_instruction_protocol": {"type": "boolean", "const": true},
         "difference_not_attributable_to_ordering_length_structure_alone": {"type": "boolean", "const": true},
+        "prompt_length_and_structure_are_part_of_bundled_axis": {"type": "boolean", "const": true},
         "held_constant_across_arms": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonBlankToken"}}
       }
     },

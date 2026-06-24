@@ -33,7 +33,9 @@ try:
     import yaml
     from jsonschema import Draft202012Validator
     from jsonschema.exceptions import SchemaError
-    from render_condition_overlays import render_overlay, ROLES
+    from render_condition_overlays import (
+        ROLES, extract_instruction_body, render_arm_overlay, render_shared_condition,
+    )
 except ImportError as exc:
     print("ERROR: Missing dependencies for model-lab-condition-design validation "
           "(need PyYAML, jsonschema, render_condition_overlays).", file=sys.stderr)
@@ -65,6 +67,43 @@ MANDATORY_TREATMENT_SECTIONS = (
     "error_cases", "edge_cases", "persistence_assumptions", "planned_implementation_order",
 )
 EFFECT_SEVERITY = {"must_be_reported": 1, "blocks_design": 2}
+
+# --- source role/provenance binding (boundary 1) --------------------------------------------
+# Each frozen source must come from its exact canonical historical location, carry the role's
+# artifact_type, and share the freeze manifest's source_base_commit_sha. gate/readiness/spec-first
+# paths are fixed; the challenge path is derived from challenge_version so a swapped benchmark fails.
+SERIES_DIR = "experiments/2026-05-31_model-lab-replication-series"
+CHALLENGE_ARTIFACT_TYPE = "benchmark_challenge"
+EXPECTED_SOURCE_ROLES = {
+    "gate": (f"{SERIES_DIR}/results/condition-contrast-design-gate.yml", GATE_ARTIFACT_TYPE),
+    "readiness": (f"{SERIES_DIR}/results/result-assessment-readiness.yml", READINESS_ARTIFACT_TYPE),
+    "spec_first": ("instruction-blocks/spec-first.md", "instruction_block"),
+}
+
+# --- delivered-prompt blinding (boundary 3) -------------------------------------------------
+# The text actually delivered to the agent (shared condition + both overlays) must carry NO
+# experiment metadata. These patterns are pure experiment-framing words that have no place in a
+# blinded task instruction; they are matched case-insensitively on the editable delivered files.
+FORBIDDEN_PROMPT_PATTERNS = tuple(re.compile(p, re.IGNORECASE) for p in (
+    r"\bcontrol\b", r"\btreatment\b", r"\barms?\b", r"\bexperiment\w*\b", r"\bhypothes\w*\b",
+    r"\baxis\b", r"\baxes\b", r"\bintervention\b", r"\bcontrast\b", r"\bbaseline\b",
+    r"\bprimary\b", r"\brun[\s-]?004\b", r"\bmodel[\s-]lab\b", r"\boverlay\b",
+    r"\bworkflow[\s-]protocol\b", r"\bcondition\s+design\b", r"\bblind\w*\b",
+))
+DELIVERED_PROMPT_FILES = ("common-condition.md", "control-workflow-protocol.md",
+                          "treatment-workflow-protocol.md")
+OPERATIVE_MARKDOWN_FILES = DELIVERED_PROMPT_FILES
+
+# --- control-as-absence (boundary 4) --------------------------------------------------------
+# The control overlay must be the ABSENCE of an extra Spec-First requirement, never a negative
+# instruction. It must mention no specification at all and carry none of the structured negative
+# flags; the treatment overlay must positively require a specification.
+CONTROL_FORBIDDEN_NEGATIVE = tuple(re.compile(p, re.IGNORECASE) for p in (
+    r"\bspecification\b", r"specification[_\s]+required", r"do\s+not\s+write",
+    r"begin\s+implementation\s+immediately", r"implementation_may_begin_immediately",
+    r"pre_implementation_specification_required", r"specification_completeness_check_required",
+    r"\(none\)", r"\bskip\b", r"\bwithout\b",
+))
 
 MANDATORY_DOES_NOT_ESTABLISH = (
     "weak_condition_contrast_resolved", "run_004_execution_allowed", "run_004_executed",
@@ -289,10 +328,114 @@ def _bundle_refs(data: dict):
     for arm in data.get("arms") or []:
         if isinstance(arm, dict) and arm.get("overlay_ref"):
             refs.append((str(arm["overlay_ref"]), f"arms[{arm.get('id','?')}].overlay_ref"))
-        df = (arm or {}).get("derived_from") if isinstance(arm, dict) else None
-        if isinstance(df, dict) and df.get("snapshot_ref"):
-            refs.append((str(df["snapshot_ref"]), f"arms[{arm.get('id','?')}].derived_from.snapshot_ref"))
+        sfb = (arm or {}).get("spec_first_basis") if isinstance(arm, dict) else None
+        if isinstance(sfb, dict) and sfb.get("snapshot_ref"):
+            refs.append((str(sfb["snapshot_ref"]), f"arms[{arm.get('id','?')}].spec_first_basis.snapshot_ref"))
     return refs
+
+
+def _freeze_base_commit(data: dict, bundle_dir: Path, repo_root: Path):
+    """Return the freeze manifest's source_base_commit_sha (lowercased) or None if unavailable."""
+    ref = str((data.get("freeze") or {}).get("freeze_manifest_ref", ""))
+    _, manifest, _ = _load_bundle_file(ref, bundle_dir, repo_root, as_yaml=True)
+    if not isinstance(manifest, dict):
+        return None
+    base = str(manifest.get("source_base_commit_sha", "")).strip().lower()
+    return base or None
+
+
+def _read_text_strict(path: Path):
+    """Return (text, problem). problem is a normalization message: invalid UTF-8, CR present, or
+    no final newline. Never uses errors='replace', so corruption is surfaced, not masked."""
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        return None, f"could not be read ({exc})"
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None, "is not valid UTF-8"
+    if b"\r" in raw:
+        return text, "contains a carriage return (LF-only required)"
+    if not raw.endswith(b"\n"):
+        return text, "has no final newline"
+    return text, None
+
+
+def _prompt_exposure_errors(bundle_dir: Path, path: Path):
+    """Boundary 3+4+§15: the delivered prompt files must be UTF-8/LF/final-newline normalized, carry
+    no experiment metadata, and model control as the ABSENCE (not a negation) of a spec requirement."""
+    norm, blind, absence = [], [], []
+    texts = {}
+    for name in OPERATIVE_MARKDOWN_FILES:
+        fp = bundle_dir / name
+        if not fp.is_file():
+            continue
+        text, prob = _read_text_strict(fp)
+        if prob is not None:
+            norm.append(f"{name} {prob}")
+        if text is None:
+            continue
+        texts[name] = text
+        for pat in FORBIDDEN_PROMPT_PATTERNS:
+            m = pat.search(text)
+            if m:
+                blind.append(f"{name} contains forbidden experiment token {m.group(0)!r}")
+                break
+    ctrl = texts.get("control-workflow-protocol.md")
+    treat = texts.get("treatment-workflow-protocol.md")
+    if ctrl is not None:
+        for pat in CONTROL_FORBIDDEN_NEGATIVE:
+            m = pat.search(ctrl)
+            if m:
+                absence.append(f"control overlay must state no specification requirement (found {m.group(0)!r})")
+                break
+    if treat is not None and not re.search(r"\bspecification\b", treat, re.IGNORECASE):
+        absence.append("treatment overlay must positively require a specification")
+    out = []
+    if norm:
+        out.append(format_error("CONDITION_DESIGN_REQUIRES_TEXT_NORMALIZATION", path,
+            "every delivered prompt file must be UTF-8, LF-only, with a final newline; " + "; ".join(norm)))
+    if blind:
+        out.append(format_error("CONDITION_DESIGN_REQUIRES_BLINDED_PROMPT", path,
+            "the delivered prompt must carry no role/axis/experiment metadata; " + "; ".join(blind)))
+    if absence:
+        out.append(format_error("CONDITION_DESIGN_REQUIRES_CONTROL_ABSENCE", path,
+            "control must be the ABSENCE of an extra Spec-First requirement (never a negative "
+            "instruction) while treatment positively requires a specification; " + "; ".join(absence)))
+    return out
+
+
+def _operative_distinctness_errors(data: dict, bundle_dir: Path, repo_root: Path, path: Path):
+    """Boundary 2/§7: the operative (non-snapshot, non-freeze) bundle files must be pairwise distinct."""
+    comp = (data.get("condition_input_assembly") or {}).get("components") or {}
+    refs = [
+        (str(data.get("design_artifact_path", "")), "condition-design.yml"),
+        (str(data.get("precondition_snapshot_ref", "")), "precondition-snapshot.yml"),
+        (str(data.get("workflow_instruction_source_ref", "")), "workflow-instruction-protocol.yml"),
+        (str((data.get("verification_surface") or {}).get("protocol_ref", "")), "verification-protocol.yml"),
+        (str((data.get("measurement_surface") or {}).get("protocol_ref", "")), "measurement-protocol.yml"),
+        (str((comp.get("shared_condition") or {}).get("ref", "")), "common-condition.md"),
+    ]
+    for arm in data.get("arms") or []:
+        if isinstance(arm, dict):
+            refs.append((str(arm.get("overlay_ref", "")), f"{arm.get('role', '?')} overlay"))
+    digests, dups = {}, []
+    for ref, label in refs:
+        resolved, code = resolve_repo_relative_path(ref, repo_root, must_exist=True)
+        if code is not None or resolved is None or not resolved.is_file():
+            continue
+        h = _sha256_of(resolved)
+        if h is None:
+            continue
+        if h in digests:
+            dups.append(f"{label} is byte-identical to {digests[h]}")
+        else:
+            digests[h] = label
+    if dups:
+        return [format_error("CONDITION_DESIGN_REQUIRES_OPERATIVE_FILE_DISTINCTNESS", path,
+            "operative bundle files must be pairwise distinct; " + "; ".join(dups))]
+    return []
 
 
 def _covered_bundle_files(data: dict, snapshot: dict | None):
@@ -369,7 +512,13 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
     snap_ref = str(data.get("precondition_snapshot_ref", ""))
     _, snapshot, snap_prob = load(snap_ref)
     frozen_gate = frozen_readiness = None
+    spec_first_res = None
+    base_commit = _freeze_base_commit(data, bundle_dir, repo_root)
+    challenge_version = str(data.get("challenge_version", "")).strip()
+    expected_paths = dict(EXPECTED_SOURCE_ROLES)
+    expected_paths["challenge"] = (f"benchmarks/challenges/{challenge_version}.md", CHALLENGE_ARTIFACT_TYPE)
     snap_problems = []
+    role_problems = []
     if snapshot is None:
         snap_problems.append(f"snapshot {display_source_path(snap_ref)} {snap_prob}")
     else:
@@ -378,10 +527,20 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
         captured_at = snapshot.get("captured_at")
         if _parse_rfc3339(captured_at) is None:
             snap_problems.append(f"captured_at is not a real RFC-3339 timestamp ({captured_at!r})")
-        for sname, expected_type, want_parse in (
-            ("gate", GATE_ARTIFACT_TYPE, "gate"), ("readiness", READINESS_ARTIFACT_TYPE, "readiness"),
-            ("challenge", None, None), ("spec_first", None, None)):
+        for sname, want_parse in (("gate", "gate"), ("readiness", "readiness"),
+                                  ("challenge", None), ("spec_first", "spec_first")):
             src = sources.get(sname) or {}
+            # boundary 1: role/provenance binding (canonical path, role artifact_type, base commit)
+            exp_path, exp_type = expected_paths[sname]
+            if str(src.get("source_path", "")).strip() != exp_path:
+                role_problems.append(f"sources.{sname}.source_path must be {exp_path!r} "
+                                     f"(found {display_source_path(str(src.get('source_path','')))})")
+            if str(src.get("artifact_type", "")).strip() != exp_type:
+                role_problems.append(f"sources.{sname}.artifact_type must be {exp_type!r} "
+                                     f"(found {str(src.get('artifact_type',''))!r})")
+            if base_commit is not None and str(src.get("source_commit_sha", "")).strip().lower() != base_commit:
+                role_problems.append(f"sources.{sname}.source_commit_sha must equal the freeze "
+                                     f"source_base_commit_sha ({base_commit})")
             spath = str(src.get("snapshot_path", ""))
             sres, _, sprob = load(spath, as_yaml=False)
             if sprob is not None:
@@ -404,6 +563,8 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
                     frozen_readiness = load_yaml(sres)
                 except (FileNotFoundError, ValueError):
                     snap_problems.append("frozen readiness snapshot is not readable YAML")
+            elif want_parse == "spec_first":
+                spec_first_res = sres
         # derive gate truth from the frozen full gate
         if frozen_gate is not None:
             if str(frozen_gate.get("artifact_type", "")).strip() != GATE_ARTIFACT_TYPE:
@@ -437,6 +598,11 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT", path,
             "the frozen precondition snapshot must verify its source hashes and derive a coherent "
             "gate+readiness precondition; offending: " + "; ".join(snap_problems)))
+    if role_problems:
+        errors.append(format_error("CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING", path,
+            "every frozen source must come from its exact canonical historical path, carry the role's "
+            "artifact_type, and share the freeze source_base_commit_sha; offending: "
+            + "; ".join(role_problems)))
 
     # --- gate requirements derived from the frozen gate (subset) -------------
     if frozen_gate is not None:
@@ -478,14 +644,39 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_PRIMARY_AXIS_NOT_CONTROLLED", path,
             "the primary axis must not also appear in controlled_dimensions."))
 
-    # --- single-axis: overlays rendered from one structured source -----------
+    # --- input-assembly component refs (used by render + assembly checks) -----
+    cia = data.get("condition_input_assembly") or {}
+    comp = cia.get("components") or {}
+    cia_arms = cia.get("arms") or {}
+    benchmark_ref = str((comp.get("benchmark") or {}).get("ref", ""))
+    shared_ref = str((comp.get("shared_condition") or {}).get("ref", ""))
+
+    # --- single-axis + blinded delivery: rendered from one structured source --
     wf_ref = str(data.get("workflow_instruction_source_ref", ""))
     _, wf, wf_prob = load(wf_ref)
+    spec_first_basis = None
+    if spec_first_res is not None:
+        spec_first_basis, _ = _read_text_strict(spec_first_res)
+    overlay_text = {}
     render_problems = []
     if wf is None:
         render_problems.append(f"workflow source {display_source_path(wf_ref)} {wf_prob}")
     else:
         render_problems += _child_identity_problems("workflow", wf, data)
+        # the shared condition (common-condition.md) is the deterministic render of the delivered surface
+        try:
+            expected_shared = render_shared_condition(wf)
+        except (ValueError, KeyError, TypeError) as exc:
+            expected_shared = None
+            render_problems.append(f"shared condition could not be rendered: {exc}")
+        sc_res, _, sc_prob = load(shared_ref, as_yaml=False)
+        if sc_prob is not None:
+            render_problems.append(f"shared condition {sc_prob}")
+        elif expected_shared is not None:
+            actual_shared, _ = _read_text_strict(sc_res)
+            if actual_shared != expected_shared:
+                render_problems.append("common-condition.md is not byte-equal to render_shared_condition()")
+        # the two overlays are rendered from the delivered surface; treatment is grounded in the frozen spec-first body
         for role in ROLES:
             arm = control_arm if role == "control" else treatment_arm
             if not arm:
@@ -495,29 +686,37 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
                 render_problems.append(f"{role} overlay {oprob}")
                 continue
             try:
-                expected = render_overlay(wf, role)
+                expected = render_arm_overlay(wf, role, spec_first_basis if role == "treatment" else None)
             except (ValueError, KeyError, TypeError) as exc:
                 render_problems.append(f"{role} overlay could not be rendered: {exc}")
                 continue
-            if ores.read_text(encoding="utf-8", errors="replace") != expected:
-                render_problems.append(f"{role} overlay does not match the deterministic render of the structured source")
+            actual, _ = _read_text_strict(ores)
+            if actual != expected:
+                render_problems.append(f"{role} overlay is not byte-equal to render_arm_overlay()")
+            else:
+                overlay_text[role] = actual
+        # control = absence: the treatment overlay must be the control overlay plus the appended delta
+        if "control" in overlay_text and "treatment" in overlay_text and not overlay_text["treatment"].startswith(overlay_text["control"]):
+            render_problems.append("treatment overlay must extend the control overlay (control = absence of the added requirement)")
     if render_problems:
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_SINGLE_AXIS_RENDER", path,
-            "arm overlays must be byte-equal to the deterministic render of the single structured "
-            "workflow-instruction source; " + "; ".join(render_problems)))
+            "the delivered shared condition and arm overlays must be byte-equal to the deterministic "
+            "render of the single structured workflow-instruction source (treatment grounded in the "
+            "frozen spec-first body); " + "; ".join(render_problems)))
 
-    # --- material contrast (read spec from the structured source) ------------
+    # --- material contrast (assigned semantics from non-delivered control_metadata) ---
     if wf is not None:
-        wf_arms = wf.get("arms") or {}
-        cs = wf_arms.get("control") or {}
-        ts = wf_arms.get("treatment") or {}
+        cm_arms = (wf.get("control_metadata") or {}).get("arms") or {}
+        cs = cm_arms.get("control") or {}
+        ts = cm_arms.get("treatment") or {}
+        sections = {str(x).strip() for x in ((wf.get("delivered_treatment_addendum") or {}).get("required_specification_sections") or [])}
         mat = []
-        if cs.get("pre_implementation_specification_required") is not False or cs.get("implementation_may_begin_immediately") is not True or (cs.get("required_specification_sections") or []):
-            mat.append("control must carry no assigned upfront-specification requirement")
+        if cs.get("pre_implementation_specification_required") is not False or cs.get("implementation_may_begin_immediately") is not True or cs.get("specification_completeness_check_required") is not False:
+            mat.append("control_metadata.arms.control must carry no assigned upfront-specification requirement")
         if ts.get("pre_implementation_specification_required") is not True or ts.get("implementation_may_begin_immediately") is not False or ts.get("specification_completeness_check_required") is not True:
-            mat.append("treatment must require a completeness-checked upfront specification")
-        if not all(s in {str(x).strip() for x in (ts.get("required_specification_sections") or [])} for s in MANDATORY_TREATMENT_SECTIONS):
-            mat.append("treatment required_specification_sections must cover: " + ", ".join(MANDATORY_TREATMENT_SECTIONS))
+            mat.append("control_metadata.arms.treatment must require a completeness-checked upfront specification")
+        if not all(s in sections for s in MANDATORY_TREATMENT_SECTIONS):
+            mat.append("delivered_treatment_addendum.required_specification_sections must cover: " + ", ".join(MANDATORY_TREATMENT_SECTIONS))
         if control_arm and str(control_arm.get("workflow_protocol", "")).strip() != CONTROL_WP:
             mat.append(f"control workflow_protocol must be {CONTROL_WP!r}")
         if treatment_arm and str(treatment_arm.get("workflow_protocol", "")).strip() != TREATMENT_WP:
@@ -526,18 +725,16 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
             errors.append(format_error("CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST", path,
                 "the assigned workflow-instruction contrast must be material and pre-execution observable; " + "; ".join(mat)))
 
-    # --- input assembly: components, fixed order, benchmark binding ----------
+    # --- input assembly: components, fixed order, benchmark + shared binding --
     asm = []
-    cia = data.get("condition_input_assembly") or {}
-    comp = cia.get("components") or {}
-    cia_arms = cia.get("arms") or {}
-    benchmark_ref = str((comp.get("benchmark") or {}).get("ref", ""))
-    shared_ref = str((comp.get("shared_condition") or {}).get("ref", ""))
-    # benchmark must be the frozen challenge snapshot
     if snapshot is not None:
         ch_snap = str(((snapshot.get("sources") or {}).get("challenge") or {}).get("snapshot_path", ""))
         if benchmark_ref != ch_snap:
             asm.append("components.benchmark.ref must be the frozen challenge snapshot from the precondition snapshot")
+    # shared_condition must bind exactly to the bundle's common-condition.md (boundary 2)
+    sc_resolved, sc_code = resolve_repo_relative_path(shared_ref, repo_root, must_exist=True)
+    if sc_code is not None or sc_resolved is None or sc_resolved != (bundle_dir / "common-condition.md").resolve():
+        asm.append("components.shared_condition.ref must be the bundle's common-condition.md")
     for role, arm in (("control", control_arm), ("treatment", treatment_arm)):
         entry = cia_arms.get(role) or {}
         if str(entry.get("overlay_ref", "")).strip() != str((arm or {}).get("overlay_ref", "")).strip():
@@ -546,8 +743,28 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
             asm.append(f"assembly.arms.{role}.composition_order must be [benchmark, shared_condition, arm_overlay]")
     if asm:
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_INPUT_ASSEMBLY", path,
-            "the input assembly must compose the frozen benchmark, shared condition, and the arm overlay "
-            "in a fixed identical order; " + "; ".join(asm)))
+            "the input assembly must compose the frozen benchmark, the bundle's shared condition, and the "
+            "arm overlay in a fixed identical order; " + "; ".join(asm)))
+
+    # --- prompt-component role binding: spec-first grounding (boundary 2) -----
+    grounding = []
+    spec_first_snap = str(((snapshot or {}).get("sources") or {}).get("spec_first", {}).get("snapshot_path", "")) if snapshot else ""
+    if treatment_arm is not None:
+        tref = str((treatment_arm.get("spec_first_basis") or {}).get("snapshot_ref", "")).strip()
+        if not tref:
+            grounding.append("treatment arm must declare spec_first_basis.snapshot_ref")
+        elif spec_first_snap and tref != spec_first_snap:
+            grounding.append("treatment spec_first_basis.snapshot_ref must be the frozen spec-first snapshot")
+    if control_arm is not None and control_arm.get("spec_first_basis") is not None:
+        grounding.append("control arm must NOT carry a spec_first_basis (control = absence of grounding)")
+    if grounding:
+        errors.append(format_error("CONDITION_DESIGN_REQUIRES_SPEC_FIRST_BASIS", path,
+            "only the treatment arm is grounded in the frozen spec-first snapshot; control is not; "
+            + "; ".join(grounding)))
+
+    # --- delivered-prompt blinding + control-as-absence + normalization -------
+    errors += _prompt_exposure_errors(bundle_dir, path)
+    errors += _operative_distinctness_errors(data, bundle_dir, repo_root, path)
 
     # --- assigned vs observed separation -------------------------------------
     aso = []

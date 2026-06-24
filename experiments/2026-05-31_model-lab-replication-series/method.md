@@ -93,15 +93,23 @@ Methodological strength: weak structural control. The condition `code_first_cont
 - The single primary axis is `workflow_protocol` with semantics `assigned_instruction_requirement`:
   it varies an **assigned** Spec-First instruction (present vs absent), not an enforced internal
   thought process, and does not require control to actually write code immediately.
-- The two future arms are `control: direct_implementation` (no assigned upfront-specification
-  requirement) and `treatment: spec_first` (a complete, completeness-checked upfront
-  specification is required before any implementation). The treatment overlay is bound by
-  `derived_from.snapshot_ref` to the frozen byte-snapshot of the adopted Spec-First
-  instruction block (`instruction-blocks/spec-first.md`).
-- Both arm overlays are rendered deterministically from one structured workflow-instruction
-  source (`workflow-instruction-protocol.yml`) whose shared instruction surface is identical for
-  both arms; the validator re-renders and byte-checks them, so no free-form prose can add a
-  second axis.
+- The two future arms are `control: direct_implementation` (the **absence** of an assigned
+  upfront-specification requirement — the neutral task baseline, never a negative instruction) and
+  `treatment: spec_first` (the same baseline plus a positive Spec-First requirement). The treatment
+  arm is grounded by `spec_first_basis.snapshot_ref` in the frozen byte-snapshot of the adopted
+  Spec-First instruction block (`instruction-blocks/spec-first.md`); the renderer embeds that
+  snapshot's instruction body verbatim, so the requirement is grounded byte-for-byte in the frozen
+  source. The control arm carries no `spec_first_basis` (enforced role-specifically by the schema).
+- The delivered prompt is **blinded**: the text actually given to the future agent (the shared
+  condition `common-condition.md` and the two overlays) carries no role names, axis names,
+  hypothesis, or experiment framing. That metadata lives only in `condition-design.yml`, this
+  `method.md`, and the non-delivered `control_metadata` block of the structured source.
+- `common-condition.md` and both overlays are rendered deterministically from the *delivered_*
+  fields of one structured workflow-instruction source (`workflow-instruction-protocol.yml`); the
+  validator re-renders and byte-checks all three (re-deriving the treatment grounding from the
+  frozen spec-first snapshot), so neither a hidden second axis nor a metadata leak can be hand-edited
+  in. Every frozen source is additionally bound to its exact canonical path, role artifact_type, and
+  the freeze `source_base_commit_sha`; every delivered file is UTF-8/LF/final-newline normalized.
 - The input assembly composes, in a fixed order identical for both arms, the frozen benchmark
   byte-snapshot, the shared condition, and the arm overlay; the benchmark component is bound to
   the frozen challenge snapshot.

@@ -1,6 +1,6 @@
 schema_version: "v1"
 artifact_type: "model_lab_condition_design"
-triggered_by: "user-request-2026-06-24-run-004-condition-design-source-binding"
+triggered_by: "user-request-2026-06-24-run-004-blinded-delivery-and-provenance-roles"
 design_id: "run-004-condition-contrast"
 design_status: "frozen"
 design_artifact_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml"
@@ -10,10 +10,13 @@ challenge_version: "rest-api-v1"
 # Frozen paired condition contrast for a FUTURE Run-004. Preconditions are read from immutable
 # source byte-snapshots (source-snapshots/) with verified provenance; gate requirements are
 # DERIVED from the frozen full gate (no editable reduced list). The single primary axis is an
-# assigned workflow-instruction requirement; the two arm overlays are rendered deterministically
-# from one structured source so no free-form prose can add a second axis. The input assembly
-# composes benchmark + shared condition + arm overlay in a fixed order, identical for both arms.
-# Condition semantics are frozen; runtime values are unbound. No run, measurement, or assessment.
+# assigned workflow-instruction requirement; the delivered prompt is BLINDED (no role/axis/
+# experiment words reach the agent) and rendered deterministically from one structured source so no
+# free-form prose can add a second axis. Control is the ABSENCE of an extra Spec-First requirement
+# (the neutral baseline, never a negative instruction); treatment is that baseline plus a positive
+# Spec-First requirement grounded byte-for-byte in the frozen spec-first snapshot. The input
+# assembly composes benchmark + shared condition + arm overlay in a fixed order, identical for both
+# arms. Condition semantics are frozen; runtime values are unbound. No run, measurement, assessment.
 
 challenge:
   id: "rest-api"
@@ -40,7 +43,7 @@ arms:
     role: "treatment"
     workflow_protocol: "spec_first"
     overlay_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md"
-    derived_from:
+    spec_first_basis:
       snapshot_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/spec-first.snapshot"
 
 condition_input_assembly:
@@ -95,6 +98,7 @@ process_artifacts_scored_as_outcome: false
 prompt_scope:
   primary_axis_is_bundled_workflow_instruction_protocol: true
   difference_not_attributable_to_ordering_length_structure_alone: true
+  prompt_length_and_structure_are_part_of_bundled_axis: true
   held_constant_across_arms:
     - outer_structure
     - language
@@ -181,7 +185,7 @@ controlled_dimensions:
   - id: "prompt_scope_neutrality"
     control_method: "rendered_from_single_structured_source"
     binding_status: "bound_at_design"
-    binding_source: "workflow-instruction-protocol.yml shared_instruction_surface"
+    binding_source: "workflow-instruction-protocol.yml delivered_shared_instructions (blinded; control_metadata is never delivered)"
     same_value_across_arms_required: true
     blocking_divergence: "Differing tone/structure/examples beyond the Spec-First requirement adds a second axis."
 

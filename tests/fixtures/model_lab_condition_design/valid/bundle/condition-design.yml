@@ -27,7 +27,7 @@ arms:
   role: treatment
   workflow_protocol: spec_first
   overlay_ref: tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md
-  derived_from:
+  spec_first_basis:
     snapshot_ref: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/spec-first.snapshot
 condition_input_assembly:
   normalization:
@@ -83,6 +83,7 @@ process_artifacts_scored_as_outcome: false
 prompt_scope:
   primary_axis_is_bundled_workflow_instruction_protocol: true
   difference_not_attributable_to_ordering_length_structure_alone: true
+  prompt_length_and_structure_are_part_of_bundled_axis: true
   held_constant_across_arms:
   - outer_structure
   - language
