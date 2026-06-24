@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
-"""Regression tests for model-lab-condition-design validation."""
+"""Regression tests for hardened model-lab-condition-design validation.
+
+Negative cases build a complete in-repo temp bundle (copy of the valid fixture bundle with
+refs rewritten to the temp location and the freeze recomputed), then mutate exactly one
+thing. This lets the design-self-identity, bundle-boundary, child-identity, and freeze
+guarantees be tested honestly rather than bypassed.
+"""
 
 from __future__ import annotations
 
+import copy
+import hashlib
 import json
 import runpy
 import shutil
@@ -20,468 +28,414 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 VALIDATOR_PATH = REPO_ROOT / "scripts" / "docmeta" / "validate_model_lab_condition_design.py"
 SCHEMA_PATH = REPO_ROOT / "schemas" / "model-lab-condition-design.v1.schema.json"
 FIXTURE_ROOT = REPO_ROOT / "tests" / "fixtures" / "model_lab_condition_design"
-EV = "tests/fixtures/model_lab_condition_design/_evidence"
+VALID_BUNDLE = FIXTURE_ROOT / "valid" / "bundle"
+FIX_PREFIX = "tests/fixtures/model_lab_condition_design/valid/bundle/"
+BUNDLE_FILES = [
+    "condition-design.yml", "common-condition.md", "control-workflow-protocol.md",
+    "treatment-workflow-protocol.md", "verification-protocol.yml",
+    "measurement-protocol.yml", "precondition-snapshot.yml",
+]
 REAL_ARTIFACT = (
-    REPO_ROOT
-    / "experiments"
-    / "2026-05-31_model-lab-replication-series"
-    / "artifacts"
-    / "run-004-condition-contrast-design"
-    / "condition-design.yml"
+    REPO_ROOT / "experiments" / "2026-05-31_model-lab-replication-series"
+    / "artifacts" / "run-004-condition-contrast-design" / "condition-design.yml"
 )
 
-VALID_FIXTURES = [
-    "valid/basic.yml",
-]
 
-# Each invalid fixture must report at least the listed semantic rule. Some fixtures may
-# co-report additional rules (e.g. an unshared protocol ref also trips the "only primary
-# axis may differ" rule); the test only asserts that the listed rule is present. Pure-form
-# (schema const / enum / required) violations are covered by the mutation tests below.
-INVALID_FIXTURES = {
-    "invalid/missing-gate-source.yml": "CONDITION_DESIGN_REQUIRES_SINGLE_GATE_SOURCE",
-    "invalid/multiple-gate-sources.yml": "CONDITION_DESIGN_REQUIRES_SINGLE_GATE_SOURCE",
-    "invalid/source-wrong-series.yml": "CONDITION_DESIGN_REQUIRES_MATCHING_SOURCE_IDENTITY",
-    "invalid/gate-allows-execution.yml": "CONDITION_DESIGN_REQUIRES_GATE_AUTHORIZES_DESIGN",
-    "invalid/gate-result-assessment-allowed.yml": "CONDITION_DESIGN_REQUIRES_BLOCKED_READINESS",
-    "invalid/readiness-not-blocked.yml": "CONDITION_DESIGN_REQUIRES_BLOCKED_READINESS",
-    "invalid/target-blocker-closed.yml": "CONDITION_DESIGN_REQUIRES_OPEN_TARGET_BLOCKER",
-    "invalid/duplicate-arm-role.yml": "CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS",
-    "invalid/arms-same-workflow-protocol.yml": "CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS",
-    "invalid/cosmetic-contrast.yml": "CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST",
-    "invalid/second-axis-difference.yml": "CONDITION_DESIGN_REQUIRES_ONLY_PRIMARY_AXIS_DIFFERENCE",
-    "invalid/unshared-verification.yml": "CONDITION_DESIGN_REQUIRES_SHARED_VERIFICATION",
-    "invalid/unshared-measurement.yml": "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT",
-    "invalid/unshared-intervention.yml": "CONDITION_DESIGN_REQUIRES_SHARED_INTERVENTION_RULES",
-    "invalid/missing-controlled-dimension.yml": "CONDITION_DESIGN_REQUIRES_COMPLETE_CONTROL_BINDINGS",
-    "invalid/confounder-incomplete.yml": "CONDITION_DESIGN_REQUIRES_COMPLETE_CONFOUNDER_CONTROLS",
-    "invalid/duplicate-semantic-id.yml": "CONDITION_DESIGN_REQUIRES_UNIQUE_SEMANTIC_IDS",
-    "invalid/mandatory-non-claim-missing.yml": "CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS",
-    "invalid/forbidden-selection-non-claim.yml": "CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS",
-    "invalid/freeze-hash-mismatch.yml": "CONDITION_DESIGN_REQUIRES_VALID_FREEZE",
-    "invalid/freeze-self-hash.yml": "CONDITION_DESIGN_REQUIRES_VALID_FREEZE",
-    "invalid/source-path-escape.yml": "CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS",
-    "invalid/source-file-missing.yml": "CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS",
-}
-
-# (label, mutation, expected instance_path) — each turns a fixed v1 value into a
-# disallowed one and must surface as a schema error (exit 2) at a stable path. The exact
-# jsonschema prose is intentionally not asserted. The wrong-primary-axis case lives here
-# (primary_intervention_axis.id is const), mirroring how the neighbour gate covers its
-# const target_blocker as a schema mutation.
-SCHEMA_CONST_MUTATIONS = [
-    ("schema_version", lambda d: d.update(schema_version="1.0.0"), "schema_version"),
-    ("artifact_type", lambda d: d.update(artifact_type="bogus"), "artifact_type"),
-    ("design_status", lambda d: d.update(design_status="draft"), "design_status"),
-    ("target_blocker", lambda d: d.update(target_blocker="external_independence_not_attested"), "target_blocker"),
-    ("target_blocker_status_after_design", lambda d: d.update(target_blocker_status_after_design="resolved"), "target_blocker_status_after_design"),
-    ("run_004_execution_allowed", lambda d: d.update(run_004_execution_allowed=True), "run_004_execution_allowed"),
-    ("result_assessment_allowed_after_design", lambda d: d.update(result_assessment_allowed_after_design=True), "result_assessment_allowed_after_design"),
-    ("comparison_ready_after_design", lambda d: d.update(comparison_ready_after_design=True), "comparison_ready_after_design"),
-    ("primary_axis_id", lambda d: d["primary_intervention_axis"].update(id="tool_and_agent_mode"), "primary_intervention_axis.id"),
-    ("primary_axis_selection_status", lambda d: d["primary_intervention_axis"].update(selection_status="pending"), "primary_intervention_axis.selection_status"),
-    ("required_axis_count", lambda d: d["primary_intervention_axis"].update(required_axis_count=2), "primary_intervention_axis.required_axis_count"),
-    ("frozen_before_execution", lambda d: d["freeze"].update(frozen_before_execution=False), "freeze.frozen_before_execution"),
-    ("decision_status", lambda d: d["decision"].update(status="draft"), "decision.status"),
-    ("decision_next_step", lambda d: d["decision"].update(next_step="run_004_execution_may_begin"), "decision.next_step"),
-    ("unknown_arm_role", lambda d: d["arms"][0].update(role="placebo"), "arms.0.role"),
-    ("same_value_required_false", lambda d: d["controlled_dimensions"][0].update(same_value_across_arms_required=False), "controlled_dimensions.0.same_value_across_arms_required"),
-    ("unknown_confounder_effect", lambda d: d["confounder_controls"][0].update(effect_if_uncontrolled="bogus"), "confounder_controls.0.effect_if_uncontrolled"),
-    ("unknown_source_kind", lambda d: d["source_evidence"][0].update(kind="bogus_kind"), "source_evidence.0.kind"),
-]
-
-# (label, foundational kind, replacement path, expected diagnostic) — each points a
-# declared foundational source at a non-mapping/non-file target; the design must exit 1
-# with READABLE_FOUNDATIONAL_SOURCES and the matching diagnostic.
-READABILITY_MUTATIONS = [
-    ("gate_wrong_extension", "condition_contrast_design_gate", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
-    ("gate_invalid_yaml", "condition_contrast_design_gate", f"{EV}/foundation-invalid.yml", "is not valid YAML"),
-    ("gate_not_mapping", "condition_contrast_design_gate", f"{EV}/foundation-list.yml", "is not a YAML mapping"),
-    ("gate_directory", "condition_contrast_design_gate", f"{EV}/source-directory", "is not a regular file"),
-    ("readiness_wrong_extension", "readiness_gate", f"{EV}/foundation-not-yaml.txt", "is not a .yml/.yaml file"),
-    ("readiness_invalid_yaml", "readiness_gate", f"{EV}/foundation-invalid.yml", "is not valid YAML"),
-    ("readiness_not_mapping", "readiness_gate", f"{EV}/foundation-list.yml", "is not a YAML mapping"),
-    ("readiness_directory", "readiness_gate", f"{EV}/source-directory", "is not a regular file"),
-]
+def _sha(p: Path) -> str:
+    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 class ModelLabConditionDesignValidatorTests(unittest.TestCase):
     def run_validator(self, *paths: Path) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
-            [sys.executable, str(VALIDATOR_PATH), *[str(path) for path in paths]],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
+            [sys.executable, str(VALIDATOR_PATH), *[str(p) for p in paths]],
+            cwd=REPO_ROOT, capture_output=True, text=True, check=False,
         )
 
-    def assert_exit_code(self, completed: subprocess.CompletedProcess[str], expected: int) -> None:
+    def assert_exit(self, completed, expected: int) -> None:
         self.assertEqual(expected, completed.returncode, completed.stdout + completed.stderr)
 
-    def _basic_data(self) -> dict:
-        return yaml.safe_load((FIXTURE_ROOT / "valid/basic.yml").read_text(encoding="utf-8"))
+    # --- temp bundle helper --------------------------------------------------
 
-    def _run_on_data(self, data: dict) -> subprocess.CompletedProcess[str]:
-        # Repo-relative source/freeze/arm paths resolve against the repo root, so the
-        # mutated file may live in a temp dir without breaking valid references.
-        with tempfile.TemporaryDirectory() as temp_dir:
-            mutated = Path(temp_dir) / "mutated.yml"
-            mutated.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
-            return self.run_validator(mutated)
+    def build_bundle(self, *, design=None, snapshot=None, verification=None,
+                     measurement=None, freeze=None, plant=None, recompute_freeze=True) -> Path:
+        tmp = Path(tempfile.mkdtemp(prefix="_scratch_", dir=FIXTURE_ROOT))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        tmp_prefix = tmp.relative_to(REPO_ROOT).as_posix() + "/"
+        for fn in BUNDLE_FILES:
+            shutil.copy(VALID_BUNDLE / fn, tmp / fn)
 
-    def _set_source_path(self, data: dict, kind: str, new_path: str) -> None:
-        for entry in data["source_evidence"]:
-            if entry.get("kind") == kind:
-                entry["path"] = new_path
-                return
-        raise AssertionError(f"no source_evidence of kind {kind!r}")
+        # condition-design.yml: rewrite refs to the temp location, then apply override.
+        text = (VALID_BUNDLE / "condition-design.yml").read_text().replace(FIX_PREFIX, tmp_prefix)
+        d = yaml.safe_load(text)
+        if design:
+            design(d)
+        (tmp / "condition-design.yml").write_text(yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
 
-    def _arm(self, data: dict, role: str) -> dict:
-        return next(a for a in data["arms"] if a.get("role") == role)
+        for fn, mut in (("precondition-snapshot.yml", snapshot),
+                        ("verification-protocol.yml", verification),
+                        ("measurement-protocol.yml", measurement)):
+            if mut:
+                doc = yaml.safe_load((tmp / fn).read_text())
+                mut(doc)
+                (tmp / fn).write_text(yaml.safe_dump(doc, sort_keys=False, allow_unicode=True))
 
-    # --- baseline guarantees -------------------------------------------------
+        if recompute_freeze:
+            ident = yaml.safe_load((tmp / "condition-design.yml").read_text())
+            man = {
+                "artifact_type": "model_lab_condition_design_freeze_manifest",
+                "design_id": ident.get("design_id"), "series_id": ident.get("series_id"),
+                "challenge_version": ident.get("challenge_version"),
+                "frozen_at": "2026-06-23T00:00:00Z", "frozen_before_execution": True,
+                "source_base_commit_sha": "0" * 40,
+                "change_rule": "temp bundle freeze; never self-hashes; records no commit SHA.",
+                "hashes": [{"path": tmp_prefix + f, "sha256": _sha(tmp / f)}
+                           for f in BUNDLE_FILES],
+            }
+            if freeze:
+                freeze(man, tmp_prefix)
+            (tmp / "freeze-manifest.yml").write_text(yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
 
-    def test_valid_fixtures_exit_zero(self) -> None:
-        for rel_path in VALID_FIXTURES:
-            with self.subTest(rel_path=rel_path):
-                self.assert_exit_code(self.run_validator(FIXTURE_ROOT / rel_path), 0)
-
-    def test_real_series_artifact_exits_zero(self) -> None:
-        self.assertTrue(REAL_ARTIFACT.is_file(), f"missing real artifact: {REAL_ARTIFACT}")
-        self.assert_exit_code(self.run_validator(REAL_ARTIFACT), 0)
-
-    def test_discovery_finds_and_passes_real_artifact(self) -> None:
-        completed = self.run_validator()  # no args -> discover under experiments/
-        self.assert_exit_code(completed, 0)
-        rel = REAL_ARTIFACT.resolve().relative_to(REPO_ROOT).as_posix()
-        self.assertIn(rel, completed.stdout)
-
-    def test_invalid_fixtures_exit_one_with_rule_ids(self) -> None:
-        for rel_path, rule_id in INVALID_FIXTURES.items():
-            with self.subTest(rel_path=rel_path):
-                completed = self.run_validator(FIXTURE_ROOT / rel_path)
-                self.assert_exit_code(completed, 1)
-                self.assertIn(rule_id, completed.stdout)
-                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
-
-    def test_multiple_paths_return_highest_exit_code(self) -> None:
-        completed = self.run_validator(
-            FIXTURE_ROOT / "valid/basic.yml",
-            FIXTURE_ROOT / "invalid/missing-gate-source.yml",
-        )
-        self.assert_exit_code(completed, 1)
-
-    # --- schema (form) violations via mutation -------------------------------
-
-    def test_schema_constant_mutations_are_schema_errors(self) -> None:
-        for label, mutate, instance_path in SCHEMA_CONST_MUTATIONS:
-            with self.subTest(case=label):
-                data = self._basic_data()
-                mutate(data)
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 2)
-                self.assertIn(f"instance_path={instance_path}", completed.stdout)
-                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
-
-    def test_arm_count_must_be_two(self) -> None:
-        for label, arms in (("one", "first"), ("three", "three")):
-            with self.subTest(case=label):
-                data = self._basic_data()
-                if arms == "first":
-                    data["arms"] = [data["arms"][0]]
+        if plant:
+            for rel, content in plant.items():
+                target = tmp / rel
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if content is None:
+                    target.mkdir(parents=True, exist_ok=True)
                 else:
-                    extra = dict(data["arms"][0])
-                    extra["id"] = "extra"
-                    data["arms"] = data["arms"] + [extra]
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 2)
-                self.assertIn("instance_path=arms", completed.stdout)
+                    target.write_text(content)
+        return tmp / "condition-design.yml"
 
-    def test_schema_violation_exits_two(self) -> None:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            bad = Path(temp_dir) / "schema-invalid.yml"
-            bad.write_text(
-                'schema_version: "v1"\nartifact_type: "model_lab_condition_design"\n',
-                encoding="utf-8",
-            )
-            self.assert_exit_code(self.run_validator(bad), 2)
-
-    def test_unknown_top_level_property_is_schema_error(self) -> None:
-        # A selection/result field is rejected by additionalProperties:false, proving no
-        # execution/result leakage into the frozen design contract.
-        data = self._basic_data()
-        data["selected_condition_winner"] = "treatment"
-        completed = self._run_on_data(data)
-        self.assert_exit_code(completed, 2)
+    def assert_rule(self, completed, rule: str) -> None:
+        self.assert_exit(completed, 1)
+        self.assertIn(rule, completed.stdout)
         self.assertNotIn("Traceback", completed.stdout + completed.stderr)
 
-    def test_schema_non_blank_fields_reject_whitespace_only(self) -> None:
-        mutations = [
-            ("series_id", lambda d: d.update(series_id="   "), "series_id"),
-            ("challenge_version", lambda d: d.update(challenge_version="   "), "challenge_version"),
-            ("design_id", lambda d: d.update(design_id="   "), "design_id"),
-            ("summary", lambda d: d.update(summary="   "), "summary"),
-            ("materiality_rationale", lambda d: d.update(materiality_rationale="   "), "materiality_rationale"),
-            ("arm_workflow_protocol", lambda d: d["arms"][0].update(workflow_protocol="   "), "arms.0.workflow_protocol"),
-            ("arm_intervention_profile", lambda d: d["arms"][0].update(intervention_profile="   "), "arms.0.intervention_profile"),
-            ("controlled_control_method", lambda d: d["controlled_dimensions"][0].update(control_method="   "), "controlled_dimensions.0.control_method"),
-            ("controlled_binding_source", lambda d: d["controlled_dimensions"][0].update(binding_source="   "), "controlled_dimensions.0.binding_source"),
-            ("confounder_controlled_by", lambda d: d["confounder_controls"][0].update(controlled_by="   "), "confounder_controls.0.controlled_by"),
-            ("decision_reason", lambda d: d["decision"].update(reason="   "), "decision.reason"),
-            ("does_not_establish_item", lambda d: d["does_not_establish"].__setitem__(0, "   "), "does_not_establish.0"),
-        ]
-        for label, mutate, instance_path in mutations:
+    # --- baseline ------------------------------------------------------------
+
+    def test_valid_bundle_exits_zero(self):
+        self.assert_exit(self.run_validator(VALID_BUNDLE / "condition-design.yml"), 0)
+
+    def test_built_bundle_exits_zero(self):
+        self.assert_exit(self.run_validator(self.build_bundle()), 0)
+
+    def test_real_series_artifact_exits_zero(self):
+        self.assertTrue(REAL_ARTIFACT.is_file(), f"missing real artifact: {REAL_ARTIFACT}")
+        self.assert_exit(self.run_validator(REAL_ARTIFACT), 0)
+
+    def test_discovery_finds_and_passes_real_artifact(self):
+        completed = self.run_validator()
+        self.assert_exit(completed, 0)
+        self.assertIn(REAL_ARTIFACT.resolve().relative_to(REPO_ROOT).as_posix(), completed.stdout)
+
+    def test_multiple_paths_return_highest_exit_code(self):
+        bad = self.build_bundle(design=lambda d: d["does_not_establish"].remove("model_quality"))
+        completed = self.run_validator(VALID_BUNDLE / "condition-design.yml", bad)
+        self.assert_exit(completed, 1)
+
+    # --- snapshot / identity -------------------------------------------------
+
+    def test_snapshot_wrong_challenge_is_invalid(self):
+        c = self.build_bundle(snapshot=lambda s: s.update(challenge_version="rest-api-v2"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT")
+
+    def test_snapshot_wrong_series_is_invalid(self):
+        c = self.build_bundle(snapshot=lambda s: s.update(series_id="other-series"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT")
+
+    def test_snapshot_gate_allows_execution_is_invalid(self):
+        c = self.build_bundle(snapshot=lambda s: s["captured_sources"]["gate"].update(run_004_execution_allowed=True))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT")
+
+    def test_snapshot_gate_target_resolved_is_invalid(self):
+        c = self.build_bundle(snapshot=lambda s: s["captured_sources"]["gate"].update(blocker_status_after_gate="resolved"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT")
+
+    def test_snapshot_readiness_not_blocked_is_invalid(self):
+        c = self.build_bundle(snapshot=lambda s: s["captured_sources"]["readiness"].update(readiness_status_at_design="ready"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT")
+
+    def test_gate_required_dimension_missing_is_subset_violation(self):
+        c = self.build_bundle(design=lambda d: d.update(
+            controlled_dimensions=[x for x in d["controlled_dimensions"] if x["id"] != "test_harness"]))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_GATE_REQUIREMENTS_SUBSET")
+
+    def test_gate_confounder_effect_weakened_is_subset_violation(self):
+        def mut(d):
+            for c in d["confounder_controls"]:
+                if c["id"] == "multi_axis_drift":
+                    c["effect_if_uncontrolled"] = "must_be_reported"
+        c = self.build_bundle(design=mut)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_GATE_REQUIREMENTS_SUBSET")
+
+    # --- child protocols -----------------------------------------------------
+
+    def test_child_wrong_design_id_is_identity_violation(self):
+        c = self.build_bundle(verification=lambda v: v.update(design_id="other-design"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_CHILD_IDENTITY")
+
+    def test_verification_not_equal_for_both_arms_is_invalid(self):
+        c = self.build_bundle(verification=lambda v: v.update(applies_equally_to_both_arms=False))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_VERIFICATION")
+
+    def test_verification_executes_is_invalid(self):
+        c = self.build_bundle(verification=lambda v: v.update(does_not_execute=False))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_VERIFICATION")
+
+    def test_measurement_records_values_is_invalid(self):
+        c = self.build_bundle(measurement=lambda m: m.update(does_not_record_values=False))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT")
+
+    def test_measurement_post_hoc_allowed_is_invalid(self):
+        c = self.build_bundle(measurement=lambda m: m.update(post_hoc_metric_selection_forbidden=False))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT")
+
+    def test_measurement_metric_with_value_is_invalid(self):
+        c = self.build_bundle(measurement=lambda m: m["primary_metrics"][0].update(value="0.9"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT")
+
+    def test_measurement_ratio_without_range_is_invalid(self):
+        c = self.build_bundle(measurement=lambda m: m["primary_metrics"][0].pop("range"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT")
+
+    def test_measurement_missing_compliance_metric_is_invalid(self):
+        def mut(m):
+            m["primary_metrics"] = [x for x in m["primary_metrics"] if x["id"] != "workflow_protocol_compliance"]
+        c = self.build_bundle(measurement=mut)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT")
+
+    # --- condition semantics -------------------------------------------------
+
+    def test_treatment_without_spec_requirement_is_not_material(self):
+        def mut(d):
+            t = next(a for a in d["arms"] if a["role"] == "treatment")
+            t["workflow_protocol_spec"] = {
+                "pre_implementation_specification_required": False,
+                "implementation_may_begin_immediately": True,
+                "specification_completeness_checked_before_implementation": False,
+                "required_specification_sections": [],
+            }
+        c = self.build_bundle(design=mut)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST")
+
+    def test_treatment_may_implement_with_incomplete_spec_is_not_material(self):
+        def mut(d):
+            t = next(a for a in d["arms"] if a["role"] == "treatment")
+            t["workflow_protocol_spec"]["implementation_may_begin_immediately"] = True
+        c = self.build_bundle(design=mut)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST")
+
+    def test_arms_same_workflow_protocol_is_single_axis_violation(self):
+        def mut(d):
+            next(a for a in d["arms"] if a["role"] == "treatment")["workflow_protocol"] = "direct_implementation"
+        c = self.build_bundle(design=mut)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS")
+
+    def test_primary_axis_in_controlled_dimensions_is_invalid(self):
+        def mut(d):
+            d["controlled_dimensions"].append({
+                "id": "workflow_protocol", "control_method": "x", "binding_status": "bound_at_design",
+                "binding_source": "x", "same_value_across_arms_required": True, "blocking_divergence": "x"})
+        c = self.build_bundle(design=mut)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_PRIMARY_AXIS_NOT_CONTROLLED")
+
+    def test_treatment_process_artifact_missing_is_separation_violation(self):
+        c = self.build_bundle(design=lambda d: d["artifact_surfaces"]["arm_specific_process_artifacts"].update(treatment=[]))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_ASSIGNED_VS_OBSERVED_SEPARATION")
+
+    def test_control_with_process_artifact_is_separation_violation(self):
+        c = self.build_bundle(design=lambda d: d["artifact_surfaces"]["arm_specific_process_artifacts"].update(control=["sneaky"]))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_ASSIGNED_VS_OBSERVED_SEPARATION")
+
+    def test_duplicate_arm_role_is_two_arms_violation(self):
+        c = self.build_bundle(design=lambda d: next(a for a in d["arms"] if a["role"] == "treatment").update(role="control"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS")
+
+    def test_duplicate_arm_id_is_unique_ids_violation(self):
+        c = self.build_bundle(design=lambda d: next(a for a in d["arms"] if a["role"] == "treatment").update(id="control"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_UNIQUE_SEMANTIC_IDS")
+
+    # --- bundle / paths / self-identity --------------------------------------
+
+    def test_wrong_design_self_path_is_invalid(self):
+        c = self.build_bundle(design=lambda d: d.update(
+            design_artifact_path="tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md"))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_DESIGN_SELF_IDENTITY")
+
+    def test_child_outside_bundle_is_boundary_violation(self):
+        c = self.build_bundle(design=lambda d: d["verification_surface"].update(
+            protocol_ref=FIX_PREFIX + "verification-protocol.yml"))  # points back at the canonical fixture, outside temp bundle
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_BUNDLE_BOUNDARY")
+
+    def test_context_source_directory_is_unsafe_path(self):
+        c = self.build_bundle(design=lambda d: d.update(source_evidence=[
+            {"path": "tests/fixtures/model_lab_condition_design/_evidence/source-directory", "kind": "assessment_context"},
+            {"path": "tests/fixtures/model_lab_condition_design/_evidence/method-context.txt", "kind": "method_context"}]))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS")
+
+    def test_context_source_escape_is_unsafe_path(self):
+        c = self.build_bundle(design=lambda d: d.update(source_evidence=[
+            {"path": "../../../../etc/passwd", "kind": "assessment_context"},
+            {"path": "tests/fixtures/model_lab_condition_design/_evidence/method-context.txt", "kind": "method_context"}]))
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS")
+
+    # --- recursive execution artifacts ---------------------------------------
+
+    def test_nested_execution_artifacts_are_forbidden(self):
+        cases = {
+            "nested_run_yml": {"nested/run.yml": "x\n"},
+            "nested_run_meta": {"nested/run_meta.json": "{}\n"},
+            "nested_implementation_dir": {"nested/implementation": None},
+            "nested_src_dir": {"nested/src": None},
+            "deep_execute_py": {"nested/deeper/execute-run.py": "x\n"},
+            "deep_verify_py": {"nested/deeper/verify-run.py": "x\n"},
+        }
+        for label, plant in cases.items():
             with self.subTest(case=label):
-                data = self._basic_data()
-                mutate(data)
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 2)
-                self.assertIn(f"instance_path={instance_path}", completed.stdout)
-                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+                c = self.build_bundle(plant=plant)
+                self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_FORBIDS_EXECUTION_ARTIFACTS")
 
-    def test_non_blank_token_rejects_trailing_line_breaks(self) -> None:
-        for loc in ("series_id", "challenge_version", "design_id"):
-            for label, val in (("lf", "x\n"), ("cr", "x\r"), ("crlf", "x\r\n"), ("tab", "x\ty")):
-                with self.subTest(loc=loc, case=label):
-                    data = self._basic_data()
-                    data[loc] = val
-                    completed = self._run_on_data(data)
-                    self.assert_exit_code(completed, 2)
-                    self.assertIn(f"instance_path={loc}", completed.stdout)
-        data = self._basic_data()
-        data["does_not_establish"][0] = data["does_not_establish"][0] + "\n"
-        completed = self._run_on_data(data)
-        self.assert_exit_code(completed, 2)
-        self.assertIn("instance_path=does_not_establish.0", completed.stdout)
+    # --- freeze --------------------------------------------------------------
 
-    def test_schema_non_blank_fields_accept_valid_text(self) -> None:
-        validator = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
-        for text in ("Valid text.", "Text with internal spaces.", "Mehrzeiliger\nText.", "日本語の説明"):
-            with self.subTest(text=text):
-                data = self._basic_data()
-                data["summary"] = text
-                self.assertEqual([], list(validator.iter_errors(data)))
-        for token in ("fixture-series", "rest-api-v1", "überprüfung_v1"):
-            with self.subTest(token=token):
-                data = self._basic_data()
-                data["series_id"] = token
-                self.assertEqual([], list(validator.iter_errors(data)))
+    def test_freeze_hash_mismatch_is_invalid(self):
+        def fr(man, prefix):
+            man["hashes"][1]["sha256"] = "0" * 64
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
-    def test_wrong_schema_version_exits_two(self) -> None:
-        data = self._basic_data()
-        data["schema_version"] = "1.0.0"
-        self.assert_exit_code(self._run_on_data(data), 2)
+    def test_freeze_self_hash_is_invalid(self):
+        def fr(man, prefix):
+            man["hashes"].append({"path": prefix + "freeze-manifest.yml", "sha256": "0" * 64})
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
-    def test_parse_error_exits_two(self) -> None:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            bad = Path(temp_dir) / "bad.yml"
-            bad.write_text("source_evidence: [\n", encoding="utf-8")
-            self.assert_exit_code(self.run_validator(bad), 2)
+    def test_freeze_duplicate_path_is_invalid(self):
+        def fr(man, prefix):
+            man["hashes"].append(dict(man["hashes"][0]))
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
-    def test_invalid_utf8_design_exits_two_without_traceback(self) -> None:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            invalid = Path(temp_dir) / "invalid-utf8.yml"
-            invalid.write_bytes(b"\xff\xfe\xfa")
-            completed = self.run_validator(invalid)
-        self.assert_exit_code(completed, 2)
-        self.assertIn("not valid UTF-8", completed.stdout)
-        self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+    def test_freeze_missing_bundle_path_is_invalid(self):
+        def fr(man, prefix):
+            man["hashes"] = man["hashes"][:-1]  # drop the snapshot coverage
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
-    # --- source path forms ---------------------------------------------------
+    def test_freeze_invalid_timestamp_is_invalid(self):
+        def fr(man, prefix):
+            man["frozen_at"] = "yesterday"
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
-    def test_invalid_source_path_forms_are_schema_errors(self) -> None:
-        cases = (
-            ("blank", "   "),
-            ("leading_whitespace", " tests/example.yml"),
-            ("trailing_whitespace", "tests/example.yml "),
-            ("nul", "a\x00b"),
-            ("tab", "a\tb"),
-            ("line_feed", "a\nb"),
-            ("carriage_return", "a\rb"),
-            ("delete", "a\x7fb"),
-            ("lone_surrogate", "a\ud800b"),
-        )
-        for label, value in cases:
-            with self.subTest(case=label):
-                data = self._basic_data()
-                data["source_evidence"][2]["path"] = value
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 2)
-                self.assertIn("instance_path=source_evidence.2.path", completed.stdout)
-                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+    def test_freeze_commit_self_reference_is_invalid(self):
+        def fr(man, prefix):
+            man["final_commit_sha"] = "a" * 40
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
-    def test_valid_unicode_source_paths_pass_schema_form(self) -> None:
-        validator = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
-        for value in ("äöü/datei.yml", "日本語/file.yml", "dir/file name.yml"):
-            with self.subTest(value=value):
-                data = self._basic_data()
-                data["source_evidence"][2]["path"] = value
-                self.assertEqual([], list(validator.iter_errors(data)))
-
-    # --- foundational source readability -------------------------------------
-
-    def test_unreadable_foundational_sources_are_readability_errors(self) -> None:
-        for label, kind, new_path, expected_message in READABILITY_MUTATIONS:
-            with self.subTest(case=label):
-                data = self._basic_data()
-                self._set_source_path(data, kind, new_path)
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 1)
-                self.assertIn("CONDITION_DESIGN_REQUIRES_READABLE_FOUNDATIONAL_SOURCES", completed.stdout)
-                self.assertIn(expected_message, completed.stdout)
-                self.assertNotIn("Traceback", completed.stdout + completed.stderr)
-
-    def test_context_source_directory_is_unsafe_path(self) -> None:
-        data = self._basic_data()
-        self._set_source_path(data, "assessment_context", f"{EV}/source-directory")
-        completed = self._run_on_data(data)
-        self.assert_exit_code(completed, 1)
-        self.assertIn("CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS", completed.stdout)
-
-    # --- arm reference path safety -------------------------------------------
-
-    def test_arm_ref_escape_is_unsafe_path(self) -> None:
-        data = self._basic_data()
-        for arm in data["arms"]:  # keep both arms equal so only the path rule is at issue
-            arm["common_condition_ref"] = "../../../../etc/passwd"
-        completed = self._run_on_data(data)
-        self.assert_exit_code(completed, 1)
-        self.assertIn("CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS", completed.stdout)
-        self.assertNotIn("Traceback", completed.stdout + completed.stderr)
-
-    # --- forbidden execution artifacts in the design directory ---------------
-
-    def test_clean_relocated_design_passes(self) -> None:
-        # A valid design copied into an otherwise-empty directory still validates: proves
-        # the execution-artifact scan does not false-positive and that mutation tests are
-        # not spuriously failing on the freeze.
-        with tempfile.TemporaryDirectory() as temp_dir:
-            copy = Path(temp_dir) / "condition-design.yml"
-            shutil.copy(FIXTURE_ROOT / "valid/basic.yml", copy)
-            self.assert_exit_code(self.run_validator(copy), 0)
-
-    def test_execution_artifacts_in_design_dir_are_forbidden(self) -> None:
-        cases = [
-            ("run_yml", lambda d: (d / "run.yml").write_text("x\n", encoding="utf-8")),
-            ("run_meta", lambda d: (d / "run_meta.json").write_text("{}\n", encoding="utf-8")),
-            ("package_json", lambda d: (d / "package.json").write_text("{}\n", encoding="utf-8")),
-            ("implementation_dir", lambda d: (d / "implementation").mkdir()),
-            ("src_dir", lambda d: (d / "src").mkdir()),
-            ("execute_script", lambda d: (d / "execute-run.py").write_text("x\n", encoding="utf-8")),
-            ("verify_script", lambda d: (d / "verify-run.py").write_text("x\n", encoding="utf-8")),
-        ]
-        for label, plant in cases:
-            with self.subTest(case=label):
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    design_dir = Path(temp_dir)
-                    copy = design_dir / "condition-design.yml"
-                    shutil.copy(FIXTURE_ROOT / "valid/basic.yml", copy)
-                    plant(design_dir)
-                    completed = self.run_validator(copy)
-                    self.assert_exit_code(completed, 1)
-                    self.assertIn("CONDITION_DESIGN_FORBIDS_EXECUTION_ARTIFACTS", completed.stdout)
-                    self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+    def test_freeze_wrong_child_identity_is_invalid(self):
+        def fr(man, prefix):
+            man["design_id"] = "other-design"
+        c = self.build_bundle(freeze=fr)
+        self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_VALID_FREEZE")
 
     # --- non-claims ----------------------------------------------------------
 
-    def test_each_mandatory_non_claim_is_required(self) -> None:
-        for claim in (
-            "weak_condition_contrast_resolved",
-            "run_004_executed",
-            "execution_environment_bound",
-            "model_quality",
-            "comparison_ready",
-        ):
+    def test_each_mandatory_non_claim_is_required(self):
+        for claim in ("weak_condition_contrast_resolved", "execution_environment_bound",
+                      "single_paired_execution_establishes_condition_effect", "model_quality"):
             with self.subTest(claim=claim):
-                data = self._basic_data()
-                data["does_not_establish"].remove(claim)
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 1)
-                self.assertIn("CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS", completed.stdout)
+                c = self.build_bundle(design=lambda d, cl=claim: d["does_not_establish"].remove(cl))
+                completed = self.run_validator(c)
+                self.assert_rule(completed, "CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS")
                 self.assertIn(claim, completed.stdout)
 
-    def test_established_selection_claims_must_not_be_denied(self) -> None:
+    def test_established_selection_claims_must_not_be_denied(self):
         for claim in ("primary_intervention_axis_selected", "concrete_condition_selected"):
             with self.subTest(claim=claim):
-                data = self._basic_data()
-                data["does_not_establish"].append(claim)
-                completed = self._run_on_data(data)
-                self.assert_exit_code(completed, 1)
-                self.assertIn("CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS", completed.stdout)
-                self.assertIn(claim, completed.stdout)
+                c = self.build_bundle(design=lambda d, cl=claim: d["does_not_establish"].append(cl))
+                self.assert_rule(self.run_validator(c), "CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS")
 
-    def test_non_claim_normalization_is_case_insensitive(self) -> None:
-        data = self._basic_data()
-        data["does_not_establish"] = [
-            "MODEL_QUALITY" if item == "model_quality" else item
-            for item in data["does_not_establish"]
+    # --- schema (form) violations -> exit 2 ----------------------------------
+
+    def _run_schema_mutation(self, mutate) -> subprocess.CompletedProcess[str]:
+        d = yaml.safe_load((VALID_BUNDLE / "condition-design.yml").read_text())
+        mutate(d)
+        with tempfile.TemporaryDirectory() as t:
+            f = Path(t) / "condition-design.yml"
+            f.write_text(yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
+            return self.run_validator(f)
+
+    def test_schema_constant_mutations_are_schema_errors(self):
+        cases = [
+            ("schema_version", lambda d: d.update(schema_version="1.0.0")),
+            ("design_status", lambda d: d.update(design_status="draft")),
+            ("target_blocker", lambda d: d.update(target_blocker="other")),
+            ("run_004_execution_allowed", lambda d: d.update(run_004_execution_allowed=True)),
+            ("execution_binding_status", lambda d: d.update(execution_binding_status="bound")),
+            ("runtime_values_bound", lambda d: d.update(runtime_values_bound=True)),
+            ("condition_semantics_status", lambda d: d.update(condition_semantics_status="draft")),
+            ("axis_id", lambda d: d["primary_intervention_axis"].update(id="tool_and_agent_mode")),
+            ("axis_semantics", lambda d: d["primary_intervention_axis"].update(semantics="enforced_thought")),
+            ("required_axis_count", lambda d: d["primary_intervention_axis"].update(required_axis_count=2)),
+            ("process_scored_as_outcome", lambda d: d.update(process_artifacts_scored_as_outcome=True)),
+            ("harness_bound_at_design", lambda d: d["executable_harness_instance"].update(binding_status="bound_at_design")),
+            ("verification_deferred", lambda d: d["verification_surface"].update(binding_status="deferred_to_execution_readiness")),
+            ("readiness_req_false", lambda d: d["execution_readiness_requirements"].update(fresh_session_per_arm=False)),
+            ("condition_input_claim", lambda d: d.update(condition_input_claim="identical_full_input")),
+            ("unknown_arm_role", lambda d: d["arms"][0].update(role="placebo")),
+            ("controlled_same_value_false", lambda d: d["controlled_dimensions"][0].update(same_value_across_arms_required=False)),
+            ("decision_next_step", lambda d: d["decision"].update(next_step="run_004_execution_may_begin")),
+            ("human_intervention_async", lambda d: d["human_intervention"].update(asymmetric_intervention_forbidden=False)),
         ]
-        completed = self._run_on_data(data)
-        self.assert_exit_code(completed, 0)
+        for label, mut in cases:
+            with self.subTest(case=label):
+                self.assert_exit(self._run_schema_mutation(mut), 2)
 
-    def test_triggered_by_accepts_non_blank_reference(self) -> None:
-        data = self._basic_data()
-        data["triggered_by"] = "user-request-2026-06-23-some-other-anchor"
-        self.assert_exit_code(self._run_on_data(data), 0)
+    def test_unknown_top_level_property_is_schema_error(self):
+        self.assert_exit(self._run_schema_mutation(lambda d: d.update(selected_condition_winner="treatment")), 2)
 
-    # --- single-primary-axis diagnostics -------------------------------------
+    def test_arm_count_must_be_two(self):
+        self.assert_exit(self._run_schema_mutation(lambda d: d.update(arms=[d["arms"][0]])), 2)
 
-    def test_arms_must_differ_along_primary_axis(self) -> None:
-        # Both arms identical along the axis but the design otherwise valid-shaped: the
-        # axis shows no variation.
-        data = self._basic_data()
-        treatment = self._arm(data, "treatment")
-        treatment["workflow_protocol"] = "direct_implementation"
-        completed = self._run_on_data(data)
-        self.assert_exit_code(completed, 1)
-        self.assertIn("CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS", completed.stdout)
+    def test_whitespace_token_rejected(self):
+        for label, mut in [("series_id", lambda d: d.update(series_id="   ")),
+                           ("design_id_newline", lambda d: d.update(design_id="x\n")),
+                           ("summary_blank", lambda d: d.update(summary="   "))]:
+            with self.subTest(case=label):
+                self.assert_exit(self._run_schema_mutation(mut), 2)
 
-    # --- resolver hardening (white-box) --------------------------------------
+    def test_challenge_sha_must_be_hex(self):
+        self.assert_exit(self._run_schema_mutation(lambda d: d["challenge"].update(source_sha256="nothex")), 2)
 
-    def test_resolver_rejects_control_and_surrogate_codepoints(self) -> None:
-        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_design_validator_module")
+    def test_parse_and_utf8_errors_exit_two(self):
+        with tempfile.TemporaryDirectory() as t:
+            bad = Path(t) / "bad.yml"
+            bad.write_text("arms: [\n")
+            self.assert_exit(self.run_validator(bad), 2)
+            badu = Path(t) / "u.yml"
+            badu.write_bytes(b"\xff\xfe\xfa")
+            completed = self.run_validator(badu)
+            self.assert_exit(completed, 2)
+            self.assertNotIn("Traceback", completed.stdout + completed.stderr)
+
+    def test_schema_accepts_valid_unicode_and_text(self):
+        validator = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
+        d = yaml.safe_load((VALID_BUNDLE / "condition-design.yml").read_text())
+        d["summary"] = "Mehrzeiliger\nText 日本語."
+        self.assertEqual([], list(validator.iter_errors(d)))
+
+    # --- resolver hardening --------------------------------------------------
+
+    def test_resolver_rejects_unsafe_values(self):
+        module = runpy.run_path(str(VALIDATOR_PATH), run_name="cd_validator_module")
         resolve = module["resolve_repo_relative_path"]
-        for value in ("a\x00b", "a\tb", "a\nb", "a\rb", "a\x7fb", "a\ud800b"):
-            with self.subTest(value=ascii(value)):
-                resolved, code = resolve(value, REPO_ROOT, must_exist=True)
-                self.assertIsNone(resolved)
-                self.assertEqual("ESCAPE", code)
-
-    def test_resolver_rejects_ordinary_whitespace(self) -> None:
-        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_design_validator_module")
-        resolve = module["resolve_repo_relative_path"]
-        for value in (" tests/example.yml", "tests/example.yml ", " tests/example.yml "):
+        for value in ("a\x00b", "a\tb", "a\nb", "a\x7fb", "a\ud800b", "../x.yml",
+                      " lead.yml", "trail.yml ", "/abs.yml", "C:/x.yml", "a\\b.yml"):
             with self.subTest(value=ascii(value)):
                 resolved, code = resolve(value, REPO_ROOT, must_exist=False)
                 self.assertIsNone(resolved)
                 self.assertEqual("ESCAPE", code)
-
-    def test_resolver_rejects_parent_escape(self) -> None:
-        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_design_validator_module")
-        resolve = module["resolve_repo_relative_path"]
-        resolved, code = resolve("../outside.yml", REPO_ROOT, must_exist=False)
-        self.assertIsNone(resolved)
-        self.assertEqual("ESCAPE", code)
-
-    def test_display_path_exception_fallback(self) -> None:
-        module = runpy.run_path(str(VALIDATOR_PATH), run_name="condition_design_validator_module")
-        display_path_func = module["display_path"]
-
-        class FailingPath:
-            def __init__(self, path_str: str, exc: Exception):
-                self.path_str = path_str
-                self.exc = exc
-
-            def resolve(self):
-                raise self.exc
-
-            def __str__(self):
-                return self.path_str
-
-        for exc_type in (OSError, RuntimeError, ValueError, UnicodeError):
-            with self.subTest(exc=exc_type.__name__):
-                fp = FailingPath("failing/path.yml", exc_type("mock error"))
-                self.assertEqual("failing/path.yml", display_path_func(fp))
 
 
 if __name__ == "__main__":

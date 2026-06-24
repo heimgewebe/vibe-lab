@@ -90,14 +90,26 @@ Methodological strength: weak structural control. The condition `code_first_cont
 ## Run-004 condition design (frozen, not executed)
 
 - A frozen condition design now exists (`artifacts/run-004-condition-contrast-design/`, contract `model-lab-condition-design.v1`).
-- The single primary intervention axis is `workflow_protocol`; the two future arms are
-  `control: direct_implementation` and `treatment: spec_first`.
-- The arms differ operationally only along `workflow_protocol`: the control arm may begin
-  implementation immediately with no required upfront specification, while the treatment arm
-  forbids implementation before a complete structured specification.
-- All other experimentally relevant dimensions are bound identically across arms; runtime
-  values (model, tooling, sampling, dependency/runtime environment) are deferred to a single
-  shared execution-readiness binding.
+- The single primary axis is `workflow_protocol` with semantics `assigned_instruction_requirement`:
+  it varies an **assigned** Spec-First instruction (present vs absent), not an enforced internal
+  thought process, and does not require control to actually write code immediately.
+- The two future arms are `control: direct_implementation` (no assigned upfront-specification
+  requirement) and `treatment: spec_first` (a complete, completeness-checked upfront
+  specification is required before any implementation). The treatment overlay is a frozen
+  structured specialization of the adopted Spec-First instruction block
+  (`instruction-blocks/spec-first.md`), bound by `derived_from` + `source_sha256`.
+- Assigned condition vs observed compliance are separated: the design declares the future
+  compliance/contamination evidence to collect (e.g. a control arm that voluntarily produces a
+  full prior specification is later recorded as `contamination_status: observed`); it does not
+  claim to have observed any compliance.
+- Prompt scope is an explicit interpretation limit: the axis is a bundled workflow-instruction
+  protocol, so a later observed difference must not be attributed to ordering/length/structure
+  alone; outer structure, tone, examples, and permissions are held constant across arms.
+- All other experimentally relevant dimensions are bound identically across arms; runtime values
+  (model, tooling, sampling, dependency/runtime environment, harness) are deferred to a single
+  shared execution-readiness binding. Condition semantics are frozen; runtime values are unbound.
+- Gate/readiness preconditions are read from a frozen precondition snapshot, not from mutable
+  live state, so the historical design does not silently break when those files are updated.
 - Historical Run-001/002/003 bundles are context only and are not a clean control arm: they
   differ on more than one uncontrolled dimension (e.g. generation method and self-reported
   model identity).

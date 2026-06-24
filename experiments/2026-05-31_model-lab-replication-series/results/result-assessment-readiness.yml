@@ -43,11 +43,11 @@ blockers:
       Run-001 vs Run-002 condition contrast remains weak. The existing
       comparison surface is inconclusive and cannot support model-quality
       or condition-effect claims. Design criteria exist
-      (results/condition-contrast-design-gate.yml) and a material contrast is now
-      designed and frozen
-      (artifacts/run-004-condition-contrast-design/condition-design.yml), but it is
-      not yet fully runtime-bound, executed or assessed; weak_condition_contrast
-      stays open.
+      (results/condition-contrast-design-gate.yml) and a material instruction
+      contrast is now selected and frozen as a design
+      (artifacts/run-004-condition-contrast-design/condition-design.yml). It is
+      not yet runtime-bound, executed, compliance-checked, or assessed;
+      weak_condition_contrast stays open.
 
   - id: "external_independence_not_attested"
     status: "open"

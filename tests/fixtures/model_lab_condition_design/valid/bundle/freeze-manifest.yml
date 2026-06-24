@@ -1,0 +1,24 @@
+artifact_type: model_lab_condition_design_freeze_manifest
+design_id: fixture-condition-design
+series_id: fixture-series
+challenge_version: rest-api-v1
+frozen_at: '2026-06-23T00:00:00Z'
+frozen_before_execution: true
+source_base_commit_sha: '0000000000000000000000000000000000000000'
+change_rule: Fixture freeze manifest; never hashes itself; records no commit/tree/head
+  SHA.
+hashes:
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/condition-design.yml
+  sha256: 11dfa124adef75124b5a540f69c70d41a7482a10ae57982abc42b9e7dee1e03d
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md
+  sha256: aed68fe5531b9181f0958e29bf58b80821b5f5d53ce7ac565fe035bf4804364a
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md
+  sha256: 289728f651bfd8ad7d0d9263a0d72a64847c88aa04f54c3c5ba7c1ea166bab0d
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md
+  sha256: 939c5f9c037e9836763c3eda826c1ef1027cf981c3f5e088421057f1935b453b
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/verification-protocol.yml
+  sha256: cd41e45a1cec9465356b613fe5e428768acbe19c68d54cdf498e98d594758521
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/measurement-protocol.yml
+  sha256: 43085a4be5e59c3826acfc7445cfc2fffe863720474ecf53b11a061a9ced49d9
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/precondition-snapshot.yml
+  sha256: 799620d3561b52d222e7b8c41aa99472527981108aff923b5acf010b887d16e8

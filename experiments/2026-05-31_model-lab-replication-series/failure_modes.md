@@ -56,3 +56,16 @@ canonicality: operative
   It does not bind the runtime environment, authorize Run-004 execution, perform a
   measurement, or assess a result; runtime values stay deferred to a separate
   execution-readiness check and `weak_condition_contrast` stays open.
+- **Assigned instruction mistaken for observed compliance.**
+  The primary axis assigns a Spec-First instruction (present vs absent); it does not
+  guarantee the future agent actually complied. Compliance and contamination
+  (e.g. a control arm that voluntarily writes a full prior specification) are a later
+  observation, recorded as declared future evidence, never assumed at design time.
+- **Hash integrity mistaken for semantic validity.**
+  A matching SHA-256 freeze proves the bundle bytes are unchanged; it does not prove
+  the design is methodologically valid. Identity, gate-subset, isolation, and child
+  semantics are checked separately from the hashes.
+- **Treatment process artifact mistaken for an outcome advantage.**
+  The treatment arm's pre-implementation specification is part of the intervention,
+  not a scored outcome. It must not raise a completeness/quality score or count as
+  extra delivered documentation (`process_artifacts_scored_as_outcome: false`).

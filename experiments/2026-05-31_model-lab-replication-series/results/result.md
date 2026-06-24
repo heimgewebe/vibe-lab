@@ -79,10 +79,10 @@ a prioritization only — no result assessment, no dependency remediation, and n
 change to the blocked status. `result_assessment_allowed` stays false and
 `comparison_ready` stays false.
 
-## Condition-contrast design gate
+## State after iteration 10 — condition-contrast design gate
 
 A machine-readable condition-contrast design gate
-(`results/condition-contrast-design-gate.yml`) now defines the criteria a future
+(`results/condition-contrast-design-gate.yml`) defines the criteria a future
 Run-004 condition-contrast design must satisfy.
 
 - condition-contrast criteria defined
@@ -94,18 +94,27 @@ Run-004 condition-contrast design must satisfy.
 - no primary intervention axis or concrete condition has been selected
 - the gate defines only criteria and the control treatment of non-primary dimensions
 
-## Run-004 condition design (frozen, not executed)
+## State after iteration 12 — frozen condition design (hardened)
 
 A machine-readable, frozen condition design now exists
 (`artifacts/run-004-condition-contrast-design/`, contract `model-lab-condition-design.v1`).
 It records only a design-state transition; it asserts no effect, quality, or comparison.
+This supersedes (does not contradict) the iteration-10 gate state above: the gate defined
+criteria; this design selects and freezes the concrete contrast.
 
-- the single primary intervention axis is `workflow_protocol`
+- the single primary axis is `workflow_protocol` with semantics `assigned_instruction_requirement`
+  (an assigned Spec-First instruction present vs absent, not an enforced internal thought process)
 - two future arms are concretised: `control: direct_implementation` and `treatment: spec_first`
-- the arms differ operationally only along `workflow_protocol`; all other dimensions are bound identically
-- the protocols (common condition, both workflow protocols, verification, measurement) are frozen via a SHA-256 freeze manifest
-- Run-004 execution remains blocked and no runtime environment is bound
-- no condition was executed, measured, or assessed
-- `weak_condition_contrast` remains open
+- the arms differ operationally only along the assigned workflow-instruction overlay; all other
+  dimensions are bound identically
+- the protocols, common condition, and a precondition snapshot are frozen via a SHA-256 freeze manifest
+- gate/readiness preconditions are read from the frozen precondition snapshot, not from mutable live state
+- condition semantics are frozen; concrete runtime values are still unbound
+  (`execution_binding_status: pending`)
+- the assigned condition and the later observed compliance are separated; compliance is a
+  declared future measurement, not something this design claims to have observed
+- prompt scope is an interpretation limit: a later observed difference must not be attributed
+  to ordering/length/structure alone
+- no condition was executed, measured, or assessed; `weak_condition_contrast` remains open
 - result assessment remains blocked and `comparison_ready` remains false
 - the only permitted next step is a separate execution-readiness / authorization check

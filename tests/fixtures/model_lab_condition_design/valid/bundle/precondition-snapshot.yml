@@ -1,0 +1,44 @@
+artifact_type: model_lab_condition_design_precondition_snapshot
+design_id: fixture-condition-design
+series_id: fixture-series
+challenge_version: rest-api-v1
+captured_at: '2026-06-23T00:00:00Z'
+captured_sources:
+  gate:
+    path: experiments/2026-05-31_model-lab-replication-series/results/condition-contrast-design-gate.yml
+    source_sha256: 73aab9e2d10fcea061469a408591570a11ad9ef796cc5059fc9c8f9b6cfbbe3e
+    artifact_type: model_lab_condition_contrast_design_gate
+    gate_status: criteria_defined
+    target_blocker: weak_condition_contrast
+    blocker_status_after_gate: open
+    run_004_design_allowed: true
+    run_004_execution_allowed: false
+    result_assessment_allowed_after_gate: false
+    comparison_ready_after_gate: false
+    required_control_dimensions:
+    - challenge_contract
+    - acceptance_surface
+    - evaluation_criteria
+    - verification_surface
+    - evidence_capture
+    - model_identity_and_version
+    - tool_and_agent_mode
+    - sampling_configuration
+    - human_intervention
+    - dependency_and_runtime_environment
+    - test_harness
+    required_confounders:
+      multi_axis_drift: blocks_design
+      acceptance_or_test_drift: blocks_design
+      unequal_human_intervention: blocks_design
+      dependency_or_runtime_drift: must_be_reported
+      post_hoc_condition_rework: blocks_design
+      self_reported_independence_as_external_proof: must_be_reported
+  readiness:
+    path: experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
+    source_sha256: 55c4e1664366c5771ce2bcaa3e0e76ac4d6bcbf4840280a8519b3aae5c2c925c
+    artifact_type: result_assessment_readiness
+    readiness_status_at_design: blocked
+    result_assessment_allowed_at_design: false
+    comparison_ready_at_design: false
+    target_blocker_status_at_design: open

@@ -14,8 +14,8 @@ experiment:
   created: "2026-05-31"
   updated: "2026-06-23"
   author: "vibe-lab maintainers"
-  triggered_by: "user-request-2026-06-23-run-004-condition-design"
-  iteration: 11
+  triggered_by: "user-request-2026-06-23-run-004-condition-design-hardening"
+  iteration: 12
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -72,6 +72,7 @@ experiment:
     - "artifacts/run-003-plan-stronger-condition-contrast/changed-files.txt"
     - "results/condition-contrast-design-gate.yml"
     - "artifacts/run-004-condition-contrast-design/condition-design.yml"
+    - "artifacts/run-004-condition-contrast-design/precondition-snapshot.yml"
     - "artifacts/run-004-condition-contrast-design/common-condition.md"
     - "artifacts/run-004-condition-contrast-design/control-workflow-protocol.md"
     - "artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md"

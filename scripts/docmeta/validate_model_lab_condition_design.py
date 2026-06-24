@@ -3,97 +3,38 @@
 
 A condition-design artifact
 (``experiments/<series>/artifacts/run-004-condition-contrast-design/condition-design.yml``)
-freezes the paired condition contrast a *future* Model-Lab Run-004 must run. v1 has
-exactly one honest state: a design frozen before execution (design_status=frozen). It
-selects a single primary intervention axis (workflow_protocol) and two future arms
-(control=direct_implementation, treatment=spec_first) for the open
-weak_condition_contrast blocker. It does NOT execute a run, does NOT bind the execution
-environment, does NOT allow a result_assessment, does NOT make the series
-comparison-ready, and does NOT resolve weak_condition_contrast.
+freezes, before execution, the paired condition contrast a *future* Model-Lab Run-004
+must run. v1 has exactly one honest state: condition semantics frozen
+(design_status=frozen, condition_semantics_status=frozen) while the execution binding is
+still pending (execution_binding_status=pending, runtime_values_bound=false). The primary
+axis is an ASSIGNED workflow-instruction requirement (Spec-First present vs absent), not an
+enforced internal thought process. Preconditions are read from a frozen precondition
+snapshot, never from mutable live state. It does NOT execute a run, bind runtime values,
+allow a result assessment, make the series comparison-ready, or resolve
+weak_condition_contrast.
 
-The fixed v1 status, permissions, primary axis, freeze flag, and decision are pinned in
-the JSON schema as const, so this validator only enforces the genuinely semantic,
-cross-artifact, completeness, freeze-integrity, path-safety, and isolation rules.
+The fixed v1 values are pinned in the JSON schema as const; this validator enforces the
+genuinely semantic, cross-artifact, freeze-integrity, isolation, and path-safety rules.
 
-This validator complements — it does not replace — the condition-contrast design gate.
-The gate records the criteria a Run-004 design must satisfy; this design selects the
-single primary axis and the two concrete conditions and freezes them before execution.
-
-Enforced semantic rules (exit 1):
-  CONDITION_DESIGN_REQUIRES_SINGLE_GATE_SOURCE
-                                   source_evidence does not contain exactly one
-                                   condition_contrast_design_gate source.
-  CONDITION_DESIGN_REQUIRES_READABLE_FOUNDATIONAL_SOURCES
-                                   a declared foundational source
-                                   (condition_contrast_design_gate / readiness_gate) is
-                                   not a readable YAML mapping.
-  CONDITION_DESIGN_REQUIRES_MATCHING_SOURCE_IDENTITY
-                                   a gate source is not a
-                                   model_lab_condition_contrast_design_gate for this
-                                   series, or a readiness source is not a
-                                   result_assessment_readiness for this series and
-                                   challenge_version.
-  CONDITION_DESIGN_REQUIRES_GATE_AUTHORIZES_DESIGN
-                                   the gate source does not authorize a Run-004 design
-                                   (gate_status=criteria_defined, run_004_design_allowed
-                                   literally True, run_004_execution_allowed literally
-                                   False).
-  CONDITION_DESIGN_REQUIRES_BLOCKED_READINESS
-                                   the gate still permits assessment/comparison, or no
-                                   single readiness_gate explicitly confirms a blocked
-                                   assessment (readiness_status=blocked,
-                                   result_assessment_allowed literally False,
-                                   comparison_ready literally False; a missing field is
-                                   NOT treated as False).
-  CONDITION_DESIGN_REQUIRES_OPEN_TARGET_BLOCKER
-                                   the target_blocker is not open in the gate and the
-                                   referenced readiness gate.
+Enforced semantic rules (exit 1) — stable ids:
+  CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT
+  CONDITION_DESIGN_REQUIRES_GATE_REQUIREMENTS_SUBSET
   CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS
-                                   arms is not exactly one control and one treatment.
   CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS
-                                   the primary axis is not workflow_protocol, or the two
-                                   arms do not take different workflow_protocol values.
   CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST
-                                   the workflow_protocol contrast is not the v1 material,
-                                   pre-execution-observable one (control=direct
-                                   implementation with no required upfront spec;
-                                   treatment=spec_first requiring a complete upfront spec).
   CONDITION_DESIGN_REQUIRES_ONLY_PRIMARY_AXIS_DIFFERENCE
-                                   the two arms differ in a non-primary (shared) field, so
-                                   the design carries a second operative difference.
+  CONDITION_DESIGN_REQUIRES_PRIMARY_AXIS_NOT_CONTROLLED
+  CONDITION_DESIGN_REQUIRES_ASSIGNED_VS_OBSERVED_SEPARATION
   CONDITION_DESIGN_REQUIRES_SHARED_VERIFICATION
-                                   the two arms do not reference the same verification
-                                   protocol.
   CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT
-                                   the two arms do not reference the same measurement
-                                   protocol.
-  CONDITION_DESIGN_REQUIRES_SHARED_INTERVENTION_RULES
-                                   the two arms do not share the same intervention profile.
-  CONDITION_DESIGN_REQUIRES_COMPLETE_CONTROL_BINDINGS
-                                   controlled_dimensions omit a mandatory non-primary
-                                   dimension id.
-  CONDITION_DESIGN_REQUIRES_COMPLETE_CONFOUNDER_CONTROLS
-                                   confounder_controls omit a mandatory id or carry an
-                                   effect_if_uncontrolled other than the declared one.
-  CONDITION_DESIGN_REQUIRES_UNIQUE_SEMANTIC_IDS
-                                   two entries within arms, controlled_dimensions, or
-                                   confounder_controls share an id.
+  CONDITION_DESIGN_REQUIRES_CHILD_IDENTITY
+  CONDITION_DESIGN_REQUIRES_DESIGN_SELF_IDENTITY
+  CONDITION_DESIGN_REQUIRES_BUNDLE_BOUNDARY
   CONDITION_DESIGN_REQUIRES_VALID_FREEZE
-                                   the freeze manifest is missing/unreadable, not frozen
-                                   before execution, lacks a change rule, hashes itself
-                                   (cycle), omits the design or a protocol artifact, or
-                                   carries a SHA-256 that does not match the file.
   CONDITION_DESIGN_FORBIDS_EXECUTION_ARTIFACTS
-                                   the design directory contains a forbidden execution
-                                   artifact (run.yml, run_meta.json, implementation/, ...).
   CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS
-                                   does_not_establish omits a static baseline non-claim,
-                                   or lists a now-established selection claim
-                                   (primary_intervention_axis_selected /
-                                   concrete_condition_selected).
+  CONDITION_DESIGN_REQUIRES_UNIQUE_SEMANTIC_IDS
   CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS
-                                   a referenced repo path resolves outside the repo,
-                                   does not exist, or is not a regular file.
 
 Exit codes:
   0  valid
@@ -110,7 +51,6 @@ import hashlib
 import json
 import re
 import sys
-from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
 try:
@@ -130,27 +70,21 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMA_PATH = REPO_ROOT / "schemas" / "model-lab-condition-design.v1.schema.json"
 
 DESIGN_GLOB = "*/artifacts/*/condition-design.yml"
+DESIGN_ARTIFACT_TYPE = "model_lab_condition_design"
 
-# Source kinds. Exactly one of each foundational kind is required and must be a readable
-# YAML mapping; the context kinds are checked only for existence as safe regular files.
-GATE_KIND = "condition_contrast_design_gate"
-READINESS_KIND = "readiness_gate"
-FOUNDATIONAL_KINDS = (GATE_KIND, READINESS_KIND)
-
-# Cross-referenced artifact identities.
+SNAPSHOT_ARTIFACT_TYPE = "model_lab_condition_design_precondition_snapshot"
 GATE_ARTIFACT_TYPE = "model_lab_condition_contrast_design_gate"
 READINESS_ARTIFACT_TYPE = "result_assessment_readiness"
+VERIFICATION_ARTIFACT_TYPE = "model_lab_condition_design_verification_protocol"
+MEASUREMENT_ARTIFACT_TYPE = "model_lab_condition_design_measurement_protocol"
+FREEZE_ARTIFACT_TYPE = "model_lab_condition_design_freeze_manifest"
 
 EXPECTED_TARGET_BLOCKER = "weak_condition_contrast"
 EXPECTED_PRIMARY_AXIS = "workflow_protocol"
 CONTROL_WORKFLOW_PROTOCOL = "direct_implementation"
 TREATMENT_WORKFLOW_PROTOCOL = "spec_first"
+COMPLIANCE_METRIC_ID = "workflow_protocol_compliance"
 
-ARTIFACT_TYPE_KEY = "artifact_type"
-SERIES_ID_KEY = "series_id"
-CHALLENGE_VERSION_KEY = "challenge_version"
-
-# The mandatory upfront-specification sections the treatment (spec_first) arm requires.
 MANDATORY_TREATMENT_SPEC_SECTIONS = (
     "endpoint_matrix",
     "request_response_schemas",
@@ -162,34 +96,9 @@ MANDATORY_TREATMENT_SPEC_SECTIONS = (
     "planned_implementation_order",
 )
 
-# Every non-primary experimentally relevant dimension that must be bound identically
-# across arms (the canonical set comes from the condition-contrast design gate; the
-# primary axis workflow_protocol is deliberately NOT in this set).
-MANDATORY_CONTROLLED_DIMENSIONS = (
-    "challenge_contract",
-    "acceptance_surface",
-    "evaluation_criteria",
-    "verification_surface",
-    "evidence_capture",
-    "model_identity_and_version",
-    "tool_and_agent_mode",
-    "sampling_configuration",
-    "human_intervention",
-    "dependency_and_runtime_environment",
-    "test_harness",
-)
+# Effect severity (higher = stronger). A design must not WEAKEN a gate-declared effect.
+EFFECT_SEVERITY = {"must_be_reported": 1, "blocks_design": 2}
 
-# Minimum confounder controls and the effect each must declare (mirrors the gate).
-EXPECTED_CONFOUNDER_EFFECTS = {
-    "multi_axis_drift": "blocks_design",
-    "acceptance_or_test_drift": "blocks_design",
-    "unequal_human_intervention": "blocks_design",
-    "dependency_or_runtime_drift": "must_be_reported",
-    "post_hoc_condition_rework": "blocks_design",
-    "self_reported_independence_as_external_proof": "must_be_reported",
-}
-
-# Static baseline anti-overclaim non-claims every condition-design artifact must carry.
 MANDATORY_DOES_NOT_ESTABLISH = (
     "weak_condition_contrast_resolved",
     "run_004_execution_allowed",
@@ -205,55 +114,37 @@ MANDATORY_DOES_NOT_ESTABLISH = (
     "dependency_risk_remediated",
     "security_readiness",
     "production_readiness",
+    "single_paired_execution_establishes_condition_effect",
 )
-
-# These two states are ESTABLISHED by this PR, so they must not be listed as
-# not-established. Listing them would deny the design's own contribution.
 FORBIDDEN_SELECTION_NON_CLAIMS = (
     "primary_intervention_axis_selected",
     "concrete_condition_selected",
 )
 
-# Forbidden execution artifacts in the real design directory. Names are exact; the
-# design's own measurement-protocol.yml / verification-protocol.yml are deliberately not
-# in this list.
-FORBIDDEN_EXECUTION_FILES = (
-    "run.yml",
-    "run_meta.json",
-    "execution.txt",
-    "measurement.yml",
-    "auditor-output.yml",
-    "comparability.yml",
-    "evidence-pack.yml",
-    "timing.txt",
-    "package.json",
-    "package-lock.json",
-)
-FORBIDDEN_EXECUTION_DIRS = ("implementation", "src", "tests")
+# Forbidden execution artifacts, detected RECURSIVELY anywhere in the design bundle.
+FORBIDDEN_EXECUTION_FILES = frozenset({
+    "run.yml", "run_meta.json", "execution.txt", "measurement.yml", "auditor-output.yml",
+    "comparability.yml", "evidence-pack.yml", "timing.txt", "package.json", "package-lock.json",
+})
+FORBIDDEN_EXECUTION_DIRS = frozenset({"implementation", "src", "tests"})
 FORBIDDEN_EXECUTION_GLOBS = ("execute-*.py", "verify-*.py")
 
-# Arm fields allowed to differ between the two arms (the primary-axis surface). Every
-# other arm field must be identical, or the design carries a second operative difference.
-PRIMARY_AXIS_ARM_KEYS = frozenset(
-    {"id", "role", "workflow_protocol", "workflow_protocol_ref", "workflow_protocol_spec"}
+# A metric must not pre-bake observed results.
+FORBIDDEN_METRIC_VALUE_KEYS = frozenset({"value", "observed", "measured", "result", "score", "values"})
+
+# Freeze manifest must never record a self-containing commit/tree/head SHA.
+FORBIDDEN_FREEZE_COMMIT_KEYS = frozenset({"final_commit_sha", "final_tree_sha", "final_pr_head_sha"})
+
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+RFC3339_RE = re.compile(
+    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$"
 )
-
-READABILITY_MESSAGES = {
-    "NOT_FILE": "is not a regular file",
-    "UNSUPPORTED_YAML_EXTENSION": "is not a .yml/.yaml file",
-    "READ_ERROR": "could not be read as UTF-8 text",
-    "YAML_PARSE_ERROR": "is not valid YAML",
-    "YAML_NOT_MAPPING": "is not a YAML mapping",
-}
-
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 
 
 def _has_forbidden_path_codepoint(text: str) -> bool:
-    """True if text contains a C0 control char, DEL, or a lone UTF-16 surrogate."""
     return any(
-        ord(char) <= 0x1F or ord(char) == 0x7F or 0xD800 <= ord(char) <= 0xDFFF
-        for char in text
+        ord(c) <= 0x1F or ord(c) == 0x7F or 0xD800 <= ord(c) <= 0xDFFF for c in text
     )
 
 
@@ -265,38 +156,25 @@ def display_path(path: Path) -> str:
 
 
 def _escape_source_path_char(char: str) -> str:
-    codepoint = ord(char)
-    if codepoint <= 0x1F or codepoint == 0x7F:
-        if char == '\t': return r'\t'
-        if char == '\n': return r'\n'
-        if char == '\r': return r'\r'
-        if char == '\f': return r'\f'
-        if char == '\v': return r'\v'
-        return f"\\x{codepoint:02x}"
-    if 0xD800 <= codepoint <= 0xDFFF:
-        return f"\\u{codepoint:04x}"
-    if char.isspace() and char != ' ':
-        if codepoint <= 0xFFFF:
-            return f"\\u{codepoint:04x}"
-        return f"\\U{codepoint:08x}"
+    cp = ord(char)
+    if cp <= 0x1F or cp == 0x7F:
+        return {"\t": r"\t", "\n": r"\n", "\r": r"\r", "\f": r"\f", "\v": r"\v"}.get(char, f"\\x{cp:02x}")
+    if 0xD800 <= cp <= 0xDFFF:
+        return f"\\u{cp:04x}"
+    if char.isspace() and char != " ":
+        return f"\\u{cp:04x}" if cp <= 0xFFFF else f"\\U{cp:08x}"
     return char
 
 
-def display_source_path(raw: str) -> str:
+def display_source_path(raw) -> str:
     if not isinstance(raw, str):
         return str(raw)
-
-    leading_count = len(raw) - len(raw.lstrip())
-    trailing_start = len(raw.rstrip())
-
-    res = []
-    for i, char in enumerate(raw):
-        if char == ' ' and (i < leading_count or i >= trailing_start):
-            res.append(r'\x20')
-        else:
-            res.append(_escape_source_path_char(char))
-
-    return "".join(res)
+    lead = len(raw) - len(raw.lstrip())
+    trail = len(raw.rstrip())
+    return "".join(
+        r"\x20" if (c == " " and (i < lead or i >= trail)) else _escape_source_path_char(c)
+        for i, c in enumerate(raw)
+    )
 
 
 def load_schema_validator() -> Draft202012Validator:
@@ -305,28 +183,18 @@ def load_schema_validator() -> Draft202012Validator:
     except FileNotFoundError as exc:
         raise RuntimeError(f"schema file missing: {display_path(SCHEMA_PATH)}") from exc
     except UnicodeDecodeError as exc:
-        raise RuntimeError(
-            f"schema file is not valid UTF-8: {display_path(SCHEMA_PATH)}"
-        ) from exc
+        raise RuntimeError(f"schema file is not valid UTF-8: {display_path(SCHEMA_PATH)}") from exc
     except OSError as exc:
-        raise RuntimeError(
-            f"schema file could not be read: {display_path(SCHEMA_PATH)}: {exc}"
-        ) from exc
-
+        raise RuntimeError(f"schema file could not be read: {display_path(SCHEMA_PATH)}: {exc}") from exc
     try:
         schema = json.loads(raw)
     except json.JSONDecodeError as exc:
-        raise RuntimeError(
-            f"schema file invalid JSON: {display_path(SCHEMA_PATH)}: {exc}"
-        ) from exc
-
+        raise RuntimeError(f"schema file invalid JSON: {display_path(SCHEMA_PATH)}: {exc}") from exc
     try:
         Draft202012Validator.check_schema(schema)
         return Draft202012Validator(schema)
     except SchemaError as exc:
-        raise RuntimeError(
-            f"schema invalid: {display_path(SCHEMA_PATH)}: {exc.message}"
-        ) from exc
+        raise RuntimeError(f"schema invalid: {display_path(SCHEMA_PATH)}: {exc.message}") from exc
 
 
 def load_yaml(path: Path) -> dict:
@@ -338,12 +206,10 @@ def load_yaml(path: Path) -> dict:
         raise ValueError(f"file is not valid UTF-8: {display_path(path)}") from exc
     except OSError as exc:
         raise ValueError(f"file could not be read: {display_path(path)}: {exc}") from exc
-
     try:
         loaded = yaml.safe_load(raw)
     except yaml.YAMLError as exc:
         raise ValueError(f"YAML parse error in {display_path(path)}: {exc}") from exc
-
     if not isinstance(loaded, dict):
         raise ValueError(f"YAML document must be an object: {display_path(path)}")
     return loaded
@@ -351,11 +217,9 @@ def load_yaml(path: Path) -> dict:
 
 def schema_errors(validator: Draft202012Validator, data: dict, path: Path) -> list[str]:
     errors: list[str] = []
-    for error in sorted(validator.iter_errors(data), key=lambda item: list(item.absolute_path)):
-        location = ".".join(str(part) for part in error.absolute_path) or "$"
-        errors.append(
-            f"ERROR path={display_path(path)} instance_path={location}: {error.message}"
-        )
+    for error in sorted(validator.iter_errors(data), key=lambda i: list(i.absolute_path)):
+        location = ".".join(str(p) for p in error.absolute_path) or "$"
+        errors.append(f"ERROR path={display_path(path)} instance_path={location}: {error.message}")
     return errors
 
 
@@ -371,34 +235,19 @@ def _inside(candidate: Path, root: Path) -> bool:
         return False
 
 
-def resolve_repo_relative_path(
-    rel_path: str, repo_root: Path, *, must_exist: bool
-) -> tuple[Path | None, str | None]:
-    """Resolve a repo-relative POSIX path safely (centralized path handling).
-
-    Returns ``(resolved_path, None)`` when the path is repo-internal (and, when
-    ``must_exist`` is True, exists after symlink resolution). On failure returns
-    ``(None, code)`` where ``code`` is "ESCAPE" (forbidden codepoint / absolute /
-    drive-letter / backslash / lexical ``..`` / symlink leading out of repo / a value
-    pathlib cannot safely resolve / otherwise resolves outside root) or "NOT_FOUND"
-    (repo-internal but missing). Mirrors the helper in the neighbouring Model-Lab
-    validators; kept small and local rather than shared to avoid coupling them.
-    """
+def resolve_repo_relative_path(rel_path, repo_root: Path, *, must_exist: bool):
+    """Resolve a repo-relative POSIX path safely. Returns (resolved|None, code|None)."""
     raw_text = str(rel_path)
     if _has_forbidden_path_codepoint(raw_text):
         return None, "ESCAPE"
-    if raw_text != raw_text.strip():
+    if raw_text != raw_text.strip() or not raw_text:
         return None, "ESCAPE"
-    text = raw_text
-    if not text:
+    if raw_text.startswith("/") or DRIVE_LETTER_RE.match(raw_text) or "\\" in raw_text:
         return None, "ESCAPE"
-    if text.startswith("/") or DRIVE_LETTER_RE.match(text) or "\\" in text:
+    if ".." in PurePosixPath(raw_text).parts:
         return None, "ESCAPE"
-    if ".." in PurePosixPath(text).parts:
-        return None, "ESCAPE"
-
     root = repo_root.resolve()
-    candidate = root / text
+    candidate = root / raw_text
     try:
         resolved = candidate.resolve(strict=must_exist)
     except FileNotFoundError:
@@ -409,7 +258,6 @@ def resolve_repo_relative_path(
         return (None, "NOT_FOUND") if _inside(lax, root) else (None, "ESCAPE")
     except (OSError, RuntimeError, ValueError, UnicodeError):
         return None, "ESCAPE"
-
     if not _inside(resolved, root):
         return None, "ESCAPE"
     if must_exist and not resolved.exists():
@@ -417,7 +265,7 @@ def resolve_repo_relative_path(
     return resolved, None
 
 
-def _sha256_of(path: Path) -> str | None:
+def _sha256_of(path: Path):
     try:
         digest = hashlib.sha256()
         with path.open("rb") as handle:
@@ -428,735 +276,617 @@ def _sha256_of(path: Path) -> str | None:
         return None
 
 
-def _source_evidence_entries(data: dict) -> list[dict]:
-    return [item for item in (data.get("source_evidence", []) or []) if isinstance(item, dict)]
-
-
-@dataclass(frozen=True)
-class SourceEvidenceResolution:
-    """One source_evidence entry, resolved (path safety + content) exactly once."""
-
-    raw_rel_path: str
-    rel_path: str
-    kind: str
-    resolved: Path | None
-    code: str | None
-    readability_error: str | None
-    loaded_yaml: dict | None
-
-
-def resolve_source_evidence_entries(
-    data: dict, repo_root: Path
-) -> list[SourceEvidenceResolution]:
-    """Resolve every source_evidence entry once (path safety + content readability)."""
-    resolutions: list[SourceEvidenceResolution] = []
-    for entry in _source_evidence_entries(data):
-        raw_rel = str(entry.get("path", ""))
-        rel = raw_rel.strip()
-        kind = str(entry.get("kind", "")).strip()
-        resolved, code = resolve_repo_relative_path(raw_rel, repo_root, must_exist=True)
-        readability_error: str | None = None
-        loaded: dict | None = None
-        if code is None and resolved is not None:
-            if not resolved.is_file():
-                readability_error = "NOT_FILE"
-            elif kind in FOUNDATIONAL_KINDS:
-                if resolved.suffix.lower() not in (".yml", ".yaml"):
-                    readability_error = "UNSUPPORTED_YAML_EXTENSION"
-                else:
-                    try:
-                        raw = resolved.read_text(encoding="utf-8")
-                    except (OSError, UnicodeError):
-                        readability_error = "READ_ERROR"
-                    else:
-                        try:
-                            doc = yaml.safe_load(raw)
-                        except yaml.YAMLError:
-                            readability_error = "YAML_PARSE_ERROR"
-                        else:
-                            if not isinstance(doc, dict):
-                                readability_error = "YAML_NOT_MAPPING"
-                            else:
-                                loaded = doc
-        resolutions.append(
-            SourceEvidenceResolution(
-                raw_rel_path=raw_rel,
-                rel_path=rel,
-                kind=kind,
-                resolved=resolved,
-                code=code,
-                readability_error=readability_error,
-                loaded_yaml=loaded,
-            )
-        )
-    return resolutions
-
-
-def _source_identity_mismatches(
-    docs_with_paths: list[tuple[str, dict]],
-    *,
-    expected_artifact_type: str,
-    expected_series_id: str,
-    expected_challenge_version: str | None = None,
-) -> list[str]:
-    problems: list[str] = []
-    for raw_rel_path, doc in docs_with_paths:
-        actual_type = str(doc.get(ARTIFACT_TYPE_KEY, "")).strip()
-        actual_series = str(doc.get(SERIES_ID_KEY, "")).strip()
-        issues: list[str] = []
-        if actual_type != expected_artifact_type:
-            issues.append(f"artifact_type={actual_type!r} (expected {expected_artifact_type!r})")
-        if not expected_series_id or actual_series != expected_series_id:
-            issues.append(f"series_id={actual_series!r} (expected {expected_series_id!r})")
-        if expected_challenge_version is not None:
-            actual_challenge = str(doc.get(CHALLENGE_VERSION_KEY, "")).strip()
-            if actual_challenge != expected_challenge_version:
-                issues.append(
-                    f"challenge_version={actual_challenge!r} (expected {expected_challenge_version!r})"
-                )
-        if issues:
-            problems.append(f"{display_source_path(raw_rel_path)}: " + ", ".join(issues))
-    return problems
-
-
-def _gate_authorizes_design(gate_docs: list[dict]) -> bool:
-    """True if a referenced gate explicitly authorizes a Run-004 design."""
-    for doc in gate_docs:
-        if (
-            doc.get("gate_status") == "criteria_defined"
-            and doc.get("run_004_design_allowed") is True
-            and doc.get("run_004_execution_allowed") is False
-        ):
-            return True
-    return False
-
-
-def _gate_keeps_assessment_blocked(gate_docs: list[dict]) -> bool:
-    """True if a referenced gate keeps assessment and comparison blocked after the gate."""
-    for doc in gate_docs:
-        if (
-            doc.get("result_assessment_allowed_after_gate") is False
-            and doc.get("comparison_ready_after_gate") is False
-        ):
-            return True
-    return False
-
-
-def _readiness_blocked_confirmed(readiness_docs: list[dict]) -> bool:
-    """True if a referenced readiness_gate explicitly confirms a blocked assessment."""
-    for doc in readiness_docs:
-        if (
-            doc.get("readiness_status") == "blocked"
-            and doc.get("result_assessment_allowed") is False
-            and doc.get("comparison_ready") is False
-        ):
-            return True
-    return False
-
-
-def _gate_target_open(gate_docs: list[dict], target_blocker: str) -> bool:
-    for doc in gate_docs:
-        if (
-            str(doc.get("target_blocker", "")).strip() == target_blocker
-            and str(doc.get("blocker_status_after_gate", "")).strip() == "open"
-        ):
-            return True
-    return False
-
-
-def _blocker_open_in(doc: dict, key: str, target: str) -> bool:
-    for item in doc.get(key, []) or []:
-        if not isinstance(item, dict):
-            continue
-        if str(item.get("id", "")).strip() == target and str(item.get("status", "")).strip() == "open":
-            return True
-    return False
-
-
-def _duplicates(values: list) -> list:
-    seen: set = set()
-    dups: set = set()
-    for value in values:
-        if value in seen:
-            dups.add(value)
-        else:
-            seen.add(value)
-    return sorted(dups, key=str)
-
-
-def _ids(items: list) -> list[str]:
+def _ids(items) -> list[str]:
     return [
-        str(item.get("id", "")).strip()
-        for item in items
-        if isinstance(item, dict) and str(item.get("id", "")).strip()
+        str(i.get("id", "")).strip()
+        for i in (items or [])
+        if isinstance(i, dict) and str(i.get("id", "")).strip()
     ]
 
 
-def _arms_by_role(arms: list) -> tuple[dict | None, dict | None]:
+def _duplicates(values) -> list:
+    seen, dups = set(), set()
+    for v in values:
+        (dups if v in seen else seen).add(v)
+    return sorted(dups, key=str)
+
+
+def _arms_by_role(arms):
     control = [a for a in arms if isinstance(a, dict) and a.get("role") == "control"]
     treatment = [a for a in arms if isinstance(a, dict) and a.get("role") == "treatment"]
-    control_arm = control[0] if len(control) == 1 else None
-    treatment_arm = treatment[0] if len(treatment) == 1 else None
-    return control_arm, treatment_arm
+    return (control[0] if len(control) == 1 else None,
+            treatment[0] if len(treatment) == 1 else None)
 
 
-def _spec_is_no_upfront_spec(spec: dict) -> bool:
+def _load_bundle_yaml(ref, bundle_dir: Path, repo_root: Path):
+    """Resolve a bundle YAML ref (must be inside the bundle dir) and load it as a mapping.
+
+    Returns (doc|None, problem|None).
+    """
+    resolved, code = resolve_repo_relative_path(ref, repo_root, must_exist=True)
+    if code == "ESCAPE":
+        return None, "resolves outside the repo root"
+    if code == "NOT_FOUND":
+        return None, "does not exist"
+    if resolved is None or not resolved.is_file():
+        return None, "is not a regular file"
+    if not _inside(resolved, bundle_dir):
+        return None, "is outside the design bundle"
+    try:
+        doc = load_yaml(resolved)
+    except (FileNotFoundError, ValueError):
+        return None, "is not a readable YAML mapping"
+    return doc, None
+
+
+def _child_identity_problems(label, doc, design):
+    out = []
+    for key in ("design_id", "series_id", "challenge_version"):
+        if str(doc.get(key, "")).strip() != str(design.get(key, "")).strip():
+            out.append(f"{label}.{key}={doc.get(key)!r} (expected {design.get(key)!r})")
+    return out
+
+
+def _bundle_refs(data: dict):
+    """(raw_ref, label) for every ref that must live inside the design bundle."""
+    refs = [
+        (str(data.get("design_artifact_path", "")), "design_artifact_path"),
+        (str(data.get("precondition_snapshot_ref", "")), "precondition_snapshot_ref"),
+    ]
+    freeze = data.get("freeze") or {}
+    if isinstance(freeze, dict) and freeze.get("freeze_manifest_ref"):
+        refs.append((str(freeze["freeze_manifest_ref"]), "freeze.freeze_manifest_ref"))
+    for block, label in (("verification_surface", "verification_surface.protocol_ref"),
+                         ("measurement_surface", "measurement_surface.protocol_ref")):
+        b = data.get(block) or {}
+        if isinstance(b, dict) and b.get("protocol_ref"):
+            refs.append((str(b["protocol_ref"]), label))
+    cia = data.get("condition_input_assembly") or {}
+    if isinstance(cia, dict) and cia.get("shared_input_ref"):
+        refs.append((str(cia["shared_input_ref"]), "condition_input_assembly.shared_input_ref"))
+    for arm in data.get("arms") or []:
+        if isinstance(arm, dict) and arm.get("overlay_ref"):
+            refs.append((str(arm["overlay_ref"]), f"arms[{arm.get('id','?')}].overlay_ref"))
+    return refs
+
+
+def _covered_bundle_files(data: dict):
+    """Repo-relative refs that the freeze manifest must cover (design + protocols + snapshot)."""
+    out = [str(data.get("design_artifact_path", "")), str(data.get("precondition_snapshot_ref", ""))]
+    for block in ("verification_surface", "measurement_surface"):
+        b = data.get(block) or {}
+        if isinstance(b, dict) and b.get("protocol_ref"):
+            out.append(str(b["protocol_ref"]))
+    cia = data.get("condition_input_assembly") or {}
+    if isinstance(cia, dict) and cia.get("shared_input_ref"):
+        out.append(str(cia["shared_input_ref"]))
+    for arm in data.get("arms") or []:
+        if isinstance(arm, dict) and arm.get("overlay_ref"):
+            out.append(str(arm["overlay_ref"]))
+    return out
+
+
+def _execution_artifact_problems(bundle_dir: Path) -> list[str]:
+    problems: set[str] = set()
+    try:
+        if not bundle_dir.is_dir():
+            return []
+        for entry in bundle_dir.rglob("*"):
+            try:
+                rel = entry.relative_to(bundle_dir).as_posix()
+                if entry.is_dir():
+                    if entry.name in FORBIDDEN_EXECUTION_DIRS:
+                        problems.add(rel + "/")
+                elif entry.is_file():
+                    if entry.name in FORBIDDEN_EXECUTION_FILES:
+                        problems.add(rel)
+                    elif any(entry.match(g) for g in FORBIDDEN_EXECUTION_GLOBS):
+                        problems.add(rel)
+            except OSError:
+                continue
+    except OSError:
+        return []
+    return sorted(problems)
+
+
+def _freeze_problems(data: dict, bundle_dir: Path, repo_root: Path) -> list[str]:
+    problems: list[str] = []
+    freeze = data.get("freeze") or {}
+    manifest_rel = str(freeze.get("freeze_manifest_ref", ""))
+    manifest, prob = _load_bundle_yaml(manifest_rel, bundle_dir, repo_root)
+    if manifest is None:
+        return [f"freeze manifest {display_source_path(manifest_rel)} {prob}"]
+    manifest_path, _ = resolve_repo_relative_path(manifest_rel, repo_root, must_exist=True)
+
+    if str(manifest.get("artifact_type", "")).strip() != FREEZE_ARTIFACT_TYPE:
+        problems.append(f"artifact_type={manifest.get('artifact_type')!r} (expected {FREEZE_ARTIFACT_TYPE!r})")
+    problems += _child_identity_problems("freeze", manifest, data)
+    if manifest.get("frozen_before_execution") is not True:
+        problems.append("frozen_before_execution must be literally true")
+    if not RFC3339_RE.match(str(manifest.get("frozen_at", ""))):
+        problems.append(f"frozen_at must be an RFC-3339 timestamp (got {manifest.get('frozen_at')!r})")
+    if not str(manifest.get("change_rule", "")).strip():
+        problems.append("change_rule must be non-empty")
+    for key in FORBIDDEN_FREEZE_COMMIT_KEYS:
+        if key in manifest:
+            problems.append(f"must not record a self-referential commit key: {key}")
+
+    entries = manifest.get("hashes")
+    if not isinstance(entries, list) or not entries:
+        problems.append("hashes must be a non-empty list")
+        return problems
+
+    declared_paths: list[str] = []
+    hashed_ok: set[Path] = set()
+    declared_resolved: set[Path] = set()
+    for idx, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            problems.append(f"hashes[{idx}] is not a mapping")
+            continue
+        rel = str(entry.get("path", ""))
+        declared = str(entry.get("sha256", "")).strip().lower()
+        declared_paths.append(rel)
+        resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
+        if code is not None or resolved is None or not resolved.is_file():
+            problems.append(f"hashed path {display_source_path(rel)} is not a safe, existing, regular file")
+            continue
+        if not _inside(resolved, bundle_dir):
+            problems.append(f"hashed path {display_source_path(rel)} is outside the design bundle")
+            continue
+        declared_resolved.add(resolved)
+        if not SHA256_RE.match(declared):
+            problems.append(f"hashed path {display_source_path(rel)} has a malformed sha256")
+            continue
+        actual = _sha256_of(resolved)
+        if actual != declared:
+            problems.append(f"sha256 mismatch for {display_source_path(rel)}")
+            continue
+        hashed_ok.add(resolved)
+
+    for dup in _duplicates(declared_paths):
+        problems.append(f"duplicate hashed path: {display_source_path(dup)}")
+    if manifest_path is not None and manifest_path in declared_resolved:
+        problems.append("freeze manifest must not hash itself (cycle)")
+
+    for rel in _covered_bundle_files(data):
+        resolved, code = resolve_repo_relative_path(rel, repo_root, must_exist=True)
+        if code is not None or resolved is None:
+            continue  # path safety reported elsewhere
+        if resolved not in hashed_ok:
+            problems.append(f"bundle file not covered by a valid freeze hash: {display_source_path(rel)}")
+    return problems
+
+
+def _snapshot_problems(data: dict, bundle_dir: Path, repo_root: Path):
+    """Returns (problems, gate_block_or_None)."""
+    problems: list[str] = []
+    ref = str(data.get("precondition_snapshot_ref", ""))
+    snap, prob = _load_bundle_yaml(ref, bundle_dir, repo_root)
+    if snap is None:
+        return [f"precondition snapshot {display_source_path(ref)} {prob}"], None
+
+    if str(snap.get("artifact_type", "")).strip() != SNAPSHOT_ARTIFACT_TYPE:
+        problems.append(f"artifact_type={snap.get('artifact_type')!r} (expected {SNAPSHOT_ARTIFACT_TYPE!r})")
+    problems += _child_identity_problems("snapshot", snap, data)
+
+    sources = snap.get("captured_sources")
+    if not isinstance(sources, dict):
+        problems.append("captured_sources missing or malformed")
+        return problems, None
+
+    gate = sources.get("gate")
+    if not isinstance(gate, dict):
+        problems.append("captured_sources.gate missing or malformed")
+        gate = None
+    else:
+        if str(gate.get("artifact_type", "")).strip() != GATE_ARTIFACT_TYPE:
+            problems.append(f"gate.artifact_type={gate.get('artifact_type')!r} (expected {GATE_ARTIFACT_TYPE!r})")
+        if gate.get("gate_status") != "criteria_defined":
+            problems.append(f"gate.gate_status={gate.get('gate_status')!r} (expected 'criteria_defined')")
+        if gate.get("run_004_design_allowed") is not True:
+            problems.append("gate.run_004_design_allowed must be literally true")
+        if gate.get("run_004_execution_allowed") is not False:
+            problems.append("gate.run_004_execution_allowed must be literally false")
+        if gate.get("result_assessment_allowed_after_gate") is not False:
+            problems.append("gate.result_assessment_allowed_after_gate must be literally false")
+        if gate.get("comparison_ready_after_gate") is not False:
+            problems.append("gate.comparison_ready_after_gate must be literally false")
+        if str(gate.get("target_blocker", "")).strip() != str(data.get("target_blocker", "")).strip():
+            problems.append(f"gate.target_blocker={gate.get('target_blocker')!r} (expected {data.get('target_blocker')!r})")
+        if str(gate.get("blocker_status_after_gate", "")).strip() != "open":
+            problems.append("gate.blocker_status_after_gate must be 'open'")
+        if not SHA256_RE.match(str(gate.get("source_sha256", "")).strip().lower()):
+            problems.append("gate.source_sha256 must be a 64-hex sha256")
+
+    readiness = sources.get("readiness")
+    if not isinstance(readiness, dict):
+        problems.append("captured_sources.readiness missing or malformed")
+    else:
+        if str(readiness.get("artifact_type", "")).strip() != READINESS_ARTIFACT_TYPE:
+            problems.append(f"readiness.artifact_type={readiness.get('artifact_type')!r} (expected {READINESS_ARTIFACT_TYPE!r})")
+        if readiness.get("readiness_status_at_design") != "blocked":
+            problems.append("readiness.readiness_status_at_design must be 'blocked'")
+        if readiness.get("result_assessment_allowed_at_design") is not False:
+            problems.append("readiness.result_assessment_allowed_at_design must be literally false")
+        if readiness.get("comparison_ready_at_design") is not False:
+            problems.append("readiness.comparison_ready_at_design must be literally false")
+        if str(readiness.get("target_blocker_status_at_design", "")).strip() != "open":
+            problems.append("readiness.target_blocker_status_at_design must be 'open'")
+        if not SHA256_RE.match(str(readiness.get("source_sha256", "")).strip().lower()):
+            problems.append("readiness.source_sha256 must be a 64-hex sha256")
+
+    return problems, gate
+
+
+def _gate_subset_problems(data: dict, gate: dict):
+    problems: list[str] = []
+    design_dims = set(_ids(data.get("controlled_dimensions")))
+    required_dims = gate.get("required_control_dimensions") or []
+    if not isinstance(required_dims, list):
+        problems.append("snapshot gate.required_control_dimensions is malformed")
+        required_dims = []
+    missing_dims = [d for d in required_dims if str(d).strip() not in design_dims]
+    if missing_dims:
+        problems.append("controlled_dimensions missing gate-required: " + ", ".join(map(str, missing_dims)))
+
+    design_conf = {
+        str(c.get("id", "")).strip(): str(c.get("effect_if_uncontrolled", "")).strip()
+        for c in (data.get("confounder_controls") or [])
+        if isinstance(c, dict) and str(c.get("id", "")).strip()
+    }
+    required_conf = gate.get("required_confounders") or {}
+    if not isinstance(required_conf, dict):
+        problems.append("snapshot gate.required_confounders is malformed")
+        required_conf = {}
+    for cid, gate_effect in required_conf.items():
+        cid_s = str(cid).strip()
+        if cid_s not in design_conf:
+            problems.append(f"confounder_controls missing gate-required: {cid_s}")
+            continue
+        if EFFECT_SEVERITY.get(design_conf[cid_s], 0) < EFFECT_SEVERITY.get(str(gate_effect).strip(), 0):
+            problems.append(
+                f"confounder {cid_s} weakens gate effect {str(gate_effect)!r} to {design_conf[cid_s]!r}"
+            )
+    return problems
+
+
+def _spec_is_no_upfront(spec) -> bool:
     return (
         isinstance(spec, dict)
         and spec.get("pre_implementation_specification_required") is False
         and spec.get("implementation_may_begin_immediately") is True
+        and spec.get("specification_completeness_checked_before_implementation") is False
         and not (spec.get("required_specification_sections") or [])
     )
 
 
-def _spec_is_full_upfront_spec(spec: dict) -> bool:
+def _spec_is_full_upfront(spec) -> bool:
     if not isinstance(spec, dict):
         return False
     if spec.get("pre_implementation_specification_required") is not True:
         return False
     if spec.get("implementation_may_begin_immediately") is not False:
         return False
+    if spec.get("specification_completeness_checked_before_implementation") is not True:
+        return False
     sections = {str(s).strip() for s in (spec.get("required_specification_sections") or [])}
-    return all(section in sections for section in MANDATORY_TREATMENT_SPEC_SECTIONS)
+    return all(s in sections for s in MANDATORY_TREATMENT_SPEC_SECTIONS)
 
 
-def _execution_artifact_problems(design_dir: Path) -> list[str]:
-    """Forbidden execution artifacts directly inside the design directory."""
-    problems: list[str] = []
-    try:
-        if not design_dir.is_dir():
-            return problems
-    except OSError:
-        return problems
-    for name in FORBIDDEN_EXECUTION_FILES:
-        try:
-            if (design_dir / name).is_file():
-                problems.append(name)
-        except OSError:
-            continue
-    for name in FORBIDDEN_EXECUTION_DIRS:
-        try:
-            if (design_dir / name).is_dir():
-                problems.append(name + "/")
-        except OSError:
-            continue
-    for pattern in FORBIDDEN_EXECUTION_GLOBS:
-        try:
-            for match in sorted(design_dir.glob(pattern)):
-                if match.is_file():
-                    problems.append(match.name)
-        except OSError:
-            continue
-    return sorted(set(problems))
-
-
-def _freeze_problems(data: dict, repo_root: Path) -> list[str]:
-    """Validate the SHA-256 freeze manifest: integrity, no cycle, complete coverage."""
-    problems: list[str] = []
-    freeze = data.get("freeze")
-    if not isinstance(freeze, dict):
-        return ["freeze block missing or malformed"]
-
-    if freeze.get("frozen_before_execution") is not True:
-        problems.append("freeze.frozen_before_execution must be literally true")
-
-    manifest_rel = str(freeze.get("freeze_manifest_ref", ""))
-    manifest_path, code = resolve_repo_relative_path(manifest_rel, repo_root, must_exist=True)
-    if code is not None or manifest_path is None or not manifest_path.is_file():
-        problems.append(
-            f"freeze_manifest_ref {display_source_path(manifest_rel)} is not a safe, existing, regular file"
-        )
-        return problems
-
-    try:
-        manifest = load_yaml(manifest_path)
-    except (FileNotFoundError, ValueError):
-        problems.append(f"freeze manifest {display_path(manifest_path)} is not a readable YAML mapping")
-        return problems
-
-    if manifest.get("frozen_before_execution") is not True:
-        problems.append("freeze manifest frozen_before_execution must be literally true")
-    if not str(manifest.get("change_rule", "")).strip():
-        problems.append("freeze manifest must declare a non-empty change_rule")
-
-    entries = manifest.get("hashes")
-    if not isinstance(entries, list) or not entries:
-        problems.append("freeze manifest hashes must be a non-empty list")
-        return problems
-
-    hashed_resolved: set[Path] = set()
-    declared_resolved: set[Path] = set()
-    for idx, entry in enumerate(entries):
-        if not isinstance(entry, dict):
-            problems.append(f"hashes[{idx}] is not a mapping")
-            continue
-        entry_rel = str(entry.get("path", ""))
-        declared = str(entry.get("sha256", "")).strip().lower()
-        resolved, ecode = resolve_repo_relative_path(entry_rel, repo_root, must_exist=True)
-        if ecode is not None or resolved is None or not resolved.is_file():
-            problems.append(f"hashed path {display_source_path(entry_rel)} is not a safe, existing, regular file")
-            continue
-        # Track every declared (resolvable) path so a self-reference is caught by path
-        # presence, independent of whether its (circular) hash happens to match.
-        declared_resolved.add(resolved)
-        if not re.fullmatch(r"[0-9a-f]{64}", declared):
-            problems.append(f"hashed path {display_source_path(entry_rel)} has a malformed sha256")
-            continue
-        actual = _sha256_of(resolved)
-        if actual is None:
-            problems.append(f"hashed path {display_source_path(entry_rel)} could not be hashed")
-            continue
-        if actual != declared:
-            problems.append(f"sha256 mismatch for {display_source_path(entry_rel)}")
-            continue
-        hashed_resolved.add(resolved)
-
-    # No self-hash: the manifest must not list itself (would be a cycle).
-    if manifest_path in declared_resolved:
-        problems.append("freeze manifest must not hash itself (cycle)")
-
-    # The design artifact and every protocol artifact it references must be frozen.
-    required_refs: dict[str, str] = {}
-    design_self = str(data.get("design_artifact_path", ""))
-    if design_self:
-        required_refs[design_self] = "design_artifact_path"
-    for arm in data.get("arms", []) or []:
-        if not isinstance(arm, dict):
-            continue
-        for key in (
-            "workflow_protocol_ref",
-            "common_condition_ref",
-            "verification_protocol_ref",
-            "measurement_protocol_ref",
-        ):
-            ref = str(arm.get(key, ""))
-            if ref:
-                required_refs.setdefault(ref, key)
-
-    for ref, label in sorted(required_refs.items()):
-        resolved, ecode = resolve_repo_relative_path(ref, repo_root, must_exist=True)
-        if ecode is not None or resolved is None:
-            # Path safety/existence of these refs is also reported by SAFE_EXISTING_PATHS;
-            # here we only assert freeze coverage, so skip unresolvable refs.
-            continue
-        if resolved not in hashed_resolved:
-            problems.append(f"{label} {display_source_path(ref)} is not covered by the freeze manifest")
-
+def _verification_problems(data: dict, bundle_dir: Path, repo_root: Path):
+    ref = str((data.get("verification_surface") or {}).get("protocol_ref", ""))
+    doc, prob = _load_bundle_yaml(ref, bundle_dir, repo_root)
+    if doc is None:
+        return [f"verification protocol {display_source_path(ref)} {prob}"]
+    problems = _child_identity_problems("verification", doc, data)
+    if str(doc.get("artifact_type", "")).strip() != VERIFICATION_ARTIFACT_TYPE:
+        problems.append(f"artifact_type={doc.get('artifact_type')!r} (expected {VERIFICATION_ARTIFACT_TYPE!r})")
+    if doc.get("applies_equally_to_both_arms") is not True:
+        problems.append("applies_equally_to_both_arms must be literally true")
+    if doc.get("does_not_execute") is not True:
+        problems.append("does_not_execute must be literally true")
+    if doc.get("per_arm_test_overrides_forbidden") is not True:
+        problems.append("per_arm_test_overrides_forbidden must be literally true")
+    if str(doc.get("executable_harness_binding_status", "")).strip() != "deferred_to_execution_readiness":
+        problems.append("executable_harness_binding_status must be 'deferred_to_execution_readiness'")
     return problems
 
 
-def _collect_repo_refs(data: dict) -> list[tuple[str, str]]:
-    """(raw_path, label) for every repo path the design references and must keep safe."""
-    refs: list[tuple[str, str]] = []
-    design_self = str(data.get("design_artifact_path", ""))
-    if design_self:
-        refs.append((design_self, "design_artifact_path"))
-    freeze = data.get("freeze")
-    if isinstance(freeze, dict) and freeze.get("freeze_manifest_ref"):
-        refs.append((str(freeze.get("freeze_manifest_ref")), "freeze.freeze_manifest_ref"))
-    for arm in data.get("arms", []) or []:
-        if not isinstance(arm, dict):
-            continue
-        arm_id = str(arm.get("id", "?"))
-        for key in (
-            "workflow_protocol_ref",
-            "common_condition_ref",
-            "verification_protocol_ref",
-            "measurement_protocol_ref",
-        ):
-            if arm.get(key):
-                refs.append((str(arm.get(key)), f"arms[{arm_id}].{key}"))
-    return refs
+def _measurement_problems(data: dict, bundle_dir: Path, repo_root: Path):
+    ref = str((data.get("measurement_surface") or {}).get("protocol_ref", ""))
+    doc, prob = _load_bundle_yaml(ref, bundle_dir, repo_root)
+    if doc is None:
+        return [f"measurement protocol {display_source_path(ref)} {prob}"]
+    problems = _child_identity_problems("measurement", doc, data)
+    if str(doc.get("artifact_type", "")).strip() != MEASUREMENT_ARTIFACT_TYPE:
+        problems.append(f"artifact_type={doc.get('artifact_type')!r} (expected {MEASUREMENT_ARTIFACT_TYPE!r})")
+    if doc.get("applies_equally_to_both_arms") is not True:
+        problems.append("applies_equally_to_both_arms must be literally true")
+    if doc.get("post_hoc_metric_selection_forbidden") is not True:
+        problems.append("post_hoc_metric_selection_forbidden must be literally true")
+    if doc.get("does_not_record_values") is not True:
+        problems.append("does_not_record_values must be literally true")
+    if doc.get("treatment_only_scoring_forbidden") is not True:
+        problems.append("treatment_only_scoring_forbidden must be literally true")
+    metrics = []
+    for key in ("primary_metrics", "secondary_metrics", "metrics"):
+        if isinstance(doc.get(key), list):
+            metrics.extend(m for m in doc[key] if isinstance(m, dict))
+    metric_ids = {str(m.get("id", "")).strip() for m in metrics}
+    if COMPLIANCE_METRIC_ID not in metric_ids:
+        problems.append(f"missing mandatory metric '{COMPLIANCE_METRIC_ID}'")
+    for m in metrics:
+        mid = str(m.get("id", "")).strip() or "<unnamed>"
+        for field in ("id", "unit", "formula"):
+            if not str(m.get(field, "")).strip():
+                problems.append(f"metric {mid} missing {field}")
+        if str(m.get("unit", "")).strip() == "ratio" and not isinstance(m.get("range"), dict):
+            problems.append(f"ratio metric {mid} must declare a range")
+        bad = sorted(FORBIDDEN_METRIC_VALUE_KEYS & set(m.keys()))
+        if bad:
+            problems.append(f"metric {mid} pre-bakes values: {', '.join(bad)}")
+    return problems
 
 
 def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     errors: list[str] = []
-
-    design_series_id = str(data.get("series_id", "")).strip()
-    design_challenge = str(data.get("challenge_version", "")).strip()
-    target_blocker = str(data.get("target_blocker", "")).strip()
-    arms = data.get("arms", []) or []
-    controlled_dimensions = data.get("controlled_dimensions", []) or []
-    confounder_controls = data.get("confounder_controls", []) or []
-    does_not_establish = data.get("does_not_establish", []) or []
+    bundle_dir = path.resolve().parent
+    arms = data.get("arms") or []
+    controlled_dimensions = data.get("controlled_dimensions") or []
+    confounder_controls = data.get("confounder_controls") or []
     primary_axis = data.get("primary_intervention_axis") or {}
-
-    resolutions = resolve_source_evidence_entries(data, repo_root)
-    gate_paths = [
-        (r.raw_rel_path, r.loaded_yaml)
-        for r in resolutions
-        if r.kind == GATE_KIND and r.loaded_yaml is not None
-    ]
-    readiness_paths = [
-        (r.raw_rel_path, r.loaded_yaml)
-        for r in resolutions
-        if r.kind == READINESS_KIND and r.loaded_yaml is not None
-    ]
-    gate_docs = [doc for _, doc in gate_paths]
-    readiness_docs = [doc for _, doc in readiness_paths]
-
-    # --- exactly one foundational gate source --------------------------------
-    gate_count = sum(1 for r in resolutions if r.kind == GATE_KIND)
-    if gate_count != 1:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_SINGLE_GATE_SOURCE",
-                path,
-                "source_evidence must contain exactly one condition_contrast_design_gate "
-                f"source; foundational gate evidence must be unambiguous (found {gate_count}).",
-            )
-        )
-
-    readiness_count = sum(1 for r in resolutions if r.kind == READINESS_KIND)
-
-    # --- foundational sources must be readable YAML mappings -----------------
-    readable_problems = [
-        f"{display_source_path(r.raw_rel_path)} ({r.kind}) "
-        f"{READABILITY_MESSAGES.get(r.readability_error, r.readability_error)}"
-        for r in resolutions
-        if r.kind in FOUNDATIONAL_KINDS and r.code is None and r.readability_error is not None
-    ]
-    if readable_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_READABLE_FOUNDATIONAL_SOURCES",
-                path,
-                "each foundational source (condition_contrast_design_gate, readiness_gate) "
-                "must be a readable YAML mapping; offending: " + "; ".join(readable_problems),
-            )
-        )
-
-    # --- foundational sources must be the right artifact for this series -----
-    identity_problems = _source_identity_mismatches(
-        gate_paths,
-        expected_artifact_type=GATE_ARTIFACT_TYPE,
-        expected_series_id=design_series_id,
-    )
-    identity_problems += _source_identity_mismatches(
-        readiness_paths,
-        expected_artifact_type=READINESS_ARTIFACT_TYPE,
-        expected_series_id=design_series_id,
-        expected_challenge_version=design_challenge,
-    )
-    if identity_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_MATCHING_SOURCE_IDENTITY",
-                path,
-                "each foundational source must match this design's identity "
-                f"(series_id={design_series_id!r}, challenge_version={design_challenge!r}); "
-                "offending: " + "; ".join(identity_problems),
-            )
-        )
-
-    # --- gate must authorize a Run-004 design --------------------------------
-    if gate_docs and not _gate_authorizes_design(gate_docs):
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_GATE_AUTHORIZES_DESIGN",
-                path,
-                "no referenced condition_contrast_design_gate authorizes a Run-004 design "
-                "(needs gate_status=criteria_defined, run_004_design_allowed=true, "
-                "run_004_execution_allowed=false).",
-            )
-        )
-
-    # --- assessment / comparison must remain blocked -------------------------
-    blocked = True
-    if gate_docs and not _gate_keeps_assessment_blocked(gate_docs):
-        blocked = False
-    if readiness_count != 1 or not readiness_docs or not _readiness_blocked_confirmed(readiness_docs):
-        blocked = False
-    if not blocked:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_BLOCKED_READINESS",
-                path,
-                "the gate must keep result_assessment_allowed_after_gate=false and "
-                "comparison_ready_after_gate=false, and exactly one readiness_gate source "
-                "must explicitly confirm a blocked assessment (readiness_status=blocked, "
-                "result_assessment_allowed=false, comparison_ready=false; missing fields do "
-                "not count as false). A frozen design is only coherent while a formal result "
-                "assessment is still blocked.",
-            )
-        )
-
-    # --- target blocker must stay open in gate and readiness -----------------
-    open_problems: list[str] = []
-    if gate_docs and target_blocker and not _gate_target_open(gate_docs, target_blocker):
-        open_problems.append("not open in the gate (blocker_status_after_gate)")
-    for raw_rel_path, doc in readiness_paths:
-        if target_blocker and not _blocker_open_in(doc, "blockers", target_blocker):
-            open_problems.append(f"{display_source_path(raw_rel_path)}: not open in readiness blockers")
-    if open_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_OPEN_TARGET_BLOCKER",
-                path,
-                f"target_blocker {target_blocker!r} must stay open in both the gate and the "
-                "referenced readiness gate; designing a contrast for a closed blocker is "
-                "incoherent. Offending: " + "; ".join(open_problems),
-            )
-        )
-
-    # --- exactly one control and one treatment arm ---------------------------
-    roles = sorted(str(a.get("role", "")).strip() for a in arms if isinstance(a, dict))
     control_arm, treatment_arm = _arms_by_role(arms)
-    if roles != ["control", "treatment"]:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS",
-                path,
-                "arms must be exactly one 'control' and one 'treatment'; "
-                f"found roles {roles}.",
-            )
-        )
 
-    # --- single primary axis: workflow_protocol, varied across arms ----------
+    # --- design self-identity ------------------------------------------------
+    dpath = str(data.get("design_artifact_path", ""))
+    resolved_self, code = resolve_repo_relative_path(dpath, repo_root, must_exist=True)
+    if code is not None or resolved_self is None or resolved_self != path.resolve():
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_DESIGN_SELF_IDENTITY", path,
+            f"design_artifact_path ({display_source_path(dpath)}) must resolve to the validated file "
+            f"({display_path(path)}); a mismatch lets the freeze bind a different file.",
+        ))
+
+    # --- precondition snapshot (frozen, not live) ----------------------------
+    snap_problems, gate_block = _snapshot_problems(data, bundle_dir, repo_root)
+    if snap_problems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_VALID_PRECONDITION_SNAPSHOT", path,
+            "the frozen precondition snapshot must be a coherent, identity-matched gate+readiness "
+            "capture (criteria_defined, design allowed, execution/assessment/comparison blocked, "
+            "target open); offending: " + "; ".join(snap_problems),
+        ))
+
+    # --- gate requirements are a minimum set (from the snapshot) -------------
+    if gate_block is not None:
+        subset_problems = _gate_subset_problems(data, gate_block)
+        if subset_problems:
+            errors.append(format_error(
+                "CONDITION_DESIGN_REQUIRES_GATE_REQUIREMENTS_SUBSET", path,
+                "the design must control at least the gate-required dimensions and carry at least the "
+                "gate-required confounders without weakening their effect; offending: "
+                + "; ".join(subset_problems),
+            ))
+
+    # --- exactly one control + one treatment ---------------------------------
+    roles = sorted(str(a.get("role", "")).strip() for a in arms if isinstance(a, dict))
+    if roles != ["control", "treatment"]:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS", path,
+            f"arms must be exactly one 'control' and one 'treatment'; found roles {roles}.",
+        ))
+
+    # --- single primary axis (assigned instruction), varied across arms ------
     axis_id = str(primary_axis.get("id", "")).strip() if isinstance(primary_axis, dict) else ""
     if axis_id != EXPECTED_PRIMARY_AXIS:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS",
-                path,
-                f"primary_intervention_axis.id must be {EXPECTED_PRIMARY_AXIS!r}; found {axis_id!r}.",
-            )
-        )
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS", path,
+            f"primary_intervention_axis.id must be {EXPECTED_PRIMARY_AXIS!r}; found {axis_id!r}.",
+        ))
     elif control_arm is not None and treatment_arm is not None:
-        if str(control_arm.get("workflow_protocol", "")).strip() == str(
-            treatment_arm.get("workflow_protocol", "")
-        ).strip():
-            errors.append(
-                format_error(
-                    "CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS",
-                    path,
-                    "the two arms must take different workflow_protocol values along the "
-                    "single primary axis; both arms share the same value.",
-                )
-            )
+        if str(control_arm.get("workflow_protocol", "")).strip() == str(treatment_arm.get("workflow_protocol", "")).strip():
+            errors.append(format_error(
+                "CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS", path,
+                "the two arms must take different workflow_protocol values along the single primary axis.",
+            ))
 
-    # --- material, pre-execution-observable contrast -------------------------
+    # --- primary axis must not also be a controlled dimension ----------------
+    if EXPECTED_PRIMARY_AXIS in set(_ids(controlled_dimensions)) or axis_id in set(_ids(controlled_dimensions)):
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_PRIMARY_AXIS_NOT_CONTROLLED", path,
+            "the selected primary axis must not also appear in controlled_dimensions (it is the one "
+            "dimension allowed to vary).",
+        ))
+
+    # --- material, pre-execution-observable assigned contrast ----------------
     if control_arm is not None and treatment_arm is not None:
-        material_problems: list[str] = []
+        mat: list[str] = []
         if str(control_arm.get("workflow_protocol", "")).strip() != CONTROL_WORKFLOW_PROTOCOL:
-            material_problems.append(
-                f"control workflow_protocol must be {CONTROL_WORKFLOW_PROTOCOL!r}"
-            )
-        if not _spec_is_no_upfront_spec(control_arm.get("workflow_protocol_spec", {})):
-            material_problems.append(
-                "control must allow immediate implementation with no required upfront specification"
-            )
+            mat.append(f"control workflow_protocol must be {CONTROL_WORKFLOW_PROTOCOL!r}")
+        if not _spec_is_no_upfront(control_arm.get("workflow_protocol_spec", {})):
+            mat.append("control must carry no assigned upfront-specification requirement")
         if str(treatment_arm.get("workflow_protocol", "")).strip() != TREATMENT_WORKFLOW_PROTOCOL:
-            material_problems.append(
-                f"treatment workflow_protocol must be {TREATMENT_WORKFLOW_PROTOCOL!r}"
-            )
-        if not _spec_is_full_upfront_spec(treatment_arm.get("workflow_protocol_spec", {})):
-            material_problems.append(
-                "treatment must forbid implementation before a complete upfront specification "
-                "carrying the mandatory sections: " + ", ".join(MANDATORY_TREATMENT_SPEC_SECTIONS)
-            )
-        if material_problems:
-            errors.append(
-                format_error(
-                    "CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST",
-                    path,
-                    "the workflow_protocol contrast must be material and observable before "
-                    "execution, not a cosmetic relabel; " + "; ".join(material_problems),
-                )
-            )
+            mat.append(f"treatment workflow_protocol must be {TREATMENT_WORKFLOW_PROTOCOL!r}")
+        if not _spec_is_full_upfront(treatment_arm.get("workflow_protocol_spec", {})):
+            mat.append("treatment must require a complete, completeness-checked upfront specification "
+                       "with sections: " + ", ".join(MANDATORY_TREATMENT_SPEC_SECTIONS))
+        if mat:
+            errors.append(format_error(
+                "CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST", path,
+                "the assigned workflow-instruction contrast must be material and observable before "
+                "execution, not a cosmetic relabel; " + "; ".join(mat),
+            ))
 
-    # --- only the primary axis may differ between arms -----------------------
-    if control_arm is not None and treatment_arm is not None:
-        differing_non_primary = sorted(
-            key
-            for key in set(control_arm) | set(treatment_arm)
-            if key not in PRIMARY_AXIS_ARM_KEYS
-            and control_arm.get(key) != treatment_arm.get(key)
-        )
-        if differing_non_primary:
-            errors.append(
-                format_error(
-                    "CONDITION_DESIGN_REQUIRES_ONLY_PRIMARY_AXIS_DIFFERENCE",
-                    path,
-                    "the two arms may differ only along the primary axis (workflow_protocol); "
-                    "these non-primary arm fields differ: " + ", ".join(differing_non_primary),
-                )
-            )
+        # --- only the primary axis may differ (overlay/condition) ------------
+        only: list[str] = []
+        if str(control_arm.get("overlay_ref", "")).strip() == str(treatment_arm.get("overlay_ref", "")).strip():
+            only.append("both arms share the same overlay_ref")
+        cia = data.get("condition_input_assembly") or {}
+        cia_arms = cia.get("arms") if isinstance(cia, dict) else None
+        if isinstance(cia_arms, dict):
+            for role, arm in (("control", control_arm), ("treatment", treatment_arm)):
+                entry = cia_arms.get(role) or {}
+                if isinstance(entry, dict) and str(entry.get("overlay_ref", "")).strip() != str(arm.get("overlay_ref", "")).strip():
+                    only.append(f"condition_input_assembly.arms.{role}.overlay_ref disagrees with arm overlay_ref")
+        if only:
+            errors.append(format_error(
+                "CONDITION_DESIGN_REQUIRES_ONLY_PRIMARY_AXIS_DIFFERENCE", path,
+                "arms may differ only along the assigned workflow overlay, and the input assembly must "
+                "agree with the arm overlays; " + "; ".join(only),
+            ))
 
-        # --- shared verification / measurement / intervention ----------------
-        if control_arm.get("verification_protocol_ref") != treatment_arm.get("verification_protocol_ref"):
-            errors.append(
-                format_error(
-                    "CONDITION_DESIGN_REQUIRES_SHARED_VERIFICATION",
-                    path,
-                    "both arms must reference the same verification protocol.",
-                )
-            )
-        if control_arm.get("measurement_protocol_ref") != treatment_arm.get("measurement_protocol_ref"):
-            errors.append(
-                format_error(
-                    "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT",
-                    path,
-                    "both arms must reference the same measurement protocol.",
-                )
-            )
-        if control_arm.get("intervention_profile") != treatment_arm.get("intervention_profile"):
-            errors.append(
-                format_error(
-                    "CONDITION_DESIGN_REQUIRES_SHARED_INTERVENTION_RULES",
-                    path,
-                    "both arms must share the same intervention_profile (intervention and "
-                    "stop rules).",
-                )
-            )
+    # --- assigned condition vs observed compliance separated -----------------
+    aso: list[str] = []
+    ccr = data.get("condition_compliance_requirements") or {}
+    if not (isinstance(ccr, dict) and (ccr.get("required_future_evidence") or [])):
+        aso.append("condition_compliance_requirements.required_future_evidence is empty")
+    surfaces = data.get("artifact_surfaces") or {}
+    arm_proc = (surfaces.get("arm_specific_process_artifacts") or {}) if isinstance(surfaces, dict) else {}
+    if "preimplementation_specification" not in [str(x).strip() for x in (arm_proc.get("treatment") or [])]:
+        aso.append("artifact_surfaces.arm_specific_process_artifacts.treatment must include 'preimplementation_specification'")
+    if [str(x).strip() for x in (arm_proc.get("control") or [])]:
+        aso.append("control must have no arm-specific process artifacts")
+    if aso:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_ASSIGNED_VS_OBSERVED_SEPARATION", path,
+            "the assigned condition and the later observed compliance must be separated, and the "
+            "treatment process artifact must not be scored as an outcome; " + "; ".join(aso),
+        ))
 
-    # --- complete control bindings for every non-primary dimension ----------
-    present_dimensions = set(_ids(controlled_dimensions))
-    missing_dimensions = [d for d in MANDATORY_CONTROLLED_DIMENSIONS if d not in present_dimensions]
-    if missing_dimensions:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_COMPLETE_CONTROL_BINDINGS",
-                path,
-                "controlled_dimensions must bind every mandatory non-primary dimension; "
-                "missing: " + ", ".join(missing_dimensions),
-            )
-        )
+    # --- shared verification / measurement child semantics -------------------
+    vproblems = _verification_problems(data, bundle_dir, repo_root)
+    if vproblems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_SHARED_VERIFICATION", path,
+            "the shared verification protocol must apply equally to both arms, not execute, forbid "
+            "per-arm overrides, and defer the harness; " + "; ".join(vproblems),
+        ))
+    mproblems = _measurement_problems(data, bundle_dir, repo_root)
+    if mproblems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_SHARED_MEASUREMENT", path,
+            "the shared measurement protocol must apply equally, forbid post-hoc/treatment-only "
+            "scoring, record no values, define units/formulas, and include the compliance metric; "
+            + "; ".join(mproblems),
+        ))
 
-    # --- complete confounder controls with declared effects ------------------
-    confounder_effects = {
-        str(c.get("id", "")).strip(): str(c.get("effect_if_uncontrolled", "")).strip()
-        for c in confounder_controls
-        if isinstance(c, dict) and str(c.get("id", "")).strip()
-    }
-    confounder_problems: list[str] = []
-    for cid, expected_effect in EXPECTED_CONFOUNDER_EFFECTS.items():
-        if cid not in confounder_effects:
-            confounder_problems.append(f"missing: {cid}")
-        elif confounder_effects[cid] != expected_effect:
-            confounder_problems.append(
-                f"{cid}: effect_if_uncontrolled={confounder_effects[cid]!r} (expected {expected_effect!r})"
-            )
-    if confounder_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_COMPLETE_CONFOUNDER_CONTROLS",
-                path,
-                "confounder_controls must cover the mandatory set, each with its declared "
-                "effect_if_uncontrolled; " + "; ".join(confounder_problems),
-            )
-        )
+    # --- child identity (snapshot/freeze covered in their own rules) ---------
+    child_id_problems: list[str] = []
+    for label, block in (("verification_surface", data.get("verification_surface")),
+                         ("measurement_surface", data.get("measurement_surface"))):
+        ref = str((block or {}).get("protocol_ref", "")) if isinstance(block, dict) else ""
+        doc, prob = _load_bundle_yaml(ref, bundle_dir, repo_root)
+        if doc is not None:
+            child_id_problems += _child_identity_problems(label, doc, data)
+    if child_id_problems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_CHILD_IDENTITY", path,
+            "every child protocol must carry the design's design_id/series_id/challenge_version; "
+            + "; ".join(child_id_problems),
+        ))
 
-    # --- unique semantic ids within each list --------------------------------
-    duplicate_id_problems: list[str] = []
-    for label, items in (
-        ("arms", arms),
-        ("controlled_dimensions", controlled_dimensions),
-        ("confounder_controls", confounder_controls),
-    ):
+    # --- bundle boundary -----------------------------------------------------
+    boundary: list[str] = []
+    for raw_ref, label in _bundle_refs(data):
+        resolved, rcode = resolve_repo_relative_path(raw_ref, repo_root, must_exist=True)
+        if rcode is not None or resolved is None:
+            continue  # path safety reported separately
+        if not resolved.is_file():
+            boundary.append(f"{label}={display_source_path(raw_ref)}: not a regular file")
+        elif not _inside(resolved, bundle_dir):
+            boundary.append(f"{label}={display_source_path(raw_ref)}: outside the design bundle")
+    if boundary:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_BUNDLE_BOUNDARY", path,
+            "every bundle artifact (overlays, shared input, protocols, snapshot, freeze) must live "
+            "inside the design bundle directory; " + "; ".join(boundary),
+        ))
+
+    # --- valid, acyclic, complete freeze (no commit self-reference) ----------
+    freeze_problems = _freeze_problems(data, bundle_dir, repo_root)
+    if freeze_problems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_VALID_FREEZE", path,
+            "the SHA-256 freeze manifest must be identity-matched, RFC-3339 timestamped, acyclic, "
+            "free of commit self-reference, and cover every bundle file; " + "; ".join(freeze_problems),
+        ))
+
+    # --- recursive execution-artifact prohibition ----------------------------
+    exec_problems = _execution_artifact_problems(bundle_dir)
+    if exec_problems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_FORBIDS_EXECUTION_ARTIFACTS", path,
+            "the design bundle must contain no execution artifacts at any depth; offending: "
+            + ", ".join(exec_problems),
+        ))
+
+    # --- unique semantic ids -------------------------------------------------
+    dup_problems: list[str] = []
+    for label, items in (("arms", arms), ("controlled_dimensions", controlled_dimensions),
+                         ("confounder_controls", confounder_controls)):
         dups = _duplicates(_ids(items))
         if dups:
-            duplicate_id_problems.append(f"{label}: " + ", ".join(dups))
-    if duplicate_id_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_UNIQUE_SEMANTIC_IDS",
-                path,
-                "ids must be unique within each list; duplicated — " + "; ".join(duplicate_id_problems),
-            )
-        )
-
-    # --- valid, acyclic, complete freeze -------------------------------------
-    freeze_problems = _freeze_problems(data, repo_root)
-    if freeze_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_VALID_FREEZE",
-                path,
-                "the SHA-256 freeze manifest must be internally consistent, acyclic, and "
-                "cover the design and every protocol artifact; " + "; ".join(freeze_problems),
-            )
-        )
-
-    # --- no execution artifacts in the design path ---------------------------
-    execution_problems = _execution_artifact_problems(path.resolve().parent)
-    if execution_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_FORBIDS_EXECUTION_ARTIFACTS",
-                path,
-                "the design directory must not contain execution artifacts; offending: "
-                + ", ".join(execution_problems),
-            )
-        )
+            dup_problems.append(f"{label}: " + ", ".join(dups))
+    if dup_problems:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_UNIQUE_SEMANTIC_IDS", path,
+            "ids must be unique within each list; duplicated — " + "; ".join(dup_problems),
+        ))
 
     # --- mandatory anti-overclaim non-claims ---------------------------------
-    declared = {str(item).strip().lower() for item in does_not_establish}
-    missing_mandatory = [item for item in MANDATORY_DOES_NOT_ESTABLISH if item not in declared]
-    wrongly_listed = [item for item in FORBIDDEN_SELECTION_NON_CLAIMS if item in declared]
-    if missing_mandatory or wrongly_listed:
-        detail: list[str] = []
-        if missing_mandatory:
-            detail.append("missing: " + ", ".join(missing_mandatory))
-        if wrongly_listed:
-            detail.append(
-                "must not be listed (this design establishes them): " + ", ".join(wrongly_listed)
-            )
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS",
-                path,
-                "does_not_establish must include all static anti-overclaim non-claims and must "
-                "not deny the design's own contribution; " + "; ".join(detail),
-            )
-        )
+    declared = {str(x).strip().lower() for x in (data.get("does_not_establish") or [])}
+    missing = [x for x in MANDATORY_DOES_NOT_ESTABLISH if x not in declared]
+    wrong = [x for x in FORBIDDEN_SELECTION_NON_CLAIMS if x in declared]
+    if missing or wrong:
+        detail = []
+        if missing:
+            detail.append("missing: " + ", ".join(missing))
+        if wrong:
+            detail.append("must not be listed (this design establishes them): " + ", ".join(wrong))
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_MANDATORY_NON_CLAIMS", path,
+            "does_not_establish must include all static anti-overclaim non-claims and must not deny "
+            "the design's own contribution; " + "; ".join(detail),
+        ))
 
-    # --- every referenced repo path safe, existing, regular ------------------
-    safe_problems: list[str] = []
-    for res in resolutions:
-        if res.code == "ESCAPE":
-            safe_problems.append(f"{display_source_path(res.raw_rel_path)}: resolves outside the repo root")
-        elif res.code == "NOT_FOUND":
-            safe_problems.append(f"{display_source_path(res.raw_rel_path)}: does not exist")
-        elif res.readability_error == "NOT_FILE" and res.kind not in FOUNDATIONAL_KINDS:
-            # A foundational non-regular-file is already reported by the readability rule.
-            safe_problems.append(f"{display_source_path(res.raw_rel_path)}: exists but is not a regular file")
-    for raw_ref, label in _collect_repo_refs(data):
-        resolved, code = resolve_repo_relative_path(raw_ref, repo_root, must_exist=True)
-        if code == "ESCAPE":
-            safe_problems.append(f"{label}={display_source_path(raw_ref)}: resolves outside the repo root")
-        elif code == "NOT_FOUND":
-            safe_problems.append(f"{label}={display_source_path(raw_ref)}: does not exist")
+    # --- safe, existing repo paths -------------------------------------------
+    safe: list[str] = []
+    for raw_ref, label in _bundle_refs(data):
+        _, rcode = resolve_repo_relative_path(raw_ref, repo_root, must_exist=True)
+        if rcode == "ESCAPE":
+            safe.append(f"{label}={display_source_path(raw_ref)}: resolves outside the repo root")
+        elif rcode == "NOT_FOUND":
+            safe.append(f"{label}={display_source_path(raw_ref)}: does not exist")
+    for entry in (data.get("source_evidence") or []):
+        if not isinstance(entry, dict):
+            continue
+        raw_ref = str(entry.get("path", ""))
+        resolved, rcode = resolve_repo_relative_path(raw_ref, repo_root, must_exist=True)
+        if rcode == "ESCAPE":
+            safe.append(f"source_evidence {display_source_path(raw_ref)}: resolves outside the repo root")
+        elif rcode == "NOT_FOUND":
+            safe.append(f"source_evidence {display_source_path(raw_ref)}: does not exist")
         elif resolved is not None and not resolved.is_file():
-            safe_problems.append(f"{label}={display_source_path(raw_ref)}: exists but is not a regular file")
-    if safe_problems:
-        errors.append(
-            format_error(
-                "CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS",
-                path,
-                "every referenced repo path must be a safe, existing, regular file; offending: "
-                + "; ".join(safe_problems),
-            )
-        )
+            safe.append(f"source_evidence {display_source_path(raw_ref)}: not a regular file")
+    if safe:
+        errors.append(format_error(
+            "CONDITION_DESIGN_REQUIRES_SAFE_EXISTING_PATHS", path,
+            "every referenced bundle/context path must be a safe, existing, regular file; offending: "
+            + "; ".join(safe),
+        ))
 
     return errors
 
 
-def validate_file(
-    path: Path,
-    validator: Draft202012Validator,
-    repo_root: Path | None = None,
-) -> tuple[int, list[str]]:
+def validate_file(path: Path, validator: Draft202012Validator, repo_root: Path | None = None):
     effective_root = repo_root if repo_root is not None else REPO_ROOT
     try:
         data = load_yaml(path)
     except (FileNotFoundError, ValueError) as exc:
         return 2, [f"ERROR path={display_path(path)}: {exc}"]
-
     errors = schema_errors(validator, data, path)
     if errors:
         return 2, errors
-
     semantic = semantic_errors(data, path, effective_root)
     if semantic:
         return 1, semantic
@@ -1164,21 +894,26 @@ def validate_file(
 
 
 def discover_artifacts(repo_root: Path) -> list[Path]:
+    """Discover only real condition-design artifacts (artifact_type match), so this strongly
+    specialized v1 validator never claims unrelated future condition-design.yml files."""
     experiments_dir = repo_root / "experiments"
     if not experiments_dir.is_dir():
         return []
-    return sorted(experiments_dir.glob(DESIGN_GLOB))
+    out = []
+    for candidate in sorted(experiments_dir.glob(DESIGN_GLOB)):
+        try:
+            doc = yaml.safe_load(candidate.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, yaml.YAMLError):
+            out.append(candidate)  # surface parse errors during validation
+            continue
+        if isinstance(doc, dict) and str(doc.get("artifact_type", "")).strip() == DESIGN_ARTIFACT_TYPE:
+            out.append(candidate)
+    return out
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Validate Model-Lab condition-design artifacts."
-    )
-    parser.add_argument(
-        "paths",
-        nargs="*",
-        help="condition-design YAML files (default: discover all under experiments/).",
-    )
+    parser = argparse.ArgumentParser(description="Validate Model-Lab condition-design artifacts.")
+    parser.add_argument("paths", nargs="*", help="condition-design YAML files (default: discover under experiments/).")
     args = parser.parse_args(argv)
 
     try:
@@ -1188,36 +923,25 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     if args.paths:
-        paths = [
-            Path(raw) if Path(raw).is_absolute() else (REPO_ROOT / raw)
-            for raw in args.paths
-        ]
+        paths = [Path(r) if Path(r).is_absolute() else (REPO_ROOT / r) for r in args.paths]
     else:
         paths = discover_artifacts(REPO_ROOT)
         if not paths:
-            print(
-                "ℹ️ No model-lab-condition-design artifacts found; "
-                "model-lab-condition-design validation skipped."
-            )
+            print("ℹ️ No model-lab-condition-design artifacts found; model-lab-condition-design validation skipped.")
             return 0
 
-    highest_exit_code = 0
-    passed = 0
+    highest, passed = 0, 0
     for path in paths:
-        exit_code, errors = validate_file(path, validator)
-        highest_exit_code = max(highest_exit_code, exit_code)
-        for error in errors:
-            print(error)
-        if exit_code == 0:
+        code, errors = validate_file(path, validator)
+        highest = max(highest, code)
+        for e in errors:
+            print(e)
+        if code == 0:
             passed += 1
             print(f"✅ {display_path(path)}")
-
     checked = len(paths)
-    print(
-        f"Model-lab-condition-design artifacts: checked={checked}, "
-        f"passed={passed}, failed={checked - passed}"
-    )
-    return highest_exit_code
+    print(f"Model-lab-condition-design artifacts: checked={checked}, passed={passed}, failed={checked - passed}")
+    return highest
 
 
 if __name__ == "__main__":

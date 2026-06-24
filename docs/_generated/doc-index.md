@@ -264,8 +264,8 @@
 | `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md` | CONTEXT | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md` | INITIAL | — | — |
 | `tests/fixtures/experiment_structure_phase1c/valid/results/result.md` | Phase-1c Valid Fixture | draft | operative |
-| `tests/fixtures/model_lab_condition_design/_evidence/common-condition.md` | common-condition | — | — |
-| `tests/fixtures/model_lab_condition_design/_evidence/control-workflow-protocol.md` | control-workflow-protocol | — | — |
-| `tests/fixtures/model_lab_condition_design/_evidence/treatment-workflow-protocol.md` | treatment-workflow-protocol | — | — |
+| `tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md` | common-condition | — | — |
+| `tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md` | control-workflow-protocol | — | — |
+| `tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md` | treatment-workflow-protocol | — | — |
 | `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md` | assessment-context | — | — |
 | `tests/fixtures/pr_scope/valid/summary.md` | summary | — | — |

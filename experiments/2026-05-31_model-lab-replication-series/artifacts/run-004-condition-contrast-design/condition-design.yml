@@ -1,23 +1,34 @@
 schema_version: "v1"
 artifact_type: "model_lab_condition_design"
-triggered_by: "user-request-2026-06-23-run-004-condition-design"
+triggered_by: "user-request-2026-06-23-run-004-condition-design-hardening"
 design_id: "run-004-condition-contrast"
 design_status: "frozen"
 design_artifact_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml"
 series_id: "2026-05-31_model-lab-replication-series"
 challenge_version: "rest-api-v1"
+
+# Frozen paired condition contrast for a FUTURE Run-004. The primary axis is an ASSIGNED
+# workflow-instruction requirement (Spec-First instruction present vs absent), NOT an
+# enforced internal thought process and NOT a guarantee that control writes code
+# immediately. Preconditions are read from the frozen precondition-snapshot.yml, not from
+# mutable live state. Condition semantics are frozen; concrete runtime values are still
+# unbound. No run is executed, nothing is measured, nothing is assessed, and
+# weak_condition_contrast stays open.
+
+challenge:
+  id: "rest-api"
+  version: "rest-api-v1"
+  path: "benchmarks/challenges/rest-api-v1.md"
+  source_sha256: "e29b34df0e89f7bc0b5592431a9ddf09633ae75572dd2a23d530ef5c36a06d5b"
+
 target_blocker: "weak_condition_contrast"
 target_blocker_status_after_design: "open"
 
-# Frozen paired condition contrast for a FUTURE Run-004. This selects a single primary
-# intervention axis (workflow_protocol) and two future arms (control=direct_implementation,
-# treatment=spec_first) for the open weak_condition_contrast blocker, and freezes them
-# before execution. Historical Run-001/002/003 bundles are context only; they are NOT a
-# clean control arm (they differ on more than one uncontrolled dimension, e.g. generation
-# method and self-reported model identity). No run is executed, the runtime environment is
-# not bound, no result is assessed, and weak_condition_contrast stays open.
+precondition_snapshot_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/precondition-snapshot.yml"
+
 primary_intervention_axis:
   id: "workflow_protocol"
+  semantics: "assigned_instruction_requirement"
   selection_status: "selected"
   required_axis_count: 1
 
@@ -25,22 +36,20 @@ arms:
   - id: "control"
     role: "control"
     workflow_protocol: "direct_implementation"
-    workflow_protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md"
+    overlay_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md"
     workflow_protocol_spec:
       pre_implementation_specification_required: false
       implementation_may_begin_immediately: true
+      specification_completeness_checked_before_implementation: false
       required_specification_sections: []
-    common_condition_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md"
-    verification_protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml"
-    measurement_protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml"
-    intervention_profile: "shared-intervention-and-stop-rules-v1"
   - id: "treatment"
     role: "treatment"
     workflow_protocol: "spec_first"
-    workflow_protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md"
+    overlay_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md"
     workflow_protocol_spec:
       pre_implementation_specification_required: true
       implementation_may_begin_immediately: false
+      specification_completeness_checked_before_implementation: true
       required_specification_sections:
         - endpoint_matrix
         - request_response_schemas
@@ -50,28 +59,88 @@ arms:
         - edge_cases
         - persistence_assumptions
         - planned_implementation_order
-    common_condition_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md"
-    verification_protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml"
-    measurement_protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml"
-    intervention_profile: "shared-intervention-and-stop-rules-v1"
+    derived_from:
+      path: "instruction-blocks/spec-first.md"
+      source_sha256: "55df5ea6ad086731fa9a432fb1f8bcb9e384d9af17a57cc49c09acd1e105dc92"
+
+condition_input_assembly:
+  normalization:
+    encoding: "utf-8"
+    line_endings: "lf"
+    final_newline: "required"
+  shared_input_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md"
+  arms:
+    control:
+      overlay_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md"
+      composition_order: ["shared_input", "arm_overlay"]
+    treatment:
+      overlay_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md"
+      composition_order: ["shared_input", "arm_overlay"]
+
+# Both arms receive the same benchmark and shared execution context; they differ ONLY in
+# the assigned workflow-instruction overlay. The fully bound runtime prompt (system, tool,
+# runtime context) is NOT hashed here; that belongs to a later execution-readiness step.
+condition_input_claim: "same_benchmark_and_shared_context_differ_only_in_workflow_overlay"
+
+condition_compliance_requirements:
+  control:
+    specification_requirement_present: false
+  treatment:
+    specification_requirement_present: true
+    specification_complete_before_first_implementation_mutation: true
+  required_future_evidence:
+    - specification_artifact_ref
+    - specification_completeness_verdict
+    - first_implementation_mutation_evidence
+    - ordering_verdict
+    - protocol_assignment_compliance
+    - contamination_status
+
+artifact_surfaces:
+  common_outcome_artifacts:
+    - implementation
+    - shared_verification_evidence
+    - shared_measurement_evidence
+  required_future_process_evidence:
+    - protocol_assignment_compliance
+    - contamination_status
+    - ordering_verdict
+  arm_specific_process_artifacts:
+    control: []
+    treatment:
+      - preimplementation_specification
+process_artifacts_scored_as_outcome: false
+
+prompt_scope:
+  primary_axis_is_bundled_workflow_instruction_protocol: true
+  difference_not_attributable_to_ordering_length_structure_alone: true
+  held_constant_across_arms:
+    - outer_structure
+    - language
+    - tone
+    - quality_rhetoric
+    - motivation
+    - examples
+    - tool_hints
+    - permissions
 
 controlled_dimensions:
   - id: "challenge_contract"
     control_method: "identical_shared_challenge"
     binding_status: "bound_at_design"
-    binding_source: "common-condition.md (rest-api-v1, unchanged)"
+    binding_source: "common-condition.md + challenge.path (rest-api-v1, unchanged)"
     same_value_across_arms_required: true
     blocking_divergence: "A different challenge or challenge_version between arms invalidates the design."
   - id: "acceptance_surface"
     control_method: "identical_shared_acceptance"
     binding_status: "bound_at_design"
-    binding_source: "common-condition.md (functional requirements and acceptance criteria)"
+    binding_source: "common-condition.md"
     same_value_across_arms_required: true
     blocking_divergence: "Different acceptance criteria between arms break comparability."
   - id: "evaluation_criteria"
     control_method: "identical_shared_evaluation"
     binding_status: "bound_at_design"
-    binding_source: "measurement-protocol.yml (metrics, formulas)"
+    binding_source: "measurement-protocol.yml"
     same_value_across_arms_required: true
     blocking_divergence: "Different evaluation criteria between arms break comparability."
   - id: "verification_surface"
@@ -106,8 +175,8 @@ controlled_dimensions:
     blocking_divergence: "Different sampling configuration between arms invalidates the design."
   - id: "human_intervention"
     control_method: "equivalent_surface"
-    binding_status: "bound_at_design"
-    binding_source: "common-condition.md (shared intervention and rework rules)"
+    binding_status: "deferred_to_execution_readiness"
+    binding_source: "human_intervention block (same across arms, asymmetric intervention forbidden)"
     same_value_across_arms_required: true
     blocking_divergence: "Unequal human intervention between arms confounds the contrast."
   - id: "dependency_and_runtime_environment"
@@ -118,10 +187,22 @@ controlled_dimensions:
     blocking_divergence: "Different dependency/runtime environment between arms invalidates the design."
   - id: "test_harness"
     control_method: "equivalent_surface"
-    binding_status: "bound_at_design"
+    binding_status: "deferred_to_execution_readiness"
     binding_source: "verification-protocol.yml (shared harness binding deferred but identical)"
     same_value_across_arms_required: true
     blocking_divergence: "Different test harness between arms manufactures false contrast."
+  - id: "session_isolation"
+    control_method: "separate_fresh_session_per_arm"
+    binding_status: "deferred_to_execution_readiness"
+    binding_source: "execution_readiness_requirements"
+    same_value_across_arms_required: true
+    blocking_divergence: "Shared conversation context across arms leaks treatment into control."
+  - id: "prompt_scope_neutrality"
+    control_method: "equivalent_surface"
+    binding_status: "bound_at_design"
+    binding_source: "prompt_scope.held_constant_across_arms"
+    same_value_across_arms_required: true
+    blocking_divergence: "Differing tone/structure/examples beyond the Spec-First requirement adds a second axis."
 
 confounder_controls:
   - id: "multi_axis_drift"
@@ -131,7 +212,7 @@ confounder_controls:
     controlled_by: "Shared common-condition.md and verification-protocol.yml fix challenge, acceptance, and verification."
     effect_if_uncontrolled: "blocks_design"
   - id: "unequal_human_intervention"
-    controlled_by: "Both arms share intervention_profile shared-intervention-and-stop-rules-v1."
+    controlled_by: "human_intervention block: same across arms, asymmetric intervention forbidden."
     effect_if_uncontrolled: "blocks_design"
   - id: "dependency_or_runtime_drift"
     controlled_by: "Runtime values bound from a single shared execution-readiness source, identical across arms."
@@ -142,33 +223,65 @@ confounder_controls:
   - id: "self_reported_independence_as_external_proof"
     controlled_by: "External attestation is kept as a separate later evidence track; not claimed by this design."
     effect_if_uncontrolled: "must_be_reported"
+  - id: "prompt_scope_confound"
+    controlled_by: "prompt_scope holds structure/tone/length-neutrality constant; only the Spec-First requirement varies."
+    effect_if_uncontrolled: "must_be_reported"
+
+human_intervention:
+  same_across_arms_required: true
+  binding_status: "deferred_to_execution_readiness"
+  asymmetric_intervention_forbidden: true
+
+verification_surface:
+  binding_status: "bound_at_design"
+  protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml"
+
+executable_harness_instance:
+  binding_status: "deferred_to_execution_readiness"
+
+measurement_surface:
+  binding_status: "bound_at_design"
+  protocol_ref: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml"
+
+execution_readiness_requirements:
+  same_repository_commit_across_arms: true
+  clean_start_state_required: true
+  separate_worktree_per_arm: true
+  fresh_session_per_arm: true
+  shared_conversation_context_forbidden: true
+  cross_arm_artifact_reuse_forbidden: true
+  treatment_spec_reuse_by_control_forbidden: true
+  execution_order_must_be_declared: true
 
 materiality_rationale: >-
   The contrast is material and observable before execution, grounded in pre-execution
-  process rules rather than a label change: in the control arm implementation may begin
-  immediately with no required upfront specification artifact, whereas in the treatment
-  arm implementation is forbidden until a complete specification artifact with a verifiable
-  minimum structure (endpoint matrix, request/response schemas, validation rules, HTTP
-  status codes, error cases, edge cases, persistence assumptions, planned implementation
-  order) exists. The order of actions is therefore objectively distinguishable before any
-  run. No effect, superiority, or quality claim is made: the design only establishes that
-  the condition is materially different and pre-execution verifiable.
+  process rules rather than a label change: the control arm carries no assigned
+  upfront-specification requirement and may begin implementation immediately, whereas the
+  treatment arm is assigned a Spec-First requirement and may not implement before a
+  complete structured specification (endpoint matrix, request/response schemas, validation
+  rules, HTTP status codes, error cases, edge cases, persistence assumptions, planned
+  implementation order) exists and is checked complete. The assigned instruction
+  difference is objectively distinguishable before any run. No effect, superiority, or
+  quality claim is made; a single later paired execution would not establish a
+  condition effect.
+
+condition_semantics_status: "frozen"
+design_constraints_frozen: true
+execution_binding_status: "pending"
+runtime_values_bound: false
 
 run_004_execution_allowed: false
 result_assessment_allowed_after_design: false
 comparison_ready_after_design: false
 
 summary: >-
-  A single primary intervention axis (workflow_protocol) and two future arms
-  (control=direct_implementation, treatment=spec_first) are selected, controlled, and
-  frozen before execution for the open weak_condition_contrast blocker. No condition is
-  executed, measured, or assessed; all other dimensions are bound identically across arms.
+  An assigned workflow-instruction axis (Spec-First requirement present vs absent) and two
+  future arms (control=direct_implementation, treatment=spec_first) are selected,
+  controlled, and frozen before execution for the open weak_condition_contrast blocker.
+  Equality requirements and future binding obligations are frozen; concrete runtime values
+  are still unbound. No condition is executed, measured, or assessed.
 
 source_evidence:
-  - path: "experiments/2026-05-31_model-lab-replication-series/results/condition-contrast-design-gate.yml"
-    kind: "condition_contrast_design_gate"
-  - path: "experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml"
-    kind: "readiness_gate"
   - path: "experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md"
     kind: "assessment_context"
   - path: "experiments/2026-05-31_model-lab-replication-series/method.md"
@@ -182,10 +295,11 @@ decision:
   status: "frozen"
   next_step: "run_004_execution_readiness_may_be_assessed"
   reason: >-
-    The paired contrast is selected and frozen before execution. The only permitted next
-    step is a separate execution-readiness / authorization check that binds the deferred
-    runtime values identically across arms; this design does not execute a run, bind the
-    runtime environment, or authorize a result assessment.
+    The assigned-instruction contrast is selected and frozen before execution. The only
+    permitted next step is a separate execution-readiness / authorization check that binds
+    the deferred runtime values identically across arms and declares execution order; this
+    design does not execute a run, bind the runtime environment, or authorize a result
+    assessment.
 
 does_not_establish:
   - "weak_condition_contrast_resolved"
@@ -202,3 +316,4 @@ does_not_establish:
   - "dependency_risk_remediated"
   - "security_readiness"
   - "production_readiness"
+  - "single_paired_execution_establishes_condition_effect"
