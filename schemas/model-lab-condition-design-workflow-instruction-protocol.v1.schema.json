@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-condition-design-workflow-instruction-protocol.v1.schema.json",
+  "title": "Model-Lab Condition Design — Workflow Instruction Protocol v1",
+  "description": "Closed contract for the single structured workflow-instruction source. The shared instruction surface is one block (identical for both arms); only the per-arm workflow spec differs. additionalProperties:false forbids per-arm tools/examples/motivation or any unknown field, so no hidden second axis can be introduced.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "design_id", "series_id", "challenge_version", "shared_instruction_surface", "arms"],
+  "properties": {
+    "artifact_type": {"type": "string", "const": "model_lab_condition_design_workflow_instruction_protocol"},
+    "design_id": {"$ref": "#/$defs/token"},
+    "series_id": {"$ref": "#/$defs/token"},
+    "challenge_version": {"$ref": "#/$defs/token"},
+    "shared_instruction_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "tone", "tool_hints", "permissions", "examples", "motivation", "quality_rhetoric", "common_constraints"],
+      "properties": {
+        "language": {"$ref": "#/$defs/token"},
+        "tone": {"$ref": "#/$defs/token"},
+        "tool_hints": {"$ref": "#/$defs/token"},
+        "permissions": {"$ref": "#/$defs/token"},
+        "examples": {"$ref": "#/$defs/token"},
+        "motivation": {"$ref": "#/$defs/token"},
+        "quality_rhetoric": {"$ref": "#/$defs/token"},
+        "common_constraints": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonBlank"}}
+      }
+    },
+    "arms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control", "treatment"],
+      "properties": {
+        "control": {"$ref": "#/$defs/armSpec"},
+        "treatment": {"$ref": "#/$defs/armSpec"}
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "nonBlank": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "armSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_implementation_specification_required", "implementation_may_begin_immediately", "specification_completeness_check_required", "required_specification_sections"],
+      "properties": {
+        "pre_implementation_specification_required": {"type": "boolean"},
+        "implementation_may_begin_immediately": {"type": "boolean"},
+        "specification_completeness_check_required": {"type": "boolean"},
+        "required_specification_sections": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}
+      }
+    }
+  }
+}

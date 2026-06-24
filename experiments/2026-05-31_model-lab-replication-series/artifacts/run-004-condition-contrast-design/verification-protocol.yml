@@ -1,9 +1,9 @@
-# Run-004 — Shared Verification Protocol (frozen design)
+# Run-004 — Shared Verification Protocol (frozen design, closed contract)
 #
-# Defines the verification SURFACE applied identically to both arms in a later, separate
-# run. This DESCRIBES the shared verification; it does NOT execute it and contains no run
-# verifier or implementation. The concrete executable harness is deferred to
-# execution-readiness. Any arm-dependent verification invalidates the design.
+# Describes the verification SURFACE applied identically to both arms in a later run. It does
+# NOT execute, contains no verifier/implementation, and defers the concrete harness. Per-arm
+# test overrides are structurally forbidden (closed schema), so no control_only / treatment_only
+# tests can be smuggled in.
 artifact_type: "model_lab_condition_design_verification_protocol"
 design_id: "run-004-condition-contrast"
 series_id: "2026-05-31_model-lab-replication-series"
@@ -14,23 +14,18 @@ per_arm_test_overrides_forbidden: true
 does_not_execute: true
 executable_harness_binding_status: "deferred_to_execution_readiness"
 
-# Verification surface bound at design time (WHAT is checked, equally for both arms).
-shared_verification_surface:
-  functional_areas:
-    - "all rest-api-v1 endpoints (POST/GET/PUT/DELETE/list)"
-    - "input validation for every endpoint"
-    - "consistent response envelope"
-    - "pagination via page/limit"
-  error_cases:
-    - "validation failure (400/422)"
-    - "not found (404)"
-    - "conflict (409)"
-  forced_500_check: "an induced internal error must yield the rest-api-v1 error envelope with HTTP 500, identically for both arms"
-  pass_fail_semantics:
-    pass: "all shared functional, error-case, and forced-500 checks succeed under the shared runtime"
-    fail: "any shared check fails, or the runtime cannot be established"
+shared_checks:
+  - functional_endpoints
+  - input_validation
+  - response_envelope
+  - pagination
+  - error_cases
+  - forced_500_error_envelope
 
-# Concrete harness instance bound only at execution-readiness (HOW it is run).
+pass_fail_semantics:
+  pass: "all shared functional, error-case, and forced-500 checks succeed under the shared runtime"
+  fail: "any shared check fails, or the runtime cannot be established"
+
 deferred_to_execution_readiness:
   - concrete_test_files
   - executable_harness_version

@@ -69,3 +69,15 @@ canonicality: operative
   The treatment arm's pre-implementation specification is part of the intervention,
   not a scored outcome. It must not raise a completeness/quality score or count as
   extra delivered documentation (`process_artifacts_scored_as_outcome: false`).
+- **Reduced snapshots are not authoritative source truth.**
+  A precondition snapshot must not carry an editable reduced gate list it could weaken;
+  gate requirements are derived by parsing the frozen full gate.
+- **A frozen hash does not prove a snapshot came from the claimed commit.**
+  Internal hash consistency is necessary but not sufficient; provenance against the claimed
+  base commit is established once, at design time, not by the permanent validator.
+- **Free-form overlays can introduce hidden secondary axes.**
+  Operative overlays are rendered from one structured workflow source and byte-checked, so
+  extra tools, examples, or motivation cannot smuggle in a second axis.
+- **An aborted arm has no time-to-validated-change value.**
+  The validated-change timer ends at the shared verification pass; an arm that stops earlier
+  records a null time, never its abort time.

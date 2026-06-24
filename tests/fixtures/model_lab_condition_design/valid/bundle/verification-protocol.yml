@@ -6,22 +6,17 @@ applies_equally_to_both_arms: true
 per_arm_test_overrides_forbidden: true
 does_not_execute: true
 executable_harness_binding_status: deferred_to_execution_readiness
-shared_verification_surface:
-  functional_areas:
-  - all rest-api-v1 endpoints (POST/GET/PUT/DELETE/list)
-  - input validation for every endpoint
-  - consistent response envelope
-  - pagination via page/limit
-  error_cases:
-  - validation failure (400/422)
-  - not found (404)
-  - conflict (409)
-  forced_500_check: an induced internal error must yield the rest-api-v1 error envelope
-    with HTTP 500, identically for both arms
-  pass_fail_semantics:
-    pass: all shared functional, error-case, and forced-500 checks succeed under the
-      shared runtime
-    fail: any shared check fails, or the runtime cannot be established
+shared_checks:
+- functional_endpoints
+- input_validation
+- response_envelope
+- pagination
+- error_cases
+- forced_500_error_envelope
+pass_fail_semantics:
+  pass: all shared functional, error-case, and forced-500 checks succeed under the
+    shared runtime
+  fail: any shared check fails, or the runtime cannot be established
 deferred_to_execution_readiness:
 - concrete_test_files
 - executable_harness_version

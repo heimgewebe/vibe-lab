@@ -9,16 +9,16 @@ treatment_only_scoring_forbidden: true
 primary_metrics:
 - id: functional_test_pass_ratio
   unit: ratio
+  formula: passing_shared_functional_tests / total_shared_functional_tests
   range:
     minimum: 0
     maximum: 1
-  formula: passing_shared_functional_tests / total_shared_functional_tests
 - id: error_case_test_pass_ratio
   unit: ratio
+  formula: passing_shared_error_case_tests / total_shared_error_case_tests
   range:
     minimum: 0
     maximum: 1
-  formula: passing_shared_error_case_tests / total_shared_error_case_tests
 - id: forced_500_check_pass
   unit: boolean
   formula: 1 if the shared forced-500 assertion passes else 0
@@ -28,9 +28,16 @@ primary_metrics:
     not a quality judgment
 - id: time_to_validated_change_seconds
   unit: seconds
-  formula: timer_end - timer_start, where timer_end is when the shared verification
-    first passes
+  formula: timer_end - timer_start
+  timer_start: task_input_delivered
+  timer_end: shared_verification_first_pass
+  value_if_aborted_before_pass: 'null'
 secondary_metrics:
+- id: time_to_stop_seconds
+  unit: seconds
+  formula: timer_end - timer_start
+  timer_start: task_input_delivered
+  timer_end: stop_rule_fired
 - id: rework_steps
   unit: count
   formula: number of post-authoring revisions to fix defects in already-produced implementation
@@ -40,29 +47,10 @@ secondary_metrics:
 - id: scope_drift_status
   unit: categorical
   formula: none / observed (challenge or acceptance surface changed by the arm)
-timing:
-  timer_start: When the agent first receives the shared task input.
-  timer_end: When the shared verification protocol first passes, or a stop rule fires.
-definitions:
-  workflow_protocol_compliance: 'Whether the arm followed its ASSIGNED workflow instruction
-    (treatment: complete spec before first implementation mutation; control: no specification
-    requirement). A control arm that voluntarily produces a full prior specification
-    is recorded as contaminated. This is a compliance verdict, not a quality or superiority
-    judgment.
-
-    '
-rules:
-  scope_drift: 'An arm that changes the challenge/acceptance surface is marked scope_drift
-    and its metrics are not comparable; this does not retroactively change the other
-    arm.
-
-    '
-  aborted_arm: 'An arm that hits a stop rule before the shared verification passes
-    is recorded as aborted with the reason; incomplete metrics are reported as such,
-    not imputed.
-
-    '
-  missing_value: 'A metric that cannot be computed is recorded as missing (null),
-    never as zero or a guessed value.
-
-    '
+aborted_arm_rule: An arm that hits a stop rule before the shared verification passes
+  is recorded as aborted; time_to_validated_change_seconds is null and incomplete
+  metrics are reported as missing, not imputed.
+missing_value_rule: A metric that cannot be computed is recorded as null, never as
+  zero or a guessed value.
+scope_drift_rule: An arm that changes the challenge/acceptance surface is marked scope_drift
+  and is not comparable; this does not retroactively change the other arm.

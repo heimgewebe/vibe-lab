@@ -1,71 +1,45 @@
-# Run-004 — Common Condition (shared task surface)
+# Run-004 — Shared Condition (one assembly component)
 
-> Frozen design artifact. This file defines the task surface that is **identical for
-> both future arms** (control and treatment). It describes a paired design only; no run
-> is executed, no runtime environment is bound, and no result is asserted. Both arms
-> read this same file; nothing here is arm-dependent.
+> Frozen design artifact. This is the **shared_condition** component of the input assembly.
+> It is NOT the only input: the assembled input for each arm is, in order, the frozen
+> benchmark text, then this shared condition, then the arm's workflow-instruction overlay
+> (see `condition-design.yml -> condition_input_assembly`). Both arms receive the same
+> benchmark and the same shared condition; they differ only in the assigned workflow overlay.
+> This describes a paired design only; no run is executed and no result is asserted.
 
-## Challenge
+## Identical inputs (both arms)
 
-- Challenge: `rest-api` at `challenge_version: rest-api-v1`.
-- The challenge contract is the existing `rest-api-v1` surface used by Run-001/002/003.
-  It is held unchanged; no requirement is added, removed, or reworded for either arm.
+- The same frozen `rest-api-v1` benchmark text (`source-snapshots/rest-api-v1.md`).
+- This same shared condition text.
+- They differ only in the assigned workflow-instruction overlay (the single primary axis).
 
-## Identical input
+## Identical functional requirements and acceptance
 
-- Both arms receive the unmodified `rest-api-v1` challenge text as their only task input.
-- No arm receives extra hints, examples, encouragement, quality rhetoric, or additional
-  background. Any such addition would be a confounder and is forbidden.
+- The functional API surface and acceptance surface required by `rest-api-v1` are identical
+  for both arms and are held unchanged.
 
-## Identical functional requirements
-
-- The functional API surface required by `rest-api-v1` (endpoints, validation, status
-  codes, error envelope, pagination, persistence behaviour) is identical for both arms.
-- The acceptance surface is identical for both arms.
-
-## Identical allowed context
-
-- The repository start state, available files, and reference material are identical.
-- The allowed working context (what the agent may read and edit) is identical.
-
-## Identical output expectation
-
-- Each arm must produce a working `rest-api-v1` implementation in the same target shape
-  expected by the shared verification protocol.
-- The expected output artifacts (implementation plus whatever the verification protocol
-  consumes) are the same for both arms.
-
-## Identical tool and permission limits
+## Identical tools, permissions, interventions
 
 - Tooling, agent mode, and permissions are identical for both arms and are bound from a
   single shared source at execution-readiness time (not in this design).
-- No arm may use a tool or permission the other arm cannot.
+- Human-intervention, retry, and stop rules are **not bound in this design**. They must be
+  bound once, from one shared execution-readiness source, and applied identically to both
+  arms before any execution authorization. No asymmetric intervention is permitted.
 
-## Identical intervention rules
+## Output artifacts (not all identical)
 
-- Human intervention, correction, and rework rules are identical for both arms
-  (`intervention_profile: shared-intervention-and-stop-rules-v1`).
-- The same retry and abort rules apply to both arms.
-
-## Identical stop rules
-
-- The same stop conditions apply to both arms (e.g. time/resource limits bound from a
-  single shared source at execution-readiness time, identical for both arms).
-- An arm that hits a stop rule is recorded as such by the shared measurement protocol;
-  the stop rules themselves do not differ between arms.
+- **Common outcome artifacts** (both arms): the implementation plus the shared verification
+  and measurement evidence.
+- **Arm-specific process artifacts**: the treatment arm additionally produces a
+  pre-implementation specification. This specification is part of the intervention and is
+  **not** scored as an outcome.
 
 ## Identical evidence requirements
 
-- Both arms capture the same provenance and evidence (run metadata, command, exit
-  status, produced artifacts) per the shared verification and measurement protocols.
-- Evidence capture is equivalent across arms; contrast is never manufactured through
-  different evidence handling.
+- Both arms capture the same provenance and evidence per the shared verification and
+  measurement protocols. Contrast is never manufactured through different evidence handling.
 
 ## What this file does not decide
 
-- It does not execute either arm.
-- It does not bind concrete runtime values (model, tool, sampling, dependencies,
-  environment, time/resource limits); those are deferred to a separate
-  execution-readiness step and must be bound identically across arms from a single
-  source.
-- It does not authorize a result assessment or a comparison.
+- It does not execute either arm, bind concrete runtime values, or authorize a result
+  assessment.

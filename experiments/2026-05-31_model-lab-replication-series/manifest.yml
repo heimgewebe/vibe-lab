@@ -12,10 +12,10 @@ experiment:
   execution_status: executed
   evidence_level: experimental
   created: "2026-05-31"
-  updated: "2026-06-23"
+  updated: "2026-06-24"
   author: "vibe-lab maintainers"
-  triggered_by: "user-request-2026-06-23-run-004-condition-design-hardening"
-  iteration: 12
+  triggered_by: "user-request-2026-06-24-run-004-condition-design-source-binding"
+  iteration: 13
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -79,6 +79,11 @@ experiment:
     - "artifacts/run-004-condition-contrast-design/verification-protocol.yml"
     - "artifacts/run-004-condition-contrast-design/measurement-protocol.yml"
     - "artifacts/run-004-condition-contrast-design/freeze-manifest.yml"
+    - "artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml"
+    - "artifacts/run-004-condition-contrast-design/source-snapshots/condition-contrast-design-gate.snapshot"
+    - "artifacts/run-004-condition-contrast-design/source-snapshots/result-assessment-readiness.snapshot"
+    - "artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot"
+    - "artifacts/run-004-condition-contrast-design/source-snapshots/spec-first.snapshot"
   limitations:
     - "Run-003 execution surface exists; Run-003 runtime validation is partial (separate runtime-evidence gate, validation_status: partial); no result assessment is performed."
     - "Run-003 independence_status is self_reported_different_agent_tool_context; external_attestation is false, so model independence is not established."

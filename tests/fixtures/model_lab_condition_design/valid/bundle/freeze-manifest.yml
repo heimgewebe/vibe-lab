@@ -2,23 +2,33 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: fixture-condition-design
 series_id: fixture-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-23T00:00:00Z'
+frozen_at: '2026-06-24T02:30:00Z'
 frozen_before_execution: true
 source_base_commit_sha: '0000000000000000000000000000000000000000'
-change_rule: Fixture freeze manifest; never hashes itself; records no commit/tree/head
+change_rule: fixture freeze; never self-hashes; records no final commit/tree/head
   SHA.
 hashes:
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/condition-design.yml
-  sha256: 11dfa124adef75124b5a540f69c70d41a7482a10ae57982abc42b9e7dee1e03d
+  sha256: 1db996ead355f9f61cca18683bf22bd6a8a3806edaf602bb21b056cf62477939
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md
-  sha256: aed68fe5531b9181f0958e29bf58b80821b5f5d53ce7ac565fe035bf4804364a
+  sha256: ce8afd3e4d56aa3a8466215c47842f4713d20460cf1953fa74f65778f678a7e5
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md
-  sha256: 289728f651bfd8ad7d0d9263a0d72a64847c88aa04f54c3c5ba7c1ea166bab0d
+  sha256: e5753cd6cc7148b257b0861420538e04105c6ffaebdc6da151cf73cce9ba0525
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md
-  sha256: 939c5f9c037e9836763c3eda826c1ef1027cf981c3f5e088421057f1935b453b
+  sha256: 42cfa0cb0e5c70ddc8544fd5a019f41e94c6cb0197d9b087af1c513f82e44e55
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/verification-protocol.yml
-  sha256: cd41e45a1cec9465356b613fe5e428768acbe19c68d54cdf498e98d594758521
+  sha256: ac2d7cb38e1fe4ab3c7e3111e8f74ebff17787eb7a1f61417979438b5c5dbf78
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/measurement-protocol.yml
-  sha256: 43085a4be5e59c3826acfc7445cfc2fffe863720474ecf53b11a061a9ced49d9
+  sha256: 4a8a83d3897be1ab6e4a56bfbfb233d9be38eb44b21bd132ea7a2657462255be
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/precondition-snapshot.yml
-  sha256: 799620d3561b52d222e7b8c41aa99472527981108aff923b5acf010b887d16e8
+  sha256: 9a890457df9dda7e01bd03706296b63829550b4ea189132d865623d97ab14a72
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/workflow-instruction-protocol.yml
+  sha256: eddc8a1dd23f933a11b83056997c0c4a2174466c35d4b3f4cfeadd5c45733f9e
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/condition-contrast-design-gate.snapshot
+  sha256: 73aab9e2d10fcea061469a408591570a11ad9ef796cc5059fc9c8f9b6cfbbe3e
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/result-assessment-readiness.snapshot
+  sha256: 77277306065bee5582572f26671f4d88f76dc1ee976ad272e55642d49a95fbae
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/rest-api-v1.snapshot
+  sha256: e29b34df0e89f7bc0b5592431a9ddf09633ae75572dd2a23d530ef5c36a06d5b
+- path: tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/spec-first.snapshot
+  sha256: 55df5ea6ad086731fa9a432fb1f8bcb9e384d9af17a57cc49c09acd1e105dc92

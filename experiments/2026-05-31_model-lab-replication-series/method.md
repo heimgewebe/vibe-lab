@@ -95,9 +95,16 @@ Methodological strength: weak structural control. The condition `code_first_cont
   thought process, and does not require control to actually write code immediately.
 - The two future arms are `control: direct_implementation` (no assigned upfront-specification
   requirement) and `treatment: spec_first` (a complete, completeness-checked upfront
-  specification is required before any implementation). The treatment overlay is a frozen
-  structured specialization of the adopted Spec-First instruction block
-  (`instruction-blocks/spec-first.md`), bound by `derived_from` + `source_sha256`.
+  specification is required before any implementation). The treatment overlay is bound by
+  `derived_from.snapshot_ref` to the frozen byte-snapshot of the adopted Spec-First
+  instruction block (`instruction-blocks/spec-first.md`).
+- Both arm overlays are rendered deterministically from one structured workflow-instruction
+  source (`workflow-instruction-protocol.yml`) whose shared instruction surface is identical for
+  both arms; the validator re-renders and byte-checks them, so no free-form prose can add a
+  second axis.
+- The input assembly composes, in a fixed order identical for both arms, the frozen benchmark
+  byte-snapshot, the shared condition, and the arm overlay; the benchmark component is bound to
+  the frozen challenge snapshot.
 - Assigned condition vs observed compliance are separated: the design declares the future
   compliance/contamination evidence to collect (e.g. a control arm that voluntarily produces a
   full prior specification is later recorded as `contamination_status: observed`); it does not
@@ -108,8 +115,13 @@ Methodological strength: weak structural control. The condition `code_first_cont
 - All other experimentally relevant dimensions are bound identically across arms; runtime values
   (model, tooling, sampling, dependency/runtime environment, harness) are deferred to a single
   shared execution-readiness binding. Condition semantics are frozen; runtime values are unbound.
-- Gate/readiness preconditions are read from a frozen precondition snapshot, not from mutable
-  live state, so the historical design does not silently break when those files are updated.
+- Gate and readiness preconditions are frozen as immutable byte-snapshots under
+  `source-snapshots/` (verified once against the base commit `41fa203`); the permanent validator
+  reads only those snapshots, never the mutable live files, and derives the required control
+  dimensions and confounders by parsing the frozen full gate (no editable reduced list that could
+  weaken its own requirements).
+- Timing on abort is explicit: `time_to_validated_change_seconds` ends at the shared verification
+  pass and is null for an arm that stops earlier; the abort time is a separate metric.
 - Historical Run-001/002/003 bundles are context only and are not a clean control arm: they
   differ on more than one uncontrolled dimension (e.g. generation method and self-reported
   model identity).

@@ -94,21 +94,29 @@ Run-004 condition-contrast design must satisfy.
 - no primary intervention axis or concrete condition has been selected
 - the gate defines only criteria and the control treatment of non-primary dimensions
 
-## State after iteration 12 — frozen condition design (hardened)
+## State after iteration 13 — frozen condition design (source-bound)
 
 A machine-readable, frozen condition design now exists
 (`artifacts/run-004-condition-contrast-design/`, contract `model-lab-condition-design.v1`).
 It records only a design-state transition; it asserts no effect, quality, or comparison.
 This supersedes (does not contradict) the iteration-10 gate state above: the gate defined
-criteria; this design selects and freezes the concrete contrast.
+criteria; this design selects and freezes the concrete contrast and binds it to verified
+immutable source byte-snapshots.
 
 - the single primary axis is `workflow_protocol` with semantics `assigned_instruction_requirement`
   (an assigned Spec-First instruction present vs absent, not an enforced internal thought process)
 - two future arms are concretised: `control: direct_implementation` and `treatment: spec_first`
 - the arms differ operationally only along the assigned workflow-instruction overlay; all other
   dimensions are bound identically
-- the protocols, common condition, and a precondition snapshot are frozen via a SHA-256 freeze manifest
-- gate/readiness preconditions are read from the frozen precondition snapshot, not from mutable live state
+- the gate/readiness/challenge/spec-first sources are frozen as immutable byte-snapshots under
+  `source-snapshots/` with verified provenance; gate requirements are derived from the frozen full
+  gate (no editable reduced list)
+- the input assembly composes the frozen benchmark, the shared condition, and the arm overlay in a
+  fixed order identical for both arms; overlays are rendered from one structured workflow source and
+  byte-checked, so no free-form prose can add a second axis
+- the protocols, structured source, snapshots, and design are frozen via a SHA-256 freeze manifest
+  that records no self-reference and no commit/tree/head SHA
+- gate/readiness preconditions are read from the frozen snapshots, not from mutable live state
 - condition semantics are frozen; concrete runtime values are still unbound
   (`execution_binding_status: pending`)
 - the assigned condition and the later observed compliance are separated; compliance is a
