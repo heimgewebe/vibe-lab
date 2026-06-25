@@ -6,101 +6,51 @@ canonicality: operative
 
 # Model-Lab Replication-Series — Failure Modes
 
-## When does this approach fail or mislead?
+## Wann scheitert der Ansatz oder führt in die Irre?
 
-- **Cosmetic condition relabeling.** A changed label or minor prose variation is
-  not a material condition difference and must not be read as a stronger contrast.
-- **Multi-axis condition drift.** Changing more than one primary experimental
-  difference at once confounds any later effect; a compliant design selects exactly
-  one primary axis and classifies every other difference as controlled or reported.
-- **Challenge or acceptance-surface drift.** Differing challenge, acceptance
-  criteria, or evaluation surface between conditions breaks comparability; these
-  surfaces stay fixed.
-- **Test or verifier drift.** Manufacturing contrast through different tests or
-  runtime checks is not a real difference; verification stays functionally
-  equivalent.
-- **Unequal human intervention.** One condition receiving different manual
-  correction or rework confounds the contrast; intervention rules are defined
-  equivalently before execution.
-- **Dependency or runtime-environment drift.** Unrecorded dependency or runtime
-  differences must be held constant or documented and justified, never silently
-  introduced.
-- **Post-hoc single-condition rework.** Altering a condition after observing its
-  result invalidates the contrast; each condition is frozen before execution.
-- **Self-reported independence mistaken for external proof.** Self-reported context
-  separation is not external attestation; external independence stays a separate
-  later evidence track.
-- **Design gate mistaken for execution permission.** Defining contrast criteria
-  does not authorize Run-004 execution, a result assessment, or a comparison;
-  `weak_condition_contrast` stays open.
-- **Historical run-bundle rewrite.** The archived Run-001/Run-002/Run-003 bundles
-  and historical evidence must not be rewritten to manufacture a stronger contrast.
-- **Ambiguous challenge version.** Every future design must stay pinned to
-  `rest-api-v1`; silent task drift destroys comparability.
-- **Missing evidence artifacts.** A declared contrast or run without resolvable,
-  repo-local evidence cannot support later assessment.
-- **Retroactive hardening of historical experiments.** This gate must not be used
-  to rewrite historical Run-001/Run-002/Run-003 bundles or to make opt-in AP-1/AP-2
-  controls retroactively mandatory for unrelated historical experiments.
-- **Pseudo-comparison without a materially distinct control condition.**
-  Multiple run surfaces do not by themselves create a meaningful comparison.
-  Without a predeclared, materially distinct and controlled intervention axis,
-  no condition-effect or comparative-quality claim is supported.
-- **Skeleton or design gate mistaken for a result.**
-  A schema-valid gate, design artifact, execution scaffold, or green validator
-  establishes structural compliance only. It does not establish an executed
-  comparison, empirical result, condition effect, or outcome upgrade.
-- **Frozen condition design mistaken for execution-readiness or a result.**
-  A frozen, validated condition design (one primary axis, two arms, controlled
-  bindings, SHA-256 freeze) selects and freezes a contrast before execution only.
-  It does not bind the runtime environment, authorize Run-004 execution, perform a
-  measurement, or assess a result; runtime values stay deferred to a separate
-  execution-readiness check and `weak_condition_contrast` stays open.
-- **Assigned instruction mistaken for observed compliance.**
-  The primary axis assigns a Spec-First instruction (present vs absent); it does not
-  guarantee the future agent actually complied. Compliance and contamination
-  (e.g. a control arm that voluntarily writes a full prior specification) are a later
-  observation, recorded as declared future evidence, never assumed at design time.
-- **Hash integrity mistaken for semantic validity.**
-  A matching SHA-256 freeze proves the bundle bytes are unchanged; it does not prove
-  the design is methodologically valid. Identity, gate-subset, isolation, and child
-  semantics are checked separately from the hashes.
-- **Treatment process artifact mistaken for an outcome advantage.**
-  The treatment arm's pre-implementation specification is part of the intervention,
-  not a scored outcome. It must not raise a completeness/quality score or count as
-  extra delivered documentation (`process_artifacts_scored_as_outcome: false`).
-- **Reduced snapshots are not authoritative source truth.**
-  A precondition snapshot must not carry an editable reduced gate list it could weaken;
-  gate requirements are derived by parsing the frozen full gate.
-- **A frozen hash does not prove a snapshot came from the claimed commit.**
-  Internal hash consistency is necessary but not sufficient; provenance against the claimed
-  base commit is established once, at design time, not by the permanent validator.
-- **Free-form overlays can introduce hidden secondary axes.**
-  Operative overlays are rendered from one structured workflow source and byte-checked, so
-  extra tools, examples, or motivation cannot smuggle in a second axis.
-- **An aborted arm has no time-to-validated-change value.**
-  The validated-change timer ends at the shared verification pass; an arm that stops earlier
-  records a null time, never its abort time.
-- **Hash integrity mistaken for provenance-role correctness.**
-  A matching `source_sha256 == snapshot_sha256` proves only internal byte consistency. Each frozen
-  source must additionally come from its exact canonical historical path, carry the role's
-  `artifact_type`, and share the freeze `source_base_commit_sha`; otherwise a correctly-hashed file
-  could still be the wrong artifact in the wrong role.
-- **Experiment metadata leaking into the delivered prompt.**
-  Role names ("control"/"treatment"), the axis name, the hypothesis, or any "experiment"/"condition
-  contrast" framing must never reach the future agent. Such words bias the run. The delivered text
-  (shared condition + overlays) is blinded and scanned; the framing lives only in the design and the
-  non-delivered `control_metadata`.
-- **Control modeled as a negative instruction instead of an absence.**
-  Telling the control arm "do not write a specification" / "begin implementation immediately" is
-  itself an intervention and confounds the contrast. Control must be the literal ABSENCE of the
-  added Spec-First requirement (the neutral baseline); treatment is that baseline plus the positive
-  requirement, so the only delta is the added instruction.
-- **shared_condition or operative-file aliasing.**
-  The `shared_condition` component must be the bundle's `common-condition.md`, and the operative
-  bundle files must be pairwise distinct. A `shared_condition` pointed at the benchmark, or two
-  byte-identical operative files, would silently collapse the assembly the design claims to compose.
-- **Unnormalized delivered text.**
-  A delivered file with CRLF endings, a missing final newline, or non-UTF-8 bytes is not the byte
-  string the design claims to deliver. Decoding with `errors="replace"` would mask this; the
-  delivered files are decoded strictly and required to be UTF-8, LF-only, with a final newline.
+### Versuchsdesign
+
+- **Kosmetische Umbenennung:** Ein neues Label oder eine geringfügige Textänderung erzeugt noch keinen materiellen Kontrast.
+- **Mehrere unkontrollierte Achsen:** Nicht deklarierte Unterschiede verhindern die Zuordnung eines späteren Befunds zur gewählten Intervention.
+- **Drift bei Challenge, Akzeptanz, Bewertung oder Tests:** Unterschiedliche Ergebnisflächen erzeugen einen ungültigen Vergleich.
+- **Ungleiche Laufzeitbedingungen:** Modell, Werkzeuge, Berechtigungen, Sampling, Abhängigkeiten, Laufzeitumgebung, Harness und menschliche Eingriffe müssen vor einer Ausführung gleich gebunden werden.
+- **Nachträgliche Änderung:** Wird eine Bedingung nach Sichtung eines Ergebnisses verändert, ist der eingefrorene Vergleich ungültig.
+- **Selbstauskunft als Unabhängigkeitsbeweis:** Ein getrennter Kontext belegt keine extern attestierte Modellunabhängigkeit.
+- **Historische Runs als nachträglich konstruierte Kontrolle:** Run-001, Run-002 und Run-003 bleiben historischer Kontext.
+
+### Grenzen des Design-Artefakts
+
+- **Design mit Ausführungsfreigabe verwechselt:** Ein gültiges Design erlaubt keinen Run, keine Messung und keine Ergebnisbewertung.
+- **Freeze mit Laufzeitbindung verwechselt:** Ein eingefrorenes Bundle kann weiterhin ungebundene Laufzeitwerte besitzen.
+- **Grüner Validator mit empirischem Ergebnis verwechselt:** Strukturelle Gültigkeit ist kein Nachweis eines Effekts oder einer Qualitätsüberlegenheit.
+- **Zugewiesene Instruktion mit beobachteter Befolgung verwechselt:** Compliance, Kontamination und Reihenfolge müssen erst in einer späteren Ausführung beobachtet werden.
+- **Prozessartefakt als Ergebnis gewertet:** Eine Treatment-spezifische Vorab-Spezifikation ist Teil der Intervention und kein zusätzlicher Qualitätsgewinn.
+- **Ein einzelnes Paar als Kausalbeweis behandelt:** Auch ein später ausgeführtes Paar isoliert nicht automatisch einzelne Promptbestandteile.
+
+### Prompt-Scope
+
+- **Das Bündel wird als Einzeleffekt interpretiert:** Die Treatment-Intervention umfasst Spezifikationspflicht, Implementierungsreihenfolge, Vollständigkeitsprüfung, Format- und Constraint-Beispiele, Promptlänge, interne Struktur, Direktionsstärke, motivationale Rahmung und Pflichtabschnitte.
+- **Ein Einzelbestandteil wird zur Ursache erklärt:** Ein späterer Befund darf höchstens dem vollständigen Bündel zugeordnet werden, nicht einem Satz, der kanonischen Spec-First-Formulierung, der Länge, der Struktur oder den Beispielen allein.
+- **Falsche Konstanten werden behauptet:** Konstant sind nur Sprache, Berechtigungen, Kompositionsreihenfolge, Benchmark und gemeinsame Bedingung.
+- **Control wird zu einer Gegeninstruktion:** Control ist die neutrale Abwesenheit der zusätzlichen positiven Workflow-Anforderung, nicht ein Verbot von Spezifikation.
+- **Experimentmetadaten werden ausgeliefert:** Rollen, Achse, Hypothese und Vergleichsrahmung dürfen nicht in Shared Condition oder Overlays gelangen.
+- **Freitext driftet vom strukturierten Ursprung weg:** Operative Promptdateien müssen deterministisch aus der strukturierten Quelle erzeugt und bytegenau geprüft werden.
+
+### Provenienz und Freeze
+
+- **Interne Hashkonsistenz wird mit Herkunft verwechselt:** Der Validator muss bei jedem Lauf das historische Git-Objekt an `source_commit_sha:source_path` lesen und Bytegleichheit mit dem Snapshot verlangen.
+- **Fehlende Historie wird als Erfolg behandelt:** Fehlender Commit, unvollständiger Checkout, fehlender historischer Pfad oder abweichende Bytes müssen fail-closed enden.
+- **Richtige Bytes werden der falschen Rolle zugeordnet:** Kanonischer Quellpfad, `artifact_type` und gemeinsamer Source-Commit müssen zusätzlich gebunden sein.
+- **Reduzierte Vorbedingung ersetzt die vollständige Gate-Wahrheit:** Erforderliche Dimensionen und Confounder werden aus dem eingefrorenen vollständigen Gate abgeleitet.
+- **Korrekte SHA-256-Werte werden mit semantischer Gültigkeit verwechselt:** Hashes belegen weder Rollenidentität noch methodische Ehrlichkeit.
+- **Ein offenes Dateiverzeichnis wird als geschlossenes Bundle behandelt:** Undeklarierte, entkommene, aliasierte oder symbolisch verlinkte Dateien müssen den Freeze ungültig machen.
+- **Das Manifest behauptet seine eigene finale Commit-Identität:** Ein Freeze-Manifest darf sich nicht selbst hashen und keinen finalen Head oder Tree als eigene Herkunft festschreiben.
+
+### Auslieferung und Messung
+
+- **Komponenten zeigen auf dieselbe Datei:** Benchmark, Shared Condition und Overlays müssen die deklarierten, voneinander getrennten Dateien sein.
+- **Textnormalisierung wird nicht geprüft:** Ausgelieferter Text muss UTF-8, LF-only und mit abschließendem Newline gespeichert sein.
+- **Abbruchzeit wird als validierte Änderungszeit behandelt:** Vor bestandenem gemeinsamem Verifikationsschritt bleibt `time_to_validated_change_seconds` null.
+- **Fehlende Evidenz wird als Problemlosigkeit gedeutet:** Fehlende Compliance-, Kontaminations-, Provenienz-, Verifikations- oder Messdaten blockieren eine spätere Interpretation.
+
+Ein Contract kann belegen, dass eine Grenze deklariert und mechanisch bewahrt wurde. Er kann nicht allein belegen, dass der Versuch lief, ein kausaler Effekt besteht oder eine Qualitätsentscheidung gerechtfertigt ist.
