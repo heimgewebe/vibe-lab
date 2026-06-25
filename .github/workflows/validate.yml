@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so the condition-design validator can verify frozen-source provenance
+          # against the git object at the declared source_commit_sha (git cat-file <commit>:<path>).
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5

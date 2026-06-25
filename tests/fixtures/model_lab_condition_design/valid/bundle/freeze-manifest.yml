@@ -2,14 +2,14 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: fixture-condition-design
 series_id: fixture-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-24T04:30:00Z'
+frozen_at: '2026-06-24T06:00:00Z'
 frozen_before_execution: true
 source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 change_rule: fixture freeze; never self-hashes; records no final commit/tree/head
   SHA.
 hashes:
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/condition-design.yml
-  sha256: dc04c395b210e54266385e57e58fe6d714de59f28dde820c24c3b9c1d3f23461
+  sha256: d33ade3ff8ca7fcc5f21fa6b2a372345ec09a015af6ebd14259d66fd61a4c23d
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md
   sha256: 27fd1d3e11f899a353aed290b3849f3bd7744df00cd3229dc675057f8f713c50
 - path: tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md

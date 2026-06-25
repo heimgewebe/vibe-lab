@@ -7,7 +7,7 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: run-004-condition-contrast
 series_id: 2026-05-31_model-lab-replication-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-24T04:30:00Z'
+frozen_at: '2026-06-24T06:00:00Z'
 frozen_before_execution: true
 source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 change_rule: Any later change to a frozen artifact requires a new freeze manifest
@@ -15,7 +15,7 @@ change_rule: Any later change to a frozen artifact requires a new freeze manifes
   a final commit/tree/head SHA; only the historical source_base_commit_sha is recorded.
 hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  sha256: 70ec52b020b1668cb7ab360cee903fa8413174882a0d98e2df324cd8e78d4a56
+  sha256: f6c2ce9db87d2ad9e172e2ccc0278f51e00a802195dc1cb7b41202e89dedac60
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
   sha256: 27fd1d3e11f899a353aed290b3849f3bd7744df00cd3229dc675057f8f713c50
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md

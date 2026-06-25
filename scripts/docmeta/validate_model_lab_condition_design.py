@@ -24,6 +24,7 @@ import datetime as _dt
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 
@@ -104,6 +105,23 @@ CONTROL_FORBIDDEN_NEGATIVE = tuple(re.compile(p, re.IGNORECASE) for p in (
     r"pre_implementation_specification_required", r"specification_completeness_check_required",
     r"\(none\)", r"\bskip\b", r"\bwithout\b",
 ))
+
+# --- honest bundled prompt axis (boundary: prompt-scope must not overclaim constancy) --------
+# The treatment overlay differs from control in more than abstract "order": it adds a spec
+# requirement, length, internal structure, directive strength, efficacy rhetoric, and 8 sections.
+# Those are honest BUNDLED-axis components; they must NOT also be claimed held-constant.
+PROMPT_ISOLATION_NONCLAIMS = ("individual_prompt_component_effect_isolated",
+                              "canonical_spec_first_instruction_effect_isolated")
+REQUIRED_BUNDLED_AXIS_COMPONENTS = frozenset({
+    "preimplementation_specification_requirement", "prompt_length",
+    "overlay_internal_structure", "required_specification_sections",
+})
+FORBIDDEN_HELD_CONSTANT = frozenset({
+    "tone", "quality_rhetoric", "motivation", "outer_structure", "directive_strength",
+    "motivational_or_efficacy_rhetoric", "prompt_length", "overlay_internal_structure",
+    "required_specification_sections", "preimplementation_specification_requirement",
+    "implementation_order_constraint",
+})
 
 MANDATORY_DOES_NOT_ESTABLISH = (
     "weak_condition_contrast_resolved", "run_004_execution_allowed", "run_004_executed",
@@ -250,6 +268,43 @@ def _sha256_of(path: Path):
         return d.hexdigest()
     except (OSError, ValueError):
         return None
+
+
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+class ToolError(Exception):
+    """A tool/environment failure that must surface as exit 2 (cannot verify), never as a green
+    skip or a semantic exit-1 verdict."""
+
+
+def read_git_source_bytes(repo_root: Path, commit_sha, source_path):
+    """Read the exact bytes of source_path at commit_sha from the git object store.
+
+    Returns (bytes, problem):
+      * (b"...", None)  — the blob bytes at <commit>:<path>;
+      * (None, "tool")  — git unavailable or the commit object is absent (e.g. a shallow checkout);
+                          the caller must fail closed with exit 2 (cannot verify), not skip;
+      * (None, "missing") — the path does not exist at that commit (a false provenance claim).
+    Never decodes; never reads the working tree; no shell. Diagnostics never include file contents.
+    """
+    commit = str(commit_sha).strip()
+    spath = str(source_path).strip()
+    if not re.match(r"^[0-9a-f]{40}$", commit) or not spath:
+        return None, "missing"
+    try:
+        chk = subprocess.run(["git", "cat-file", "-e", f"{commit}^{{commit}}"],
+                             cwd=str(repo_root), capture_output=True, check=False)
+        if chk.returncode != 0:
+            return None, "tool"  # commit object not present -> cannot verify (need full history)
+        blob = subprocess.run(["git", "cat-file", "blob", f"{commit}:{spath}"],
+                              cwd=str(repo_root), capture_output=True, check=False)
+    except (OSError, ValueError):
+        return None, "tool"
+    if blob.returncode != 0:
+        return None, "missing"  # path absent at that commit -> provenance claim is false
+    return blob.stdout, None
 
 
 def _parse_rfc3339(value):
@@ -438,6 +493,110 @@ def _operative_distinctness_errors(data: dict, bundle_dir: Path, repo_root: Path
     return []
 
 
+def _prompt_scope_errors(data: dict, path: Path):
+    """§13: prompt_scope must honestly separate held-constant features from the bundled axis and
+    must not claim isolation of any single prompt component or of the canonical Spec-First text."""
+    ps = data.get("prompt_scope") or {}
+    held = {str(x).strip() for x in (ps.get("held_constant_across_arms") or [])}
+    bundled = {str(x).strip() for x in (ps.get("bundled_axis_components") or [])}
+    declared_nonclaims = {str(x).strip() for x in (data.get("does_not_establish") or [])}
+    probs = []
+    overlap = held & bundled
+    if overlap:
+        probs.append("held_constant_across_arms and bundled_axis_components overlap: " + ", ".join(sorted(overlap)))
+    dishonest = held & FORBIDDEN_HELD_CONSTANT
+    if dishonest:
+        probs.append("features that vary between arms must not be held_constant: " + ", ".join(sorted(dishonest)))
+    missing_bundled = REQUIRED_BUNDLED_AXIS_COMPONENTS - bundled
+    if missing_bundled:
+        probs.append("bundled_axis_components must include the actually-varying classes: " + ", ".join(sorted(missing_bundled)))
+    missing_nonclaims = [n for n in PROMPT_ISOLATION_NONCLAIMS if n not in declared_nonclaims]
+    if missing_nonclaims:
+        probs.append("does_not_establish must include: " + ", ".join(missing_nonclaims))
+    if probs:
+        return [format_error("CONDITION_DESIGN_REQUIRES_HONEST_PROMPT_SCOPE", path,
+            "the bundled prompt axis must be described honestly; " + "; ".join(probs))]
+    return []
+
+
+def _expected_bundle_files(data: dict, snapshot, bundle_dir: Path, repo_root: Path):
+    """The closed set of files the contract says belong in the bundle, as resolved paths."""
+    expected = set()
+    for raw, _ in _bundle_refs(data):
+        r, _c = resolve_repo_relative_path(raw, repo_root, must_exist=False)
+        if r is not None and _inside(r, bundle_dir):
+            expected.add(r)
+    man = str((data.get("freeze") or {}).get("freeze_manifest_ref", ""))
+    r, _c = resolve_repo_relative_path(man, repo_root, must_exist=False)
+    if r is not None and _inside(r, bundle_dir):
+        expected.add(r)
+    if isinstance(snapshot, dict):
+        for src in (snapshot.get("sources") or {}).values():
+            if isinstance(src, dict) and src.get("snapshot_path"):
+                r, _c = resolve_repo_relative_path(str(src["snapshot_path"]), repo_root, must_exist=False)
+                if r is not None and _inside(r, bundle_dir):
+                    expected.add(r)
+    return expected
+
+
+def _closed_bundle_errors(data: dict, snapshot, bundle_dir: Path, repo_root: Path, path: Path):
+    """§12: the bundle is a closed set — actual regular files == contract-referenced files, no
+    symlinks or escapes, and the freeze covers exactly the expected set minus the manifest itself."""
+    bdir = bundle_dir.resolve()
+    if not bdir.is_dir():
+        return []
+    expected = _expected_bundle_files(data, snapshot, bdir, repo_root)
+
+    def rel(p):
+        try:
+            return p.resolve().relative_to(bdir).as_posix()
+        except (ValueError, OSError):
+            return str(p)
+
+    problems, actual = [], set()
+    for entry in sorted(bdir.rglob("*")):
+        r = rel(entry)
+        if entry.is_symlink():
+            problems.append(f"symlink not allowed in bundle: {r}")
+            continue
+        if entry.is_dir():
+            continue
+        if not entry.is_file():
+            problems.append(f"not a regular file: {r}")
+            continue
+        resolved = entry.resolve()
+        if not _inside(resolved, bdir):
+            problems.append(f"file escapes the bundle: {r}")
+            continue
+        actual.add(resolved)
+    for p in sorted(actual - expected):
+        problems.append(f"unexpected file not referenced by any contract: {rel(p)}")
+    for p in sorted(expected - actual):
+        problems.append(f"expected contract file missing from bundle: {rel(p)}")
+    # freeze hash set must equal the expected set minus the manifest (which never self-hashes)
+    man_rel = str((data.get("freeze") or {}).get("freeze_manifest_ref", ""))
+    man_resolved, _c = resolve_repo_relative_path(man_rel, repo_root, must_exist=False)
+    _, manifest, _p = _load_bundle_file(man_rel, bundle_dir, repo_root, as_yaml=True)
+    if isinstance(manifest, dict):
+        hashed = set()
+        for e in manifest.get("hashes") or []:
+            if isinstance(e, dict):
+                r, _c = resolve_repo_relative_path(str(e.get("path", "")), repo_root, must_exist=False)
+                if r is not None:
+                    hashed.add(r)
+        expected_hashed = expected - ({man_resolved} if man_resolved else set())
+        for p in sorted(expected_hashed - hashed):
+            problems.append(f"expected file not covered by freeze: {rel(p)}")
+        for p in sorted(hashed - expected_hashed):
+            problems.append(f"freeze hashes a path outside the expected set: {rel(p)}")
+    if problems:
+        return [format_error("CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE", path,
+            "the design bundle must be a closed set (actual regular files == contract-referenced "
+            "files; no symlinks/escapes; freeze covers exactly the expected set minus the manifest); "
+            + "; ".join(problems))]
+    return []
+
+
 def _covered_bundle_files(data: dict, snapshot: dict | None):
     out = {r for r, _ in _bundle_refs(data) if r}
     out.discard(str((data.get("freeze") or {}).get("freeze_manifest_ref", "")))  # manifest never self-covers
@@ -604,6 +763,38 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
             "artifact_type, and share the freeze source_base_commit_sha; offending: "
             + "; ".join(role_problems)))
 
+    # --- permanent git-object provenance: snapshot bytes == git <commit>:<path> ----
+    # source_sha256 == snapshot_sha256 only proves self-consistency; this proves the frozen bytes
+    # actually came from the declared commit+path. Reads the git object store only (never the
+    # working tree). A missing commit / unavailable git is "cannot verify" -> exit 2 (ToolError).
+    if snapshot is not None:
+        prov = []
+        for sname in ("gate", "readiness", "challenge", "spec_first"):
+            src = (snapshot.get("sources") or {}).get(sname) or {}
+            commit = str(src.get("source_commit_sha", "")).strip()
+            spath = str(src.get("source_path", "")).strip()
+            sres, _, sprob = load(str(src.get("snapshot_path", "")), as_yaml=False)
+            if sprob is not None:
+                continue  # snapshot file already reported as a precondition-snapshot problem
+            git_bytes, gprob = read_git_source_bytes(repo_root, commit, spath)
+            if gprob == "tool":
+                raise ToolError(
+                    f"cannot verify git-source provenance for sources.{sname}: commit "
+                    f"{commit[:12] or '<none>'} or the git object store is unavailable "
+                    f"(the validate job needs full history, e.g. fetch-depth: 0)")
+            if gprob == "missing":
+                prov.append(f"sources.{sname}: {display_source_path(spath)} does not exist at commit {commit[:12]}")
+                continue
+            snap_bytes = sres.read_bytes()
+            if git_bytes != snap_bytes:
+                prov.append(f"sources.{sname}: frozen snapshot bytes differ from git {commit[:12]}:{display_source_path(spath)}")
+            elif _sha256_bytes(git_bytes) != str(src.get("source_sha256", "")).strip().lower():
+                prov.append(f"sources.{sname}: source_sha256 does not match the git object at {commit[:12]}")
+        if prov:
+            errors.append(format_error("CONDITION_DESIGN_REQUIRES_GIT_SOURCE_PROVENANCE", path,
+                "each frozen source must be byte-identical to the git object at its declared "
+                "source_commit_sha:source_path; " + "; ".join(prov)))
+
     # --- gate requirements derived from the frozen gate (subset) -------------
     if frozen_gate is not None:
         derived_dims = set(_ids(frozen_gate.get("invariant_dimensions")) + _ids(frozen_gate.get("dimensions_to_control_when_not_primary")))
@@ -765,6 +956,8 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
     # --- delivered-prompt blinding + control-as-absence + normalization -------
     errors += _prompt_exposure_errors(bundle_dir, path)
     errors += _operative_distinctness_errors(data, bundle_dir, repo_root, path)
+    errors += _closed_bundle_errors(data, snapshot, bundle_dir, repo_root, path)
+    errors += _prompt_scope_errors(data, path)
 
     # --- assigned vs observed separation -------------------------------------
     aso = []
@@ -951,7 +1144,10 @@ def validate_file(path: Path, validator: Draft202012Validator, repo_root: Path |
     child_errs = child_schema_errors(data, path, root)
     if child_errs:
         return 2, child_errs
-    sem = semantic_errors(data, path, root)
+    try:
+        sem = semantic_errors(data, path, root)
+    except ToolError as exc:
+        return 2, [f"ERROR rule=CONDITION_DESIGN_REQUIRES_GIT_SOURCE_PROVENANCE path={display_path(path)}: {exc}"]
     if sem:
         return 1, sem
     return 0, []
@@ -961,15 +1157,11 @@ def discover_artifacts(repo_root: Path):
     exp = repo_root / "experiments"
     if not exp.is_dir():
         return []
-    out = []
-    for c in sorted(exp.glob(DESIGN_GLOB)):
-        try:
-            doc = yaml.safe_load(c.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, yaml.YAMLError):
-            out.append(c); continue
-        if isinstance(doc, dict) and str(doc.get("artifact_type", "")).strip() == DESIGN_ARTIFACT_TYPE:
-            out.append(c)
-    return out
+    # The canonical path pattern IS the identity: every condition-design.yml under
+    # experiments/*/artifacts/*/ is a candidate. We deliberately do NOT filter by artifact_type
+    # here — a malformed or mistyped artifact must reach the schema (and fail exit 2), never
+    # silently vanish from discovery into a green "skipped".
+    return sorted(exp.glob(DESIGN_GLOB))
 
 
 def main(argv=None):
@@ -987,7 +1179,9 @@ def main(argv=None):
     else:
         paths = discover_artifacts(REPO_ROOT)
         if not paths:
-            print("ℹ️ No model-lab-condition-design artifacts found; validation skipped."); return 0
+            print("ERROR: no model-lab-condition-design artifact found; the canonical design must "
+                  "exist and be discoverable (empty discovery is a failure, not a skip).")
+            return 2
     highest, passed = 0, 0
     for p in paths:
         code, errs = validate_file(p, validator)

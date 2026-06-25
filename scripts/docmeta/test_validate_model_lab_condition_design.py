@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import runpy
 import shutil
 import subprocess
@@ -68,13 +69,16 @@ class CD(unittest.TestCase):
         self.assertNotIn("Traceback", c.stdout + c.stderr)
 
     def build(self, *, design=None, snapshot=None, workflow=None, verification=None, measurement=None,
-              freeze=None, frozen_gate=None, frozen_readiness=None, plant=None,
+              freeze=None, frozen_gate=None, frozen_readiness=None, plant=None, snapshot_files=None,
               rerender=True, recompute_snapshot_hashes=True, recompute_freeze=True) -> Path:
         tmp = Path(tempfile.mkdtemp(prefix="_scratch_", dir=FIXROOT))
         self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
         (tmp / "source-snapshots").mkdir()
         for f in ALL_FILES:
             shutil.copy(VB / f, tmp / f)
+        if snapshot_files:  # overwrite frozen-source bytes BEFORE hashes/render/freeze recompute
+            for rel, content in snapshot_files.items():
+                (tmp / rel).write_bytes(content if isinstance(content, bytes) else content.encode())
         pre = tmp.relative_to(REPO_ROOT).as_posix() + "/"
 
         d = yaml.safe_load((VB / "condition-design.yml").read_text().replace(FIX_PRE, pre))
@@ -442,9 +446,10 @@ class CD(unittest.TestCase):
         self.assert_rule(self.build(snapshot=lambda s: s["sources"]["challenge"].update(source_path="benchmarks/challenges/other-v9.md")),
                          "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
 
-    def test_source_commit_not_base(self):
-        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["readiness"].update(source_commit_sha="0" * 40)),
-                         "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
+    def test_source_commit_unknown_fails_closed(self):
+        # a source pointing at a commit absent from the object store cannot be verified -> exit 2
+        self.assert_exit(self.build(snapshot=lambda s: s["sources"]["readiness"].update(
+            source_commit_sha="deadbeef" * 5)), 2)
 
     def test_base_commit_drift_breaks_sources(self):
         self.assert_rule(self.build(freeze=lambda m, p: m.update(source_base_commit_sha="a" * 40)),
@@ -542,8 +547,8 @@ class CD(unittest.TestCase):
         self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_TEXT_NORMALIZATION")
 
     # === schema: new structure ===
-    def test_promptscope_missing_new_field_is_schema_error(self):
-        self.assert_exit(self._schema_mut(lambda d: d["prompt_scope"].pop("prompt_length_and_structure_are_part_of_bundled_axis")), 2)
+    def test_promptscope_missing_bundled_axis_is_schema_error(self):
+        self.assert_exit(self._schema_mut(lambda d: d["prompt_scope"].pop("bundled_axis_components")), 2)
 
     def test_workflow_unknown_delivered_field_is_schema_error(self):
         self.assert_exit(self.build(workflow=lambda w: w["delivered_shared_instructions"].update(extra="x")), 2)
@@ -584,6 +589,91 @@ class CD(unittest.TestCase):
     def test_extract_instruction_body_strips_frontmatter(self):
         self.assertEqual("Hello body", _extract_body("---\ntitle: x\n---\n\nHello body\n"))
         self.assertEqual("No frontmatter", _extract_body("No frontmatter\n"))
+
+    # === discovery fail-closed (Patch A) ===
+    def test_discovery_includes_matching_path_with_wrong_artifact_type(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="cd_disc")
+        discover = mod["discover_artifacts"]
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td) / "experiments" / "s" / "artifacts" / "b"
+            b.mkdir(parents=True)
+            d = yaml.safe_load((VB / "condition-design.yml").read_text())
+            d["artifact_type"] = "model_lab_condition_desing"  # typo must NOT hide it
+            (b / "condition-design.yml").write_text(yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
+            self.assertEqual(1, len(discover(Path(td))))
+        # and validating the mistyped artifact is a schema failure, never a green skip
+        self.assert_exit(self.build(design=lambda x: x.update(artifact_type="model_lab_condition_desing")), 2)
+
+    def test_no_discovered_condition_design_is_not_success(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="cd_empty")
+        with tempfile.TemporaryDirectory() as td:
+            self.assertEqual([], mod["discover_artifacts"](Path(td)))
+        main = mod["main"]
+        main.__globals__["discover_artifacts"] = lambda root: []  # simulate empty discovery
+        self.assertEqual(2, main([]))  # empty discovery is a failure, not a green skip
+
+    # === git-object provenance (Patch B) ===
+    def test_snapshot_and_all_internal_hashes_cannot_self_attest_to_git_source(self):
+        c = self.build(snapshot_files={"source-snapshots/spec-first.snapshot":
+            (VB / "source-snapshots/spec-first.snapshot").read_bytes() + b"\nSmuggled extra line.\n"})
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_GIT_SOURCE_PROVENANCE")
+
+    def test_git_source_commit_missing_fails_closed(self):
+        self.assert_exit(self.build(snapshot=lambda s: s["sources"]["gate"].update(
+            source_commit_sha="deadbeef" * 5)), 2)
+
+    def test_git_source_path_missing_fails_closed(self):
+        self.assert_rule(self.build(snapshot=lambda s: s["sources"]["spec_first"].update(
+            source_path="instruction-blocks/does-not-exist-at-base.md")),
+            "CONDITION_DESIGN_REQUIRES_GIT_SOURCE_PROVENANCE")
+
+    def test_real_snapshots_match_declared_git_sources(self):
+        self.assert_exit(self.run_v(REAL), 0)  # committed sources match git <commit>:<path>
+
+    # === closed bundle (Patch C) ===
+    def test_unknown_extra_bundle_file_is_rejected(self):
+        c = self.build()
+        (c.parent / "notes").mkdir()
+        (c.parent / "notes" / "hidden-instructions.txt").write_text("psst\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE")
+
+    def test_unreferenced_source_file_is_rejected(self):
+        c = self.build()
+        (c.parent / "source-snapshots" / "extra.snapshot").write_text("x\n")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE")
+
+    def test_bundle_symlink_is_rejected(self):
+        c = self.build()
+        try:
+            os.symlink(REPO_ROOT / "AGENTS.md", c.parent / "link-to-agents.md")
+        except OSError:
+            self.skipTest("symlinks unsupported on this platform")
+        self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE")
+
+    def test_freeze_hash_set_matches_closed_bundle_set(self):
+        self.assert_rule(self.build(freeze=lambda m, p: m["hashes"].append(
+            {"path": p + "source-snapshots/ghost.snapshot", "sha256": "0" * 64})),
+            "CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE")
+
+    # === honest bundled prompt axis (Patch D) ===
+    def test_held_constant_and_bundled_axis_components_are_disjoint(self):
+        self.assert_rule(self.build(design=lambda d: d["prompt_scope"]["held_constant_across_arms"].append("prompt_length")),
+            "CONDITION_DESIGN_REQUIRES_HONEST_PROMPT_SCOPE")
+
+    def test_dishonest_held_constant_tone_is_rejected(self):
+        self.assert_rule(self.build(design=lambda d: d["prompt_scope"]["held_constant_across_arms"].append("tone")),
+            "CONDITION_DESIGN_REQUIRES_HONEST_PROMPT_SCOPE")
+
+    def test_bundled_axis_contains_actual_prompt_delta_classes(self):
+        self.assert_rule(self.build(design=lambda d: d["prompt_scope"]["bundled_axis_components"].remove("prompt_length")),
+            "CONDITION_DESIGN_REQUIRES_HONEST_PROMPT_SCOPE")
+
+    def test_prompt_component_effect_isolation_nonclaims_are_required(self):
+        self.assert_rule(self.build(design=lambda d: d["does_not_establish"].remove("canonical_spec_first_instruction_effect_isolated")),
+            "CONDITION_DESIGN_REQUIRES_HONEST_PROMPT_SCOPE")
+
+    def test_promptscope_missing_effect_attribution_is_schema_error(self):
+        self.assert_exit(self._schema_mut(lambda d: d["prompt_scope"].pop("effect_attribution_scope")), 2)
 
 
 if __name__ == "__main__":

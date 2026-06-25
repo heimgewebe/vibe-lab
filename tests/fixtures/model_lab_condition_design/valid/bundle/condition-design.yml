@@ -82,17 +82,30 @@ artifact_surfaces:
 process_artifacts_scored_as_outcome: false
 prompt_scope:
   primary_axis_is_bundled_workflow_instruction_protocol: true
-  difference_not_attributable_to_ordering_length_structure_alone: true
-  prompt_length_and_structure_are_part_of_bundled_axis: true
+  effect_attribution_scope: bundled_instruction_protocol_only
   held_constant_across_arms:
-  - outer_structure
   - language
-  - tone
-  - quality_rhetoric
-  - motivation
   - examples
   - tool_hints
   - permissions
+  - composition_order
+  - benchmark
+  - shared_condition
+  bundled_axis_components:
+  - preimplementation_specification_requirement
+  - implementation_order_constraint
+  - prompt_length
+  - overlay_internal_structure
+  - directive_strength
+  - motivational_or_efficacy_rhetoric
+  - required_specification_sections
+  does_not_isolate:
+  - canonical_spec_first_text_effect
+  - specification_before_code_effect
+  - prompt_length_effect
+  - prompt_structure_effect
+  - directive_strength_effect
+  - motivational_framing_effect
 controlled_dimensions:
 - id: challenge_contract
   control_method: identical_shared_challenge
@@ -280,3 +293,5 @@ does_not_establish:
 - security_readiness
 - production_readiness
 - single_paired_execution_establishes_condition_effect
+- individual_prompt_component_effect_isolated
+- canonical_spec_first_instruction_effect_isolated
