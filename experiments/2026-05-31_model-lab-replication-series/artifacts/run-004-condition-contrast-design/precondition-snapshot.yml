@@ -4,8 +4,9 @@
 # validator reads ONLY the frozen snapshot files (never the mutable live files), verifies their
 # hashes, and DERIVES gate requirements and readiness truth by parsing the frozen full gate /
 # readiness — there is no editable reduced gate list that could weaken its own requirements.
-# source_commit_sha is the base commit whose content is asserted as the precondition; the
-# one-time Target-Proof verifies each source_sha256 against `git show <commit>:<path>`.
+# For every source, the validator also reads the historical Git object at
+# `source_commit_sha:source_path` and requires byte equality with the frozen snapshot. A missing
+# commit (for example in a shallow checkout), a missing source path, or different bytes fails closed.
 artifact_type: "model_lab_condition_design_precondition_snapshot"
 design_id: "run-004-condition-contrast"
 series_id: "2026-05-31_model-lab-replication-series"
