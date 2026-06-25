@@ -7,7 +7,7 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: run-004-condition-contrast
 series_id: 2026-05-31_model-lab-replication-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-24T06:00:00Z'
+frozen_at: '2026-06-25T08:00:00Z'
 frozen_before_execution: true
 source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 change_rule: Any later change to a frozen artifact requires a new freeze manifest
@@ -27,7 +27,7 @@ hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
   sha256: 320b86a62b4bb2a785896c029af0d6b796512e3f0e573b17811de3413bc285f4
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/precondition-snapshot.yml
-  sha256: 17219fe6272693d6c0e5d60b9ac9d8b9aa3ce9ff2bf666d3289ce63bcef359f7
+  sha256: a84beb60b6c17c58db482825c013ac44ce1310da70f0185969229bed973c9f3b
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml
   sha256: 4aa0d0f0de35d354d6abb290b3c6d5123b54cb16c8ec23966c8fca34cde55fed
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/condition-contrast-design-gate.snapshot
