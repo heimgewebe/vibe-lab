@@ -9,7 +9,11 @@ violations schema errors (exit 2); cross-artifact/source/freeze violations are s
 
 from __future__ import annotations
 
+import ast
+import atexit
+import contextlib
 import hashlib
+import io
 import json
 import os
 import runpy
@@ -40,10 +44,50 @@ ALL_FILES = TOP_FILES + SRC_FILES
 REAL = (REPO_ROOT / "experiments" / "2026-05-31_model-lab-replication-series" / "artifacts"
         / "run-004-condition-contrast-design" / "condition-design.yml")
 BASE_COMMIT = "41fa2031160f6a7288f2c90eaccff60c7c1b50f2"
+SCRATCH_PREFIX = f"_scratch_{os.getpid()}_"
+_CREATED_SCRATCH: set[Path] = set()
 _R = runpy.run_path(str(RENDERER), run_name="cd_renderer")
 _render_shared = _R["render_shared_condition"]
 _render_overlay = _R["render_arm_overlay"]
 _extract_body = _R["extract_instruction_body"]
+
+
+def _read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def _write_text(path: Path, text: str) -> None:
+    path.write_text(text, encoding="utf-8")
+
+
+def _register_created_scratch(path: Path) -> Path:
+    resolved = path.resolve()
+    fixture_root = FIXROOT.resolve()
+    if resolved.parent != fixture_root or not resolved.name.startswith(SCRATCH_PREFIX):
+        raise ValueError(f"refusing to register non-owned scratch directory: {path}")
+    _CREATED_SCRATCH.add(resolved)
+    return resolved
+
+
+def _safe_remove_created_scratch(path: Path) -> None:
+    try:
+        resolved = path.resolve()
+        fixture_root = FIXROOT.resolve()
+    except OSError:
+        return
+    if (resolved not in _CREATED_SCRATCH or resolved.parent != fixture_root
+            or not resolved.name.startswith(SCRATCH_PREFIX)):
+        return
+    shutil.rmtree(resolved, ignore_errors=True)
+    _CREATED_SCRATCH.discard(resolved)
+
+
+def _cleanup_registered_scratch() -> None:
+    for path in tuple(_CREATED_SCRATCH):
+        _safe_remove_created_scratch(path)
+
+
+atexit.register(_cleanup_registered_scratch)
 
 
 def _sha(p: Path) -> str:
@@ -53,7 +97,8 @@ def _sha(p: Path) -> str:
 class CD(unittest.TestCase):
     def run_v(self, *paths: Path):
         return subprocess.run([sys.executable, str(VALIDATOR), *[str(p) for p in paths]],
-                              cwd=REPO_ROOT, capture_output=True, text=True, check=False)
+                              cwd=REPO_ROOT, capture_output=True, text=True,
+                              encoding="utf-8", errors="strict", check=False)
 
     def _coerce(self, c):
         return self.run_v(c) if isinstance(c, Path) else c
@@ -71,8 +116,10 @@ class CD(unittest.TestCase):
     def build(self, *, design=None, snapshot=None, workflow=None, verification=None, measurement=None,
               freeze=None, frozen_gate=None, frozen_readiness=None, plant=None, snapshot_files=None,
               rerender=True, recompute_snapshot_hashes=True, recompute_freeze=True) -> Path:
-        tmp = Path(tempfile.mkdtemp(prefix="_scratch_", dir=FIXROOT))
-        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        tmp = _register_created_scratch(
+            Path(tempfile.mkdtemp(prefix=SCRATCH_PREFIX, dir=FIXROOT))
+        )
+        self.addCleanup(_safe_remove_created_scratch, tmp)
         (tmp / "source-snapshots").mkdir()
         for f in ALL_FILES:
             shutil.copy(VB / f, tmp / f)
@@ -81,31 +128,31 @@ class CD(unittest.TestCase):
                 (tmp / rel).write_bytes(content if isinstance(content, bytes) else content.encode())
         pre = tmp.relative_to(REPO_ROOT).as_posix() + "/"
 
-        d = yaml.safe_load((VB / "condition-design.yml").read_text().replace(FIX_PRE, pre))
+        d = yaml.safe_load((VB / "condition-design.yml").read_text(encoding="utf-8").replace(FIX_PRE, pre))
         if design:
             design(d)
-        (tmp / "condition-design.yml").write_text(yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
+        _write_text(tmp / "condition-design.yml", yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
 
         for fn, mut in (("workflow-instruction-protocol.yml", workflow),
                         ("verification-protocol.yml", verification),
                         ("measurement-protocol.yml", measurement)):
             if mut:
-                doc = yaml.safe_load((tmp / fn).read_text()); mut(doc)
-                (tmp / fn).write_text(yaml.safe_dump(doc, sort_keys=False, allow_unicode=True))
+                doc = yaml.safe_load((tmp / fn).read_text(encoding="utf-8")); mut(doc)
+                _write_text(tmp / fn, yaml.safe_dump(doc, sort_keys=False, allow_unicode=True))
         for fn, mut in (("source-snapshots/condition-contrast-design-gate.snapshot", frozen_gate),
                         ("source-snapshots/result-assessment-readiness.snapshot", frozen_readiness)):
             if mut:
-                doc = yaml.safe_load((tmp / fn).read_text()); mut(doc)
-                (tmp / fn).write_text(yaml.safe_dump(doc, sort_keys=False, allow_unicode=True))
+                doc = yaml.safe_load((tmp / fn).read_text(encoding="utf-8")); mut(doc)
+                _write_text(tmp / fn, yaml.safe_dump(doc, sort_keys=False, allow_unicode=True))
 
         if rerender:
-            wf = yaml.safe_load((tmp / "workflow-instruction-protocol.yml").read_text())
-            basis = (tmp / "source-snapshots" / "spec-first.snapshot").read_text()
+            wf = yaml.safe_load((tmp / "workflow-instruction-protocol.yml").read_text(encoding="utf-8"))
+            basis = (tmp / "source-snapshots" / "spec-first.snapshot").read_text(encoding="utf-8")
             (tmp / "common-condition.md").write_bytes(_render_shared(wf).encode("utf-8"))
             (tmp / "control-workflow-protocol.md").write_bytes(_render_overlay(wf, "control").encode("utf-8"))
             (tmp / "treatment-workflow-protocol.md").write_bytes(_render_overlay(wf, "treatment", basis).encode("utf-8"))
 
-        s = yaml.safe_load((VB / "precondition-snapshot.yml").read_text().replace(FIX_PRE, pre))
+        s = yaml.safe_load((VB / "precondition-snapshot.yml").read_text(encoding="utf-8").replace(FIX_PRE, pre))
         if recompute_snapshot_hashes:
             for src in s["sources"].values():
                 fp = REPO_ROOT / src["snapshot_path"]
@@ -113,10 +160,10 @@ class CD(unittest.TestCase):
                     src["snapshot_sha256"] = src["source_sha256"] = _sha(fp)
         if snapshot:
             snapshot(s)
-        (tmp / "precondition-snapshot.yml").write_text(yaml.safe_dump(s, sort_keys=False, allow_unicode=True))
+        _write_text(tmp / "precondition-snapshot.yml", yaml.safe_dump(s, sort_keys=False, allow_unicode=True))
 
         if recompute_freeze:
-            ident = yaml.safe_load((tmp / "condition-design.yml").read_text())
+            ident = yaml.safe_load((tmp / "condition-design.yml").read_text(encoding="utf-8"))
             man = {"artifact_type": "model_lab_condition_design_freeze_manifest",
                    "design_id": ident["design_id"], "series_id": ident["series_id"],
                    "challenge_version": ident["challenge_version"], "frozen_at": "2026-06-24T02:30:00Z",
@@ -124,12 +171,12 @@ class CD(unittest.TestCase):
                    "change_rule": "temp", "hashes": [{"path": pre + f, "sha256": _sha(tmp / f)} for f in ALL_FILES]}
             if freeze:
                 freeze(man, pre)
-            (tmp / "freeze-manifest.yml").write_text(yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
+            _write_text(tmp / "freeze-manifest.yml", yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
         if plant:
             for rel, content in plant.items():
                 t = tmp / rel
                 t.parent.mkdir(parents=True, exist_ok=True)
-                t.mkdir() if content is None else t.write_text(content)
+                t.mkdir() if content is None else t.write_text(content, encoding="utf-8")
         return tmp / "condition-design.yml"
 
     # --- baseline ---
@@ -234,14 +281,16 @@ class CD(unittest.TestCase):
         c = self.build(design=design, rerender=False)
         # overwrite the committed control overlay with an extra line, keep freeze consistent
         tmp = c.parent
-        (tmp / "control-workflow-protocol.md").write_text(
-            (tmp / "control-workflow-protocol.md").read_text() + "\nUse any extra tools you like.\n")
+        _write_text(
+            tmp / "control-workflow-protocol.md",
+            _read_text(tmp / "control-workflow-protocol.md") + "\nUse any extra tools you like.\n",
+        )
         # recompute freeze so only the render check fails
-        man = yaml.safe_load((tmp / "freeze-manifest.yml").read_text())
+        man = yaml.safe_load((tmp / "freeze-manifest.yml").read_text(encoding="utf-8"))
         for h in man["hashes"]:
             if h["path"].endswith("control-workflow-protocol.md"):
                 h["sha256"] = _sha(tmp / "control-workflow-protocol.md")
-        (tmp / "freeze-manifest.yml").write_text(yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
+        _write_text(tmp / "freeze-manifest.yml", yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
         self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_SINGLE_AXIS_RENDER")
 
     def test_workflow_unknown_arm_field_is_schema_error(self):
@@ -362,11 +411,11 @@ class CD(unittest.TestCase):
 
     # --- main schema const ---
     def _schema_mut(self, mutate):
-        d = yaml.safe_load((VB / "condition-design.yml").read_text())
+        d = yaml.safe_load((VB / "condition-design.yml").read_text(encoding="utf-8"))
         mutate(d)
         with tempfile.TemporaryDirectory() as t:
             f = Path(t) / "condition-design.yml"
-            f.write_text(yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
+            _write_text(f, yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
             return self.run_v(f)
 
     def test_main_schema_consts(self):
@@ -382,10 +431,41 @@ class CD(unittest.TestCase):
                 self.assert_exit(self._schema_mut(mut), 2)
 
     def test_schema_accepts_unicode(self):
-        v = Draft202012Validator(json.loads(SCHEMA.read_text()))
-        d = yaml.safe_load((VB / "condition-design.yml").read_text())
+        v = Draft202012Validator(json.loads(SCHEMA.read_text(encoding="utf-8")))
+        d = yaml.safe_load((VB / "condition-design.yml").read_text(encoding="utf-8"))
         d["summary"] = "Mehrzeiliger\nText 日本語."
         self.assertEqual([], list(v.iter_errors(d)))
+
+    def test_test_io_is_explicit_utf8(self):
+        tree = ast.parse(_read_text(Path(__file__)))
+
+        def literal_keyword(node, name):
+            keyword = next((item for item in node.keywords if item.arg == name), None)
+            return ast.literal_eval(keyword.value) if keyword is not None else None
+
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            if isinstance(node.func, ast.Attribute) and node.func.attr in {"read_text", "write_text"}:
+                self.assertEqual(
+                    "utf-8", literal_keyword(node, "encoding"),
+                    f"{node.func.attr} must use UTF-8 at line {node.lineno}",
+                )
+            is_subprocess_run = (
+                isinstance(node.func, ast.Attribute)
+                and node.func.attr == "run"
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "subprocess"
+            )
+            if is_subprocess_run and literal_keyword(node, "text") is True:
+                self.assertEqual(
+                    "utf-8", literal_keyword(node, "encoding"),
+                    f"subprocess.run(text=True) must use UTF-8 at line {node.lineno}",
+                )
+                self.assertEqual(
+                    "strict", literal_keyword(node, "errors"),
+                    f"subprocess.run(text=True) must use strict decoding at line {node.lineno}",
+                )
 
     def test_resolver_rejects_unsafe(self):
         mod = runpy.run_path(str(VALIDATOR), run_name="cd_mod")
@@ -402,18 +482,18 @@ class CD(unittest.TestCase):
         tmp = c.parent
         p = tmp / rel
         p.write_bytes(content if isinstance(content, bytes) else content.encode("utf-8"))
-        man = yaml.safe_load((tmp / "freeze-manifest.yml").read_text())
+        man = yaml.safe_load((tmp / "freeze-manifest.yml").read_text(encoding="utf-8"))
         for h in man["hashes"]:
             if Path(h["path"]).name == Path(rel).name:
                 h["sha256"] = _sha(p)
-        (tmp / "freeze-manifest.yml").write_text(yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
+        _write_text(tmp / "freeze-manifest.yml", yaml.safe_dump(man, sort_keys=False, allow_unicode=True))
         return c
 
     def _wf(self):
-        return yaml.safe_load((VB / "workflow-instruction-protocol.yml").read_text())
+        return yaml.safe_load((VB / "workflow-instruction-protocol.yml").read_text(encoding="utf-8"))
 
     def _basis(self):
-        return (VB / "source-snapshots" / "spec-first.snapshot").read_text()
+        return (VB / "source-snapshots" / "spec-first.snapshot").read_text(encoding="utf-8")
 
     def _treat(self, d):
         return next(a for a in d["arms"] if a["role"] == "treatment")
@@ -590,27 +670,103 @@ class CD(unittest.TestCase):
         self.assertEqual("Hello body", _extract_body("---\ntitle: x\n---\n\nHello body\n"))
         self.assertEqual("No frontmatter", _extract_body("No frontmatter\n"))
 
-    # === discovery fail-closed (Patch A) ===
-    def test_discovery_includes_matching_path_with_wrong_artifact_type(self):
+    # === Run-004 v1 discovery fail-closed (Patch A) ===
+    def test_run_004_v1_discovery_includes_wrong_artifact_type_candidate(self):
         mod = runpy.run_path(str(VALIDATOR), run_name="cd_disc")
-        discover = mod["discover_artifacts"]
+        discover = mod["discover_run_004_v1_artifacts"]
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td) / "experiments" / "s" / "artifacts" / "b"
-            b.mkdir(parents=True)
-            d = yaml.safe_load((VB / "condition-design.yml").read_text())
-            d["artifact_type"] = "model_lab_condition_desing"  # typo must NOT hide it
-            (b / "condition-design.yml").write_text(yaml.safe_dump(d, sort_keys=False, allow_unicode=True))
-            self.assertEqual(1, len(discover(Path(td))))
-        # and validating the mistyped artifact is a schema failure, never a green skip
-        self.assert_exit(self.build(design=lambda x: x.update(artifact_type="model_lab_condition_desing")), 2)
+            root = Path(td)
+            target = root / "experiments/z-series/artifacts/z-run/condition-design.yml"
+            target.parent.mkdir(parents=True)
+            _write_text(target, "artifact_type: model_lab_condition_desing\n")
+            self.assertEqual([target], discover(root))
+        self.assert_exit(
+            self.build(design=lambda value: value.update(artifact_type="model_lab_condition_desing")),
+            2,
+        )
 
-    def test_no_discovered_condition_design_is_not_success(self):
+    def test_run_004_v1_discovery_returns_all_candidates_in_deterministic_order(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="cd_disc_order")
+        discover = mod["discover_run_004_v1_artifacts"]
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            relative_paths = [
+                Path("experiments/z-series/artifacts/b-run/condition-design.yml"),
+                Path("experiments/a-series/artifacts/z-run/condition-design.yml"),
+            ]
+            for relative in relative_paths:
+                target = root / relative
+                target.parent.mkdir(parents=True)
+                _write_text(target, "artifact_type: wrong\n")
+            expected = [root / relative for relative in sorted(relative_paths, key=lambda p: p.as_posix())]
+            self.assertEqual(expected, discover(root))
+
+    def test_main_no_arg_discovery_checks_every_candidate_and_returns_highest_exit(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="cd_main_multi")
+        main = mod["main"]
+        calls = []
+
+        def fake_validate(path, validator, repo_root=None):
+            relative = path.relative_to(repo_root).as_posix()
+            calls.append(relative)
+            return (2, [f"invalid {relative}"]) if "z-series" in relative else (0, [])
+
+        main.__globals__["load_validator"] = lambda path: object()
+        main.__globals__["validate_file"] = fake_validate
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            relative_paths = [
+                Path("experiments/z-series/artifacts/b-run/condition-design.yml"),
+                Path("experiments/a-series/artifacts/z-run/condition-design.yml"),
+            ]
+            for relative in relative_paths:
+                target = root / relative
+                target.parent.mkdir(parents=True)
+                _write_text(target, "artifact_type: wrong\n")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                code = main([], repo_root=root)
+        expected = [relative.as_posix() for relative in sorted(relative_paths, key=lambda p: p.as_posix())]
+        self.assertEqual(2, code)
+        self.assertEqual(expected, calls)
+        self.assertIn(
+            "Run-004 v1 model-lab-condition-design artifacts: checked=2, passed=1, failed=1",
+            output.getvalue(),
+        )
+
+    def test_no_discovered_run_004_v1_condition_design_is_not_success(self):
         mod = runpy.run_path(str(VALIDATOR), run_name="cd_empty")
         with tempfile.TemporaryDirectory() as td:
-            self.assertEqual([], mod["discover_artifacts"](Path(td)))
+            self.assertEqual([], mod["discover_run_004_v1_artifacts"](Path(td)))
         main = mod["main"]
-        main.__globals__["discover_artifacts"] = lambda root: []  # simulate empty discovery
-        self.assertEqual(2, main([]))  # empty discovery is a failure, not a green skip
+        main.__globals__["discover_run_004_v1_artifacts"] = lambda root: []
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(2, main([]))
+
+    def test_scratch_cleanup_removes_only_registered_process_owned_paths(self):
+        owned = _register_created_scratch(
+            Path(tempfile.mkdtemp(prefix=SCRATCH_PREFIX, dir=FIXROOT))
+        )
+        foreign = Path(tempfile.mkdtemp(prefix="_scratch_foreign_", dir=FIXROOT))
+        try:
+            _safe_remove_created_scratch(foreign)
+            self.assertTrue(foreign.is_dir())
+            _safe_remove_created_scratch(owned)
+            self.assertFalse(owned.exists())
+        finally:
+            _safe_remove_created_scratch(owned)
+            shutil.rmtree(foreign, ignore_errors=True)
+
+    def test_registered_scratch_atexit_callback_leaves_no_owned_path(self):
+        owned = _register_created_scratch(
+            Path(tempfile.mkdtemp(prefix=SCRATCH_PREFIX, dir=FIXROOT))
+        )
+        try:
+            _cleanup_registered_scratch()
+            self.assertFalse(owned.exists())
+            self.assertNotIn(owned, _CREATED_SCRATCH)
+        finally:
+            _safe_remove_created_scratch(owned)
 
     # === git-object provenance (Patch B) ===
     def test_snapshot_and_all_internal_hashes_cannot_self_attest_to_git_source(self):
@@ -634,12 +790,12 @@ class CD(unittest.TestCase):
     def test_unknown_extra_bundle_file_is_rejected(self):
         c = self.build()
         (c.parent / "notes").mkdir()
-        (c.parent / "notes" / "hidden-instructions.txt").write_text("psst\n")
+        _write_text(c.parent / "notes" / "hidden-instructions.txt", "psst\n")
         self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE")
 
     def test_unreferenced_source_file_is_rejected(self):
         c = self.build()
-        (c.parent / "source-snapshots" / "extra.snapshot").write_text("x\n")
+        _write_text(c.parent / "source-snapshots" / "extra.snapshot", "x\n")
         self.assert_rule(self.run_v(c), "CONDITION_DESIGN_REQUIRES_CLOSED_BUNDLE")
 
     def test_bundle_symlink_is_rejected(self):

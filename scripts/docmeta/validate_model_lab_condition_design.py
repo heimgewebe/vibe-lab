@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""validate_model_lab_condition_design.py — Validator for Model-Lab condition-design artifacts.
+"""validate_model_lab_condition_design.py — Frozen Run-004 v1 condition-design validator.
 
-A condition-design artifact freezes, before execution, the paired condition contrast a future
-Model-Lab Run-004 must run. v1 binds the design to immutable historical source byte-snapshots
-(source-snapshots/), derives gate requirements by parsing the frozen full gate (no editable
-reduced list), enforces a deterministic benchmark+shared+overlay input assembly, and renders the
-arm overlays from a single structured workflow source so only the assigned-instruction axis can
-differ. It does NOT execute, bind runtime values, allow assessment, or resolve
-weak_condition_contrast.
+This is not a generic condition-design framework. It is the v1 specialization for the frozen
+Model-Lab Run-004 condition-contrast design. No-argument CLI discovery scans every canonical
+condition-design path candidate, but every candidate is still validated against this one v1
+contract. Supporting a different experimental axis requires a new contract version, a dispatcher,
+or a separate generalization change. The artifact freezes, before execution, the paired
+condition contrast that Run-004 must run. v1 binds the design to immutable historical source
+byte-snapshots (source-snapshots/), derives gate requirements by parsing the frozen full gate
+(no editable reduced list), enforces a deterministic benchmark+shared+overlay input assembly,
+and renders the arm overlays from a single structured workflow source so only the assigned-
+instruction axis can differ. It does NOT execute, bind runtime values, allow assessment, or
+resolve weak_condition_contrast.
 
 Closed child contracts (schema-validated; a child schema violation is a bundle schema error):
   precondition-snapshot, workflow-instruction-protocol, verification-protocol,
@@ -54,15 +58,19 @@ CHILD_SCHEMA = {
     "freeze": SCHEMA_DIR / "model-lab-condition-design-freeze-manifest.v1.schema.json",
 }
 
-DESIGN_GLOB = "*/artifacts/*/condition-design.yml"
-DESIGN_ARTIFACT_TYPE = "model_lab_condition_design"
-GATE_ARTIFACT_TYPE = "model_lab_condition_contrast_design_gate"
-READINESS_ARTIFACT_TYPE = "result_assessment_readiness"
+RUN_004_V1_SERIES_DIR = "experiments/2026-05-31_model-lab-replication-series"
+RUN_004_V1_DESIGN_REPO_PATH = (
+    f"{RUN_004_V1_SERIES_DIR}/artifacts/run-004-condition-contrast-design/condition-design.yml"
+)
+RUN_004_V1_DESIGN_GLOB = "*/artifacts/*/condition-design.yml"
+RUN_004_V1_DESIGN_ARTIFACT_TYPE = "model_lab_condition_design"
+RUN_004_V1_GATE_ARTIFACT_TYPE = "model_lab_condition_contrast_design_gate"
+RUN_004_V1_READINESS_ARTIFACT_TYPE = "result_assessment_readiness"
 
-EXPECTED_PRIMARY_AXIS = "workflow_protocol"
-CONTROL_WP = "direct_implementation"
-TREATMENT_WP = "spec_first"
-COMPLIANCE_METRIC_ID = "workflow_protocol_compliance"
+RUN_004_V1_EXPECTED_PRIMARY_AXIS = "workflow_protocol"
+RUN_004_V1_CONTROL_WORKFLOW_PROTOCOL = "direct_implementation"
+RUN_004_V1_TREATMENT_WORKFLOW_PROTOCOL = "spec_first"
+RUN_004_V1_COMPLIANCE_METRIC_ID = "workflow_protocol_compliance"
 MANDATORY_TREATMENT_SECTIONS = (
     "endpoint_matrix", "request_response_schemas", "validation_rules", "http_status_codes",
     "error_cases", "edge_cases", "persistence_assumptions", "planned_implementation_order",
@@ -73,11 +81,16 @@ EFFECT_SEVERITY = {"must_be_reported": 1, "blocks_design": 2}
 # Each frozen source must come from its exact canonical historical location, carry the role's
 # artifact_type, and share the freeze manifest's source_base_commit_sha. gate/readiness/spec-first
 # paths are fixed; the challenge path is derived from challenge_version so a swapped benchmark fails.
-SERIES_DIR = "experiments/2026-05-31_model-lab-replication-series"
-CHALLENGE_ARTIFACT_TYPE = "benchmark_challenge"
-EXPECTED_SOURCE_ROLES = {
-    "gate": (f"{SERIES_DIR}/results/condition-contrast-design-gate.yml", GATE_ARTIFACT_TYPE),
-    "readiness": (f"{SERIES_DIR}/results/result-assessment-readiness.yml", READINESS_ARTIFACT_TYPE),
+RUN_004_V1_CHALLENGE_ARTIFACT_TYPE = "benchmark_challenge"
+RUN_004_V1_EXPECTED_SOURCE_ROLES = {
+    "gate": (
+        f"{RUN_004_V1_SERIES_DIR}/results/condition-contrast-design-gate.yml",
+        RUN_004_V1_GATE_ARTIFACT_TYPE,
+    ),
+    "readiness": (
+        f"{RUN_004_V1_SERIES_DIR}/results/result-assessment-readiness.yml",
+        RUN_004_V1_READINESS_ARTIFACT_TYPE,
+    ),
     "spec_first": ("instruction-blocks/spec-first.md", "instruction_block"),
 }
 
@@ -674,8 +687,8 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
     spec_first_res = None
     base_commit = _freeze_base_commit(data, bundle_dir, repo_root)
     challenge_version = str(data.get("challenge_version", "")).strip()
-    expected_paths = dict(EXPECTED_SOURCE_ROLES)
-    expected_paths["challenge"] = (f"benchmarks/challenges/{challenge_version}.md", CHALLENGE_ARTIFACT_TYPE)
+    expected_paths = dict(RUN_004_V1_EXPECTED_SOURCE_ROLES)
+    expected_paths["challenge"] = (f"benchmarks/challenges/{challenge_version}.md", RUN_004_V1_CHALLENGE_ARTIFACT_TYPE)
     snap_problems = []
     role_problems = []
     if snapshot is None:
@@ -726,7 +739,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
                 spec_first_res = sres
         # derive gate truth from the frozen full gate
         if frozen_gate is not None:
-            if str(frozen_gate.get("artifact_type", "")).strip() != GATE_ARTIFACT_TYPE:
+            if str(frozen_gate.get("artifact_type", "")).strip() != RUN_004_V1_GATE_ARTIFACT_TYPE:
                 snap_problems.append("frozen gate artifact_type mismatch")
             if frozen_gate.get("gate_status") != "criteria_defined":
                 snap_problems.append("frozen gate gate_status must be criteria_defined")
@@ -825,13 +838,13 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_EXACTLY_TWO_ARMS", path,
             f"arms must be exactly one control and one treatment; found roles {roles}."))
     axis_id = str(primary_axis.get("id", "")).strip() if isinstance(primary_axis, dict) else ""
-    if axis_id != EXPECTED_PRIMARY_AXIS:
+    if axis_id != RUN_004_V1_EXPECTED_PRIMARY_AXIS:
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS", path,
-            f"primary_intervention_axis.id must be {EXPECTED_PRIMARY_AXIS!r}; found {axis_id!r}."))
+            f"primary_intervention_axis.id must be {RUN_004_V1_EXPECTED_PRIMARY_AXIS!r}; found {axis_id!r}."))
     elif control_arm and treatment_arm and str(control_arm.get("workflow_protocol", "")).strip() == str(treatment_arm.get("workflow_protocol", "")).strip():
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_SINGLE_PRIMARY_AXIS", path,
             "the two arms must take different workflow_protocol values."))
-    if EXPECTED_PRIMARY_AXIS in set(_ids(controlled)):
+    if RUN_004_V1_EXPECTED_PRIMARY_AXIS in set(_ids(controlled)):
         errors.append(format_error("CONDITION_DESIGN_REQUIRES_PRIMARY_AXIS_NOT_CONTROLLED", path,
             "the primary axis must not also appear in controlled_dimensions."))
 
@@ -908,10 +921,18 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
             mat.append("control_metadata.arms.treatment must require a completeness-checked upfront specification")
         if not all(s in sections for s in MANDATORY_TREATMENT_SECTIONS):
             mat.append("delivered_treatment_addendum.required_specification_sections must cover: " + ", ".join(MANDATORY_TREATMENT_SECTIONS))
-        if control_arm and str(control_arm.get("workflow_protocol", "")).strip() != CONTROL_WP:
-            mat.append(f"control workflow_protocol must be {CONTROL_WP!r}")
-        if treatment_arm and str(treatment_arm.get("workflow_protocol", "")).strip() != TREATMENT_WP:
-            mat.append(f"treatment workflow_protocol must be {TREATMENT_WP!r}")
+        if (
+            control_arm
+            and str(control_arm.get("workflow_protocol", "")).strip()
+            != RUN_004_V1_CONTROL_WORKFLOW_PROTOCOL
+        ):
+            mat.append(f"control workflow_protocol must be {RUN_004_V1_CONTROL_WORKFLOW_PROTOCOL!r}")
+        if (
+            treatment_arm
+            and str(treatment_arm.get("workflow_protocol", "")).strip()
+            != RUN_004_V1_TREATMENT_WORKFLOW_PROTOCOL
+        ):
+            mat.append(f"treatment workflow_protocol must be {RUN_004_V1_TREATMENT_WORKFLOW_PROTOCOL!r}")
         if mat:
             errors.append(format_error("CONDITION_DESIGN_REQUIRES_MATERIAL_CONTRAST", path,
                 "the assigned workflow-instruction contrast must be material and pre-execution observable; " + "; ".join(mat)))
@@ -985,8 +1006,8 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
         ids = [str(m.get("id", "")).strip() for m in metrics]
         for dup in _duplicates(ids):
             mproblems.append(f"duplicate metric id: {dup}")
-        if COMPLIANCE_METRIC_ID not in ids:
-            mproblems.append(f"missing mandatory metric '{COMPLIANCE_METRIC_ID}'")
+        if RUN_004_V1_COMPLIANCE_METRIC_ID not in ids:
+            mproblems.append(f"missing mandatory metric '{RUN_004_V1_COMPLIANCE_METRIC_ID}'")
         for m in metrics:
             mid = str(m.get("id", "")).strip() or "<unnamed>"
             if str(m.get("unit", "")).strip() == "ratio":
@@ -1153,19 +1174,23 @@ def validate_file(path: Path, validator: Draft202012Validator, repo_root: Path |
     return 0, []
 
 
-def discover_artifacts(repo_root: Path):
-    exp = repo_root / "experiments"
-    if not exp.is_dir():
+def discover_run_004_v1_artifacts(repo_root: Path):
+    # Broad path discovery is a fail-closed candidate inventory, not generic contract support.
+    # Every experiments/*/artifacts/*/condition-design.yml candidate reaches the frozen Run-004
+    # v1 schema and semantics, including malformed or mistyped artifacts. A different axis needs
+    # a new contract version, dispatcher, or separate generalization change.
+    experiments = repo_root / "experiments"
+    if not experiments.is_dir():
         return []
-    # The canonical path pattern IS the identity: every condition-design.yml under
-    # experiments/*/artifacts/*/ is a candidate. We deliberately do NOT filter by artifact_type
-    # here — a malformed or mistyped artifact must reach the schema (and fail exit 2), never
-    # silently vanish from discovery into a green "skipped".
-    return sorted(exp.glob(DESIGN_GLOB))
+    return sorted(experiments.glob(RUN_004_V1_DESIGN_GLOB), key=lambda path: path.as_posix())
 
 
-def main(argv=None):
-    parser = argparse.ArgumentParser(description="Validate Model-Lab condition-design artifacts.")
+def main(argv=None, *, repo_root: Path | None = None):
+    root = repo_root if repo_root is not None else REPO_ROOT
+    parser = argparse.ArgumentParser(
+        description=("Validate every discovered condition-design path candidate against the "
+                     "frozen Run-004 v1 Model-Lab contract.")
+    )
     parser.add_argument("paths", nargs="*")
     args = parser.parse_args(argv)
     try:
@@ -1175,22 +1200,25 @@ def main(argv=None):
     except RuntimeError as exc:
         print(f"ERROR: {exc}"); return 2
     if args.paths:
-        paths = [Path(r) if Path(r).is_absolute() else (REPO_ROOT / r) for r in args.paths]
+        paths = [Path(r) if Path(r).is_absolute() else (root / r) for r in args.paths]
     else:
-        paths = discover_artifacts(REPO_ROOT)
+        paths = discover_run_004_v1_artifacts(root)
         if not paths:
-            print("ERROR: no model-lab-condition-design artifact found; the canonical design must "
-                  "exist and be discoverable (empty discovery is a failure, not a skip).")
+            print("ERROR: no Run-004 v1 model-lab-condition-design path candidate found; "
+                  "empty discovery is a failure, not a skip.")
             return 2
     highest, passed = 0, 0
     for p in paths:
-        code, errs = validate_file(p, validator)
+        code, errs = validate_file(p, validator, root)
         highest = max(highest, code)
         for e in errs:
             print(e)
         if code == 0:
             passed += 1; print(f"✅ {display_path(p)}")
-    print(f"Model-lab-condition-design artifacts: checked={len(paths)}, passed={passed}, failed={len(paths) - passed}")
+    print(
+        f"Run-004 v1 model-lab-condition-design artifacts: "
+        f"checked={len(paths)}, passed={passed}, failed={len(paths) - passed}"
+    )
     return highest
 
 

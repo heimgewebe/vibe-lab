@@ -195,8 +195,7 @@ validate-model-lab-condition-design-tests:
 
 validate-model-lab-condition-design:
 	@echo "🧭 Validating model-lab condition-design artifacts..."
-	@python3 scripts/docmeta/validate_model_lab_condition_design.py \
-	  experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+	@python3 scripts/docmeta/validate_model_lab_condition_design.py
 
 validate-pr-scope:
 	@echo "🔎 Validating PR scope / artifact boundary..."
