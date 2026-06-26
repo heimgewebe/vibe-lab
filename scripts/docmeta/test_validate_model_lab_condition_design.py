@@ -526,6 +526,18 @@ class CD(unittest.TestCase):
         self.assert_rule(self.build(snapshot=lambda s: s["sources"]["challenge"].update(source_path="benchmarks/challenges/other-v9.md")),
                          "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING")
 
+    def test_challenge_block_version_must_match_frozen_challenge_version(self):
+        self.assert_rule(
+            self.build(design=lambda d: d["challenge"].update(version="other-v1")),
+            "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING",
+        )
+
+    def test_challenge_block_id_must_match_frozen_challenge_id(self):
+        self.assert_rule(
+            self.build(design=lambda d: d["challenge"].update(id="other-api")),
+            "CONDITION_DESIGN_REQUIRES_SOURCE_ROLE_BINDING",
+        )
+
     def test_source_commit_unknown_fails_closed(self):
         # a source pointing at a commit absent from the object store cannot be verified -> exit 2
         self.assert_exit(self.build(snapshot=lambda s: s["sources"]["readiness"].update(

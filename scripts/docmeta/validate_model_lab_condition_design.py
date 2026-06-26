@@ -80,7 +80,8 @@ EFFECT_SEVERITY = {"must_be_reported": 1, "blocks_design": 2}
 # --- source role/provenance binding (boundary 1) --------------------------------------------
 # Each frozen source must come from its exact canonical historical location, carry the role's
 # artifact_type, and share the freeze manifest's source_base_commit_sha. gate/readiness/spec-first
-# paths are fixed; the challenge path is derived from challenge_version so a swapped benchmark fails.
+# paths are fixed; the challenge path is derived from challenge_version and its block metadata is
+# reconciled with the frozen challenge frontmatter so a swapped or ambiguously labelled benchmark fails.
 RUN_004_V1_CHALLENGE_ARTIFACT_TYPE = "benchmark_challenge"
 RUN_004_V1_EXPECTED_SOURCE_ROLES = {
     "gate": (
@@ -221,6 +222,29 @@ def load_yaml(path: Path) -> dict:
         raise ValueError(f"YAML parse error in {display_path(path)}: {exc}") from exc
     if not isinstance(loaded, dict):
         raise ValueError(f"YAML document must be an object: {display_path(path)}")
+    return loaded
+
+
+def load_markdown_frontmatter(path: Path) -> dict:
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(f"file missing: {display_path(path)}") from exc
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"file is not valid UTF-8: {display_path(path)}") from exc
+    except OSError as exc:
+        raise ValueError(f"file could not be read: {display_path(path)}: {exc}") from exc
+    if not raw.startswith("---\n"):
+        raise ValueError(f"Markdown frontmatter missing in {display_path(path)}")
+    end = raw.find("\n---\n", 4)
+    if end < 0:
+        raise ValueError(f"Markdown frontmatter is not closed in {display_path(path)}")
+    try:
+        loaded = yaml.safe_load(raw[4:end])
+    except yaml.YAMLError as exc:
+        raise ValueError(f"frontmatter YAML parse error in {display_path(path)}: {exc}") from exc
+    if not isinstance(loaded, dict):
+        raise ValueError(f"Markdown frontmatter must be an object: {display_path(path)}")
     return loaded
 
 
@@ -683,14 +707,22 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
     # --- precondition snapshot + frozen source provenance --------------------
     snap_ref = str(data.get("precondition_snapshot_ref", ""))
     _, snapshot, snap_prob = load(snap_ref)
-    frozen_gate = frozen_readiness = None
+    frozen_gate = frozen_readiness = frozen_challenge = None
     spec_first_res = None
     base_commit = _freeze_base_commit(data, bundle_dir, repo_root)
     challenge_version = str(data.get("challenge_version", "")).strip()
+    challenge = data.get("challenge") or {}
+    challenge_id = str(challenge.get("id", "")).strip()
+    challenge_block_version = str(challenge.get("version", "")).strip()
     expected_paths = dict(RUN_004_V1_EXPECTED_SOURCE_ROLES)
     expected_paths["challenge"] = (f"benchmarks/challenges/{challenge_version}.md", RUN_004_V1_CHALLENGE_ARTIFACT_TYPE)
     snap_problems = []
     role_problems = []
+    if challenge_block_version != challenge_version:
+        role_problems.append(
+            f"challenge.version must equal challenge_version {challenge_version!r} "
+            f"(found {challenge_block_version!r})"
+        )
     if snapshot is None:
         snap_problems.append(f"snapshot {display_source_path(snap_ref)} {snap_prob}")
     else:
@@ -700,7 +732,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
         if _parse_rfc3339(captured_at) is None:
             snap_problems.append(f"captured_at is not a real RFC-3339 timestamp ({captured_at!r})")
         for sname, want_parse in (("gate", "gate"), ("readiness", "readiness"),
-                                  ("challenge", None), ("spec_first", "spec_first")):
+                                  ("challenge", "challenge"), ("spec_first", "spec_first")):
             src = sources.get(sname) or {}
             # boundary 1: role/provenance binding (canonical path, role artifact_type, base commit)
             exp_path, exp_type = expected_paths[sname]
@@ -735,8 +767,32 @@ def semantic_errors(data: dict, path: Path, repo_root: Path):
                     frozen_readiness = load_yaml(sres)
                 except (FileNotFoundError, ValueError):
                     snap_problems.append("frozen readiness snapshot is not readable YAML")
+            elif want_parse == "challenge":
+                try:
+                    frozen_challenge = load_markdown_frontmatter(sres)
+                except (FileNotFoundError, ValueError):
+                    snap_problems.append("frozen challenge snapshot has no readable YAML frontmatter")
             elif want_parse == "spec_first":
                 spec_first_res = sres
+        if frozen_challenge is not None:
+            frozen_challenge_id = str(frozen_challenge.get("challenge_id", "")).strip()
+            frozen_version = str(frozen_challenge.get("version", "")).strip()
+            frozen_combined_version = (
+                f"{frozen_challenge_id}-{frozen_version}"
+                if frozen_challenge_id and frozen_version
+                else ""
+            )
+            if challenge_id != frozen_challenge_id:
+                role_problems.append(
+                    f"challenge.id must equal the frozen challenge_id {frozen_challenge_id!r} "
+                    f"(found {challenge_id!r})"
+                )
+            if challenge_version not in {frozen_version, frozen_combined_version}:
+                role_problems.append(
+                    f"challenge_version {challenge_version!r} is not reconcilable with the "
+                    f"frozen challenge metadata challenge_id={frozen_challenge_id!r}, "
+                    f"version={frozen_version!r}"
+                )
         # derive gate truth from the frozen full gate
         if frozen_gate is not None:
             if str(frozen_gate.get("artifact_type", "")).strip() != RUN_004_V1_GATE_ARTIFACT_TYPE:
