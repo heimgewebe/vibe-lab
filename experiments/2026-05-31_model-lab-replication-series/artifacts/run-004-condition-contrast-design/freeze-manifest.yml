@@ -2,7 +2,7 @@ artifact_type: model_lab_condition_design_freeze_manifest
 design_id: run-004-condition-contrast
 series_id: 2026-05-31_model-lab-replication-series
 challenge_version: rest-api-v1
-frozen_at: '2026-06-25T08:00:00Z'
+frozen_at: '2026-06-26T12:52:59Z'
 frozen_before_execution: true
 source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 change_rule: recompute all frozen-file hashes
