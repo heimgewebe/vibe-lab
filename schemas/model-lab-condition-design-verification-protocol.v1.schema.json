@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-condition-design-verification-protocol.v1.schema.json",
+  "title": "Model-Lab Condition Design — Verification Protocol v1",
+  "description": "Closed contract for the shared verification surface. additionalProperties:false forbids per-arm overrides (control_only_tests, treatment_only_tests, arm_overrides) and any unknown field.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type", "design_id", "series_id", "challenge_version",
+    "applies_equally_to_both_arms", "per_arm_test_overrides_forbidden", "does_not_execute",
+    "executable_harness_binding_status", "shared_checks", "pass_fail_semantics",
+    "deferred_to_execution_readiness", "abort_on_arm_dependent_drift"
+  ],
+  "properties": {
+    "artifact_type": {"type": "string", "const": "model_lab_condition_design_verification_protocol"},
+    "design_id": {"$ref": "#/$defs/token"},
+    "series_id": {"$ref": "#/$defs/token"},
+    "challenge_version": {"$ref": "#/$defs/token"},
+    "applies_equally_to_both_arms": {"type": "boolean", "const": true},
+    "per_arm_test_overrides_forbidden": {"type": "boolean", "const": true},
+    "does_not_execute": {"type": "boolean", "const": true},
+    "executable_harness_binding_status": {"type": "string", "const": "deferred_to_execution_readiness"},
+    "shared_checks": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+    "pass_fail_semantics": {
+      "type": "object", "additionalProperties": false, "required": ["pass", "fail"],
+      "properties": {"pass": {"$ref": "#/$defs/nonBlank"}, "fail": {"$ref": "#/$defs/nonBlank"}}
+    },
+    "deferred_to_execution_readiness": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+    "abort_on_arm_dependent_drift": {"type": "boolean", "const": true}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "nonBlank": {"type": "string", "minLength": 1, "pattern": "\\S"}
+  }
+}

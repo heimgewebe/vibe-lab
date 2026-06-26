@@ -1,0 +1,57 @@
+# Run-004 — Shared Measurement Protocol (frozen design, closed contract)
+#
+# Pre-declares metrics and rules applied identically to both arms. Contains NO measured values
+# (closed schema forbids observed_values and any unknown result field), no post-hoc metric
+# selection, and no treatment-only scoring. The timing metric ends at the shared verification
+# pass; an aborted arm has a null time-to-validated-change (abort time is a separate metric).
+artifact_type: "model_lab_condition_design_measurement_protocol"
+design_id: "run-004-condition-contrast"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+
+applies_equally_to_both_arms: true
+post_hoc_metric_selection_forbidden: true
+does_not_record_values: true
+treatment_only_scoring_forbidden: true
+
+primary_metrics:
+  - id: "functional_test_pass_ratio"
+    unit: "ratio"
+    formula: "passing_shared_functional_tests / total_shared_functional_tests"
+    range: {minimum: 0, maximum: 1}
+  - id: "error_case_test_pass_ratio"
+    unit: "ratio"
+    formula: "passing_shared_error_case_tests / total_shared_error_case_tests"
+    range: {minimum: 0, maximum: 1}
+  - id: "forced_500_check_pass"
+    unit: "boolean"
+    formula: "1 if the shared forced-500 assertion passes else 0"
+  - id: "workflow_protocol_compliance"
+    unit: "categorical"
+    formula: "assigned-protocol compliance verdict (compliant / non_compliant / contaminated); not a quality judgment"
+  - id: "time_to_validated_change_seconds"
+    unit: "seconds"
+    formula: "timer_end - timer_start"
+    timer_start: "task_input_delivered"
+    timer_end: "shared_verification_first_pass"
+    value_if_aborted_before_pass: "null"
+
+secondary_metrics:
+  - id: "time_to_stop_seconds"
+    unit: "seconds"
+    formula: "timer_end - timer_start"
+    timer_start: "task_input_delivered"
+    timer_end: "stop_rule_fired"
+  - id: "rework_steps"
+    unit: "count"
+    formula: "number of post-authoring revisions to fix defects in already-produced implementation"
+  - id: "human_intervention_count"
+    unit: "count"
+    formula: "number of human-originated corrections beyond the shared task input"
+  - id: "scope_drift_status"
+    unit: "categorical"
+    formula: "none / observed (challenge or acceptance surface changed by the arm)"
+
+aborted_arm_rule: "An arm that hits a stop rule before the shared verification passes is recorded as aborted; time_to_validated_change_seconds is null and incomplete metrics are reported as missing, not imputed."
+missing_value_rule: "A metric that cannot be computed is recorded as null, never as zero or a guessed value."
+scope_drift_rule: "An arm that changes the challenge/acceptance surface is marked scope_drift and is not comparable; this does not retroactively change the other arm."

@@ -1,0 +1,44 @@
+# Run-004 — Precondition Snapshot (frozen design, closed contract)
+#
+# Provenance for the historical source bytes frozen under source-snapshots/. The permanent
+# validator reads ONLY the frozen snapshot files (never the mutable live files), verifies their
+# hashes, and DERIVES gate requirements and readiness truth by parsing the frozen full gate /
+# readiness — there is no editable reduced gate list that could weaken its own requirements.
+# For every source, the validator also reads the historical Git object at
+# `source_commit_sha:source_path` and requires byte equality with the frozen snapshot. A missing
+# commit (for example in a shallow checkout), a missing source path, or different bytes fails closed.
+artifact_type: "model_lab_condition_design_precondition_snapshot"
+design_id: "run-004-condition-contrast"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+captured_at: "2026-06-24T02:00:00Z"
+
+sources:
+  gate:
+    source_path: "experiments/2026-05-31_model-lab-replication-series/results/condition-contrast-design-gate.yml"
+    source_commit_sha: "41fa2031160f6a7288f2c90eaccff60c7c1b50f2"
+    source_sha256: "73aab9e2d10fcea061469a408591570a11ad9ef796cc5059fc9c8f9b6cfbbe3e"
+    snapshot_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/condition-contrast-design-gate.snapshot"
+    snapshot_sha256: "73aab9e2d10fcea061469a408591570a11ad9ef796cc5059fc9c8f9b6cfbbe3e"
+    artifact_type: "model_lab_condition_contrast_design_gate"
+  readiness:
+    source_path: "experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml"
+    source_commit_sha: "41fa2031160f6a7288f2c90eaccff60c7c1b50f2"
+    source_sha256: "77277306065bee5582572f26671f4d88f76dc1ee976ad272e55642d49a95fbae"
+    snapshot_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/result-assessment-readiness.snapshot"
+    snapshot_sha256: "77277306065bee5582572f26671f4d88f76dc1ee976ad272e55642d49a95fbae"
+    artifact_type: "result_assessment_readiness"
+  challenge:
+    source_path: "benchmarks/challenges/rest-api-v1.md"
+    source_commit_sha: "41fa2031160f6a7288f2c90eaccff60c7c1b50f2"
+    source_sha256: "e29b34df0e89f7bc0b5592431a9ddf09633ae75572dd2a23d530ef5c36a06d5b"
+    snapshot_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot"
+    snapshot_sha256: "e29b34df0e89f7bc0b5592431a9ddf09633ae75572dd2a23d530ef5c36a06d5b"
+    artifact_type: "benchmark_challenge"
+  spec_first:
+    source_path: "instruction-blocks/spec-first.md"
+    source_commit_sha: "41fa2031160f6a7288f2c90eaccff60c7c1b50f2"
+    source_sha256: "55df5ea6ad086731fa9a432fb1f8bcb9e384d9af17a57cc49c09acd1e105dc92"
+    snapshot_path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/spec-first.snapshot"
+    snapshot_sha256: "55df5ea6ad086731fa9a432fb1f8bcb9e384d9af17a57cc49c09acd1e105dc92"
+    artifact_type: "instruction_block"

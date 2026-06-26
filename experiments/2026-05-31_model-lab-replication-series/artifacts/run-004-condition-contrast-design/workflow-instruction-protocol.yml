@@ -1,0 +1,57 @@
+# Run-004 — Structured Workflow-Instruction Source (single axis, blinded delivery)
+#
+# The single machine-readable source of the assigned workflow instruction. It is split into a
+# NON-DELIVERED experiment-control block and the DELIVERED prompt fields:
+#   * control_metadata          — role/axis framing and the per-arm assigned-instruction semantics.
+#                                 NEVER delivered to the agent; the renderer ignores it. It exists
+#                                 for human readers and for the validator's material-contrast check.
+#   * delivered_shared_instructions — the blinded text delivered identically to BOTH arms
+#                                 (the shared condition and the neutral overlay baseline).
+#   * delivered_treatment_addendum  — the positive Spec-First requirement delivered to the TREATMENT
+#                                 arm only; its body is the frozen Spec-First snapshot embedded
+#                                 verbatim (grounded byte-for-byte in instruction-blocks/spec-first.md).
+# common-condition.md and the two overlays are rendered deterministically from the delivered_*
+# fields by scripts/docmeta/render_condition_overlays.py; the validator re-renders and asserts byte
+# equality, so neither a hidden second axis nor any experiment-metadata leak can be hand-edited in.
+artifact_type: "model_lab_condition_design_workflow_instruction_protocol"
+design_id: "run-004-condition-contrast"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+
+control_metadata:
+  primary_axis: "workflow_protocol"
+  axis_semantics: "assigned_instruction_requirement"
+  arm_roles:
+    - control
+    - treatment
+  arms:
+    control:
+      pre_implementation_specification_required: false
+      implementation_may_begin_immediately: true
+      specification_completeness_check_required: false
+    treatment:
+      pre_implementation_specification_required: true
+      implementation_may_begin_immediately: false
+      specification_completeness_check_required: true
+
+delivered_shared_instructions:
+  shared_condition_lines:
+    - "Complete the task described in the accompanying benchmark."
+    - "Use only the tools and permissions made available for this task."
+    - "Deliver a working implementation together with executable tests or verification evidence."
+    - "Capture the evidence needed to check the result against the stated requirements."
+    - "Keep the functional requirements and acceptance criteria exactly as given."
+  overlay_baseline_lines:
+    - "Carry out the task using the materials provided above."
+
+delivered_treatment_addendum:
+  embed_spec_first_basis: true
+  required_specification_sections:
+    - endpoint_matrix
+    - request_response_schemas
+    - validation_rules
+    - http_status_codes
+    - error_cases
+    - edge_cases
+    - persistence_assumptions
+    - planned_implementation_order

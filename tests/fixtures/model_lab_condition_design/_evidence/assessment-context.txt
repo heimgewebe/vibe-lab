@@ -1,0 +1,3 @@
+Fixture assessment context. The condition-design validator checks only that this path
+exists and is a safe repo-internal regular file; its prose is never parsed. Kept as .txt
+to avoid a doc-index diff.

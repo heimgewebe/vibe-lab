@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-condition-design-workflow-instruction-protocol.v1.schema.json",
+  "title": "Model-Lab Condition Design — Workflow Instruction Protocol v1",
+  "description": "Closed contract for the single structured workflow-instruction source. It separates NON-DELIVERED experiment-control metadata (control_metadata: role/axis framing and per-arm assigned-instruction semantics) from the DELIVERED, blinded prompt fields (delivered_shared_instructions, delivered_treatment_addendum). additionalProperties:false at every level forbids per-arm tools/examples/motivation or any unknown field, so no hidden second axis and no metadata leak can be introduced. The overlays and common-condition.md are rendered from the delivered_* fields only and byte-checked by the validator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "design_id", "series_id", "challenge_version", "control_metadata", "delivered_shared_instructions", "delivered_treatment_addendum"],
+  "properties": {
+    "artifact_type": {"type": "string", "const": "model_lab_condition_design_workflow_instruction_protocol"},
+    "design_id": {"$ref": "#/$defs/token"},
+    "series_id": {"$ref": "#/$defs/token"},
+    "challenge_version": {"$ref": "#/$defs/token"},
+    "control_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary_axis", "axis_semantics", "arm_roles", "arms"],
+      "properties": {
+        "primary_axis": {"type": "string", "const": "workflow_protocol"},
+        "axis_semantics": {"type": "string", "const": "assigned_instruction_requirement"},
+        "arm_roles": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "string", "enum": ["control", "treatment"]}},
+        "arms": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["control", "treatment"],
+          "properties": {
+            "control": {"$ref": "#/$defs/armSpec"},
+            "treatment": {"$ref": "#/$defs/armSpec"}
+          }
+        }
+      }
+    },
+    "delivered_shared_instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shared_condition_lines", "overlay_baseline_lines"],
+      "properties": {
+        "shared_condition_lines": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonBlank"}},
+        "overlay_baseline_lines": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonBlank"}}
+      }
+    },
+    "delivered_treatment_addendum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["embed_spec_first_basis", "required_specification_sections"],
+      "properties": {
+        "embed_spec_first_basis": {"type": "boolean", "const": true},
+        "required_specification_sections": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "nonBlank": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "armSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_implementation_specification_required", "implementation_may_begin_immediately", "specification_completeness_check_required"],
+      "properties": {
+        "pre_implementation_specification_required": {"type": "boolean"},
+        "implementation_may_begin_immediately": {"type": "boolean"},
+        "specification_completeness_check_required": {"type": "boolean"}
+      }
+    }
+  }
+}

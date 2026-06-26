@@ -1,0 +1,37 @@
+# Run-004 — Shared Verification Protocol (frozen design, closed contract)
+#
+# Describes the verification SURFACE applied identically to both arms in a later run. It does
+# NOT execute, contains no verifier/implementation, and defers the concrete harness. Per-arm
+# test overrides are structurally forbidden (closed schema), so no control_only / treatment_only
+# tests can be smuggled in.
+artifact_type: "model_lab_condition_design_verification_protocol"
+design_id: "run-004-condition-contrast"
+series_id: "2026-05-31_model-lab-replication-series"
+challenge_version: "rest-api-v1"
+
+applies_equally_to_both_arms: true
+per_arm_test_overrides_forbidden: true
+does_not_execute: true
+executable_harness_binding_status: "deferred_to_execution_readiness"
+
+shared_checks:
+  - functional_endpoints
+  - input_validation
+  - response_envelope
+  - pagination
+  - error_cases
+  - forced_500_error_envelope
+
+pass_fail_semantics:
+  pass: "all shared functional, error-case, and forced-500 checks succeed under the shared runtime"
+  fail: "any shared check fails, or the runtime cannot be established"
+
+deferred_to_execution_readiness:
+  - concrete_test_files
+  - executable_harness_version
+  - install_command
+  - start_command
+  - exact_test_command
+  - concrete_timeout_values
+
+abort_on_arm_dependent_drift: true

@@ -1,0 +1,2 @@
+Fixture method context. Existence-checked only; never parsed. Kept as .txt to avoid a
+doc-index diff.

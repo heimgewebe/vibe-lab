@@ -14,83 +14,107 @@ relations:
 
 ## Shape of the series
 
-A small, controlled series that grows one run at a time. Three execution surfaces now exist under `rest-api-v1`: a baseline anchor (spec-first), a control run (code-first), and Run-003 under `independent_model_or_tool_condition`. All three runs now have separate runtime-validation artifacts; Run-003's machine-readable gate is `partial`. No result assessment or model-quality evaluation is performed.
+The series grows one run at a time under the fixed challenge `rest-api-v1`.
 
-## Run-001 (executed baseline)
+- Run-001 is the executed `spec_first_baseline`.
+- Run-002 is the executed `code_first_control`.
+- Run-003 is executed under the retained label `independent_model_or_tool_condition`; its independence is only `self_reported_different_agent_tool_context`, with `external_attestation: false`.
+- All three have separate runtime-validation artifacts. Run-003 has `validation_status: partial`.
 
-- **Challenge:** `rest-api` at `challenge_version: rest-api-v1`.
-- **Condition:** `spec_first_baseline`.
-- **Execution:** executed repo-locally via
-  `python3 experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/execute-baseline.py`;
-  the command wrote `baseline-output.md`, an `implementation/` bundle with
-  TypeScript/Fastify source plus Vitest verification specification, and archived
-  `execution.txt`, `changed-files.txt`, and `timing.txt`.
-- **Activation:** `run_meta.json` sets `model_lab_control: true` (AP-1) and
-  `results/decision.yml` opts in as a Model-Lab / comparative decision against
-  `rest-api-v1` (AP-2).
+These surfaces support structural comparison work only. They do not establish model quality, comparative superiority, a condition effect, outcome upgrade, adoption, promotion, production readiness, or security readiness. Formal assessment remains separate and blocked.
 
-## Run-002 (executed control)
+## Historical execution surfaces
 
-- **Challenge:** `rest-api` at `challenge_version: rest-api-v1` (same as Run-001).
-- **Condition:** `code_first_control` (different from Run-001).
-- **Execution:** executed repo-locally via
-  `python3 experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/execute-control.py`;
-  the command wrote `control-output.md`, an `implementation/` bundle with
-  TypeScript/Fastify source plus Vitest verification specification, and archived
-  `execution.txt`, `changed-files.txt`, and `timing.txt`.
-- **Activation:** `run_meta.json` sets `model_lab_control: true` (AP-1), while `comparability.yml` records
-  `compared_against: run-001`. The control run links to the same `rest-api-v1`
-  challenge version, enabling first-order comparability structure.
-- **Comparability:** `comparability.yml` in Run-002 records
-  `verdict: comparable_surface_available`, but comparison remains deferred.
+### Run-001
 
-## Run-003 (executed, self-reported different agent/tool/session condition)
+Run-001 executes the baseline challenge repo-locally and archives its implementation, verification specification, execution output, changed files, and timing. `run_meta.json` opts into Model-Lab control semantics; `results/decision.yml` references `rest-api-v1`.
 
-Run-003 executes the same `rest-api-v1` challenge under the retained label `independent_model_or_tool_condition`. Its calibrated independence status is `self_reported_different_agent_tool_context`; `external_attestation` is false, so the label does not establish model independence.
+### Run-002
 
-The concrete condition boundary is recorded in `artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md`.
+Run-002 executes the same challenge under `code_first_control`. Its `comparability.yml` references Run-001 and records `comparable_surface_available`, but comparison remains deferred.
 
-Run-003 adds a third execution surface but does not establish model quality, comparative superiority, outcome upgrade, adoption, promotion, production readiness, or security readiness.
+### Run-003
 
-Run-003 execution surface exists; Run-003 runtime validation is now archived separately in `artifacts/runtime-validation-run-003/` (machine-readable gate, `validation_status: partial`); no result assessment is performed.
+Run-003 executes the same challenge in a separately reported agent/tool/session context. Its concrete boundary is recorded in `artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md`. The label does not prove model independence. Runtime validation is archived separately under `artifacts/runtime-validation-run-003/`.
 
-## What is measured now
+## Measurement status
 
-Three executed run surfaces now exist under the same challenge version. The series
-tracks repo-local observations:
+The series records execution completeness, artifact locators, verification evidence, and the availability of a comparison surface. It does not perform model comparison inside the run bundles.
 
-- Run-001 and Run-002 both execute deterministically and have separate runtime validation evidence.
-- Run-003 execution surface exists; Run-003 runtime validation is now archived separately (gate `validation_status: partial`); no result assessment is performed.
-- All three target `rest-api-v1` with identical API surface requirements.
-- All three produce implementation and verification artifacts.
-- None makes model-quality, comparative, outcome, adoption, promotion, production-readiness, or security-readiness claims.
+Current status:
 
-**Measurement status:** `executed_three_surface_run003_runtime_validation_partial`.
+```text
+executed_three_surface_run003_runtime_validation_partial
+```
 
-`measurement.yml` in each run records execution completeness, locator presence,
-verification evidence, and comparability structure availability. No model comparison
-is performed inside the runs. Actual comparison (assessment, verdict, model-quality
-judgment) is deferred to later, separate assessment artifacts.
+Runtime validation is a prerequisite for later assessment, not an assessment result.
 
-* **Note on Runtime Validation**: Following the creation of the run bundles, a distinct phase was executed to runtime-validate the implementations without mutating the original artifacts. The logs and verification metrics for these executions are isolated in the `runtime-validation-run-001-run-002` directory. Run-003 is runtime-validated in the same way in `runtime-validation-run-003`, expressed as a machine-readable runtime-evidence gate (`validation_status: partial`).
+## Methodological strength
 
-## Methodological Strength Note
-
-Methodological strength: weak structural control. The condition `code_first_control` in Run-002 establishes a second execution surface under the same challenge, but does not by itself prove a materially different generation method. Comparative claims remain blocked until a separate assessment artifact evaluates the actual differences.
+The existing three-run surface provides weak structural control. Run-001 and Run-002 differ in more than a fully isolated experimental treatment, and Run-003 adds only self-reported context separation. Comparative claims therefore remain blocked.
 
 ## Condition-contrast design gate
 
-- Condition-contrast design criteria now exist (`results/condition-contrast-design-gate.yml`, contract `model-lab-condition-contrast-design-gate.v1`).
-- Run-004 design may begin as a separate task.
-- No primary axis or concrete condition has been selected.
-- The gate fixes how dimensions must be controlled or documented whenever they are not selected as the single primary intervention axis by the later design; it does not decide which dimensions are eligible to become that primary axis.
-- No Run-004 execution is allowed.
-- Methodological strength remains weak until a compliant contrast is designed, executed and assessed.
+`results/condition-contrast-design-gate.yml` defines the criteria for a stronger future contrast. It permits a separate Run-004 design task but does not authorize execution or assessment and does not close `weak_condition_contrast`.
+
+## Run-004 condition design
+
+A frozen, not-executed condition design exists under `artifacts/run-004-condition-contrast-design/`.
+
+### Primary axis and arms
+
+The single primary axis is `workflow_protocol` with semantics `assigned_instruction_requirement`.
+
+- Control receives the neutral baseline without an assigned upfront-specification requirement.
+- Treatment receives the same baseline plus a positive Spec-First workflow requirement grounded in the frozen snapshot of `instruction-blocks/spec-first.md`.
+
+The design varies an assigned instruction, not an inaccessible internal thought process. Assigned condition and later observed compliance remain separate; contamination and ordering evidence must be collected in a future execution.
+
+### Blinded deterministic delivery
+
+The delivered prompt consists of the frozen benchmark, shared condition, and arm overlay in the same fixed order for both arms. Role names, axis names, hypotheses, and experiment framing remain outside the delivered text.
+
+`common-condition.md` and both overlays are rendered from `workflow-instruction-protocol.yml` and byte-checked. The treatment grounding is re-derived from the frozen Spec-First snapshot. Delivered files must be UTF-8 with LF line endings and a final newline.
+
+### Honest bundled prompt scope
+
+The intervention is the complete treatment-only workflow-instruction bundle, not an isolated sentence. It includes:
+
+- the preimplementation specification requirement;
+- implementation ordering and completeness review;
+- formal specification-format and explicit constraint examples;
+- prompt length and internal structure;
+- directive strength and motivational or efficacy framing;
+- required specification sections.
+
+A later observation may be attributed only to this complete bundle. It may not be attributed to an individual component or to the canonical Spec-First text alone.
+
+Only these prompt surfaces are declared constant across arms:
+
+- language;
+- permissions;
+- composition order;
+- benchmark;
+- shared condition.
+
+Runtime dimensions such as model identity, tooling, sampling, dependency/runtime environment, harness, session isolation, and human-intervention rules remain unbound until a separate execution-readiness step and must then be bound equivalently across arms.
+
+### Permanent historical provenance
+
+Gate, readiness, challenge, and Spec-First preconditions are frozen as byte snapshots. On every validation, the validator reads the historical Git object at each declared `source_commit_sha:source_path` and requires byte equality with the snapshot.
+
+A missing commit, unavailable object store, missing historical path, or byte mismatch fails closed. Full Git history is therefore part of the CI verification surface. Mutable working-tree files are not treated as provenance.
+
+The validator also derives required dimensions and confounders from the frozen full gate rather than trusting an editable reduced list.
+
+### Freeze and current boundary
+
+The design bundle is closed and frozen with SHA-256 values before execution. The manifest excludes itself and contains no final commit, tree, or head identity.
+
+No Run-004 arm has been executed. Runtime is unbound. No measurements, compliance observations, result assessment, model judgment, or condition effect exist. `weak_condition_contrast` remains open and `comparison_ready` remains false.
+
+The only permitted next step is a separate execution-readiness and authorization check.
 
 ## Next extension
 
-- Cross-Run-Assessment exists as a separate artifact (`results/cross-run-assessment.md`).
-- Runtime validation for Run-001 and Run-002 exists in `artifacts/runtime-validation-run-001-run-002`.
-- Run-003 execution exists with a self-reported different agent/tool/session boundary; externally attested model independence is not established.
-- Run-003 is now runtime-validated in a separate artifact (`runtime-validation-run-003`, gate `validation_status: partial`). A formal `decision_type=result_assessment` remains deferred; runtime contact is a prerequisite, not a result.
-- Model-quality, comparative-superiority, outcome, adoption, promotion, production-readiness, and security-readiness claims remain blocked.
+Later work may assess execution readiness, bind identical runtime values, and declare execution order. It must remain separate from the design and must not infer assessment readiness from the existence of the frozen bundle.

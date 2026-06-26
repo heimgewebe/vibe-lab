@@ -79,10 +79,10 @@ a prioritization only — no result assessment, no dependency remediation, and n
 change to the blocked status. `result_assessment_allowed` stays false and
 `comparison_ready` stays false.
 
-## Condition-contrast design gate
+## State after iteration 10 — condition-contrast design gate
 
 A machine-readable condition-contrast design gate
-(`results/condition-contrast-design-gate.yml`) now defines the criteria a future
+(`results/condition-contrast-design-gate.yml`) defines the criteria a future
 Run-004 condition-contrast design must satisfy.
 
 - condition-contrast criteria defined
@@ -93,3 +93,64 @@ Run-004 condition-contrast design must satisfy.
 - `comparison_ready` remains false
 - no primary intervention axis or concrete condition has been selected
 - the gate defines only criteria and the control treatment of non-primary dimensions
+
+## State after iteration 13 — frozen condition design (source-bound)
+
+A machine-readable, frozen condition design now exists
+(`artifacts/run-004-condition-contrast-design/`, contract `model-lab-condition-design.v1`).
+It records only a design-state transition; it asserts no effect, quality, or comparison.
+This supersedes (does not contradict) the iteration-10 gate state above: the gate defined
+criteria; this design selects and freezes the concrete contrast and binds it to verified
+immutable source byte-snapshots.
+
+- the single primary axis is `workflow_protocol` with semantics `assigned_instruction_requirement`
+  (an assigned Spec-First instruction present vs absent, not an enforced internal thought process)
+- two future arms are concretised: `control: direct_implementation` and `treatment: spec_first`
+- the arms differ operationally only along the assigned workflow-instruction overlay; all other
+  dimensions are bound identically
+- the gate/readiness/challenge/spec-first sources are frozen as immutable byte-snapshots under
+  `source-snapshots/` with verified provenance; gate requirements are derived from the frozen full
+  gate (no editable reduced list)
+- the input assembly composes the frozen benchmark, the shared condition, and the arm overlay in a
+  fixed order identical for both arms; overlays are rendered from one structured workflow source and
+  byte-checked, so no free-form prose can add a second axis
+- the protocols, structured source, snapshots, and design are frozen via a SHA-256 freeze manifest
+  that records no self-reference and no commit/tree/head SHA
+- gate/readiness preconditions are read from the frozen snapshots, not from mutable live state
+- condition semantics are frozen; concrete runtime values are still unbound
+  (`execution_binding_status: pending`)
+- the assigned condition and the later observed compliance are separated; compliance is a
+  declared future measurement, not something this design claims to have observed
+- prompt scope is an interpretation limit: a later observed difference must not be attributed
+  to ordering/length/structure alone
+- no condition was executed, measured, or assessed; `weak_condition_contrast` remains open
+- result assessment remains blocked and `comparison_ready` remains false
+- the only permitted next step is a separate execution-readiness / authorization check
+
+## State after iteration 14 — blinded delivery and bound provenance roles
+
+Iteration 14 hardens the same frozen design (no new state transition, no execution): it closes
+four trust boundaries that hash-integrity alone left open. It still asserts no effect, quality, or
+comparison.
+
+- **Source role/provenance binding.** Each frozen source must come from its exact canonical path
+  (gate/readiness under `results/`, challenge derived from `challenge_version`, spec-first under
+  `instruction-blocks/`), carry the role's `artifact_type`, and share the freeze
+  `source_base_commit_sha`. A correctly-hashed but mislabelled or mis-located source is now rejected.
+- **Prompt-component role binding.** `shared_condition` must be the bundle's `common-condition.md`;
+  the eight operative files must be pairwise distinct; the treatment arm is grounded in the frozen
+  spec-first snapshot via `spec_first_basis` (renamed from `derived_from`) while the control arm is
+  forbidden any grounding (enforced role-specifically by the schema).
+- **Blinded delivered prompt.** The text actually delivered to the future agent (shared condition +
+  both overlays) carries no role names, axis names, hypothesis, or experiment framing; the framing
+  lives only in the design, `method.md`, and the non-delivered `control_metadata`.
+- **Control = absence.** The control overlay is the neutral task baseline (no specification mention,
+  no negative instruction); the treatment overlay is that exact baseline plus a positive Spec-First
+  requirement whose body is the frozen spec-first snapshot embedded verbatim. The only delta between
+  the two delivered prompts is the added requirement.
+- Delivered files are decoded strictly (UTF-8, LF-only, final newline; no `errors="replace"`).
+- The frozen-source provenance was re-verified once against base commit `41fa203` (all four sources
+  MATCH `git show 41fa203:<path>`); the freeze manifest was recomputed for the changed files.
+- no condition was executed, measured, or assessed; `weak_condition_contrast` remains open;
+  `result_assessment_allowed` and `comparison_ready` remain false; the only permitted next step is a
+  separate execution-readiness / authorization check.
