@@ -176,6 +176,10 @@ Open blocking readiness blockers are:
 - `FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED`
 - `FORCED_500_TRIGGER_UNRESOLVED`
 - `FIRST_MUTATION_TRACE_UNRESOLVED`
+- `ACCESS_POLICY_UNRESOLVED`
+- `RUNTIME_ENVIRONMENT_UNRESOLVED`
+- `EXECUTION_ORDER_UNRESOLVED`
+- `METRIC_OPERATIONALIZATION_UNRESOLVED`
 
 `WEAK_CONDITION_CONTRAST_OPEN` remains open as an informational blocker in the readiness artifact and
 as a methodological blocker for later assessment. No Run-004 arm was executed, no measurement or

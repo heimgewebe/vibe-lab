@@ -346,6 +346,47 @@ class ExecutionReadinessTests(unittest.TestCase):
             "EXECUTION_READINESS_REQUIRES_VALID_FREEZE",
         )
 
+    def test_ready_requires_authorization_timestamp(self):
+        self.assert_rule(
+            self.build(mutate=lambda d, _: d.update(authorized_at=None)),
+            "EXECUTION_READINESS_REQUIRES_STATE_MODEL",
+        )
+
+    def test_ready_evidence_path_must_be_registered(self):
+        def mut(d, _):
+            d["runtime_binding"]["exact_model_id"]["evidence"] = [
+                "tests/fixtures/model_lab_execution_readiness/_evidence/does-not-exist.txt"
+            ]
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+    def test_ready_evidence_registry_hash_must_match(self):
+        def mut(d, _):
+            d["evidence_registry"][0]["sha256"] = "0" * 64
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_EVIDENCE_REGISTRY")
+
+    def test_ready_workspace_names_must_not_leak_role(self):
+        def mut(d, _):
+            d["workspace_session_isolation"]["arms"]["control"]["workspace_path"] = "/tmp/run004/control/workspace"
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+    def test_ready_visibility_requires_registered_evidence(self):
+        self.assert_rule(
+            self.build(mutate=lambda d, _: d["visibility_boundary"].update(evidence=[])),
+            "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING",
+        )
+
+    def test_ready_harness_neutrality_requires_registered_evidence(self):
+        self.assert_rule(
+            self.build(mutate=lambda d, _: d["harness"]["framework_neutrality"].update(evidence=[])),
+            "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING",
+        )
+
+    def test_ready_first_mutation_trace_requires_registered_evidence(self):
+        self.assert_rule(
+            self.build(mutate=lambda d, _: d["metric_operationalization"]["first_mutation_trace"].update(evidence=[])),
+            "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING",
+        )
+
     def test_authorized_when_blocked(self):
         def mut(d, _):
             d["state"]["authorization_status"] = "authorized"
@@ -371,6 +412,11 @@ class ExecutionReadinessTests(unittest.TestCase):
     def test_closed_blocker_is_invalid(self):
         def mut(d, _):
             d["blockers"][0]["status"] = "closed"
+        self.assert_rule(self.build(source=VALID_BLOCKED, mutate=mut), "EXECUTION_READINESS_REQUIRES_STATE_MODEL")
+
+    def test_blocked_requires_all_derived_blockers(self):
+        def mut(d, _):
+            d["blockers"] = [item for item in d["blockers"] if item["id"] != "EXECUTION_ORDER_UNRESOLVED"]
         self.assert_rule(self.build(source=VALID_BLOCKED, mutate=mut), "EXECUTION_READINESS_REQUIRES_STATE_MODEL")
 
     def test_missing_mandatory_non_claim(self):

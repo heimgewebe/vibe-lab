@@ -11,12 +11,11 @@ source_design_commit_sha: 570a0806a8f173679e659e43741035a54f92b3c1
 design_input_source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 future_execution_seed_status: unresolved
 future_execution_seed_sha256: null
-readiness_bundle_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256
-  + LF) over hashed files)
-readiness_bundle_content_sha256: 32980417457feaba30b6fbece3236675485796d13c95958ae867c6df8840458f
+readiness_bundle_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)
+readiness_bundle_content_sha256: 67de76ad8fb4138d6949e838068602749a14a5aec10ae19c580957a96350db4f
 hashes:
 - path: tests/fixtures/model_lab_execution_readiness/valid/blocked/execution-readiness.yml
-  sha256: 586bd683182f69907edff850c0a4bba80577ec7f77fc324015f2b16c79e1fb60
+  sha256: acf14a97f48d9fa6bfa0403b1e72a860b62ae0c2f2b1b1bc9896cb673b4de13d
 - path: tests/fixtures/model_lab_execution_readiness/valid/blocked/source-snapshots/condition-design.snapshot
   sha256: 867470e522cf569c8e6e914be417d473ff78292fcf1f786e83850ff0d17f051b
 - path: tests/fixtures/model_lab_execution_readiness/valid/blocked/source-snapshots/design-freeze-manifest.snapshot

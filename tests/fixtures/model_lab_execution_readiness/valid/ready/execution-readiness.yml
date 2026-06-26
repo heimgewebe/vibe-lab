@@ -40,8 +40,8 @@ blockers:
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 is designed to address weak_condition_contrast later, but no execution
-    or assessment has occurred, so the blocker remains open.
+  note: Run-004 is designed to address weak_condition_contrast later, but no execution or assessment has occurred, so the
+    blocker remains open.
 runtime_binding:
   binding_status: bound
   same_runtime_across_arms_required: true
@@ -192,14 +192,14 @@ workspace_session_isolation:
       arm_id: control
       execution_seed: run004-fixture-seed
       seed_hash: 3b037bb5e6fc5bd37eecb179f9f1b0de8b078a90b90a1a4f5132d63bdb2757dc
-      workspace_path: /tmp/vibe-lab-run004-fixture/control/workspace
-      session_id: fixture-session-control
-      temp_dir: /tmp/vibe-lab-run004-fixture/control/tmp
-      cache_dir: /tmp/vibe-lab-run004-fixture/control/cache
+      workspace_path: /tmp/vibe-lab-run004-fixture/arm-a/workspace
+      session_id: fixture-session-a
+      temp_dir: /tmp/vibe-lab-run004-fixture/arm-a/tmp
+      cache_dir: /tmp/vibe-lab-run004-fixture/arm-a/cache
       port_assignment: '3101'
       clean_start_state: true
       allowed_paths:
-      - /tmp/vibe-lab-run004-fixture/control/workspace
+      - /tmp/vibe-lab-run004-fixture/arm-a/workspace
       forbidden_paths:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design
       cleanup_rule: delete assigned temp/cache/workspace after capture
@@ -207,17 +207,19 @@ workspace_session_isolation:
       arm_id: treatment
       execution_seed: run004-fixture-seed
       seed_hash: 3b037bb5e6fc5bd37eecb179f9f1b0de8b078a90b90a1a4f5132d63bdb2757dc
-      workspace_path: /tmp/vibe-lab-run004-fixture/treatment/workspace
-      session_id: fixture-session-treatment
-      temp_dir: /tmp/vibe-lab-run004-fixture/treatment/tmp
-      cache_dir: /tmp/vibe-lab-run004-fixture/treatment/cache
+      workspace_path: /tmp/vibe-lab-run004-fixture/arm-b/workspace
+      session_id: fixture-session-b
+      temp_dir: /tmp/vibe-lab-run004-fixture/arm-b/tmp
+      cache_dir: /tmp/vibe-lab-run004-fixture/arm-b/cache
       port_assignment: '3102'
       clean_start_state: true
       allowed_paths:
-      - /tmp/vibe-lab-run004-fixture/treatment/workspace
+      - /tmp/vibe-lab-run004-fixture/arm-b/workspace
       forbidden_paths:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design
       cleanup_rule: delete assigned temp/cache/workspace after capture
+  evidence:
+  - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
 visibility_boundary:
   boundary_status: verified
   agent_sees_only_assigned_prompt: true
@@ -228,10 +230,11 @@ visibility_boundary:
   path_names_role_neutral: true
   repo_metadata_reconstruction_prevented: true
   normal_repo_read_access_can_reconstruct_experiment: false
+  evidence:
+  - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
 prompt_delivery:
   binding_status: bound
-  assembly_rule: strip exactly one final LF from each component, join components with
-    separator, append one final LF
+  assembly_rule: strip exactly one final LF from each component, join components with separator, append one final LF
   encoding: utf-8
   newline: lf
   final_newline: required
@@ -278,41 +281,38 @@ harness:
     status: verified
     fastify_specific_imports_absent: true
     express_fastify_neutral: true
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
   forced_500_trigger:
     status: verified
-    mechanism: framework-neutral HTTP endpoint fault injection through test-owned
-      request header
+    mechanism: framework-neutral HTTP endpoint fault injection through test-owned request header
     same_for_both_arms: true
     framework_neutral: true
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
 human_intervention:
-  policy: no content help; only predefined arm-neutral infrastructure responses, fully
-    logged
+  policy: no content help; only predefined arm-neutral infrastructure responses, fully logged
   content_help_forbidden: true
   infrastructure_answers_allowed: true
   standard_response_texts:
-  - No task-content guidance is available. Continue with the assigned prompt and available
-    tools.
+  - No task-content guidance is available. Continue with the assigned prompt and available tools.
   - Use the predefined infrastructure rule already supplied for both arms.
   abort_conditions:
   - Any request requiring task-content help.
   - Any asymmetric intervention not available to both arms.
-  count_rule: Every human-originated message after task delivery counts as one intervention,
-    including predefined infrastructure responses.
-  agent_question_handling: Answer only with a predefined arm-neutral infrastructure
-    response or abort both arms.
+  count_rule: Every human-originated message after task delivery counts as one intervention, including predefined infrastructure
+    responses.
+  agent_question_handling: Answer only with a predefined arm-neutral infrastructure response or abort both arms.
   asymmetric_intervention_forbidden: true
   same_policy_across_arms: true
 retry_policy:
   max_retries: 0
   allowed_retry_reasons: []
-  partial_workspace_behavior: discard both arms and require a new authorized readiness
-    bundle before retry
+  partial_workspace_behavior: discard both arms and require a new authorized readiness bundle before retry
   agent_abort_behavior: record abort; do not silently restart one arm
-  install_failure_behavior: record failure; do not patch dependencies inside this
-    readiness contract
+  install_failure_behavior: record failure; do not patch dependencies inside this readiness contract
   timeout_behavior: record timeout; do not extend timeout post hoc
-  flaky_test_behavior: no unilateral rerun; both arms require the same predeclared
-    retry policy
+  flaky_test_behavior: no unilateral rerun; both arms require the same predeclared retry policy
   both_arms_restart_after_retry: true
   silent_or_one_sided_retries_forbidden: true
 execution_order:
@@ -326,20 +326,17 @@ metric_operationalization:
   - id: rework_steps
     rule: Count post-authoring revisions to fix defects in already-produced implementation.
   - id: human_intervention_count
-    rule: Count every human-originated message after task delivery, including predefined
-      infrastructure responses.
+    rule: Count every human-originated message after task delivery, including predefined infrastructure responses.
   - id: workflow_protocol_compliance
-    rule: Treatment requires a complete specification before first implementation
-      mutation; control voluntary specification is not automatically non-compliant.
+    rule: Treatment requires a complete specification before first implementation mutation; control voluntary specification
+      is not automatically non-compliant.
   - id: contamination_status
-    rule: Mark contaminated if an arm sees the other payload, role labels, hypothesis,
-      other-arm artifacts, or reconstructable experiment metadata.
+    rule: Mark contaminated if an arm sees the other payload, role labels, hypothesis, other-arm artifacts, or reconstructable
+      experiment metadata.
   - id: functional_test_pass_ratio
-    rule: passing_shared_functional_tests / total_shared_functional_tests; missing
-      values remain null.
+    rule: passing_shared_functional_tests / total_shared_functional_tests; missing values remain null.
   - id: error_case_test_pass_ratio
-    rule: passing_shared_error_case_tests / total_shared_error_case_tests; missing
-      values remain null.
+    rule: passing_shared_error_case_tests / total_shared_error_case_tests; missing values remain null.
   - id: forced_500_check_pass
     rule: True only if the shared framework-neutral forced-500 assertion passes.
   - id: timeout_count
@@ -352,6 +349,25 @@ metric_operationalization:
     status: available
     required_for_treatment_preimplementation_claim: true
     agent_report_alone_sufficient: false
+    mechanism: fixture filesystem event journal with monotonic sequence numbers
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+evidence_registry:
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  sha256: ac00ef56c49c551b25c3227063303900aaec0f87669b568f10ed59b631d18811
+  kinds:
+  - synthetic_fixture
+  - model_identity
+  - agent_identity
+  - access_policy
+  - sampling_config
+  - runtime_environment
+  - workspace_isolation
+  - visibility_boundary
+  - harness
+  - harness_neutrality
+  - forced_500_trigger
+  - first_mutation_trace
 evidence:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   kind: frozen_condition_design

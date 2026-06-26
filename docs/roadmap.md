@@ -329,7 +329,7 @@ Ergaenzung 2026-06-26 zu RM-008 (Run-004 Execution-Readiness-Preflight, ohne Aus
 - Der reale Readiness-Status ist `blocked`, `authorization_status=not_authorized`,
   `runtime_values_bound=false` und `run_004_execution_allowed=false`.
 - Offene Readiness-Blocker betreffen Modell-, Agent-, Sampling-, Seed-, Workspace-/Session-,
-  Blindungs-, Harness-, forced-500- und First-Mutation-Trace-Bindungen.
+  Blindungs-, Harness-, forced-500-, First-Mutation-Trace-, Zugriffs-, Runtime-, Ausfuehrungsreihenfolge- und Metrik-Bindungen.
 - Run-004 wurde nicht ausgefuehrt; keine Messung, kein Vergleich und keine Ergebnisbewertung
   wurden erzeugt.
 - Naechster Schritt: echte Runtime-Bindung und Autorisierung erst mit konkret verfuegbaren,

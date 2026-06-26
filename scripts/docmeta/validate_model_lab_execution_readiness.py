@@ -151,6 +151,7 @@ PLACEHOLDER_VALUES = {
 }
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
+ROLE_LEAK_RE = re.compile(r"(?:^|[^a-z0-9])(control|treatment)(?:[^a-z0-9]|$)", re.IGNORECASE)
 _SCHEMA_CACHE: dict[str, Draft202012Validator] = {}
 
 
@@ -315,17 +316,28 @@ def _is_placeholder(value) -> bool:
     return value.strip().lower() in PLACEHOLDER_VALUES
 
 
-def _binding_is_bound(field) -> bool:
+def _evidence_paths_registered(paths, registry: dict[str, set[str]], required_kind: str) -> bool:
+    return bool(paths) and all(
+        isinstance(item, str)
+        and item in registry
+        and required_kind in registry[item]
+        for item in paths
+    )
+
+
+def _binding_is_bound(field, registry: dict[str, set[str]], required_kind: str) -> bool:
     return (
         isinstance(field, dict)
         and field.get("status") == "bound"
         and not _is_placeholder(field.get("value"))
-        and bool(field.get("evidence"))
+        and _evidence_paths_registered(field.get("evidence"), registry, required_kind)
     )
 
 
-def _binding_is_sampling_ready(field, unavailable_ids: set[str], field_id: str) -> bool:
-    if _binding_is_bound(field):
+def _binding_is_sampling_ready(
+    field, unavailable_ids: set[str], field_id: str, registry: dict[str, set[str]]
+) -> bool:
+    if _binding_is_bound(field, registry, "sampling_config"):
         return True
     return (
         isinstance(field, dict)
@@ -333,12 +345,101 @@ def _binding_is_sampling_ready(field, unavailable_ids: set[str], field_id: str) 
         and field.get("value") is None
         and field_id in unavailable_ids
         and not _is_placeholder(field.get("reason"))
-        and bool(field.get("evidence"))
+        and _evidence_paths_registered(field.get("evidence"), registry, "sampling_config")
     )
 
 
 def _has_placeholder_item(values) -> bool:
     return any(_is_placeholder(item) for item in (values or []))
+
+
+def _is_fixture_candidate(path: Path, repo_root: Path) -> bool:
+    try:
+        rel = path.resolve().relative_to(repo_root.resolve()).as_posix()
+    except (OSError, RuntimeError, ValueError, UnicodeError):
+        return False
+    return rel.startswith("tests/fixtures/model_lab_execution_readiness/")
+
+
+def _evidence_registry(data: dict, path: Path, repo_root: Path):
+    registry: dict[str, set[str]] = {}
+    problems = []
+    fixture_candidate = _is_fixture_candidate(path, repo_root)
+    for entry in data.get("evidence_registry") or []:
+        if not isinstance(entry, dict):
+            continue
+        raw = str(entry.get("path", ""))
+        if raw in registry:
+            problems.append(f"duplicate evidence_registry path: {display_source_path(raw)}")
+            continue
+        resolved, code = _load_ref(raw, repo_root)
+        if code is not None or resolved is None:
+            problems.append(f"evidence_registry path is not a safe existing regular file: {display_source_path(raw)}")
+            continue
+        declared = str(entry.get("sha256", ""))
+        if _sha256_of(resolved) != declared:
+            problems.append(f"evidence_registry sha256 mismatch: {display_source_path(raw)}")
+        kinds = {str(kind) for kind in (entry.get("kinds") or [])}
+        if not kinds:
+            problems.append(f"evidence_registry kinds must be non-empty: {display_source_path(raw)}")
+        if "synthetic_fixture" in kinds and not fixture_candidate:
+            problems.append("synthetic_fixture evidence is forbidden outside validator fixtures")
+        registry[raw] = kinds
+    return registry, problems
+
+
+def _general_evidence_errors(data: dict, repo_root: Path) -> list[str]:
+    problems = []
+    refs = []
+    refs.extend(item.get("path") for item in (data.get("evidence") or []) if isinstance(item, dict))
+    for blocker in data.get("blockers") or []:
+        if isinstance(blocker, dict):
+            refs.extend(blocker.get("evidence") or [])
+    for raw in refs:
+        resolved, code = _load_ref(str(raw), repo_root)
+        if code is not None or resolved is None:
+            problems.append(f"declared evidence path is not a safe existing regular file: {display_source_path(str(raw))}")
+    return problems
+
+
+def _required_blocker_ids(data: dict) -> set[str]:
+    required = set()
+    runtime = data.get("runtime_binding") or {}
+    if any((runtime.get(name) or {}).get("status") != "bound" for name in ("provider", "exact_model_id", "model_revision_or_version")):
+        required.add("MODEL_BINDING_UNRESOLVED")
+    if any((runtime.get(name) or {}).get("status") != "bound" for name in ("agent_program", "agent_version", "operating_mode", "system_developer_context_identity")):
+        required.add("AGENT_BINDING_UNRESOLVED")
+    sampling = runtime.get("sampling") or {}
+    if any((sampling.get(name) or {}).get("status") not in {"bound", "unavailable_documented"} for name in READY_REQUIRED_SAMPLING_FIELDS):
+        required.add("SAMPLING_BINDING_UNRESOLVED")
+    permissions = runtime.get("permissions") or {}
+    if not runtime.get("available_tools") or any((permissions.get(name) or {}).get("status") != "bound" for name in READY_REQUIRED_PERMISSION_FIELDS):
+        required.add("ACCESS_POLICY_UNRESOLVED")
+    environment = runtime.get("environment") or {}
+    if (
+        any((environment.get(name) or {}).get("status") != "bound" for name in READY_REQUIRED_ENV_FIELDS)
+        or any((runtime.get(name) or {}).get("status") != "bound" for name in ("network_policy", "cache_policy", "dependency_resolution_strategy"))
+    ):
+        required.add("RUNTIME_ENVIRONMENT_UNRESOLVED")
+    workspace = data.get("workspace_session_isolation") or {}
+    if workspace.get("binding_status") != "bound":
+        required.update({"EXECUTION_SEED_UNRESOLVED", "SESSION_ISOLATION_UNPROVEN"})
+    visibility = data.get("visibility_boundary") or {}
+    if visibility.get("boundary_status") != "verified":
+        required.add("BLINDED_WORKSPACE_UNRESOLVED")
+    harness = data.get("harness") or {}
+    if (harness.get("framework_neutrality") or {}).get("status") != "verified":
+        required.add("FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED")
+    if (harness.get("forced_500_trigger") or {}).get("status") != "verified":
+        required.add("FORCED_500_TRIGGER_UNRESOLVED")
+    metric = data.get("metric_operationalization") or {}
+    if (metric.get("first_mutation_trace") or {}).get("status") != "available":
+        required.add("FIRST_MUTATION_TRACE_UNRESOLVED")
+    if metric.get("binding_status") != "bound":
+        required.add("METRIC_OPERATIONALIZATION_UNRESOLVED")
+    if (data.get("execution_order") or {}).get("binding_status") != "bound":
+        required.add("EXECUTION_ORDER_UNRESOLVED")
+    return required
 
 
 def read_git_source_bytes(repo_root: Path, commit_sha, source_path):
@@ -479,6 +580,8 @@ def _state_errors(data: dict) -> list[str]:
         problems.append("readiness blockers must not be listed as closed in this preflight bundle: " + ", ".join(closed))
     if authorization == "authorized" and readiness != "ready":
         problems.append("authorization_status=authorized requires readiness_status=ready")
+    if authorization == "authorized" and data.get("authorized_at") is None:
+        problems.append("authorization_status=authorized requires authorized_at")
     if state.get("run_004_execution_allowed") is True and authorization != "authorized":
         problems.append("run_004_execution_allowed=true requires authorization_status=authorized")
     if readiness == "blocked":
@@ -492,6 +595,10 @@ def _state_errors(data: dict) -> list[str]:
             problems.append("blocked readiness must not set authorized_at")
         if not open_blocking:
             problems.append("blocked readiness must list at least one open blocking blocker")
+        observed_ids = {str(item.get("id", "")) for item in open_blocking}
+        missing_blockers = _required_blocker_ids(data) - observed_ids
+        if missing_blockers:
+            problems.append("blocked readiness is missing derived blocker ids: " + ", ".join(sorted(missing_blockers)))
     if readiness == "ready":
         if authorization != "authorized":
             problems.append("ready readiness must be authorized in Run-004-v1")
@@ -513,28 +620,40 @@ def _state_errors(data: dict) -> list[str]:
     return problems
 
 
-def _ready_runtime_errors(data: dict) -> list[str]:
+def _ready_runtime_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     runtime = data.get("runtime_binding") or {}
     problems = []
     if runtime.get("binding_status") != "bound":
         problems.append("runtime_binding.binding_status must be bound")
+    kind_by_field = {
+        "provider": "model_identity",
+        "exact_model_id": "model_identity",
+        "model_revision_or_version": "model_identity",
+        "agent_program": "agent_identity",
+        "agent_version": "agent_identity",
+        "operating_mode": "agent_identity",
+        "system_developer_context_identity": "agent_identity",
+        "network_policy": "runtime_environment",
+        "cache_policy": "runtime_environment",
+        "dependency_resolution_strategy": "runtime_environment",
+    }
     for field in READY_REQUIRED_RUNTIME_FIELDS:
-        if not _binding_is_bound(runtime.get(field)):
-            problems.append(f"runtime_binding.{field} must be bound to a non-placeholder value")
+        if not _binding_is_bound(runtime.get(field), registry, kind_by_field[field]):
+            problems.append(f"runtime_binding.{field} must be bound to a non-placeholder value and registered evidence")
     if not runtime.get("available_tools") or _has_placeholder_item(runtime.get("available_tools")):
         problems.append("runtime_binding.available_tools must be non-empty and contain no placeholders")
     permissions = runtime.get("permissions") or {}
     for field in READY_REQUIRED_PERMISSION_FIELDS:
-        if not _binding_is_bound(permissions.get(field)):
+        if not _binding_is_bound(permissions.get(field), registry, "access_policy"):
             problems.append(f"runtime_binding.permissions.{field} must be bound")
     sampling = runtime.get("sampling") or {}
     unavailable = {str(item.get("id", "")) for item in sampling.get("unavailable_parameters") or [] if isinstance(item, dict)}
     for field in READY_REQUIRED_SAMPLING_FIELDS:
-        if not _binding_is_sampling_ready(sampling.get(field), unavailable, field):
+        if not _binding_is_sampling_ready(sampling.get(field), unavailable, field, registry):
             problems.append(f"runtime_binding.sampling.{field} must be bound or explicitly unavailable")
     environment = runtime.get("environment") or {}
     for field in READY_REQUIRED_ENV_FIELDS:
-        if not _binding_is_bound(environment.get(field)):
+        if not _binding_is_bound(environment.get(field), registry, "runtime_environment"):
             problems.append(f"runtime_binding.environment.{field} must be bound")
     arms = runtime.get("arms") or {}
     profiles = [((arms.get(role) or {}).get("profile_id")) for role in ("control", "treatment")]
@@ -543,11 +662,13 @@ def _ready_runtime_errors(data: dict) -> list[str]:
     return problems
 
 
-def _ready_workspace_errors(data: dict) -> list[str]:
+def _ready_workspace_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     ws = data.get("workspace_session_isolation") or {}
     problems = []
     if ws.get("binding_status") != "bound":
         problems.append("workspace_session_isolation.binding_status must be bound")
+    if not _evidence_paths_registered(ws.get("evidence"), registry, "workspace_isolation"):
+        problems.append("workspace_session_isolation.evidence must be hash-registered workspace_isolation evidence")
     arms = ws.get("arms") or {}
     values_by_field: dict[str, list[str]] = {}
     seeds = []
@@ -563,6 +684,13 @@ def _ready_workspace_errors(data: dict) -> list[str]:
                 values_by_field.setdefault(field, []).append(value)
         if arm.get("clean_start_state") is not True:
             problems.append(f"workspace_session_isolation.arms.{role}.clean_start_state must be true")
+        for visible_field in ("workspace_path", "session_id", "temp_dir", "cache_dir"):
+            visible_value = arm.get(visible_field)
+            if isinstance(visible_value, str) and ROLE_LEAK_RE.search(visible_value):
+                problems.append(f"workspace_session_isolation.arms.{role}.{visible_field} leaks an arm role token")
+        for visible_path in arm.get("allowed_paths") or []:
+            if isinstance(visible_path, str) and ROLE_LEAK_RE.search(visible_path):
+                problems.append(f"workspace_session_isolation.arms.{role}.allowed_paths leaks an arm role token")
         if (
             not arm.get("allowed_paths")
             or not arm.get("forbidden_paths")
@@ -588,11 +716,13 @@ def _ready_workspace_errors(data: dict) -> list[str]:
     return problems
 
 
-def _ready_visibility_errors(data: dict) -> list[str]:
+def _ready_visibility_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     vb = data.get("visibility_boundary") or {}
     problems = []
     if vb.get("boundary_status") != "verified":
         problems.append("visibility_boundary.boundary_status must be verified")
+    if not _evidence_paths_registered(vb.get("evidence"), registry, "visibility_boundary"):
+        problems.append("visibility_boundary.evidence must be hash-registered visibility_boundary evidence")
     for field in (
         "agent_sees_only_assigned_prompt",
         "other_overlay_hidden",
@@ -609,7 +739,7 @@ def _ready_visibility_errors(data: dict) -> list[str]:
     return problems
 
 
-def _ready_harness_errors(data: dict, repo_root: Path) -> list[str]:
+def _ready_harness_errors(data: dict, repo_root: Path, registry: dict[str, set[str]]) -> list[str]:
     h = data.get("harness") or {}
     problems = []
     if h.get("binding_status") != "bound":
@@ -635,16 +765,22 @@ def _ready_harness_errors(data: dict, repo_root: Path) -> list[str]:
         declared = str(entry.get("sha256", "")).strip()
         if _sha256_of(resolved) != declared:
             problems.append(f"harness file hash mismatch: {display_source_path(str(entry.get('path', '')))}")
+        if not _evidence_paths_registered([str(entry.get("path", ""))], registry, "harness"):
+            problems.append(f"harness file is not registered as harness evidence: {display_source_path(str(entry.get('path', '')))}")
     fn = h.get("framework_neutrality") or {}
     if not (fn.get("status") == "verified" and fn.get("fastify_specific_imports_absent") is True and fn.get("express_fastify_neutral") is True):
         problems.append("harness framework neutrality must be verified for Express and Fastify")
+    if not _evidence_paths_registered(fn.get("evidence"), registry, "harness_neutrality"):
+        problems.append("harness framework neutrality requires hash-registered evidence")
     forced = h.get("forced_500_trigger") or {}
     if not (forced.get("status") == "verified" and forced.get("same_for_both_arms") is True and forced.get("framework_neutral") is True and not _is_placeholder(forced.get("mechanism"))):
         problems.append("forced_500_trigger must be a verified identical framework-neutral mechanism")
+    if not _evidence_paths_registered(forced.get("evidence"), registry, "forced_500_trigger"):
+        problems.append("forced_500_trigger requires hash-registered evidence")
     return problems
 
 
-def _ready_misc_errors(data: dict) -> list[str]:
+def _ready_misc_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     problems = []
     human = data.get("human_intervention") or {}
     for field in ("policy", "count_rule", "agent_question_handling"):
@@ -695,6 +831,10 @@ def _ready_misc_errors(data: dict) -> list[str]:
     first = metric.get("first_mutation_trace") or {}
     if first.get("status") != "available":
         problems.append("first_mutation_trace must be available before authorization")
+    if _is_placeholder(first.get("mechanism")):
+        problems.append("first_mutation_trace.mechanism must be bound before authorization")
+    if not _evidence_paths_registered(first.get("evidence"), registry, "first_mutation_trace"):
+        problems.append("first_mutation_trace requires hash-registered evidence")
     if first.get("agent_report_alone_sufficient") is not False:
         problems.append("agent report alone must not be sufficient for first mutation trace")
     return problems
@@ -925,6 +1065,12 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
         freeze_schema_errs = schema_errors(load_validator(FREEZE_SCHEMA_PATH), freeze, freeze_resolved, label="child=freeze")
         if freeze_schema_errs:
             return freeze_schema_errs
+    registry, registry_problems = _evidence_registry(data, path, repo_root)
+    if registry_problems:
+        errors.append(format_error("EXECUTION_READINESS_REQUIRES_EVIDENCE_REGISTRY", path, "; ".join(registry_problems)))
+    general_evidence_problems = _general_evidence_errors(data, repo_root)
+    if general_evidence_problems:
+        errors.append(format_error("EXECUTION_READINESS_REQUIRES_EVIDENCE_PATHS", path, "; ".join(general_evidence_problems)))
     state_problems = _state_errors(data)
     if state_problems:
         errors.append(format_error("EXECUTION_READINESS_REQUIRES_STATE_MODEL", path, "; ".join(state_problems)))
@@ -947,11 +1093,11 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             errors.append(format_error("EXECUTION_READINESS_REQUIRES_VALID_FREEZE", path, "; ".join(freeze_problems)))
     if data.get("state", {}).get("readiness_status") == "ready":
         ready_problems = []
-        ready_problems += _ready_runtime_errors(data)
-        ready_problems += _ready_workspace_errors(data)
-        ready_problems += _ready_visibility_errors(data)
-        ready_problems += _ready_harness_errors(data, repo_root)
-        ready_problems += _ready_misc_errors(data)
+        ready_problems += _ready_runtime_errors(data, registry)
+        ready_problems += _ready_workspace_errors(data, registry)
+        ready_problems += _ready_visibility_errors(data, registry)
+        ready_problems += _ready_harness_errors(data, repo_root, registry)
+        ready_problems += _ready_misc_errors(data, registry)
         if ready_problems:
             errors.append(format_error("EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING", path, "; ".join(ready_problems)))
     return errors
