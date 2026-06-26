@@ -1,0 +1,2 @@
+Synthetic fixture evidence for a framework-neutral Run-004 readiness harness.
+This file is not a real Run-004 harness and must not be used as execution evidence.

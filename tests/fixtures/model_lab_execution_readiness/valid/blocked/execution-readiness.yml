@@ -1,0 +1,429 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness
+contract_version: run-004-execution-readiness.v1
+triggered_by: user-request-2026-06-26-run-004-execution-readiness-preflight
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+readiness_bundle_id: run-004-execution-readiness
+bundle_artifact_path: tests/fixtures/model_lab_execution_readiness/valid/blocked/execution-readiness.yml
+source_captured_at: '2026-06-26T13:00:00Z'
+generated_at: '2026-06-26T13:10:00Z'
+readiness_frozen_at: '2026-06-26T13:30:00Z'
+authorized_at: null
+provenance:
+  condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  condition_design_sha256: 867470e522cf569c8e6e914be417d473ff78292fcf1f786e83850ff0d17f051b
+  condition_design_snapshot_ref: tests/fixtures/model_lab_execution_readiness/valid/blocked/source-snapshots/condition-design.snapshot
+  design_freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/freeze-manifest.yml
+  design_freeze_manifest_sha256: eeb6ec4fc85f026ced6a355320bc764386727498b2375b5feb479d8ef25418e9
+  design_freeze_manifest_snapshot_ref: tests/fixtures/model_lab_execution_readiness/valid/blocked/source-snapshots/design-freeze-manifest.snapshot
+  design_source_commit_sha: 570a0806a8f173679e659e43741035a54f92b3c1
+  design_input_source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
+  design_freeze_hash_coverage:
+    manifest_excludes_itself: true
+    expected_hashed_file_count: 12
+    hashes_all_declared_design_bundle_files: true
+state:
+  readiness_status: blocked
+  runtime_values_bound: false
+  authorization_status: not_authorized
+  run_004_execution_allowed: false
+  run_004_executed: false
+  result_assessment_allowed: false
+  comparison_ready: false
+  weak_condition_contrast_status: open
+blockers:
+- id: MODEL_BINDING_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: Run-004 has no exact provider/model/revision binding. Historical Run-001 to
+    Run-003 runtime values are not valid Run-004 bindings.
+- id: AGENT_BINDING_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: Run-004 has no executing agent/program/version/mode binding.
+- id: SAMPLING_BINDING_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: Sampling parameters and any documented parameter unavailability are not bound
+    for Run-004.
+- id: EXECUTION_SEED_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: No future execution seed or seed/tree identity is bound for both arms.
+- id: BLINDED_WORKSPACE_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml
+  note: The delivered prompt text is blinded, but no technical workspace boundary
+    proves that the agent cannot read the other overlay, arm labels, hypothesis, or
+    repository experiment metadata.
+- id: SESSION_ISOLATION_UNPROVEN
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: Separate fresh sessions, temporary directories, caches, ports, and clean start
+    states are not proven for Run-004 arms.
+- id: FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml
+  note: The frozen design defers concrete harness binding. Existing runtime validation
+    artifacts are for earlier runs and do not prove a Run-004 harness neutral across
+    Express and Fastify.
+- id: FORCED_500_TRIGGER_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml
+  note: No identical framework-neutral forced-500 fault-injection mechanism is bound
+    for Run-004.
+- id: FIRST_MUTATION_TRACE_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
+  note: No reliable mutation/event trace exists to prove treatment specification completeness
+    before first implementation mutation.
+- id: WEAK_CONDITION_CONTRAST_OPEN
+  status: open
+  severity: informational
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: Run-004 is designed to address weak_condition_contrast later, but no execution
+    or assessment has occurred, so the blocker remains open.
+runtime_binding:
+  binding_status: unbound
+  same_runtime_across_arms_required: true
+  historical_runtime_reuse_forbidden: true
+  provider:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 provider selected.
+  exact_model_id:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 model identifier selected.
+  model_revision_or_version:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 model revision or equivalent identity selected.
+  agent_program:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 executing program selected.
+  agent_version:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 agent version selected.
+  operating_mode:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 operating mode selected.
+  system_developer_context_identity:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: No Run-004 system/developer context identity frozen.
+  available_tools: []
+  permissions:
+    filesystem:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: File access boundary not bound.
+    shell:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Shell rights not bound.
+    network:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Network policy not bound.
+    connectors:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Connector rights not bound.
+  sampling:
+    temperature:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Temperature not bound.
+    top_p:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: top_p not bound.
+    top_k:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: top_k not bound.
+    max_output_tokens:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: max_output_tokens not bound.
+    seed:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Execution seed not bound.
+    unavailable_parameters: []
+  environment:
+    os_or_container_identity:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: OS/container identity not bound.
+    architecture:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Architecture not bound.
+    node_version:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Node version not bound.
+    npm_version:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: npm version not bound.
+    python_version:
+      status: unresolved
+      value: null
+      evidence: []
+      reason: Python version not bound.
+  network_policy:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: Network policy not bound.
+  cache_policy:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: Cache policy not bound.
+  dependency_resolution_strategy:
+    status: unresolved
+    value: null
+    evidence: []
+    reason: Dependency resolution strategy not bound.
+  arms:
+    control:
+      profile_id: unbound-shared-runtime
+    treatment:
+      profile_id: unbound-shared-runtime
+workspace_session_isolation:
+  binding_status: unbound
+  same_execution_seed_required: true
+  shared_writable_workspace_forbidden: true
+  shared_session_forbidden: true
+  arms:
+    control:
+      arm_id: control
+      execution_seed: null
+      seed_hash: null
+      workspace_path: null
+      session_id: null
+      temp_dir: null
+      cache_dir: null
+      port_assignment: null
+      clean_start_state: false
+      allowed_paths: []
+      forbidden_paths: []
+      cleanup_rule: null
+    treatment:
+      arm_id: treatment
+      execution_seed: null
+      seed_hash: null
+      workspace_path: null
+      session_id: null
+      temp_dir: null
+      cache_dir: null
+      port_assignment: null
+      clean_start_state: false
+      allowed_paths: []
+      forbidden_paths: []
+      cleanup_rule: null
+visibility_boundary:
+  boundary_status: unresolved
+  agent_sees_only_assigned_prompt: false
+  other_overlay_hidden: false
+  arm_labels_hidden: false
+  hypothesis_hidden: false
+  other_arm_artifacts_hidden: false
+  path_names_role_neutral: false
+  repo_metadata_reconstruction_prevented: false
+  normal_repo_read_access_can_reconstruct_experiment: true
+prompt_delivery:
+  binding_status: bound
+  assembly_rule: strip exactly one final LF from each component, join components with
+    separator, append one final LF
+  encoding: utf-8
+  newline: lf
+  final_newline: required
+  separator: \n\n
+  composition_order:
+  - benchmark
+  - shared_condition
+  - assigned_overlay
+  arms:
+    control:
+      arm_id: control
+      benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
+      shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+      overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md
+      payload_sha256: 4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e
+      only_assigned_payload_delivered: false
+    treatment:
+      arm_id: treatment
+      benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
+      shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+      overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md
+      payload_sha256: 7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d
+      only_assigned_payload_delivered: false
+harness:
+  binding_status: unresolved
+  harness_id: null
+  harness_version: null
+  file_hashes: []
+  install_command: null
+  start_command: null
+  health_ready_signal: null
+  test_command: null
+  port_strategy: null
+  timeouts:
+    start_seconds: null
+    test_seconds: null
+    total_seconds: null
+  process_termination: null
+  cleanup: null
+  identical_surface_for_both_arms: false
+  framework_neutrality:
+    status: unresolved
+    fastify_specific_imports_absent: false
+    express_fastify_neutral: false
+  forced_500_trigger:
+    status: unresolved
+    mechanism: null
+    same_for_both_arms: false
+    framework_neutral: false
+human_intervention:
+  policy: no content help; only predefined arm-neutral infrastructure responses, fully
+    logged
+  content_help_forbidden: true
+  infrastructure_answers_allowed: true
+  standard_response_texts:
+  - No task-content guidance is available. Continue with the assigned prompt and available
+    tools.
+  - Use the predefined infrastructure rule already supplied for both arms.
+  abort_conditions:
+  - Any request requiring task-content help.
+  - Any asymmetric intervention not available to both arms.
+  count_rule: Every human-originated message after task delivery counts as one intervention,
+    including predefined infrastructure responses.
+  agent_question_handling: Answer only with a predefined arm-neutral infrastructure
+    response or abort both arms.
+  asymmetric_intervention_forbidden: true
+  same_policy_across_arms: true
+retry_policy:
+  max_retries: 0
+  allowed_retry_reasons: []
+  partial_workspace_behavior: discard both arms and require a new authorized readiness
+    bundle before retry
+  agent_abort_behavior: record abort; do not silently restart one arm
+  install_failure_behavior: record failure; do not patch dependencies inside this
+    readiness contract
+  timeout_behavior: record timeout; do not extend timeout post hoc
+  flaky_test_behavior: no unilateral rerun; both arms require the same predeclared
+    retry policy
+  both_arms_restart_after_retry: true
+  silent_or_one_sided_retries_forbidden: true
+execution_order:
+  binding_status: unbound
+  strategy: null
+  randomization_procedure: null
+  post_observation_selection_forbidden: true
+metric_operationalization:
+  binding_status: unresolved
+  metrics:
+  - id: rework_steps
+    rule: Count post-authoring revisions to fix defects in already-produced implementation.
+  - id: human_intervention_count
+    rule: Count every human-originated message after task delivery, including predefined
+      infrastructure responses.
+  - id: workflow_protocol_compliance
+    rule: Treatment requires a complete specification before first implementation
+      mutation; control voluntary specification is not automatically non-compliant.
+  - id: contamination_status
+    rule: Mark contaminated if an arm sees the other payload, role labels, hypothesis,
+      other-arm artifacts, or reconstructable experiment metadata.
+  - id: functional_test_pass_ratio
+    rule: passing_shared_functional_tests / total_shared_functional_tests; missing
+      values remain null.
+  - id: error_case_test_pass_ratio
+    rule: passing_shared_error_case_tests / total_shared_error_case_tests; missing
+      values remain null.
+  - id: forced_500_check_pass
+    rule: True only if the shared framework-neutral forced-500 assertion passes.
+  - id: timeout_count
+    rule: Count predeclared timeout events; never convert timeout to zero pass.
+  - id: abort_status
+    rule: Record any arm abort explicitly and block comparison.
+  - id: retry_count
+    rule: Count every predeclared retry; silent or one-sided retry is invalid.
+  first_mutation_trace:
+    status: unresolved
+    required_for_treatment_preimplementation_claim: true
+    agent_report_alone_sufficient: false
+evidence:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  kind: frozen_condition_design
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/freeze-manifest.yml
+  kind: design_freeze_manifest
+- path: experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
+  kind: assessment_blocker_context
+required_non_claims:
+- run_004_executed
+- run_004_result_measured
+- result_assessment_allowed
+- comparison_ready
+- weak_condition_contrast_resolved
+- model_quality
+- comparative_superiority
+- condition_effect
+- outcome_upgrade
+- adoption_readiness
+- promotion_readiness
+- production_readiness
+- security_readiness
+- individual_prompt_component_effect_isolated
+- execution_artifacts_present
+freeze:
+  freeze_manifest_ref: tests/fixtures/model_lab_execution_readiness/valid/blocked/freeze-manifest.yml

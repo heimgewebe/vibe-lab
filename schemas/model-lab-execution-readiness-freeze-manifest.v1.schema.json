@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-execution-readiness-freeze-manifest.v1.schema.json",
+  "title": "Model-Lab Execution Readiness — Freeze Manifest v1",
+  "description": "Run-004-v1-specific closed SHA-256 freeze manifest for execution-readiness preflight bundles. The manifest hashes every expected bundle file except itself, distinguishes historical source commits from future execution seed identity, and intentionally has no execution_started_at field.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "contract_version",
+    "readiness_bundle_id",
+    "series_id",
+    "design_id",
+    "challenge_version",
+    "source_captured_at",
+    "readiness_frozen_at",
+    "authorized_at",
+    "source_design_commit_sha",
+    "design_input_source_base_commit_sha",
+    "future_execution_seed_status",
+    "future_execution_seed_sha256",
+    "readiness_bundle_hash_algorithm",
+    "readiness_bundle_content_sha256",
+    "hashes"
+  ],
+  "properties": {
+    "artifact_type": {"type": "string", "const": "model_lab_execution_readiness_freeze_manifest"},
+    "contract_version": {"type": "string", "const": "run-004-execution-readiness.v1"},
+    "readiness_bundle_id": {"$ref": "#/$defs/token"},
+    "series_id": {"$ref": "#/$defs/token"},
+    "design_id": {"$ref": "#/$defs/token"},
+    "challenge_version": {"$ref": "#/$defs/token"},
+    "source_captured_at": {"$ref": "#/$defs/rfc3339"},
+    "readiness_frozen_at": {"$ref": "#/$defs/rfc3339"},
+    "authorized_at": {"anyOf": [{"$ref": "#/$defs/rfc3339"}, {"type": "null"}]},
+    "source_design_commit_sha": {"$ref": "#/$defs/gitSha"},
+    "design_input_source_base_commit_sha": {"$ref": "#/$defs/gitSha"},
+    "future_execution_seed_status": {"type": "string", "enum": ["unresolved", "bound"]},
+    "future_execution_seed_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "readiness_bundle_hash_algorithm": {
+      "type": "string",
+      "const": "sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)"
+    },
+    "readiness_bundle_content_sha256": {"$ref": "#/$defs/sha256"},
+    "hashes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"$ref": "#/$defs/path"},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!.*[\\u0000-\\u001F\\u007F\\uD800-\\uDFFF])(?!\\s)(?!/)(?![A-Za-z]:)(?!.*\\\\)(?:.*\\S)?$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "rfc3339": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(Z|[+-]\\d{2}:\\d{2})$"}
+  }
+}

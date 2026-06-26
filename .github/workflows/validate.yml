@@ -96,6 +96,12 @@ jobs:
       - name: Validate Model-Lab condition-design artifacts
         run: make validate-model-lab-condition-design
 
+      - name: Test Model-Lab execution-readiness validator
+        run: make validate-model-lab-execution-readiness-tests
+
+      - name: Validate Model-Lab execution-readiness artifacts
+        run: make validate-model-lab-execution-readiness
+
       - name: Test PR scope validator
         run: python3 scripts/docmeta/test_validate_pr_scope.py
 
