@@ -278,6 +278,8 @@ workspace_session_isolation:
       allowed_paths: []
       forbidden_paths: []
       cleanup_rule: null
+      execution_seed_kind: null
+      execution_seed_ref: null
     treatment:
       arm_id: treatment
       execution_seed: null
@@ -291,6 +293,8 @@ workspace_session_isolation:
       allowed_paths: []
       forbidden_paths: []
       cleanup_rule: null
+      execution_seed_kind: null
+      execution_seed_ref: null
   evidence: []
 visibility_boundary:
   boundary_status: unresolved

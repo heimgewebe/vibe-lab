@@ -1,2 +1,49 @@
-Synthetic fixture evidence for a framework-neutral Run-004 readiness harness.
-This file is not a real Run-004 harness and must not be used as execution evidence.
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: synthetic-run004-ready-evidence
+synthetic_fixture: true
+claims:
+- kind: model_identity
+  status: verified
+  subject: synthetic fixture model_identity
+  value: fixture-only verified model_identity value
+- kind: agent_identity
+  status: verified
+  subject: synthetic fixture agent_identity
+  value: fixture-only verified agent_identity value
+- kind: access_policy
+  status: verified
+  subject: synthetic fixture access_policy
+  value: fixture-only verified access_policy value
+- kind: sampling_config
+  status: verified
+  subject: synthetic fixture sampling_config
+  value: fixture-only verified sampling_config value
+- kind: runtime_environment
+  status: verified
+  subject: synthetic fixture runtime_environment
+  value: fixture-only verified runtime_environment value
+- kind: workspace_isolation
+  status: verified
+  subject: synthetic fixture workspace_isolation
+  value: fixture-only verified workspace_isolation value
+- kind: visibility_boundary
+  status: verified
+  subject: synthetic fixture visibility_boundary
+  value: fixture-only verified visibility_boundary value
+- kind: harness
+  status: verified
+  subject: synthetic fixture harness
+  value: fixture-only verified harness value
+- kind: harness_neutrality
+  status: verified
+  subject: synthetic fixture harness_neutrality
+  value: fixture-only verified harness_neutrality value
+- kind: forced_500_trigger
+  status: verified
+  subject: synthetic fixture forced_500_trigger
+  value: fixture-only verified forced_500_trigger value
+- kind: first_mutation_trace
+  status: verified
+  subject: synthetic fixture first_mutation_trace
+  value: fixture-only verified first_mutation_trace value

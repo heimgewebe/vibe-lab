@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-execution-readiness-evidence.v1.schema.json",
+  "title": "Model-Lab Execution Readiness Evidence v1",
+  "description": "Closed, typed evidence envelope for Run-004-v1 readiness claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "evidence_id",
+    "synthetic_fixture",
+    "claims"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "model_lab_execution_readiness_evidence"
+    },
+    "evidence_id": {
+      "$ref": "#/$defs/token"
+    },
+    "synthetic_fixture": {
+      "type": "boolean"
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "status",
+          "subject",
+          "value"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "model_identity",
+              "agent_identity",
+              "access_policy",
+              "sampling_config",
+              "runtime_environment",
+              "workspace_isolation",
+              "visibility_boundary",
+              "harness",
+              "harness_neutrality",
+              "forced_500_trigger",
+              "first_mutation_trace"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "const": "verified"
+          },
+          "subject": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "value": {
+            "$ref": "#/$defs/nonBlank"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*\\s).+$"
+    },
+    "nonBlank": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  }
+}

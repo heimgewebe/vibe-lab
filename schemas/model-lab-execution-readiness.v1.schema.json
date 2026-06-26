@@ -657,6 +657,8 @@
       "required": [
         "arm_id",
         "execution_seed",
+        "execution_seed_kind",
+        "execution_seed_ref",
         "seed_hash",
         "workspace_path",
         "session_id",
@@ -721,6 +723,27 @@
         },
         "cleanup_rule": {
           "$ref": "#/$defs/nullableNonBlank"
+        },
+        "execution_seed_kind": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "file_manifest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "execution_seed_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/path"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -1321,7 +1344,21 @@
           "minItems": 1,
           "uniqueItems": true,
           "items": {
-            "$ref": "#/$defs/token"
+            "type": "string",
+            "enum": [
+              "model_identity",
+              "agent_identity",
+              "access_policy",
+              "sampling_config",
+              "runtime_environment",
+              "workspace_isolation",
+              "visibility_boundary",
+              "harness",
+              "harness_neutrality",
+              "forced_500_trigger",
+              "first_mutation_trace",
+              "synthetic_fixture"
+            ]
           }
         }
       }

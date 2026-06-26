@@ -37,6 +37,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMA_DIR = REPO_ROOT / "schemas"
 SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness.v1.schema.json"
 FREEZE_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness-freeze-manifest.v1.schema.json"
+EVIDENCE_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness-evidence.v1.schema.json"
+SEED_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-seed-manifest.v1.schema.json"
 
 RUN_004_SERIES_ID = "2026-05-31_model-lab-replication-series"
 RUN_004_DESIGN_ID = "run-004-condition-contrast"
@@ -49,6 +51,10 @@ RUN_004_DISCOVERY_GLOB = "*/artifacts/*/execution-readiness.yml"
 DESIGN_CONDITION_PATH = (
     "experiments/2026-05-31_model-lab-replication-series/artifacts/"
     "run-004-condition-contrast-design/condition-design.yml"
+)
+DESIGN_MEASUREMENT_PATH = (
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/"
+    "run-004-condition-contrast-design/measurement-protocol.yml"
 )
 DESIGN_FREEZE_PATH = (
     "experiments/2026-05-31_model-lab-replication-series/artifacts/"
@@ -122,17 +128,39 @@ READY_REQUIRED_ENV_FIELDS = (
 )
 READY_REQUIRED_SAMPLING_FIELDS = ("temperature", "top_p", "top_k", "max_output_tokens", "seed")
 READY_REQUIRED_METRIC_IDS = {
-    "rework_steps",
-    "human_intervention_count",
-    "workflow_protocol_compliance",
-    "contamination_status",
     "functional_test_pass_ratio",
     "error_case_test_pass_ratio",
     "forced_500_check_pass",
+    "workflow_protocol_compliance",
+    "time_to_validated_change_seconds",
+    "time_to_stop_seconds",
+    "rework_steps",
+    "human_intervention_count",
+    "scope_drift_status",
+    "contamination_status",
     "timeout_count",
     "abort_status",
     "retry_count",
 }
+SUPPLEMENTAL_METRIC_RULES = {
+    "contamination_status": "none / prompt_metadata_exposure / other_arm_artifact_exposure / shared_context_exposure / operator_intervention / workspace_seed_drift / unknown",
+    "timeout_count": "number of predeclared timeout events; never impute a timeout as zero or success",
+    "abort_status": "completed / aborted; any abort blocks comparison and preserves incomplete metrics as null",
+    "retry_count": "number of predeclared symmetric retries; silent or one-sided retries are invalid",
+}
+EVIDENCE_CLAIM_KINDS = frozenset({
+    "model_identity",
+    "agent_identity",
+    "access_policy",
+    "sampling_config",
+    "runtime_environment",
+    "workspace_isolation",
+    "visibility_boundary",
+    "harness",
+    "harness_neutrality",
+    "forced_500_trigger",
+    "first_mutation_trace",
+})
 PLACEHOLDER_VALUES = {
     "",
     "unknown",
@@ -151,7 +179,7 @@ PLACEHOLDER_VALUES = {
 }
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
-ROLE_LEAK_RE = re.compile(r"(?:^|[^a-z0-9])(control|treatment)(?:[^a-z0-9]|$)", re.IGNORECASE)
+ROLE_LEAK_RE = re.compile(r"control|treatment", re.IGNORECASE)
 _SCHEMA_CACHE: dict[str, Draft202012Validator] = {}
 
 
@@ -260,10 +288,14 @@ def load_yaml(path: Path) -> dict:
     return loaded
 
 
+def _schema_error_sort_key(error):
+    return tuple((type(part).__name__, str(part)) for part in error.absolute_path)
+
+
 def schema_errors(validator: Draft202012Validator, data: dict, path: Path, *, label: str = "") -> list[str]:
     errors = []
     prefix = f"{label} " if label else ""
-    for err in sorted(validator.iter_errors(data), key=lambda e: list(e.absolute_path)):
+    for err in sorted(validator.iter_errors(data), key=_schema_error_sort_key):
         loc = ".".join(str(p) for p in err.absolute_path) or "$"
         errors.append(f"ERROR {prefix}path={display_path(path)} instance_path={loc}: {err.message}")
     return errors
@@ -365,6 +397,8 @@ def _evidence_registry(data: dict, path: Path, repo_root: Path):
     registry: dict[str, set[str]] = {}
     problems = []
     fixture_candidate = _is_fixture_candidate(path, repo_root)
+    evidence_validator = load_validator(EVIDENCE_SCHEMA_PATH)
+    root = repo_root.resolve()
     for entry in data.get("evidence_registry") or []:
         if not isinstance(entry, dict):
             continue
@@ -376,14 +410,55 @@ def _evidence_registry(data: dict, path: Path, repo_root: Path):
         if code is not None or resolved is None:
             problems.append(f"evidence_registry path is not a safe existing regular file: {display_source_path(raw)}")
             continue
+        try:
+            rel = resolved.relative_to(root).as_posix()
+        except ValueError:
+            rel = raw
+        if not fixture_candidate and rel.startswith("tests/fixtures/"):
+            problems.append(f"fixture evidence is forbidden for a real readiness artifact: {display_source_path(raw)}")
         declared = str(entry.get("sha256", ""))
         if _sha256_of(resolved) != declared:
             problems.append(f"evidence_registry sha256 mismatch: {display_source_path(raw)}")
         kinds = {str(kind) for kind in (entry.get("kinds") or [])}
-        if not kinds:
-            problems.append(f"evidence_registry kinds must be non-empty: {display_source_path(raw)}")
-        if "synthetic_fixture" in kinds and not fixture_candidate:
+        unsupported = kinds - EVIDENCE_CLAIM_KINDS - {"synthetic_fixture"}
+        if unsupported:
+            problems.append(f"unsupported evidence kinds for {display_source_path(raw)}: " + ", ".join(sorted(unsupported)))
+        try:
+            document = load_yaml(resolved)
+        except (FileNotFoundError, ValueError) as exc:
+            problems.append(f"evidence document is invalid or unreadable: {display_source_path(raw)}: {exc}")
+            registry[raw] = kinds
+            continue
+        doc_errors = list(evidence_validator.iter_errors(document))
+        if doc_errors:
+            detail = "; ".join(
+                f"{'.'.join(str(p) for p in err.absolute_path) or '$'}: {err.message}"
+                for err in sorted(doc_errors, key=_schema_error_sort_key)
+            )
+            problems.append(f"evidence document schema invalid: {display_source_path(raw)}: {detail}")
+            registry[raw] = kinds
+            continue
+        synthetic = document.get("synthetic_fixture") is True
+        if synthetic != ("synthetic_fixture" in kinds):
+            problems.append(f"synthetic_fixture registry kind must match evidence document: {display_source_path(raw)}")
+        if synthetic and not fixture_candidate:
             problems.append("synthetic_fixture evidence is forbidden outside validator fixtures")
+        claims = document.get("claims") or []
+        claim_kinds = [str(claim.get("kind", "")) for claim in claims if isinstance(claim, dict)]
+        duplicates = sorted({kind for kind in claim_kinds if claim_kinds.count(kind) > 1})
+        if duplicates:
+            problems.append(f"duplicate evidence claims for {display_source_path(raw)}: " + ", ".join(duplicates))
+        declared_claim_kinds = kinds - {"synthetic_fixture"}
+        if not fixture_candidate and len(declared_claim_kinds) != 1:
+            problems.append(
+                f"real readiness evidence must bind exactly one claim kind per file: {display_source_path(raw)}"
+            )
+        missing = declared_claim_kinds - set(claim_kinds)
+        extra = set(claim_kinds) - declared_claim_kinds
+        if missing:
+            problems.append(f"evidence document lacks declared claims for {display_source_path(raw)}: " + ", ".join(sorted(missing)))
+        if extra:
+            problems.append(f"evidence document has undeclared claims for {display_source_path(raw)}: " + ", ".join(sorted(extra)))
         registry[raw] = kinds
     return registry, problems
 
@@ -402,45 +477,220 @@ def _general_evidence_errors(data: dict, repo_root: Path) -> list[str]:
     return problems
 
 
-def _required_blocker_ids(data: dict) -> set[str]:
+def _seed_manifest_errors(raw_ref, declared_hash, repo_root: Path, fixture_candidate: bool) -> list[str]:
+    problems = []
+    raw = str(raw_ref or "")
+    resolved, code = _load_ref(raw, repo_root)
+    if code is not None or resolved is None:
+        return [f"execution seed manifest is not a safe existing file: {display_source_path(raw)}"]
+    try:
+        rel = resolved.relative_to(repo_root.resolve()).as_posix()
+    except ValueError:
+        rel = raw
+    if not fixture_candidate and rel.startswith("tests/fixtures/"):
+        problems.append("fixture seed manifest is forbidden for a real readiness artifact")
+    if _sha256_of(resolved) != declared_hash:
+        problems.append("execution seed manifest sha256 mismatch")
+    try:
+        manifest = load_yaml(resolved)
+    except (FileNotFoundError, ValueError) as exc:
+        return problems + [f"execution seed manifest is invalid or unreadable: {exc}"]
+    schema_problems = list(load_validator(SEED_SCHEMA_PATH).iter_errors(manifest))
+    if schema_problems:
+        detail = "; ".join(
+            f"{'.'.join(str(p) for p in err.absolute_path) or '$'}: {err.message}"
+            for err in sorted(schema_problems, key=_schema_error_sort_key)
+        )
+        return problems + [f"execution seed manifest schema invalid: {detail}"]
+    synthetic = manifest.get("synthetic_fixture") is True
+    if synthetic and not fixture_candidate:
+        problems.append("synthetic execution seed is forbidden outside validator fixtures")
+    root_raw = str(manifest.get("root_ref", ""))
+    root_path, root_code = resolve_repo_relative_path(root_raw, repo_root, must_exist=True)
+    if root_code is not None or root_path is None or not root_path.is_dir():
+        return problems + [f"execution seed root_ref is not a safe existing directory: {display_source_path(root_raw)}"]
+    try:
+        root_rel = root_path.relative_to(repo_root.resolve()).as_posix()
+    except ValueError:
+        root_rel = root_raw
+    if not fixture_candidate and root_rel.startswith("tests/fixtures/"):
+        problems.append("fixture seed root is forbidden for a real readiness artifact")
+    entries = manifest.get("files") or []
+    paths = [str(entry.get("path", "")) for entry in entries if isinstance(entry, dict)]
+    declared_resolved = set()
+    for duplicate in sorted({item for item in paths if paths.count(item) > 1}):
+        problems.append(f"duplicate execution seed file path: {display_source_path(duplicate)}")
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        file_raw = str(entry.get("path", ""))
+        file_path, file_code = _load_ref(file_raw, repo_root)
+        if file_code is not None or file_path is None:
+            problems.append(f"execution seed file is not a safe existing regular file: {display_source_path(file_raw)}")
+            continue
+        if not _inside(file_path, root_path):
+            problems.append(f"execution seed file lies outside root_ref: {display_source_path(file_raw)}")
+            continue
+        declared_resolved.add(file_path)
+        if _sha256_of(file_path) != str(entry.get("sha256", "")):
+            problems.append(f"execution seed file sha256 mismatch: {display_source_path(file_raw)}")
+    actual_resolved = set()
+    try:
+        root_entries = sorted(root_path.rglob("*"))
+    except OSError as exc:
+        return problems + [f"cannot walk execution seed root ({exc})"]
+    for item in root_entries:
+        try:
+            item_rel = item.relative_to(root_path).as_posix()
+        except ValueError:
+            item_rel = str(item)
+        if item.is_symlink():
+            problems.append(f"symlink not allowed in execution seed root: {item_rel}")
+        elif item.is_dir():
+            continue
+        elif item.is_file():
+            actual_resolved.add(item.resolve())
+        else:
+            problems.append(f"non-regular entry in execution seed root: {item_rel}")
+    for missing in sorted(actual_resolved - declared_resolved):
+        problems.append(f"execution seed manifest omits root file: {missing.relative_to(root_path).as_posix()}")
+    for extra in sorted(declared_resolved - actual_resolved):
+        problems.append(f"execution seed manifest declares absent root file: {display_path(extra)}")
+    if _bundle_content_hash(entries) != manifest.get("content_sha256"):
+        problems.append("execution seed manifest content_sha256 mismatch")
+    return problems
+
+
+def _canonical_metric_rules(repo_root: Path) -> tuple[dict[str, str], list[str]]:
+    resolved, code = _load_ref(DESIGN_MEASUREMENT_PATH, repo_root)
+    if code is not None or resolved is None:
+        return {}, ["frozen measurement protocol is missing or unsafe"]
+    try:
+        protocol = load_yaml(resolved)
+    except (FileNotFoundError, ValueError) as exc:
+        return {}, [f"frozen measurement protocol is invalid or unreadable: {exc}"]
+    problems = []
+    if protocol.get("artifact_type") != "model_lab_condition_design_measurement_protocol":
+        problems.append("frozen measurement protocol artifact_type mismatch")
+    if protocol.get("design_id") != RUN_004_DESIGN_ID or protocol.get("series_id") != RUN_004_SERIES_ID:
+        problems.append("frozen measurement protocol identity mismatch")
+    if protocol.get("challenge_version") != RUN_004_CHALLENGE_VERSION:
+        problems.append("frozen measurement protocol challenge_version mismatch")
+    if protocol.get("applies_equally_to_both_arms") is not True or protocol.get("post_hoc_metric_selection_forbidden") is not True:
+        problems.append("frozen measurement protocol equality/post-hoc guards are not true")
+    rules = {}
+    for section in ("primary_metrics", "secondary_metrics"):
+        for item in protocol.get(section) or []:
+            if not isinstance(item, dict):
+                continue
+            metric_id = str(item.get("id", ""))
+            formula = item.get("formula")
+            if not metric_id or not isinstance(formula, str) or not formula.strip():
+                problems.append(f"frozen measurement protocol contains invalid {section} entry")
+                continue
+            if metric_id in rules:
+                problems.append(f"duplicate frozen metric id: {metric_id}")
+            rules[metric_id] = formula
+    rules.update(SUPPLEMENTAL_METRIC_RULES)
+    return rules, problems
+
+
+def _required_blocker_ids(
+    data: dict,
+    registry: dict[str, set[str]],
+    repo_root: Path,
+    path: Path,
+) -> set[str]:
     required = set()
     runtime = data.get("runtime_binding") or {}
-    if any((runtime.get(name) or {}).get("status") != "bound" for name in ("provider", "exact_model_id", "model_revision_or_version")):
+    if any(
+        not _binding_is_bound(runtime.get(name), registry, "model_identity")
+        for name in ("provider", "exact_model_id", "model_revision_or_version")
+    ):
         required.add("MODEL_BINDING_UNRESOLVED")
-    if any((runtime.get(name) or {}).get("status") != "bound" for name in ("agent_program", "agent_version", "operating_mode", "system_developer_context_identity")):
+    if any(
+        not _binding_is_bound(runtime.get(name), registry, "agent_identity")
+        for name in ("agent_program", "agent_version", "operating_mode", "system_developer_context_identity")
+    ):
         required.add("AGENT_BINDING_UNRESOLVED")
     sampling = runtime.get("sampling") or {}
-    if any((sampling.get(name) or {}).get("status") not in {"bound", "unavailable_documented"} for name in READY_REQUIRED_SAMPLING_FIELDS):
+    unavailable = {
+        str(item.get("id", ""))
+        for item in sampling.get("unavailable_parameters") or []
+        if isinstance(item, dict)
+    }
+    if any(
+        not _binding_is_sampling_ready(sampling.get(name), unavailable, name, registry)
+        for name in READY_REQUIRED_SAMPLING_FIELDS
+    ):
         required.add("SAMPLING_BINDING_UNRESOLVED")
     permissions = runtime.get("permissions") or {}
-    if not runtime.get("available_tools") or any((permissions.get(name) or {}).get("status") != "bound" for name in READY_REQUIRED_PERMISSION_FIELDS):
+    if (
+        not runtime.get("available_tools")
+        or _has_placeholder_item(runtime.get("available_tools"))
+        or any(
+            not _binding_is_bound(permissions.get(name), registry, "access_policy")
+            for name in READY_REQUIRED_PERMISSION_FIELDS
+        )
+    ):
         required.add("ACCESS_POLICY_UNRESOLVED")
     environment = runtime.get("environment") or {}
     if (
-        any((environment.get(name) or {}).get("status") != "bound" for name in READY_REQUIRED_ENV_FIELDS)
-        or any((runtime.get(name) or {}).get("status") != "bound" for name in ("network_policy", "cache_policy", "dependency_resolution_strategy"))
+        any(
+            not _binding_is_bound(environment.get(name), registry, "runtime_environment")
+            for name in READY_REQUIRED_ENV_FIELDS
+        )
+        or any(
+            not _binding_is_bound(runtime.get(name), registry, "runtime_environment")
+            for name in ("network_policy", "cache_policy", "dependency_resolution_strategy")
+        )
     ):
         required.add("RUNTIME_ENVIRONMENT_UNRESOLVED")
-    workspace = data.get("workspace_session_isolation") or {}
-    if workspace.get("binding_status") != "bound":
+    if _ready_workspace_errors(data, registry, repo_root, path):
         required.update({"EXECUTION_SEED_UNRESOLVED", "SESSION_ISOLATION_UNPROVEN"})
-    visibility = data.get("visibility_boundary") or {}
-    if visibility.get("boundary_status") != "verified":
+    if _ready_visibility_errors(data, registry) or _prompt_delivery_errors(
+        data, repo_root, require_delivery_isolation=True
+    ):
         required.add("BLINDED_WORKSPACE_UNRESOLVED")
     harness = data.get("harness") or {}
-    if (harness.get("framework_neutrality") or {}).get("status") != "verified":
+    if _ready_harness_errors(data, repo_root, registry):
         required.add("FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED")
-    if (harness.get("forced_500_trigger") or {}).get("status") != "verified":
+    forced = harness.get("forced_500_trigger") or {}
+    if (
+        forced.get("status") != "verified"
+        or forced.get("same_for_both_arms") is not True
+        or forced.get("framework_neutral") is not True
+        or _is_placeholder(forced.get("mechanism"))
+        or not _evidence_paths_registered(forced.get("evidence"), registry, "forced_500_trigger")
+    ):
         required.add("FORCED_500_TRIGGER_UNRESOLVED")
     metric = data.get("metric_operationalization") or {}
-    if (metric.get("first_mutation_trace") or {}).get("status") != "available":
+    first = metric.get("first_mutation_trace") or {}
+    if (
+        first.get("status") != "available"
+        or _is_placeholder(first.get("mechanism"))
+        or not _evidence_paths_registered(first.get("evidence"), registry, "first_mutation_trace")
+    ):
         required.add("FIRST_MUTATION_TRACE_UNRESOLVED")
-    if metric.get("binding_status") != "bound":
+    canonical_rules, metric_problems = _canonical_metric_rules(repo_root)
+    observed = {
+        str(item.get("id", "")): item.get("rule")
+        for item in metric.get("metrics") or []
+        if isinstance(item, dict)
+    }
+    if metric.get("binding_status") != "bound" or metric_problems or observed != canonical_rules:
         required.add("METRIC_OPERATIONALIZATION_UNRESOLVED")
-    if (data.get("execution_order") or {}).get("binding_status") != "bound":
+    order = data.get("execution_order") or {}
+    if (
+        order.get("binding_status") != "bound"
+        or _is_placeholder(order.get("strategy"))
+        or (
+            order.get("strategy") == "deterministic_randomization"
+            and _is_placeholder(order.get("randomization_procedure"))
+        )
+    ):
         required.add("EXECUTION_ORDER_UNRESOLVED")
     return required
-
 
 def read_git_source_bytes(repo_root: Path, commit_sha, source_path):
     commit = str(commit_sha).strip()
@@ -532,6 +782,7 @@ def _actual_bundle_files(bundle_dir: Path) -> tuple[set[Path], list[str]]:
             continue
         if entry.name in FORBIDDEN_EXECUTION_FILES:
             problems.append(f"execution artifact forbidden in readiness bundle: {rel}")
+            continue
         actual.add(entry.resolve())
     return actual, problems
 
@@ -565,7 +816,7 @@ def _check_chronology(data: dict, freeze: dict) -> list[str]:
     return problems
 
 
-def _state_errors(data: dict) -> list[str]:
+def _state_errors(data: dict, registry: dict[str, set[str]], repo_root: Path, path: Path) -> list[str]:
     problems = []
     state = data.get("state") or {}
     readiness = state.get("readiness_status")
@@ -596,7 +847,7 @@ def _state_errors(data: dict) -> list[str]:
         if not open_blocking:
             problems.append("blocked readiness must list at least one open blocking blocker")
         observed_ids = {str(item.get("id", "")) for item in open_blocking}
-        missing_blockers = _required_blocker_ids(data) - observed_ids
+        missing_blockers = _required_blocker_ids(data, registry, repo_root, path) - observed_ids
         if missing_blockers:
             problems.append("blocked readiness is missing derived blocker ids: " + ", ".join(sorted(missing_blockers)))
     if readiness == "ready":
@@ -662,21 +913,49 @@ def _ready_runtime_errors(data: dict, registry: dict[str, set[str]]) -> list[str
     return problems
 
 
-def _ready_workspace_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
+def _ready_workspace_errors(
+    data: dict,
+    registry: dict[str, set[str]],
+    repo_root: Path,
+    path: Path,
+) -> list[str]:
     ws = data.get("workspace_session_isolation") or {}
     problems = []
+    fixture_candidate = _is_fixture_candidate(path, repo_root)
     if ws.get("binding_status") != "bound":
         problems.append("workspace_session_isolation.binding_status must be bound")
     if not _evidence_paths_registered(ws.get("evidence"), registry, "workspace_isolation"):
         problems.append("workspace_session_isolation.evidence must be hash-registered workspace_isolation evidence")
     arms = ws.get("arms") or {}
     values_by_field: dict[str, list[str]] = {}
-    seeds = []
+    seed_refs = []
+    seed_hashes = []
     for role in ("control", "treatment"):
         arm = arms.get(role) or {}
         if arm.get("arm_id") != role:
             problems.append(f"workspace arm {role} must have arm_id={role}")
-        for field in ("execution_seed", "seed_hash", "workspace_path", "session_id", "temp_dir", "cache_dir", "port_assignment", "cleanup_rule"):
+        if arm.get("execution_seed_kind") != "file_manifest":
+            problems.append(f"workspace_session_isolation.arms.{role}.execution_seed_kind must be file_manifest")
+        seed_ref = arm.get("execution_seed_ref")
+        seed_hash = arm.get("seed_hash")
+        if _is_placeholder(seed_ref) or _is_placeholder(seed_hash):
+            problems.append(f"workspace_session_isolation.arms.{role} must bind execution_seed_ref and seed_hash")
+        else:
+            seed_refs.append(str(seed_ref))
+            seed_hashes.append(str(seed_hash))
+            problems.extend(
+                f"workspace_session_isolation.arms.{role}: {problem}"
+                for problem in _seed_manifest_errors(seed_ref, seed_hash, repo_root, fixture_candidate)
+            )
+        for field in (
+            "execution_seed",
+            "workspace_path",
+            "session_id",
+            "temp_dir",
+            "cache_dir",
+            "port_assignment",
+            "cleanup_rule",
+        ):
             value = arm.get(field)
             if _is_placeholder(value):
                 problems.append(f"workspace_session_isolation.arms.{role}.{field} must be bound")
@@ -698,17 +977,10 @@ def _ready_workspace_errors(data: dict, registry: dict[str, set[str]]) -> list[s
             or _has_placeholder_item(arm.get("forbidden_paths"))
         ):
             problems.append(
-                f"workspace_session_isolation.arms.{role} must bind non-placeholder "
-                "allowed_paths and forbidden_paths"
+                f"workspace_session_isolation.arms.{role} must bind non-placeholder allowed_paths and forbidden_paths"
             )
-        seed = arm.get("execution_seed")
-        seed_hash = arm.get("seed_hash")
-        if isinstance(seed, str) and isinstance(seed_hash, str):
-            seeds.append(seed)
-            if _sha256_bytes(seed.encode("utf-8")) != seed_hash:
-                problems.append(f"workspace_session_isolation.arms.{role}.seed_hash does not match execution_seed")
-    if len(set(seeds)) != 1:
-        problems.append("both arms must use the identical execution seed")
+    if len(seed_refs) != 2 or len(set(seed_refs)) != 1 or len(seed_hashes) != 2 or len(set(seed_hashes)) != 1:
+        problems.append("both arms must use the identical content-bound execution seed manifest")
     for field in ("workspace_path", "session_id", "temp_dir", "cache_dir", "port_assignment"):
         vals = values_by_field.get(field, [])
         if len(vals) == 2 and vals[0] == vals[1]:
@@ -747,9 +1019,13 @@ def _ready_harness_errors(data: dict, repo_root: Path, registry: dict[str, set[s
     for field in ("harness_id", "harness_version", "install_command", "start_command", "health_ready_signal", "test_command", "port_strategy", "process_termination", "cleanup"):
         if _is_placeholder(h.get(field)):
             problems.append(f"harness.{field} must be bound")
+    timeouts = h.get("timeouts") or {}
     for field in ("start_seconds", "test_seconds", "total_seconds"):
-        if not isinstance((h.get("timeouts") or {}).get(field), int):
+        if not isinstance(timeouts.get(field), int):
             problems.append(f"harness.timeouts.{field} must be bound")
+    if all(isinstance(timeouts.get(field), int) for field in ("start_seconds", "test_seconds", "total_seconds")):
+        if timeouts["total_seconds"] < timeouts["start_seconds"] + timeouts["test_seconds"]:
+            problems.append("harness.timeouts.total_seconds must cover start_seconds + test_seconds")
     if h.get("identical_surface_for_both_arms") is not True:
         problems.append("harness.identical_surface_for_both_arms must be true")
     hashes = h.get("file_hashes") or []
@@ -780,7 +1056,11 @@ def _ready_harness_errors(data: dict, repo_root: Path, registry: dict[str, set[s
     return problems
 
 
-def _ready_misc_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
+def _ready_misc_errors(
+    data: dict,
+    registry: dict[str, set[str]],
+    repo_root: Path,
+) -> list[str]:
     problems = []
     human = data.get("human_intervention") or {}
     for field in ("policy", "count_rule", "agent_question_handling"):
@@ -817,17 +1097,25 @@ def _ready_misc_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     metric = data.get("metric_operationalization") or {}
     if metric.get("binding_status") != "bound":
         problems.append("metric_operationalization.binding_status must be bound")
-    observed_metric_ids = {
-        str(item.get("id", ""))
-        for item in (metric.get("metrics") or [])
-        if isinstance(item, dict)
-    }
-    missing_metric_ids = READY_REQUIRED_METRIC_IDS - observed_metric_ids
-    if missing_metric_ids:
-        problems.append("metric_operationalization.metrics missing required ids: " + ", ".join(sorted(missing_metric_ids)))
+    canonical_rules, canonical_problems = _canonical_metric_rules(repo_root)
+    problems.extend(canonical_problems)
+    observed = {}
     for item in metric.get("metrics") or []:
-        if isinstance(item, dict) and (_is_placeholder(item.get("id")) or _is_placeholder(item.get("rule"))):
-            problems.append("metric_operationalization.metrics must use non-placeholder ids and rules")
+        if not isinstance(item, dict):
+            continue
+        metric_id = str(item.get("id", ""))
+        if metric_id in observed:
+            problems.append(f"metric_operationalization contains duplicate id: {metric_id}")
+        observed[metric_id] = item.get("rule")
+    missing = set(canonical_rules) - set(observed)
+    extra = set(observed) - set(canonical_rules)
+    if missing:
+        problems.append("metric_operationalization.metrics missing canonical ids: " + ", ".join(sorted(missing)))
+    if extra:
+        problems.append("metric_operationalization.metrics contains non-canonical ids: " + ", ".join(sorted(extra)))
+    for metric_id in sorted(set(canonical_rules) & set(observed)):
+        if observed[metric_id] != canonical_rules[metric_id]:
+            problems.append(f"metric_operationalization.metrics.{metric_id} rule differs from the frozen protocol")
     first = metric.get("first_mutation_trace") or {}
     if first.get("status") != "available":
         problems.append("first_mutation_trace must be available before authorization")
@@ -843,6 +1131,8 @@ def _ready_misc_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
 def _prompt_delivery_errors(data: dict, repo_root: Path, *, require_delivery_isolation: bool) -> list[str]:
     problems = []
     pd = data.get("prompt_delivery") or {}
+    if require_delivery_isolation and pd.get("binding_status") != "bound":
+        problems.append("prompt_delivery.binding_status must be bound when ready")
     design = None
     design_ref = ((data.get("provenance") or {}).get("condition_design_snapshot_ref"))
     design_resolved, code = _load_ref(str(design_ref), repo_root)
@@ -920,8 +1210,8 @@ def _provenance_errors(data: dict, repo_root: Path) -> list[str]:
             return None
         try:
             return load_yaml(resolved)
-        except (FileNotFoundError, ValueError):
-            return None
+        except (FileNotFoundError, ValueError) as exc:
+            raise ToolError(f"snapshot for {ref_key} is invalid or unreadable: {exc}") from exc
 
     design = _load_snapshot_yaml("condition_design_snapshot_ref")
     design_freeze = _load_snapshot_yaml("design_freeze_manifest_snapshot_ref")
@@ -938,6 +1228,12 @@ def _provenance_errors(data: dict, repo_root: Path) -> list[str]:
         coverage = p.get("design_freeze_hash_coverage") or {}
         if design_freeze.get("artifact_type") != DESIGN_FREEZE_ARTIFACT_TYPE:
             problems.append("design freeze manifest snapshot artifact_type mismatch")
+        design_frozen = _parse_rfc3339(design_freeze.get("frozen_at"))
+        source_captured = _parse_rfc3339(data.get("source_captured_at"))
+        if design_frozen is None:
+            problems.append("design freeze manifest snapshot frozen_at is not a real RFC-3339 timestamp")
+        elif source_captured is not None and design_frozen > source_captured:
+            problems.append("design freeze frozen_at must be <= readiness source_captured_at")
         if design_freeze.get("source_base_commit_sha") != p.get("design_input_source_base_commit_sha"):
             problems.append("design_input_source_base_commit_sha must match design freeze source_base_commit_sha")
         entries = design_freeze.get("hashes") or []
@@ -1071,7 +1367,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     general_evidence_problems = _general_evidence_errors(data, repo_root)
     if general_evidence_problems:
         errors.append(format_error("EXECUTION_READINESS_REQUIRES_EVIDENCE_PATHS", path, "; ".join(general_evidence_problems)))
-    state_problems = _state_errors(data)
+    state_problems = _state_errors(data, registry, repo_root, path)
     if state_problems:
         errors.append(format_error("EXECUTION_READINESS_REQUIRES_STATE_MODEL", path, "; ".join(state_problems)))
     try:
@@ -1094,10 +1390,10 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
     if data.get("state", {}).get("readiness_status") == "ready":
         ready_problems = []
         ready_problems += _ready_runtime_errors(data, registry)
-        ready_problems += _ready_workspace_errors(data, registry)
+        ready_problems += _ready_workspace_errors(data, registry, repo_root, path)
         ready_problems += _ready_visibility_errors(data, registry)
         ready_problems += _ready_harness_errors(data, repo_root, registry)
-        ready_problems += _ready_misc_errors(data, registry)
+        ready_problems += _ready_misc_errors(data, registry, repo_root)
         if ready_problems:
             errors.append(format_error("EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING", path, "; ".join(ready_problems)))
     return errors
@@ -1138,6 +1434,8 @@ def main(argv=None, *, repo_root: Path | None = None):
     try:
         validator = load_validator(SCHEMA_PATH)
         load_validator(FREEZE_SCHEMA_PATH)
+        load_validator(EVIDENCE_SCHEMA_PATH)
+        load_validator(SEED_SCHEMA_PATH)
     except RuntimeError as exc:
         print(f"ERROR: {exc}")
         return 2

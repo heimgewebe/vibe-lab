@@ -191,7 +191,7 @@ workspace_session_isolation:
     control:
       arm_id: control
       execution_seed: run004-fixture-seed
-      seed_hash: 3b037bb5e6fc5bd37eecb179f9f1b0de8b078a90b90a1a4f5132d63bdb2757dc
+      seed_hash: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
       workspace_path: /tmp/vibe-lab-run004-fixture/arm-a/workspace
       session_id: fixture-session-a
       temp_dir: /tmp/vibe-lab-run004-fixture/arm-a/tmp
@@ -203,10 +203,12 @@ workspace_session_isolation:
       forbidden_paths:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design
       cleanup_rule: delete assigned temp/cache/workspace after capture
+      execution_seed_kind: file_manifest
+      execution_seed_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed-manifest.yml
     treatment:
       arm_id: treatment
       execution_seed: run004-fixture-seed
-      seed_hash: 3b037bb5e6fc5bd37eecb179f9f1b0de8b078a90b90a1a4f5132d63bdb2757dc
+      seed_hash: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
       workspace_path: /tmp/vibe-lab-run004-fixture/arm-b/workspace
       session_id: fixture-session-b
       temp_dir: /tmp/vibe-lab-run004-fixture/arm-b/tmp
@@ -218,6 +220,8 @@ workspace_session_isolation:
       forbidden_paths:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design
       cleanup_rule: delete assigned temp/cache/workspace after capture
+      execution_seed_kind: file_manifest
+      execution_seed_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed-manifest.yml
   evidence:
   - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
 visibility_boundary:
@@ -264,7 +268,7 @@ harness:
   harness_version: 1.0.0
   file_hashes:
   - path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
-    sha256: ac00ef56c49c551b25c3227063303900aaec0f87669b568f10ed59b631d18811
+    sha256: 57a69c6779e15edef14762aff773362358a7ba6fff00af4dd2bad582ba5ca3f4
   install_command: npm ci
   start_command: npm run start -- --port ${PORT}
   health_ready_signal: GET /health returns 200
@@ -323,28 +327,33 @@ execution_order:
 metric_operationalization:
   binding_status: bound
   metrics:
-  - id: rework_steps
-    rule: Count post-authoring revisions to fix defects in already-produced implementation.
-  - id: human_intervention_count
-    rule: Count every human-originated message after task delivery, including predefined infrastructure responses.
-  - id: workflow_protocol_compliance
-    rule: Treatment requires a complete specification before first implementation mutation; control voluntary specification
-      is not automatically non-compliant.
-  - id: contamination_status
-    rule: Mark contaminated if an arm sees the other payload, role labels, hypothesis, other-arm artifacts, or reconstructable
-      experiment metadata.
   - id: functional_test_pass_ratio
-    rule: passing_shared_functional_tests / total_shared_functional_tests; missing values remain null.
+    rule: passing_shared_functional_tests / total_shared_functional_tests
   - id: error_case_test_pass_ratio
-    rule: passing_shared_error_case_tests / total_shared_error_case_tests; missing values remain null.
+    rule: passing_shared_error_case_tests / total_shared_error_case_tests
   - id: forced_500_check_pass
-    rule: True only if the shared framework-neutral forced-500 assertion passes.
+    rule: 1 if the shared forced-500 assertion passes else 0
+  - id: workflow_protocol_compliance
+    rule: assigned-protocol compliance verdict (compliant / non_compliant / contaminated); not a quality judgment
+  - id: time_to_validated_change_seconds
+    rule: timer_end - timer_start
+  - id: time_to_stop_seconds
+    rule: timer_end - timer_start
+  - id: rework_steps
+    rule: number of post-authoring revisions to fix defects in already-produced implementation
+  - id: human_intervention_count
+    rule: number of human-originated corrections beyond the shared task input
+  - id: scope_drift_status
+    rule: none / observed (challenge or acceptance surface changed by the arm)
+  - id: contamination_status
+    rule: none / prompt_metadata_exposure / other_arm_artifact_exposure / shared_context_exposure / operator_intervention
+      / workspace_seed_drift / unknown
   - id: timeout_count
-    rule: Count predeclared timeout events; never convert timeout to zero pass.
+    rule: number of predeclared timeout events; never impute a timeout as zero or success
   - id: abort_status
-    rule: Record any arm abort explicitly and block comparison.
+    rule: completed / aborted; any abort blocks comparison and preserves incomplete metrics as null
   - id: retry_count
-    rule: Count every predeclared retry; silent or one-sided retry is invalid.
+    rule: number of predeclared symmetric retries; silent or one-sided retries are invalid
   first_mutation_trace:
     status: available
     required_for_treatment_preimplementation_claim: true
@@ -354,9 +363,8 @@ metric_operationalization:
     - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
 evidence_registry:
 - path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
-  sha256: ac00ef56c49c551b25c3227063303900aaec0f87669b568f10ed59b631d18811
+  sha256: 57a69c6779e15edef14762aff773362358a7ba6fff00af4dd2bad582ba5ca3f4
   kinds:
-  - synthetic_fixture
   - model_identity
   - agent_identity
   - access_policy
@@ -368,6 +376,7 @@ evidence_registry:
   - harness_neutrality
   - forced_500_trigger
   - first_mutation_trace
+  - synthetic_fixture
 evidence:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   kind: frozen_condition_design

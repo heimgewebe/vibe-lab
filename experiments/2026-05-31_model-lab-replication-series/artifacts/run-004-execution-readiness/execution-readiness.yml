@@ -8,8 +8,8 @@ challenge_version: rest-api-v1
 readiness_bundle_id: run-004-execution-readiness
 bundle_artifact_path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml
 source_captured_at: '2026-06-26T20:00:34.960258Z'
-generated_at: '2026-06-26T20:00:34.960302Z'
-readiness_frozen_at: '2026-06-26T20:00:34.960305Z'
+generated_at: '2026-06-26T21:04:36.886256Z'
+readiness_frozen_at: '2026-06-26T21:04:36.886277Z'
 authorized_at: null
 provenance:
   condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
@@ -278,6 +278,8 @@ workspace_session_isolation:
       allowed_paths: []
       forbidden_paths: []
       cleanup_rule: null
+      execution_seed_kind: null
+      execution_seed_ref: null
     treatment:
       arm_id: treatment
       execution_seed: null
@@ -291,6 +293,8 @@ workspace_session_isolation:
       allowed_paths: []
       forbidden_paths: []
       cleanup_rule: null
+      execution_seed_kind: null
+      execution_seed_ref: null
   evidence: []
 visibility_boundary:
   boundary_status: unresolved

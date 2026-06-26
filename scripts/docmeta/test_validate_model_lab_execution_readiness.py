@@ -450,7 +450,7 @@ class ExecutionReadinessTests(unittest.TestCase):
                 Path("experiments/b/artifacts/bad/execution-readiness.yml"),
             ):
                 target = root / rel
-                target.parent.mkdir(parents=True)
+                target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text("artifact_type: wrong\n", encoding="utf-8")
             output = io.StringIO()
             with contextlib.redirect_stdout(output):
@@ -496,6 +496,131 @@ class ExecutionReadinessTests(unittest.TestCase):
             self.build(mutate=lambda d, _: d.update(source_captured_at="2026-06-26T14:00:00Z")),
             "EXECUTION_READINESS_REQUIRES_VALID_FREEZE",
         )
+
+    def test_forbidden_execution_artifact_reports_once(self):
+        completed = self.run_v(self.build(plant={"run.yml": "not allowed\n"}))
+        self.assert_exit(completed, 1)
+        self.assertEqual(1, completed.stdout.count("execution artifact forbidden in readiness bundle: run.yml"))
+        self.assertNotIn("unexpected file in closed readiness bundle: run.yml", completed.stdout)
+
+    def test_invalid_snapshot_yaml_fails_closed(self):
+        def mut(d, tmp):
+            snap = tmp / "source-snapshots" / "condition-design.snapshot"
+            snap.write_text(": invalid yaml: [\n", encoding="utf-8")
+            d["provenance"]["condition_design_sha256"] = _sha(snap)
+        completed = self.run_v(self.build(mutate=mut))
+        self.assert_exit(completed, 2)
+        self.assertIn("invalid or unreadable", completed.stdout)
+
+    def test_ready_rejects_untyped_readme_evidence(self):
+        def mut(d, _):
+            path = "README.md"
+            d["evidence_registry"][0]["path"] = path
+            d["evidence_registry"][0]["sha256"] = _sha(REPO_ROOT / path)
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_EVIDENCE_REGISTRY")
+
+    def test_ready_seed_hash_binds_manifest_bytes(self):
+        def mut(d, _):
+            d["workspace_session_isolation"]["arms"]["control"]["seed_hash"] = "0" * 64
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+    def test_ready_prompt_delivery_status_must_be_bound(self):
+        self.assert_rule(
+            self.build(mutate=lambda d, _: d["prompt_delivery"].update(binding_status="unbound")),
+            "EXECUTION_READINESS_REQUIRES_PROMPT_DELIVERY",
+        )
+
+    def test_blocker_derivation_rejects_status_only_model_binding(self):
+        def mut(d, _):
+            d["blockers"] = [item for item in d["blockers"] if item["id"] != "MODEL_BINDING_UNRESOLVED"]
+            for key in ("provider", "exact_model_id", "model_revision_or_version"):
+                d["runtime_binding"][key].update(status="bound", value=None, evidence=[])
+        self.assert_rule(self.build(source=VALID_BLOCKED, mutate=mut), "EXECUTION_READINESS_REQUIRES_STATE_MODEL")
+
+    def test_ready_metric_rule_must_match_frozen_protocol(self):
+        def mut(d, _):
+            for item in d["metric_operationalization"]["metrics"]:
+                if item["id"] == "rework_steps":
+                    item["rule"] = "a post-hoc alternative rule"
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+    def test_source_capture_must_follow_design_freeze(self):
+        self.assert_rule(
+            self.build(mutate=lambda d, _: d.update(source_captured_at="2026-06-26T12:00:00Z")),
+            "EXECUTION_READINESS_REQUIRES_DESIGN_PROVENANCE",
+        )
+
+    def test_ready_workspace_camelcase_role_leak_is_rejected(self):
+        def mut(d, _):
+            d["workspace_session_isolation"]["arms"]["control"]["session_id"] = "fixtureControlA"
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+    def test_ready_total_timeout_must_cover_start_and_test(self):
+        def mut(d, _):
+            d["harness"]["timeouts"].update(start_seconds=30, test_seconds=120, total_seconds=100)
+        self.assert_rule(self.build(mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+    def test_seed_manifest_must_cover_every_root_file(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="exec_ready_seed_coverage")
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            repo = root / "repo"
+            seed_root = repo / "seed"
+            seed_root.mkdir(parents=True)
+            included = seed_root / "included.txt"
+            omitted = seed_root / "omitted.txt"
+            included.write_text("included\n", encoding="utf-8")
+            omitted.write_text("omitted\n", encoding="utf-8")
+            entry = {"path": "seed/included.txt", "sha256": _sha(included)}
+            manifest = repo / "manifest.yml"
+            _write_yaml(
+                manifest,
+                {
+                    "schema_version": "v1",
+                    "artifact_type": "model_lab_execution_seed_manifest",
+                    "seed_id": "fixture-seed",
+                    "synthetic_fixture": True,
+                    "root_ref": "seed",
+                    "content_hash_algorithm": "sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over files)",
+                    "content_sha256": _bundle_hash([entry]),
+                    "files": [entry],
+                },
+            )
+            problems = mod["_seed_manifest_errors"]("manifest.yml", _sha(manifest), repo, True)
+        self.assertTrue(any("omits root file" in problem for problem in problems), problems)
+
+    def test_real_evidence_file_must_bind_one_claim_kind(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="exec_ready_single_purpose_evidence")
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            evidence = root / "evidence.yml"
+            _write_yaml(
+                evidence,
+                {
+                    "schema_version": "v1",
+                    "artifact_type": "model_lab_execution_readiness_evidence",
+                    "evidence_id": "combined-real-evidence",
+                    "synthetic_fixture": False,
+                    "claims": [
+                        {"kind": "model_identity", "status": "verified", "subject": "model", "value": "m"},
+                        {"kind": "agent_identity", "status": "verified", "subject": "agent", "value": "a"},
+                    ],
+                },
+            )
+            artifact = root / "experiments" / "x" / "artifacts" / "r" / "execution-readiness.yml"
+            artifact.parent.mkdir(parents=True)
+            artifact.write_text("placeholder\n", encoding="utf-8")
+            data = {
+                "evidence_registry": [
+                    {
+                        "path": "evidence.yml",
+                        "sha256": _sha(evidence),
+                        "kinds": ["model_identity", "agent_identity"],
+                    }
+                ]
+            }
+            _, problems = mod["_evidence_registry"](data, artifact, root)
+        self.assertTrue(any("exactly one claim kind" in problem for problem in problems), problems)
 
 
 if __name__ == "__main__":
