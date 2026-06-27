@@ -97,7 +97,7 @@ Only these prompt surfaces are declared constant across arms:
 - benchmark;
 - shared condition.
 
-Runtime dimensions such as model identity, tooling, sampling, dependency/runtime environment, harness, session isolation, and human-intervention rules remain unbound until a separate execution-readiness step and must then be bound equivalently across arms.
+At design-freeze time, runtime dimensions such as model identity, tooling, sampling, dependency/runtime environment, harness, session isolation, and human-intervention rules were unbound. Later readiness artifacts bind the deterministic seed, workspace/session preparation, and launcher access policy separately; model, agent, sampling, runtime environment, harness, execution order, and metric capture remain unbound.
 
 ### Permanent historical provenance
 
@@ -125,7 +125,7 @@ A Run-004-v1-specific execution-readiness preflight now exists under `artifacts/
 
 The preflight checks the frozen condition-design provenance and freeze root, the readiness state model, runtime binding, workspace and session isolation, blinded visibility boundaries, deterministic prompt delivery, harness neutrality, forced-500 triggering, human-intervention rules, retry/error rules, execution order, and metric operationalization. It also keeps the design freeze and the new readiness freeze separate from any future execution seed.
 
-The current real artifact is intentionally `blocked`: Run-004 has no concrete model, agent, sampling, access policy, runtime environment, seed, workspace/session isolation, execution order, metric capture, neutral harness, neutral forced-500 trigger, or first-mutation trace binding. Therefore `runtime_values_bound=false`, `authorization_status=not_authorized`, and `run_004_execution_allowed=false`.
+The current real artifact is intentionally `blocked`: Run-004 has no concrete model, agent, sampling configuration, runtime environment, execution order, metric capture, neutral harness, neutral forced-500 trigger, or first-mutation trace binding. The deterministic empty seed, opaque workspace/session preparation, and access-policy visibility boundary are bound separately. Therefore `runtime_values_bound=false`, `authorization_status=not_authorized`, and `run_004_execution_allowed=false`.
 
 This is a pre-execution readiness state only. No Run-004 arm was executed, no result assessment is allowed, `comparison_ready=false`, and `weak_condition_contrast` remains open until a later authorized execution and separate assessment evidence exist.
 
@@ -139,4 +139,14 @@ The seed manifest is validated and can be materialized by `scripts/docmeta/build
 
 Iteration 18 adds a create-only materializer for two opaque Run-004 slots. Each slot receives the same content-bound empty seed, a distinct workspace/session/temp/cache/loopback-lease identity, and exactly one assigned prompt payload assembled from the frozen benchmark, shared condition, and that slot's overlay. Visible path and session names contain no `control` or `treatment` token. Existing output roots are rejected rather than reused.
 
-This closes `SESSION_ISOLATION_UNPROVEN` at the preparation-contract level. It does **not** close `BLINDED_WORKSPACE_UNRESOLVED`: the global filesystem and repository-read policy for the future executing agent remains unbound, so the current artifacts do not claim that repository experiment metadata is already unreachable. No arm was executed.
+This closes `SESSION_ISOLATION_UNPROVEN` at the preparation-contract level. At this stage, the global filesystem and repository-read policy for the future executing process was still unbound, so iteration 18 did not claim that repository experiment metadata was unreachable. No arm was executed.
+
+## Run-004 access policy and visibility boundary
+
+Iteration 19 binds a Run-004-specific access policy for the prepared slots. The launcher uses Bubblewrap with `--unshare-all --share-net` and a libseccomp BPF filter that denies network, `io_uring`, namespace, mount, new mount-API, and escape syscalls with `EPERM` before the child command runs. The host filesystem is not mounted as the sandbox base; only `/usr`, minimal runtime compatibility roots, `/proc`, minimal `/dev`, the assigned `/workspace`, `/tmp`, and `/cache` are visible.
+
+Assigned prompts are read outside the sandbox through no-symlink path checks, hash-verified, and delivered only on stdin. No prompt file, repository, host home, delivery directory, policy/evidence file, or other slot is mounted. Commands are argv-only and must use an absolute executable path under `/usr/bin` or `/bin`; shell-string evaluation is outside the contract.
+
+The live boundary probe starts only a neutral Python diagnostic through the launcher. It verifies byte-identical stdin prompt delivery, workspace read/write, minimal environment, absent repository/home/delivery/other-slot visibility, absent role tokens in visible paths, no `.git`, no prompt file, and `EPERM` for socket creation, namespace escape, `io_uring_setup`, and `fsopen`. It materializes the canonical runtime root only when absent and removes only the root it created.
+
+This closes `ACCESS_POLICY_UNRESOLVED` and `BLINDED_WORKSPACE_UNRESOLVED` for processes actually launched through the bound launcher. It does not execute a Run-004 arm, start a model or agent, bind runtime/model/agent/sampling values, measure results, compare arms, or make a general host/container security claim.

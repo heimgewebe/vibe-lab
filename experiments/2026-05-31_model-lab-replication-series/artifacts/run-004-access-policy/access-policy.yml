@@ -1,0 +1,121 @@
+schema_version: v1
+artifact_type: model_lab_access_policy
+contract_version: run-004-access-policy.v1
+policy_id: run-004-access-policy-bubblewrap-seccomp-v1
+synthetic_fixture: false
+triggered_by: user-request-2026-06-27-run-004-access-policy
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+runtime_root: /tmp/vibe-lab-run004-v1
+launcher_ref: scripts/docmeta/run_model_lab_run004_sandbox.py
+launcher_sha256: 817ad51cec508812f795c972ee55090d39c80152d424d41cd3c29a91a14d0019
+isolation_plan_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml
+isolation_plan_sha256: aa0c5a41ecfe7bb336fcf8a41c3effd427e013abc10463bdc51b0a3a4085e131
+backend:
+  id: bubblewrap-libseccomp-fd-stdin-v1
+  executable: /usr/bin/bwrap
+  minimum_version: 0.6.1
+  seccomp_library: libseccomp.so.2
+  host_filesystem_base_mounted: false
+  namespace_mode: unshare-all-share-net-seccomp-network-deny
+  share_net_required_due_to_netlink_route: true
+  network_enforcement: libseccomp-errno-eperm
+  denied_syscall_errno: EPERM
+  denied_syscalls:
+  - socket
+  - socketpair
+  - connect
+  - bind
+  - listen
+  - accept
+  - accept4
+  - sendto
+  - sendmsg
+  - sendmmsg
+  - recvfrom
+  - recvmsg
+  - recvmmsg
+  - shutdown
+  - getsockname
+  - getpeername
+  - setsockopt
+  - getsockopt
+  - io_uring_setup
+  - io_uring_enter
+  - io_uring_register
+  - mount
+  - umount2
+  - open_tree
+  - move_mount
+  - fsopen
+  - fsconfig
+  - fsmount
+  - fspick
+  - mount_setattr
+  - pivot_root
+  - chroot
+  - setns
+  - unshare
+  - ptrace
+  - bpf
+  - perf_event_open
+  - keyctl
+  - add_key
+  - request_key
+  - open_by_handle_at
+  - name_to_handle_at
+  drop_capabilities: true
+  clear_environment: true
+  new_session: true
+  die_with_parent: true
+  close_fds: true
+  argv_only: true
+  shell_eval_forbidden: true
+  bind_implementation: directory-fd-no-symlink-components
+  prompt_delivery: stdin-only
+  unset_pwd: true
+  pwd_removed_by_argv_wrapper: true
+  environment_wrapper:
+  - /usr/bin/env
+  - -u
+  - PWD
+  - --
+  tty: false
+sandbox_environment:
+  HOME: /workspace
+  LANG: C.UTF-8
+  LC_ALL: C.UTF-8
+  PATH: /usr/bin:/bin
+  TMPDIR: /tmp
+  XDG_CACHE_HOME: /cache
+allowed_command_roots:
+- /usr/bin
+- /bin
+required_read_only_roots:
+- /usr
+optional_read_only_roots:
+- /lib
+- /lib64
+- /etc/ld.so.cache
+arms:
+  control:
+    slot_id: node-287d6079ef6a
+    workspace_source: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/workspace
+    temp_source: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/tmp
+    cache_source: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/cache
+    delivery_source: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/delivery/task.md
+    payload_sha256: 4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e
+    workspace_target: /workspace
+    temp_target: /tmp
+    cache_target: /cache
+  treatment:
+    slot_id: node-23ec2b8accb3
+    workspace_source: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/workspace
+    temp_source: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/tmp
+    cache_source: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/cache
+    delivery_source: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/delivery/task.md
+    payload_sha256: 7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d
+    workspace_target: /workspace
+    temp_target: /tmp
+    cache_target: /cache

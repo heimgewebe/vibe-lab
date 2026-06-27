@@ -24,6 +24,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install sandbox dependencies
+        run: sudo apt-get update && sudo apt-get install -y bubblewrap libseccomp2
+
       - name: Install dependencies
         run: python3 -m pip install pyyaml jsonschema rfc3339-validator
 
@@ -95,6 +98,12 @@ jobs:
 
       - name: Validate Model-Lab condition-design artifacts
         run: make validate-model-lab-condition-design
+
+      - name: Test Run-004 access-policy sandbox
+        run: make validate-model-lab-access-policy-tests
+
+      - name: Validate Run-004 access-policy bundle
+        run: make validate-model-lab-access-policy
 
       - name: Test Model-Lab execution-readiness validator
         run: make validate-model-lab-execution-readiness-tests

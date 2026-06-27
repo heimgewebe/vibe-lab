@@ -40,8 +40,8 @@ blockers:
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 is designed to address weak_condition_contrast later, but no execution or assessment has occurred, so the
-    blocker remains open.
+  note: Run-004 is designed to address weak_condition_contrast later, but no execution
+    or assessment has occurred, so the blocker remains open.
 runtime_binding:
   binding_status: bound
   same_runtime_across_arms_required: true
@@ -90,22 +90,22 @@ runtime_binding:
       status: bound
       value: read/write assigned workspace only
       evidence:
-      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
     shell:
       status: bound
       value: noninteractive commands only
       evidence:
-      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
     network:
       status: bound
       value: disabled during arm execution
       evidence:
-      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
     connectors:
       status: bound
       value: disabled by pre-execution policy
       evidence:
-      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
   sampling:
     temperature:
       status: bound
@@ -235,10 +235,11 @@ visibility_boundary:
   repo_metadata_reconstruction_prevented: true
   normal_repo_read_access_can_reconstruct_experiment: false
   evidence:
-  - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-visibility-boundary-evidence.yml
 prompt_delivery:
   binding_status: bound
-  assembly_rule: strip exactly one final LF from each component, join components with separator, append one final LF
+  assembly_rule: strip exactly one final LF from each component, join components with
+    separator, append one final LF
   encoding: utf-8
   newline: lf
   final_newline: required
@@ -289,34 +290,41 @@ harness:
     - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
   forced_500_trigger:
     status: verified
-    mechanism: framework-neutral HTTP endpoint fault injection through test-owned request header
+    mechanism: framework-neutral HTTP endpoint fault injection through test-owned
+      request header
     same_for_both_arms: true
     framework_neutral: true
     evidence:
     - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
 human_intervention:
-  policy: no content help; only predefined arm-neutral infrastructure responses, fully logged
+  policy: no content help; only predefined arm-neutral infrastructure responses, fully
+    logged
   content_help_forbidden: true
   infrastructure_answers_allowed: true
   standard_response_texts:
-  - No task-content guidance is available. Continue with the assigned prompt and available tools.
+  - No task-content guidance is available. Continue with the assigned prompt and available
+    tools.
   - Use the predefined infrastructure rule already supplied for both arms.
   abort_conditions:
   - Any request requiring task-content help.
   - Any asymmetric intervention not available to both arms.
-  count_rule: Every human-originated message after task delivery counts as one intervention, including predefined infrastructure
-    responses.
-  agent_question_handling: Answer only with a predefined arm-neutral infrastructure response or abort both arms.
+  count_rule: Every human-originated message after task delivery counts as one intervention,
+    including predefined infrastructure responses.
+  agent_question_handling: Answer only with a predefined arm-neutral infrastructure
+    response or abort both arms.
   asymmetric_intervention_forbidden: true
   same_policy_across_arms: true
 retry_policy:
   max_retries: 0
   allowed_retry_reasons: []
-  partial_workspace_behavior: discard both arms and require a new authorized readiness bundle before retry
+  partial_workspace_behavior: discard both arms and require a new authorized readiness
+    bundle before retry
   agent_abort_behavior: record abort; do not silently restart one arm
-  install_failure_behavior: record failure; do not patch dependencies inside this readiness contract
+  install_failure_behavior: record failure; do not patch dependencies inside this
+    readiness contract
   timeout_behavior: record timeout; do not extend timeout post hoc
-  flaky_test_behavior: no unilateral rerun; both arms require the same predeclared retry policy
+  flaky_test_behavior: no unilateral rerun; both arms require the same predeclared
+    retry policy
   both_arms_restart_after_retry: true
   silent_or_one_sided_retries_forbidden: true
 execution_order:
@@ -334,7 +342,8 @@ metric_operationalization:
   - id: forced_500_check_pass
     rule: 1 if the shared forced-500 assertion passes else 0
   - id: workflow_protocol_compliance
-    rule: assigned-protocol compliance verdict (compliant / non_compliant / contaminated); not a quality judgment
+    rule: assigned-protocol compliance verdict (compliant / non_compliant / contaminated);
+      not a quality judgment
   - id: time_to_validated_change_seconds
     rule: timer_end - timer_start
   - id: time_to_stop_seconds
@@ -346,14 +355,17 @@ metric_operationalization:
   - id: scope_drift_status
     rule: none / observed (challenge or acceptance surface changed by the arm)
   - id: contamination_status
-    rule: none / prompt_metadata_exposure / other_arm_artifact_exposure / shared_context_exposure / operator_intervention
-      / workspace_seed_drift / unknown
+    rule: none / prompt_metadata_exposure / other_arm_artifact_exposure / shared_context_exposure
+      / operator_intervention / workspace_seed_drift / unknown
   - id: timeout_count
-    rule: number of predeclared timeout events; never impute a timeout as zero or success
+    rule: number of predeclared timeout events; never impute a timeout as zero or
+      success
   - id: abort_status
-    rule: completed / aborted; any abort blocks comparison and preserves incomplete metrics as null
+    rule: completed / aborted; any abort blocks comparison and preserves incomplete
+      metrics as null
   - id: retry_count
-    rule: number of predeclared symmetric retries; silent or one-sided retries are invalid
+    rule: number of predeclared symmetric retries; silent or one-sided retries are
+      invalid
   first_mutation_trace:
     status: available
     required_for_treatment_preimplementation_claim: true
@@ -377,6 +389,16 @@ evidence_registry:
   - forced_500_trigger
   - first_mutation_trace
   - synthetic_fixture
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
+  sha256: dfaf80d5791cc7cc8002b28325aaca980a7032ecff286eaaa8a0eb98bc648dab
+  kinds:
+  - access_policy
+  - synthetic_fixture
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-visibility-boundary-evidence.yml
+  sha256: 420afd0ffa6f9f24aafe774714b594fb023b1c237420846c25bf4bfd631cb34f
+  kinds:
+  - visibility_boundary
+  - synthetic_fixture
 evidence:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   kind: frozen_condition_design
@@ -384,6 +406,10 @@ evidence:
   kind: design_freeze_manifest
 - path: experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
   kind: assessment_blocker_context
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
+  kind: synthetic_access_policy_evidence
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-visibility-boundary-evidence.yml
+  kind: synthetic_visibility_boundary_evidence
 required_non_claims:
 - run_004_executed
 - run_004_result_measured
@@ -402,3 +428,26 @@ required_non_claims:
 - execution_artifacts_present
 freeze:
   freeze_manifest_ref: tests/fixtures/model_lab_execution_readiness/valid/ready/freeze-manifest.yml
+access_policy:
+  binding_status: bound
+  policy_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy.yml
+  policy_sha256: f01ac0e21d6d19b364145b7c36e8bd55f88aabbff1f376edd7cb5d3946e89a88
+  launcher_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-launcher.py
+  launcher_sha256: 9c2334587341918de2353bd5a1d0e271f42ff5445e07fa53f94994657f3df969
+  probe_runner_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-probe-runner.py
+  probe_runner_sha256: 3bdff908ac90220f3a71ff3ee7b003c43fd6d513b42011ba7c4704bd65abcf5d
+  boundary_probe_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-boundary-probe.json
+  boundary_probe_sha256: 0900ccf6aa8dae9cd98bad9de3ebebf6b6edaef43bf42a21016808bbaa1d613c
+  freeze_manifest_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-freeze.yml
+  freeze_manifest_sha256: 039f9011f6999063f5434977d56262c808c518db21721e3a424245607ac49dae
+  access_policy_evidence: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml
+  visibility_boundary_evidence: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-visibility-boundary-evidence.yml
+  validation:
+    policy_bundle_valid: true
+    live_negative_probe_passed: true
+    content_hashes_match: true
+    stdin_only_prompt_delivery: true
+    network_denied_eperm: true
+    namespace_escape_denied_eperm: true
+    io_uring_setup_denied_eperm: true
+    new_mount_api_fsopen_denied_eperm: true

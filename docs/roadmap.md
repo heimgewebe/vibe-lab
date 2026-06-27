@@ -5,7 +5,7 @@ triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-06-05"
+updated: "2026-06-27"
 relations:
   - type: references
     target: masterplan.md
@@ -347,3 +347,11 @@ Ergaenzung 2026-06-27 zu RM-008 (Run-004 Workspace-/Session-Isolation):
 - Pro Slot wird genau das zugewiesene Promptpaket erzeugt.
 - `SESSION_ISOLATION_UNPROVEN` ist geschlossen; `BLINDED_WORKSPACE_UNRESOLVED` bleibt bis zur technisch gebundenen Access-Policy offen.
 - Keine Run-004-Ausfuehrung oder Ergebnisbewertung.
+
+Ergaenzung 2026-06-27 zu RM-008 (Run-004 Access-Policy/Visibility Boundary):
+- Eine content-bound Bubblewrap/libseccomp-Access-Policy ist fuer die vorbereiteten Slots gebunden:
+  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/`.
+- Die Live-Negativprobe prueft nur den Sandboxmechanismus mit einem neutralen Python-Diagnoseprogramm, inklusive EPERM fuer Socket, Namespace-Escape, `io_uring_setup` und `fsopen`; kein Modell-/Agentlauf und keine Run-004-Ausfuehrung.
+- `ACCESS_POLICY_UNRESOLVED` und `BLINDED_WORKSPACE_UNRESOLVED` sind geschlossen.
+- Der reale Readiness-Status bleibt `blocked`, `not_authorized`, `run_004_execution_allowed=false` und `run_004_executed=false`.
+- Modell-, Agent-, Sampling-, Runtime-Environment-, Harness-, forced-500-, First-Mutation-Trace-, Ausfuehrungsreihenfolge- und Metrik-Bindungen bleiben offen.
