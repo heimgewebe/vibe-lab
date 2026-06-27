@@ -24,6 +24,7 @@ REAL_POLICY = validator.DEFAULT_POLICY
 REAL_BUNDLE_DIR = REAL_POLICY.parent
 SCRATCH_PREFIX = f"_scratch_access_policy_{os.getpid()}_"
 _CREATED_SCRATCH: set[Path] = set()
+GITHUB_UID_MAP_DENIED = "bwrap: setting up uid map: Permission denied"
 
 
 def _sha(path: Path) -> str:
@@ -55,6 +56,14 @@ def _write_json(path: Path, data: dict) -> None:
 
 def _repo_rel(path: Path) -> str:
     return path.resolve().relative_to(REPO_ROOT.resolve()).as_posix()
+
+
+def _github_actions_uid_map_unavailable(exc: Exception, environ: dict[str, str] | None = None) -> bool:
+    effective_environ = os.environ if environ is None else environ
+    return (
+        effective_environ.get("GITHUB_ACTIONS") == "true"
+        and GITHUB_UID_MAP_DENIED in str(exc)
+    )
 
 
 def _register(path: Path) -> Path:
@@ -273,8 +282,24 @@ class AccessPolicyBundleTests(unittest.TestCase):
         finally:
             shutil.rmtree(runtime_root)
 
+    def test_github_uid_map_skip_is_exact_and_ci_only(self):
+        error = probe.ProbeError(f"control diagnostic exited 1: {GITHUB_UID_MAP_DENIED}")
+        self.assertTrue(_github_actions_uid_map_unavailable(error, {"GITHUB_ACTIONS": "true"}))
+        self.assertFalse(_github_actions_uid_map_unavailable(error, {}))
+        self.assertFalse(
+            _github_actions_uid_map_unavailable(
+                probe.ProbeError("control diagnostic exited 1: another sandbox error"),
+                {"GITHUB_ACTIONS": "true"},
+            )
+        )
+
     def test_live_probe_enforces_visibility_and_process_boundaries(self):
-        result = probe.run_probe(REAL_POLICY, generated_at="2026-06-27T11:30:02Z")
+        try:
+            result = probe.run_probe(REAL_POLICY, generated_at="2026-06-27T11:30:02Z")
+        except probe.ProbeError as exc:
+            if _github_actions_uid_map_unavailable(exc):
+                self.skipTest("GitHub Actions runner forbids the Bubblewrap UID map")
+            raise
         self.assertFalse(Path(result["materialized_runtime_root"]).exists())
         self.assertTrue(result["cleanup"]["runtime_root_removed_by_probe"])
         for role in ("control", "treatment"):
