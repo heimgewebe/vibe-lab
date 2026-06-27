@@ -1,15 +1,15 @@
 schema_version: v1
 artifact_type: model_lab_execution_readiness
 contract_version: run-004-execution-readiness.v1
-triggered_by: user-request-2026-06-26-run-004-execution-readiness-preflight
+triggered_by: user-request-2026-06-27-run-004-workspace-session-isolation
 series_id: 2026-05-31_model-lab-replication-series
 design_id: run-004-condition-contrast
 challenge_version: rest-api-v1
 readiness_bundle_id: run-004-execution-readiness
 bundle_artifact_path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml
 source_captured_at: '2026-06-26T20:00:34.960258Z'
-generated_at: '2026-06-27T04:39:34.108783Z'
-readiness_frozen_at: '2026-06-27T04:39:34.135704Z'
+generated_at: '2026-06-27T07:05:21.789276Z'
+readiness_frozen_at: '2026-06-27T07:05:21.789276Z'
 authorized_at: null
 provenance:
   condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
@@ -58,14 +58,9 @@ blockers:
   severity: blocking
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml
-  note: The delivered prompt text is blinded, but no technical workspace boundary proves that the agent cannot read the other
-    overlay, arm labels, hypothesis, or repository experiment metadata.
-- id: SESSION_ISOLATION_UNPROVEN
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Separate fresh sessions, temporary directories, caches, ports, and clean start states are not proven for Run-004 arms.
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml
+  note: Assigned prompt packages and opaque create-only slots are now deterministic, but the agent access policy is still
+    unbound; therefore repository metadata and the other operator-side payload are not yet technically unreachable.
 - id: FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED
   status: open
   severity: blocking
@@ -254,7 +249,7 @@ runtime_binding:
     treatment:
       profile_id: unbound-shared-runtime
 workspace_session_isolation:
-  binding_status: unbound
+  binding_status: bound
   same_execution_seed_required: true
   shared_writable_workspace_forbidden: true
   shared_session_forbidden: true
@@ -263,33 +258,42 @@ workspace_session_isolation:
       arm_id: control
       execution_seed: run-004-rest-api-v1-empty-workspace
       seed_hash: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
-      workspace_path: null
-      session_id: null
-      temp_dir: null
-      cache_dir: null
-      port_assignment: null
-      clean_start_state: false
-      allowed_paths: []
-      forbidden_paths: []
-      cleanup_rule: null
+      workspace_path: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/workspace
+      session_id: session-3bd68f058a093213
+      temp_dir: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/tmp
+      cache_dir: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/cache
+      port_assignment: loopback-lease-6f9e334b7e0e
+      clean_start_state: true
+      allowed_paths:
+      - /tmp/vibe-lab-run004-v1/node-287d6079ef6a/workspace
+      forbidden_paths:
+      - /tmp/vibe-lab-run004-v1/node-287d6079ef6a/delivery
+      - /tmp/vibe-lab-run004-v1/node-23ec2b8accb3
+      cleanup_rule: remove complete opaque slot root after evidence capture; refuse pre-existing slot root
       execution_seed_kind: empty_directory
       execution_seed_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml
     treatment:
       arm_id: treatment
       execution_seed: run-004-rest-api-v1-empty-workspace
       seed_hash: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
-      workspace_path: null
-      session_id: null
-      temp_dir: null
-      cache_dir: null
-      port_assignment: null
-      clean_start_state: false
-      allowed_paths: []
-      forbidden_paths: []
-      cleanup_rule: null
+      workspace_path: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/workspace
+      session_id: session-517d942523a37dac
+      temp_dir: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/tmp
+      cache_dir: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/cache
+      port_assignment: loopback-lease-95e32bac7bd0
+      clean_start_state: true
+      allowed_paths:
+      - /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/workspace
+      forbidden_paths:
+      - /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/delivery
+      - /tmp/vibe-lab-run004-v1/node-287d6079ef6a
+      cleanup_rule: remove complete opaque slot root after evidence capture; refuse pre-existing slot root
       execution_seed_kind: empty_directory
       execution_seed_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml
-  evidence: []
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-evidence.yml
+  isolation_plan_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml
+  isolation_plan_sha256: aa0c5a41ecfe7bb336fcf8a41c3effd427e013abc10463bdc51b0a3a4085e131
 visibility_boundary:
   boundary_status: unresolved
   agent_sees_only_assigned_prompt: false
@@ -297,7 +301,7 @@ visibility_boundary:
   arm_labels_hidden: false
   hypothesis_hidden: false
   other_arm_artifacts_hidden: false
-  path_names_role_neutral: false
+  path_names_role_neutral: true
   repo_metadata_reconstruction_prevented: false
   normal_repo_read_access_can_reconstruct_experiment: true
   evidence: []
@@ -319,14 +323,14 @@ prompt_delivery:
       shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
       overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md
       payload_sha256: 4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e
-      only_assigned_payload_delivered: false
+      only_assigned_payload_delivered: true
     treatment:
       arm_id: treatment
       benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
       shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
       overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md
       payload_sha256: 7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d
-      only_assigned_payload_delivered: false
+      only_assigned_payload_delivered: true
 harness:
   binding_status: unresolved
   harness_id: null
@@ -416,7 +420,11 @@ metric_operationalization:
     agent_report_alone_sufficient: false
     mechanism: null
     evidence: []
-evidence_registry: []
+evidence_registry:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-evidence.yml
+  sha256: 5d107280e96912e6ba03ba2b049d70798e2f25a163a9306d47eadcc124ae8649
+  kinds:
+  - workspace_isolation
 evidence:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   kind: frozen_condition_design

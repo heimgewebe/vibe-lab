@@ -1,0 +1,12 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-workspace-session-isolation-v1
+synthetic_fixture: false
+claims:
+- kind: workspace_isolation
+  status: verified
+  subject: Run-004 create-only opaque workspace and session materializer
+  value: The canonical plan and tested materializer create two distinct opaque slot roots from the identical content-bound
+    seed; bind unique workspace, session, temp, cache, and loopback lease identifiers; refuse pre-existing output; and package
+    exactly one assigned prompt payload per slot. This evidence does not claim that repository-wide read access is already
+    prevented.

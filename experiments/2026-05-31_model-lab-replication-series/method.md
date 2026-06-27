@@ -134,3 +134,9 @@ This is a pre-execution readiness state only. No Run-004 arm was executed, no re
 Iteration 17 binds both future Run-004 arms to the same deterministic execution seed: `run-004-rest-api-v1-empty-workspace`. The seed kind is `empty_directory`, so materialization produces a fresh workspace containing no files. This avoids choosing Express or Fastify, prescribing a source layout, or exposing repository-level experiment metadata through the starting workspace.
 
 The seed manifest is validated and can be materialized by `scripts/docmeta/build_model_lab_execution_seed.py`. Its canonical content hash is the SHA-256 of the empty manifest stream (`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). This closes `EXECUTION_SEED_UNRESOLVED` only. Session/workspace isolation, assigned-prompt delivery, model/runtime binding, harness binding, and execution authorization remain unresolved. No Run-004 arm was executed.
+
+## Run-004 opaque workspace and session preparation
+
+Iteration 18 adds a create-only materializer for two opaque Run-004 slots. Each slot receives the same content-bound empty seed, a distinct workspace/session/temp/cache/loopback-lease identity, and exactly one assigned prompt payload assembled from the frozen benchmark, shared condition, and that slot's overlay. Visible path and session names contain no `control` or `treatment` token. Existing output roots are rejected rather than reused.
+
+This closes `SESSION_ISOLATION_UNPROVEN` at the preparation-contract level. It does **not** close `BLINDED_WORKSPACE_UNRESOLVED`: the global filesystem and repository-read policy for the future executing agent remains unbound, so the current artifacts do not claim that repository experiment metadata is already unreachable. No arm was executed.

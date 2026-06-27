@@ -648,6 +648,26 @@
           "items": {
             "$ref": "#/$defs/path"
           }
+        },
+        "isolation_plan_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/path"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "isolation_plan_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
