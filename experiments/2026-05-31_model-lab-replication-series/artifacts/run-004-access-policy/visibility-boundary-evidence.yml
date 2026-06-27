@@ -1,0 +1,13 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-visibility-boundary-enforcement-v1
+synthetic_fixture: false
+claims:
+- kind: visibility_boundary
+  status: verified
+  subject: Run-004 sandbox visibility boundary for assigned slot processes
+  value: The recorded boundary probe shows that each sandboxed diagnostic process receives only its assigned prompt via
+    stdin, can read and write only its own workspace/temp/cache mounts, and cannot see the repository root, host home,
+    delivery directory, other slot root, .git metadata, or a prompt file in the workspace. Visible sandbox path names are
+    role-neutral and the root mount surface contains only the expected sandbox roots. This evidence applies only to
+    processes launched through the bound sandbox launcher.

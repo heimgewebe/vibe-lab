@@ -1,15 +1,15 @@
 schema_version: v1
 artifact_type: model_lab_execution_readiness
 contract_version: run-004-execution-readiness.v1
-triggered_by: user-request-2026-06-27-run-004-workspace-session-isolation
+triggered_by: user-request-2026-06-27-run-004-access-policy
 series_id: 2026-05-31_model-lab-replication-series
 design_id: run-004-condition-contrast
 challenge_version: rest-api-v1
 readiness_bundle_id: run-004-execution-readiness
 bundle_artifact_path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml
 source_captured_at: '2026-06-26T20:00:34.960258Z'
-generated_at: '2026-06-27T07:05:21.789276Z'
-readiness_frozen_at: '2026-06-27T07:05:21.789276Z'
+generated_at: '2026-06-27T11:32:00Z'
+readiness_frozen_at: '2026-06-27T11:32:00Z'
 authorized_at: null
 provenance:
   condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
@@ -53,14 +53,6 @@ blockers:
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   note: Sampling parameters and any documented parameter unavailability are not bound for Run-004.
-- id: BLINDED_WORKSPACE_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml
-  note: Assigned prompt packages and opaque create-only slots are now deterministic, but the agent access policy is still
-    unbound; therefore repository metadata and the other operator-side payload are not yet technically unreachable.
 - id: FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED
   status: open
   severity: blocking
@@ -81,12 +73,6 @@ blockers:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
   note: No reliable mutation/event trace exists to prove treatment specification completeness before first implementation
     mutation.
-- id: ACCESS_POLICY_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 tool inventory and filesystem, shell, network, and connector access policies are not bound.
 - id: RUNTIME_ENVIRONMENT_UNRESOLVED
   status: open
   severity: blocking
@@ -114,6 +100,29 @@ blockers:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   note: Run-004 is designed to address weak_condition_contrast later, but no execution or assessment has occurred, so the
     blocker remains open.
+access_policy:
+  binding_status: bound
+  policy_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml
+  policy_sha256: 8f7bece9dbfc3a48c49cd5fa504394640a02e6250e35be2e21fb69ea4afaa1fe
+  launcher_ref: scripts/docmeta/run_model_lab_run004_sandbox.py
+  launcher_sha256: 817ad51cec508812f795c972ee55090d39c80152d424d41cd3c29a91a14d0019
+  probe_runner_ref: scripts/docmeta/probe_model_lab_run004_access_policy.py
+  probe_runner_sha256: f3d8c27fe50cdc1094ba1eb21c12785dc46078c725a8b2ec16c2a9bbf068f734
+  boundary_probe_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/boundary-probe.json
+  boundary_probe_sha256: 99015c6af2cb8ebca2e3c66e1d7ab69d71c02d1402958fb65dc3fb56dbf86de7
+  freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/freeze-manifest.yml
+  freeze_manifest_sha256: a18f2d5b1eb7617c6c1fce1154302071869ccf8c506aab4f770220ced93a8744
+  access_policy_evidence: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+  visibility_boundary_evidence: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/visibility-boundary-evidence.yml
+  validation:
+    policy_bundle_valid: true
+    live_negative_probe_passed: true
+    content_hashes_match: true
+    stdin_only_prompt_delivery: true
+    network_denied_eperm: true
+    namespace_escape_denied_eperm: true
+    io_uring_setup_denied_eperm: true
+    new_mount_api_fsopen_denied_eperm: true
 runtime_binding:
   binding_status: unbound
   same_runtime_across_arms_required: true
@@ -153,28 +162,38 @@ runtime_binding:
     value: null
     evidence: []
     reason: No Run-004 system/developer context identity frozen.
-  available_tools: []
+  available_tools:
+  - filesystem
+  - shell
   permissions:
     filesystem:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: File access boundary not bound.
+      status: bound
+      value: 'sandbox filesystem: /workspace read-write, /tmp read-write, /cache read-write, /usr read-only, optional runtime
+        compatibility roots read-only; repository, host home, delivery directory, other slot, and policy/evidence paths are
+        not mounted'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+      reason: null
     shell:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Shell rights not bound.
+      status: bound
+      value: argv-only command execution through the bound Bubblewrap/libseccomp launcher; executable path must be absolute
+        under /usr/bin or /bin; shell string evaluation is forbidden
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+      reason: null
     network:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Network policy not bound.
+      status: bound
+      value: network, io_uring, and new mount-API syscalls are denied with EPERM by the bound libseccomp filter before
+        child exec; --share-net is only a Bubblewrap compatibility measure
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+      reason: null
     connectors:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Connector rights not bound.
+      status: bound
+      value: no connectors are mounted or configured inside the sandbox environment
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+      reason: null
   sampling:
     temperature:
       status: unresolved
@@ -295,16 +314,17 @@ workspace_session_isolation:
   isolation_plan_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml
   isolation_plan_sha256: aa0c5a41ecfe7bb336fcf8a41c3effd427e013abc10463bdc51b0a3a4085e131
 visibility_boundary:
-  boundary_status: unresolved
-  agent_sees_only_assigned_prompt: false
-  other_overlay_hidden: false
-  arm_labels_hidden: false
-  hypothesis_hidden: false
-  other_arm_artifacts_hidden: false
+  boundary_status: verified
+  agent_sees_only_assigned_prompt: true
+  other_overlay_hidden: true
+  arm_labels_hidden: true
+  hypothesis_hidden: true
+  other_arm_artifacts_hidden: true
   path_names_role_neutral: true
-  repo_metadata_reconstruction_prevented: false
-  normal_repo_read_access_can_reconstruct_experiment: true
-  evidence: []
+  repo_metadata_reconstruction_prevented: true
+  normal_repo_read_access_can_reconstruct_experiment: false
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/visibility-boundary-evidence.yml
 prompt_delivery:
   binding_status: bound
   assembly_rule: strip exactly one final LF from each component, join components with separator, append one final LF
@@ -425,6 +445,14 @@ evidence_registry:
   sha256: 5d107280e96912e6ba03ba2b049d70798e2f25a163a9306d47eadcc124ae8649
   kinds:
   - workspace_isolation
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+  sha256: 5af786026f385609cde08a66202cb61e929b30e218c7ee1af9221ee2b088cf30
+  kinds:
+  - access_policy
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/visibility-boundary-evidence.yml
+  sha256: 86987b3ef18d5a3b47df49b4036ff029b7555d33ee4b4ecf175cdeba47e3911d
+  kinds:
+  - visibility_boundary
 evidence:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   kind: frozen_condition_design
@@ -432,6 +460,16 @@ evidence:
   kind: design_freeze_manifest
 - path: experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
   kind: assessment_blocker_context
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml
+  kind: access_policy
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/boundary-probe.json
+  kind: access_policy_probe
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/freeze-manifest.yml
+  kind: access_policy_freeze
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
+  kind: access_policy_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/visibility-boundary-evidence.yml
+  kind: visibility_boundary_evidence
 required_non_claims:
 - run_004_executed
 - run_004_result_measured

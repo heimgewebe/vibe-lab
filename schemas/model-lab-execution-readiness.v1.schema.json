@@ -22,6 +22,7 @@
     "provenance",
     "state",
     "blockers",
+    "access_policy",
     "runtime_binding",
     "workspace_session_isolation",
     "visibility_boundary",
@@ -97,6 +98,9 @@
       "items": {
         "$ref": "#/$defs/blocker"
       }
+    },
+    "access_policy": {
+      "$ref": "#/$defs/accessPolicyBinding"
     },
     "runtime_binding": {
       "$ref": "#/$defs/runtimeBinding"
@@ -559,6 +563,111 @@
         },
         "arms": {
           "$ref": "#/$defs/twoArmProfiles"
+        }
+      }
+    },
+    "accessPolicyBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_status",
+        "policy_ref",
+        "policy_sha256",
+        "launcher_ref",
+        "launcher_sha256",
+        "probe_runner_ref",
+        "probe_runner_sha256",
+        "boundary_probe_ref",
+        "boundary_probe_sha256",
+        "freeze_manifest_ref",
+        "freeze_manifest_sha256",
+        "access_policy_evidence",
+        "visibility_boundary_evidence",
+        "validation"
+      ],
+      "properties": {
+        "binding_status": {
+          "type": "string",
+          "enum": [
+            "unbound",
+            "bound"
+          ]
+        },
+        "policy_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "launcher_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "launcher_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "probe_runner_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "probe_runner_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "boundary_probe_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "boundary_probe_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "freeze_manifest_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "freeze_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "access_policy_evidence": {
+          "$ref": "#/$defs/path"
+        },
+        "visibility_boundary_evidence": {
+          "$ref": "#/$defs/path"
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "policy_bundle_valid",
+            "live_negative_probe_passed",
+            "content_hashes_match",
+            "stdin_only_prompt_delivery",
+            "network_denied_eperm",
+            "namespace_escape_denied_eperm",
+            "io_uring_setup_denied_eperm",
+            "new_mount_api_fsopen_denied_eperm"
+          ],
+          "properties": {
+            "policy_bundle_valid": {
+              "type": "boolean"
+            },
+            "live_negative_probe_passed": {
+              "type": "boolean"
+            },
+            "content_hashes_match": {
+              "type": "boolean"
+            },
+            "stdin_only_prompt_delivery": {
+              "type": "boolean"
+            },
+            "network_denied_eperm": {
+              "type": "boolean"
+            },
+            "namespace_escape_denied_eperm": {
+              "type": "boolean"
+            },
+            "io_uring_setup_denied_eperm": {
+              "type": "boolean"
+            },
+            "new_mount_api_fsopen_denied_eperm": {
+              "type": "boolean"
+            }
+          }
         }
       }
     },

@@ -1,0 +1,164 @@
+{
+  "schema_version": "v1",
+  "artifact_type": "model_lab_access_policy_probe",
+  "contract_version": "run-004-access-policy-probe.v1",
+  "probe_id": "run-004-access-policy-boundary-probe-v1",
+  "synthetic_fixture": false,
+  "triggered_by": "user-request-2026-06-27-run-004-access-policy",
+  "generated_at": "2026-06-27T11:30:00Z",
+  "policy_ref": "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml",
+  "policy_sha256": "8f7bece9dbfc3a48c49cd5fa504394640a02e6250e35be2e21fb69ea4afaa1fe",
+  "launcher_ref": "scripts/docmeta/run_model_lab_run004_sandbox.py",
+  "launcher_sha256": "817ad51cec508812f795c972ee55090d39c80152d424d41cd3c29a91a14d0019",
+  "isolation_plan_ref": "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml",
+  "isolation_plan_sha256": "aa0c5a41ecfe7bb336fcf8a41c3effd427e013abc10463bdc51b0a3a4085e131",
+  "materialized_runtime_root": "/tmp/vibe-lab-run004-v1",
+  "command": {
+    "executable": "/usr/bin/python3",
+    "argv_only": true,
+    "shell_eval_used": false,
+    "model_process_started": false,
+    "agent_process_started": false,
+    "tty": false
+  },
+  "cleanup": {
+    "canonical_runtime_root_preexisting": false,
+    "runtime_root_created_by_probe": true,
+    "runtime_root_removed_by_probe": true
+  },
+  "arms": {
+    "control": {
+      "slot_id": "node-287d6079ef6a",
+      "exit_code": 0,
+      "expected_prompt_sha256": "4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e",
+      "observed_prompt_sha256": "4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e",
+      "checks": {
+        "assigned_prompt_stdin_byte_equal": true,
+        "delivery_not_visible": true,
+        "environment_is_minimal": true,
+        "home_not_visible": true,
+        "io_uring_setup_denied_eperm": true,
+        "namespace_escape_denied_eperm": true,
+        "network_socket_denied_eperm": true,
+        "new_mount_api_fsopen_denied_eperm": true,
+        "other_slot_not_visible": true,
+        "repo_root_not_visible": true,
+        "root_mount_surface_has_no_unexpected_host_paths": true,
+        "visible_paths_role_tokens_absent": true,
+        "workspace_has_no_git": true,
+        "workspace_has_no_prompt_file": true,
+        "workspace_read_write": true
+      },
+      "observed": {
+        "environment": {
+          "HOME": "/workspace",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PATH": "/usr/bin:/bin",
+          "TMPDIR": "/tmp",
+          "XDG_CACHE_HOME": "/cache"
+        },
+        "io_uring_setup_errno": "EPERM",
+        "namespace_escape_errno": "EPERM",
+        "network_socket_errno": "EPERM",
+        "new_mount_api_fsopen_errno": "EPERM",
+        "root_entries": [
+          "bin",
+          "cache",
+          "dev",
+          "etc",
+          "lib",
+          "lib64",
+          "proc",
+          "tmp",
+          "usr",
+          "workspace"
+        ],
+        "visible_path_sample": [
+          "/",
+          "/bin",
+          "/cache",
+          "/dev",
+          "/etc",
+          "/lib",
+          "/lib64",
+          "/proc",
+          "/tmp",
+          "/usr",
+          "/workspace"
+        ]
+      }
+    },
+    "treatment": {
+      "slot_id": "node-23ec2b8accb3",
+      "exit_code": 0,
+      "expected_prompt_sha256": "7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d",
+      "observed_prompt_sha256": "7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d",
+      "checks": {
+        "assigned_prompt_stdin_byte_equal": true,
+        "delivery_not_visible": true,
+        "environment_is_minimal": true,
+        "home_not_visible": true,
+        "io_uring_setup_denied_eperm": true,
+        "namespace_escape_denied_eperm": true,
+        "network_socket_denied_eperm": true,
+        "new_mount_api_fsopen_denied_eperm": true,
+        "other_slot_not_visible": true,
+        "repo_root_not_visible": true,
+        "root_mount_surface_has_no_unexpected_host_paths": true,
+        "visible_paths_role_tokens_absent": true,
+        "workspace_has_no_git": true,
+        "workspace_has_no_prompt_file": true,
+        "workspace_read_write": true
+      },
+      "observed": {
+        "environment": {
+          "HOME": "/workspace",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PATH": "/usr/bin:/bin",
+          "TMPDIR": "/tmp",
+          "XDG_CACHE_HOME": "/cache"
+        },
+        "io_uring_setup_errno": "EPERM",
+        "namespace_escape_errno": "EPERM",
+        "network_socket_errno": "EPERM",
+        "new_mount_api_fsopen_errno": "EPERM",
+        "root_entries": [
+          "bin",
+          "cache",
+          "dev",
+          "etc",
+          "lib",
+          "lib64",
+          "proc",
+          "tmp",
+          "usr",
+          "workspace"
+        ],
+        "visible_path_sample": [
+          "/",
+          "/bin",
+          "/cache",
+          "/dev",
+          "/etc",
+          "/lib",
+          "/lib64",
+          "/proc",
+          "/tmp",
+          "/usr",
+          "/workspace"
+        ]
+      }
+    }
+  },
+  "non_claims": [
+    "run_004_executed",
+    "model_process_started",
+    "agent_process_started",
+    "runtime_model_agent_sampling_bound",
+    "result_assessment_allowed",
+    "comparison_ready",
+    "general_container_security"
+  ]
+}

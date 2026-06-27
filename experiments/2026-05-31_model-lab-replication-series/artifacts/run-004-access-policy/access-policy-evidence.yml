@@ -1,0 +1,14 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-access-policy-enforcement-v1
+synthetic_fixture: false
+claims:
+- kind: access_policy
+  status: verified
+  subject: Run-004 access-policy launcher and sandbox enforcement
+  value: The Run-004 access policy is bound to the exact sandbox launcher bytes, the exact workspace-isolation plan,
+    Bubblewrap 0.6.1, and a libseccomp BPF deny list for network, io_uring, namespace, mount, and escape-related syscalls.
+    The recorded live probe starts only a neutral Python diagnostic program via argv and stdin, observes EPERM for socket
+    creation, namespace escape, io_uring_setup, and fsopen, and confirms the minimal sandbox environment. This evidence
+    does not authorize Run-004 execution and does not claim general host/container security outside processes started
+    through this launcher.

@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-access-policy-probe.v1.schema.json",
+  "title": "Model-Lab Run-004 Access Policy Probe v1",
+  "description": "Closed negative-probe result contract for the Run-004 access-policy sandbox. The probe starts only a neutral diagnostic program through the sandbox launcher.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "contract_version",
+    "probe_id",
+    "synthetic_fixture",
+    "triggered_by",
+    "generated_at",
+    "policy_ref",
+    "policy_sha256",
+    "launcher_ref",
+    "launcher_sha256",
+    "isolation_plan_ref",
+    "isolation_plan_sha256",
+    "materialized_runtime_root",
+    "command",
+    "cleanup",
+    "arms",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "v1"},
+    "artifact_type": {"type": "string", "const": "model_lab_access_policy_probe"},
+    "contract_version": {"type": "string", "const": "run-004-access-policy-probe.v1"},
+    "probe_id": {"$ref": "#/$defs/token"},
+    "synthetic_fixture": {"type": "boolean"},
+    "triggered_by": {"$ref": "#/$defs/nonBlank"},
+    "generated_at": {"$ref": "#/$defs/rfc3339"},
+    "policy_ref": {"$ref": "#/$defs/repoPath"},
+    "policy_sha256": {"$ref": "#/$defs/sha256"},
+    "launcher_ref": {"$ref": "#/$defs/repoPath"},
+    "launcher_sha256": {"$ref": "#/$defs/sha256"},
+    "isolation_plan_ref": {"$ref": "#/$defs/repoPath"},
+    "isolation_plan_sha256": {"$ref": "#/$defs/sha256"},
+    "materialized_runtime_root": {"$ref": "#/$defs/absolutePath"},
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executable",
+        "argv_only",
+        "shell_eval_used",
+        "model_process_started",
+        "agent_process_started",
+        "tty"
+      ],
+      "properties": {
+        "executable": {"type": "string", "const": "/usr/bin/python3"},
+        "argv_only": {"type": "boolean", "const": true},
+        "shell_eval_used": {"type": "boolean", "const": false},
+        "model_process_started": {"type": "boolean", "const": false},
+        "agent_process_started": {"type": "boolean", "const": false},
+        "tty": {"type": "boolean", "const": false}
+      }
+    },
+    "cleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_runtime_root_preexisting",
+        "runtime_root_created_by_probe",
+        "runtime_root_removed_by_probe"
+      ],
+      "properties": {
+        "canonical_runtime_root_preexisting": {"type": "boolean", "const": false},
+        "runtime_root_created_by_probe": {"type": "boolean", "const": true},
+        "runtime_root_removed_by_probe": {"type": "boolean", "const": true}
+      }
+    },
+    "arms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control", "treatment"],
+      "properties": {
+        "control": {"$ref": "#/$defs/armResult"},
+        "treatment": {"$ref": "#/$defs/armResult"}
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "nonBlank": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rfc3339": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"},
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*[\\u0000-\\u001F\\u007F\\uD800-\\uDFFF])(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+    },
+    "absolutePath": {"type": "string", "minLength": 2, "pattern": "^/[^\\0]+$"},
+    "armResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot_id",
+        "exit_code",
+        "expected_prompt_sha256",
+        "observed_prompt_sha256",
+        "checks",
+        "observed"
+      ],
+      "properties": {
+        "slot_id": {"$ref": "#/$defs/token"},
+        "exit_code": {"type": "integer", "const": 0},
+        "expected_prompt_sha256": {"$ref": "#/$defs/sha256"},
+        "observed_prompt_sha256": {"$ref": "#/$defs/sha256"},
+        "checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "assigned_prompt_stdin_byte_equal",
+            "workspace_read_write",
+            "repo_root_not_visible",
+            "home_not_visible",
+            "delivery_not_visible",
+            "other_slot_not_visible",
+            "root_mount_surface_has_no_unexpected_host_paths",
+            "environment_is_minimal",
+            "network_socket_denied_eperm",
+            "namespace_escape_denied_eperm",
+            "io_uring_setup_denied_eperm",
+            "new_mount_api_fsopen_denied_eperm",
+            "visible_paths_role_tokens_absent",
+            "workspace_has_no_git",
+            "workspace_has_no_prompt_file"
+          ],
+          "properties": {
+            "assigned_prompt_stdin_byte_equal": {"type": "boolean", "const": true},
+            "workspace_read_write": {"type": "boolean", "const": true},
+            "repo_root_not_visible": {"type": "boolean", "const": true},
+            "home_not_visible": {"type": "boolean", "const": true},
+            "delivery_not_visible": {"type": "boolean", "const": true},
+            "other_slot_not_visible": {"type": "boolean", "const": true},
+            "root_mount_surface_has_no_unexpected_host_paths": {"type": "boolean", "const": true},
+            "environment_is_minimal": {"type": "boolean", "const": true},
+            "network_socket_denied_eperm": {"type": "boolean", "const": true},
+            "namespace_escape_denied_eperm": {"type": "boolean", "const": true},
+            "io_uring_setup_denied_eperm": {"type": "boolean", "const": true},
+            "new_mount_api_fsopen_denied_eperm": {"type": "boolean", "const": true},
+            "visible_paths_role_tokens_absent": {"type": "boolean", "const": true},
+            "workspace_has_no_git": {"type": "boolean", "const": true},
+            "workspace_has_no_prompt_file": {"type": "boolean", "const": true}
+          }
+        },
+        "observed": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "environment",
+            "root_entries",
+            "visible_path_sample",
+            "network_socket_errno",
+            "namespace_escape_errno",
+            "io_uring_setup_errno",
+            "new_mount_api_fsopen_errno"
+          ],
+          "properties": {
+            "environment": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            },
+            "root_entries": {
+              "type": "array",
+              "items": {"type": "string"},
+              "uniqueItems": true
+            },
+            "visible_path_sample": {
+              "type": "array",
+              "items": {"type": "string"},
+              "uniqueItems": true
+            },
+            "network_socket_errno": {"type": "string", "const": "EPERM"},
+            "namespace_escape_errno": {"type": "string", "const": "EPERM"},
+            "io_uring_setup_errno": {"type": "string", "const": "EPERM"},
+            "new_mount_api_fsopen_errno": {"type": "string", "const": "EPERM"}
+          }
+        }
+      }
+    }
+  }
+}

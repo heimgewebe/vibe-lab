@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: synthetic-run004-visibility-boundary-evidence
+synthetic_fixture: true
+claims:
+- kind: visibility_boundary
+  status: verified
+  subject: synthetic fixture visibility boundary
+  value: fixture-only verified visibility boundary value

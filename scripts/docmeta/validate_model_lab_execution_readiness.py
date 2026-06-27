@@ -40,6 +40,20 @@ FREEZE_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness-freeze-manifest
 EVIDENCE_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness-evidence.v1.schema.json"
 SEED_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-seed-manifest.v1.schema.json"
 WORKSPACE_ISOLATION_PLAN_SCHEMA_PATH = SCHEMA_DIR / "model-lab-workspace-isolation-plan.v1.schema.json"
+ACCESS_POLICY_PATH = (
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/"
+    "run-004-access-policy/access-policy.yml"
+)
+ACCESS_POLICY_FREEZE_PATH = (
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/"
+    "run-004-access-policy/freeze-manifest.yml"
+)
+ACCESS_POLICY_BOUNDARY_PROBE_PATH = (
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/"
+    "run-004-access-policy/boundary-probe.json"
+)
+ACCESS_POLICY_PROBE_RUNNER_PATH = "scripts/docmeta/probe_model_lab_run004_access_policy.py"
+ACCESS_POLICY_LAUNCHER_PATH = "scripts/docmeta/run_model_lab_run004_sandbox.py"
 
 RUN_004_SERIES_ID = "2026-05-31_model-lab-replication-series"
 RUN_004_DESIGN_ID = "run-004-condition-contrast"
@@ -788,6 +802,74 @@ def _canonical_metric_rules(repo_root: Path) -> tuple[dict[str, str], list[str]]
     return rules, problems
 
 
+def _access_policy_binding_errors(
+    data: dict,
+    registry: dict[str, set[str]],
+    repo_root: Path,
+    path: Path,
+) -> list[str]:
+    ap = data.get("access_policy") or {}
+    problems: list[str] = []
+    fixture_candidate = _is_fixture_candidate(path, repo_root)
+    if ap.get("binding_status") != "bound":
+        return ["access_policy.binding_status must be bound"]
+    validation = ap.get("validation") or {}
+    for field in (
+        "policy_bundle_valid",
+        "live_negative_probe_passed",
+        "content_hashes_match",
+        "stdin_only_prompt_delivery",
+        "network_denied_eperm",
+        "namespace_escape_denied_eperm",
+        "io_uring_setup_denied_eperm",
+        "new_mount_api_fsopen_denied_eperm",
+    ):
+        if validation.get(field) is not True:
+            problems.append(f"access_policy.validation.{field} must be true")
+    for ref_key, hash_key in (
+        ("policy_ref", "policy_sha256"),
+        ("launcher_ref", "launcher_sha256"),
+        ("probe_runner_ref", "probe_runner_sha256"),
+        ("boundary_probe_ref", "boundary_probe_sha256"),
+        ("freeze_manifest_ref", "freeze_manifest_sha256"),
+    ):
+        resolved, code = _load_ref(str(ap.get(ref_key, "")), repo_root)
+        if code is not None or resolved is None:
+            problems.append(f"access_policy.{ref_key} is not a safe existing file")
+            continue
+        if _sha256_of(resolved) != ap.get(hash_key):
+            problems.append(f"access_policy.{hash_key} mismatch")
+    if not _evidence_paths_registered([ap.get("access_policy_evidence")], registry, "access_policy"):
+        problems.append("access_policy.access_policy_evidence must be hash-registered access_policy evidence")
+    if not _evidence_paths_registered([ap.get("visibility_boundary_evidence")], registry, "visibility_boundary"):
+        problems.append(
+            "access_policy.visibility_boundary_evidence must be hash-registered visibility_boundary evidence"
+        )
+    if fixture_candidate:
+        return problems
+    expected_refs = {
+        "policy_ref": ACCESS_POLICY_PATH,
+        "launcher_ref": ACCESS_POLICY_LAUNCHER_PATH,
+        "probe_runner_ref": ACCESS_POLICY_PROBE_RUNNER_PATH,
+        "boundary_probe_ref": ACCESS_POLICY_BOUNDARY_PROBE_PATH,
+        "freeze_manifest_ref": ACCESS_POLICY_FREEZE_PATH,
+    }
+    for field, expected in expected_refs.items():
+        if ap.get(field) != expected:
+            problems.append(f"real readiness access_policy.{field} must be {expected!r}")
+    try:
+        import validate_model_lab_run004_access_policy as access_validator
+    except ImportError as exc:
+        raise ToolError(f"cannot import Run-004 access-policy validator: {exc}") from exc
+    try:
+        bundle_problems = access_validator.validate_bundle(repo_root / ACCESS_POLICY_PATH)
+    except Exception as exc:  # noqa: BLE001 - fail closed across parser/tool errors
+        raise ToolError(f"access-policy bundle validation failed closed: {exc}") from exc
+    if bundle_problems:
+        problems.extend(f"access-policy bundle: {problem}" for problem in bundle_problems)
+    return problems
+
+
 def _required_blocker_ids(
     data: dict,
     registry: dict[str, set[str]],
@@ -825,6 +907,7 @@ def _required_blocker_ids(
             not _binding_is_bound(permissions.get(name), registry, "access_policy")
             for name in READY_REQUIRED_PERMISSION_FIELDS
         )
+        or _access_policy_binding_errors(data, registry, repo_root, path)
     ):
         required.add("ACCESS_POLICY_UNRESOLVED")
     environment = runtime.get("environment") or {}
@@ -843,7 +926,7 @@ def _required_blocker_ids(
         required.add("EXECUTION_SEED_UNRESOLVED")
     if _session_isolation_errors(data, registry, repo_root, path):
         required.add("SESSION_ISOLATION_UNPROVEN")
-    if _ready_visibility_errors(data, registry) or _prompt_delivery_errors(
+    if _access_policy_binding_errors(data, registry, repo_root, path) or _ready_visibility_errors(data, registry) or _prompt_delivery_errors(
         data, repo_root, require_delivery_isolation=True
     ):
         required.add("BLINDED_WORKSPACE_UNRESOLVED")
@@ -1522,6 +1605,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
             errors.append(format_error("EXECUTION_READINESS_REQUIRES_VALID_FREEZE", path, "; ".join(freeze_problems)))
     if data.get("state", {}).get("readiness_status") == "ready":
         ready_problems = []
+        ready_problems += _access_policy_binding_errors(data, registry, repo_root, path)
         ready_problems += _ready_runtime_errors(data, registry)
         ready_problems += _ready_workspace_errors(data, registry, repo_root, path)
         ready_problems += _ready_visibility_errors(data, registry)

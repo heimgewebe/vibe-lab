@@ -1,0 +1,5 @@
+schema_version: v1
+artifact_type: synthetic_model_lab_access_policy_fixture
+fixture_id: synthetic-run004-access-policy
+synthetic_fixture: true
+note: Fixture-only file used to hash-bind synthetic readiness access_policy references.

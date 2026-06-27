@@ -197,3 +197,23 @@ Both future Run-004 arms are now bound to the same content-addressed `empty_dire
 The Run-004 preparation surface now deterministically creates two distinct opaque slots from the identical empty seed and packages one assigned prompt per slot. `SESSION_ISOLATION_UNPROVEN` is closed. The prompt-delivery records now state that only the assigned payload is packaged for each slot.
 
 `BLINDED_WORKSPACE_UNRESOLVED` remains open because filesystem and repository-read enforcement is part of the still-unbound access policy. The result therefore avoids the stronger claim that agents cannot reconstruct experiment metadata. Runtime/model/agent/sampling/access bindings, harness, forced-500 trigger, first-mutation tracing, execution order, metric operationalization, authorization, execution, comparison, and assessment remain unresolved.
+
+## State after iteration 20 — access policy and visibility boundary hardening
+
+A content-bound Bubblewrap/libseccomp launcher, live negative probe, closed schemas, evidence files, and freeze manifest now bind the Run-004 access policy. Iteration 20 hardens the deny list for `io_uring_*` and newer mount-API syscalls; the live negative probe includes low-level EPERM checks for socket creation, namespace escape, `io_uring_setup`, and `fsopen`. `ACCESS_POLICY_UNRESOLVED` and `BLINDED_WORKSPACE_UNRESOLVED` are no longer open readiness blockers.
+
+The real readiness state remains `blocked`, `authorization_status=not_authorized`, `runtime_values_bound=false`, `run_004_execution_allowed=false`, `run_004_executed=false`, `result_assessment_allowed=false`, and `comparison_ready=false`.
+
+Open blocking readiness blockers remain:
+
+- `MODEL_BINDING_UNRESOLVED`
+- `AGENT_BINDING_UNRESOLVED`
+- `SAMPLING_BINDING_UNRESOLVED`
+- `FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED`
+- `FORCED_500_TRIGGER_UNRESOLVED`
+- `FIRST_MUTATION_TRACE_UNRESOLVED`
+- `RUNTIME_ENVIRONMENT_UNRESOLVED`
+- `EXECUTION_ORDER_UNRESOLVED`
+- `METRIC_OPERATIONALIZATION_UNRESOLVED`
+
+`WEAK_CONDITION_CONTRAST_OPEN` remains informational in the readiness artifact and a methodological blocker for later assessment. No Run-004 arm was executed, no model or agent process was started, and no measurement, comparison, result, quality, security-readiness, adoption, promotion, or production claim is derived.

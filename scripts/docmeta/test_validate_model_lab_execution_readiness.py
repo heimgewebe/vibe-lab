@@ -637,7 +637,8 @@ class ExecutionReadinessTests(unittest.TestCase):
         ids = {item["id"] for item in data["blockers"]}
         self.assertNotIn("EXECUTION_SEED_UNRESOLVED", ids)
         self.assertNotIn("SESSION_ISOLATION_UNPROVEN", ids)
-        self.assertIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
+        self.assertNotIn("ACCESS_POLICY_UNRESOLVED", ids)
+        self.assertNotIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
         for role in ("control", "treatment"):
             arm = data["workspace_session_isolation"]["arms"][role]
             self.assertEqual("empty_directory", arm["execution_seed_kind"])
@@ -666,21 +667,59 @@ class ExecutionReadinessTests(unittest.TestCase):
             "EXECUTION_READINESS_REQUIRES_VALID_FREEZE",
         )
 
-    def test_real_artifact_closes_session_isolation_only(self):
+    def test_real_artifact_closes_only_seed_session_access_and_visibility_blockers(self):
         data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
         ids = {item["id"] for item in data["blockers"]}
+        self.assertEqual("blocked", data["state"]["readiness_status"])
+        self.assertEqual("not_authorized", data["state"]["authorization_status"])
+        self.assertFalse(data["state"]["run_004_execution_allowed"])
+        self.assertFalse(data["state"]["run_004_executed"])
+        self.assertNotIn("EXECUTION_SEED_UNRESOLVED", ids)
         self.assertNotIn("SESSION_ISOLATION_UNPROVEN", ids)
-        self.assertIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
+        self.assertNotIn("ACCESS_POLICY_UNRESOLVED", ids)
+        self.assertNotIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
+        for expected in {
+            "MODEL_BINDING_UNRESOLVED",
+            "AGENT_BINDING_UNRESOLVED",
+            "SAMPLING_BINDING_UNRESOLVED",
+            "FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED",
+            "FORCED_500_TRIGGER_UNRESOLVED",
+            "FIRST_MUTATION_TRACE_UNRESOLVED",
+            "RUNTIME_ENVIRONMENT_UNRESOLVED",
+            "EXECUTION_ORDER_UNRESOLVED",
+            "METRIC_OPERATIONALIZATION_UNRESOLVED",
+        }:
+            self.assertIn(expected, ids)
         self.assertEqual("bound", data["workspace_session_isolation"]["binding_status"])
-        self.assertEqual("unresolved", data["visibility_boundary"]["boundary_status"])
+        self.assertEqual("bound", data["access_policy"]["binding_status"])
+        self.assertEqual("verified", data["visibility_boundary"]["boundary_status"])
 
-    def test_real_prompt_packages_are_assigned_but_visibility_is_not_overclaimed(self):
+    def test_real_prompt_packages_are_assigned_and_visibility_boundary_is_bound(self):
         data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
         for role in ("control", "treatment"):
             self.assertTrue(data["prompt_delivery"]["arms"][role]["only_assigned_payload_delivered"])
         self.assertTrue(data["visibility_boundary"]["path_names_role_neutral"])
-        self.assertFalse(data["visibility_boundary"]["repo_metadata_reconstruction_prevented"])
-        self.assertTrue(data["visibility_boundary"]["normal_repo_read_access_can_reconstruct_experiment"])
+        self.assertTrue(data["visibility_boundary"]["repo_metadata_reconstruction_prevented"])
+        self.assertFalse(data["visibility_boundary"]["normal_repo_read_access_can_reconstruct_experiment"])
+        self.assertIn("filesystem", data["runtime_binding"]["available_tools"])
+        self.assertIn("shell", data["runtime_binding"]["available_tools"])
+        self.assertEqual("bound", data["runtime_binding"]["permissions"]["network"]["status"])
+
+    def test_access_policy_hash_drift_reopens_target_blockers(self):
+        def mut(data, _):
+            data["access_policy"]["policy_sha256"] = "0" * 64
+        self.assert_rule(
+            self.build(source=REAL.parent, mutate=mut),
+            "EXECUTION_READINESS_REQUIRES_STATE_MODEL",
+        )
+
+    def test_access_policy_field_drift_reopens_target_blockers(self):
+        def mut(data, _):
+            data["access_policy"]["validation"]["io_uring_setup_denied_eperm"] = False
+        self.assert_rule(
+            self.build(source=REAL.parent, mutate=mut),
+            "EXECUTION_READINESS_REQUIRES_STATE_MODEL",
+        )
 
     def test_real_isolation_plan_is_content_bound(self):
         data = yaml.safe_load(REAL.read_text(encoding="utf-8"))
