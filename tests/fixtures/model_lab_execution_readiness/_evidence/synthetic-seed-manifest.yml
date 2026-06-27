@@ -1,6 +1,7 @@
 schema_version: v1
 artifact_type: model_lab_execution_seed_manifest
 seed_id: synthetic-run004-seed
+seed_kind: file_manifest
 synthetic_fixture: true
 root_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed
 content_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over files)
