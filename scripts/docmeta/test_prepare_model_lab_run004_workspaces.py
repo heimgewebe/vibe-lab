@@ -170,6 +170,16 @@ class Run004WorkspaceIsolationTests(unittest.TestCase):
             self.assertTrue(source.is_dir())
             self.assertTrue(destination.is_dir())
 
+    def test_materializer_hash_drift_is_rejected(self):
+        temp, path = self.write_mutated_plan(
+            lambda data: data.update(materializer_sha256="0" * 64)
+        )
+        try:
+            _, problems = module.validate_plan(path, REPO_ROOT)
+            self.assertTrue(any("materializer_sha256 mismatch" in problem for problem in problems), problems)
+        finally:
+            temp.cleanup()
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

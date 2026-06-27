@@ -17,6 +17,8 @@
     "create_only_if_absent",
     "seed_manifest_ref",
     "seed_manifest_sha256",
+    "materializer_ref",
+    "materializer_sha256",
     "delivery",
     "slots"
   ],
@@ -128,6 +130,12 @@
           "$ref": "#/$defs/slot"
         }
       }
+    },
+    "materializer_ref": {
+      "$ref": "#/$defs/repoPath"
+    },
+    "materializer_sha256": {
+      "$ref": "#/$defs/sha256"
     }
   },
   "$defs": {

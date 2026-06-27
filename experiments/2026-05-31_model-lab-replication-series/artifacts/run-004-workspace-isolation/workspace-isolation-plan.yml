@@ -9,6 +9,8 @@ runtime_root: /tmp/vibe-lab-run004-v1
 create_only_if_absent: true
 seed_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml
 seed_manifest_sha256: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
+materializer_ref: scripts/docmeta/prepare_model_lab_run004_workspaces.py
+materializer_sha256: b2965248ec8121373b191a2ece9fdc8e5e1bd6daeb48106d91871ea1ee96dc6c
 delivery:
   encoding: utf-8
   newline: lf

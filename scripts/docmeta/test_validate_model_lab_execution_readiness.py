@@ -682,6 +682,28 @@ class ExecutionReadinessTests(unittest.TestCase):
         self.assertFalse(data["visibility_boundary"]["repo_metadata_reconstruction_prevented"])
         self.assertTrue(data["visibility_boundary"]["normal_repo_read_access_can_reconstruct_experiment"])
 
+    def test_real_isolation_plan_is_content_bound(self):
+        data = yaml.safe_load(REAL.read_text(encoding="utf-8"))
+        binding = data["workspace_session_isolation"]
+        plan = REPO_ROOT / binding["isolation_plan_ref"]
+        self.assertEqual(_sha(plan), binding["isolation_plan_sha256"])
+
+    def test_isolation_plan_hash_drift_reopens_session_blocker(self):
+        def mut(data, _):
+            data["workspace_session_isolation"]["isolation_plan_sha256"] = "0" * 64
+        self.assert_rule(
+            self.build(source=REAL.parent, mutate=mut),
+            "EXECUTION_READINESS_REQUIRES_STATE_MODEL",
+        )
+
+    def test_isolation_plan_field_drift_reopens_session_blocker(self):
+        def mut(data, _):
+            data["workspace_session_isolation"]["arms"]["control"]["session_id"] += "-drift"
+        self.assert_rule(
+            self.build(source=REAL.parent, mutate=mut),
+            "EXECUTION_READINESS_REQUIRES_STATE_MODEL",
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

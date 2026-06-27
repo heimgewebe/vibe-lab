@@ -39,6 +39,7 @@ SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness.v1.schema.json"
 FREEZE_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness-freeze-manifest.v1.schema.json"
 EVIDENCE_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-readiness-evidence.v1.schema.json"
 SEED_SCHEMA_PATH = SCHEMA_DIR / "model-lab-execution-seed-manifest.v1.schema.json"
+WORKSPACE_ISOLATION_PLAN_SCHEMA_PATH = SCHEMA_DIR / "model-lab-workspace-isolation-plan.v1.schema.json"
 
 RUN_004_SERIES_ID = "2026-05-31_model-lab-replication-series"
 RUN_004_DESIGN_ID = "run-004-condition-contrast"
@@ -632,9 +633,88 @@ def _seed_binding_errors(data: dict, repo_root: Path, path: Path) -> list[str]:
     return problems
 
 
-def _session_isolation_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
+def _workspace_isolation_plan_errors(data: dict, repo_root: Path, path: Path) -> list[str]:
     ws = data.get("workspace_session_isolation") or {}
-    problems = []
+    raw_ref = ws.get("isolation_plan_ref")
+    declared_hash = ws.get("isolation_plan_sha256")
+    fixture_candidate = _is_fixture_candidate(path, repo_root)
+    fields_present = not _is_placeholder(raw_ref) or not _is_placeholder(declared_hash)
+    if not fields_present:
+        if ws.get("binding_status") == "bound" and not fixture_candidate:
+            return ["bound workspace/session isolation must bind isolation_plan_ref and isolation_plan_sha256"]
+        return []
+    problems: list[str] = []
+    if _is_placeholder(raw_ref) or _is_placeholder(declared_hash):
+        return ["isolation_plan_ref and isolation_plan_sha256 must be bound together"]
+    resolved, code = _load_ref(str(raw_ref), repo_root)
+    if code is not None or resolved is None:
+        return ["isolation plan is not a safe existing repository file"]
+    if _sha256_of(resolved) != declared_hash:
+        problems.append("isolation plan sha256 mismatch")
+    try:
+        plan = load_yaml(resolved)
+    except (FileNotFoundError, ValueError) as exc:
+        return problems + [f"isolation plan is invalid or unreadable: {exc}"]
+    schema_problems = list(load_validator(WORKSPACE_ISOLATION_PLAN_SCHEMA_PATH).iter_errors(plan))
+    if schema_problems:
+        detail = "; ".join(
+            f"{'.'.join(str(part) for part in error.absolute_path) or '$'}: {error.message}"
+            for error in sorted(schema_problems, key=_schema_error_sort_key)
+        )
+        return problems + [f"isolation plan schema invalid: {detail}"]
+    if plan.get("synthetic_fixture") is True and not fixture_candidate:
+        problems.append("synthetic isolation plan is forbidden for a real readiness artifact")
+    for field in ("series_id", "design_id", "challenge_version"):
+        if plan.get(field) != data.get(field):
+            problems.append(f"isolation plan {field} must match readiness")
+    materializer_ref = plan.get("materializer_ref")
+    materializer_hash = plan.get("materializer_sha256")
+    materializer_path, materializer_code = _load_ref(str(materializer_ref or ""), repo_root)
+    if materializer_code is not None or materializer_path is None:
+        problems.append("isolation plan materializer_ref is not a safe existing file")
+    elif _sha256_of(materializer_path) != materializer_hash:
+        problems.append("isolation plan materializer_sha256 mismatch")
+    arms = ws.get("arms") or {}
+    plan_slots = plan.get("slots") or {}
+    prompt_arms = (data.get("prompt_delivery") or {}).get("arms") or {}
+    seed_refs = {((arms.get(role) or {}).get("execution_seed_ref")) for role in ("control", "treatment")}
+    seed_hashes = {((arms.get(role) or {}).get("seed_hash")) for role in ("control", "treatment")}
+    if seed_refs != {plan.get("seed_manifest_ref")}:
+        problems.append("isolation plan seed_manifest_ref must match both readiness arms")
+    if seed_hashes != {plan.get("seed_manifest_sha256")}:
+        problems.append("isolation plan seed_manifest_sha256 must match both readiness arms")
+    arm_fields = (
+        "workspace_path",
+        "session_id",
+        "temp_dir",
+        "cache_dir",
+        "port_assignment",
+        "allowed_paths",
+        "forbidden_paths",
+        "cleanup_rule",
+    )
+    prompt_fields = ("benchmark_ref", "shared_condition_ref", "overlay_ref", "payload_sha256")
+    for role in ("control", "treatment"):
+        arm = arms.get(role) or {}
+        slot = plan_slots.get(role) or {}
+        prompt_arm = prompt_arms.get(role) or {}
+        for field in arm_fields:
+            if arm.get(field) != slot.get(field):
+                problems.append(f"workspace_session_isolation.arms.{role}.{field} must match isolation plan")
+        for field in prompt_fields:
+            if prompt_arm.get(field) != slot.get(field):
+                problems.append(f"prompt_delivery.arms.{role}.{field} must match isolation plan")
+    return problems
+
+
+def _session_isolation_errors(
+    data: dict,
+    registry: dict[str, set[str]],
+    repo_root: Path,
+    path: Path,
+) -> list[str]:
+    ws = data.get("workspace_session_isolation") or {}
+    problems = _workspace_isolation_plan_errors(data, repo_root, path)
     if ws.get("binding_status") != "bound":
         problems.append("workspace_session_isolation.binding_status must be bound")
     if not _evidence_paths_registered(ws.get("evidence"), registry, "workspace_isolation"):
@@ -761,7 +841,7 @@ def _required_blocker_ids(
         required.add("RUNTIME_ENVIRONMENT_UNRESOLVED")
     if _seed_binding_errors(data, repo_root, path):
         required.add("EXECUTION_SEED_UNRESOLVED")
-    if _session_isolation_errors(data, registry):
+    if _session_isolation_errors(data, registry, repo_root, path):
         required.add("SESSION_ISOLATION_UNPROVEN")
     if _ready_visibility_errors(data, registry) or _prompt_delivery_errors(
         data, repo_root, require_delivery_isolation=True
@@ -1034,7 +1114,7 @@ def _ready_workspace_errors(
     repo_root: Path,
     path: Path,
 ) -> list[str]:
-    return _seed_binding_errors(data, repo_root, path) + _session_isolation_errors(data, registry)
+    return _seed_binding_errors(data, repo_root, path) + _session_isolation_errors(data, registry, repo_root, path)
 
 def _ready_visibility_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     vb = data.get("visibility_boundary") or {}
@@ -1489,6 +1569,7 @@ def main(argv=None, *, repo_root: Path | None = None):
         load_validator(FREEZE_SCHEMA_PATH)
         load_validator(EVIDENCE_SCHEMA_PATH)
         load_validator(SEED_SCHEMA_PATH)
+        load_validator(WORKSPACE_ISOLATION_PLAN_SCHEMA_PATH)
     except RuntimeError as exc:
         print(f"ERROR: {exc}")
         return 2

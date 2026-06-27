@@ -146,6 +146,12 @@ def validate_plan(plan_path: Path, repo_root: Path) -> tuple[dict | None, list[s
             problems.append("seed_manifest_sha256 mismatch")
         _, seed_problems = seed_builder.validate_manifest(seed_path, repo_root)
         problems.extend(f"seed: {problem}" for problem in seed_problems)
+    materializer_ref = str(data.get("materializer_ref", ""))
+    materializer_path = _load_repo_file(materializer_ref, repo_root)
+    if materializer_path is None:
+        problems.append("materializer_ref must be a safe existing repository file")
+    elif _sha256(materializer_path) != data.get("materializer_sha256"):
+        problems.append("materializer_sha256 mismatch")
     design_assembly = {}
     try:
         design = yaml.safe_load(DESIGN_SNAPSHOT.read_text(encoding="utf-8"))
