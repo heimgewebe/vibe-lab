@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_seed_manifest
+seed_id: run-004-rest-api-v1-empty-workspace
+seed_kind: empty_directory
+synthetic_fixture: false
+root_ref: null
+content_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over files)
+content_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+files: []

@@ -579,6 +579,7 @@ class ExecutionReadinessTests(unittest.TestCase):
                     "schema_version": "v1",
                     "artifact_type": "model_lab_execution_seed_manifest",
                     "seed_id": "fixture-seed",
+                    "seed_kind": "file_manifest",
                     "synthetic_fixture": True,
                     "root_ref": "seed",
                     "content_hash_algorithm": "sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over files)",
@@ -621,6 +622,21 @@ class ExecutionReadinessTests(unittest.TestCase):
             }
             _, problems = mod["_evidence_registry"](data, artifact, root)
         self.assertTrue(any("exactly one claim kind" in problem for problem in problems), problems)
+
+    def test_real_artifact_binds_execution_seed_but_not_sessions(self):
+        data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
+        ids = {item["id"] for item in data["blockers"]}
+        self.assertNotIn("EXECUTION_SEED_UNRESOLVED", ids)
+        self.assertIn("SESSION_ISOLATION_UNPROVEN", ids)
+        for role in ("control", "treatment"):
+            arm = data["workspace_session_isolation"]["arms"][role]
+            self.assertEqual("empty_directory", arm["execution_seed_kind"])
+            self.assertEqual("run-004-rest-api-v1-empty-workspace", arm["execution_seed"])
+
+    def test_seed_kind_must_match_manifest(self):
+        def mut(d, _):
+            d["workspace_session_isolation"]["arms"]["control"]["execution_seed_kind"] = "empty_directory"
+        self.assert_rule(self.build(source=VALID_READY, mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
 
 
 if __name__ == "__main__":

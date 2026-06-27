@@ -9,6 +9,7 @@
     "schema_version",
     "artifact_type",
     "seed_id",
+    "seed_kind",
     "synthetic_fixture",
     "root_ref",
     "content_hash_algorithm",
@@ -39,7 +40,7 @@
     },
     "files": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -58,7 +59,21 @@
       }
     },
     "root_ref": {
-      "$ref": "#/$defs/path"
+      "anyOf": [
+        {
+          "$ref": "#/$defs/path"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "seed_kind": {
+      "type": "string",
+      "enum": [
+        "empty_directory",
+        "file_manifest"
+      ]
     }
   },
   "$defs": {
@@ -76,5 +91,53 @@
       "type": "string",
       "pattern": "^[0-9a-f]{64}$"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "seed_kind": {
+            "const": "empty_directory"
+          }
+        },
+        "required": [
+          "seed_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_ref": {
+            "type": "null"
+          },
+          "files": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "seed_kind": {
+            "const": "file_manifest"
+          }
+        },
+        "required": [
+          "seed_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_ref": {
+            "$ref": "#/$defs/path"
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
 }

@@ -185,3 +185,9 @@ Open blocking readiness blockers are:
 as a methodological blocker for later assessment. No Run-004 arm was executed, no measurement or
 comparison evidence was produced, and no model-quality, comparative-superiority, condition-effect,
 outcome-upgrade, adoption, promotion, production-readiness, or security-readiness claim is derived.
+
+## State after iteration 17 — deterministic empty execution seed
+
+Both future Run-004 arms are now bound to the same content-addressed `empty_directory` seed. The seed introduces no framework, dependency, file-layout, arm-label, hypothesis, overlay, or repository-metadata content into the starting workspace. `EXECUTION_SEED_UNRESOLVED` is therefore no longer an open readiness blocker.
+
+`SESSION_ISOLATION_UNPROVEN`, `BLINDED_WORKSPACE_UNRESOLVED`, all runtime/model/agent/sampling/access blockers, the framework-neutral harness and forced-500 blockers, first-mutation tracing, execution order, and metric operationalization remain open. The readiness state remains `blocked`, authorization remains absent, and Run-004 has not been executed or assessed.

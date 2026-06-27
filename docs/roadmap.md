@@ -334,3 +334,9 @@ Ergaenzung 2026-06-26 zu RM-008 (Run-004 Execution-Readiness-Preflight, ohne Aus
   wurden erzeugt.
 - Naechster Schritt: echte Runtime-Bindung und Autorisierung erst mit konkret verfuegbaren,
   pruefbaren Werten; Experimentausfuehrung folgt nur nach Autorisierung.
+
+Ergaenzung 2026-06-27 zu RM-008 (Run-004 deterministischer Execution-Seed):
+- Beide kuenftigen Arme sind an denselben inhaltsadressierten `empty_directory`-Seed gebunden.
+- Der Seed legt weder Framework, Abhaengigkeiten noch Dateistruktur fest und enthaelt keine Experimentmetadaten.
+- `EXECUTION_SEED_UNRESOLVED` ist geschlossen; Session-Isolation, vollstaendige Workspace-Verblindung, Runtime und Harness bleiben offen.
+- Keine Run-004-Ausfuehrung oder Ergebnisbewertung.

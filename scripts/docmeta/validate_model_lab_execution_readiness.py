@@ -505,6 +505,16 @@ def _seed_manifest_errors(raw_ref, declared_hash, repo_root: Path, fixture_candi
     synthetic = manifest.get("synthetic_fixture") is True
     if synthetic and not fixture_candidate:
         problems.append("synthetic execution seed is forbidden outside validator fixtures")
+    entries = manifest.get("files") or []
+    seed_kind = manifest.get("seed_kind")
+    if seed_kind == "empty_directory":
+        if manifest.get("root_ref") is not None or entries:
+            problems.append("empty_directory seed must have root_ref=null and files=[]")
+        if _bundle_content_hash(entries) != manifest.get("content_sha256"):
+            problems.append("execution seed manifest content_sha256 mismatch")
+        return problems
+    if seed_kind != "file_manifest":
+        return problems + ["execution seed manifest seed_kind is unsupported"]
     root_raw = str(manifest.get("root_ref", ""))
     root_path, root_code = resolve_repo_relative_path(root_raw, repo_root, must_exist=True)
     if root_code is not None or root_path is None or not root_path.is_dir():
@@ -515,7 +525,6 @@ def _seed_manifest_errors(raw_ref, declared_hash, repo_root: Path, fixture_candi
         root_rel = root_raw
     if not fixture_candidate and root_rel.startswith("tests/fixtures/"):
         problems.append("fixture seed root is forbidden for a real readiness artifact")
-    entries = manifest.get("files") or []
     paths = [str(entry.get("path", "")) for entry in entries if isinstance(entry, dict)]
     declared_resolved = set()
     for duplicate in sorted({item for item in paths if paths.count(item) > 1}):
@@ -558,6 +567,110 @@ def _seed_manifest_errors(raw_ref, declared_hash, repo_root: Path, fixture_candi
         problems.append(f"execution seed manifest declares absent root file: {display_path(extra)}")
     if _bundle_content_hash(entries) != manifest.get("content_sha256"):
         problems.append("execution seed manifest content_sha256 mismatch")
+    return problems
+
+
+def _seed_binding_errors(data: dict, repo_root: Path, path: Path) -> list[str]:
+    ws = data.get("workspace_session_isolation") or {}
+    arms = ws.get("arms") or {}
+    problems = []
+    fixture_candidate = _is_fixture_candidate(path, repo_root)
+    seed_ids = []
+    seed_kinds = []
+    seed_refs = []
+    seed_hashes = []
+    for role in ("control", "treatment"):
+        arm = arms.get(role) or {}
+        if arm.get("arm_id") != role:
+            problems.append(f"workspace arm {role} must have arm_id={role}")
+        seed_id = arm.get("execution_seed")
+        seed_kind = arm.get("execution_seed_kind")
+        seed_ref = arm.get("execution_seed_ref")
+        seed_hash = arm.get("seed_hash")
+        if _is_placeholder(seed_id):
+            problems.append(f"workspace_session_isolation.arms.{role}.execution_seed must be bound")
+        else:
+            seed_ids.append(str(seed_id))
+        if seed_kind not in {"empty_directory", "file_manifest"}:
+            problems.append(f"workspace_session_isolation.arms.{role}.execution_seed_kind must be supported")
+        else:
+            seed_kinds.append(str(seed_kind))
+        if _is_placeholder(seed_ref) or _is_placeholder(seed_hash):
+            problems.append(f"workspace_session_isolation.arms.{role} must bind execution_seed_ref and seed_hash")
+        else:
+            seed_refs.append(str(seed_ref))
+            seed_hashes.append(str(seed_hash))
+            manifest_path, code = _load_ref(str(seed_ref), repo_root)
+            manifest_kind = None
+            manifest_id = None
+            if code is None and manifest_path is not None:
+                try:
+                    manifest_data = load_yaml(manifest_path)
+                    manifest_kind = manifest_data.get("seed_kind")
+                    manifest_id = manifest_data.get("seed_id")
+                except (FileNotFoundError, ValueError):
+                    pass
+            if manifest_kind is not None and manifest_kind != seed_kind:
+                problems.append(f"workspace_session_isolation.arms.{role}.execution_seed_kind must match seed manifest")
+            if manifest_id is not None and manifest_id != seed_id:
+                problems.append(f"workspace_session_isolation.arms.{role}.execution_seed must match seed manifest seed_id")
+            problems.extend(
+                f"workspace_session_isolation.arms.{role}: {problem}"
+                for problem in _seed_manifest_errors(seed_ref, seed_hash, repo_root, fixture_candidate)
+            )
+    if (
+        len(seed_ids) != 2
+        or len(set(seed_ids)) != 1
+        or len(seed_kinds) != 2
+        or len(set(seed_kinds)) != 1
+        or len(seed_refs) != 2
+        or len(set(seed_refs)) != 1
+        or len(seed_hashes) != 2
+        or len(set(seed_hashes)) != 1
+    ):
+        problems.append("both arms must use the identical content-bound execution seed manifest")
+    return problems
+
+
+def _session_isolation_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
+    ws = data.get("workspace_session_isolation") or {}
+    problems = []
+    if ws.get("binding_status") != "bound":
+        problems.append("workspace_session_isolation.binding_status must be bound")
+    if not _evidence_paths_registered(ws.get("evidence"), registry, "workspace_isolation"):
+        problems.append("workspace_session_isolation.evidence must be hash-registered workspace_isolation evidence")
+    arms = ws.get("arms") or {}
+    values_by_field: dict[str, list[str]] = {}
+    for role in ("control", "treatment"):
+        arm = arms.get(role) or {}
+        for field in ("workspace_path", "session_id", "temp_dir", "cache_dir", "port_assignment", "cleanup_rule"):
+            value = arm.get(field)
+            if _is_placeholder(value):
+                problems.append(f"workspace_session_isolation.arms.{role}.{field} must be bound")
+            elif isinstance(value, str):
+                values_by_field.setdefault(field, []).append(value)
+        if arm.get("clean_start_state") is not True:
+            problems.append(f"workspace_session_isolation.arms.{role}.clean_start_state must be true")
+        for visible_field in ("workspace_path", "session_id", "temp_dir", "cache_dir"):
+            visible_value = arm.get(visible_field)
+            if isinstance(visible_value, str) and ROLE_LEAK_RE.search(visible_value):
+                problems.append(f"workspace_session_isolation.arms.{role}.{visible_field} leaks an arm role token")
+        for visible_path in arm.get("allowed_paths") or []:
+            if isinstance(visible_path, str) and ROLE_LEAK_RE.search(visible_path):
+                problems.append(f"workspace_session_isolation.arms.{role}.allowed_paths leaks an arm role token")
+        if (
+            not arm.get("allowed_paths")
+            or not arm.get("forbidden_paths")
+            or _has_placeholder_item(arm.get("allowed_paths"))
+            or _has_placeholder_item(arm.get("forbidden_paths"))
+        ):
+            problems.append(
+                f"workspace_session_isolation.arms.{role} must bind non-placeholder allowed_paths and forbidden_paths"
+            )
+    for field in ("workspace_path", "session_id", "temp_dir", "cache_dir", "port_assignment"):
+        vals = values_by_field.get(field, [])
+        if len(vals) == 2 and vals[0] == vals[1]:
+            problems.append(f"both arms must not share the same {field}")
     return problems
 
 
@@ -646,8 +759,10 @@ def _required_blocker_ids(
         )
     ):
         required.add("RUNTIME_ENVIRONMENT_UNRESOLVED")
-    if _ready_workspace_errors(data, registry, repo_root, path):
-        required.update({"EXECUTION_SEED_UNRESOLVED", "SESSION_ISOLATION_UNPROVEN"})
+    if _seed_binding_errors(data, repo_root, path):
+        required.add("EXECUTION_SEED_UNRESOLVED")
+    if _session_isolation_errors(data, registry):
+        required.add("SESSION_ISOLATION_UNPROVEN")
     if _ready_visibility_errors(data, registry) or _prompt_delivery_errors(
         data, repo_root, require_delivery_isolation=True
     ):
@@ -919,74 +1034,7 @@ def _ready_workspace_errors(
     repo_root: Path,
     path: Path,
 ) -> list[str]:
-    ws = data.get("workspace_session_isolation") or {}
-    problems = []
-    fixture_candidate = _is_fixture_candidate(path, repo_root)
-    if ws.get("binding_status") != "bound":
-        problems.append("workspace_session_isolation.binding_status must be bound")
-    if not _evidence_paths_registered(ws.get("evidence"), registry, "workspace_isolation"):
-        problems.append("workspace_session_isolation.evidence must be hash-registered workspace_isolation evidence")
-    arms = ws.get("arms") or {}
-    values_by_field: dict[str, list[str]] = {}
-    seed_refs = []
-    seed_hashes = []
-    for role in ("control", "treatment"):
-        arm = arms.get(role) or {}
-        if arm.get("arm_id") != role:
-            problems.append(f"workspace arm {role} must have arm_id={role}")
-        if arm.get("execution_seed_kind") != "file_manifest":
-            problems.append(f"workspace_session_isolation.arms.{role}.execution_seed_kind must be file_manifest")
-        seed_ref = arm.get("execution_seed_ref")
-        seed_hash = arm.get("seed_hash")
-        if _is_placeholder(seed_ref) or _is_placeholder(seed_hash):
-            problems.append(f"workspace_session_isolation.arms.{role} must bind execution_seed_ref and seed_hash")
-        else:
-            seed_refs.append(str(seed_ref))
-            seed_hashes.append(str(seed_hash))
-            problems.extend(
-                f"workspace_session_isolation.arms.{role}: {problem}"
-                for problem in _seed_manifest_errors(seed_ref, seed_hash, repo_root, fixture_candidate)
-            )
-        for field in (
-            "execution_seed",
-            "workspace_path",
-            "session_id",
-            "temp_dir",
-            "cache_dir",
-            "port_assignment",
-            "cleanup_rule",
-        ):
-            value = arm.get(field)
-            if _is_placeholder(value):
-                problems.append(f"workspace_session_isolation.arms.{role}.{field} must be bound")
-            elif isinstance(value, str):
-                values_by_field.setdefault(field, []).append(value)
-        if arm.get("clean_start_state") is not True:
-            problems.append(f"workspace_session_isolation.arms.{role}.clean_start_state must be true")
-        for visible_field in ("workspace_path", "session_id", "temp_dir", "cache_dir"):
-            visible_value = arm.get(visible_field)
-            if isinstance(visible_value, str) and ROLE_LEAK_RE.search(visible_value):
-                problems.append(f"workspace_session_isolation.arms.{role}.{visible_field} leaks an arm role token")
-        for visible_path in arm.get("allowed_paths") or []:
-            if isinstance(visible_path, str) and ROLE_LEAK_RE.search(visible_path):
-                problems.append(f"workspace_session_isolation.arms.{role}.allowed_paths leaks an arm role token")
-        if (
-            not arm.get("allowed_paths")
-            or not arm.get("forbidden_paths")
-            or _has_placeholder_item(arm.get("allowed_paths"))
-            or _has_placeholder_item(arm.get("forbidden_paths"))
-        ):
-            problems.append(
-                f"workspace_session_isolation.arms.{role} must bind non-placeholder allowed_paths and forbidden_paths"
-            )
-    if len(seed_refs) != 2 or len(set(seed_refs)) != 1 or len(seed_hashes) != 2 or len(set(seed_hashes)) != 1:
-        problems.append("both arms must use the identical content-bound execution seed manifest")
-    for field in ("workspace_path", "session_id", "temp_dir", "cache_dir", "port_assignment"):
-        vals = values_by_field.get(field, [])
-        if len(vals) == 2 and vals[0] == vals[1]:
-            problems.append(f"both arms must not share the same {field}")
-    return problems
-
+    return _seed_binding_errors(data, repo_root, path) + _session_isolation_errors(data, registry)
 
 def _ready_visibility_errors(data: dict, registry: dict[str, set[str]]) -> list[str]:
     vb = data.get("visibility_boundary") or {}

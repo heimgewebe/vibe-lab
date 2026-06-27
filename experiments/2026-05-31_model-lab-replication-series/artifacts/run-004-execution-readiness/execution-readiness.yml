@@ -8,8 +8,8 @@ challenge_version: rest-api-v1
 readiness_bundle_id: run-004-execution-readiness
 bundle_artifact_path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml
 source_captured_at: '2026-06-26T20:00:34.960258Z'
-generated_at: '2026-06-26T21:04:36.886256Z'
-readiness_frozen_at: '2026-06-26T21:04:36.886277Z'
+generated_at: '2026-06-27T04:39:34.108783Z'
+readiness_frozen_at: '2026-06-27T04:39:34.135704Z'
 authorized_at: null
 provenance:
   condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
@@ -53,12 +53,6 @@ blockers:
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   note: Sampling parameters and any documented parameter unavailability are not bound for Run-004.
-- id: EXECUTION_SEED_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: No future execution seed or seed/tree identity is bound for both arms.
 - id: BLINDED_WORKSPACE_UNRESOLVED
   status: open
   severity: blocking
@@ -267,8 +261,8 @@ workspace_session_isolation:
   arms:
     control:
       arm_id: control
-      execution_seed: null
-      seed_hash: null
+      execution_seed: run-004-rest-api-v1-empty-workspace
+      seed_hash: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
       workspace_path: null
       session_id: null
       temp_dir: null
@@ -278,12 +272,12 @@ workspace_session_isolation:
       allowed_paths: []
       forbidden_paths: []
       cleanup_rule: null
-      execution_seed_kind: null
-      execution_seed_ref: null
+      execution_seed_kind: empty_directory
+      execution_seed_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml
     treatment:
       arm_id: treatment
-      execution_seed: null
-      seed_hash: null
+      execution_seed: run-004-rest-api-v1-empty-workspace
+      seed_hash: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
       workspace_path: null
       session_id: null
       temp_dir: null
@@ -293,8 +287,8 @@ workspace_session_isolation:
       allowed_paths: []
       forbidden_paths: []
       cleanup_rule: null
-      execution_seed_kind: null
-      execution_seed_ref: null
+      execution_seed_kind: empty_directory
+      execution_seed_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml
   evidence: []
 visibility_boundary:
   boundary_status: unresolved

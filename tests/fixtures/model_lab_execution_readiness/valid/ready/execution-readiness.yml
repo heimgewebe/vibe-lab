@@ -190,8 +190,8 @@ workspace_session_isolation:
   arms:
     control:
       arm_id: control
-      execution_seed: run004-fixture-seed
-      seed_hash: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
+      execution_seed: synthetic-run004-seed
+      seed_hash: 22191c62c9157126c33bceb95ba3090c259a288d2db5df166e5261266032d2f3
       workspace_path: /tmp/vibe-lab-run004-fixture/arm-a/workspace
       session_id: fixture-session-a
       temp_dir: /tmp/vibe-lab-run004-fixture/arm-a/tmp
@@ -207,8 +207,8 @@ workspace_session_isolation:
       execution_seed_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed-manifest.yml
     treatment:
       arm_id: treatment
-      execution_seed: run004-fixture-seed
-      seed_hash: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
+      execution_seed: synthetic-run004-seed
+      seed_hash: 22191c62c9157126c33bceb95ba3090c259a288d2db5df166e5261266032d2f3
       workspace_path: /tmp/vibe-lab-run004-fixture/arm-b/workspace
       session_id: fixture-session-b
       temp_dir: /tmp/vibe-lab-run004-fixture/arm-b/tmp

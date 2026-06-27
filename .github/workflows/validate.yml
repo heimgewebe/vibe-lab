@@ -102,6 +102,12 @@ jobs:
       - name: Validate Model-Lab execution-readiness artifacts
         run: make validate-model-lab-execution-readiness
 
+      - name: Test Model-Lab execution-seed builder
+        run: make validate-model-lab-execution-seed-tests
+
+      - name: Validate canonical Run-004 execution seed
+        run: make validate-model-lab-execution-seed
+
       - name: Test PR scope validator
         run: python3 scripts/docmeta/test_validate_pr_scope.py
 

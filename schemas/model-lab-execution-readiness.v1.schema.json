@@ -728,7 +728,10 @@
           "anyOf": [
             {
               "type": "string",
-              "const": "file_manifest"
+              "enum": [
+                "empty_directory",
+                "file_manifest"
+              ]
             },
             {
               "type": "null"

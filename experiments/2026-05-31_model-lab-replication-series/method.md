@@ -128,3 +128,9 @@ The preflight checks the frozen condition-design provenance and freeze root, the
 The current real artifact is intentionally `blocked`: Run-004 has no concrete model, agent, sampling, access policy, runtime environment, seed, workspace/session isolation, execution order, metric capture, neutral harness, neutral forced-500 trigger, or first-mutation trace binding. Therefore `runtime_values_bound=false`, `authorization_status=not_authorized`, and `run_004_execution_allowed=false`.
 
 This is a pre-execution readiness state only. No Run-004 arm was executed, no result assessment is allowed, `comparison_ready=false`, and `weak_condition_contrast` remains open until a later authorized execution and separate assessment evidence exist.
+
+## Run-004 deterministic execution seed
+
+Iteration 17 binds both future Run-004 arms to the same deterministic execution seed: `run-004-rest-api-v1-empty-workspace`. The seed kind is `empty_directory`, so materialization produces a fresh workspace containing no files. This avoids choosing Express or Fastify, prescribing a source layout, or exposing repository-level experiment metadata through the starting workspace.
+
+The seed manifest is validated and can be materialized by `scripts/docmeta/build_model_lab_execution_seed.py`. Its canonical content hash is the SHA-256 of the empty manifest stream (`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). This closes `EXECUTION_SEED_UNRESOLVED` only. Session/workspace isolation, assigned-prompt delivery, model/runtime binding, harness binding, and execution authorization remain unresolved. No Run-004 arm was executed.
