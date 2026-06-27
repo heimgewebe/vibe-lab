@@ -1,0 +1,404 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness
+contract_version: run-004-execution-readiness.v1
+triggered_by: user-request-2026-06-26-run-004-execution-readiness-preflight
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+readiness_bundle_id: run-004-execution-readiness
+bundle_artifact_path: tests/fixtures/model_lab_execution_readiness/valid/ready/execution-readiness.yml
+source_captured_at: '2026-06-26T13:00:00Z'
+generated_at: '2026-06-26T13:10:00Z'
+readiness_frozen_at: '2026-06-26T13:30:00Z'
+authorized_at: '2026-06-26T13:45:00Z'
+provenance:
+  condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  condition_design_sha256: 867470e522cf569c8e6e914be417d473ff78292fcf1f786e83850ff0d17f051b
+  condition_design_snapshot_ref: tests/fixtures/model_lab_execution_readiness/valid/ready/source-snapshots/condition-design.snapshot
+  design_freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/freeze-manifest.yml
+  design_freeze_manifest_sha256: eeb6ec4fc85f026ced6a355320bc764386727498b2375b5feb479d8ef25418e9
+  design_freeze_manifest_snapshot_ref: tests/fixtures/model_lab_execution_readiness/valid/ready/source-snapshots/design-freeze-manifest.snapshot
+  design_source_commit_sha: 570a0806a8f173679e659e43741035a54f92b3c1
+  design_input_source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
+  design_freeze_hash_coverage:
+    manifest_excludes_itself: true
+    expected_hashed_file_count: 12
+    hashes_all_declared_design_bundle_files: true
+state:
+  readiness_status: ready
+  runtime_values_bound: true
+  authorization_status: authorized
+  run_004_execution_allowed: true
+  run_004_executed: false
+  result_assessment_allowed: false
+  comparison_ready: false
+  weak_condition_contrast_status: open
+blockers:
+- id: WEAK_CONDITION_CONTRAST_OPEN
+  status: open
+  severity: informational
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  note: Run-004 is designed to address weak_condition_contrast later, but no execution or assessment has occurred, so the
+    blocker remains open.
+runtime_binding:
+  binding_status: bound
+  same_runtime_across_arms_required: true
+  historical_runtime_reuse_forbidden: true
+  provider:
+    status: bound
+    value: fixture-provider
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  exact_model_id:
+    status: bound
+    value: fixture-model-run004
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  model_revision_or_version:
+    status: bound
+    value: fixture-model-2026-06-26
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  agent_program:
+    status: bound
+    value: fixture-agent
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  agent_version:
+    status: bound
+    value: 1.0.0
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  operating_mode:
+    status: bound
+    value: isolated-noninteractive
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  system_developer_context_identity:
+    status: bound
+    value: sha256:fixture-system-developer-context
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  available_tools:
+  - shell
+  - filesystem
+  - network-disabled-test-harness
+  permissions:
+    filesystem:
+      status: bound
+      value: read/write assigned workspace only
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    shell:
+      status: bound
+      value: noninteractive commands only
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    network:
+      status: bound
+      value: disabled during arm execution
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    connectors:
+      status: bound
+      value: disabled by pre-execution policy
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  sampling:
+    temperature:
+      status: bound
+      value: '0'
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    top_p:
+      status: bound
+      value: '1'
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    top_k:
+      status: unavailable_documented
+      value: null
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+      reason: Provider fixture exposes no top_k control.
+    max_output_tokens:
+      status: bound
+      value: '120000'
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    seed:
+      status: bound
+      value: run004-fixture-seed
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    unavailable_parameters:
+    - id: top_k
+      reason: Provider fixture exposes no top_k control.
+  environment:
+    os_or_container_identity:
+      status: bound
+      value: ubuntu-24.04-fixture-container
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    architecture:
+      status: bound
+      value: x86_64
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    node_version:
+      status: bound
+      value: v22.0.0
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    npm_version:
+      status: bound
+      value: 10.0.0
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    python_version:
+      status: bound
+      value: 3.11.0
+      evidence:
+      - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  network_policy:
+    status: bound
+    value: disabled-except-package-cache-fixture
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  cache_policy:
+    status: bound
+    value: per-arm-empty-cache
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  dependency_resolution_strategy:
+    status: bound
+    value: npm ci from locked fixture dependencies
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  arms:
+    control:
+      profile_id: shared-fixture-runtime
+    treatment:
+      profile_id: shared-fixture-runtime
+workspace_session_isolation:
+  binding_status: bound
+  same_execution_seed_required: true
+  shared_writable_workspace_forbidden: true
+  shared_session_forbidden: true
+  arms:
+    control:
+      arm_id: control
+      execution_seed: run004-fixture-seed
+      seed_hash: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
+      workspace_path: /tmp/vibe-lab-run004-fixture/arm-a/workspace
+      session_id: fixture-session-a
+      temp_dir: /tmp/vibe-lab-run004-fixture/arm-a/tmp
+      cache_dir: /tmp/vibe-lab-run004-fixture/arm-a/cache
+      port_assignment: '3101'
+      clean_start_state: true
+      allowed_paths:
+      - /tmp/vibe-lab-run004-fixture/arm-a/workspace
+      forbidden_paths:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design
+      cleanup_rule: delete assigned temp/cache/workspace after capture
+      execution_seed_kind: file_manifest
+      execution_seed_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed-manifest.yml
+    treatment:
+      arm_id: treatment
+      execution_seed: run004-fixture-seed
+      seed_hash: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
+      workspace_path: /tmp/vibe-lab-run004-fixture/arm-b/workspace
+      session_id: fixture-session-b
+      temp_dir: /tmp/vibe-lab-run004-fixture/arm-b/tmp
+      cache_dir: /tmp/vibe-lab-run004-fixture/arm-b/cache
+      port_assignment: '3102'
+      clean_start_state: true
+      allowed_paths:
+      - /tmp/vibe-lab-run004-fixture/arm-b/workspace
+      forbidden_paths:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design
+      cleanup_rule: delete assigned temp/cache/workspace after capture
+      execution_seed_kind: file_manifest
+      execution_seed_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed-manifest.yml
+  evidence:
+  - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+visibility_boundary:
+  boundary_status: verified
+  agent_sees_only_assigned_prompt: true
+  other_overlay_hidden: true
+  arm_labels_hidden: true
+  hypothesis_hidden: true
+  other_arm_artifacts_hidden: true
+  path_names_role_neutral: true
+  repo_metadata_reconstruction_prevented: true
+  normal_repo_read_access_can_reconstruct_experiment: false
+  evidence:
+  - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+prompt_delivery:
+  binding_status: bound
+  assembly_rule: strip exactly one final LF from each component, join components with separator, append one final LF
+  encoding: utf-8
+  newline: lf
+  final_newline: required
+  separator: \n\n
+  composition_order:
+  - benchmark
+  - shared_condition
+  - assigned_overlay
+  arms:
+    control:
+      arm_id: control
+      benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
+      shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+      overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md
+      payload_sha256: 4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e
+      only_assigned_payload_delivered: true
+    treatment:
+      arm_id: treatment
+      benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
+      shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+      overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md
+      payload_sha256: 7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d
+      only_assigned_payload_delivered: true
+harness:
+  binding_status: bound
+  harness_id: fixture-run004-neutral-harness
+  harness_version: 1.0.0
+  file_hashes:
+  - path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+    sha256: 57a69c6779e15edef14762aff773362358a7ba6fff00af4dd2bad582ba5ca3f4
+  install_command: npm ci
+  start_command: npm run start -- --port ${PORT}
+  health_ready_signal: GET /health returns 200
+  test_command: npm test -- --runInBand
+  port_strategy: deterministic per-arm ports 3101 and 3102
+  timeouts:
+    start_seconds: 30
+    test_seconds: 120
+    total_seconds: 180
+  process_termination: SIGTERM then SIGKILL after 5 seconds
+  cleanup: remove per-arm tmp/cache after capture
+  identical_surface_for_both_arms: true
+  framework_neutrality:
+    status: verified
+    fastify_specific_imports_absent: true
+    express_fastify_neutral: true
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  forced_500_trigger:
+    status: verified
+    mechanism: framework-neutral HTTP endpoint fault injection through test-owned request header
+    same_for_both_arms: true
+    framework_neutral: true
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+human_intervention:
+  policy: no content help; only predefined arm-neutral infrastructure responses, fully logged
+  content_help_forbidden: true
+  infrastructure_answers_allowed: true
+  standard_response_texts:
+  - No task-content guidance is available. Continue with the assigned prompt and available tools.
+  - Use the predefined infrastructure rule already supplied for both arms.
+  abort_conditions:
+  - Any request requiring task-content help.
+  - Any asymmetric intervention not available to both arms.
+  count_rule: Every human-originated message after task delivery counts as one intervention, including predefined infrastructure
+    responses.
+  agent_question_handling: Answer only with a predefined arm-neutral infrastructure response or abort both arms.
+  asymmetric_intervention_forbidden: true
+  same_policy_across_arms: true
+retry_policy:
+  max_retries: 0
+  allowed_retry_reasons: []
+  partial_workspace_behavior: discard both arms and require a new authorized readiness bundle before retry
+  agent_abort_behavior: record abort; do not silently restart one arm
+  install_failure_behavior: record failure; do not patch dependencies inside this readiness contract
+  timeout_behavior: record timeout; do not extend timeout post hoc
+  flaky_test_behavior: no unilateral rerun; both arms require the same predeclared retry policy
+  both_arms_restart_after_retry: true
+  silent_or_one_sided_retries_forbidden: true
+execution_order:
+  binding_status: bound
+  strategy: deterministic_randomization
+  randomization_procedure: sha256(execution_seed) even=control_first odd=treatment_first
+  post_observation_selection_forbidden: true
+metric_operationalization:
+  binding_status: bound
+  metrics:
+  - id: functional_test_pass_ratio
+    rule: passing_shared_functional_tests / total_shared_functional_tests
+  - id: error_case_test_pass_ratio
+    rule: passing_shared_error_case_tests / total_shared_error_case_tests
+  - id: forced_500_check_pass
+    rule: 1 if the shared forced-500 assertion passes else 0
+  - id: workflow_protocol_compliance
+    rule: assigned-protocol compliance verdict (compliant / non_compliant / contaminated); not a quality judgment
+  - id: time_to_validated_change_seconds
+    rule: timer_end - timer_start
+  - id: time_to_stop_seconds
+    rule: timer_end - timer_start
+  - id: rework_steps
+    rule: number of post-authoring revisions to fix defects in already-produced implementation
+  - id: human_intervention_count
+    rule: number of human-originated corrections beyond the shared task input
+  - id: scope_drift_status
+    rule: none / observed (challenge or acceptance surface changed by the arm)
+  - id: contamination_status
+    rule: none / prompt_metadata_exposure / other_arm_artifact_exposure / shared_context_exposure / operator_intervention
+      / workspace_seed_drift / unknown
+  - id: timeout_count
+    rule: number of predeclared timeout events; never impute a timeout as zero or success
+  - id: abort_status
+    rule: completed / aborted; any abort blocks comparison and preserves incomplete metrics as null
+  - id: retry_count
+    rule: number of predeclared symmetric retries; silent or one-sided retries are invalid
+  first_mutation_trace:
+    status: available
+    required_for_treatment_preimplementation_claim: true
+    agent_report_alone_sufficient: false
+    mechanism: fixture filesystem event journal with monotonic sequence numbers
+    evidence:
+    - tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+evidence_registry:
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt
+  sha256: 57a69c6779e15edef14762aff773362358a7ba6fff00af4dd2bad582ba5ca3f4
+  kinds:
+  - model_identity
+  - agent_identity
+  - access_policy
+  - sampling_config
+  - runtime_environment
+  - workspace_isolation
+  - visibility_boundary
+  - harness
+  - harness_neutrality
+  - forced_500_trigger
+  - first_mutation_trace
+  - synthetic_fixture
+evidence:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  kind: frozen_condition_design
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/freeze-manifest.yml
+  kind: design_freeze_manifest
+- path: experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
+  kind: assessment_blocker_context
+required_non_claims:
+- run_004_executed
+- run_004_result_measured
+- result_assessment_allowed
+- comparison_ready
+- weak_condition_contrast_resolved
+- model_quality
+- comparative_superiority
+- condition_effect
+- outcome_upgrade
+- adoption_readiness
+- promotion_readiness
+- production_readiness
+- security_readiness
+- individual_prompt_component_effect_isolated
+- execution_artifacts_present
+freeze:
+  freeze_manifest_ref: tests/fixtures/model_lab_execution_readiness/valid/ready/freeze-manifest.yml

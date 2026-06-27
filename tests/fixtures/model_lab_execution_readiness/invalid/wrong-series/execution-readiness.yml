@@ -1,0 +1,4 @@
+schema_version: "v1"
+artifact_type: "model_lab_execution_readiness"
+contract_version: "run-004-execution-readiness.v1"
+series_id: "wrong-series"

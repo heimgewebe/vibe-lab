@@ -1,0 +1,10 @@
+schema_version: v1
+artifact_type: model_lab_execution_seed_manifest
+seed_id: synthetic-run004-seed
+synthetic_fixture: true
+root_ref: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed
+content_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over files)
+content_sha256: 8209298c6c91ec9ef83d605bb7f76ee11b477159458d8de5af700909bd9edf8f
+files:
+- path: tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed/input.txt
+  sha256: 23fb9105576a72c8cb24e2bd7fa03927a37f9b85ba984c3ca14bec2616428fc2

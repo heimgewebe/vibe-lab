@@ -118,3 +118,13 @@ The only permitted next step is a separate execution-readiness and authorization
 ## Next extension
 
 Later work may assess execution readiness, bind identical runtime values, and declare execution order. It must remain separate from the design and must not infer assessment readiness from the existence of the frozen bundle.
+
+## Run-004 execution-readiness preflight
+
+A Run-004-v1-specific execution-readiness preflight now exists under `artifacts/run-004-execution-readiness/`. It implements the contract and validation layer for a future execution decision, but it does not execute either arm and does not create implementation, measurement, comparison, or result-assessment evidence.
+
+The preflight checks the frozen condition-design provenance and freeze root, the readiness state model, runtime binding, workspace and session isolation, blinded visibility boundaries, deterministic prompt delivery, harness neutrality, forced-500 triggering, human-intervention rules, retry/error rules, execution order, and metric operationalization. It also keeps the design freeze and the new readiness freeze separate from any future execution seed.
+
+The current real artifact is intentionally `blocked`: Run-004 has no concrete model, agent, sampling, access policy, runtime environment, seed, workspace/session isolation, execution order, metric capture, neutral harness, neutral forced-500 trigger, or first-mutation trace binding. Therefore `runtime_values_bound=false`, `authorization_status=not_authorized`, and `run_004_execution_allowed=false`.
+
+This is a pre-execution readiness state only. No Run-004 arm was executed, no result assessment is allowed, `comparison_ready=false`, and `weak_condition_contrast` remains open until a later authorized execution and separate assessment evidence exist.

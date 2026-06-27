@@ -1,0 +1,22 @@
+artifact_type: model_lab_execution_readiness_freeze_manifest
+contract_version: run-004-execution-readiness.v1
+readiness_bundle_id: run-004-execution-readiness
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+source_captured_at: '2026-06-26T13:00:00Z'
+readiness_frozen_at: '2026-06-26T13:30:00Z'
+authorized_at: '2026-06-26T13:45:00Z'
+source_design_commit_sha: 570a0806a8f173679e659e43741035a54f92b3c1
+design_input_source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
+future_execution_seed_status: bound
+future_execution_seed_sha256: cac35a736c7e609c33a60f7f6b09e71bcf4c0e1286a7e183e178e5a2b6200b96
+readiness_bundle_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)
+readiness_bundle_content_sha256: 42a4195635dcd76b8f593da145b20c2dcb2893ad2a456eb3c3b274ba2ad0789e
+hashes:
+- path: tests/fixtures/model_lab_execution_readiness/valid/ready/execution-readiness.yml
+  sha256: f445de7d8d5b774666157e698e46e5794f114e437225a31edff14d7aafd7bb14
+- path: tests/fixtures/model_lab_execution_readiness/valid/ready/source-snapshots/condition-design.snapshot
+  sha256: 867470e522cf569c8e6e914be417d473ff78292fcf1f786e83850ff0d17f051b
+- path: tests/fixtures/model_lab_execution_readiness/valid/ready/source-snapshots/design-freeze-manifest.snapshot
+  sha256: eeb6ec4fc85f026ced6a355320bc764386727498b2375b5feb479d8ef25418e9

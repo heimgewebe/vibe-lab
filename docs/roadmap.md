@@ -320,3 +320,17 @@ Ergaenzung 2026-06-05 zu RM-008 (Run-003 ausgefuehrt, ohne formales Result Asses
 - Der Rand ist als `self_reported_different_agent_tool_context` mit `external_attestation: false` kalibriert; eine extern attestierte Modellunabhaengigkeit ist nicht belegt. Die Details sind in `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` dokumentiert.
 - Kein Modellqualitaets-, Outcome-, Adoption-, Promotion-, Production- oder Security-Readiness-Urteil.
 - Naechster Schritt: separate Runtime-Validation fuer Run-003, danach erst formales `decision_type=result_assessment` pruefen.
+
+Ergaenzung 2026-06-26 zu RM-008 (Run-004 Execution-Readiness-Preflight, ohne Ausfuehrung):
+- Das Run-004 Condition-Design ist abgeschlossen und eingefroren:
+  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/`.
+- Die aktuelle Stufe ist der Run-004-v1 Execution-Readiness-Preflight:
+  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/`.
+- Der reale Readiness-Status ist `blocked`, `authorization_status=not_authorized`,
+  `runtime_values_bound=false` und `run_004_execution_allowed=false`.
+- Offene Readiness-Blocker betreffen Modell-, Agent-, Sampling-, Seed-, Workspace-/Session-,
+  Blindungs-, Harness-, forced-500-, First-Mutation-Trace-, Zugriffs-, Runtime-, Ausfuehrungsreihenfolge- und Metrik-Bindungen.
+- Run-004 wurde nicht ausgefuehrt; keine Messung, kein Vergleich und keine Ergebnisbewertung
+  wurden erzeugt.
+- Naechster Schritt: echte Runtime-Bindung und Autorisierung erst mit konkret verfuegbaren,
+  pruefbaren Werten; Experimentausfuehrung folgt nur nach Autorisierung.

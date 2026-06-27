@@ -154,3 +154,34 @@ comparison.
 - no condition was executed, measured, or assessed; `weak_condition_contrast` remains open;
   `result_assessment_allowed` and `comparison_ready` remain false; the only permitted next step is a
   separate execution-readiness / authorization check.
+
+## State after iteration 16 — Run-004 execution-readiness preflight
+
+A machine-readable Run-004-v1 execution-readiness bundle now exists at
+`artifacts/run-004-execution-readiness/`. It validates the readiness contract and freezes the
+readiness bundle before any execution.
+
+The real readiness status is `blocked`: `runtime_values_bound=false`,
+`authorization_status=not_authorized`, `run_004_execution_allowed=false`,
+`run_004_executed=false`, `result_assessment_allowed=false`, and `comparison_ready=false`.
+
+Open blocking readiness blockers are:
+
+- `MODEL_BINDING_UNRESOLVED`
+- `AGENT_BINDING_UNRESOLVED`
+- `SAMPLING_BINDING_UNRESOLVED`
+- `EXECUTION_SEED_UNRESOLVED`
+- `BLINDED_WORKSPACE_UNRESOLVED`
+- `SESSION_ISOLATION_UNPROVEN`
+- `FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED`
+- `FORCED_500_TRIGGER_UNRESOLVED`
+- `FIRST_MUTATION_TRACE_UNRESOLVED`
+- `ACCESS_POLICY_UNRESOLVED`
+- `RUNTIME_ENVIRONMENT_UNRESOLVED`
+- `EXECUTION_ORDER_UNRESOLVED`
+- `METRIC_OPERATIONALIZATION_UNRESOLVED`
+
+`WEAK_CONDITION_CONTRAST_OPEN` remains open as an informational blocker in the readiness artifact and
+as a methodological blocker for later assessment. No Run-004 arm was executed, no measurement or
+comparison evidence was produced, and no model-quality, comparative-superiority, condition-effect,
+outcome-upgrade, adoption, promotion, production-readiness, or security-readiness claim is derived.
