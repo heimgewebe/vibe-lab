@@ -1371,14 +1371,19 @@ def _freeze_errors(data: dict, freeze: dict, path: Path, repo_root: Path) -> lis
         problems.append(f"expected file not covered by readiness freeze: {missing.relative_to(bundle_dir).as_posix()}")
     for extra in sorted(declared_resolved - expected_hashed):
         problems.append(f"readiness freeze hashes outside expected set: {extra.relative_to(bundle_dir).as_posix() if _inside(extra, bundle_dir) else display_path(extra)}")
-    if data.get("state", {}).get("authorization_status") == "authorized":
-        ws = data.get("workspace_session_isolation", {}).get("arms", {})
-        seed_hashes = {((ws.get(role) or {}).get("seed_hash")) for role in ("control", "treatment")}
-        if len(seed_hashes) != 1 or freeze.get("future_execution_seed_status") != "bound" or freeze.get("future_execution_seed_sha256") not in seed_hashes:
-            problems.append("authorized readiness must bind future_execution_seed_sha256 to the shared arm seed hash")
-    else:
-        if freeze.get("future_execution_seed_status") != "unresolved" or freeze.get("future_execution_seed_sha256") is not None:
-            problems.append("not_authorized readiness must keep the future execution seed unresolved")
+    ws = data.get("workspace_session_isolation", {}).get("arms", {})
+    seed_hashes = {((ws.get(role) or {}).get("seed_hash")) for role in ("control", "treatment")}
+    seed_is_bound = not _seed_binding_errors(data, repo_root, path)
+    if seed_is_bound:
+        if (
+            len(seed_hashes) != 1
+            or None in seed_hashes
+            or freeze.get("future_execution_seed_status") != "bound"
+            or freeze.get("future_execution_seed_sha256") not in seed_hashes
+        ):
+            problems.append("bound execution seed must be mirrored by future_execution_seed_sha256")
+    elif freeze.get("future_execution_seed_status") != "unresolved" or freeze.get("future_execution_seed_sha256") is not None:
+        problems.append("unbound execution seed must remain unresolved in the readiness freeze")
     return problems
 
 

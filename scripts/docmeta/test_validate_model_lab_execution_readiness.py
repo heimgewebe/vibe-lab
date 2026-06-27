@@ -176,14 +176,23 @@ class ExecutionReadinessTests(unittest.TestCase):
             "authorized_at": data["authorized_at"],
             "source_design_commit_sha": data["provenance"]["design_source_commit_sha"],
             "design_input_source_base_commit_sha": data["provenance"]["design_input_source_base_commit_sha"],
-            "future_execution_seed_status": "bound" if data["state"]["authorization_status"] == "authorized" else "unresolved",
+            "future_execution_seed_status": "unresolved",
             "future_execution_seed_sha256": None,
             "readiness_bundle_hash_algorithm": "sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)",
             "readiness_bundle_content_sha256": _bundle_hash(entries),
             "hashes": entries,
         }
-        if freeze["future_execution_seed_status"] == "bound":
-            freeze["future_execution_seed_sha256"] = data["workspace_session_isolation"]["arms"]["control"]["seed_hash"]
+        arms = data["workspace_session_isolation"]["arms"]
+        seed_hashes = {arms[role].get("seed_hash") for role in ("control", "treatment")}
+        seed_refs = {arms[role].get("execution_seed_ref") for role in ("control", "treatment")}
+        seed_ids = {arms[role].get("execution_seed") for role in ("control", "treatment")}
+        seed_kinds = {arms[role].get("execution_seed_kind") for role in ("control", "treatment")}
+        if (
+            len(seed_hashes) == len(seed_refs) == len(seed_ids) == len(seed_kinds) == 1
+            and None not in seed_hashes | seed_refs | seed_ids | seed_kinds
+        ):
+            freeze["future_execution_seed_status"] = "bound"
+            freeze["future_execution_seed_sha256"] = next(iter(seed_hashes))
         if mutate_freeze:
             mutate_freeze(freeze, tmp)
         _write_yaml(tmp / "freeze-manifest.yml", freeze)
@@ -637,6 +646,23 @@ class ExecutionReadinessTests(unittest.TestCase):
         def mut(d, _):
             d["workspace_session_isolation"]["arms"]["control"]["execution_seed_kind"] = "empty_directory"
         self.assert_rule(self.build(source=VALID_READY, mutate=mut), "EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING")
+
+
+    def test_real_blocked_freeze_binds_prepared_seed(self):
+        data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
+        freeze = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/freeze-manifest.yml").read_text(encoding="utf-8"))
+        self.assertEqual("not_authorized", data["state"]["authorization_status"])
+        self.assertEqual("bound", freeze["future_execution_seed_status"])
+        self.assertEqual(data["workspace_session_isolation"]["arms"]["control"]["seed_hash"], freeze["future_execution_seed_sha256"])
+
+    def test_bound_seed_cannot_be_unresolved_in_freeze(self):
+        def mut_freeze(freeze, _):
+            freeze["future_execution_seed_status"] = "unresolved"
+            freeze["future_execution_seed_sha256"] = None
+        self.assert_rule(
+            self.build(source=VALID_READY, mutate_freeze=mut_freeze),
+            "EXECUTION_READINESS_REQUIRES_VALID_FREEZE",
+        )
 
 
 if __name__ == "__main__":
