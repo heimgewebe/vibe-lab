@@ -1,0 +1,60 @@
+schema_version: v1
+artifact_type: model_lab_workspace_isolation_plan
+plan_id: run-004-isolated-workspace-delivery-v1
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+synthetic_fixture: false
+runtime_root: /tmp/vibe-lab-run004-v1
+create_only_if_absent: true
+seed_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml
+seed_manifest_sha256: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
+delivery:
+  encoding: utf-8
+  newline: lf
+  final_newline: required
+  separator: \n\n
+  composition_order:
+  - benchmark
+  - shared_condition
+  - assigned_overlay
+  prompt_filename: task.md
+slots:
+  control:
+    slot_id: node-287d6079ef6a
+    slot_root: /tmp/vibe-lab-run004-v1/node-287d6079ef6a
+    workspace_path: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/workspace
+    delivery_path: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/delivery/task.md
+    session_id: session-3bd68f058a093213
+    temp_dir: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/tmp
+    cache_dir: /tmp/vibe-lab-run004-v1/node-287d6079ef6a/cache
+    port_assignment: loopback-lease-6f9e334b7e0e
+    allowed_paths:
+    - /tmp/vibe-lab-run004-v1/node-287d6079ef6a/workspace
+    forbidden_paths:
+    - /tmp/vibe-lab-run004-v1/node-287d6079ef6a/delivery
+    - /tmp/vibe-lab-run004-v1/node-23ec2b8accb3
+    cleanup_rule: remove complete opaque slot root after evidence capture; refuse pre-existing slot root
+    benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
+    shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+    overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md
+    payload_sha256: 4233a682660cfad7631f28c8bf61c5358b35238ffb43bb8af1e43da2fcdc617e
+  treatment:
+    slot_id: node-23ec2b8accb3
+    slot_root: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3
+    workspace_path: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/workspace
+    delivery_path: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/delivery/task.md
+    session_id: session-517d942523a37dac
+    temp_dir: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/tmp
+    cache_dir: /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/cache
+    port_assignment: loopback-lease-95e32bac7bd0
+    allowed_paths:
+    - /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/workspace
+    forbidden_paths:
+    - /tmp/vibe-lab-run004-v1/node-23ec2b8accb3/delivery
+    - /tmp/vibe-lab-run004-v1/node-287d6079ef6a
+    cleanup_rule: remove complete opaque slot root after evidence capture; refuse pre-existing slot root
+    benchmark_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot
+    shared_condition_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md
+    overlay_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md
+    payload_sha256: 7ffea278d362e257d0b23a9cd20787f57638c7353e746fd170b68e59c2442f9d

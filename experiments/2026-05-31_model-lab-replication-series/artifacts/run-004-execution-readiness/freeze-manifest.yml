@@ -5,17 +5,17 @@ series_id: 2026-05-31_model-lab-replication-series
 design_id: run-004-condition-contrast
 challenge_version: rest-api-v1
 source_captured_at: '2026-06-26T20:00:34.960258Z'
-readiness_frozen_at: '2026-06-27T04:39:34.135704Z'
+readiness_frozen_at: '2026-06-27T06:25:29.673743Z'
 authorized_at: null
 source_design_commit_sha: 570a0806a8f173679e659e43741035a54f92b3c1
 design_input_source_base_commit_sha: 41fa2031160f6a7288f2c90eaccff60c7c1b50f2
 future_execution_seed_status: bound
 future_execution_seed_sha256: 2f09de7c37c0bb45b250736b7322e087c99770687b26a7bd13aa7279a5fdb708
 readiness_bundle_hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)
-readiness_bundle_content_sha256: bf233645b06713da9feeb8a9e881a884251a69493e058bdfc2b2431b316a397e
+readiness_bundle_content_sha256: 52aed63cc5c96ce3dbeeef4ff9f8ed9c27b81914dedda4507c2cc6cadb819cef
 hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml
-  sha256: 6068efa6b2b5c4af5c5c184d361c3976fe45b4fd767cacd93d2a518bcc00e88a
+  sha256: a1fdd22b8861b884c290263c8c26fee80d59e3bca25f5ba6d7b915472891ba1a
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/source-snapshots/condition-design.snapshot
   sha256: 867470e522cf569c8e6e914be417d473ff78292fcf1f786e83850ff0d17f051b
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/source-snapshots/design-freeze-manifest.snapshot

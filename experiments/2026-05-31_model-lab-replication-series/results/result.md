@@ -191,3 +191,9 @@ outcome-upgrade, adoption, promotion, production-readiness, or security-readines
 Both future Run-004 arms are now bound to the same content-addressed `empty_directory` seed. The seed introduces no framework, dependency, file-layout, arm-label, hypothesis, overlay, or repository-metadata content into the starting workspace. `EXECUTION_SEED_UNRESOLVED` is therefore no longer an open readiness blocker.
 
 `SESSION_ISOLATION_UNPROVEN`, `BLINDED_WORKSPACE_UNRESOLVED`, all runtime/model/agent/sampling/access blockers, the framework-neutral harness and forced-500 blockers, first-mutation tracing, execution order, and metric operationalization remain open. The readiness state remains `blocked`, authorization remains absent, and Run-004 has not been executed or assessed.
+
+## State after iteration 18 — opaque workspace/session preparation
+
+The Run-004 preparation surface now deterministically creates two distinct opaque slots from the identical empty seed and packages one assigned prompt per slot. `SESSION_ISOLATION_UNPROVEN` is closed. The prompt-delivery records now state that only the assigned payload is packaged for each slot.
+
+`BLINDED_WORKSPACE_UNRESOLVED` remains open because filesystem and repository-read enforcement is part of the still-unbound access policy. The result therefore avoids the stronger claim that agents cannot reconstruct experiment metadata. Runtime/model/agent/sampling/access bindings, harness, forced-500 trigger, first-mutation tracing, execution order, metric operationalization, authorization, execution, comparison, and assessment remain unresolved.

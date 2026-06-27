@@ -340,3 +340,10 @@ Ergaenzung 2026-06-27 zu RM-008 (Run-004 deterministischer Execution-Seed):
 - Der Seed legt weder Framework, Abhaengigkeiten noch Dateistruktur fest und enthaelt keine Experimentmetadaten.
 - `EXECUTION_SEED_UNRESOLVED` ist geschlossen; Session-Isolation, vollstaendige Workspace-Verblindung, Runtime und Harness bleiben offen.
 - Keine Run-004-Ausfuehrung oder Ergebnisbewertung.
+
+Ergaenzung 2026-06-27 zu RM-008 (Run-004 Workspace-/Session-Isolation):
+- Zwei create-only, rollen-neutral benannte Slots werden aus demselben leeren Seed materialisiert.
+- Workspace, Session, Temp, Cache und Port-Lease sind pro Slot eindeutig; vorhandene Ausgabewurzeln werden abgewiesen.
+- Pro Slot wird genau das zugewiesene Promptpaket erzeugt.
+- `SESSION_ISOLATION_UNPROVEN` ist geschlossen; `BLINDED_WORKSPACE_UNRESOLVED` bleibt bis zur technisch gebundenen Access-Policy offen.
+- Keine Run-004-Ausfuehrung oder Ergebnisbewertung.

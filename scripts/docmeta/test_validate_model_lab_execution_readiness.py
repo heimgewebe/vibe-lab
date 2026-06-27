@@ -632,15 +632,17 @@ class ExecutionReadinessTests(unittest.TestCase):
             _, problems = mod["_evidence_registry"](data, artifact, root)
         self.assertTrue(any("exactly one claim kind" in problem for problem in problems), problems)
 
-    def test_real_artifact_binds_execution_seed_but_not_sessions(self):
+    def test_real_artifact_binds_execution_seed_and_sessions(self):
         data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
         ids = {item["id"] for item in data["blockers"]}
         self.assertNotIn("EXECUTION_SEED_UNRESOLVED", ids)
-        self.assertIn("SESSION_ISOLATION_UNPROVEN", ids)
+        self.assertNotIn("SESSION_ISOLATION_UNPROVEN", ids)
+        self.assertIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
         for role in ("control", "treatment"):
             arm = data["workspace_session_isolation"]["arms"][role]
             self.assertEqual("empty_directory", arm["execution_seed_kind"])
             self.assertEqual("run-004-rest-api-v1-empty-workspace", arm["execution_seed"])
+            self.assertTrue(arm["clean_start_state"])
 
     def test_seed_kind_must_match_manifest(self):
         def mut(d, _):
@@ -663,6 +665,22 @@ class ExecutionReadinessTests(unittest.TestCase):
             self.build(source=VALID_READY, mutate_freeze=mut_freeze),
             "EXECUTION_READINESS_REQUIRES_VALID_FREEZE",
         )
+
+    def test_real_artifact_closes_session_isolation_only(self):
+        data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
+        ids = {item["id"] for item in data["blockers"]}
+        self.assertNotIn("SESSION_ISOLATION_UNPROVEN", ids)
+        self.assertIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
+        self.assertEqual("bound", data["workspace_session_isolation"]["binding_status"])
+        self.assertEqual("unresolved", data["visibility_boundary"]["boundary_status"])
+
+    def test_real_prompt_packages_are_assigned_but_visibility_is_not_overclaimed(self):
+        data = yaml.safe_load((REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml").read_text(encoding="utf-8"))
+        for role in ("control", "treatment"):
+            self.assertTrue(data["prompt_delivery"]["arms"][role]["only_assigned_payload_delivered"])
+        self.assertTrue(data["visibility_boundary"]["path_names_role_neutral"])
+        self.assertFalse(data["visibility_boundary"]["repo_metadata_reconstruction_prevented"])
+        self.assertTrue(data["visibility_boundary"]["normal_repo_read_access_can_reconstruct_experiment"])
 
 
 if __name__ == "__main__":
