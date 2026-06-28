@@ -1,11 +1,11 @@
 ---
 title: "Roadmap — Koordination offener Arbeitsstränge"
 status: active
-triggered_by: "user-request-2026-06-05-model-lab-next-step-diagnosis"
+triggered_by: "user-request-2026-06-28-run-004-runtime-binding"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-06-27"
+updated: "2026-06-28"
 relations:
   - type: references
     target: masterplan.md
@@ -355,3 +355,12 @@ Ergaenzung 2026-06-27 zu RM-008 (Run-004 Access-Policy/Visibility Boundary):
 - `ACCESS_POLICY_UNRESOLVED` und `BLINDED_WORKSPACE_UNRESOLVED` sind geschlossen.
 - Der reale Readiness-Status bleibt `blocked`, `not_authorized`, `run_004_execution_allowed=false` und `run_004_executed=false`.
 - Modell-, Agent-, Sampling-, Runtime-Environment-, Harness-, forced-500-, First-Mutation-Trace-, Ausfuehrungsreihenfolge- und Metrik-Bindungen bleiben offen.
+
+Ergaenzung 2026-06-28 zu RM-008 (Run-004 Runtime-Binding, ohne Ausfuehrung):
+- Ein geschlossener Runtime-Binding-Bundle liegt vor:
+  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/`.
+- Gebunden sind lokaler Ollama-Provider/Model-Identitaet, content-bound Agent-Broker/Protokoll, identisches Sampling, identisches Runtime-Profil und deterministische Ausfuehrungsreihenfolge (`treatment_first`).
+- `MODEL_BINDING_UNRESOLVED`, `AGENT_BINDING_UNRESOLVED`, `SAMPLING_BINDING_UNRESOLVED` und `EXECUTION_ORDER_UNRESOLVED` sind geschlossen, solange die Bundle-Hashes validieren.
+- `RUNTIME_ENVIRONMENT_UNRESOLVED` bleibt offen, weil Dependency-Resolution, Cache-Policy, volle Execution-Environment und Live-Loopback-Chat unvollstaendig sind.
+- Harness-, forced-500-, First-Mutation-Trace- und Metrik-Bindungen bleiben offen; Status bleibt `blocked`, `not_authorized`, `run_004_execution_allowed=false`, `run_004_executed=false`.
+- Keine Run-004-Ausfuehrung, keine Messung, kein Vergleich und keine Ergebnisbewertung.

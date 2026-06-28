@@ -546,6 +546,24 @@ class ExecutionReadinessTests(unittest.TestCase):
                 d["runtime_binding"][key].update(status="bound", value=None, evidence=[])
         self.assert_rule(self.build(source=VALID_BLOCKED, mutate=mut), "EXECUTION_READINESS_REQUIRES_STATE_MODEL")
 
+    def test_runtime_binding_hash_drift_reopens_bound_blockers(self):
+        mod = runpy.run_path(str(VALIDATOR), run_name="exec_ready_runtime_drift")
+        data = _read_yaml(REAL)
+        registry, problems = mod["_evidence_registry"](data, REAL, REPO_ROOT)
+        self.assertEqual([], problems)
+        data["runtime_binding"]["runtime_contract_sha256"] = "0" * 64
+        required = mod["_required_blocker_ids"](data, registry, REPO_ROOT, REAL)
+        self.assertTrue(
+            {
+                "MODEL_BINDING_UNRESOLVED",
+                "AGENT_BINDING_UNRESOLVED",
+                "SAMPLING_BINDING_UNRESOLVED",
+                "EXECUTION_ORDER_UNRESOLVED",
+            }
+            <= required,
+            required,
+        )
+
     def test_ready_metric_rule_must_match_frozen_protocol(self):
         def mut(d, _):
             for item in d["metric_operationalization"]["metrics"]:
@@ -678,20 +696,21 @@ class ExecutionReadinessTests(unittest.TestCase):
         self.assertNotIn("SESSION_ISOLATION_UNPROVEN", ids)
         self.assertNotIn("ACCESS_POLICY_UNRESOLVED", ids)
         self.assertNotIn("BLINDED_WORKSPACE_UNRESOLVED", ids)
+        self.assertNotIn("MODEL_BINDING_UNRESOLVED", ids)
+        self.assertNotIn("AGENT_BINDING_UNRESOLVED", ids)
+        self.assertNotIn("SAMPLING_BINDING_UNRESOLVED", ids)
+        self.assertNotIn("EXECUTION_ORDER_UNRESOLVED", ids)
         for expected in {
-            "MODEL_BINDING_UNRESOLVED",
-            "AGENT_BINDING_UNRESOLVED",
-            "SAMPLING_BINDING_UNRESOLVED",
             "FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED",
             "FORCED_500_TRIGGER_UNRESOLVED",
             "FIRST_MUTATION_TRACE_UNRESOLVED",
             "RUNTIME_ENVIRONMENT_UNRESOLVED",
-            "EXECUTION_ORDER_UNRESOLVED",
             "METRIC_OPERATIONALIZATION_UNRESOLVED",
         }:
             self.assertIn(expected, ids)
         self.assertEqual("bound", data["workspace_session_isolation"]["binding_status"])
         self.assertEqual("bound", data["access_policy"]["binding_status"])
+        self.assertEqual("partially_bound", data["runtime_binding"]["binding_status"])
         self.assertEqual("verified", data["visibility_boundary"]["boundary_status"])
 
     def test_real_prompt_packages_are_assigned_and_visibility_boundary_is_bound(self):
@@ -701,8 +720,8 @@ class ExecutionReadinessTests(unittest.TestCase):
         self.assertTrue(data["visibility_boundary"]["path_names_role_neutral"])
         self.assertTrue(data["visibility_boundary"]["repo_metadata_reconstruction_prevented"])
         self.assertFalse(data["visibility_boundary"]["normal_repo_read_access_can_reconstruct_experiment"])
-        self.assertIn("filesystem", data["runtime_binding"]["available_tools"])
-        self.assertIn("shell", data["runtime_binding"]["available_tools"])
+        self.assertIn("list_files", data["runtime_binding"]["available_tools"])
+        self.assertIn("run_command", data["runtime_binding"]["available_tools"])
         self.assertEqual("bound", data["runtime_binding"]["permissions"]["network"]["status"])
 
     def test_access_policy_hash_drift_reopens_target_blockers(self):

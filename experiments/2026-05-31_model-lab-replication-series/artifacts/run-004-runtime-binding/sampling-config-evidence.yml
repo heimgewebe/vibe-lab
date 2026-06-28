@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-runtime-binding-sampling-config
+synthetic_fixture: false
+claims:
+  - kind: sampling_config
+    status: verified
+    subject: identical_sampling_for_control_and_treatment
+    value: temperature=0; top_p=1; top_k=1; num_predict=4096; seed=424004; num_ctx=16384; stream=false; keep_alive=10m; same_across_arms=true

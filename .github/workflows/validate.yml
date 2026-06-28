@@ -105,6 +105,12 @@ jobs:
       - name: Validate Run-004 access-policy bundle
         run: make validate-model-lab-access-policy
 
+      - name: Test Run-004 runtime-binding broker and validator
+        run: make validate-model-lab-runtime-binding-tests
+
+      - name: Validate Run-004 runtime-binding bundle
+        run: make validate-model-lab-runtime-binding
+
       - name: Test Model-Lab execution-readiness validator
         run: make validate-model-lab-execution-readiness-tests
 

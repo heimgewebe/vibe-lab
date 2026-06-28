@@ -1,15 +1,15 @@
 schema_version: v1
 artifact_type: model_lab_execution_readiness
 contract_version: run-004-execution-readiness.v1
-triggered_by: user-request-2026-06-27-run-004-access-policy
+triggered_by: user-request-2026-06-28-run-004-runtime-binding
 series_id: 2026-05-31_model-lab-replication-series
 design_id: run-004-condition-contrast
 challenge_version: rest-api-v1
 readiness_bundle_id: run-004-execution-readiness
 bundle_artifact_path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml
 source_captured_at: '2026-06-26T20:00:34.960258Z'
-generated_at: '2026-06-27T11:32:00Z'
-readiness_frozen_at: '2026-06-27T11:32:00Z'
+generated_at: '2026-06-28T06:35:00Z'
+readiness_frozen_at: '2026-06-28T06:35:00Z'
 authorized_at: null
 provenance:
   condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
@@ -34,32 +34,12 @@ state:
   comparison_ready: false
   weak_condition_contrast_status: open
 blockers:
-- id: MODEL_BINDING_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 has no exact provider/model/revision binding. Historical Run-001 to Run-003 runtime values are not valid Run-004
-    bindings.
-- id: AGENT_BINDING_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 has no executing agent/program/version/mode binding.
-- id: SAMPLING_BINDING_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Sampling parameters and any documented parameter unavailability are not bound for Run-004.
 - id: FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED
   status: open
   severity: blocking
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml
-  note: The frozen design defers concrete harness binding. Existing runtime validation artifacts are for earlier runs and
-    do not prove a Run-004 harness neutral across Express and Fastify.
+  note: The frozen design defers concrete harness binding. Existing runtime validation artifacts are for earlier runs and do not prove a Run-004 harness neutral across Express and Fastify.
 - id: FORCED_500_TRIGGER_UNRESOLVED
   status: open
   severity: blocking
@@ -71,21 +51,14 @@ blockers:
   severity: blocking
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml
-  note: No reliable mutation/event trace exists to prove treatment specification completeness before first implementation
-    mutation.
+  note: No reliable mutation/event trace exists to prove treatment specification completeness before first implementation mutation.
 - id: RUNTIME_ENVIRONMENT_UNRESOLVED
   status: open
   severity: blocking
   evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 OS/container, architecture, language runtimes, network, cache, and dependency-resolution strategy are not
-    bound.
-- id: EXECUTION_ORDER_UNRESOLVED
-  status: open
-  severity: blocking
-  evidence:
-  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: The arm execution order or deterministic pre-observation randomization procedure is not bound.
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/neutral-probe.yml
+  note: Local model transport is live-verified, but dependency resolution, cache policy, the full execution environment, and the required NODE_OPTIONS=--jitless command binding remain incomplete.
 - id: METRIC_OPERATIONALIZATION_UNRESOLVED
   status: open
   severity: blocking
@@ -98,8 +71,7 @@ blockers:
   evidence:
   - experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml
   - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
-  note: Run-004 is designed to address weak_condition_contrast later, but no execution or assessment has occurred, so the
-    blocker remains open.
+  note: Run-004 is designed to address weak_condition_contrast later, but no execution or assessment has occurred, so the blocker remains open.
 access_policy:
   binding_status: bound
   policy_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml
@@ -124,67 +96,78 @@ access_policy:
     io_uring_setup_denied_eperm: true
     new_mount_api_fsopen_denied_eperm: true
 runtime_binding:
-  binding_status: unbound
+  binding_status: partially_bound
   same_runtime_across_arms_required: true
   historical_runtime_reuse_forbidden: true
+  runtime_contract_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-contract.yml
+  runtime_contract_sha256: 19c89f4332de9575c5080cf440905f635b14a08d8d25afed51c95b3d37236713
+  runtime_freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/freeze-manifest.yml
+  runtime_freeze_manifest_sha256: 666b4e07f0fe3c18044d14e19abe226979e0c59e991be37fe2adda409abb3b28
   provider:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 provider selected.
+    status: bound
+    value: ollama-local-loopback
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml
+    reason: null
   exact_model_id:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 model identifier selected.
+    status: bound
+    value: qwen2.5-coder:14b
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml
+    reason: null
   model_revision_or_version:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 model revision or equivalent identity selected.
+    status: bound
+    value: qwen2 14.8B Q4_K_M; manifest_sha256=9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849; model_blob_sha256=ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed; advertised_context=32768; bound_num_ctx=16384; tools_supported=true
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml
+    reason: null
   agent_program:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 executing program selected.
+    status: bound
+    value: scripts/docmeta/run_model_lab_run004_agent.py
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
+    reason: null
   agent_version:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 agent version selected.
+    status: bound
+    value: run-004-local-tool-broker.v1
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
+    reason: null
   operating_mode:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 operating mode selected.
+    status: bound
+    value: external-local-model-with-content-bound-sandbox-tools
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
+    reason: null
   system_developer_context_identity:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: No Run-004 system/developer context identity frozen.
+    status: bound
+    value: sha256:dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
+    reason: null
   available_tools:
-  - filesystem
-  - shell
+  - list_files
+  - read_file
+  - write_file
+  - make_directory
+  - delete_path
+  - run_command
   permissions:
     filesystem:
       status: bound
-      value: 'sandbox filesystem: /workspace read-write, /tmp read-write, /cache read-write, /usr read-only, optional runtime
-        compatibility roots read-only; repository, host home, delivery directory, other slot, and policy/evidence paths are
-        not mounted'
+      value: 'sandbox filesystem: /workspace read-write, /tmp read-write, /cache read-write, /usr read-only, optional runtime compatibility roots read-only; repository, host home, delivery directory, other slot, and policy/evidence paths are not mounted'
       evidence:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
       reason: null
     shell:
       status: bound
-      value: argv-only command execution through the bound Bubblewrap/libseccomp launcher; executable path must be absolute
-        under /usr/bin or /bin; shell string evaluation is forbidden
+      value: argv-only command execution through the bound Bubblewrap/libseccomp launcher; executable path must be absolute under /usr/bin or /bin; shell string evaluation is forbidden
       evidence:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
       reason: null
     network:
       status: bound
-      value: network, io_uring, and new mount-API syscalls are denied with EPERM by the bound libseccomp filter before
-        child exec; --share-net is only a Bubblewrap compatibility measure
+      value: network, io_uring, and new mount-API syscalls are denied with EPERM by the bound libseccomp filter before child exec; --share-net is only a Bubblewrap compatibility measure
       evidence:
       - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml
       reason: null
@@ -196,77 +179,106 @@ runtime_binding:
       reason: null
   sampling:
     temperature:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Temperature not bound.
+      status: bound
+      value: '0'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
     top_p:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: top_p not bound.
+      status: bound
+      value: '1'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
     top_k:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: top_k not bound.
+      status: bound
+      value: '1'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
     max_output_tokens:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: max_output_tokens not bound.
+      status: bound
+      value: num_predict=4096
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
     seed:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Execution seed not bound.
+      status: bound
+      value: '424004'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
+    num_ctx:
+      status: bound
+      value: '16384'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
+    stream:
+      status: bound
+      value: 'false'
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
+    keep_alive:
+      status: bound
+      value: 10m
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+      reason: null
     unavailable_parameters: []
   environment:
     os_or_container_identity:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: OS/container identity not bound.
+      status: bound
+      value: Linux-6.17.9-76061709-generic-x86_64-with-glibc2.35
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+      reason: null
     architecture:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Architecture not bound.
+      status: bound
+      value: x86_64
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+      reason: null
     node_version:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Node version not bound.
+      status: bound
+      value: v22.22.3; requires NODE_OPTIONS=--jitless on this host
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+      reason: Identity is observed; usable command invocation remains unresolved until NODE_OPTIONS=--jitless is enforced.
     npm_version:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: npm version not bound.
+      status: bound
+      value: 10.9.8; requires NODE_OPTIONS=--jitless on this host
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+      reason: Identity is observed; usable command invocation remains unresolved until NODE_OPTIONS=--jitless is enforced.
     python_version:
-      status: unresolved
-      value: null
-      evidence: []
-      reason: Python version not bound.
+      status: bound
+      value: 3.10.12
+      evidence:
+      - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+      reason: null
   network_policy:
-    status: unresolved
-    value: null
-    evidence: []
-    reason: Network policy not bound.
+    status: bound
+    value: broker outbound is limited to http://127.0.0.1:11434/api/chat and was live-verified; sandboxed child commands retain the bound access-policy network denial
+    evidence:
+    - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+    reason: null
   cache_policy:
     status: unresolved
     value: null
     evidence: []
-    reason: Cache policy not bound.
+    reason: Cache policy is not fully bound for a complete Run-004 execution environment.
   dependency_resolution_strategy:
     status: unresolved
     value: null
     evidence: []
-    reason: Dependency resolution strategy not bound.
+    reason: Dependency resolution strategy is not fully bound for a complete Run-004 execution environment.
   arms:
     control:
-      profile_id: unbound-shared-runtime
+      profile_id: ollama-qwen25coder14b-local-broker-v1
     treatment:
-      profile_id: unbound-shared-runtime
+      profile_id: ollama-qwen25coder14b-local-broker-v1
 workspace_session_isolation:
   binding_status: bound
   same_execution_seed_required: true
@@ -389,8 +401,7 @@ human_intervention:
   abort_conditions:
   - Any request requiring task-content help.
   - Any asymmetric intervention not available to both arms.
-  count_rule: Every human-originated message after task delivery counts as one intervention, including predefined infrastructure
-    responses.
+  count_rule: Every human-originated message after task delivery counts as one intervention, including predefined infrastructure responses.
   agent_question_handling: Answer only with a predefined arm-neutral infrastructure response or abort both arms.
   asymmetric_intervention_forbidden: true
   same_policy_across_arms: true
@@ -405,9 +416,11 @@ retry_policy:
   both_arms_restart_after_retry: true
   silent_or_one_sided_retries_forbidden: true
 execution_order:
-  binding_status: unbound
-  strategy: null
-  randomization_procedure: null
+  binding_status: bound
+  strategy: treatment_first
+  randomization_procedure: source_string=run-004-rest-api-v1-empty-workspace; source_sha256=c66688ebf8213a9280baef83b5d86e2eede66710a42a09e0f256c521a3f10dff; low bit 0 => control_first, 1 => treatment_first; low_bit=1
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/execution-order-evidence.yml
   post_observation_selection_forbidden: true
 metric_operationalization:
   binding_status: unresolved
@@ -417,11 +430,9 @@ metric_operationalization:
   - id: human_intervention_count
     rule: Count every human-originated message after task delivery, including predefined infrastructure responses.
   - id: workflow_protocol_compliance
-    rule: Treatment requires a complete specification before first implementation mutation; control voluntary specification
-      is not automatically non-compliant.
+    rule: Treatment requires a complete specification before first implementation mutation; control voluntary specification is not automatically non-compliant.
   - id: contamination_status
-    rule: Mark contaminated if an arm sees the other payload, role labels, hypothesis, other-arm artifacts, or reconstructable
-      experiment metadata.
+    rule: Mark contaminated if an arm sees the other payload, role labels, hypothesis, other-arm artifacts, or reconstructable experiment metadata.
   - id: functional_test_pass_ratio
     rule: passing_shared_functional_tests / total_shared_functional_tests; missing values remain null.
   - id: error_case_test_pass_ratio
@@ -453,6 +464,26 @@ evidence_registry:
   sha256: 86987b3ef18d5a3b47df49b4036ff029b7555d33ee4b4ecf175cdeba47e3911d
   kinds:
   - visibility_boundary
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml
+  sha256: f771fe19333ba9cc54f13f22cca40e06dd1ba887c5eb7252dab7b39da283a619
+  kinds:
+  - model_identity
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
+  sha256: fe579c04ce019cfeb9d6e0d12f611cd7199e25f1f8f8226bebca70f5c9e7f4f0
+  kinds:
+  - agent_identity
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+  sha256: 09aca9adbff863c8bf6eb0559219c8224b9a7d66b764a3914ba2f10479c2bb8f
+  kinds:
+  - sampling_config
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/execution-order-evidence.yml
+  sha256: ec82503beb4d01fb1f9e5093b3febbb2ecb914a96d3569c1b4f975d9d9cf6a13
+  kinds:
+  - execution_order
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+  sha256: 68f77b8b1a0ca1e2a5147489480c3a03f6bc97d195689f138a6427deae64c0b8
+  kinds:
+  - runtime_environment
 evidence:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
   kind: frozen_condition_design
@@ -470,6 +501,22 @@ evidence:
   kind: access_policy_evidence
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/visibility-boundary-evidence.yml
   kind: visibility_boundary_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-contract.yml
+  kind: runtime_binding_contract
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/neutral-probe.yml
+  kind: runtime_binding_neutral_probe
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/freeze-manifest.yml
+  kind: runtime_binding_freeze
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml
+  kind: model_identity_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
+  kind: agent_identity_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
+  kind: sampling_config_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/execution-order-evidence.yml
+  kind: execution_order_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml
+  kind: runtime_environment_evidence
 required_non_claims:
 - run_004_executed
 - run_004_result_measured

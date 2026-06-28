@@ -414,6 +414,7 @@
           "type": "string",
           "enum": [
             "unbound",
+            "partially_bound",
             "bound"
           ]
         },
@@ -427,6 +428,18 @@
         },
         "provider": {
           "$ref": "#/$defs/bindingField"
+        },
+        "runtime_contract_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "runtime_contract_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "runtime_freeze_manifest_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "runtime_freeze_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
         },
         "exact_model_id": {
           "$ref": "#/$defs/bindingField"
@@ -501,6 +514,15 @@
               "$ref": "#/$defs/bindingField"
             },
             "seed": {
+              "$ref": "#/$defs/bindingField"
+            },
+            "num_ctx": {
+              "$ref": "#/$defs/bindingField"
+            },
+            "stream": {
+              "$ref": "#/$defs/bindingField"
+            },
+            "keep_alive": {
               "$ref": "#/$defs/bindingField"
             },
             "unavailable_parameters": {
@@ -1359,6 +1381,12 @@
         "randomization_procedure": {
           "$ref": "#/$defs/nullableNonBlank"
         },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/path"
+          }
+        },
         "post_observation_selection_forbidden": {
           "type": "boolean",
           "const": true
@@ -1489,6 +1517,7 @@
               "harness_neutrality",
               "forced_500_trigger",
               "first_mutation_trace",
+              "execution_order",
               "synthetic_fixture"
             ]
           }

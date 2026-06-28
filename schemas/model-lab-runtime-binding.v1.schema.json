@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-runtime-binding.v1.schema.json",
+  "title": "Model-Lab Run-004 Runtime Binding v1",
+  "description": "Closed Run-004 runtime-binding contract for the local Ollama model, content-bound local tool broker, sampling configuration, execution order, and observed partial runtime-environment fields. This contract binds only the named values and does not authorize or execute Run-004.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "contract_version",
+    "binding_id",
+    "triggered_by",
+    "series_id",
+    "design_id",
+    "challenge_version",
+    "generated_at",
+    "provider",
+    "ollama",
+    "model",
+    "agent",
+    "sampling",
+    "runtime_profile",
+    "execution_order",
+    "runtime_environment",
+    "neutral_probe",
+    "non_claims",
+    "freeze"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "v1"},
+    "artifact_type": {"type": "string", "const": "model_lab_run004_runtime_binding"},
+    "contract_version": {"type": "string", "const": "run-004-runtime-binding.v1"},
+    "binding_id": {"$ref": "#/$defs/token"},
+    "triggered_by": {"$ref": "#/$defs/nonBlank"},
+    "series_id": {"type": "string", "const": "2026-05-31_model-lab-replication-series"},
+    "design_id": {"type": "string", "const": "run-004-condition-contrast"},
+    "challenge_version": {"type": "string", "const": "rest-api-v1"},
+    "generated_at": {"$ref": "#/$defs/rfc3339"},
+    "provider": {"type": "string", "const": "ollama-local-loopback"},
+    "ollama": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["client_version", "endpoint", "loopback_only", "live_chat_status"],
+      "properties": {
+        "client_version": {"type": "string", "const": "0.12.6"},
+        "endpoint": {"type": "string", "const": "http://127.0.0.1:11434/api/chat"},
+        "loopback_only": {"type": "boolean", "const": true},
+        "live_chat_status": {"type": "string", "enum": ["verified", "unavailable_documented"]}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alias",
+        "family",
+        "parameters",
+        "quantization",
+        "context_tokens",
+        "tools_supported",
+        "manifest_sha256",
+        "model_blob_sha256",
+        "blob_content_hash_verified"
+      ],
+      "properties": {
+        "alias": {"type": "string", "const": "qwen2.5-coder:14b"},
+        "family": {"type": "string", "const": "qwen2"},
+        "parameters": {"type": "string", "const": "14.8B"},
+        "quantization": {"type": "string", "const": "Q4_K_M"},
+        "context_tokens": {"type": "integer", "const": 32768},
+        "tools_supported": {"type": "boolean", "const": true},
+        "manifest_sha256": {"type": "string", "const": "9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849"},
+        "model_blob_sha256": {"type": "string", "const": "ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed"},
+        "blob_content_hash_verified": {"type": "boolean", "const": true}
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "program_ref",
+        "program_sha256",
+        "protocol_ref",
+        "protocol_sha256",
+        "agent_version",
+        "mode",
+        "system_developer_identity_sha256",
+        "model_direct_file_or_shell_access",
+        "tool_surface"
+      ],
+      "properties": {
+        "program_ref": {"$ref": "#/$defs/repoPath"},
+        "program_sha256": {"$ref": "#/$defs/sha256"},
+        "protocol_ref": {"$ref": "#/$defs/repoPath"},
+        "protocol_sha256": {"$ref": "#/$defs/sha256"},
+        "agent_version": {"type": "string", "const": "run-004-local-tool-broker.v1"},
+        "mode": {"type": "string", "const": "external-local-model-with-content-bound-sandbox-tools"},
+        "system_developer_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "model_direct_file_or_shell_access": {"type": "boolean", "const": false},
+        "tool_surface": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "list_files"},
+            {"const": "read_file"},
+            {"const": "write_file"},
+            {"const": "make_directory"},
+            {"const": "delete_path"},
+            {"const": "run_command"}
+          ],
+          "minItems": 6,
+          "maxItems": 6,
+          "items": false
+        }
+      }
+    },
+    "sampling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "same_across_arms",
+        "temperature",
+        "top_p",
+        "top_k",
+        "num_predict",
+        "seed",
+        "num_ctx",
+        "stream",
+        "keep_alive"
+      ],
+      "properties": {
+        "same_across_arms": {"type": "boolean", "const": true},
+        "temperature": {"type": "number", "const": 0},
+        "top_p": {"type": "number", "const": 1},
+        "top_k": {"type": "integer", "const": 1},
+        "num_predict": {"type": "integer", "const": 4096},
+        "seed": {"type": "integer", "const": 424004},
+        "num_ctx": {"type": "integer", "const": 16384},
+        "stream": {"type": "boolean", "const": false},
+        "keep_alive": {"type": "string", "const": "10m"}
+      }
+    },
+    "runtime_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["same_runtime_across_arms", "control_profile_id", "treatment_profile_id"],
+      "properties": {
+        "same_runtime_across_arms": {"type": "boolean", "const": true},
+        "control_profile_id": {"$ref": "#/$defs/token"},
+        "treatment_profile_id": {"$ref": "#/$defs/token"}
+      }
+    },
+    "execution_order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_string", "source_sha256", "low_bit", "rule", "result"],
+      "properties": {
+        "source_string": {"type": "string", "const": "run-004-rest-api-v1-empty-workspace"},
+        "source_sha256": {"type": "string", "const": "c66688ebf8213a9280baef83b5d86e2eede66710a42a09e0f256c521a3f10dff"},
+        "low_bit": {"type": "integer", "const": 1},
+        "rule": {"type": "string", "const": "low bit 0 => control_first, 1 => treatment_first"},
+        "result": {"type": "string", "const": "treatment_first"}
+      }
+    },
+    "runtime_environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "observed_fields", "unresolved_fields"],
+      "properties": {
+        "status": {"type": "string", "const": "partial"},
+        "observed_fields": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["os_or_container_identity", "architecture", "python_version", "node_version", "npm_version", "ollama_client_version"],
+          "properties": {
+            "os_or_container_identity": {"$ref": "#/$defs/nonBlank"},
+            "architecture": {"$ref": "#/$defs/nonBlank"},
+            "python_version": {"$ref": "#/$defs/nonBlank"},
+            "node_version": {"$ref": "#/$defs/nonBlank"},
+            "npm_version": {"$ref": "#/$defs/nonBlank"},
+            "ollama_client_version": {"type": "string", "const": "0.12.6"}
+          }
+        },
+        "unresolved_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    },
+    "neutral_probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "sha256"],
+      "properties": {
+        "ref": {"$ref": "#/$defs/repoPath"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "freeze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["freeze_manifest_ref"],
+      "properties": {
+        "freeze_manifest_ref": {"$ref": "#/$defs/repoPath"}
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "nonBlank": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rfc3339": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"},
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*[\\u0000-\\u001F\\u007F\\uD800-\\uDFFF])(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+    }
+  }
+}

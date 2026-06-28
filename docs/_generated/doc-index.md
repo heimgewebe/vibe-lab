@@ -216,6 +216,7 @@
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md` | common-condition | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md` | control-workflow-protocol | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md` | treatment-workflow-protocol | — | — |
+| `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md` | agent-protocol | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md` | README | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/README.md` | README | — | — |
 | `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` | Model-Lab Replication-Series — Failure Modes | designed | operative |

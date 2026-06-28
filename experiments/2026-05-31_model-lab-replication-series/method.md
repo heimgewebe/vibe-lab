@@ -97,7 +97,7 @@ Only these prompt surfaces are declared constant across arms:
 - benchmark;
 - shared condition.
 
-At design-freeze time, runtime dimensions such as model identity, tooling, sampling, dependency/runtime environment, harness, session isolation, and human-intervention rules were unbound. Later readiness artifacts bind the deterministic seed, workspace/session preparation, and launcher access policy separately; model, agent, sampling, runtime environment, harness, execution order, and metric capture remain unbound.
+At design-freeze time, runtime dimensions such as model identity, tooling, sampling, dependency/runtime environment, harness, session isolation, and human-intervention rules were unbound. Later readiness artifacts bind the deterministic seed, workspace/session preparation, launcher access policy, model identity, local agent broker identity, sampling configuration, and execution order separately. Runtime environment remains only partially bound; harness, forced-500 trigger, first-mutation trace, and metric capture remain unbound.
 
 ### Permanent historical provenance
 
@@ -125,7 +125,7 @@ A Run-004-v1-specific execution-readiness preflight now exists under `artifacts/
 
 The preflight checks the frozen condition-design provenance and freeze root, the readiness state model, runtime binding, workspace and session isolation, blinded visibility boundaries, deterministic prompt delivery, harness neutrality, forced-500 triggering, human-intervention rules, retry/error rules, execution order, and metric operationalization. It also keeps the design freeze and the new readiness freeze separate from any future execution seed.
 
-The current real artifact is intentionally `blocked`: Run-004 has no concrete model, agent, sampling configuration, runtime environment, execution order, metric capture, neutral harness, neutral forced-500 trigger, or first-mutation trace binding. The deterministic empty seed, opaque workspace/session preparation, and access-policy visibility boundary are bound separately. Therefore `runtime_values_bound=false`, `authorization_status=not_authorized`, and `run_004_execution_allowed=false`.
+The current real artifact is intentionally `blocked`: Run-004 now has concrete model, local agent broker, sampling configuration, and execution-order bindings, but it still lacks full runtime environment, metric capture, neutral harness, neutral forced-500 trigger, and first-mutation trace binding. The deterministic empty seed, opaque workspace/session preparation, and access-policy visibility boundary are bound separately. Therefore `runtime_values_bound=false`, `authorization_status=not_authorized`, and `run_004_execution_allowed=false`.
 
 This is a pre-execution readiness state only. No Run-004 arm was executed, no result assessment is allowed, `comparison_ready=false`, and `weak_condition_contrast` remains open until a later authorized execution and separate assessment evidence exist.
 
@@ -150,3 +150,15 @@ Assigned prompts are read outside the sandbox through no-symlink path checks, ha
 The live boundary probe starts only a neutral Python diagnostic through the launcher. It verifies byte-identical stdin prompt delivery, workspace read/write, minimal environment, absent repository/home/delivery/other-slot visibility, absent role tokens in visible paths, no `.git`, no prompt file, and `EPERM` for socket creation, namespace escape, `io_uring_setup`, and `fsopen`. It materializes the canonical runtime root only when absent and removes only the root it created.
 
 This closes `ACCESS_POLICY_UNRESOLVED` and `BLINDED_WORKSPACE_UNRESOLVED` for processes actually launched through the bound launcher. It does not execute a Run-004 arm, start a model or agent, bind runtime/model/agent/sampling values, measure results, compare arms, or make a general host/container security claim.
+
+## Run-004 runtime binding
+
+Iteration 21 adds a closed runtime-binding bundle under `artifacts/run-004-runtime-binding/`. It binds the future local model interface to Ollama on `127.0.0.1:11434` with model `qwen2.5-coder:14b`, Ollama client version `0.12.6`, model manifest SHA-256 `9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849`, and model blob SHA-256 `ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed`.
+
+The local broker is `scripts/docmeta/run_model_lab_run004_agent.py`, version `run-004-local-tool-broker.v1`, operating in `external-local-model-with-content-bound-sandbox-tools` mode. The model receives no direct file or shell access. Its only structured tools are `list_files`, `read_file`, `write_file`, `make_directory`, `delete_path`, and `run_command`; command execution remains argv-only and delegates to the already bound sandbox launcher. The system/developer identity is the SHA-256 of the closed agent protocol.
+
+The bundle also binds identical sampling for both arms (`temperature=0`, `top_p=1`, `top_k=1`, `num_predict=4096`, `seed=424004`, `num_ctx=16384`, `stream=false`, `keep_alive=10m`) and deterministic execution order (`treatment_first`) from source string `run-004-rest-api-v1-empty-workspace` and SHA-256 `c66688ebf8213a9280baef83b5d86e2eede66710a42a09e0f256c521a3f10dff`.
+
+The neutral probe verifies local model identity, Ollama client version, one strict textual-JSON tool action, and a complete multi-turn tool-result round trip over the loopback endpoint. The neutral probe uses no challenge prompt, overlay, or Run-004 arm workspace. No challenge prompt, overlay, arm output, model quality evidence, comparison evidence, or Run-004 execution evidence is produced.
+
+This closes only `MODEL_BINDING_UNRESOLVED`, `AGENT_BINDING_UNRESOLVED`, `SAMPLING_BINDING_UNRESOLVED`, and `EXECUTION_ORDER_UNRESOLVED` when the runtime bundle validates. `RUNTIME_ENVIRONMENT_UNRESOLVED` remains open because dependency resolution, cache policy, the full execution environment, and the `NODE_OPTIONS=--jitless` command binding are incomplete. Harness, forced-500 trigger, first-mutation trace, metric operationalization, authorization, execution, comparison, and assessment remain blocked.

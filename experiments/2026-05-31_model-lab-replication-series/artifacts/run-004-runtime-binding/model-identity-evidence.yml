@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-runtime-binding-model-identity
+synthetic_fixture: false
+claims:
+- kind: model_identity
+  status: verified
+  subject: qwen2.5-coder:14b
+  value: provider=ollama-local-loopback; alias=qwen2.5-coder:14b; family=qwen2; parameters=14.8B; quantization=Q4_K_M; advertised_context=32768; bound_num_ctx=16384; tools_supported=true; manifest_sha256=9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849; model_blob_sha256=ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed; blob_content_hash_verified=true; live_loopback_chat_verified=true

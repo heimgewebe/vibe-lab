@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-runtime-binding-agent-identity
+synthetic_fixture: false
+claims:
+- kind: agent_identity
+  status: verified
+  subject: run-004-local-tool-broker.v1
+  value: program=scripts/docmeta/run_model_lab_run004_agent.py; program_sha256=31bf7470f026fe00d7069f43a0738b2a1eed7ce5105988075398266b7f60845a; protocol_sha256=dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e; mode=external-local-model-with-content-bound-sandbox-tools; direct_model_file_or_shell_access=false; tool_action_encoding=whole-message textual JSON or strict native tool_calls; multi_turn_round_trip_verified=true
