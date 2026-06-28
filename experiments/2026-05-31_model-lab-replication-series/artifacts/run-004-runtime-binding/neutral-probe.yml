@@ -1,0 +1,44 @@
+schema_version: v1
+artifact_type: model_lab_run004_runtime_neutral_probe
+contract_version: run-004-runtime-neutral-probe.v1
+probe_id: run-004-runtime-binding-neutral-probe
+triggered_by: user-request-2026-06-28-run-004-runtime-binding
+generated_at: '2026-06-28T06:35:00Z'
+model_file_identity_verified: true
+ollama_client_version_verified: true
+ollama_loopback_chat_completed: true
+textual_json_tool_action_verified: true
+multi_turn_tool_round_trip_verified: true
+structured_tool_action_verified: true
+synthetic_workspace_removed: true
+run_004_execution_started: false
+challenge_prompt_used: false
+arm_output_produced: false
+limitations:
+- The live probe used a neutral instruction and list_files only; it used no challenge prompt, overlay, or Run-004 arm workspace.
+- It proves local model identity and broker transport/tool-protocol viability, not dependency installation, harness readiness, model quality, or Run-004 completion.
+- Node and npm require NODE_OPTIONS=--jitless on this host; that command-level binding remains unresolved.
+observations:
+  model_alias: qwen2.5-coder:14b
+  manifest_sha256: 9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849
+  model_blob_sha256: ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed
+  model_blob_size: 8988110784
+  model_blob_content_hash_verified: true
+  ollama_client_version: 0.12.6
+  endpoint: http://127.0.0.1:11434/api/chat
+  configured_num_ctx: 16384
+  configured_num_predict: 4096
+  keep_alive: 10m
+  response_tool_encoding: whole-message textual JSON object
+  first_tool_name: list_files
+  first_tool_path: ''
+  follow_up_content: DONE
+  run_004_prompt_bytes_read: 0
+  run_004_workspace_materialized: false
+non_claims:
+- run_004_executed
+- challenge_prompt_used
+- arm_output_produced
+- result_assessment_allowed
+- comparison_ready
+- live_ollama_required_for_ci

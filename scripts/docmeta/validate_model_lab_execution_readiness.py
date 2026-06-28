@@ -54,6 +54,14 @@ ACCESS_POLICY_BOUNDARY_PROBE_PATH = (
 )
 ACCESS_POLICY_PROBE_RUNNER_PATH = "scripts/docmeta/probe_model_lab_run004_access_policy.py"
 ACCESS_POLICY_LAUNCHER_PATH = "scripts/docmeta/run_model_lab_run004_sandbox.py"
+RUNTIME_BINDING_CONTRACT_PATH = (
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/"
+    "run-004-runtime-binding/runtime-contract.yml"
+)
+RUNTIME_BINDING_FREEZE_PATH = (
+    "experiments/2026-05-31_model-lab-replication-series/artifacts/"
+    "run-004-runtime-binding/freeze-manifest.yml"
+)
 
 RUN_004_SERIES_ID = "2026-05-31_model-lab-replication-series"
 RUN_004_DESIGN_ID = "run-004-condition-contrast"
@@ -171,6 +179,7 @@ EVIDENCE_CLAIM_KINDS = frozenset({
     "runtime_environment",
     "workspace_isolation",
     "visibility_boundary",
+    "execution_order",
     "harness",
     "harness_neutrality",
     "forced_500_trigger",
@@ -870,6 +879,53 @@ def _access_policy_binding_errors(
     return problems
 
 
+def _runtime_binding_bundle_blockers(
+    data: dict,
+    repo_root: Path,
+    path: Path,
+) -> set[str]:
+    if _is_fixture_candidate(path, repo_root):
+        return set()
+    runtime = data.get("runtime_binding") or {}
+    ref = runtime.get("runtime_contract_ref")
+    declared_hash = runtime.get("runtime_contract_sha256")
+    freeze_ref = runtime.get("runtime_freeze_manifest_ref")
+    freeze_hash = runtime.get("runtime_freeze_manifest_sha256")
+    broad = {
+        "MODEL_BINDING_UNRESOLVED",
+        "AGENT_BINDING_UNRESOLVED",
+        "SAMPLING_BINDING_UNRESOLVED",
+        "EXECUTION_ORDER_UNRESOLVED",
+    }
+    if _is_placeholder(ref) or _is_placeholder(declared_hash):
+        return set(broad)
+    if ref != RUNTIME_BINDING_CONTRACT_PATH:
+        return set(broad)
+    contract_path, code = _load_ref(str(ref), repo_root)
+    if code is not None or contract_path is None:
+        return set(broad)
+    if _sha256_of(contract_path) != declared_hash:
+        return set(broad)
+    if _is_placeholder(freeze_ref) or _is_placeholder(freeze_hash):
+        return set(broad)
+    if freeze_ref != RUNTIME_BINDING_FREEZE_PATH:
+        return set(broad)
+    freeze_path, freeze_code = _load_ref(str(freeze_ref), repo_root)
+    if freeze_code is not None or freeze_path is None or _sha256_of(freeze_path) != freeze_hash:
+        return set(broad)
+    try:
+        import validate_model_lab_run004_runtime_binding as runtime_validator
+    except ImportError as exc:
+        raise ToolError(f"cannot import Run-004 runtime-binding validator: {exc}") from exc
+    try:
+        bundle_problems, affected = runtime_validator.validate_bundle_with_blockers(contract_path)
+    except Exception as exc:  # noqa: BLE001 - fail closed across parser/tool errors
+        raise ToolError(f"runtime-binding bundle validation failed closed: {exc}") from exc
+    if bundle_problems:
+        return set(affected) or set(broad)
+    return set()
+
+
 def _required_blocker_ids(
     data: dict,
     registry: dict[str, set[str]],
@@ -899,6 +955,7 @@ def _required_blocker_ids(
         for name in READY_REQUIRED_SAMPLING_FIELDS
     ):
         required.add("SAMPLING_BINDING_UNRESOLVED")
+    required.update(_runtime_binding_bundle_blockers(data, repo_root, path))
     permissions = runtime.get("permissions") or {}
     if (
         not runtime.get("available_tools")
@@ -965,6 +1022,10 @@ def _required_blocker_ids(
         or (
             order.get("strategy") == "deterministic_randomization"
             and _is_placeholder(order.get("randomization_procedure"))
+        )
+        or (
+            not _is_fixture_candidate(path, repo_root)
+            and not _evidence_paths_registered(order.get("evidence"), registry, "execution_order")
         )
     ):
         required.add("EXECUTION_ORDER_UNRESOLVED")
@@ -1271,6 +1332,7 @@ def _ready_misc_errors(
     data: dict,
     registry: dict[str, set[str]],
     repo_root: Path,
+    path: Path,
 ) -> list[str]:
     problems = []
     human = data.get("human_intervention") or {}
@@ -1305,6 +1367,11 @@ def _ready_misc_errors(
         problems.append("execution_order must be bound before authorization")
     if order.get("strategy") == "deterministic_randomization" and _is_placeholder(order.get("randomization_procedure")):
         problems.append("execution_order.randomization_procedure must be bound for deterministic_randomization")
+    if (
+        not _is_fixture_candidate(path, repo_root)
+        and not _evidence_paths_registered(order.get("evidence"), registry, "execution_order")
+    ):
+        problems.append("execution_order requires hash-registered execution_order evidence")
     metric = data.get("metric_operationalization") or {}
     if metric.get("binding_status") != "bound":
         problems.append("metric_operationalization.binding_status must be bound")
@@ -1610,7 +1677,7 @@ def semantic_errors(data: dict, path: Path, repo_root: Path) -> list[str]:
         ready_problems += _ready_workspace_errors(data, registry, repo_root, path)
         ready_problems += _ready_visibility_errors(data, registry)
         ready_problems += _ready_harness_errors(data, repo_root, registry)
-        ready_problems += _ready_misc_errors(data, registry, repo_root)
+        ready_problems += _ready_misc_errors(data, registry, repo_root, path)
         if ready_problems:
             errors.append(format_error("EXECUTION_READINESS_REQUIRES_FULL_READY_BINDING", path, "; ".join(ready_problems)))
     return errors

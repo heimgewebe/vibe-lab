@@ -1,0 +1,91 @@
+schema_version: v1
+artifact_type: model_lab_run004_runtime_binding
+contract_version: run-004-runtime-binding.v1
+binding_id: run-004-runtime-binding
+triggered_by: user-request-2026-06-28-run-004-runtime-binding
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+generated_at: '2026-06-28T06:35:00Z'
+provider: ollama-local-loopback
+ollama:
+  client_version: 0.12.6
+  endpoint: http://127.0.0.1:11434/api/chat
+  loopback_only: true
+  live_chat_status: verified
+model:
+  alias: qwen2.5-coder:14b
+  family: qwen2
+  parameters: 14.8B
+  quantization: Q4_K_M
+  context_tokens: 32768
+  tools_supported: true
+  manifest_sha256: 9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849
+  model_blob_sha256: ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed
+  blob_content_hash_verified: true
+agent:
+  program_ref: scripts/docmeta/run_model_lab_run004_agent.py
+  program_sha256: 91d737af6ad0270c62f6e9cc4fcf76b051d1241bcaf91015f917e1c690d384e7
+  protocol_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md
+  protocol_sha256: dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e
+  agent_version: run-004-local-tool-broker.v1
+  mode: external-local-model-with-content-bound-sandbox-tools
+  system_developer_identity_sha256: dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e
+  model_direct_file_or_shell_access: false
+  tool_surface:
+  - list_files
+  - read_file
+  - write_file
+  - make_directory
+  - delete_path
+  - run_command
+sampling:
+  same_across_arms: true
+  temperature: 0
+  top_p: 1
+  top_k: 1
+  num_predict: 4096
+  seed: 424004
+  num_ctx: 16384
+  stream: false
+  keep_alive: 10m
+runtime_profile:
+  same_runtime_across_arms: true
+  control_profile_id: ollama-qwen25coder14b-local-broker-v1
+  treatment_profile_id: ollama-qwen25coder14b-local-broker-v1
+execution_order:
+  source_string: run-004-rest-api-v1-empty-workspace
+  source_sha256: c66688ebf8213a9280baef83b5d86e2eede66710a42a09e0f256c521a3f10dff
+  low_bit: 1
+  rule: low bit 0 => control_first, 1 => treatment_first
+  result: treatment_first
+runtime_environment:
+  status: partial
+  observed_fields:
+    os_or_container_identity: Linux-6.17.9-76061709-generic-x86_64-with-glibc2.35
+    architecture: x86_64
+    python_version: 3.10.12
+    node_version: v22.22.3; requires NODE_OPTIONS=--jitless on this host
+    npm_version: 10.9.8; requires NODE_OPTIONS=--jitless on this host
+    ollama_client_version: 0.12.6
+  unresolved_fields:
+  - dependency_resolution_strategy
+  - cache_policy
+  - full_execution_environment
+  - node_jitless_command_binding
+neutral_probe:
+  ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/neutral-probe.yml
+  sha256: 4eb26b6414513c84e2b1ba5b96e0696924570444d8b5411b14daf7a7f814b351
+non_claims:
+- run_004_executed
+- run_004_result_measured
+- result_assessment_allowed
+- comparison_ready
+- model_quality
+- comparative_superiority
+- condition_effect
+- production_readiness
+- security_readiness
+- run_004_arm_workspace_materialized
+freeze:
+  freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/freeze-manifest.yml

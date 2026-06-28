@@ -53,7 +53,8 @@
               "harness",
               "harness_neutrality",
               "forced_500_trigger",
-              "first_mutation_trace"
+              "first_mutation_trace",
+              "execution_order"
             ]
           },
           "status": {

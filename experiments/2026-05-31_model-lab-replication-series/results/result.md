@@ -217,3 +217,26 @@ Open blocking readiness blockers remain:
 - `METRIC_OPERATIONALIZATION_UNRESOLVED`
 
 `WEAK_CONDITION_CONTRAST_OPEN` remains informational in the readiness artifact and a methodological blocker for later assessment. No Run-004 arm was executed, no model or agent process was started, and no measurement, comparison, result, quality, security-readiness, adoption, promotion, or production claim is derived.
+
+## State after iteration 21 — runtime binding
+
+A closed Run-004 runtime-binding bundle now exists at `artifacts/run-004-runtime-binding/`. It binds the local Ollama provider/model identity, content-bound local broker and agent protocol, identical sampling configuration, identical runtime profile, and deterministic execution order.
+
+The real readiness state remains `blocked`, `authorization_status=not_authorized`, `runtime_values_bound=false`, `run_004_execution_allowed=false`, `run_004_executed=false`, `result_assessment_allowed=false`, and `comparison_ready=false`.
+
+No longer open as readiness blockers:
+
+- `MODEL_BINDING_UNRESOLVED`
+- `AGENT_BINDING_UNRESOLVED`
+- `SAMPLING_BINDING_UNRESOLVED`
+- `EXECUTION_ORDER_UNRESOLVED`
+
+Open blocking readiness blockers remain:
+
+- `FRAMEWORK_NEUTRAL_HARNESS_UNRESOLVED`
+- `FORCED_500_TRIGGER_UNRESOLVED`
+- `FIRST_MUTATION_TRACE_UNRESOLVED`
+- `RUNTIME_ENVIRONMENT_UNRESOLVED`
+- `METRIC_OPERATIONALIZATION_UNRESOLVED`
+
+`RUNTIME_ENVIRONMENT_UNRESOLVED` remains open because dependency resolution, cache policy, the full execution environment, and the `NODE_OPTIONS=--jitless` command binding are incomplete. The neutral probe did not use the challenge prompt, overlays, or arm outputs; it did not start a Run-004 execution. `WEAK_CONDITION_CONTRAST_OPEN` remains informational in the readiness artifact and a methodological blocker for later assessment.
