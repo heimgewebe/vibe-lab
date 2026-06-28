@@ -82,6 +82,43 @@ class PrContextPilotValidationTests(unittest.TestCase):
         errors, _, _ = validate_pilot(pilot, repo_root=Path(tmp.name))
         self.assertTrue(any("execution_allowed" in error for error in errors))
 
+    def test_duplicate_task_refs_block_readiness(self) -> None:
+        tmp, pilot, data = self._fixture()
+        self.addCleanup(tmp.cleanup)
+        mutated = copy.deepcopy(data)
+        for pair in mutated["pairing"]["pairs"]:
+            pair["task_refs"] = ["task:duplicate", "task:duplicate"]
+        mutated["role_bindings"] = {
+            "executor": "executor:test",
+            "reviewer": "reviewer:test",
+            "auditor": "auditor:test",
+        }
+        mutated["blockers"] = ["task_refs_not_unique"]
+        self._write(pilot, mutated)
+        errors, warnings, parsed = validate_pilot(pilot, repo_root=Path(tmp.name))
+        self.assertEqual(errors, [])
+        self.assertFalse(parsed["execution_allowed"])
+        self.assertTrue(any("task_refs_not_unique" in warning for warning in warnings))
+
+    def test_overlapping_roles_block_readiness(self) -> None:
+        tmp, pilot, data = self._fixture()
+        self.addCleanup(tmp.cleanup)
+        mutated = copy.deepcopy(data)
+        for pair in mutated["pairing"]["pairs"]:
+            mutated_refs = [f"task:{pair['pair_id']}:1", f"task:{pair['pair_id']}:2"]
+            pair["task_refs"] = mutated_refs
+        mutated["role_bindings"] = {
+            "executor": "agent:test",
+            "reviewer": "agent:test",
+            "auditor": "auditor:test",
+        }
+        mutated["blockers"] = ["role_bindings_not_distinct"]
+        self._write(pilot, mutated)
+        errors, warnings, parsed = validate_pilot(pilot, repo_root=Path(tmp.name))
+        self.assertEqual(errors, [])
+        self.assertFalse(parsed["execution_allowed"])
+        self.assertTrue(any("role_bindings_not_distinct" in warning for warning in warnings))
+
     def test_ready_state_requires_bound_tasks_and_roles(self) -> None:
         tmp, pilot, data = self._fixture()
         self.addCleanup(tmp.cleanup)

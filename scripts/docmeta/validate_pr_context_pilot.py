@@ -68,6 +68,7 @@ def _derived_blockers(data: dict[str, Any]) -> list[str]:
     pairing = data.get("pairing")
     pairs = pairing.get("pairs", []) if isinstance(pairing, dict) else []
     task_refs_missing = False
+    task_refs: list[str] = []
     for pair in pairs if isinstance(pairs, list) else []:
         if not isinstance(pair, dict):
             task_refs_missing = True
@@ -77,15 +78,24 @@ def _derived_blockers(data: dict[str, Any]) -> list[str]:
             not isinstance(ref, str) or not ref.strip() for ref in refs
         ):
             task_refs_missing = True
+            continue
+        task_refs.extend(ref.strip() for ref in refs)
     if task_refs_missing:
         blockers.append("tasks_not_bound")
+    elif len(task_refs) != len(set(task_refs)):
+        blockers.append("task_refs_not_unique")
 
+    role_names = ("executor", "reviewer", "auditor")
     roles = data.get("role_bindings")
     if not isinstance(roles, dict) or any(
         not isinstance(roles.get(role), str) or not roles.get(role, "").strip()
-        for role in ("executor", "reviewer", "auditor")
+        for role in role_names
     ):
         blockers.append("role_bindings_missing")
+    else:
+        role_bindings = [roles[role].strip() for role in role_names]
+        if len(role_bindings) != len(set(role_bindings)):
+            blockers.append("role_bindings_not_distinct")
     return blockers
 
 
