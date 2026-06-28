@@ -100,9 +100,9 @@ runtime_binding:
   same_runtime_across_arms_required: true
   historical_runtime_reuse_forbidden: true
   runtime_contract_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-contract.yml
-  runtime_contract_sha256: 9f0e727f7307fb0f7261ce2828bbc5c22de63ee2919522a55af9020d9f5652d2
+  runtime_contract_sha256: 19c89f4332de9575c5080cf440905f635b14a08d8d25afed51c95b3d37236713
   runtime_freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/freeze-manifest.yml
-  runtime_freeze_manifest_sha256: bf0c1923856b56c82d3a7a58f362d3e1a44814597e748607060ee0ff30d4eac4
+  runtime_freeze_manifest_sha256: 666b4e07f0fe3c18044d14e19abe226979e0c59e991be37fe2adda409abb3b28
   provider:
     status: bound
     value: ollama-local-loopback
@@ -469,7 +469,7 @@ evidence_registry:
   kinds:
   - model_identity
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
-  sha256: 632f77dd828153e11c3405ec68b4c0b585258ab1cad73b8aaf14f4c14c3e2881
+  sha256: fe579c04ce019cfeb9d6e0d12f611cd7199e25f1f8f8226bebca70f5c9e7f4f0
   kinds:
   - agent_identity
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml

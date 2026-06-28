@@ -25,6 +25,7 @@ import run_model_lab_run004_sandbox as sandbox
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_POLICY = REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml"
 DEFAULT_PROTOCOL = REPO_ROOT / "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md"
+PROTOCOL_SHA256 = "dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e"
 MODEL_ALIAS = "qwen2.5-coder:14b"
 MODEL_MANIFEST_SHA256 = "9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849"
 MODEL_BLOB_SHA256 = "ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed"
@@ -561,10 +562,14 @@ def run_agent(
     raise BrokerError("maximum tool turns exceeded")
 
 
-def _load_protocol(path: Path) -> str:
+def _load_protocol(path: Path = DEFAULT_PROTOCOL) -> str:
+    if path != DEFAULT_PROTOCOL:
+        raise BrokerError("agent protocol override is forbidden")
     if path.is_symlink() or not path.is_file():
         raise BrokerError("agent protocol must be a regular non-symlink file")
     try:
+        if sha256_file(path) != PROTOCOL_SHA256:
+            raise BrokerError("agent protocol hash mismatch")
         text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError) as exc:
         raise BrokerError(f"agent protocol is unreadable: {exc}") from exc
@@ -587,23 +592,21 @@ def _assigned_prompt(policy: dict[str, Any], arm: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--policy", type=Path, default=DEFAULT_POLICY)
-    parser.add_argument("--protocol", type=Path, default=DEFAULT_PROTOCOL)
     parser.add_argument("--arm", choices=("control", "treatment"), required=True)
     parser.add_argument("--check-runtime", action="store_true")
     args = parser.parse_args(argv)
     try:
         identity = verify_model_installation()
-        policy, problems = sandbox.validate_policy(args.policy, REPO_ROOT)
+        policy, problems = sandbox.validate_policy(DEFAULT_POLICY, REPO_ROOT)
         if problems or policy is None:
             raise BrokerError("access policy is invalid: " + "; ".join(problems))
+        protocol = _load_protocol()
         if args.check_runtime:
             print(json.dumps({"agent_version": AGENT_VERSION, "model": MODEL_ALIAS, **identity}, sort_keys=True))
             return 0
         arm_data = (policy.get("arms") or {}).get(args.arm) or {}
         prompt = _assigned_prompt(policy, args.arm)
-        protocol = _load_protocol(args.protocol)
-        with WorkspaceTools(Path(str(arm_data.get("workspace_source", ""))), args.policy, args.arm) as tools:
+        with WorkspaceTools(Path(str(arm_data.get("workspace_source", ""))), DEFAULT_POLICY, args.arm) as tools:
             final = run_agent(prompt, protocol, tools, OllamaTransport())
         sys.stdout.write(final.rstrip("\n") + "\n")
         return 0

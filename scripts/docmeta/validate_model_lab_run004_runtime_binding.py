@@ -186,7 +186,7 @@ def _program_binding_errors(path: Path, contract: dict) -> list[str]:
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     except (OSError, UnicodeError, SyntaxError) as exc:
         return [f"agent program constants are unreadable: {exc}"]
-    names = {"MODEL_ALIAS", "OLLAMA_ENDPOINT", "OLLAMA_KEEP_ALIVE", "AGENT_VERSION", "SAMPLING"}
+    names = {"MODEL_ALIAS", "OLLAMA_ENDPOINT", "OLLAMA_KEEP_ALIVE", "AGENT_VERSION", "PROTOCOL_SHA256", "SAMPLING"}
     values: dict[str, object] = {}
     for node in tree.body:
         if not isinstance(node, ast.Assign) or len(node.targets) != 1:
@@ -208,6 +208,8 @@ def _program_binding_errors(path: Path, contract: dict) -> list[str]:
         problems.append("agent OLLAMA_ENDPOINT must match runtime contract ollama.endpoint")
     if values["AGENT_VERSION"] != (contract.get("agent") or {}).get("agent_version"):
         problems.append("agent AGENT_VERSION must match runtime contract agent.agent_version")
+    if values["PROTOCOL_SHA256"] != (contract.get("agent") or {}).get("protocol_sha256"):
+        problems.append("agent PROTOCOL_SHA256 must match runtime contract agent.protocol_sha256")
     contract_sampling = contract.get("sampling") or {}
     program_sampling = values["SAMPLING"]
     if not isinstance(program_sampling, dict):

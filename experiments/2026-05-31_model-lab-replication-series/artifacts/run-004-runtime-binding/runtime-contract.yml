@@ -25,7 +25,7 @@ model:
   blob_content_hash_verified: true
 agent:
   program_ref: scripts/docmeta/run_model_lab_run004_agent.py
-  program_sha256: 91d737af6ad0270c62f6e9cc4fcf76b051d1241bcaf91015f917e1c690d384e7
+  program_sha256: 31bf7470f026fe00d7069f43a0738b2a1eed7ce5105988075398266b7f60845a
   protocol_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md
   protocol_sha256: dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e
   agent_version: run-004-local-tool-broker.v1

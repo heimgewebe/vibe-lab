@@ -8,18 +8,18 @@ frozen_at: '2026-06-28T06:35:00Z'
 manifest_excludes_itself: true
 hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed
   files)
-content_sha256: 0da476d40f0ca0320e157fd632a7b1bfc2bd4112721435d8662bba69add81b4f
+content_sha256: 5c5f7f5fff21cbbf23f38a7e087cc4438ae736c93c23ee247c66cb9ab4b9be8c
 hashes:
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md
   sha256: dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-contract.yml
-  sha256: 9f0e727f7307fb0f7261ce2828bbc5c22de63ee2919522a55af9020d9f5652d2
+  sha256: 19c89f4332de9575c5080cf440905f635b14a08d8d25afed51c95b3d37236713
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/neutral-probe.yml
   sha256: 4eb26b6414513c84e2b1ba5b96e0696924570444d8b5411b14daf7a7f814b351
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml
   sha256: f771fe19333ba9cc54f13f22cca40e06dd1ba887c5eb7252dab7b39da283a619
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml
-  sha256: 632f77dd828153e11c3405ec68b4c0b585258ab1cad73b8aaf14f4c14c3e2881
+  sha256: fe579c04ce019cfeb9d6e0d12f611cd7199e25f1f8f8226bebca70f5c9e7f4f0
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml
   sha256: 09aca9adbff863c8bf6eb0559219c8224b9a7d66b764a3914ba2f10479c2bb8f
 - path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/execution-order-evidence.yml

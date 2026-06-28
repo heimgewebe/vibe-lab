@@ -6,9 +6,12 @@ bound loopback Ollama model when it is installed; CI may skip only when absent.
 """
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 import run_model_lab_run004_agent as broker
@@ -62,6 +65,21 @@ class BrokerToolTests(unittest.TestCase):
         self.assertEqual(16384, broker.SAMPLING["num_ctx"])
         self.assertEqual(4096, broker.SAMPLING["num_predict"])
         self.assertEqual("10m", broker.OLLAMA_KEEP_ALIVE)
+
+    def test_bound_protocol_hash_is_enforced(self):
+        self.assertEqual(broker.PROTOCOL_SHA256, broker.sha256_file(broker.DEFAULT_PROTOCOL))
+        self.assertEqual(broker.DEFAULT_PROTOCOL.read_text(encoding="utf-8"), broker._load_protocol())
+        with mock.patch.object(broker, "PROTOCOL_SHA256", "0" * 64):
+            with self.assertRaisesRegex(broker.BrokerError, "protocol hash mismatch"):
+                broker._load_protocol()
+
+    def test_cli_rejects_policy_and_protocol_overrides(self):
+        for option in ("--policy", "--protocol"):
+            with self.subTest(option=option):
+                with contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit) as raised:
+                        broker.main([option, "/tmp/override", "--arm", "control", "--check-runtime"])
+                self.assertEqual(2, raised.exception.code)
 
     def test_native_tool_call_is_normalized_and_validated(self):
         calls = broker.normalize_tool_calls(

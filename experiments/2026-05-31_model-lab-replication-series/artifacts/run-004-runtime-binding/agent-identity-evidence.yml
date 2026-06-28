@@ -6,4 +6,4 @@ claims:
 - kind: agent_identity
   status: verified
   subject: run-004-local-tool-broker.v1
-  value: program=scripts/docmeta/run_model_lab_run004_agent.py; program_sha256=91d737af6ad0270c62f6e9cc4fcf76b051d1241bcaf91015f917e1c690d384e7; protocol_sha256=dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e; mode=external-local-model-with-content-bound-sandbox-tools; direct_model_file_or_shell_access=false; tool_action_encoding=whole-message textual JSON or strict native tool_calls; multi_turn_round_trip_verified=true
+  value: program=scripts/docmeta/run_model_lab_run004_agent.py; program_sha256=31bf7470f026fe00d7069f43a0738b2a1eed7ce5105988075398266b7f60845a; protocol_sha256=dd5cf3d5bc43ed592ae6993b5a66f996a09bf3949360acc742be25defe45469e; mode=external-local-model-with-content-bound-sandbox-tools; direct_model_file_or_shell_access=false; tool_action_encoding=whole-message textual JSON or strict native tool_calls; multi_turn_round_trip_verified=true
