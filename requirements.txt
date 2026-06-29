@@ -1,0 +1,4 @@
+# Runtime dependencies for local validation and GitHub Actions.
+PyYAML
+jsonschema
+rfc3339-validator
