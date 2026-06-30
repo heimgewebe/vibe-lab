@@ -1,0 +1,82 @@
+schema_version: "1.0.0"
+contract: "pr_context_comparison_pilot"
+pilot_id: "pr-context-b-vs-d-pilot-v1"
+triggered_by: "user-request-2026-06-28-implement-pr-context-usefulness-plan"
+status: "prepared"
+execution_allowed: false
+
+primary_question: >
+  Reduces a full Vibe-Lab handoff (B), compared with the minimal
+  decision-first checklist (D), correction load on real PR tasks without
+  disproportionate total effort?
+
+conditions:
+  B:
+    name: "vibe-lab-handoff"
+    path: "artifacts/run-002-vibe-lab-handoff/condition-input.md"
+    sha256: "ce234227b442ebc370c80887b8da6f4d0d1c732c07a806e748d25c615d29f8c1"
+  D:
+    name: "minimal-decision-first-checklist"
+    path: "artifacts/run-004-minimal-decision-first-checklist/condition-input.md"
+    sha256: "88448ad269447774bc9388b7c4335d60b991196377e9595340be9313e95ee2d4"
+
+pairing:
+  strategy: "blocked_randomization"
+  pair_count: 3
+  pairs:
+    - pair_id: "pair-01"
+      task_class: "documentation_policy"
+      assignment_order: ["D", "B"]
+      task_refs: [null, null]
+    - pair_id: "pair-02"
+      task_class: "validator_test"
+      assignment_order: ["B", "D"]
+      task_refs: [null, null]
+    - pair_id: "pair-03"
+      task_class: "implementation_ci"
+      assignment_order: ["D", "B"]
+      task_refs: [null, null]
+
+role_bindings:
+  executor: null
+  reviewer: null
+  auditor: null
+
+required_metrics:
+  - "scope_drift_count"
+  - "unsupported_claim_count"
+  - "missing_locator_count"
+  - "validation_gap_count"
+  - "review_friction_count"
+  - "rework_count"
+  - "false_block_count"
+  - "task_completion_time_observed"
+
+primary_axes:
+  correction_load:
+    - "review_friction_count"
+    - "rework_count"
+    - "unsupported_claim_count"
+    - "validation_gap_count"
+  total_effort:
+    - "preparation_seconds"
+    - "execution_seconds"
+    - "validation_seconds"
+    - "review_seconds"
+    - "rework_seconds"
+
+stop_rules:
+  - "Stop result assessment if any run lacks timing evidence."
+  - "Stop result assessment if review/rework evidence is missing without an explicit not-applicable reason."
+  - "Stop or redesign after more than two non-comparable runs."
+  - "Do not adopt a condition from the three-pair pilot alone."
+
+blockers:
+  - "tasks_not_bound"
+  - "role_bindings_missing"
+
+does_not_establish:
+  - "condition_superiority"
+  - "general_agent_quality"
+  - "lenskit_necessity"
+  - "adoption_readiness"
