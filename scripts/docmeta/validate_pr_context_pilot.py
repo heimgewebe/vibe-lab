@@ -38,6 +38,27 @@ EXPECTED_METRICS = {
     "false_block_count",
     "task_completion_time_observed",
 }
+EXPECTED_PRIMARY_AXES = {
+    "correction_load": {
+        "review_friction_count",
+        "rework_count",
+        "unsupported_claim_count",
+        "validation_gap_count",
+    },
+    "total_effort": {
+        "preparation_seconds",
+        "execution_seconds",
+        "validation_seconds",
+        "review_seconds",
+        "rework_seconds",
+    },
+}
+EXPECTED_DOES_NOT_ESTABLISH = {
+    "condition_superiority",
+    "general_agent_quality",
+    "lenskit_necessity",
+    "adoption_readiness",
+}
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -191,11 +212,32 @@ def validate_pilot(
     if not isinstance(metrics, list) or set(metrics) != EXPECTED_METRICS or len(metrics) != len(EXPECTED_METRICS):
         errors.append("required_metrics must contain the eight canonical metrics exactly once")
 
+    primary_axes = data.get("primary_axes")
+    if not isinstance(primary_axes, dict) or set(primary_axes) != set(EXPECTED_PRIMARY_AXES):
+        errors.append("primary_axes must contain exactly correction_load and total_effort")
+    else:
+        for axis, expected_metrics in EXPECTED_PRIMARY_AXES.items():
+            values = primary_axes.get(axis)
+            if (
+                not isinstance(values, list)
+                or set(values) != expected_metrics
+                or len(values) != len(expected_metrics)
+            ):
+                errors.append(f"primary_axes.{axis} must contain the canonical metrics exactly once")
+
     stop_rules = data.get("stop_rules")
     if not isinstance(stop_rules, list) or len(stop_rules) < 3 or any(
         not isinstance(item, str) or not item.strip() for item in stop_rules
     ):
         errors.append("stop_rules must contain at least three non-empty rules")
+
+    does_not_establish = data.get("does_not_establish")
+    if (
+        not isinstance(does_not_establish, list)
+        or set(does_not_establish) != EXPECTED_DOES_NOT_ESTABLISH
+        or len(does_not_establish) != len(EXPECTED_DOES_NOT_ESTABLISH)
+    ):
+        errors.append("does_not_establish must contain the four canonical non-claims exactly once")
 
     declared_blockers = data.get("blockers")
     derived_blockers = _derived_blockers(data)

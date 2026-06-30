@@ -119,6 +119,25 @@ class PrContextPilotValidationTests(unittest.TestCase):
         self.assertFalse(parsed["execution_allowed"])
         self.assertTrue(any("role_bindings_not_distinct" in warning for warning in warnings))
 
+
+    def test_primary_axes_drift_fails(self) -> None:
+        tmp, pilot, data = self._fixture()
+        self.addCleanup(tmp.cleanup)
+        mutated = copy.deepcopy(data)
+        mutated["primary_axes"]["correction_load"].append("false_block_count")
+        self._write(pilot, mutated)
+        errors, _, _ = validate_pilot(pilot, repo_root=Path(tmp.name))
+        self.assertTrue(any("primary_axes.correction_load" in error for error in errors))
+
+    def test_non_claim_drift_fails(self) -> None:
+        tmp, pilot, data = self._fixture()
+        self.addCleanup(tmp.cleanup)
+        mutated = copy.deepcopy(data)
+        mutated["does_not_establish"].remove("condition_superiority")
+        self._write(pilot, mutated)
+        errors, _, _ = validate_pilot(pilot, repo_root=Path(tmp.name))
+        self.assertTrue(any("does_not_establish" in error for error in errors))
+
     def test_ready_state_requires_bound_tasks_and_roles(self) -> None:
         tmp, pilot, data = self._fixture()
         self.addCleanup(tmp.cleanup)
