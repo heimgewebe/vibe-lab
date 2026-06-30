@@ -36,8 +36,9 @@ validate-run-bundle-tests:
 	@python3 scripts/docmeta/test_validate_run_bundle.py
 
 validate-pr-context-pilot-tests:
-	@echo "🧪 Running PR-context pilot validator regression tests..."
+	@echo "🧪 Running PR-context pilot regression tests..."
 	@python3 scripts/docmeta/test_validate_pr_context_pilot.py
+	@python3 tools/vibe-cli/test_pr_context_capture.py
 
 validate-pr-context-pilot:
 	@echo "🧭 Validating PR-context pilot contract..."

@@ -234,7 +234,7 @@ def main(argv: list[str] | None = None) -> int:
                 result = finalize(directory)
         print(result if isinstance(result, Path) else json.dumps(result, indent=2, sort_keys=True))
         return 0
-    except (CollectorError, OSError, ValueError, KeyError, json.JSONDecodeError, yaml.YAMLError) as exc:
+    except (CaptureError, OSError, ValueError, KeyError, json.JSONDecodeError, yaml.YAMLError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
