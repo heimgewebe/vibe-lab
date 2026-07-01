@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 1408
-- classified: 1407
-  - of which fallback_classified (catch-all rule): 767
-  - fallback_share: 54.5% (767 / 1407)
+- total: 1413
+- classified: 1412
+  - of which fallback_classified (catch-all rule): 770
+  - fallback_share: 54.5% (770 / 1412)
   - fallback_threshold: 50.0% — warning
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -29,11 +29,11 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | <none> | 1 |
 | agent | 11 |
 | archive | 24 |
-| capture | 7 |
+| capture | 8 |
 | catalog | 12 |
 | contract | 51 |
 | docs | 40 |
-| experiment | 738 |
+| experiment | 742 |
 | export | 15 |
 | generated | 8 |
 | governance | 75 |
@@ -47,14 +47,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | diagnostic_signal | 7 |
 | evidence_log | 20 |
 | generated_projection | 10 |
-| historical_record | 487 |
+| historical_record | 490 |
 | implementation_behavior | 19 |
 | navigation_surface | 23 |
 | normative_contract | 16 |
 | procedure_contract | 130 |
-| raw_capture | 27 |
+| raw_capture | 28 |
 | result_interpretation | 67 |
-| runtime_observation | 87 |
+| runtime_observation | 88 |
 | schema_truth | 39 |
 | sovereign_source | 3 |
 | test_expectation | 426 |
@@ -65,10 +65,10 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | lifecycle | count |
 | --- | ---: |
 | <none> | 1 |
-| append_only | 553 |
+| append_only | 557 |
 | handcrafted | 766 |
 | regenerated | 18 |
-| revision_with_reason | 68 |
+| revision_with_reason | 69 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -80,11 +80,11 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | ci_blocking | 595 |
 | diagnostic | 2 |
 | no_manual_edit | 18 |
-| no_rewrite | 553 |
+| no_rewrite | 557 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 283 |
+| review_required | 284 |
 
 ## Unknown artifacts
 
@@ -592,6 +592,9 @@ _none_
 - `experiments/2026-07-01_operator-lab-loop/artifacts/README.md`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/steuerboard-summary.json`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-002-bureau-t005-binding/run-card.yml`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-002-bureau-t005-binding/steuerboard-summary.json`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-002-rlens-agent-ecosystem/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md`
 - `experiments/_template/artifacts/README.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
@@ -977,8 +980,8 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 460 | 60.0% |
-| `tests/fixtures/**` | 273 | 35.6% |
+| `experiments/*/artifacts/**` | 463 | 60.1% |
+| `tests/fixtures/**` | 273 | 35.5% |
 | `experiments/**` | 27 | 3.5% |
 | `docs/**` | 7 | 0.9% |
 
@@ -995,7 +998,7 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
 | `tests/fixtures/**` | 273 | 273 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/model_lab_next_blocker_triage/invalid`=29, `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence`=16, `tests/fixtures/dependency_risk_caveat_scope/invalid`=15, `tests/fixtures/model_lab_condition_contrast_design_gate/invalid`=15, `tests/fixtures/model_lab_next_blocker_triage/_evidence`=15 |
-| `experiments/*/artifacts/**` | 460 | 0 | `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
+| `experiments/*/artifacts/**` | 463 | 0 | `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
 | `experiments/**` | 27 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2, `app.ts`=1, `condition-contrast-design-gate.yml`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-05-31_model-lab-replication-series/results`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
 
@@ -1005,7 +1008,7 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 460 | 0 | `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
+| `experiments/*/artifacts/**` | 463 | 0 | `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
 | `tests/fixtures/**` | 273 | 273 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/model_lab_next_blocker_triage/invalid`=29, `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence`=16, `tests/fixtures/dependency_risk_caveat_scope/invalid`=15, `tests/fixtures/model_lab_condition_contrast_design_gate/invalid`=15, `tests/fixtures/model_lab_next_blocker_triage/_evidence`=15 |
 | `experiments/**` | 27 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2, `app.ts`=1, `condition-contrast-design-gate.yml`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-05-31_model-lab-replication-series/results`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |

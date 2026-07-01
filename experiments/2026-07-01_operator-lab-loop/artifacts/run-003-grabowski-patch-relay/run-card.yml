@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+run_id: "run-003-grabowski-patch-relay"
+date: "2026-07-01"
+operation: "Promote the Grabowski patch relay Operator-Lab raw note into a structured run card."
+target_repo: "heimgewebe/grabowski"
+condition: "operator_patch_relay"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+source_note:
+  path: "raw-vibes/operator-lab-run-20260701-grabowski-patch-relay-v1.md"
+  role: "intake_source"
+claims:
+  - claim: "The Grabowski patch relay work was identified as an Operator-Lab-worthy PR/agent run."
+    status: observed
+    evidence:
+      - path: "../../../raw-vibes/operator-lab-run-20260701-grabowski-patch-relay-v1.md"
+        evidence_status: repo_local
+  - claim: "The original raw-vibes note is not the final structured Operator-Lab run-card location."
+    status: observed
+    evidence:
+      - path: "artifacts/run-003-grabowski-patch-relay/run-card.yml"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Original raw note exists and shows a valid trigger check, but final PR evidence should be structured under the Operator-Lab experiment."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "This is evidence-structure cleanup, not a new cross-repo task signal."
+decision: "promote_raw_note_to_structured_run_card"
+does_not_establish:
+  - "patch relay implementation correctness"
+  - "grabowski pr merge readiness"
+  - "operator lab workflow superiority"

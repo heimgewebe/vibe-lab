@@ -1,0 +1,11 @@
+{
+  "command": "promote raw-vibes operator-lab note into structured run-card.yml",
+  "executor": "operator:chatgpt-grabowski",
+  "exit_code": 0,
+  "generated_at": "2026-07-01T18:05:00Z",
+  "notes": "Structured follow-up for the raw Grabowski patch relay Operator-Lab intake note. This does not validate the target Grabowski implementation itself.",
+  "provenance_level": "self_reported",
+  "run_id": "run-003-grabowski-patch-relay",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-003-grabowski-patch-relay/run-card.yml"
+}
