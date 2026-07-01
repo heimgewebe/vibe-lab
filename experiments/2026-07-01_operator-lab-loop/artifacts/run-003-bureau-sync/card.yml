@@ -1,0 +1,38 @@
+schema_version: "0.1.0"
+run_id: "run-20260701-bureau-sync"
+date: "2026-07-01"
+operation: "Fix Bureau closure selection after verified bound tasks."
+target_repo: "/home/alex/repos/bureau"
+condition: "verified_bound_lane_state_sync"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - Bureau
+claims:
+  - claim: "A verified canonical Bureau task must not remain selected as an open closure lane."
+    status: observed
+    evidence:
+      - path: "bureau: src/bureau/closure.py"
+        evidence_status: repo_pr
+      - path: "bureau: tests/test_closure.py"
+        evidence_status: repo_pr
+  - claim: "After synchronizing canonical task state, the live closure bridge selected the next bound task."
+    status: observed
+    evidence:
+      - path: "bureau: work/grabowski-safety-smooth-ops/receipts/bur-2026-001-t007-binding-proof.json"
+        evidence_status: repo_pr
+metrics:
+  scope_drift_count: 1
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 2
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+decision: "iterate"
+does_not_establish:
+  - "branch merge readiness"
+  - "deployment readiness"
+  - "closure of remaining planned Bureau tasks"
+  - "general superiority of the Operator Lab Loop"

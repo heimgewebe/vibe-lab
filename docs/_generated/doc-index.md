@@ -59,6 +59,7 @@
 | `docs/playbooks/pr-run-evidence-pack.md` | Playbook: PR Run Evidence Pack | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
 | `docs/policies/agent-compliance.md` | Policy — Agent Compliance | active | operative |
+| `docs/policies/agent-reading-protocol.md` | Policy: Agent Reading Protocol | active | operative |
 | `docs/policies/artifact-boundary-policy.md` | Policy — Artifact Boundary | active | exploratory |
 | `docs/policies/interpretation-budget.md` | Interpretation Budget | active | operative |
 | `docs/policies/model-lab-control-minimum.md` | Policy — Model-Lab Control Minimum | active | operative |
