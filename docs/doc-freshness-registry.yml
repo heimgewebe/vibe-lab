@@ -1,0 +1,89 @@
+kind: lenskit.doc_freshness_registry
+version: "1.0"
+authority: diagnostic_signal
+risk_class: diagnostic
+does_not_prove:
+  - "registered claims are true beyond their declared evidence"
+  - "documentation is complete"
+  - "an agent understood the repository"
+  - "a generated claim-evidence map has already been emitted"
+entries:
+  - id: operator-lab-loop-playbook-active
+    doc: docs/playbooks/operator-lab-loop.md
+    locator: "frontmatter.status"
+    claim: "The Operator Lab Loop playbook is an active operative playbook."
+    status: done
+    normative: false
+    owner: heimgewebe
+    last_verified: "2026-07-01"
+    evidence:
+      - kind: text
+        target: "docs/playbooks/operator-lab-loop.md::status: active"
+        implies: done
+      - kind: text
+        target: "docs/playbooks/operator-lab-loop.md::canonicality: operative"
+        implies: done
+    notes: "Tracks the method anchor only; it does not claim workflow superiority."
+
+  - id: operator-lab-anchor-run-present
+    doc: experiments/2026-07-01_operator-lab-loop/manifest.yml
+    locator: "experiment.execution_refs"
+    claim: "The first Operator Lab Loop anchor run is recorded with a run card."
+    status: done
+    normative: false
+    owner: heimgewebe
+    last_verified: "2026-07-01"
+    evidence:
+      - kind: file
+        target: experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/run-card.yml
+      - kind: text
+        target: "experiments/2026-07-01_operator-lab-loop/manifest.yml::artifacts/run-001-plan-anchor/run-card.yml"
+        implies: done
+    notes: "Run 001 is an anchor run and does not prove operator-loop usefulness."
+
+  - id: roadmap-operator-lab-loop-visible
+    doc: docs/roadmap.md
+    locator: "Ergaenzung 2026-07-01 zu Operator Lab Loop"
+    claim: "The roadmap exposes the Operator Lab Loop and its first next step."
+    status: done
+    normative: false
+    owner: heimgewebe
+    last_verified: "2026-07-01"
+    evidence:
+      - kind: text
+        target: "docs/roadmap.md::Ergaenzung 2026-07-01 zu Operator Lab Loop"
+        implies: done
+      - kind: text
+        target: "docs/roadmap.md::Naechster Schritt: ersten echten Arbeitslauf als Operator-Lab-Run erfassen."
+        implies: done
+    notes: "Roadmap visibility is navigation; source truth stays in the playbook and run artifacts."
+
+  - id: agent-reading-protocol-active
+    doc: docs/policies/agent-reading-protocol.md
+    locator: "frontmatter.status"
+    claim: "Agent reading requirements are documented as an active task-profile protocol."
+    status: done
+    normative: true
+    owner: heimgewebe
+    last_verified: "2026-07-01"
+    evidence:
+      - kind: file
+        target: docs/policies/agent-reading-protocol.md
+      - kind: text
+        target: "docs/policies/agent-reading-protocol.md::## 2. Task-Profile"
+        implies: done
+    notes: "This registers the protocol surface; it does not prove agents actually followed it."
+
+  - id: pr-template-operator-lab-run-line
+    doc: .github/pull_request_template.md
+    locator: "Operator Lab Run"
+    claim: "The PR template asks authors to record an Operator-Lab-Run path or a not-applicable reason."
+    status: done
+    normative: true
+    owner: heimgewebe
+    last_verified: "2026-07-01"
+    evidence:
+      - kind: text
+        target: ".github/pull_request_template.md::Operator-Lab-Run:"
+        implies: done
+    notes: "A template line is only a prompt; it does not prove PR authors will supply correct evidence."
