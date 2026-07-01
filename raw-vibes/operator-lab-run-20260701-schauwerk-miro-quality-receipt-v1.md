@@ -40,3 +40,38 @@ This proves local receipt generation and heuristic checks. It does not prove vis
 ## Follow-up
 
 Use quality receipts to drive Layout v1.2 changes. Do not patch visual grammar based only on subjective board impressions.
+
+## Follow-up: rich item type correction
+
+Date: 2026-07-01
+Target repo: heimgewebe/schauwerk
+PR: #24
+Commit after merge: 435beb5
+
+### Observation
+
+Live Miro snapshots expose rich items as `doc_format` and `data_table_format`, not only as abstract `doc` and `table` types. The first quality receipt therefore undercounted DOC/TABLE items.
+
+### Correction
+
+Schauwerk PR #24 updated the quality type mapping and tests.
+
+### Evidence
+
+```text
+make validate
+ruff: passed
+registry_validation: passed
+pytest: 107 passed
+GitHub validate 3.11: success
+GitHub validate 3.12: success
+```
+
+Live rechecks after local correction:
+
+```text
+learn-live-20260701-194620: ok=true, score=92, connectors=5, docs=1, tables=2
+nicole-mt-zoom-chunked-20260701-211733: ok=true, score=92, items=96, frames=15, connectors=5, docs=14, tables=13, overlaps=0
+```
+
+Remaining boundary: geometry coverage remains low because Miro snapshot reads do not expose full geometry for every item.
