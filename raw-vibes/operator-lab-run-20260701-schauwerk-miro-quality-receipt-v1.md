@@ -75,3 +75,25 @@ nicole-mt-zoom-chunked-20260701-211733: ok=true, score=92, items=96, frames=15, 
 ```
 
 Remaining boundary: geometry coverage remains low because Miro snapshot reads do not expose full geometry for every item.
+
+## Follow-up: Zoomlandkarte renderer
+
+Date: 2026-07-01
+Target repo: heimgewebe/schauwerk
+PR: #25
+Commit after merge: 76c775f
+
+Schauwerk PR #25 adds `learning-zoomlandkarte-v1` and the CLI option `--template zoomlandkarte` for render, apply and live-test.
+
+Evidence:
+
+```text
+make validate
+ruff: passed
+registry_validation: passed
+pytest: 110 passed
+GitHub validate 3.11: success
+GitHub validate 3.12: success
+```
+
+Boundary: render/CLI/test proven; live Miro board creation still needs a separate live run because the long live-test invocation was blocked by the platform tool filter.
