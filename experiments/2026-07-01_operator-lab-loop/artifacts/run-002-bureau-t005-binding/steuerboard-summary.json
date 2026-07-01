@@ -1,0 +1,13 @@
+{
+  "operation": "bureau-t005-smooth-ops-binding",
+  "target_repo": "/home/alex/repos/bureau",
+  "useful_signal": "Canonical Bureau checkout was stale/dirty and high branch drift was visible; the signal changed the decision toward a fresh origin/main worktree.",
+  "changed_decision": "yes",
+  "noise": "medium",
+  "boundary": {
+    "does_not_authorise_actions": true,
+    "does_not_execute": true,
+    "does_not_mutate": true,
+    "does_not_recommend_actions": true
+  }
+}

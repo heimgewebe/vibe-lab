@@ -1,0 +1,50 @@
+schema_version: "0.1.0"
+run_id: "run-20260701-bureau-t005-binding"
+date: "2026-07-01"
+operation: "Verify Bureau T005 Grabowski smooth-ops binding."
+target_repo: "/home/alex/repos/bureau"
+condition: "closure_bridge_claimable_task"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+claims:
+  - claim: "Bureau's actually claimable next task was BUR-2026-001-T005, not the lower-ranked T007 registry entry."
+    status: observed
+    evidence:
+      - path: "bureau: registry/tasks/BUR-2026-001-T005.json"
+        evidence_status: repo_pr
+      - path: "bureau: work/grabowski-safety-smooth-ops/receipts/bur-2026-001-t005-binding-proof.json"
+        evidence_status: repo_pr
+  - claim: "The T005 closure lane has a valid brief and canonical task binding."
+    status: observed
+    evidence:
+      - path: "bureau: work/grabowski-safety-smooth-ops/receipts/bur-2026-001-t005-binding-proof.json"
+        evidence_status: repo_pr
+  - claim: "The GBW task pack was deliberately kept as non-executable evidence in this slice."
+    status: observed
+    evidence:
+      - path: "bureau: work/grabowski-safety-smooth-ops/receipts/bur-2026-001-t005-binding-proof.json"
+        evidence_status: repo_pr
+metrics:
+  scope_drift_count: 1
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 2
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Canonical Bureau checkout was stale/dirty and branch drift was high; this changed the decision to use a fresh origin/main worktree before mutating."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "The run verified an existing canonical Bureau task; no new Bureau task is needed from this run alone."
+decision: "iterate"
+does_not_establish:
+  - "GBW implementation completion"
+  - "merge readiness for plan/grabowski-safety-smooth-ops"
+  - "closure of T006 or T007"
+  - "general superiority of the Operator Lab Loop"
