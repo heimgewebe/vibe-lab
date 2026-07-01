@@ -1,0 +1,48 @@
+schema_version: "0.1.0"
+run_id: "run-20260701-doc-freshness-validator"
+date: "2026-07-01"
+operation: "Add a Vibe-Lab-local validator for docs/doc-freshness-registry.yml."
+target_repo: "heimgewebe/vibe-lab"
+condition: "decision_first"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - GitHub connector
+claims:
+  - claim: "The doc-freshness registry now has a repository-local validator."
+    status: observed
+    evidence:
+      - path: "scripts/docmeta/validate_doc_freshness_registry.py"
+        evidence_status: repo_local
+  - claim: "The validator has direct regression tests."
+    status: observed
+    evidence:
+      - path: "scripts/docmeta/test_validate_doc_freshness_registry.py"
+        evidence_status: repo_local
+  - claim: "CI has a dedicated doc-freshness-registry workflow."
+    status: observed
+    evidence:
+      - path: ".github/workflows/doc-freshness-registry.yml"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 1
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Not run in this connector-only implementation path."
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "This is an internal validation bridge; Bureau mutation waits for repeated operator friction or a cross-repo task."
+decision: "iterate"
+does_not_establish:
+  - "fresh_lenskit_dump_generated"
+  - "claim_evidence_map_generated"
+  - "registry_semantics_complete"
+  - "full_local_validation"

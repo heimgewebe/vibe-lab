@@ -1,0 +1,30 @@
+name: Doc Freshness Registry
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-doc-freshness-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Test doc-freshness registry validator
+        run: python3 scripts/docmeta/test_validate_doc_freshness_registry.py
+
+      - name: Validate doc-freshness registry
+        run: python3 scripts/docmeta/validate_doc_freshness_registry.py
