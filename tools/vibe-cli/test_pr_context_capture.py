@@ -47,6 +47,31 @@ class PrContextCaptureTests(unittest.TestCase):
         pilot.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
         return pilot, root / "runs"
 
+
+    def test_prepare_runs_pilot_validator_before_writing_state(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pilot, work_root = self._ready_pilot(Path(tmp))
+            data = yaml.safe_load(pilot.read_text(encoding="utf-8"))
+            first_ref = data["pairing"]["pairs"][0]["task_refs"][0]
+            data["pairing"]["pairs"][0]["task_refs"][1] = first_ref
+            pilot.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+            with self.assertRaises(pr_context_capture.CaptureError) as caught:
+                pr_context_capture.prepare(
+                    "run-duplicate-task-ref",
+                    "pair-01",
+                    1,
+                    "tester",
+                    "abcdef0",
+                    pilot_path=pilot,
+                    work_root=work_root,
+                )
+
+            message = str(caught.exception)
+            self.assertIn("pilot validator preflight failed", message)
+            self.assertIn("task_refs_not_unique", message)
+            self.assertFalse((work_root / "run-duplicate-task-ref").exists())
+
     def test_main_reports_capture_error_without_name_error(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             stderr = io.StringIO()

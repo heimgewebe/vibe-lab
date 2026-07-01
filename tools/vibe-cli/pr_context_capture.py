@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -19,6 +20,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 EXPERIMENT = ROOT / "experiments/2026-06-10_pr-agent-context-comparison-series"
 PILOT = EXPERIMENT / "pilot-v1.yml"
+VALIDATOR = ROOT / "scripts/docmeta/validate_pr_context_pilot.py"
 WORK = ROOT / ".tmp/pr-context-runs"
 PHASES = ("preparation", "execution", "validation", "review", "rework")
 RUN_ID = re.compile(r"^run-[a-z0-9][a-z0-9-]*$")
@@ -38,6 +40,42 @@ def yaml_object(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise CaptureError(f"{path} must contain an object")
     return value
+
+
+def pilot_repo_root(pilot_path: Path) -> Path:
+    experiment_dir = pilot_path.resolve().parent
+    if experiment_dir.name == EXPERIMENT.name and experiment_dir.parent.name == "experiments":
+        return experiment_dir.parent.parent
+    return ROOT
+
+
+def validate_pilot_preflight(pilot_path: Path) -> dict[str, Any]:
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "validate_pr_context_pilot",
+            VALIDATOR,
+        )
+        if spec is None or spec.loader is None:
+            raise CaptureError("cannot load pilot validator")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        validator = getattr(module, "validate_pilot")
+        errors, _warnings, pilot = validator(
+            pilot_path,
+            repo_root=pilot_repo_root(pilot_path),
+        )
+    except CaptureError:
+        raise
+    except Exception as exc:
+        raise CaptureError(f"pilot validator preflight failed: {exc}") from exc
+
+    if errors:
+        raise CaptureError("pilot validator preflight failed: " + "; ".join(errors))
+    if not isinstance(pilot, dict):
+        raise CaptureError("pilot validator returned malformed data")
+    if pilot.get("execution_allowed") is not True:
+        raise CaptureError("pilot execution is blocked")
+    return pilot
 
 
 def atomic_json(path: Path, value: dict[str, Any]) -> None:
@@ -72,9 +110,7 @@ def prepare(run_id: str, pair_id: str, slot: int, executor: str, base_commit: st
             *, pilot_path: Path = PILOT, work_root: Path = WORK) -> Path:
     if slot not in {1, 2} or not executor.strip() or not SHA.fullmatch(base_commit):
         raise CaptureError("invalid slot, executor, or base commit")
-    pilot = yaml_object(pilot_path)
-    if pilot.get("execution_allowed") is not True:
-        raise CaptureError("pilot execution is blocked")
+    pilot = validate_pilot_preflight(pilot_path)
     pair = next((item for item in pilot["pairing"]["pairs"]
                  if item.get("pair_id") == pair_id), None)
     if not isinstance(pair, dict):
