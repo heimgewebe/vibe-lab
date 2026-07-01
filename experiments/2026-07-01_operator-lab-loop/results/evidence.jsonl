@@ -1,0 +1,3 @@
+{"timestamp":"2026-07-01T08:00:00Z","event_type":"observation","metric":"operator_lab_loop_playbook_anchored","value":1,"context":"docs/playbooks/operator-lab-loop.md created as operative playbook","iteration":1}
+{"timestamp":"2026-07-01T08:01:00Z","event_type":"observation","metric":"anchor_run_card_created","value":1,"context":"experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/run-card.yml created","iteration":1}
+{"timestamp":"2026-07-01T08:02:00Z","event_type":"observation","metric":"condition_superiority_claimed","value":0,"context":"first anchor run records non-claims; no comparison condition executed","iteration":1}

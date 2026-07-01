@@ -1,0 +1,50 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "operator-lab-loop"
+  hypothesis: "A minimal operator lab loop can make real repo and PR work traceable without adding a new enforcement layer."
+  status: testing
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - artifacts/run-001-plan-anchor/run_meta.json
+    - artifacts/run-001-plan-anchor/run-card.yml
+    - artifacts/run-001-plan-anchor/steuerboard-summary.json
+    - results/evidence.jsonl
+  created: "2026-07-01"
+  updated: "2026-07-01"
+  author: "heimgewebe"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The loop is weakened if real repo runs show more added ceremony than
+      reduced correction work, or if strong claims still lack bound evidence.
+    counter_hypotheses:
+      - id: ceremony_exceeds_signal
+        statement: >
+          Existing PR review, CI and operator judgement may already provide the
+          useful signal, while the run card only adds overhead.
+        assessment:
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: "results/evidence.jsonl"
+            - path: "results/result.md"
+            - path: "artifacts/run-001-plan-anchor/run-card.yml"
+          limitations:
+            - "This anchor run only proves repo anchoring, not workflow benefit."
+          confidence: low
+
+context:
+  tools:
+    - ChatGPT
+    - Grabowski
+    - steuerboard
+  language: "documentation"
+  environment: "local vibe-lab checkout on heim-pc"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

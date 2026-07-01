@@ -1,0 +1,13 @@
+{
+  "operation": "operator-lab-loop-anchor",
+  "target_repo": "/home/alex/repos/vibe-lab",
+  "useful_signal": "vibe-lab main checkout usable; broader branch drift visible but not decision-changing",
+  "changed_decision": "no",
+  "noise": "medium",
+  "boundary": {
+    "does_not_authorise_actions": true,
+    "does_not_execute": true,
+    "does_not_mutate": true,
+    "does_not_recommend_actions": true
+  }
+}

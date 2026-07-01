@@ -282,17 +282,32 @@
       "promotion_ready": false,
       "status": "designed",
       "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [],
+      "notes": [],
+      "path": "experiments/2026-07-01_operator-lab-loop",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "testing",
+      "warnings": [
+        "falsifiability_assessment_inconclusive"
+      ]
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 18,
+    "experiments_checked": 19,
     "historical_escape": 1,
     "not_ready": 12,
     "pre_execution_hold": 2,
-    "ready": 3,
-    "warnings": 4
+    "ready": 4,
+    "warnings": 5
   },
   "trigger": "need_for_reproducibility"
 }
