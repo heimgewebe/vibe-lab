@@ -1,0 +1,49 @@
+schema_version: "0.1.0"
+run_id: "run-20260701-consumption-bridge"
+date: "2026-07-01"
+operation: "Add the operator consumption bridge for Vibe-Lab."
+target_repo: "heimgewebe/vibe-lab"
+condition: "decision_first"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - GitHub connector
+claims:
+  - claim: "Agent reading requirements are documented as a task-profile protocol."
+    status: observed
+    evidence:
+      - path: "docs/policies/agent-reading-protocol.md"
+        evidence_status: repo_local
+  - claim: "A Lenskit-compatible doc freshness registry is introduced for tracked status and policy claims."
+    status: observed
+    evidence:
+      - path: "docs/doc-freshness-registry.yml"
+        evidence_status: repo_local
+  - claim: "The pull request template exposes an Operator-Lab-Run evidence line."
+    status: observed
+    evidence:
+      - path: ".github/pull_request_template.md"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 1
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Not run in this connector-only implementation path. Existing operator loop remains non-blocking."
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "This run adds Vibe-Lab-internal consumption surfaces; no cross-repo Bureau task is created yet."
+decision: "iterate"
+does_not_establish:
+  - "condition_superiority"
+  - "general_agent_quality"
+  - "adoption_readiness"
+  - "claim_evidence_map_generated"
+  - "full_local_validation"
