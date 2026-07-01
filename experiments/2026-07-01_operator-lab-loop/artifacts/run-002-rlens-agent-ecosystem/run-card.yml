@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+run_id: "run-20260701-rlens-agent-ecosystem"
+date: "2026-07-01"
+operation: "Implement first rLens agent-ecosystem integration slices."
+target_repo: "multi-repo: lenskit, grabowski, bureau"
+condition: "evidence_backbone_integration"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+claims:
+  - claim: "The run starts from fresh worktrees based on origin/main for the target repositories."
+    status: observed
+    evidence:
+      - path: "artifacts/run-002-rlens-agent-ecosystem/run-card.yml"
+        evidence_status: repo_local
+  - claim: "The first implementation scope is limited to Lenskit preflight self-role, Grabowski rLens discovery/status/freshness tools, and Bureau rlens_context_ref schema support."
+    status: planned
+    evidence:
+      - path: "artifacts/run-002-rlens-agent-ecosystem/run-card.yml"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "High ecosystem branch drift makes fresh worktrees and rLens freshness checks decision-relevant."
+  changed_decision: "yes"
+  noise: "medium-high"
+bureau_bridge:
+  create_or_update_candidate: true
+  reason: "User explicitly requested that the optimized plan be lodged for Bureau execution."
+decision: "implement_first_slice"
+does_not_establish:
+  - "rLens improves agent quality"
+  - "all target repos are fully integrated"
+  - "agents actually understood consumed dumps"
+  - "all dumps are globally current"
+  - "merge_readiness"
