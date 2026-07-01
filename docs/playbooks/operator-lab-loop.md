@@ -82,6 +82,30 @@ Nicht nutzen fuer triviale Aenderungen ohne Claim, Entscheidung oder Lernwert.
 7. **Entscheiden:** adopt, iterate, defer, reject oder no_decision.
 8. **Rueckfuehren:** Nur bei wiederholtem Nutzen in Playbook, Instruction Block, Agent-Regel oder Bureau-Kandidat uebertragen.
 
+## 4.1 Ablage-Regel fuer Run Cards
+
+Wenn eine Operator-Lab-Run-Card noetig ist, ist die Standard-Zielstruktur im Vibe-Lab:
+
+```text
+experiments/2026-07-01_operator-lab-loop/artifacts/run-XXX-<slug>/run-card.yml
+```
+
+Dazu gehoert in derselben Run-Directory ein `run_meta.json`, sobald der Run als ausgefuehrter Operator-Lab-Arbeitslauf dokumentiert wird.
+
+`raw-vibes/` ist nur Intake: Rohnotizen, erste Beobachtungen oder ungeformte Ideen duerfen dort landen. Ein PR-Body darf `raw-vibes/...` aber nicht als finalen Operator-Lab-Nachweis verwenden, wenn der Trigger-Check `Run Card nötig? yes` ergeben hat. In diesem Fall muss die Rohnotiz entweder vor dem Merge in eine strukturierte Run Card ueberfuehrt werden oder der PR muss sie ausdruecklich als `raw/intake` markieren und einen Follow-up zur Strukturierung nennen.
+
+PR-Body-Regel:
+
+```text
+Operator-Lab-Run: vibe-lab: experiments/2026-07-01_operator-lab-loop/artifacts/run-XXX-<slug>/run-card.yml
+```
+
+Nur wenn keine Run Card noetig ist:
+
+```text
+Operator-Lab-Run: not applicable — <kurzer Grund>
+```
+
 ## 5. Run Card Mindestfelder
 
 ```yaml

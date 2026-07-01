@@ -1,0 +1,11 @@
+{
+  "command": "harden operator-lab run-card storage rule and add structured follow-up run cards",
+  "executor": "operator:chatgpt-grabowski",
+  "exit_code": 0,
+  "generated_at": "2026-07-01T18:06:00Z",
+  "notes": "Records the process-hardening slice that converts raw intake to structured run-card storage and documents raw-vibes as intake-only.",
+  "provenance_level": "self_reported",
+  "run_id": "run-004-run-card-structure-hardening",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-004-run-card-structure-hardening/run-card.yml"
+}

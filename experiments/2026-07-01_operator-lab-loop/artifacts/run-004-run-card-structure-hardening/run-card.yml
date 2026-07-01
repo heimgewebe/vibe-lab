@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+run_id: "run-004-run-card-structure-hardening"
+date: "2026-07-01"
+operation: "Harden Operator-Lab run-card storage rules after raw-vibes evidence drift was observed."
+target_repo: "heimgewebe/vibe-lab"
+condition: "operator_lab_process_hardening"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+claims:
+  - claim: "Operator-Lab raw-vibes intake is insufficient as a final PR evidence path when a structured run-card is required."
+    status: observed
+    evidence:
+      - path: "raw-vibes/operator-lab-run-20260701-grabowski-patch-relay-v1.md"
+        evidence_status: repo_local
+      - path: "docs/playbooks/operator-lab-loop.md"
+        evidence_status: repo_local
+  - claim: "The playbook now distinguishes raw intake from final structured Operator-Lab run-card storage."
+    status: observed
+    evidence:
+      - path: "docs/playbooks/operator-lab-loop.md"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Existing run-card PR #251 had to be fixed first because it occupied run-002 and was red."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "This is a Vibe-Lab process correction; Bureau handoff still waits for repeated friction or a clear follow-up task."
+decision: "iterate"
+does_not_establish:
+  - "hard enforcement is required"
+  - "all future operator runs will comply"
+  - "bureau priority"
