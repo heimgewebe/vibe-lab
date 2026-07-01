@@ -53,6 +53,7 @@
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
 | `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` | Evidence-Control-Plane — Diagnose nach Merge PR #189 | draft | diagnosis |
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
+| `docs/playbooks/operator-lab-loop.md` | Playbook: Operator Lab Loop | active | operative |
 | `docs/playbooks/outcome-evidence-replication-series-gate.md` | Playbook — Outcome-Evidence-Replication-Series Gate | active | operative |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/pr-run-evidence-pack.md` | Playbook: PR Run Evidence Pack | active | operative |
@@ -236,6 +237,13 @@
 | `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` | Method — PR Agent Context Comparison Series | designed | operative |
 | `experiments/2026-06-10_pr-agent-context-comparison-series/results/cross-run-assessment.md` | Cross-Run Assessment — PR Agent Context Comparison Series | draft | operative |
 | `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` | Results — PR Agent Context Comparison Series | draft | operative |
+| `experiments/2026-07-01_operator-lab-loop/CONTEXT.md` | Kontext: Operator Lab Loop | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/INITIAL.md` | Initiale Situation: Operator Lab Loop | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/artifacts/README.md` | Operator Lab Loop Artifacts | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md` | Operator Lab Loop Run Template | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/failure_modes.md` | Failure Modes: Operator Lab Loop | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/method.md` | Methode: Operator Lab Loop | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/results/result.md` | Result: Operator Lab Loop Anchor Run | active | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

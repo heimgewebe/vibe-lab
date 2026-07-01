@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+run_id: "run-20260701-plan-anchor"
+date: "2026-07-01"
+operation: "Anchor the Operator Lab Loop in vibe-lab."
+target_repo: "/home/alex/repos/vibe-lab"
+condition: "decision_first"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+claims:
+  - claim: "A non-blocking Steuerboard report was used as an operator signal."
+    status: observed
+    evidence:
+      - path: "artifacts/run-001-plan-anchor/steuerboard-summary.json"
+        evidence_status: repo_local
+  - claim: "Bureau was considered but not mutated."
+    status: observed
+    evidence:
+      - path: "artifacts/run-001-plan-anchor/run-card.yml"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "vibe-lab checkout was usable; broader branch drift did not change this decision."
+  changed_decision: "no"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "No clear cross-repo follow-up task from this first anchor run."
+decision: "iterate"
+does_not_establish:
+  - "condition_superiority"
+  - "general_agent_quality"
+  - "adoption_readiness"
+  - "bureau_priority"

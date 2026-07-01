@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (63 found):
+Unexpected orphans (80 found):
 
 - `.vibe/intent.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
@@ -53,7 +53,20 @@ Unexpected orphans (63 found):
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/baseline-output.md`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/condition-input.md`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control/control-output.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/README.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/AGENT_INSTRUCTION.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/README.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-001-baseline-no-structured-handoff/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-002-vibe-lab-handoff/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-003-lenskit-plus-vibe-lab-handoff/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-004-minimal-decision-first-checklist/condition-input.md`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/README.md`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
@@ -67,9 +80,13 @@ Unexpected orphans (63 found):
 - `tests/fixtures/experiment_structure_phase1c/valid/CONTEXT.md`
 - `tests/fixtures/experiment_structure_phase1c/valid/INITIAL.md`
 - `tests/fixtures/experiment_structure_phase1c/valid/results/result.md`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
 
-Expected orphans (85 found):
+Expected orphans (95 found):
 
 - `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
@@ -146,6 +163,16 @@ Expected orphans (85 found):
 - `experiments/2026-05-31_model-lab-replication-series/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-05-31_model-lab-replication-series/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-05-31_model-lab-replication-series/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-06-10_pr-agent-context-comparison-series/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-06-10_pr-agent-context-comparison-series/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-06-10_pr-agent-context-comparison-series/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` — experiment_bundle_method
+- `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` — experiment_result_local_surface
+- `experiments/2026-07-01_operator-lab-loop/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-07-01_operator-lab-loop/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-07-01_operator-lab-loop/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-07-01_operator-lab-loop/method.md` — experiment_bundle_method
+- `experiments/2026-07-01_operator-lab-loop/results/result.md` — experiment_result_local_surface
 - `exports/copilot/constraint-before-code.md` — generated_export_surface
 - `exports/copilot/edge-case-enumeration.md` — generated_export_surface
 - `exports/copilot/no-vague-prompts.md` — generated_export_surface

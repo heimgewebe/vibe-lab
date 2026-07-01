@@ -312,6 +312,11 @@
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 - ← `docs/roadmap.md` (references)
 
+## `docs/playbooks/operator-lab-loop.md`
+
+- ← `docs/index.md` (references)
+- ← `docs/roadmap.md` (references)
+
 ## `docs/playbooks/outcome-evidence-replication-series-gate.md`
 
 - ← `docs/roadmap.md` (references)
@@ -319,11 +324,13 @@
 ## `docs/playbooks/plan-execution-checklist.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/operator-lab-loop.md` (references)
 - ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/pr-run-evidence-pack.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/operator-lab-loop.md` (references)
 
 ## `docs/playbooks/reconciliation.md`
 
@@ -382,6 +389,7 @@
 
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
+- ← `docs/playbooks/operator-lab-loop.md` (references)
 - ← `docs/playbooks/outcome-evidence-replication-series-gate.md` (references)
 - ← `docs/policies/model-lab-control-minimum.md` (references)
 
@@ -664,9 +672,42 @@
 
 - ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
 
+## `experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml`
+
+- ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
 ## `experiments/2026-05-31_model-lab-replication-series/results/result.md`
 
 - ← `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md` (references)
+
+## `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-template.md`
+
+- ← `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` (references)
+
+## `experiments/2026-06-10_pr-agent-context-comparison-series/pilot-v1.yml`
+
+- ← `docs/playbooks/operator-lab-loop.md` (references)
+
+## `experiments/2026-06-10_pr-agent-context-comparison-series/results/cross-run-assessment.md`
+
+- ← `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` (references)
+- ← `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` (references)
+
+## `experiments/2026-06-10_pr-agent-context-comparison-series/results/decision.yml`
+
+- ← `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` (references)
+
+## `experiments/2026-06-10_pr-agent-context-comparison-series/results/evidence.jsonl`
+
+- ← `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` (references)
+
+## `experiments/2026-07-01_operator-lab-loop/manifest.yml`
+
+- ← `docs/playbooks/operator-lab-loop.md` (references)
 
 ## `experiments/README.md`
 

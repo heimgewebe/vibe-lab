@@ -1,11 +1,11 @@
 ---
 title: "Roadmap — Koordination offener Arbeitsstränge"
 status: active
-triggered_by: "user-request-2026-06-28-run-004-runtime-binding"
+triggered_by: "user-request-vibe-lab-operator-loop-2026-07-01"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-06-28"
+updated: "2026-07-01"
 relations:
   - type: references
     target: masterplan.md
@@ -41,6 +41,8 @@ relations:
     target: playbooks/outcome-evidence-replication-series-gate.md
   - type: references
     target: playbooks/plan-execution-checklist.md
+  - type: references
+    target: playbooks/operator-lab-loop.md
   - type: references
     target: policies/interpretation-budget.md
   - type: references
@@ -364,3 +366,9 @@ Ergaenzung 2026-06-28 zu RM-008 (Run-004 Runtime-Binding, ohne Ausfuehrung):
 - `RUNTIME_ENVIRONMENT_UNRESOLVED` bleibt offen, weil Dependency-Resolution, Cache-Policy, volle Execution-Environment und Live-Loopback-Chat unvollstaendig sind.
 - Harness-, forced-500-, First-Mutation-Trace- und Metrik-Bindungen bleiben offen; Status bleibt `blocked`, `not_authorized`, `run_004_execution_allowed=false`, `run_004_executed=false`.
 - Keine Run-004-Ausfuehrung, keine Messung, kein Vergleich und keine Ergebnisbewertung.
+
+Ergaenzung 2026-07-01 zu Operator Lab Loop:
+- Neues Playbook: docs/playbooks/operator-lab-loop.md.
+- Neuer Anchoring-Run: experiments/2026-07-01_operator-lab-loop/.
+- Zweck: kleine Operator-Feedbackschleife fuer echte Repo- und PR-Arbeit.
+- Naechster Schritt: ersten echten Arbeitslauf als Operator-Lab-Run erfassen.

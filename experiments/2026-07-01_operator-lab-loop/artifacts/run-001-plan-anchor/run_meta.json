@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-001-plan-anchor",
+  "generated_at": "2026-07-01T08:33:54Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "anchor operator lab loop playbook and first run card",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-plan-anchor/run-card.yml",
+  "provenance_level": "self_reported",
+  "notes": "Anchoring run for the Operator Lab Loop. This documents repo-local method anchoring only; it does not establish workflow superiority, adoption readiness, or Bureau priority."
+}

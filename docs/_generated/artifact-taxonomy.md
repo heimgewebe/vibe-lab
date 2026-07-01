@@ -11,14 +11,14 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 1103
-- classified: 1103
-  - of which fallback_classified (catch-all rule): 535
-  - fallback_share: 48.5% (535 / 1103)
-  - fallback_threshold: 50.0% — ok
+- total: 1408
+- classified: 1407
+  - of which fallback_classified (catch-all rule): 767
+  - fallback_share: 54.5% (767 / 1407)
+  - fallback_threshold: 50.0% — warning
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
-- unknown: 0
+- unknown: 1
 - ambiguous: 0
 - conflict: 0
 
@@ -26,47 +26,49 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | layer | count |
 | --- | ---: |
+| <none> | 1 |
 | agent | 11 |
 | archive | 24 |
 | capture | 7 |
 | catalog | 12 |
-| contract | 29 |
-| docs | 39 |
-| experiment | 658 |
+| contract | 51 |
+| docs | 40 |
+| experiment | 738 |
 | export | 15 |
 | generated | 8 |
-| governance | 58 |
-| test | 242 |
+| governance | 75 |
+| test | 426 |
 
 ### By authority
 
 | authority | count |
 | --- | ---: |
-| decision_record | 20 |
+| decision_record | 22 |
 | diagnostic_signal | 7 |
-| evidence_log | 18 |
+| evidence_log | 20 |
 | generated_projection | 10 |
-| historical_record | 425 |
-| implementation_behavior | 12 |
+| historical_record | 487 |
+| implementation_behavior | 19 |
 | navigation_surface | 23 |
 | normative_contract | 16 |
-| procedure_contract | 113 |
-| raw_capture | 25 |
-| result_interpretation | 62 |
-| runtime_observation | 86 |
-| schema_truth | 17 |
+| procedure_contract | 130 |
+| raw_capture | 27 |
+| result_interpretation | 67 |
+| runtime_observation | 87 |
+| schema_truth | 39 |
 | sovereign_source | 3 |
-| test_expectation | 242 |
-| unknown | 24 |
+| test_expectation | 426 |
+| unknown | 25 |
 
 ### By lifecycle
 
 | lifecycle | count |
 | --- | ---: |
-| append_only | 489 |
-| handcrafted | 529 |
+| <none> | 1 |
+| append_only | 553 |
+| handcrafted | 766 |
 | regenerated | 18 |
-| revision_with_reason | 65 |
+| revision_with_reason | 68 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -75,18 +77,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 367 |
+| ci_blocking | 595 |
 | diagnostic | 2 |
 | no_manual_edit | 18 |
-| no_rewrite | 489 |
+| no_rewrite | 553 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 269 |
+| review_required | 283 |
 
 ## Unknown artifacts
 
-_none_
+- `requirements.txt`
 
 ## Ambiguous artifacts
 
@@ -516,6 +518,40 @@ _none_
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/static-verify-run-003.txt`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/targeted-tests.txt`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/timing.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/boundary-probe.json`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/freeze-manifest.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/visibility-boundary-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/common-condition.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/control-workflow-protocol.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/freeze-manifest.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/measurement-protocol.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/precondition-snapshot.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/condition-contrast-design-gate.snapshot`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/rest-api-v1.snapshot`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/result-assessment-readiness.snapshot`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/source-snapshots/spec-first.snapshot`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/treatment-workflow-protocol.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/verification-protocol.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/workflow-instruction-protocol.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/execution-readiness.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/freeze-manifest.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/source-snapshots/condition-design.snapshot`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/source-snapshots/design-freeze-manifest.snapshot`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-seed/seed-manifest.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-identity-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/agent-protocol.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/execution-order-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/freeze-manifest.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/model-identity-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/neutral-probe.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-contract.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/runtime-environment-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/sampling-config-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-evidence.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-workspace-isolation/workspace-isolation-plan.yml`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/README.md`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/changed-files.txt`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/forced-500-run-001.txt`
@@ -529,6 +565,34 @@ _none_
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/verifier-run-002.txt`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-001.txt`
 - `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/vitest-run-002.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/README.md`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/changed-files.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/dependency-audit-run-003.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/environment.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/evidence-pack.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/forced-500-run-003.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/forced-500.test.ts`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/npm-install-run-003.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/replay-commands.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/runtime-evidence-gate.yml`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/static-verifier-run-003.txt`
+- `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003/vitest-run-003.txt`
+- `experiments/2026-05-31_model-lab-replication-series/results/condition-contrast-design-gate.yml`
+- `experiments/2026-05-31_model-lab-replication-series/results/dependency-risk-caveat-scope.yml`
+- `experiments/2026-05-31_model-lab-replication-series/results/next-blocker-triage.yml`
+- `experiments/2026-05-31_model-lab-replication-series/results/result-assessment-readiness.yml`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/AGENT_INSTRUCTION.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/README.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-001-baseline-no-structured-handoff/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-002-vibe-lab-handoff/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-003-lenskit-plus-vibe-lab-handoff/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-004-minimal-decision-first-checklist/condition-input.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-template.md`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/pilot-v1.yml`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/README.md`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/run-card.yml`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/steuerboard-summary.json`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md`
 - `experiments/_template/artifacts/README.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md`
@@ -563,12 +627,145 @@ _none_
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-external-verified.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/pass-with-repo-local-test-output.yml`
 - `tests/fixtures/claim_evidence_semantic/valid/test-output.txt`
+- `tests/fixtures/dependency_risk_caveat_scope/_evidence/dependency-audit-nonzero.txt`
+- `tests/fixtures/dependency_risk_caveat_scope/_evidence/readiness.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/_evidence/runtime-evidence-gate-partial.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/comparison-ready.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/functional-runtime-without-security-disclaimer.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/missing-does-not-establish.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/nonzero-audit-comparison-ready.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/nonzero-audit-marked-safe.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/nonzero-audit-result-assessment-allowed.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/production-ready-despite-unremediated.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/remediated-out-of-scope.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/remediation-performed-out-of-scope.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/result-assessment-allowed.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/scoped-but-remediated.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/security-ready-despite-unremediated.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/source-evidence-escape.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/source-evidence-missing.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/invalid/unknown-challenge-version.yml`
+- `tests/fixtures/dependency_risk_caveat_scope/valid/scoped-not-remediated.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/assessment-context.txt`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/foundation-invalid.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/foundation-list.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/foundation-not-yaml.txt`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/method-context.txt`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/readiness-alt.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/readiness-assessment-allowed.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/readiness-comparison-ready.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/readiness-not-blocked.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/readiness.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/source-directory/.keep`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage-alt.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage-target-resolved.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage-wrong-series.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage-wrong-target.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage-wrong-task.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence/triage.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/confounder-control-incomplete.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/duplicate-semantic-id.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/mandatory-non-claim-missing.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/missing-invariant-dimensions.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/missing-triage-source.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/multiple-triage-sources.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/readiness-assessment-allowed.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/readiness-comparison-ready.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/readiness-not-blocked.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/source-file-missing.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/source-path-escape.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/source-wrong-series.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/target-blocker-closed.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/triage-wrong-target-blocker.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/invalid/triage-wrong-task.yml`
+- `tests/fixtures/model_lab_condition_contrast_design_gate/valid/basic.yml`
+- `tests/fixtures/model_lab_condition_design/.gitignore`
+- `tests/fixtures/model_lab_condition_design/_evidence/assessment-context.txt`
+- `tests/fixtures/model_lab_condition_design/_evidence/method-context.txt`
+- `tests/fixtures/model_lab_condition_design/_evidence/source-directory/.keep`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/common-condition.md`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/condition-design.yml`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/control-workflow-protocol.md`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/freeze-manifest.yml`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/measurement-protocol.yml`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/precondition-snapshot.yml`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/condition-contrast-design-gate.snapshot`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/rest-api-v1.snapshot`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/result-assessment-readiness.snapshot`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/source-snapshots/spec-first.snapshot`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/treatment-workflow-protocol.md`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/verification-protocol.yml`
+- `tests/fixtures/model_lab_condition_design/valid/bundle/workflow-instruction-protocol.yml`
 - `tests/fixtures/model_lab_control/invalid/empty-evidence-artifacts.json`
 - `tests/fixtures/model_lab_control/invalid/missing-challenge-version.json`
 - `tests/fixtures/model_lab_control/invalid/missing-model-id.json`
 - `tests/fixtures/model_lab_control/invalid/non-string-model-id.json`
 - `tests/fixtures/model_lab_control/legacy/legacy-run-meta.json`
 - `tests/fixtures/model_lab_control/valid/minimal-run-meta.json`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-freeze.yml`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-launcher.py`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy-evidence.yml`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-policy.yml`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-access-probe-runner.py`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-boundary-probe.json`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-neutral-harness.txt`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed-manifest.yml`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-seed/input.txt`
+- `tests/fixtures/model_lab_execution_readiness/_evidence/synthetic-visibility-boundary-evidence.yml`
+- `tests/fixtures/model_lab_execution_readiness/invalid/wrong-series/execution-readiness.yml`
+- `tests/fixtures/model_lab_execution_readiness/valid/blocked/execution-readiness.yml`
+- `tests/fixtures/model_lab_execution_readiness/valid/blocked/freeze-manifest.yml`
+- `tests/fixtures/model_lab_execution_readiness/valid/blocked/source-snapshots/condition-design.snapshot`
+- `tests/fixtures/model_lab_execution_readiness/valid/blocked/source-snapshots/design-freeze-manifest.snapshot`
+- `tests/fixtures/model_lab_execution_readiness/valid/ready/execution-readiness.yml`
+- `tests/fixtures/model_lab_execution_readiness/valid/ready/freeze-manifest.yml`
+- `tests/fixtures/model_lab_execution_readiness/valid/ready/source-snapshots/condition-design.snapshot`
+- `tests/fixtures/model_lab_execution_readiness/valid/ready/source-snapshots/design-freeze-manifest.snapshot`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope-alt.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope-invalid-remaining-blockers.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope-missing-remaining-blockers.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope-wrong-artifact-type.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope-wrong-series.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/dependency-risk-scope.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-allowed.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked-alt.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked-comparison-ready.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked-missing-allowed.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked-missing-comparison.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-blocked.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-wrong-artifact-type.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/_evidence/readiness-wrong-series.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/comparison-ready.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/dependency-risk-scope-invalid-remaining-blockers.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/dependency-risk-scope-wrong-artifact-type.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/dependency-risk-scope-wrong-series.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/duplicate-blocker-id.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/duplicate-recommended-position.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/duplicate-triage-criteria-id.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/missing-dependency-risk-scope-source.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/missing-does-not-establish.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/missing-recommended-next-task.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/missing-scope-blocker.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/multiple-dependency-risk-scopes.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/multiple-readiness-gates.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/readiness-comparison-ready-true.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/readiness-gate-not-blocked.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/readiness-gate-wrong-artifact-type.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/readiness-gate-wrong-series.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/readiness-missing-comparison-ready.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/readiness-missing-result-assessment-allowed.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/recommended-next-task-missing-reason.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/recommended-target-blocker-not-listed.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/resolved-remaining-blocker.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/result-assessment-allowed.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/scope-missing-remaining-blockers.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/source-evidence-escape.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/source-evidence-missing.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/target-not-top-priority.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/task-shape-mismatch.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/invalid/unexpected-scope-blocker.yml`
+- `tests/fixtures/model_lab_next_blocker_triage/valid/basic.yml`
 - `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/auditor-output.yml`
 - `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/changed-files.txt`
 - `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/comparability.yml`
@@ -633,6 +830,43 @@ _none_
 - `tests/fixtures/pr_scope/valid/evidence-pack.yml`
 - `tests/fixtures/pr_scope/valid/summary.md`
 - `tests/fixtures/pr_scope/valid/test-output.txt`
+- `tests/fixtures/result_assessment_readiness/_evidence/assessment-note.txt`
+- `tests/fixtures/result_assessment_readiness/_evidence/runtime-gate-partial.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/assessment-allowed-without-ready.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/blocked-but-assessment-allowed.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/blocked-without-open-blocker.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/claim-overlap.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/comparison-ready-without-assessment-allowed.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/evidence-path-escape.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/evidence-path-not-found.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/missing-mandatory-disallowed-claim.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/open-blocker-without-evidence.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/ready-with-open-blocker.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/ready-with-partial-runtime-gate.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/ready-without-assessment-allowed.yml`
+- `tests/fixtures/result_assessment_readiness/invalid/unknown-challenge-version.yml`
+- `tests/fixtures/result_assessment_readiness/valid/blocked-minimal.yml`
+- `tests/fixtures/runtime_evidence_gate/_evidence/audit-partial.txt`
+- `tests/fixtures/runtime_evidence_gate/_evidence/forced-500-ok.txt`
+- `tests/fixtures/runtime_evidence_gate/_evidence/missing-explained.txt`
+- `tests/fixtures/runtime_evidence_gate/_evidence/npm-install-ok.txt`
+- `tests/fixtures/runtime_evidence_gate/_evidence/static-ok.txt`
+- `tests/fixtures/runtime_evidence_gate/_evidence/vitest-ok.txt`
+- `tests/fixtures/runtime_evidence_gate/invalid/challenge-version-mismatch.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/command-exit-code-mismatch.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/implementation-path-not-found.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/missing-does-not-establish.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/non-pass-without-limitations.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/pass-with-failed-check.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/pass-with-missing-command-output.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/pass-with-nonzero-command.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/pass-with-unexecuted-command.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/path-escape-evidence.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/strong-claim-without-runtime-evidence.yml`
+- `tests/fixtures/runtime_evidence_gate/invalid/unknown-challenge-version.yml`
+- `tests/fixtures/runtime_evidence_gate/valid/missing-evidence-explicit.yml`
+- `tests/fixtures/runtime_evidence_gate/valid/partial-with-limitations.yml`
+- `tests/fixtures/runtime_evidence_gate/valid/pass-minimal.yml`
 
 ## High-risk artifacts
 
@@ -687,6 +921,10 @@ _none_
 - `experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl`
 - `experiments/2026-05-31_model-lab-replication-series/results/decision.yml`
 - `experiments/2026-05-31_model-lab-replication-series/results/evidence.jsonl`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/results/decision.yml`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/results/evidence.jsonl`
+- `experiments/2026-07-01_operator-lab-loop/results/decision.yml`
+- `experiments/2026-07-01_operator-lab-loop/results/evidence.jsonl`
 - `experiments/_template/results/decision.yml`
 - `experiments/_template/results/evidence.jsonl`
 - `instruction-blocks/constraint-before-code.md`
@@ -703,13 +941,35 @@ _none_
 - `schemas/command.validate_change.schema.json`
 - `schemas/command.write_change.schema.json`
 - `schemas/decision.schema.json`
+- `schemas/dependency-risk-caveat-scope.v1.schema.json`
 - `schemas/experiment-run-bundle.v1.schema.json`
 - `schemas/experiment.manifest.schema.json`
 - `schemas/measurement-run.v1.schema.json`
+- `schemas/model-lab-access-policy-freeze-manifest.v1.schema.json`
+- `schemas/model-lab-access-policy-probe.v1.schema.json`
+- `schemas/model-lab-access-policy.v1.schema.json`
+- `schemas/model-lab-condition-contrast-design-gate.v1.schema.json`
+- `schemas/model-lab-condition-design-freeze-manifest.v1.schema.json`
+- `schemas/model-lab-condition-design-measurement-protocol.v1.schema.json`
+- `schemas/model-lab-condition-design-precondition-snapshot.v1.schema.json`
+- `schemas/model-lab-condition-design-verification-protocol.v1.schema.json`
+- `schemas/model-lab-condition-design-workflow-instruction-protocol.v1.schema.json`
+- `schemas/model-lab-condition-design.v1.schema.json`
+- `schemas/model-lab-execution-readiness-evidence.v1.schema.json`
+- `schemas/model-lab-execution-readiness-freeze-manifest.v1.schema.json`
+- `schemas/model-lab-execution-readiness.v1.schema.json`
+- `schemas/model-lab-execution-seed-manifest.v1.schema.json`
+- `schemas/model-lab-next-blocker-triage.v1.schema.json`
+- `schemas/model-lab-runtime-binding-freeze-manifest.v1.schema.json`
+- `schemas/model-lab-runtime-binding-neutral-probe.v1.schema.json`
+- `schemas/model-lab-runtime-binding.v1.schema.json`
+- `schemas/model-lab-workspace-isolation-plan.v1.schema.json`
 - `schemas/replay.trace.schema.json`
+- `schemas/result-assessment-readiness.v1.schema.json`
 - `schemas/review-events.v1.schema.json`
 - `schemas/run-evidence-pack.v1.schema.json`
 - `schemas/run_meta.schema.json`
+- `schemas/runtime-evidence-gate.v1.schema.json`
 
 ## Fallback classified: by matched pattern
 
@@ -717,10 +977,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 404 | 75.5% |
-| `tests/fixtures/**` | 103 | 19.3% |
-| `experiments/**` | 21 | 3.9% |
-| `docs/**` | 7 | 1.3% |
+| `experiments/*/artifacts/**` | 460 | 60.0% |
+| `tests/fixtures/**` | 273 | 35.6% |
+| `experiments/**` | 27 | 3.5% |
+| `docs/**` | 7 | 0.9% |
 
 ## Residual fallback clusters
 
@@ -734,9 +994,9 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `tests/fixtures/**` | 103 | 103 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001`=8 |
-| `experiments/*/artifacts/**` | 404 | 0 | `auditor-output.yml`=21, `evidence-pack.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
-| `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
+| `tests/fixtures/**` | 273 | 273 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/model_lab_next_blocker_triage/invalid`=29, `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence`=16, `tests/fixtures/dependency_risk_caveat_scope/invalid`=15, `tests/fixtures/model_lab_condition_contrast_design_gate/invalid`=15, `tests/fixtures/model_lab_next_blocker_triage/_evidence`=15 |
+| `experiments/*/artifacts/**` | 460 | 0 | `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
+| `experiments/**` | 27 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2, `app.ts`=1, `condition-contrast-design-gate.yml`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-05-31_model-lab-replication-series/results`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
 
 ### Volume-first clusters
@@ -745,9 +1005,9 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 404 | 0 | `auditor-output.yml`=21, `evidence-pack.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
-| `tests/fixtures/**` | 103 | 103 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/claim_evidence_semantic/invalid`=11, `tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/not-comparable-upgrades/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/premature-upgrade/artifacts/run-001`=8, `tests/fixtures/outcome_evidence_replication_series/invalid/self-reported-full-independence/artifacts/run-001`=8 |
-| `experiments/**` | 21 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=1, `app.ts`=1, `followups.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2, `experiments/2026-04-23_phase-1-drift-injection/fixtures`=1 |
+| `experiments/*/artifacts/**` | 460 | 0 | `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21, `comparability.yml`=20 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
+| `tests/fixtures/**` | 273 | 273 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/model_lab_next_blocker_triage/invalid`=29, `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence`=16, `tests/fixtures/dependency_risk_caveat_scope/invalid`=15, `tests/fixtures/model_lab_condition_contrast_design_gate/invalid`=15, `tests/fixtures/model_lab_next_blocker_triage/_evidence`=15 |
+| `experiments/**` | 27 | 0 | `README.md`=3, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2, `app.ts`=1, `condition-contrast-design-gate.yml`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-05-31_model-lab-replication-series/results`=4, `experiments/2026-04-12_spec-first-legacy/src`=3, `experiments/2026-04-14_tdd-vibe`=2 |
 | `docs/**` | 7 | 0 | `README.md`=4, `agent-skill-file-fruitfulness.md`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/experiments`=1, `docs/onboarding`=1, `docs/rules`=1, `docs/syntheses`=1 |
 
 ## Fallback classified artifacts requiring review
