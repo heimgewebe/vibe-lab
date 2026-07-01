@@ -17,6 +17,10 @@
 <!-- Was ist bewusst in Scope, was explizit out of scope?
      Dieser Abschnitt ist Review-Kontext, kein Ersatz für run-lokale Evidence-Artefakte. -->
 
+## Operator Lab Run
+
+Operator-Lab-Run: <!-- vibe-lab: <pfad> oder not applicable - <kurzer Grund> -->
+
 ## Validierung
 
 Für jeden Check unten ein Evidence Artifact angeben (repo-local, CI-Artifact oder
