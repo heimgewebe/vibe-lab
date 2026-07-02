@@ -51,6 +51,7 @@
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/onboarding/README.md` | Onboarding (Stub-Namespace) | active | navigation |
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
+| `docs/playbooks/bundle-freshness-receipt.md` | bundle-freshness-receipt | — | — |
 | `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` | Evidence-Control-Plane — Diagnose nach Merge PR #189 | draft | diagnosis |
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
 | `docs/playbooks/operator-lab-loop.md` | Playbook: Operator Lab Loop | active | operative |
@@ -241,6 +242,7 @@
 | `experiments/2026-07-01_operator-lab-loop/CONTEXT.md` | Kontext: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/INITIAL.md` | Initiale Situation: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/README.md` | Operator Lab Loop Artifacts | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/notes.md` | notes | — | — |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md` | Operator Lab Loop Run Template | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/failure_modes.md` | Failure Modes: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/method.md` | Methode: Operator Lab Loop | active | operative |
