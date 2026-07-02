@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-011-pr-context-capture-playbook",
+  "generated_at": "2026-07-02T12:05:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "document PR context capture helper",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-011-pr-context-capture-playbook/run-card.yml",
+  "provenance_level": "self_reported"
+}

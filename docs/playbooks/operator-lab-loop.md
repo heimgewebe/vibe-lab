@@ -11,6 +11,8 @@ relations:
   - type: references
     target: pr-run-evidence-pack.md
   - type: references
+    target: pr-context-capture.md
+  - type: references
     target: plan-execution-checklist.md
   - type: references
     target: ../roadmap.md
