@@ -240,6 +240,28 @@ def finalize(directory: Path) -> dict[str, Any]:
     return summary
 
 
+def capture_status(directory: Path) -> dict[str, Any]:
+    value = state(directory)
+    events = value.get("phase_events", [])
+    observed = {event.get("name") for event in events if isinstance(event, dict)}
+    missing = [phase for phase in PHASES if phase not in observed]
+    evidence = {
+        "agent_output": (directory / "agent-output.md").is_file(),
+        "review_events": (directory / "review-events.yml").is_file(),
+        "validation": (directory / "targeted-tests.txt").is_file() or (directory / "diagnostic-checks.txt").is_file(),
+        "changes": (directory / "changed-files.txt").is_file() or (directory / "no-changes.txt").is_file(),
+    }
+    return {
+        "run_id": value.get("run_id"),
+        "status": value.get("status"),
+        "active_phase": value.get("active_phase"),
+        "observed_phases": [phase for phase in PHASES if phase in observed],
+        "missing_phases": missing,
+        "evidence": evidence,
+        "ready_to_finalize": value.get("active_phase") is None and not missing and all(evidence.values()),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--work-root", type=Path, default=WORK)
@@ -258,6 +280,8 @@ def main(argv: list[str] | None = None) -> int:
     review_parser.add_argument("--pr-ref", required=True)
     review_parser.add_argument("--rounds", type=int, required=True)
     review_parser.add_argument("--rework-commit", action="append", default=[])
+    status_parser = commands.add_parser("status")
+    status_parser.add_argument("--run-id", required=True)
     finish_parser = commands.add_parser("finalize")
     finish_parser.add_argument("--run-id", required=True)
     args = parser.parse_args(argv)
@@ -272,6 +296,8 @@ def main(argv: list[str] | None = None) -> int:
                 result = stop(directory)
             elif args.command == "review":
                 result = review(directory, args.pr_ref, args.rounds, args.rework_commit)
+            elif args.command == "status":
+                result = capture_status(directory)
             else:
                 result = finalize(directory)
         print(result if isinstance(result, Path) else json.dumps(result, indent=2, sort_keys=True))

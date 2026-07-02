@@ -150,5 +150,55 @@ class PrContextCaptureBlockedDefaultPilotTests(unittest.TestCase):
             self.assertFalse((work_root / "run-blocked-default-pilot").exists())
 
 
+class PrContextCaptureStatusTests(unittest.TestCase):
+    def test_status_reports_missing_evidence_for_prepared_run(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pilot, work_root = PrContextCaptureTests()._ready_pilot(Path(tmp))
+            directory = pr_context_capture.prepare(
+                "run-status-prepared",
+                "pair-01",
+                1,
+                "tester",
+                "abcdef0",
+                pilot_path=pilot,
+                work_root=work_root,
+            )
+
+            result = pr_context_capture.capture_status(directory)
+
+            self.assertEqual(result["run_id"], "run-status-prepared")
+            self.assertEqual(result["status"], "prepared")
+            self.assertEqual(result["missing_phases"], list(pr_context_capture.PHASES))
+            self.assertFalse(result["evidence"]["agent_output"])
+            self.assertFalse(result["ready_to_finalize"])
+
+    def test_status_reports_ready_after_required_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            pilot, work_root = PrContextCaptureTests()._ready_pilot(Path(tmp))
+            directory = pr_context_capture.prepare(
+                "run-status-ready",
+                "pair-01",
+                1,
+                "tester",
+                "abcdef0",
+                pilot_path=pilot,
+                work_root=work_root,
+            )
+            for index, phase in enumerate(pr_context_capture.PHASES):
+                started = float(index * 10)
+                pr_context_capture.start(directory, phase, clock=started)
+                pr_context_capture.stop(directory, clock=started + 1.0)
+            (directory / "agent-output.md").write_text("agent output\n", encoding="utf-8")
+            (directory / "targeted-tests.txt").write_text("tests passed\n", encoding="utf-8")
+            (directory / "changed-files.txt").write_text("tools/vibe-cli/pr_context_capture.py\n", encoding="utf-8")
+            pr_context_capture.review(directory, "PR-245", 1, [])
+
+            result = pr_context_capture.capture_status(directory)
+
+            self.assertEqual(result["missing_phases"], [])
+            self.assertTrue(all(result["evidence"].values()))
+            self.assertTrue(result["ready_to_finalize"])
+
+
 if __name__ == "__main__":
     unittest.main()

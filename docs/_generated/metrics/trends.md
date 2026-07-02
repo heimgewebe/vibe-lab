@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-07-02T11:45:00Z
+Latest Evidence Timestamp: 2026-07-02T12:55:00Z
 
 ## Gate Snapshot
 
-- Total events: **333**
+- Total events: **335**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **19**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-07-02T11:45:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 139 |
+| observation | 141 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -171,6 +171,8 @@ Latest Evidence Timestamp: 2026-07-02T11:45:00Z
 | phase_result_separation | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
 | pr_context_capture_blocker_detail_added | 1 | 1 | 1 | 1 | 1 |
+| pr_context_capture_playbook_added | 1 | 1 | 1 | 1 | 1 |
+| pr_context_capture_status_command_added | 1 | 1 | 1 | 1 | 1 |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
 | pr_opened_run_003 | 1 | 0 | - | - | - |
 | pr_opened_run_004 | 1 | 0 | - | - | - |

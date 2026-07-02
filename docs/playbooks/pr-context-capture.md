@@ -67,6 +67,14 @@ rework
 
 Jede Phase muss gestartet und gestoppt werden, bevor `finalize` erfolgreich sein darf.
 
+Zwischenstand lesen:
+
+```bash
+python3 tools/vibe-cli/pr_context_capture.py status --run-id run-example
+```
+
+Der Status zeigt beobachtete Phasen, fehlende Phasen, Evidence-Pruefpunkte und `ready_to_finalize`.
+
 ## 3. Pflichtartefakte vor Finalize
 
 Vor `finalize` muessen im Run-Verzeichnis mindestens diese Dateien vorhanden sein:
