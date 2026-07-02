@@ -97,3 +97,35 @@ GitHub validate 3.12: success
 ```
 
 Boundary: render/CLI/test proven; live Miro board creation still needs a separate live run because the long live-test invocation was blocked by the platform tool filter.
+
+## Follow-up: Typed region plan v1
+
+Date: 2026-07-02
+Target repo: heimgewebe/schauwerk
+PR: #28
+Commit after merge: 4773a75
+
+### Intervention
+
+Schauwerk now has a dry-run typed region plan for future managed-region writes:
+
+```text
+schauwerk miro region plan <region.yml> --json
+```
+
+The plan validates region mode, local surface alias shape, expected snapshot digest, preflight steps, postflight steps, restore requirement, and an explicit no-mutation boundary.
+
+### Evidence
+
+```text
+make validate
+ruff: passed
+registry_validation: passed
+pytest: 115 passed
+GitHub validate 3.11: success
+GitHub validate 3.12: success
+```
+
+### Boundary
+
+This is SW-009A planning only. It does not mutate Miro and does not yet apply managed updates.
