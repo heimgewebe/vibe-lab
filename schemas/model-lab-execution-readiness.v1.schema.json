@@ -102,6 +102,9 @@
     "access_policy": {
       "$ref": "#/$defs/accessPolicyBinding"
     },
+    "runtime_candidate": {
+      "$ref": "#/$defs/runtimeCandidateBinding"
+    },
     "runtime_binding": {
       "$ref": "#/$defs/runtimeBinding"
     },
@@ -690,6 +693,60 @@
               "type": "boolean"
             }
           }
+        }
+      }
+    },
+    "runtimeCandidateBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_ref",
+        "candidate_sha256",
+        "candidate_freeze_ref",
+        "candidate_freeze_sha256",
+        "candidate_bundle_validated_offline",
+        "ordinary_validation_calls_model",
+        "model_identity_bound",
+        "host_identity_bound",
+        "model_accessible_through_bound_sandbox",
+        "broker_ready"
+      ],
+      "properties": {
+        "candidate_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "candidate_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_freeze_ref": {
+          "$ref": "#/$defs/path"
+        },
+        "candidate_freeze_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_bundle_validated_offline": {
+          "type": "boolean",
+          "const": true
+        },
+        "ordinary_validation_calls_model": {
+          "type": "boolean",
+          "const": false
+        },
+        "model_identity_bound": {
+          "type": "boolean",
+          "const": true
+        },
+        "host_identity_bound": {
+          "type": "boolean",
+          "const": true
+        },
+        "model_accessible_through_bound_sandbox": {
+          "type": "boolean",
+          "const": false
+        },
+        "broker_ready": {
+          "type": "boolean",
+          "const": false
         }
       }
     },

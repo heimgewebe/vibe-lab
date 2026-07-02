@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/model-lab-runtime-candidate-freeze-manifest.v1.schema.json",
+  "title": "Model-Lab Run-004 Runtime Candidate Freeze Manifest v1",
+  "description": "Closed SHA-256 freeze manifest for the Run-004 runtime-candidate preflight bundle. The manifest excludes itself and hashes runtime-candidate.yml plus its typed evidence files.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "contract_version",
+    "candidate_id",
+    "series_id",
+    "design_id",
+    "challenge_version",
+    "frozen_at",
+    "manifest_excludes_itself",
+    "hash_algorithm",
+    "content_sha256",
+    "hashes"
+  ],
+  "properties": {
+    "artifact_type": {"type": "string", "const": "model_lab_runtime_candidate_freeze_manifest"},
+    "contract_version": {"type": "string", "const": "run-004-runtime-candidate-freeze.v1"},
+    "candidate_id": {"$ref": "#/$defs/token"},
+    "series_id": {"type": "string", "const": "2026-05-31_model-lab-replication-series"},
+    "design_id": {"type": "string", "const": "run-004-condition-contrast"},
+    "challenge_version": {"type": "string", "const": "rest-api-v1"},
+    "frozen_at": {"$ref": "#/$defs/rfc3339"},
+    "manifest_excludes_itself": {"type": "boolean", "const": true},
+    "hash_algorithm": {
+      "type": "string",
+      "const": "sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)"
+    },
+    "content_sha256": {"$ref": "#/$defs/sha256"},
+    "hashes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"$ref": "#/$defs/repoPath"},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "pattern": "^(?!.*\\s).+$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rfc3339": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"},
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*[\\u0000-\\u001F\\u007F\\uD800-\\uDFFF])(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+artifact_type: model_lab_runtime_candidate_freeze_manifest
+contract_version: run-004-runtime-candidate-freeze.v1
+candidate_id: run-004-runtime-candidate-ollama-qwen2-5-coder-14b-v1
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+frozen_at: '2026-06-27T17:10:29Z'
+manifest_excludes_itself: true
+hash_algorithm: sha256(sorted(repo_relative_path + NUL + file_sha256 + LF) over hashed files)
+content_sha256: 274b71a194eea4c7c39fea339cb5aea099ac4cd822e2fb26a1e3166a26e7c3fa
+hashes:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-candidate.yml
+  sha256: 76a814be5a2cc809a3209800a16d6569a674715bf66dc512eabbd0557267c288
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/model-identity-evidence.yml
+  sha256: 32fd0f2c258a592130213a8a6e20a1792b0879ec5fa7c9f28cf5a7face6ca776
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-environment-evidence.yml
+  sha256: 6e1e81cb003171eed20f7d1a7b960387f24841d3ff18630c14dd9056810c5bba

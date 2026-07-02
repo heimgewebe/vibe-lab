@@ -1,0 +1,11 @@
+{
+  "command": "extract Run-004 runtime-candidate preflight slice from dirty worktree",
+  "executor": "operator:chatgpt-grabowski",
+  "exit_code": 0,
+  "generated_at": "2026-07-02T06:20:00Z",
+  "notes": "Cherry-pick conflicted against current main; only non-conflicting runtime-candidate artifacts, schemas, validator and tests were retained, with Makefile wiring added separately.",
+  "provenance_level": "self_reported",
+  "run_id": "run-008-run004-runtime-candidate-preflight",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-008-run004-runtime-candidate-preflight/run-card.yml"
+}
