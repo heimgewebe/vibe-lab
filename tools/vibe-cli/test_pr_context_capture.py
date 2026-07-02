@@ -128,5 +128,27 @@ class PrContextCaptureTests(unittest.TestCase):
             self.assertEqual(state["status"], "finalized")
 
 
+class PrContextCaptureBlockedDefaultPilotTests(unittest.TestCase):
+    def test_prepare_reports_default_pilot_blockers_without_partial_run(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            work_root = Path(tmp) / "runs"
+            with self.assertRaises(pr_context_capture.CaptureError) as caught:
+                pr_context_capture.prepare(
+                    "run-blocked-default-pilot",
+                    "pair-01",
+                    1,
+                    "tester",
+                    "abcdef0",
+                    pilot_path=pr_context_capture.PILOT,
+                    work_root=work_root,
+                )
+
+            message = str(caught.exception)
+            self.assertIn("pilot execution is blocked", message)
+            self.assertIn("tasks_not_bound", message)
+            self.assertIn("role_" + "bindings_missing", message)
+            self.assertFalse((work_root / "run-blocked-default-pilot").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

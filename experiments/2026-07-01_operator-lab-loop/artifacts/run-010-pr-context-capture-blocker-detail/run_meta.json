@@ -1,0 +1,11 @@
+{
+  "command": "harden PR-context capture blocked-pilot diagnostics",
+  "executor": "operator:chatgpt-grabowski",
+  "exit_code": 0,
+  "generated_at": "2026-07-02T11:45:00Z",
+  "notes": "Small slice only: no parallel collector was introduced; blocked prepare now reports derived blocker ids and remains fail-closed before staging.",
+  "provenance_level": "self_reported",
+  "run_id": "run-010-pr-context-capture-blocker-detail",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-010-pr-context-capture-blocker-detail/run-card.yml"
+}

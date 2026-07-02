@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+run_id: "run-010-pr-context-capture-blocker-detail"
+date: "2026-07-02"
+operation: "Make PR-context capture preflight report derived blockers before creating a staged run directory."
+target_repo: "heimgewebe/vibe-lab"
+condition: "pr_context_capture_preflight_hardening"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Blocked PR-context pilots now surface concrete blocker ids in capture prepare errors."
+    status: "observed"
+    evidence:
+      - path: "tools/vibe-cli/pr_context_capture.py"
+        evidence_status: "repo_local"
+  - claim: "Prepare still fails before creating a partial run directory when the pilot is blocked."
+    status: "observed"
+    evidence:
+      - path: "tools/vibe-cli/test_pr_context_capture.py"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Fresh dump and clean main showed no pending PR; remaining value was a small capture preflight hardening slice."
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Single small PR-context hardening slice; no repeated Bureau friction class."
+decision: "implement_small_preflight_hardening"
+does_not_establish:
+  - "pilot_execution_allowed"
+  - "condition_superiority"
+  - "collector_runtime_adoption"

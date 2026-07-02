@@ -3,13 +3,13 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-06-06T00:00:00Z
+Latest Evidence Timestamp: 2026-07-02T11:45:00Z
 
 ## Gate Snapshot
 
-- Total events: **305**
+- Total events: **333**
 - Distinct event types: **4** (decision, measurement, observation, run)
-- Source evidence files: **17**
+- Source evidence files: **19**
 
 ## Event Type Counts
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 111 |
+| observation | 139 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -28,6 +28,7 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | M0_task_validity_rate_iteration2 | 1 | 1 | 1 | 1 | 1 |
 | abort_rate_control | 1 | 1 | 0 | 0 | 0 |
 | abort_rate_treatment | 1 | 1 | 0 | 0 | 0 |
+| anchor_run_card_created | 1 | 1 | 1 | 1 | 1 |
 | ap4_execution_verdict | 1 | 0 | - | - | - |
 | ap4_skeleton_status | 1 | 0 | - | - | - |
 | append_only_integrity_check | 1 | 0 | - | - | - |
@@ -63,10 +64,12 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | compilation-single-shot | 1 | 1 | 0 | 0 | 0 |
 | compile_status | 2 | 0 | - | - | - |
 | completeness | 4 | 0 | - | - | - |
+| condition_superiority_claimed | 1 | 1 | 0 | 0 | 0 |
 | consistency | 2 | 0 | - | - | - |
 | control_tasks_executed | 1 | 1 | 3 | 3 | 3 |
 | controlled_run_recorded | 2 | 0 | - | - | - |
 | controlled_schema_deviation_injected | 1 | 1 | 1 | 1 | 1 |
+| dependency_risk_caveat_scope_status | 1 | 0 | - | - | - |
 | design-sharpening | 1 | 0 | - | - | - |
 | detection_latency_seconds | 3 | 3 | 47 | 97 | 48 |
 | diagnosis_baseline | 1 | 0 | - | - | - |
@@ -89,6 +92,7 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | exotic_blindspot_count | 2 | 2 | 0 | 1 | 0.5 |
 | experiment-setup | 2 | 0 | - | - | - |
 | experiment-verdict | 1 | 0 | - | - | - |
+| experiment_series_scaffold_status | 1 | 0 | - | - | - |
 | external_cross_family_audit_status | 1 | 0 | - | - | - |
 | first_failing_input_index | 1 | 0 | - | - | - |
 | fix-verification | 1 | 0 | - | - | - |
@@ -122,8 +126,23 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | manual_regen_steps | 6 | 5 | 0 | 2 | 1 |
 | measurement_object_alignment | 1 | 1 | 1 | 1 | 1 |
 | model_lab_baseline_execution_status | 1 | 0 | - | - | - |
+| model_lab_condition_contrast_design_gate_status | 1 | 0 | - | - | - |
 | model_lab_control_execution_status | 1 | 0 | - | - | - |
+| model_lab_next_blocker_triage_status | 1 | 0 | - | - | - |
 | model_lab_run003_execution_status | 1 | 0 | - | - | - |
+| model_lab_run_004_access_policy_review_hardening | 1 | 0 | - | - | - |
+| model_lab_run_004_access_policy_status | 1 | 0 | - | - | - |
+| model_lab_run_004_condition_design_blinding_and_provenance_role_status | 1 | 0 | - | - | - |
+| model_lab_run_004_condition_design_final_refreeze_status | 1 | 0 | - | - | - |
+| model_lab_run_004_condition_design_hardening_status | 1 | 0 | - | - | - |
+| model_lab_run_004_condition_design_source_binding_status | 1 | 0 | - | - | - |
+| model_lab_run_004_condition_design_status | 1 | 0 | - | - | - |
+| model_lab_run_004_execution_readiness_status | 1 | 0 | - | - | - |
+| model_lab_run_004_execution_seed_status | 1 | 0 | - | - | - |
+| model_lab_run_004_runtime_binding_status | 1 | 0 | - | - | - |
+| model_lab_run_004_workspace_session_isolation_status | 1 | 0 | - | - | - |
+| operator_lab_loop_playbook_anchored | 1 | 1 | 1 | 1 | 1 |
+| operator_lab_raw_note_validator_added | 1 | 1 | 1 | 1 | 1 |
 | outcome_evidence_negative_case_recorded | 1 | 0 | - | - | - |
 | outcome_evidence_pilot_recorded | 1 | 0 | - | - | - |
 | patch_size | 1 | 1 | 7 | 7 | 7 |
@@ -151,6 +170,7 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | phase_f_rrg03_remediation_boundary | 1 | 0 | - | - | - |
 | phase_result_separation | 1 | 0 | - | - | - |
 | pip_install_pyyaml | 1 | 0 | - | - | - |
+| pr_context_capture_blocker_detail_added | 1 | 1 | 1 | 1 | 1 |
 | pr_opened_run_002 | 1 | 0 | - | - | - |
 | pr_opened_run_003 | 1 | 0 | - | - | - |
 | pr_opened_run_004 | 1 | 0 | - | - | - |
@@ -160,8 +180,11 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | prompts-incremental | 1 | 1 | 6 | 6 | 6 |
 | prompts-single-shot | 1 | 1 | 1 | 1 | 1 |
 | prompts_used | 2 | 2 | 1 | 2 | 1.5 |
+| raw_patch_relay_note_promoted | 1 | 1 | 1 | 1 | 1 |
+| raw_vibes_final_evidence_disallowed | 1 | 1 | 1 | 1 | 1 |
 | replication_status | 1 | 1 | 0 | 0 | 0 |
 | resetstore_actually_used | 1 | 1 | 0 | 0 | 0 |
+| result_assessment_readiness_status | 1 | 0 | - | - | - |
 | result_assessment_verdict | 2 | 0 | - | - | - |
 | review_comments_control | 1 | 0 | - | - | - |
 | review_comments_treatment | 1 | 0 | - | - | - |
@@ -174,13 +197,17 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | rework_lines | 2 | 2 | 4 | 23 | 13.5 |
 | rework_semantic | 1 | 0 | - | - | - |
 | rework_test_isolation | 1 | 0 | - | - | - |
+| rlens_run_card_structured | 1 | 1 | 1 | 1 | 1 |
 | rrg01_rrg02_cross_diagnosis | 1 | 0 | - | - | - |
+| run004_runtime_candidate_slice_extracted | 1 | 1 | 1 | 1 | 1 |
 | run_002_availability | 1 | 0 | - | - | - |
 | run_003_condition_semantic_calibration | 1 | 0 | - | - | - |
+| run_003_runtime_validation_status | 1 | 0 | - | - | - |
 | run_010_post_audit_reconciliation_recorded | 1 | 0 | - | - | - |
 | run_artifacts_written | 1 | 0 | - | - | - |
 | run_started | 2 | 2 | 1 | 1 | 1 |
 | scaffold_created | 1 | 1 | 1 | 1 | 1 |
+| schauwerk_raw_receipt_promoted | 1 | 1 | 1 | 1 | 1 |
 | scope_drift_control | 1 | 1 | 0 | 0 | 0 |
 | scope_drift_treatment | 1 | 1 | 0 | 0 | 0 |
 | series_agent_handoff_boundary_validation_status | 1 | 0 | - | - | - |
@@ -243,6 +270,7 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 | validator_signal_before_patch | 1 | 1 | 0 | 0 | 0 |
 | verdict | 3 | 0 | - | - | - |
 | verdict-recalibrated | 1 | 0 | - | - | - |
+| weltgewebe_dependency_alert_run_card_structured | 1 | 1 | 1 | 1 | 1 |
 
 ## Source Paths
 
@@ -263,3 +291,5 @@ Latest Evidence Timestamp: 2026-06-06T00:00:00Z
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl`
 - `experiments/2026-05-25_outcome-evidence-replication-series/results/evidence.jsonl`
 - `experiments/2026-05-31_model-lab-replication-series/results/evidence.jsonl`
+- `experiments/2026-06-10_pr-agent-context-comparison-series/results/evidence.jsonl`
+- `experiments/2026-07-01_operator-lab-loop/results/evidence.jsonl`

@@ -74,7 +74,13 @@ def validate_pilot_preflight(pilot_path: Path) -> dict[str, Any]:
     if not isinstance(pilot, dict):
         raise CaptureError("pilot validator returned malformed data")
     if pilot.get("execution_allowed") is not True:
-        raise CaptureError("pilot execution is blocked")
+        blockers = pilot.get("blockers")
+        if isinstance(blockers, list):
+            details = [str(item) for item in blockers if str(item).strip()]
+        else:
+            details = []
+        suffix = f": {', '.join(details)}" if details else ""
+        raise CaptureError("pilot execution is blocked" + suffix)
     return pilot
 
 
