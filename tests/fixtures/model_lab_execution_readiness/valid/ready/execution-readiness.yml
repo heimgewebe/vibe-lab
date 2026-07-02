@@ -8,7 +8,7 @@ challenge_version: rest-api-v1
 readiness_bundle_id: run-004-execution-readiness
 bundle_artifact_path: tests/fixtures/model_lab_execution_readiness/valid/ready/execution-readiness.yml
 source_captured_at: '2026-06-26T13:00:00Z'
-generated_at: '2026-06-26T13:10:00Z'
+generated_at: '2026-06-26T13:30:00Z'
 readiness_frozen_at: '2026-06-26T13:30:00Z'
 authorized_at: '2026-06-26T13:45:00Z'
 provenance:

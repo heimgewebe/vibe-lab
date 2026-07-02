@@ -1,0 +1,136 @@
+schema_version: v1
+artifact_type: model_lab_runtime_candidate
+contract_version: run-004-runtime-candidate.v1
+candidate_id: run-004-runtime-candidate-ollama-qwen2-5-coder-14b-v1
+synthetic_fixture: false
+triggered_by: user-request-2026-06-27-run-004-runtime-candidate-preflight
+series_id: 2026-05-31_model-lab-replication-series
+design_id: run-004-condition-contrast
+challenge_version: rest-api-v1
+candidate_artifact_path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-candidate.yml
+generated_at: '2026-06-27T17:10:28Z'
+provenance:
+  condition_design_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/condition-design.yml
+  condition_design_sha256: 867470e522cf569c8e6e914be417d473ff78292fcf1f786e83850ff0d17f051b
+  access_policy_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml
+  access_policy_sha256: 8f7bece9dbfc3a48c49cd5fa504394640a02e6250e35be2e21fb69ea4afaa1fe
+state:
+  runtime_candidate_status: blocked
+  authorization_status: not_authorized
+  run_004_execution_allowed: false
+  run_004_executed: false
+  result_assessment_allowed: false
+  comparison_ready: false
+  ordinary_validation_calls_model: false
+  run_004_model_process_started: false
+  run_004_agent_process_started: false
+model_candidate:
+  binding_status: bound_identity_only
+  provider: Ollama
+  provider_version: 0.12.6
+  model_id: qwen2.5-coder:14b
+  family: qwen2
+  parameter_count: 14.8B
+  quantization: Q4_K_M
+  context_window: 32768
+  capabilities:
+  - completion
+  - tools
+  - insert
+  model_blob_digest: sha256:ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed
+  config_digest: sha256:0578f229f23ad620e123654fd0b4708405e7af3629ec1aecf3f553f54e06bc40
+host_environment:
+  binding_status: bound_identity_only
+  os: Pop!_OS 22.04
+  kernel: Linux 6.17.9-76061709-generic
+  architecture: x86_64
+  node_version: v22.22.3
+  npm_version: 10.9.8
+  python_version: 3.10.12
+  bubblewrap_version: 0.6.1
+  seccomp_library: libseccomp.so.2
+sandbox_access:
+  binding_status: blocked
+  sockets_denied: true
+  allowed_command_roots:
+  - /usr/bin
+  - /bin
+  sandbox_path: /usr/bin:/bin
+  ollama_executable: /usr/local/bin/ollama
+  ollama_access: localhost
+  model_accessible_through_bound_sandbox: false
+  reason: The bound sandbox denies socket syscalls and permits only /usr/bin or /bin command roots, while Ollama is /usr/local/bin/ollama and is accessed through localhost.
+agent_binding:
+  binding_status: unresolved
+  codex_version_observed: 0.142.2
+  codex_auth: ChatGPT
+  rejected_snapshot: gpt-5.5-2026-04-23
+  codex_bound_for_run004: false
+  reason: The 'gpt-5.5-2026-04-23' model is not supported when using Codex with a ChatGPT account; Codex is not bound for Run-004.
+sampling_binding:
+  binding_status: unresolved
+  reason: Sampling parameters are not fully proven or bound for this runtime candidate.
+broker:
+  blocker_id: AGENT_TOOL_BROKER_UNRESOLVED
+  parent_model_controller_implemented: false
+  sandboxed_structured_tool_broker_implemented: false
+  broker_ready: false
+  reason: A parent model controller plus sandboxed structured-tool broker is not implemented, so no sandboxed agent can use the localhost Ollama model through the bound sandbox.
+blockers:
+- id: AGENT_TOOL_BROKER_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-candidate.yml
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml
+  note: The model identity is known, but the current sandbox cannot reach localhost Ollama or execute /usr/local/bin/ollama, and no broker/controller exists.
+- id: AGENT_BINDING_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-candidate.yml
+  note: No executing agent/program/mode is bound; Codex is explicitly not bound.
+- id: SAMPLING_BINDING_UNRESOLVED
+  status: open
+  severity: blocking
+  evidence:
+  - experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-candidate.yml
+  note: Sampling parameters remain unresolved.
+evidence_registry:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/model-identity-evidence.yml
+  sha256: 32fd0f2c258a592130213a8a6e20a1792b0879ec5fa7c9f28cf5a7face6ca776
+  kinds:
+  - model_identity
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-environment-evidence.yml
+  sha256: 6e1e81cb003171eed20f7d1a7b960387f24841d3ff18630c14dd9056810c5bba
+  kinds:
+  - runtime_environment
+evidence:
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/model-identity-evidence.yml
+  kind: model_identity_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-environment-evidence.yml
+  kind: runtime_environment_evidence
+- path: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/access-policy.yml
+  kind: sandbox_access_policy
+required_non_claims:
+- run_004_executed
+- run_004_execution_allowed
+- run_004_model_process_started
+- run_004_agent_process_started
+- broker_ready
+- model_accessible_through_bound_sandbox
+- codex_bound_for_run004
+- agent_bound
+- sampling_bound
+- result_assessment_allowed
+- comparison_ready
+- model_quality
+- comparative_superiority
+- condition_effect
+- outcome_upgrade
+- adoption_readiness
+- promotion_readiness
+- production_readiness
+- security_readiness
+freeze:
+  freeze_manifest_ref: experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/freeze-manifest.yml

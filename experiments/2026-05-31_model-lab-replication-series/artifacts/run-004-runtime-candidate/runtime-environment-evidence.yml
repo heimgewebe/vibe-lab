@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-runtime-candidate-environment-v1
+synthetic_fixture: false
+claims:
+- kind: runtime_environment
+  status: verified
+  subject: Run-004 runtime-candidate host and sandbox boundary
+  value: Pop!_OS 22.04; Linux 6.17.9-76061709-generic; x86_64; Node v22.22.3; npm 10.9.8; Python 3.10.12; bubblewrap 0.6.1; libseccomp.so.2. The bound access sandbox denies sockets and allows commands only below /usr/bin or /bin; Ollama is /usr/local/bin and accessed through localhost, so the model is not accessible through the bound sandbox.

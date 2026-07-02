@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+run_id: "run-008-run004-runtime-candidate-preflight"
+date: "2026-07-02"
+operation: "Extract Run-004 runtime-candidate preflight slice from a dirty local worktree."
+target_repo: "heimgewebe/vibe-lab"
+condition: "model_lab_runtime_candidate_preflight"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "The dirty run004-access worktree contained a substantive runtime-candidate validator slice."
+    status: "observed"
+    evidence:
+      - path: "scripts/docmeta/validate_model_lab_runtime_candidate.py"
+        evidence_status: "repo_local"
+  - claim: "The slice records a blocked runtime candidate without authorizing Run-004 execution."
+    status: "observed"
+    evidence:
+      - path: "experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-candidate/runtime-candidate.yml"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Dirty worktree audit found one valuable runtime-candidate slice and scratch leftovers."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Single extraction slice; no Bureau handoff needed."
+decision: "extract_selectively"
+does_not_establish:
+  - "run_004_execution_allowed"
+  - "run_004_executed"
+  - "broker_ready"
+  - "comparison_ready"
