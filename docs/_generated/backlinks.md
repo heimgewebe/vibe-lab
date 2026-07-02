@@ -50,6 +50,7 @@
 ## `AGENTS.md`
 
 - ← `docs/policies/agent-compliance.md` (references)
+- ← `docs/policies/agent-reading-protocol.md` (references)
 
 ## `CLAUDE.md`
 
@@ -315,6 +316,7 @@
 ## `docs/playbooks/operator-lab-loop.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/policies/agent-reading-protocol.md` (references)
 - ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/outcome-evidence-replication-series-gate.md`
@@ -356,6 +358,7 @@
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
+- ← `docs/policies/agent-reading-protocol.md` (references)
 - ← `docs/policies/pr-run-evidence-policy.md` (references)
 - ← `docs/roadmap.md` (references)
 
@@ -368,6 +371,7 @@
 
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
+- ← `docs/policies/agent-reading-protocol.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
 
 ## `docs/reference/agent-operability-fixture-matrix.md`
@@ -391,6 +395,7 @@
 - ← `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` (references)
 - ← `docs/playbooks/operator-lab-loop.md` (references)
 - ← `docs/playbooks/outcome-evidence-replication-series-gate.md` (references)
+- ← `docs/policies/agent-reading-protocol.md` (references)
 - ← `docs/policies/model-lab-control-minimum.md` (references)
 
 ## `docs/rules/README.md`

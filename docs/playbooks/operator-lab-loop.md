@@ -106,6 +106,8 @@ Nur wenn keine Run Card noetig ist:
 Operator-Lab-Run: not applicable — <kurzer Grund>
 ```
 
+Repo-lokale Sicherung: `make validate-operator-lab-run-cards` prueft, dass `raw-vibes/operator-lab-run-*.md` nicht ohne strukturierte Run-Card-Folge im Vibe-Lab bleibt. Dieser Guard ist eng: Er validiert Raw-Note-Linkage, nicht jeden historischen Operator-Lab-Artefaktstil und nicht GitHub-PR-Bodies.
+
 ## 5. Run Card Mindestfelder
 
 ```yaml

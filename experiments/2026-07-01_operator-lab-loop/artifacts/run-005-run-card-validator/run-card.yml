@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+run_id: "run-005-run-card-validator"
+date: "2026-07-01"
+operation: "Add a narrow validator for Operator-Lab raw-note to structured run-card linkage."
+target_repo: "heimgewebe/vibe-lab"
+condition: "operator_lab_process_guard"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+claims:
+  - claim: "Operator-Lab raw notes matching raw-vibes/operator-lab-run-*.md are now checked for structured run-card follow-up."
+    status: observed
+    evidence:
+      - path: "scripts/docmeta/validate_operator_lab_run_cards.py"
+        evidence_status: repo_local
+      - path: "scripts/docmeta/test_validate_operator_lab_run_cards.py"
+        evidence_status: repo_local
+  - claim: "The validator is intentionally narrow and does not enforce every historic Operator-Lab artifact shape."
+    status: observed
+    evidence:
+      - path: "scripts/docmeta/validate_operator_lab_run_cards.py"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "No open PRs at start; current main contains structured run-card follow-up for the raw patch-relay note."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "This is a Vibe-Lab local guard against a known evidence-shape drift."
+decision: "add_narrow_validator"
+does_not_establish:
+  - "all PR bodies are automatically checked"
+  - "all historic Operator-Lab artifact shapes are canonical"
+  - "hard enforcement beyond raw-note linkage is justified"

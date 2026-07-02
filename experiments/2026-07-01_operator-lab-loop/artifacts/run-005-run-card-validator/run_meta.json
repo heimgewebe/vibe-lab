@@ -1,0 +1,11 @@
+{
+  "command": "add operator-lab raw-note linkage validator and tests",
+  "executor": "operator:chatgpt-grabowski",
+  "exit_code": 0,
+  "generated_at": "2026-07-01T18:35:00Z",
+  "notes": "Records the narrow validator slice that blocks raw-vibes operator-lab notes without structured run-card follow-up.",
+  "provenance_level": "self_reported",
+  "run_id": "run-005-run-card-validator",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-005-run-card-validator/run-card.yml"
+}
