@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+run_id: "run-006-schauwerk-miro-quality-receipt"
+date: "2026-07-01"
+operation: "Promote the Schauwerk Miro quality Operator-Lab raw receipt into structured run-card storage."
+target_repo: "heimgewebe/vibe-lab"
+condition: "operator_lab_raw_note_cleanup"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - steuerboard
+source_note:
+  path: "raw-vibes/operator-lab-run-20260701-schauwerk-miro-quality-receipt-v1.md"
+  role: "intake_source"
+claims:
+  - claim: "The Schauwerk Miro quality receipt existed as a raw-vibes Operator-Lab note on an unmerged local branch."
+    status: observed
+    evidence:
+      - path: "raw-vibes/operator-lab-run-20260701-schauwerk-miro-quality-receipt-v1.md"
+        evidence_status: repo_local
+  - claim: "The raw receipt now has structured Operator-Lab follow-up storage under the central experiment."
+    status: observed
+    evidence:
+      - path: "experiments/2026-07-01_operator-lab-loop/artifacts/run-006-schauwerk-miro-quality-receipt/run-card.yml"
+        evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Open PR list was empty; local Vibe-Lab checkout exposed an unmerged raw Operator-Lab note branch."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "This is raw-note cleanup in Vibe-Lab, not a new Bureau execution signal."
+decision: "promote_raw_note_to_structured_followup"
+does_not_establish:
+  - "Schauwerk Miro quality outcome"
+  - "Miro board correctness"
+  - "all historic local branches are cleaned"

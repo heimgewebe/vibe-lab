@@ -1,0 +1,11 @@
+{
+  "command": "promote Schauwerk Miro quality raw Operator-Lab receipt into structured run-card storage",
+  "executor": "operator:chatgpt-grabowski",
+  "exit_code": 0,
+  "generated_at": "2026-07-02T03:15:00Z",
+  "notes": "Structured follow-up for an existing raw-vibes receipt found on local branch chore/run-card-schauwerk-miro-quality.",
+  "provenance_level": "self_reported",
+  "run_id": "run-006-schauwerk-miro-quality-receipt",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-006-schauwerk-miro-quality-receipt/run-card.yml"
+}
