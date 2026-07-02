@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-014-cabinet-observation-candidates",
+  "generated_at": "2026-07-02T17:10:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "record Cabinet repository observation candidates run card",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-014-cabinet-observation-candidates/run-card.yml",
+  "provenance_level": "self_reported"
+}

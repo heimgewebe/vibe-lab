@@ -1,0 +1,38 @@
+schema_version: "0.1.0"
+run_id: "run-014-cabinet-observation-candidates"
+date: "2026-07-02"
+operation: "Add Cabinet repository observation candidate report."
+target_repo: "heimgewebe/cabinet"
+condition: "cabinet_observation_candidates_v1"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet renders snapshot-derived repository follow-up candidates without creating Bureau tasks or dispatches."
+    status: "observed"
+    evidence:
+      - path: "scripts/build-repository-observation-candidates.py"
+        evidence_status: "repo_local"
+      - path: "steuerung/20 Aufgaben/repository-observation-candidates-v1.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; work was bounded to Cabinet snapshot-derived generated artifacts."
+  changed_decision: "no"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Report creates candidates only; no Bureau task materialisation."
+decision: "implement_candidate_report_without_dispatch"
+does_not_establish:
+  - "Bureau task creation"
+  - "Grabowski dispatch readiness"
+  - "current live repository state"
