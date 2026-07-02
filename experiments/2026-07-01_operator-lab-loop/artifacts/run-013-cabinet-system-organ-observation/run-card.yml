@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+run_id: "run-013-cabinet-system-organ-observation"
+date: "2026-07-02"
+operation: "Expand Cabinet repository observation to core system organs."
+target_repo: "heimgewebe/cabinet"
+condition: "cabinet_system_organ_observation"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet can validate an observation policy with bureau, cabinet, and grabowski included."
+    status: "observed"
+    evidence:
+      - path: "policy/repository-observation.json"
+        evidence_status: "repo_local"
+      - path: "steuerung/40 Organe/"
+        evidence_status: "repo_local"
+  - claim: "A real read-only repository observation run succeeds for 8 approved repositories."
+    status: "observed"
+    evidence:
+      - path: "/tmp/cabinet-system-organ-observation-20260702T125424Z.json"
+        evidence_status: "runtime_local"
+metrics:
+  scope_drift_count: 1
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 2
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; direct steuerboard command was blocked by tool filter earlier in the Cabinet triage."
+  changed_decision: "no"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Cabinet read-only observation slice only; no Bureau task import or dispatch."
+decision: "implement_cabinet_system_organ_observation_slice"
+does_not_establish:
+  - "autonomous Cabinet execution"
+  - "current runtime readiness of observed repositories"
+  - "merge readiness for Cabinet without PR review"
