@@ -3,9 +3,10 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (81 found):
+Unexpected orphans (83 found):
 
 - `.vibe/intent.md`
+- `docs/playbooks/bundle-freshness-receipt.md`
 - `docs/policies/agent-reading-protocol.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
@@ -67,6 +68,7 @@ Unexpected orphans (81 found):
 - `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-003-lenskit-plus-vibe-lab-handoff/condition-input.md`
 - `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-004-minimal-decision-first-checklist/condition-input.md`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/README.md`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/notes.md`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`

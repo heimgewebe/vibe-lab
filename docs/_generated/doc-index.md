@@ -242,7 +242,7 @@
 | `experiments/2026-07-01_operator-lab-loop/CONTEXT.md` | Kontext: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/INITIAL.md` | Initiale Situation: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/README.md` | Operator Lab Loop Artifacts | active | operative |
-| `experiments/2026-07-01_operator-lab-loop/artifacts/run-007-bundle-freshness-receipt/notes.md` | notes | — | — |
+| `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/notes.md` | notes | — | — |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md` | Operator Lab Loop Run Template | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/failure_modes.md` | Failure Modes: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/method.md` | Methode: Operator Lab Loop | active | operative |

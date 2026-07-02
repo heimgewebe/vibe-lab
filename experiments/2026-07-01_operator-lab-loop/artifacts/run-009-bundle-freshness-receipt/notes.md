@@ -1,4 +1,4 @@
-# run-007-bundle-freshness-receipt notes
+# run-009-bundle-freshness-receipt notes
 
 The receipt check is intentionally narrow. It checks expected source markers in a generated canonical bundle markdown file.
 
