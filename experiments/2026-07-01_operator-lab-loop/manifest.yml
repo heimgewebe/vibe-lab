@@ -33,6 +33,9 @@ experiment:
     - artifacts/run-012-pr-context-capture-status/run-card.yml
     - artifacts/run-013-cabinet-system-organ-observation/run_meta.json
     - artifacts/run-013-cabinet-system-organ-observation/run-card.yml
+    - artifacts/run-014-bureau-runtime-drift-check/run_meta.json
+    - artifacts/run-014-bureau-runtime-drift-check/run-card.yml
+    - artifacts/run-014-bureau-runtime-drift-check/validation-summary.txt
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-01"

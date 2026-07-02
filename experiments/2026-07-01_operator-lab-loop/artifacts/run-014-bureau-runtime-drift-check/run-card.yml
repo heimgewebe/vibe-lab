@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+run_id: "run-014-bureau-runtime-drift-check"
+date: "2026-07-02"
+operation: "Record Bureau runtime drift check for BUR-2026-003-T001."
+target_repo: "heimgewebe/bureau"
+condition: "repo_task"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+  - "Bureau"
+claims:
+  - claim: "A read-only Bureau CLI command reports runtime, checkout, registry and receipt drift."
+    status: "observed"
+    evidence:
+      - path: "bureau:/home/alex/repos/.bureau-worktrees/BUR-RUN-20260702T122654Z-3b4792f588"
+        evidence_status: "repo_local_commit"
+      - path: "bureau:/home/alex/.local/state/bureau/receipts/BUR-RUN-20260702T122654Z-3b4792f588.json"
+        evidence_status: "receipt_local"
+  - claim: "The implementation remained read-only and did not fetch, pull, merge or repair runtime state."
+    status: "observed"
+    evidence:
+      - path: "bureau:commit e066645eceaebcb874c469d60eb98d85da015029"
+        evidence_status: "repo_local_commit"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run"
+  changed_decision: "no"
+  noise: "not_measured"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Run was already claimed and completed as Bureau task BUR-2026-003-T001."
+decision: "record_bureau_runtime_drift_check_as_evidence"
+does_not_establish:
+  - "merge_allowed"
+  - "runtime_repair_safe"
+  - "fetch_or_pull_automation_safe"
+  - "operator_lab_condition_superiority"
