@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+run_id: "run-012-pr-context-capture-status"
+date: "2026-07-02"
+operation: "Add status command for PR-context capture."
+target_repo: "heimgewebe/vibe-lab"
+condition: "pr_context_capture_status"
+operator_tooling:
+  - "ChatGPT"
+claims:
+  - claim: "Capture helper reports staged run readiness."
+    status: "observed"
+    evidence:
+      - path: "tools/vibe-cli/pr_context_capture.py"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Fresh dump and receipt were available."
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Small UX slice only."
+decision: "implement_capture_status_command"
+does_not_establish:
+  - "condition_superiority"

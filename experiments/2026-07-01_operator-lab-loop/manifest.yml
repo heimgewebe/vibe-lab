@@ -24,6 +24,13 @@ experiment:
     - artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml
     - artifacts/run-008-run004-runtime-candidate-preflight/run_meta.json
     - artifacts/run-008-run004-runtime-candidate-preflight/run-card.yml
+    - artifacts/run-009-bundle-freshness-receipt/run-card.yml
+    - artifacts/run-010-pr-context-capture-blocker-detail/run_meta.json
+    - artifacts/run-010-pr-context-capture-blocker-detail/run-card.yml
+    - artifacts/run-011-pr-context-capture-playbook/run_meta.json
+    - artifacts/run-011-pr-context-capture-playbook/run-card.yml
+    - artifacts/run-012-pr-context-capture-status/run_meta.json
+    - artifacts/run-012-pr-context-capture-status/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-01"

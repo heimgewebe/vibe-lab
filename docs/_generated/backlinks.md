@@ -316,6 +316,7 @@
 ## `docs/playbooks/operator-lab-loop.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/pr-context-capture.md` (references)
 - ← `docs/policies/agent-reading-protocol.md` (references)
 - ← `docs/roadmap.md` (references)
 
@@ -329,10 +330,16 @@
 - ← `docs/playbooks/operator-lab-loop.md` (references)
 - ← `docs/roadmap.md` (references)
 
+## `docs/playbooks/pr-context-capture.md`
+
+- ← `docs/index.md` (references)
+- ← `docs/playbooks/operator-lab-loop.md` (references)
+
 ## `docs/playbooks/pr-run-evidence-pack.md`
 
 - ← `docs/index.md` (references)
 - ← `docs/playbooks/operator-lab-loop.md` (references)
+- ← `docs/playbooks/pr-context-capture.md` (references)
 
 ## `docs/playbooks/reconciliation.md`
 
@@ -696,6 +703,7 @@
 ## `experiments/2026-06-10_pr-agent-context-comparison-series/pilot-v1.yml`
 
 - ← `docs/playbooks/operator-lab-loop.md` (references)
+- ← `docs/playbooks/pr-context-capture.md` (references)
 
 ## `experiments/2026-06-10_pr-agent-context-comparison-series/results/cross-run-assessment.md`
 
@@ -811,9 +819,17 @@
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 
+## `tools/vibe-cli/pr_context_capture.py`
+
+- ← `docs/playbooks/pr-context-capture.md` (references)
+
 ## `tools/vibe-cli/replay_minimal.py`
 
 - ← `docs/reference/replay-trace-redaction.md` (references)
+
+## `tools/vibe-cli/test_pr_context_capture.py`
+
+- ← `docs/playbooks/pr-context-capture.md` (references)
 
 ## `tools/vibe-cli/test_replay_trace_contract.py`
 
