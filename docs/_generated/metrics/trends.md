@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-07-02T12:55:00Z
+Latest Evidence Timestamp: 2026-07-02T17:15:00Z
 
 ## Gate Snapshot
 
-- Total events: **336**
+- Total events: **337**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **19**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-07-02T12:55:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 142 |
+| observation | 143 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -144,6 +144,7 @@ Latest Evidence Timestamp: 2026-07-02T12:55:00Z
 | model_lab_run_004_workspace_session_isolation_status | 1 | 0 | - | - | - |
 | operator_lab_loop_playbook_anchored | 1 | 1 | 1 | 1 | 1 |
 | operator_lab_raw_note_validator_added | 1 | 1 | 1 | 1 | 1 |
+| operator_lab_run_slot_guard_added | 1 | 1 | 1 | 1 | 1 |
 | outcome_evidence_negative_case_recorded | 1 | 0 | - | - | - |
 | outcome_evidence_pilot_recorded | 1 | 0 | - | - | - |
 | patch_size | 1 | 1 | 7 | 7 | 7 |

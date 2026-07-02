@@ -9,6 +9,7 @@ final PR evidence without a structured run-card follow-up.
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -19,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[2]
 ARTIFACTS = ROOT / "experiments/2026-07-01_operator-lab-loop/artifacts"
 RAW_VIBES = ROOT / "raw-vibes"
 RAW_PATTERN = "operator-lab-run-*.md"
+RECENT_RUN_SLOT_MIN = 15
+RUN_SLOT_RE = re.compile(r"^run-(\d{3})-")
 
 
 def _repo_rel(path: Path, *, root: Path) -> str:
@@ -29,6 +32,21 @@ def _load_yaml(path: Path) -> dict[str, Any]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     return data if isinstance(data, dict) else {}
 
+
+
+def _run_slot(path):
+    match = RUN_SLOT_RE.match(path.parent.name)
+    if match is None:
+        return None
+    return int(match.group(1))
+
+
+def _manifest_execution_refs(repo_root):
+    manifest = repo_root / "experiments/2026-07-01_operator-lab-loop/manifest.yml"
+    data = _load_yaml(manifest) if manifest.is_file() else {}
+    experiment = data.get("experiment")
+    refs = experiment.get("execution_refs") if isinstance(experiment, dict) else None
+    return {item for item in refs if isinstance(item, str)} if isinstance(refs, list) else set()
 
 def _source_note_paths(card: dict[str, Any]) -> set[str]:
     paths: set[str] = set()
@@ -58,6 +76,26 @@ def validate_operator_lab_run_cards(repo_root: Path = ROOT) -> list[str]:
             source_index.setdefault(raw_path, []).append(run_card)
             if raw_path.startswith("raw-vibes/") and not (repo_root / raw_path).is_file():
                 errors.append(f"{_repo_rel(run_card, root=repo_root)} references missing source_note.path: {raw_path}")
+
+
+    manifest_refs = _manifest_execution_refs(repo_root)
+    recent_by_slot = {}
+    experiment_dir = repo_root / "experiments/2026-07-01_operator-lab-loop"
+    for run_card in run_cards:
+        slot = _run_slot(run_card)
+        if slot is None or slot < RECENT_RUN_SLOT_MIN:
+            continue
+        recent_by_slot.setdefault(slot, []).append(run_card)
+        rel_to_experiment = run_card.resolve().relative_to(experiment_dir.resolve()).as_posix()
+        if rel_to_experiment not in manifest_refs:
+            errors.append(
+                f"{_repo_rel(run_card, root=repo_root)} is not registered in operator-lab manifest execution_refs"
+            )
+
+    for slot, cards in sorted(recent_by_slot.items()):
+        if len(cards) > 1:
+            joined = ", ".join(_repo_rel(card, root=repo_root) for card in cards)
+            errors.append(f"operator-lab run slot run-{slot:03d} is used by multiple run-cards: {joined}")
 
     for raw_note in raw_notes:
         rel = _repo_rel(raw_note, root=repo_root)
