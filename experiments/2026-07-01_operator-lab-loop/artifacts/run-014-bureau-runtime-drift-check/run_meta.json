@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-014-bureau-runtime-drift-check",
+  "generated_at": "2026-07-02T12:55:00Z",
+  "target_repo": "heimgewebe/bureau",
+  "bureau_task_id": "BUR-2026-003-T001",
+  "bureau_run_id": "BUR-RUN-20260702T122654Z-3b4792f588",
+  "bureau_receipt_sha256": "0fc04a3ef8bd14b27520b9e32bbb6badfdf76f3441e9bc887d905db53be72d64",
+  "local_commit": "e066645eceaebcb874c469d60eb98d85da015029",
+  "branch": "bureau/bur-2026-003-t001/3b4792f588",
+  "executor": "local:chatgpt+grabowski@heim-pc",
+  "command": "Bureau T001 local validation: focused tests, ruff, full tests, runtime drift check",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-014-bureau-runtime-drift-check/validation-summary.txt",
+  "provenance_level": "self_reported"
+}

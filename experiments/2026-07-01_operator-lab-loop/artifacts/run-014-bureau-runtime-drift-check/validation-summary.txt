@@ -1,0 +1,20 @@
+Bureau runtime drift check T001 validation summary
+
+Target repo: heimgewebe/bureau
+Bureau task: BUR-2026-003-T001
+Bureau run: BUR-RUN-20260702T122654Z-3b4792f588
+Local commit: e066645eceaebcb874c469d60eb98d85da015029
+Receipt SHA: 0fc04a3ef8bd14b27520b9e32bbb6badfdf76f3441e9bc887d905db53be72d64
+
+Commands observed in Bureau worktree:
+- .venv/bin/pytest tests/test_v2.py -q: passed
+- .venv/bin/ruff check src tests: passed
+- .venv/bin/pytest -q: passed
+- .venv/bin/bureau --root . --json runtime-drift-check: exit 0; status blocked due observed drift, not command failure
+
+Runtime findings captured:
+- head-differs-origin-main
+- lifecycle-mismatch: BUR-2026-001
+- receipt-drift: BUR-2026-001-T001, BUR-2026-001-T002
+
+No runtime repair, merge, or deploy was performed.

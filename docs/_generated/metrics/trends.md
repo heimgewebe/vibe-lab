@@ -7,7 +7,7 @@ Latest Evidence Timestamp: 2026-07-02T12:55:00Z
 
 ## Gate Snapshot
 
-- Total events: **335**
+- Total events: **336**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **19**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-07-02T12:55:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 141 |
+| observation | 142 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -40,6 +40,7 @@ Latest Evidence Timestamp: 2026-07-02T12:55:00Z
 | branch_coverage_extended | 1 | 0 | - | - | - |
 | branch_setup_completed | 4 | 0 | - | - | - |
 | bug-task2-incremental-cli-parser | 1 | 0 | - | - | - |
+| bureau_runtime_drift_check_bound | 1 | 1 | 1 | 1 | 1 |
 | candidate_probe_uncaught_count | 1 | 1 | 6 | 6 | 6 |
 | candidate_rehearsal_run_recorded | 2 | 0 | - | - | - |
 | canonical_contract_fix_committed | 1 | 0 | - | - | - |
