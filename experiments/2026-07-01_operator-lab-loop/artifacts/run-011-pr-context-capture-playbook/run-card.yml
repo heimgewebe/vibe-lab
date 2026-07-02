@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+run_id: "run-011-pr-context-capture-playbook"
+date: "2026-07-02"
+operation: "Document PR context capture usage."
+target_repo: "heimgewebe/vibe-lab"
+condition: "documentation"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Playbook documents the capture workflow."
+    status: "observed"
+    evidence:
+      - path: "docs/playbooks/pr-context-capture.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Fresh dump showed missing human playbook."
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Documentation slice only."
+decision: "document_existing_capture_workflow"
+does_not_establish:
+  - "pilot_execution_allowed"
+  - "condition_superiority"
+  - "capture_runtime_adoption"
