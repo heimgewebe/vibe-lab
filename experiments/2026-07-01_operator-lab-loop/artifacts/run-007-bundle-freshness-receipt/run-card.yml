@@ -1,0 +1,31 @@
+schema_version: "0.1.0"
+run_id: "run-20260702-bundle-freshness-receipt"
+date: "2026-07-02"
+operation: "Add a receipt check for generated bundle freshness."
+target_repo: "heimgewebe/vibe-lab"
+condition: "decision_first"
+operator_tooling:
+  - ChatGPT
+  - Grabowski
+  - GitHub connector
+claims:
+  - claim: "A bundle freshness receipt playbook was added."
+    status: observed
+    evidence:
+      - path: "docs/playbooks/bundle-freshness-receipt.md"
+        evidence_status: repo_local
+  - claim: "A receipt validator was added."
+    status: observed
+    evidence:
+      - path: "scripts/docmeta/validate_bundle_freshness_receipt.py"
+        evidence_status: repo_local
+  - claim: "Regression tests were added."
+    status: observed
+    evidence:
+      - path: "scripts/docmeta/test_validate_bundle_freshness_receipt.py"
+        evidence_status: repo_local
+decision: "iterate"
+does_not_establish:
+  - "fresh_bundle_generated"
+  - "native_rlens_execution"
+  - "full_local_validation"
