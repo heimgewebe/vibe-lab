@@ -1,10 +1,10 @@
 {
-  "command": "structure Weltgewebe dependency-alert Operator-Lab run card in Vibe-Lab",
+  "command": "update Weltgewebe dependency-alert Operator-Lab run card with post-merge evidence",
   "executor": "operator:chatgpt-grabowski",
   "exit_code": 0,
-  "generated_at": "2026-07-02T03:50:00Z",
-  "notes": "Structures an untracked run card found in the Vibe-Lab main checkout. Claims are deliberately limited to evidence recording, not dependency closure.",
-  "provenance_level": "self_reported",
+  "generated_at": "2026-07-02T05:49:37Z",
+  "notes": "Adds externally verified PR merge, changed-file, and workflow-run evidence. Dependabot alert closure remains explicitly missing evidence.",
+  "provenance_level": "github_connector_verified",
   "run_id": "run-007-weltgewebe-dependency-alerts",
   "schema_version": "1.0.0",
   "test_output_file": "artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
