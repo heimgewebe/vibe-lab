@@ -1,0 +1,2 @@
+python3 scripts/docmeta/validate_bundle_freshness_receipt.py \
+  --canonical-md /path/to/vibe-lab-max-YYYYMMDD-HHMM_merge.md
