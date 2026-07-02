@@ -77,6 +77,51 @@ class OperatorLabRunCardValidationTests(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("sibling run_meta.json is missing", errors[0])
 
+    def _operator_manifest(self, root: Path, refs: list[str]) -> None:
+        manifest = root / "experiments/2026-07-01_operator-lab-loop/manifest.yml"
+        manifest.parent.mkdir(parents=True, exist_ok=True)
+        lines = ["schema_version: '0.1.0'", "experiment:", "  execution_refs:"]
+        lines.extend(f"    - {ref}" for ref in refs)
+        manifest.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    def _numbered_run_card(self, root: Path, run_dir_name: str) -> None:
+        run_dir = root / "experiments/2026-07-01_operator-lab-loop/artifacts" / run_dir_name
+        run_dir.mkdir(parents=True)
+        (run_dir / "run-card.yml").write_text(
+            f"schema_version: '0.1.0'\nrun_id: {run_dir_name!r}\n",
+            encoding="utf-8",
+        )
+
+    def test_recent_run_card_requires_manifest_registration(self) -> None:
+        tmp, root = self._root()
+        self.addCleanup(tmp.cleanup)
+        self._numbered_run_card(root, "run-015-missing-manifest")
+        self._operator_manifest(root, [])
+        errors = validate_operator_lab_run_cards(root)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("is not registered", errors[0])
+
+    def test_recent_run_slot_collision_fails(self) -> None:
+        tmp, root = self._root()
+        self.addCleanup(tmp.cleanup)
+        self._numbered_run_card(root, "run-015-alpha")
+        self._numbered_run_card(root, "run-015-beta")
+        self._operator_manifest(root, [
+            "artifacts/run-015-alpha/run-card.yml",
+            "artifacts/run-015-beta/run-card.yml",
+        ])
+        errors = validate_operator_lab_run_cards(root)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("run-015", errors[0])
+        self.assertIn("multiple run-cards", errors[0])
+
+    def test_legacy_run_slot_collision_is_tolerated(self) -> None:
+        tmp, root = self._root()
+        self.addCleanup(tmp.cleanup)
+        self._numbered_run_card(root, "run-014-alpha")
+        self._numbered_run_card(root, "run-014-beta")
+        self.assertEqual(validate_operator_lab_run_cards(root), [])
+
 
 if __name__ == "__main__":
     unittest.main()

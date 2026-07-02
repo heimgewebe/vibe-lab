@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-015-operator-lab-run-slot-guard",
+  "generated_at": "2026-07-02T17:15:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "add forward-looking Operator-Lab run-slot and manifest guard",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-015-operator-lab-run-slot-guard/run-card.yml",
+  "provenance_level": "self_reported"
+}

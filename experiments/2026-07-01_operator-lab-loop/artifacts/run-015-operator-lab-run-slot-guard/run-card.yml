@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+run_id: "run-015-operator-lab-run-slot-guard"
+date: "2026-07-02"
+operation: "Add a forward-looking Operator-Lab run-slot and manifest guard."
+target_repo: "heimgewebe/vibe-lab"
+condition: "operator_lab_guard_hardening"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "The Operator-Lab validator rejects unmanifested run-cards from run-015 onward."
+    status: "observed"
+    evidence:
+      - path: "scripts/docmeta/validate_operator_lab_run_cards.py"
+        evidence_status: "repo_local"
+      - path: "scripts/docmeta/test_validate_operator_lab_run_cards.py"
+        evidence_status: "repo_local"
+  - claim: "The Operator-Lab validator rejects duplicate run slots from run-015 onward while tolerating historical duplicate slots."
+    status: "observed"
+    evidence:
+      - path: "scripts/docmeta/test_validate_operator_lab_run_cards.py"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Fresh dump and recent PR audit exposed run-slot and manifest drift."
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Vibe-Lab guard hardening only."
+decision: "implement_forward_guard"
+does_not_establish:
+  - "historical_run_slot_uniqueness"
+  - "operator_lab_condition_superiority"
+  - "automatic PR merge safety"
