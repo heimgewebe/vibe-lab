@@ -1,0 +1,9 @@
+schema_version: v1
+artifact_type: model_lab_execution_readiness_evidence
+evidence_id: run-004-runtime-candidate-model-identity-v1
+synthetic_fixture: false
+claims:
+- kind: model_identity
+  status: verified
+  subject: Run-004 runtime-candidate model identity
+  value: Ollama 0.12.6; qwen2.5-coder:14b; family qwen2; 14.8B; Q4_K_M; context 32768; capabilities completion/tools/insert; model blob sha256:ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed; config sha256:0578f229f23ad620e123654fd0b4708405e7af3629ec1aecf3f553f54e06bc40.
