@@ -1,0 +1,47 @@
+schema_version: "0.1.0"
+run_id: "run-007-weltgewebe-dependency-alerts"
+date: "2026-07-02"
+operation: "Record the Weltgewebe dependency-alert remediation run as Operator-Lab evidence."
+target_repo: "heimgewebe/weltgewebe"
+condition: "dependency_alert_remediation"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "The run was triggered by reported GitHub dependency alerts on heimgewebe/weltgewebe."
+    status: "observed"
+    evidence:
+      - path: "operator report in this run-card"
+        evidence_status: "self_reported"
+  - claim: "Local package-audit and validation evidence is not stored in this Vibe-Lab run-card."
+    status: "observed"
+    evidence:
+      - path: "artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
+        evidence_status: "repo_local"
+  - claim: "This Vibe-Lab record does not prove production runtime safety or dependency-alert closure."
+    status: "observed"
+    evidence:
+      - path: "artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 1
+  validation_gap_count: 1
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_used in original external run; current Vibe-Lab cleanup detected the untracked run-card directory on main"
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "single dependency-alert run; no repeated Vibe-Lab friction class yet"
+decision: "document_as_evidence_with_limited_claims"
+does_not_establish:
+  - "production_runtime_safety"
+  - "dependency_alert_closure"
+  - "condition_superiority"
+  - "full_web_unit_validation"
