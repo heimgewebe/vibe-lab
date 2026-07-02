@@ -3,8 +3,8 @@
   "executor": "operator:chatgpt-grabowski",
   "exit_code": 0,
   "generated_at": "2026-07-02T05:49:37Z",
-  "notes": "Adds externally verified PR merge, changed-file, and workflow-run evidence. Dependabot alert closure remains explicitly missing evidence.",
-  "provenance_level": "github_connector_verified",
+  "notes": "Adds PR merge, changed-file, and workflow-run evidence. Dependabot alert closure remains explicitly missing evidence.",
+  "provenance_level": "self_reported",
   "run_id": "run-007-weltgewebe-dependency-alerts",
   "schema_version": "1.0.0",
   "test_output_file": "artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
