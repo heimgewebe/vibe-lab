@@ -207,6 +207,23 @@
         ".github/workflows/*.yml"
       ],
       "origin": "handcrafted",
+      "path": ".github/workflows/doc-freshness-registry.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking",
+        "review_required"
+      ],
+      "kind": "ci_workflow",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".github/workflows/*.yml"
+      ],
+      "origin": "handcrafted",
       "path": ".github/workflows/validate.yml",
       "status": "classified"
     },
@@ -1342,6 +1359,22 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/doc-freshness-registry.yml",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -1683,6 +1716,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/policies/agent-compliance.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "policy_doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/policies/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/policies/agent-reading-protocol.md",
       "status": "classified"
     },
     {
@@ -13655,6 +13704,22 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-consumption-bridge/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-rlens-agent-ecosystem/run-card.yml",
       "status": "classified"
     },
@@ -13672,6 +13737,102 @@
       ],
       "origin": "captured",
       "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-rlens-agent-ecosystem/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-bureau-sync/card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-doc-freshness-validator/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-grabowski-patch-relay/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-grabowski-patch-relay/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-004-run-card-structure-hardening/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-004-run-card-structure-hardening/run_meta.json",
       "status": "classified"
     },
     {
@@ -15678,6 +15839,22 @@
         "scripts/docmeta/test_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_doc_freshness_registry.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_experiment_structure_phase1c_fixtures.py",
       "status": "classified"
     },
@@ -16063,6 +16240,22 @@
       ],
       "origin": "handcrafted",
       "path": "scripts/docmeta/validate_dependency_risk_caveat_scope.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_doc_freshness_registry.py",
       "status": "classified"
     },
     {
@@ -22642,6 +22835,7 @@
   ],
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
+    "docs/doc-freshness-registry.yml",
     "docs/evaluations/agent-skill-file-fruitfulness.md",
     "docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md",
     "docs/evaluations/rrg03-remediation-strategy-comparison.md",
@@ -23136,7 +23330,12 @@
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/steuerboard-summary.json",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-bureau-t005-binding/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-bureau-t005-binding/steuerboard-summary.json",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-consumption-bridge/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-002-rlens-agent-ecosystem/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-bureau-sync/card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-doc-freshness-validator/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-003-grabowski-patch-relay/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-004-run-card-structure-hardening/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md",
     "experiments/_template/artifacts/README.md",
     "tests/fixtures/challenge_versions/invalid/challenges/missing-version.md",
@@ -23415,19 +23614,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 490,
-      "navigation_surface": 7,
+      "historical_record": 495,
+      "navigation_surface": 8,
       "test_expectation": 273
     },
     "by_layer": {
-      "docs": 7,
-      "experiment": 490,
+      "docs": 8,
+      "experiment": 495,
       "test": 273
     },
     "by_matched_pattern": {
-      "docs/**": 7,
+      "docs/**": 8,
       "experiments/**": 27,
-      "experiments/*/artifacts/**": 463,
+      "experiments/*/artifacts/**": 468,
       "tests/fixtures/**": 273
     },
     "high_risk_count": 273,
@@ -23489,7 +23688,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 463
+          "total": 468
         },
         {
           "high_risk_count": 0,
@@ -23524,17 +23723,19 @@
           "top_basenames": {
             "README.md": 4,
             "agent-skill-file-fruitfulness.md": 1,
+            "doc-freshness-registry.yml": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
             "rrg03-remediation-strategy-comparison.md": 1
           },
           "top_parent_dirs": {
+            "docs": 1,
             "docs/evaluations": 3,
             "docs/experiments": 1,
             "docs/onboarding": 1,
             "docs/rules": 1,
             "docs/syntheses": 1
           },
-          "total": 7
+          "total": 8
         }
       ],
       "volume_first": [
@@ -23565,7 +23766,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 463
+          "total": 468
         },
         {
           "high_risk_count": 273,
@@ -23629,17 +23830,19 @@
           "top_basenames": {
             "README.md": 4,
             "agent-skill-file-fruitfulness.md": 1,
+            "doc-freshness-registry.yml": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
             "rrg03-remediation-strategy-comparison.md": 1
           },
           "top_parent_dirs": {
+            "docs": 1,
             "docs/evaluations": 3,
             "docs/experiments": 1,
             "docs/onboarding": 1,
             "docs/rules": 1,
             "docs/syntheses": 1
           },
-          "total": 7
+          "total": 8
         }
       ]
     },
@@ -23700,7 +23903,7 @@
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
         },
-        "total": 463
+        "total": 468
       },
       {
         "high_risk_count": 0,
@@ -23735,17 +23938,19 @@
         "top_basenames": {
           "README.md": 4,
           "agent-skill-file-fruitfulness.md": 1,
+          "doc-freshness-registry.yml": 1,
           "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
           "rrg03-remediation-strategy-comparison.md": 1
         },
         "top_parent_dirs": {
+          "docs": 1,
           "docs/evaluations": 3,
           "docs/experiments": 1,
           "docs/onboarding": 1,
           "docs/rules": 1,
           "docs/syntheses": 1
         },
-        "total": 7
+        "total": 8
       }
     ]
   },
@@ -23948,30 +24153,30 @@
       "diagnostic_signal": 7,
       "evidence_log": 20,
       "generated_projection": 10,
-      "historical_record": 490,
+      "historical_record": 495,
       "implementation_behavior": 19,
-      "navigation_surface": 23,
+      "navigation_surface": 24,
       "normative_contract": 16,
-      "procedure_contract": 130,
+      "procedure_contract": 133,
       "raw_capture": 28,
       "result_interpretation": 67,
-      "runtime_observation": 88,
+      "runtime_observation": 90,
       "schema_truth": 39,
       "sovereign_source": 3,
-      "test_expectation": 426,
+      "test_expectation": 427,
       "unknown": 25
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 595,
+      "ci_blocking": 598,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 557,
+      "no_rewrite": 562,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 284
+      "review_required": 289
     },
     "by_layer": {
       "<none>": 1,
@@ -23980,28 +24185,28 @@
       "capture": 8,
       "catalog": 12,
       "contract": 51,
-      "docs": 40,
-      "experiment": 742,
+      "docs": 42,
+      "experiment": 749,
       "export": 15,
       "generated": 8,
-      "governance": 75,
-      "test": 426
+      "governance": 77,
+      "test": 427
     },
     "by_lifecycle": {
       "<none>": 1,
-      "append_only": 557,
-      "handcrafted": 766,
+      "append_only": 562,
+      "handcrafted": 771,
       "regenerated": 18,
-      "revision_with_reason": 69,
+      "revision_with_reason": 71,
       "superseded_not_rewritten": 2
     },
-    "classified": 1412,
+    "classified": 1424,
     "conflict": 0,
-    "fallback_classified": 770,
-    "fallback_share": 0.5453257790368272,
+    "fallback_classified": 776,
+    "fallback_share": 0.5449438202247191,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
-    "total": 1413,
+    "total": 1425,
     "unknown": 1
   },
   "transition_risk_hints": [],
