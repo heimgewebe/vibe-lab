@@ -129,3 +129,28 @@ GitHub validate 3.12: success
 ### Boundary
 
 This is SW-009A planning only. It does not mutate Miro and does not yet apply managed updates.
+
+## Follow-up: Miro auth history
+
+Date: 2026-07-02
+Target repo: heimgewebe/schauwerk
+PR: #30
+Commit after merge: bcfd23f
+
+### Intervention
+
+Schauwerk now keeps a bounded owner-only Miro auth-health history in addition to the latest auth-health receipt. The doctor can report recent auth states without exposing OAuth material.
+
+### Evidence
+
+```text
+GitHub validate 3.11: success
+GitHub validate 3.12: success
+Local targeted tests: tests/miro/test_live_status.py and tests/miro/test_safe_logout.py passed
+Local full pytest: passed
+Registry validation: passed
+```
+
+### Boundary
+
+No Miro mutation. This only improves operational observability around OAuth renewal and live readiness.
