@@ -1,7 +1,7 @@
 schema_version: "0.1.0"
 run_id: "run-007-weltgewebe-dependency-alerts"
 date: "2026-07-02"
-operation: "Record the Weltgewebe dependency-alert remediation run as Operator-Lab evidence."
+operation: "Record the Weltgewebe dependency-alert remediation run as Operator-Lab evidence, including post-merge status."
 target_repo: "heimgewebe/weltgewebe"
 condition: "dependency_alert_remediation"
 operator_tooling:
@@ -13,33 +13,50 @@ claims:
     evidence:
       - path: "operator report in this run-card"
         evidence_status: "self_reported"
-  - claim: "Local package-audit and validation evidence is not stored in this Vibe-Lab run-card."
+  - claim: "Weltgewebe PR #1315 was merged after the dependency-alert remediation patch."
     status: "observed"
     evidence:
-      - path: "artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
-        evidence_status: "repo_local"
-  - claim: "This Vibe-Lab record does not prove production runtime safety or dependency-alert closure."
+      - path: "heimgewebe/weltgewebe#1315"
+        evidence_status: "external_verified"
+      - path: "merge_commit: b43717624ecf413365db623ea1c7ed9b87b63ead"
+        evidence_status: "external_verified"
+  - claim: "The remediation PR changed exactly the intended dependency and lockfile surface."
     status: "observed"
     evidence:
-      - path: "artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
+      - path: "heimgewebe/weltgewebe#1315 files: Cargo.lock, apps/web/package.json, apps/web/pnpm-lock.yaml, package-lock.json, package.json, pnpm-lock.yaml"
+        evidence_status: "external_verified"
+  - claim: "The observed PR-head CI surface completed successfully for the relevant security, contracts, api, web, deploy, and basemap checks."
+    status: "observed"
+    evidence:
+      - path: "heimgewebe/weltgewebe actions for head 64bf621b12f58d8cdc7d2ca3c519ef787468193c"
+        evidence_status: "external_verified"
+  - claim: "Dependabot alert closure on the default branch was not directly verified in this tool session."
+    status: "missing_evidence"
+    evidence:
+      - path: "GitHub Dependabot alerts page after merge"
+        evidence_status: "missing_evidence"
+  - claim: "This Vibe-Lab record does not prove production runtime safety or full dependency-alert closure."
+    status: "observed"
+    evidence:
+      - path: "experiments/2026-07-01_operator-lab-loop/artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml"
         evidence_status: "repo_local"
 metrics:
   scope_drift_count: 0
   unsupported_claim_count: 0
-  missing_locator_count: 1
+  missing_locator_count: 0
   validation_gap_count: 1
   review_friction_count: 1
-  rework_count: 1
+  rework_count: 2
   false_block_count: 0
   task_completion_time_observed: "not_measured"
 steuerboard_probe:
-  useful_signal: "not_used in original external run; current Vibe-Lab cleanup detected the untracked run-card directory on main"
+  useful_signal: "not_used; GitHub PR status changed the decision from manual merge to post-merge evidence update"
   changed_decision: "yes"
   noise: "low"
 bureau_bridge:
   create_or_update_candidate: false
-  reason: "single dependency-alert run; no repeated Vibe-Lab friction class yet"
-decision: "document_as_evidence_with_limited_claims"
+  reason: "single dependency-alert run; no repeated Vibe-Lab friction class and no direct Bureau follow-up task yet"
+decision: "document_as_post_merge_evidence_with_limited_claims"
 does_not_establish:
   - "production_runtime_safety"
   - "dependency_alert_closure"
