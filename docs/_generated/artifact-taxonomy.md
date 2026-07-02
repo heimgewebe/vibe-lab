@@ -607,11 +607,11 @@ _none_
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-004-run-card-structure-hardening/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-005-run-card-validator/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-006-schauwerk-miro-quality-receipt/run-card.yml`
-- `experiments/2026-07-01_operator-lab-loop/artifacts/run-007-bundle-freshness-receipt/example-command.txt`
-- `experiments/2026-07-01_operator-lab-loop/artifacts/run-007-bundle-freshness-receipt/notes.md`
-- `experiments/2026-07-01_operator-lab-loop/artifacts/run-007-bundle-freshness-receipt/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-007-weltgewebe-dependency-alerts/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-008-run004-runtime-candidate-preflight/run-card.yml`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/example-command.txt`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/notes.md`
+- `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/run-card.yml`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md`
 - `experiments/_template/artifacts/README.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
