@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+run_id: "run-025-bureau-proposal"
+date: "2026-07-03"
+operation: "Record Bureau refresh proposal."
+target_repo: "heimgewebe/cabinet"
+condition: "bureau_reference_refresh_proposal"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "A Cabinet proposal was recorded."
+    status: "observed"
+    evidence:
+      - path: "steuerung/20 Aufgaben/bureau-reference-refresh-proposal-2026-07-03.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; this run records a proposal"
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Proposal only; no Bureau-ready handoff."
+decision: "record_proposal"
+does_not_establish:
+  - "Repository Reference refresh"
+  - "Bureau task creation"
+  - "source repository repair need"

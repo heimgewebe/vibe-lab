@@ -54,9 +54,11 @@ experiment:
     - artifacts/run-023-summary/run-card.yml
     - artifacts/run-024-bureau-plan/run_meta.json
     - artifacts/run-024-bureau-plan/run-card.yml
+    - artifacts/run-025-bureau-proposal/run_meta.json
+    - artifacts/run-025-bureau-proposal/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
-  updated: "2026-07-01"
+  updated: "2026-07-03"
   author: "heimgewebe"
   iteration: 1
   evidence_level: experimental
