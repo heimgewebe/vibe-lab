@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-027-bureau-apply",
+  "generated_at": "2026-07-03T13:30:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "apply Cabinet Bureau reference refresh",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-027-bureau-apply/run-card.yml",
+  "provenance_level": "self_reported",
+  "triggered_by": "user request via ChatGPT: handle nach eigenem gutduenken"
+}
