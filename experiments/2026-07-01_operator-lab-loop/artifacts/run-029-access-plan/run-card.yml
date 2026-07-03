@@ -29,7 +29,7 @@ metrics:
   task_completion_time_observed: "not_measured"
 steuerboard_probe:
   useful_signal: "not_run; Git-based live checks were sufficient for proposal planning"
-  changed_decision: "yes"
+  changed_decision: "no"
   noise: "low"
 bureau_bridge:
   create_or_update_candidate: false
