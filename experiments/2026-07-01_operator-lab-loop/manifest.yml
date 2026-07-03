@@ -45,6 +45,7 @@ experiment:
     - artifacts/run-017-repo-audit-third-pass/run_meta.json
     - artifacts/run-017-repo-audit-third-pass/run-card.yml
     - artifacts/run-017-repo-audit-third-pass/validation-summary.txt
+    - artifacts/run-018-repo-candidate-live-verification/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-01"

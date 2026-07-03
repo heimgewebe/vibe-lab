@@ -1,0 +1,31 @@
+schema_version: "0.1.0"
+run_id: "run-018-repo-candidate-live-verification"
+date: "2026-07-03"
+operation: "Record Cabinet candidate live verification."
+target_repo: "heimgewebe/cabinet"
+condition: "repo_candidate_live_verification"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Candidate checked live and recorded as finding."
+    status: "observed"
+    evidence:
+      - path: "cabinet finding file on branch docs/repo-candidate-live-verification-v1"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Finding only; no executable task materialised."
+decision: "record_finding"
+does_not_establish:
+  - "runtime readiness"
+  - "task creation"
