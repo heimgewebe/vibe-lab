@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-026-proposal-guard",
+  "generated_at": "2026-07-03T12:55:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "implement Cabinet reference refresh proposal guard",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-026-proposal-guard/run-card.yml",
+  "provenance_level": "self_reported"
+}

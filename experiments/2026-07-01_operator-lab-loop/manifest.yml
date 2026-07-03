@@ -56,6 +56,8 @@ experiment:
     - artifacts/run-024-bureau-plan/run-card.yml
     - artifacts/run-025-bureau-proposal/run_meta.json
     - artifacts/run-025-bureau-proposal/run-card.yml
+    - artifacts/run-026-proposal-guard/run_meta.json
+    - artifacts/run-026-proposal-guard/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-03"
