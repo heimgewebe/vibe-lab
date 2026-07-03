@@ -62,6 +62,8 @@ experiment:
     - artifacts/run-027-bureau-apply/run-card.yml
     - artifacts/run-028-lenskit-stop/run_meta.json
     - artifacts/run-028-lenskit-stop/run-card.yml
+    - artifacts/run-029-access-plan/run_meta.json
+    - artifacts/run-029-access-plan/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-03"

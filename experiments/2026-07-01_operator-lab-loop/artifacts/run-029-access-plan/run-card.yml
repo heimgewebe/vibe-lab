@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+run_id: "run-029-access-plan"
+date: "2026-07-03"
+operation: "Record Cabinet Access Layer refresh plan and proposal."
+target_repo: "heimgewebe/cabinet"
+condition: "access_layer_reference_refresh_proposal"
+triggered_by: "user request via ChatGPT: handle nach eigenem gutduenken"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet recorded an Access Layer refresh readiness finding, plan, and proposal without applying a reference update."
+    status: "observed"
+    evidence:
+      - path: "pruefung/30 Befunde/access-refresh-readiness-2026-07-03.md"
+        evidence_status: "repo_local"
+      - path: "steuerung/20 Aufgaben/access-layer-reference-refresh-plan-2026-07-03.md"
+        evidence_status: "repo_local"
+      - path: "steuerung/20 Aufgaben/access-layer-reference-refresh-proposal-2026-07-03.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; Git-based live checks were sufficient for proposal planning"
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Proposal only; no Bureau-ready handoff."
+decision: "record_plan_and_proposal"
+does_not_establish:
+  - "Repository Reference refresh"
+  - "Bureau task creation"
+  - "source repository repair need"
