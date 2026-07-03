@@ -21,6 +21,15 @@
 
 Operator-Lab-Run: <!-- vibe-lab: <pfad> oder not applicable - <kurzer Grund> -->
 
+
+## Review-Evidence Wait Gate
+
+Wenn dieser PR einen Review-, Agenten-, Auditor- oder Merge-Readiness-Claim beruehrt, erwartete Review-Surfaces zum aktuellen Head einordnen. Wenn nicht relevant: `not applicable - <kurzer Grund>`.
+
+| surface | head_ref | expected | current_head_observed | finding_state | evidence | decision |
+|---|---|---:|---|---|---|---|
+| `review_surface` | `<head-ref>` | yes/no/n-a | yes/no/n-a | none_observed/resolved/unresolved/not_checked/unavailable/out_of_scope |  | allow_after_review/block_merge/allow_with_override/not_applicable |
+
 ## Validierung
 
 Für jeden Check unten ein Evidence Artifact angeben (repo-local, CI-Artifact oder

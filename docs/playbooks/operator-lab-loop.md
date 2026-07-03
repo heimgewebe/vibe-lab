@@ -13,6 +13,9 @@ relations:
   - type: references
     target: pr-context-capture.md
   - type: references
+    target: pr-review-evidence-wait-gate.md
+    reason: "PR work with review claims must record expected review surfaces before readiness claims."
+  - type: references
     target: plan-execution-checklist.md
   - type: references
     target: ../roadmap.md
@@ -80,9 +83,10 @@ Nicht nutzen fuer triviale Aenderungen ohne Claim, Entscheidung oder Lernwert.
 3. **Steuerboard-Signal lesen:** `steuerboard operator report --branch-warning-threshold 5 --json` als Nutzungsprobe; kein Gate.
 4. **Run Card schreiben:** kleine YAML-Card unter `artifacts/run-*/run-card.yml`.
 5. **Evidence binden:** kleine repo-lokale Artefakte oder stabile Referenzen. Keine Loghalde.
-6. **Reibung zaehlen:** Zeit, Korrektur, Nacharbeit, falsche Claims, Entscheidungsaufwand.
-7. **Entscheiden:** adopt, iterate, defer, reject oder no_decision.
-8. **Rueckfuehren:** Nur bei wiederholtem Nutzen in Playbook, Instruction Block, Agent-Regel oder Bureau-Kandidat uebertragen.
+6. **Review-Evidence-Wartegate pruefen:** Bei PR-Arbeit mit Review- oder Merge-Readiness-Claim erwartete Review-Surfaces fuer den aktuellen Head einordnen; siehe `pr-review-evidence-wait-gate.md`.
+7. **Reibung zaehlen:** Zeit, Korrektur, Nacharbeit, falsche Claims, Entscheidungsaufwand.
+8. **Entscheiden:** adopt, iterate, defer, reject oder no_decision.
+9. **Rueckfuehren:** Nur bei wiederholtem Nutzen in Playbook, Instruction Block, Agent-Regel oder Bureau-Kandidat uebertragen.
 
 ## 4.1 Ablage-Regel fuer Run Cards
 
