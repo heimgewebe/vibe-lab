@@ -1,0 +1,46 @@
+schema_version: "0.1.0"
+run_id: "run-016-lenskit-graph-provenance-test-rescue"
+date: "2026-07-03"
+operation: "Rescue useful Lenskit graph provenance tests from a stale dirty worktree."
+target_repo: "heimgewebe/lenskit"
+condition: "stale_worktree_salvage"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "The stale Lenskit graph-provenance worktree was backed up and not rebased wholesale."
+    status: "observed"
+    evidence:
+      - path: "/home/alex/tmp/lenskit-graph-provenance-coherence-audit-20260702"
+        evidence_status: "runtime_local"
+  - claim: "Only the still-useful graph provenance compiler tests were ported onto current Lenskit main."
+    status: "observed"
+    evidence:
+      - path: "lenskit:merger/lenskit/tests/test_graph_compiler_provenance.py"
+        evidence_status: "repo_remote_pr"
+  - claim: "Lenskit PR #862 merged with CI green."
+    status: "observed"
+    evidence:
+      - path: "https://github.com/heimgewebe/lenskit/pull/862"
+        evidence_status: "remote_pr"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "Identified lenskit graph provenance worktree as highest drift candidate."
+  changed_decision: "yes"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Direct repo salvage; no Bureau task materialisation."
+decision: "salvage_tests_only_from_stale_worktree"
+does_not_establish:
+  - "stale_worktree_mergeability"
+  - "full_graph_provenance_feature_completion"
+  - "closure_of_remaining_lenskit_prs"

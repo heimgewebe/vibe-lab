@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-07-02T17:15:00Z
+Latest Evidence Timestamp: 2026-07-03T03:35:00Z
 
 ## Gate Snapshot
 
-- Total events: **337**
+- Total events: **338**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **19**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-07-02T17:15:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 143 |
+| observation | 144 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -122,6 +122,7 @@ Latest Evidence Timestamp: 2026-07-02T17:15:00Z
 | iteration3_taskset_prepared | 1 | 1 | 1 | 1 | 1 |
 | iteration4_execution_claims_rollback | 1 | 1 | 1 | 1 | 1 |
 | iteration4_taskset_prepared | 1 | 1 | 1 | 1 | 1 |
+| lenskit_graph_provenance_tests_rescued | 1 | 1 | 1 | 1 | 1 |
 | local_generation_double_run_completed | 3 | 3 | 0 | 0 | 0 |
 | make_validate | 1 | 0 | - | - | - |
 | manual_regen_steps | 6 | 5 | 0 | 2 | 1 |

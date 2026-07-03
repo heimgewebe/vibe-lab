@@ -40,6 +40,8 @@ experiment:
     - artifacts/run-014-cabinet-observation-candidates/run-card.yml
     - artifacts/run-015-operator-lab-run-slot-guard/run_meta.json
     - artifacts/run-015-operator-lab-run-slot-guard/run-card.yml
+    - artifacts/run-016-lenskit-graph-provenance-test-rescue/run_meta.json
+    - artifacts/run-016-lenskit-graph-provenance-test-rescue/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-01"
