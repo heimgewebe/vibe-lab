@@ -58,6 +58,7 @@
 | `docs/playbooks/outcome-evidence-replication-series-gate.md` | Playbook — Outcome-Evidence-Replication-Series Gate | active | operative |
 | `docs/playbooks/plan-execution-checklist.md` | Playbook: Plan Execution Checklist | active | operative |
 | `docs/playbooks/pr-context-capture.md` | Playbook: PR Context Capture | active | operative |
+| `docs/playbooks/pr-review-evidence-wait-gate.md` | Playbook: PR Review Evidence Wait Gate | active | operative |
 | `docs/playbooks/pr-run-evidence-pack.md` | Playbook: PR Run Evidence Pack | active | operative |
 | `docs/playbooks/reconciliation.md` | Playbook: Reconciliation | active | operative |
 | `docs/policies/agent-compliance.md` | Policy — Agent Compliance | active | operative |
