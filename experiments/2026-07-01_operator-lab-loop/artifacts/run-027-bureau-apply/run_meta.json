@@ -6,5 +6,6 @@
   "command": "apply Cabinet Bureau reference refresh",
   "exit_code": 0,
   "test_output_file": "artifacts/run-027-bureau-apply/run-card.yml",
-  "provenance_level": "self_reported"
+  "provenance_level": "self_reported",
+  "triggered_by": "user request via ChatGPT: handle nach eigenem gutduenken"
 }

@@ -4,6 +4,7 @@ date: "2026-07-03"
 operation: "Record Cabinet Bureau reference refresh apply slice."
 target_repo: "heimgewebe/cabinet"
 condition: "bureau_reference_refresh_apply"
+triggered_by: "user request via ChatGPT: handle nach eigenem gutduenken"
 operator_tooling:
   - "ChatGPT"
   - "Grabowski"
