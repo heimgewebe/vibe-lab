@@ -3,11 +3,11 @@
 
 # Metrics Trends (Pilot)
 
-Latest Evidence Timestamp: 2026-07-03T03:35:00Z
+Latest Evidence Timestamp: 2026-07-03T04:20:00Z
 
 ## Gate Snapshot
 
-- Total events: **338**
+- Total events: **339**
 - Distinct event types: **4** (decision, measurement, observation, run)
 - Source evidence files: **19**
 
@@ -17,7 +17,7 @@ Latest Evidence Timestamp: 2026-07-03T03:35:00Z
 | --- | ---: |
 | decision | 19 |
 | measurement | 133 |
-| observation | 144 |
+| observation | 145 |
 | run | 42 |
 
 ## Metric Aggregates
@@ -188,6 +188,7 @@ Latest Evidence Timestamp: 2026-07-03T03:35:00Z
 | raw_patch_relay_note_promoted | 1 | 1 | 1 | 1 | 1 |
 | raw_vibes_final_evidence_disallowed | 1 | 1 | 1 | 1 | 1 |
 | replication_status | 1 | 1 | 0 | 0 | 0 |
+| repo_audit_third_pass_recorded | 1 | 1 | 1 | 1 | 1 |
 | resetstore_actually_used | 1 | 1 | 0 | 0 | 0 |
 | result_assessment_readiness_status | 1 | 0 | - | - | - |
 | result_assessment_verdict | 2 | 0 | - | - | - |

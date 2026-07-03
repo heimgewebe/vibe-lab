@@ -1,0 +1,11 @@
+{
+  "command": "full repo audit third pass: guard stack, consistency reconciliation, wave-A fixes",
+  "executor": "operator:claude-code",
+  "exit_code": 0,
+  "generated_at": "2026-07-02T17:30:00Z",
+  "notes": "Wave A fixed mechanically source-bound findings (schema->doc drift, CI->Makefile parity, navigation gaps, taxonomy unknown, roadmap rule 7.3, stale generated diagnostics). Wave B items need human decisions and stay in the raw note.",
+  "provenance_level": "self_reported",
+  "run_id": "run-017-repo-audit-third-pass",
+  "schema_version": "1.0.0",
+  "test_output_file": "artifacts/run-017-repo-audit-third-pass/run-card.yml"
+}

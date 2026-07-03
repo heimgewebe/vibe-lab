@@ -1,0 +1,40 @@
+Repo audit third pass (run-016) validation summary
+
+Target repo: heimgewebe/vibe-lab
+Branch: claude/repo-audit-improvements-26g8k7 (rebased onto origin/main 923b89c)
+Date: 2026-07-03
+
+Commands executed locally after rebase and regeneration:
+- make agent-check: OK (post-commit tree; during staging the expected
+  generated-artifact hits were verified with --allow-generated after
+  running the generators)
+- make generate: OK; regenerated doc-index, system-map, backlinks, orphans,
+  promotion-readiness, artifact-taxonomy, metrics/trends, exports
+- make validate (all targets except validate-model-lab-access-policy-tests,
+  see environment limit below): OK — includes schema, relations,
+  execution-proof, run-bundle, interpretation-budget, handoff/command/chain
+  fixtures, cross-contract, replay dry-run + trace contract, phase-1c corpus,
+  adoption completeness, export parity, generated-artifact contract v2,
+  artifact taxonomy, claim-evidence, runtime-evidence gates,
+  result-assessment readiness, model-lab validators, PR scope,
+  outcome-series gate, PR-context pilot, doc-freshness registry,
+  bundle-freshness receipt tests, operator-lab run cards (incl. new
+  slot guard >= run-015)
+- make validate-promotion-readiness-ratchet: OK — 14 frozen not_ready cases
+  tolerated, 12 freeze entries validated, no unregistered violations
+
+Environment limit (not a repo failure):
+- validate-model-lab-access-policy-tests requires /usr/bin/python3 to be
+  resolvable inside the hash-frozen bubblewrap sandbox. In this remote
+  container /usr/bin/python3 is a symlink via /etc/alternatives, whose
+  chain breaks inside the sandbox (exit 127). GitHub CI (ubuntu-latest)
+  resolves the interpreter directly and is not affected. The canonical
+  bundle itself validates: make validate-model-lab-access-policy: OK.
+
+Diagnostic deltas produced by this audit:
+- artifact taxonomy unknown artifacts: 1 -> 0 (requirements.txt rule)
+- unexpected orphans: 3 doc-level orphans resolved via navigation relations
+  (.vibe/intent.md, docs/policies/agent-reading-protocol.md,
+  docs/playbooks/bundle-freshness-receipt.md)
+
+No promotion, no adoption, no experiment status change was performed.

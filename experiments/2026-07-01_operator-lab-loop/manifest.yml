@@ -42,6 +42,9 @@ experiment:
     - artifacts/run-015-operator-lab-run-slot-guard/run-card.yml
     - artifacts/run-016-lenskit-graph-provenance-test-rescue/run_meta.json
     - artifacts/run-016-lenskit-graph-provenance-test-rescue/run-card.yml
+    - artifacts/run-017-repo-audit-third-pass/run_meta.json
+    - artifacts/run-017-repo-audit-third-pass/run-card.yml
+    - artifacts/run-017-repo-audit-third-pass/validation-summary.txt
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-01"
