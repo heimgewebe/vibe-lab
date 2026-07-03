@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-016-lenskit-graph-provenance-test-rescue",
+  "generated_at": "2026-07-03T03:35:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "salvage Lenskit graph provenance tests from stale worktree and merge PR 862",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-016-lenskit-graph-provenance-test-rescue/run-card.yml",
+  "provenance_level": "self_reported"
+}
