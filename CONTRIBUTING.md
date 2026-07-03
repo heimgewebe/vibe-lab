@@ -46,7 +46,7 @@ Erst wenn ein Experiment belastbare Ergebnisse liefert, wird es zur Übernahme v
 2. **Alle** Pflichtartefakte müssen vollständig sein:
    - `CONTEXT.md` und `INITIAL.md` — vollständig ausgefüllt
    - `evidence.jsonl` — mindestens ein Eintrag
-   - `decision.yml` — mit verdict (`adopted` / `rejected`)
+   - `decision.yml` — mit `decision_type: adoption_assessment` und verdict (`adopt` / `reject` / `defer`)
    - `failure_modes.md` — ausgefüllt, keine Template-Platzhalter
 3. Schema-Validierung muss bestehen (`make validate`)
 

@@ -22,6 +22,8 @@ relations:
   - type: references
     target: policies/model-lab-control-minimum.md
   - type: references
+    target: policies/agent-reading-protocol.md
+  - type: references
     target: playbooks/reconciliation.md
   - type: references
     target: playbooks/build-reliable-prompt.md
@@ -35,6 +37,14 @@ relations:
     target: playbooks/evidence-control-plane-roadmap-checklist.md
   - type: references
     target: playbooks/plan-execution-checklist.md
+  - type: references
+    target: playbooks/bundle-freshness-receipt.md
+  - type: references
+    target: playbooks/outcome-evidence-replication-series-gate.md
+  - type: references
+    target: playbooks/evidence-control-plane-post-pr189-diagnosis.md
+  - type: references
+    target: ../.vibe/intent.md
   - type: references
     target: ../catalog/combos/spec-first-constraint-control.md
   - type: references
@@ -103,6 +113,7 @@ relations:
 | [repo.meta.yaml](../repo.meta.yaml)          | Maschinenlesbare Repo-Verfassung    |
 | [AGENTS.md](../AGENTS.md)                    | Bindende Leseregeln für Agenten     |
 | [agent-policy.yaml](../agent-policy.yaml)    | Operative Agentensteuerung          |
+| [.vibe/intent.md](../.vibe/intent.md)        | Repo-operative Intention            |
 
 ## Epistemische Dokumentpfade
 
@@ -136,6 +147,7 @@ relations:
 | [policies/artifact-boundary-policy.md](policies/artifact-boundary-policy.md) | Artefaktgrenzen für repo-lokale Evidence (policy-only, nicht enforced) |
 | [policies/agent-compliance.md](policies/agent-compliance.md) | Agent-Compliance: Anker-Dateien, lokaler Guard, Durchsetzungs-Map |
 | [policies/model-lab-control-minimum.md](policies/model-lab-control-minimum.md) | Lab-Control-Minimum fuer opt-in Model-Lab-Runs (AP-1, Validator-Vorbau) |
+| [policies/agent-reading-protocol.md](policies/agent-reading-protocol.md) | Task-Profil-Protokoll für Agenten-Leseanforderungen |
 
 ## Diagnose (Generiert)
 
@@ -150,6 +162,7 @@ relations:
 | [_generated/promotion-readiness.json](_generated/promotion-readiness.json) | diagnostic_dry_run | non_blocking | Promotion-Readiness Dry-Run (Phase 1) |
 | [_generated/metrics/trends.md](_generated/metrics/trends.md) | metric_report | best_effort | Metrik-Trends (feature-gated Diagnose) |
 | [_generated/artifact-taxonomy.md](_generated/artifact-taxonomy.md) | diagnostic_report | non_blocking | Globale Artefakt-Taxonomie (Diagnose, nicht kanonisch) |
+| [_generated/artifact-taxonomy.json](_generated/artifact-taxonomy.json) | diagnostic_report | non_blocking | Artefakt-Taxonomie (maschinenlesbar, gleiche Quelle) |
 | `_generated/epistemic-state.md` (CI-Artifact)          | ephemeral_trace | artifact_only | Abgeleiteter Zustands-Snapshot |
 
 ## Exports (Generiert)
@@ -195,7 +208,10 @@ Warum Exporte abgeleitete Artefakte sind: Sie enthalten keinen eigenständigen I
 - [PR Run Evidence Pack](playbooks/pr-run-evidence-pack.md)
 - [PR Context Capture](playbooks/pr-context-capture.md)
 - [Operator Lab Loop](playbooks/operator-lab-loop.md)
+- [Bundle Freshness Receipt](playbooks/bundle-freshness-receipt.md)
 - [Evidence-Control-Plane v1 — Roadmap](playbooks/evidence-control-plane-roadmap-checklist.md)
+- [Evidence-Control-Plane — Post-PR-189-Diagnose](playbooks/evidence-control-plane-post-pr189-diagnosis.md)
+- [Outcome-Evidence Replication Series — Gate](playbooks/outcome-evidence-replication-series-gate.md)
 - [Plan-Execution Checklist](playbooks/plan-execution-checklist.md)
 
 ## Bibliothek

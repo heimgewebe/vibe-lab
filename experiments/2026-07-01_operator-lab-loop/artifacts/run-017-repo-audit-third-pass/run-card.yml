@@ -1,0 +1,55 @@
+schema_version: "0.1.0"
+run_id: "run-017-repo-audit-third-pass"
+date: "2026-07-02"
+operation: "Full repository audit (third pass): run guard stack, reconcile docs/CI/navigation surfaces, fix wave-A findings, report wave-B decisions."
+target_repo: "heimgewebe/vibe-lab"
+condition: "repo_audit_third_pass"
+operator_tooling:
+  - "Claude Code"
+source_note:
+  path: "raw-vibes/2026-07-02_repo-audit-third-pass.md"
+claims:
+  - claim: "The full validate stack passes except one environment-limited sandbox probe test (symlinked /usr/bin/python3 via /etc/alternatives)."
+    status: "observed"
+    evidence:
+      - path: "raw-vibes/2026-07-02_repo-audit-third-pass.md"
+        evidence_status: "repo_local"
+  - claim: "Three committed generated diagnostics (system-map, artifact-taxonomy md/json) were stale relative to sources and were regenerated via generators only."
+    status: "observed"
+    evidence:
+      - path: "docs/_generated/system-map.md"
+        evidence_status: "repo_local"
+  - claim: "CONTRIBUTING.md named decision verdicts (adopted/rejected) that the canonical decision schema does not allow for adoption_assessment (adopt/reject/defer)."
+    status: "observed"
+    evidence:
+      - path: "schemas/decision.schema.json"
+        evidence_status: "repo_local"
+  - claim: "Local `make validate` covered less than CI: doc-freshness-registry and bundle-freshness-receipt checks ran only in dedicated workflows."
+    status: "observed"
+    evidence:
+      - path: ".github/workflows/doc-freshness-registry.yml"
+        evidence_status: "repo_local"
+      - path: ".github/workflows/bundle-freshness-receipt.yml"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 2
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_available — steuerboard CLI is not present in this remote session; probe skipped, no gate implied"
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Single audit run; wave-B items are documented in the raw note for human prioritization, no repeated friction class yet."
+decision: "implement_wave_a_report_wave_b"
+does_not_establish:
+  - "condition_superiority"
+  - "general_agent_quality"
+  - "adoption_readiness"
+  - "content_quality_of_experiments"

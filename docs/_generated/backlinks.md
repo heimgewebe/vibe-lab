@@ -34,6 +34,10 @@
 
 - ← `docs/policies/agent-compliance.md` (references)
 
+## `.vibe/intent.md`
+
+- ← `docs/index.md` (references)
+
 ## `.vibe/pr-scope-policy.yml`
 
 - ← `docs/policies/artifact-boundary-policy.md` (references)
@@ -299,8 +303,13 @@
 
 - ← `docs/index.md` (references)
 
+## `docs/playbooks/bundle-freshness-receipt.md`
+
+- ← `docs/index.md` (references)
+
 ## `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md`
 
+- ← `docs/index.md` (references)
 - ← `docs/playbooks/evidence-control-plane-roadmap-checklist.md` (references)
 
 ## `docs/playbooks/evidence-control-plane-roadmap-checklist.md`
@@ -322,6 +331,7 @@
 
 ## `docs/playbooks/outcome-evidence-replication-series-gate.md`
 
+- ← `docs/index.md` (references)
 - ← `docs/roadmap.md` (references)
 
 ## `docs/playbooks/plan-execution-checklist.md`
@@ -349,6 +359,10 @@
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 
 ## `docs/policies/agent-compliance.md`
+
+- ← `docs/index.md` (references)
+
+## `docs/policies/agent-reading-protocol.md`
 
 - ← `docs/index.md` (references)
 

@@ -3,11 +3,8 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (83 found):
+Unexpected orphans (80 found):
 
-- `.vibe/intent.md`
-- `docs/playbooks/bundle-freshness-receipt.md`
-- `docs/policies/agent-reading-protocol.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`

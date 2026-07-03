@@ -87,6 +87,13 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: requirements.txt
+    layer: governance
+    kind: dependency_manifest
+    authority: implementation_behavior
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: README.md
     layer: docs
     kind: entrypoint

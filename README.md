@@ -60,12 +60,15 @@ vibe-lab/
   catalog/                        # Bibliothek: Validiertes Wissen
   prompts/                        # Bibliothek: Menschenlesbare Artefakte
   benchmarks/                     # Bibliothek: Vergleichsaufgaben
+  instruction-blocks/             # Bibliothek: Portable Denkbausteine
   decisions/                      # Meta-Entscheidungen
   docs/                           # Epistemische Dokumentpfade
   contracts/                      # Kanonische/policy-nahe Schemas
   schemas/                        # Pipeline-Validierungs-Schemas
   scripts/                        # Guard-/Generator-Stack
+  tests/                          # Fixture- und Contract-Tests
   tools/                          # CLI / Automatisierung
+  exports/                        # Generierte Tool-Projektionen (nie manuell editieren)
   .vibe/                          # Repo-operative Verträge
 ```
 

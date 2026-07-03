@@ -14377,6 +14377,86 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-lenskit-graph-provenance-test-rescue/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-lenskit-graph-provenance-test-rescue/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-repo-audit-third-pass/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-repo-audit-third-pass/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-repo-audit-third-pass/validation-summary.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md",
       "status": "classified"
     },
@@ -14979,6 +15059,22 @@
         "raw-vibes/*.md"
       ],
       "origin": "handcrafted",
+      "path": "raw-vibes/2026-07-02_repo-audit-third-pass.md",
+      "status": "classified"
+    },
+    {
+      "authority": "raw_capture",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "raw_capture",
+      "layer": "capture",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "raw-vibes/*.md"
+      ],
+      "origin": "handcrafted",
       "path": "raw-vibes/README.md",
       "status": "classified"
     },
@@ -15096,16 +15192,20 @@
       "status": "classified"
     },
     {
-      "authority": "unknown",
+      "authority": "implementation_behavior",
       "catchall_match": false,
-      "enforcement": [],
-      "kind": null,
-      "layer": null,
-      "lifecycle": null,
-      "matched_patterns": [],
-      "origin": null,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "dependency_manifest",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "requirements.txt"
+      ],
+      "origin": "handcrafted",
       "path": "requirements.txt",
-      "status": "unknown"
+      "status": "classified"
     },
     {
       "authority": "schema_truth",
@@ -24042,6 +24142,9 @@
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-014-bureau-runtime-drift-check/validation-summary.txt",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-014-cabinet-observation-candidates/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-015-operator-lab-run-slot-guard/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-lenskit-graph-provenance-test-rescue/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-repo-audit-third-pass/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-016-repo-audit-third-pass/validation-summary.txt",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md",
     "experiments/_template/artifacts/README.md",
     "tests/fixtures/challenge_versions/invalid/challenges/missing-version.md",
@@ -24320,19 +24423,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 514,
+      "historical_record": 517,
       "navigation_surface": 8,
       "test_expectation": 273
     },
     "by_layer": {
       "docs": 8,
-      "experiment": 514,
+      "experiment": 517,
       "test": 273
     },
     "by_matched_pattern": {
       "docs/**": 8,
       "experiments/**": 27,
-      "experiments/*/artifacts/**": 487,
+      "experiments/*/artifacts/**": 490,
       "tests/fixtures/**": 273
     },
     "high_risk_count": 273,
@@ -24378,7 +24481,7 @@
             "make-validate.txt": 17,
             "measurement.yml": 21,
             "refactored_processor.py": 15,
-            "run-card.yml": 19,
+            "run-card.yml": 21,
             "run.yml": 21,
             "targeted-tests.txt": 14
           },
@@ -24394,7 +24497,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 487
+          "total": 490
         },
         {
           "high_risk_count": 0,
@@ -24456,7 +24559,7 @@
             "make-validate.txt": 17,
             "measurement.yml": 21,
             "refactored_processor.py": 15,
-            "run-card.yml": 19,
+            "run-card.yml": 21,
             "run.yml": 21,
             "targeted-tests.txt": 14
           },
@@ -24472,7 +24575,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 487
+          "total": 490
         },
         {
           "high_risk_count": 273,
@@ -24593,7 +24696,7 @@
           "make-validate.txt": 17,
           "measurement.yml": 21,
           "refactored_processor.py": 15,
-          "run-card.yml": 19,
+          "run-card.yml": 21,
           "run.yml": 21,
           "targeted-tests.txt": 14
         },
@@ -24609,7 +24712,7 @@
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
         },
-        "total": 487
+        "total": 490
       },
       {
         "high_risk_count": 0,
@@ -24861,64 +24964,60 @@
       "diagnostic_signal": 7,
       "evidence_log": 20,
       "generated_projection": 10,
-      "historical_record": 514,
-      "implementation_behavior": 19,
+      "historical_record": 517,
+      "implementation_behavior": 20,
       "navigation_surface": 24,
       "normative_contract": 16,
       "procedure_contract": 139,
-      "raw_capture": 29,
+      "raw_capture": 30,
       "result_interpretation": 67,
-      "runtime_observation": 101,
+      "runtime_observation": 103,
       "schema_truth": 41,
       "sovereign_source": 3,
       "test_expectation": 430,
-      "unknown": 26
+      "unknown": 25
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 607,
+      "ci_blocking": 608,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 582,
+      "no_rewrite": 586,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 303
+      "review_required": 305
     },
     "by_layer": {
-      "<none>": 1,
       "agent": 11,
       "archive": 25,
-      "capture": 9,
+      "capture": 10,
       "catalog": 12,
       "contract": 53,
       "docs": 44,
-      "experiment": 779,
+      "experiment": 784,
       "export": 15,
       "generated": 8,
-      "governance": 81,
+      "governance": 82,
       "test": 430
     },
     "by_lifecycle": {
-      "<none>": 1,
-      "append_only": 582,
-      "handcrafted": 783,
+      "append_only": 586,
+      "handcrafted": 784,
       "regenerated": 18,
-      "revision_with_reason": 82,
+      "revision_with_reason": 84,
       "superseded_not_rewritten": 2
     },
-    "classified": 1467,
+    "classified": 1474,
     "conflict": 0,
-    "fallback_classified": 795,
-    "fallback_share": 0.5419222903885481,
+    "fallback_classified": 798,
+    "fallback_share": 0.5413839891451832,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
-    "total": 1468,
-    "unknown": 1
+    "total": 1474,
+    "unknown": 0
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": [
-    "requirements.txt"
-  ]
+  "unknown_artifacts": []
 }
