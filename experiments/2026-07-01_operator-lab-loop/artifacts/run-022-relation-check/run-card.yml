@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+run_id: "run-022-relation-check"
+date: "2026-07-03"
+operation: "Record repository relation check finding in Cabinet."
+target_repo: "heimgewebe/cabinet"
+condition: "repository_relation_live_verification"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "The final repository observation candidate was checked live and recorded as a Cabinet finding."
+    status: "observed"
+    evidence:
+      - path: "pruefung/30 Befunde/repo-relation-check-2026-07-03.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; Git-based live checks were sufficient for the candidate boundary"
+  changed_decision: "no"
+  noise: "medium"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Finding only; no Bureau-ready task materialised."
+decision: "record_finding_without_task_promotion"
+does_not_establish:
+  - "Repository Reference refresh"
+  - "Bureau task creation"
+  - "source repository repair need"
