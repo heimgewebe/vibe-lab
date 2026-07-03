@@ -11,7 +11,7 @@ claims:
   - claim: "Candidate checked live and recorded as finding."
     status: "observed"
     evidence:
-      - path: "cabinet finding file on branch docs/repo-candidate-live-verification-v1"
+      - path: "pruefung/30 Befunde/repository-candidate-live-verification-2026-07-03.md"
         evidence_status: "repo_local"
 metrics:
   scope_drift_count: 0
@@ -22,6 +22,10 @@ metrics:
   rework_count: 1
   false_block_count: 0
   task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "The live probe changed the decision from task promotion to finding only."
+  changed_decision: "yes"
+  noise: "medium"
 bureau_bridge:
   create_or_update_candidate: false
   reason: "Finding only; no executable task materialised."
