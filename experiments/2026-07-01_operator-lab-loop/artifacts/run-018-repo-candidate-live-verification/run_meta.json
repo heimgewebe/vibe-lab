@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-018-repo-candidate-live-verification",
+  "generated_at": "2026-07-03T05:25:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "record Cabinet candidate live verification finding",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-018-repo-candidate-live-verification/run-card.yml",
+  "provenance_level": "self_reported"
+}
