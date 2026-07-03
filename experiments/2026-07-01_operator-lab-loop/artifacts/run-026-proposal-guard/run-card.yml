@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+run_id: "run-026-proposal-guard"
+date: "2026-07-03"
+operation: "Record Cabinet proposal guard implementation."
+target_repo: "heimgewebe/cabinet"
+condition: "reference_refresh_proposal_guard"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet now validates reference refresh proposals in repository validation."
+    status: "observed"
+    evidence:
+      - path: "scripts/check-reference-refresh-proposals.py"
+        evidence_status: "repo_local"
+      - path: "scripts/tests/test_reference_refresh_proposals.py"
+        evidence_status: "repo_local"
+      - path: "scripts/ci/validate-repository.sh"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; this run implements a Cabinet-local validator"
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Guard implementation only; no Bureau-ready handoff."
+decision: "implement_guard"
+does_not_establish:
+  - "Repository Reference refresh"
+  - "Bureau task creation"
+  - "source repository repair need"
