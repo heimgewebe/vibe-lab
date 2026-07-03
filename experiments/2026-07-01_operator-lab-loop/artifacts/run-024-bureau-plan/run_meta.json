@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-024-bureau-plan",
+  "generated_at": "2026-07-03T12:00:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "record Cabinet Bureau reference refresh plan",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-024-bureau-plan/run-card.yml",
+  "provenance_level": "self_reported"
+}

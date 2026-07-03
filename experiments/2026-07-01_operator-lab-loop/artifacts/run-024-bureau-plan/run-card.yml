@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+run_id: "run-024-bureau-plan"
+date: "2026-07-03"
+operation: "Record refresh plan."
+target_repo: "heimgewebe/cabinet"
+condition: "reference_refresh_plan"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "A Cabinet plan was recorded from a live finding."
+    status: "observed"
+    evidence:
+      - path: "steuerung/20 Aufgaben/bureau-reference-refresh-plan-2026-07-03.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; this run records a bounded plan"
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Plan only; no Bureau-ready handoff."
+decision: "record_plan"
+does_not_establish:
+  - "Repository Reference refresh"
+  - "Bureau task creation"
+  - "source repository repair need"
