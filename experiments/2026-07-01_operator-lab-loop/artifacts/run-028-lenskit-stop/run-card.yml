@@ -1,0 +1,37 @@
+schema_version: "0.1.0"
+run_id: "run-028-lenskit-stop"
+date: "2026-07-03"
+operation: "Record Lenskit reference refresh stop finding."
+target_repo: "heimgewebe/cabinet"
+condition: "lenskit_reference_refresh_stop"
+triggered_by: "user request via ChatGPT: handle nach eigenem gutduenken"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet recorded that Lenskit reference refresh should stop because the live checkout is an open PR branch."
+    status: "observed"
+    evidence:
+      - path: "pruefung/30 Befunde/lenskit-reference-refresh-stop-2026-07-03.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; Git-based live checks were sufficient for the stop decision"
+  changed_decision: "yes"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Stop finding only; no Bureau-ready handoff."
+decision: "record_stop_finding"
+does_not_establish:
+  - "Lenskit reference refresh"
+  - "Bureau task creation"
+  - "source repository repair need"
