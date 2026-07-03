@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+run_id: "run-031-if-apply"
+date: "2026-07-03"
+operation: "Record Cabinet Infra reference refresh apply."
+target_repo: "heimgewebe/cabinet"
+condition: "infra_reference_refresh_apply"
+triggered_by: "user request via ChatGPT: handle nach eigenem gutduenken"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet applied the Infra reference refresh and regenerated derived repository surfaces."
+    status: "observed"
+    evidence:
+      - path: "werkstatt/20 Werkzeuge/Infra/Repository Reference.md"
+        evidence_status: "repo_local"
+      - path: "pruefung/30 Befunde/infra-reference-refresh-apply-2026-07-03.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 1
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; Git-based live checks and Cabinet generators drove the decision"
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Reference refresh only; no Bureau-ready handoff."
+decision: "apply_infra_reference_refresh"
+does_not_establish:
+  - "Infra runtime readiness"
+  - "Bureau task creation"
+  - "source repository repair need"
