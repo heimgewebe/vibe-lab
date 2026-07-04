@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+run_id: "run-033-verified-history"
+date: "2026-07-04"
+operation: "Record Cabinet verified history candidate refinement."
+target_repo: "heimgewebe/cabinet"
+condition: "verified_history_candidate_refinement"
+triggered_by: "user request via ChatGPT: handle nach eigenem gutduenken"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet can mark verified history candidates as routine."
+    status: "observed"
+    evidence:
+      - path: "werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md"
+        evidence_status: "repo_local"
+      - path: "steuerung/20 Aufgaben/repository-observation-candidates-v1.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+decision: "mark_verified_history_candidate"
+does_not_establish:
+  - "source repository repair need"
+  - "Bureau task creation"
+  - "runtime readiness"

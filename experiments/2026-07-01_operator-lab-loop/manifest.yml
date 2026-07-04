@@ -68,9 +68,11 @@ experiment:
     - artifacts/run-031-if-apply/run-card.yml
     - artifacts/run-032-candidate-refine/run_meta.json
     - artifacts/run-032-candidate-refine/run-card.yml
+    - artifacts/run-033-verified-history/run_meta.json
+    - artifacts/run-033-verified-history/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
-  updated: "2026-07-03"
+  updated: "2026-07-04"
   author: "heimgewebe"
   iteration: 1
   evidence_level: experimental
