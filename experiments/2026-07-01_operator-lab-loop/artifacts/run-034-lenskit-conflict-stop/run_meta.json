@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-034-lenskit-conflict-stop",
+  "generated_at": "2026-07-04T05:20:00Z",
+  "executor": "operator",
+  "command": "record Lenskit conflict stop",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-034-lenskit-conflict-stop/run-card.yml",
+  "provenance_level": "self_reported",
+  "triggered_by": "user request"
+}
