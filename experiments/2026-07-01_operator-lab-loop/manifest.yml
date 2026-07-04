@@ -66,6 +66,8 @@ experiment:
     - artifacts/run-029-access-plan/run-card.yml
     - artifacts/run-031-if-apply/run_meta.json
     - artifacts/run-031-if-apply/run-card.yml
+    - artifacts/run-032-candidate-refine/run_meta.json
+    - artifacts/run-032-candidate-refine/run-card.yml
     - results/evidence.jsonl
   created: "2026-07-01"
   updated: "2026-07-03"

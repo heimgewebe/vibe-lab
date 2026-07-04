@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+run_id: "run-032-candidate-refine"
+date: "2026-07-03"
+operation: "Record Cabinet candidate generator refinement."
+target_repo: "heimgewebe/cabinet"
+condition: "candidate_generator_refinement"
+triggered_by: "user request via ChatGPT: handle nach eigenem gutduenken"
+operator_tooling:
+  - "ChatGPT"
+  - "Grabowski"
+claims:
+  - claim: "Cabinet records clean contained relationships as routine."
+    status: "observed"
+    evidence:
+      - path: "scripts/snapshot_review_model.py"
+        evidence_status: "repo_local"
+      - path: "steuerung/20 Aufgaben/repository-observation-candidates-v1.md"
+        evidence_status: "repo_local"
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 0
+  review_friction_count: 1
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
+steuerboard_probe:
+  useful_signal: "not_run; Cabinet-local model logic"
+  changed_decision: "no"
+  noise: "low"
+bureau_bridge:
+  create_or_update_candidate: false
+  reason: "Model refinement only."
+decision: "refine_candidate_generator"
+does_not_establish:
+  - "source repository repair need"
+  - "Bureau task creation"
+  - "runtime readiness"
