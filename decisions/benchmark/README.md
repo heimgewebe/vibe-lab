@@ -2,7 +2,7 @@
 title: "Decisions/Benchmark (Stub-Namespace)"
 status: active
 canonicality: navigation
-updated: "2026-05-18"
+updated: "2026-07-05"
 relations:
   - type: references
     target: ../../docs/foundations/repo-plan.md
@@ -11,6 +11,12 @@ relations:
 # Decisions / Benchmark — Stub-Namespace
 
 Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
+
+**Stub-Status:** `dormant`.
+
+- Grund: Es gibt noch keinen freigegebenen Benchmark-Versions- oder Definitionsentscheid in diesem Namespace.
+- Reaktivierung: Wenn ein Benchmark-Entscheid real gebraucht wird, darf genau ein konkretes Decision-Artefakt als `minimal-seed` entstehen; vorher kein Framework.
+- Grenze: `dormant` bedeutet nicht `queued`; aus diesem Stub folgt keine Pflicht, den Namespace künstlich zu befüllen.
 
 `decisions/benchmark/` ist Teil der **typisierten Decision-Namespaces**
 (`process/`, `system/`, `export/`, `policy/`, `benchmark/`), die im Repo-Plan

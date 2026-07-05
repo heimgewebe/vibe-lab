@@ -2,7 +2,7 @@
 title: "Docs/Experiments (Stub-Namespace)"
 status: active
 canonicality: navigation
-updated: "2026-05-18"
+updated: "2026-07-05"
 relations:
   - type: references
     target: ../foundations/repo-plan.md
@@ -13,6 +13,12 @@ relations:
 # Docs/Experiments — Stub-Namespace
 
 Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
+
+**Stub-Status:** `dormant`.
+
+- Grund: Das operative Labor liegt unter `/experiments/`; diese Dokumentationsebene hat noch kein eigenes freigegebenes Versuchsdesign-Artefakt.
+- Reaktivierung: Wenn ein reales Versuchsdesign bewusst auf der Dokumentationsebene geführt werden soll, darf genau ein konkretes Design-Artefakt als `minimal-seed` entstehen.
+- Grenze: `dormant` bedeutet nicht `queued`; aus diesem Stub folgt keine Pflicht, den Namespace künstlich zu befüllen.
 
 `docs/experiments/` ist im Zielbaum als **Dokumentationsebene für
 Versuchsdesign** vorgesehen (`docs/foundations/repo-plan.md` → Zielstruktur,
