@@ -16,7 +16,7 @@ Der aktuelle Stand ist ein Experiment-Seed, kein Wirksamkeitsnachweis. Der PR ve
 - Bureau und Cabinet bleiben in dieser Iteration Auswertungs- oder Kontextkandidaten, nicht produktive Steuerorgane.
 - Der erste CI-Fehler betraf nicht das Manifest-Schema, sondern den blocking generated-artifact contract fuer den Dokumentenindex.
 - Der Fix bestand darin, den generierten Dokumentenindex um den neuen Kontext zu ergaenzen.
-- Die Ergaenzung von Methode, Fehlmodi und Resultat macht die im Manifest referenzierte Evidenzadresse existent.
+- Die Ergaenzung von Methode, Fehlmodi, Resultat und `results/evidence.jsonl` trennt narrative Auswertung von strukturiertem Evidenzstrom.
 
 ## Deutung
 
