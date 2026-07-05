@@ -4,7 +4,7 @@ status: active
 canonicality: operative
 schema_version: "0.1.0"
 created: "2026-04-23"
-updated: "2026-05-29"
+updated: "2026-07-05"
 author: "GitHub Copilot"
 triggered_by: "user-request-plan-execution-checklist-2026-04-23"
 relations:
@@ -83,9 +83,9 @@ Jeder neue Mechanismus braucht Aktivierungsgrund, klare Deaktivierung und Nachwe
 
 ## Phase 4 — Stub-Zonen hart entscheiden
 
-- [ ] Jede leere Zone als `dormant` oder `minimal-seed` markieren (kein `queued`)
-- [ ] Bei `minimal-seed`: genau ein reales Artefakt, kein Framework
-- [ ] Reactive Loop: dormant lassen bis echter Staleness-Fall existiert
+- [x] Jede leere Zone als `dormant` oder `minimal-seed` markieren (kein `queued`) — Stub-Namespaces dokumentieren `dormant` und eine enge `minimal-seed`-Reaktivierungsgrenze.
+- [x] Bei `minimal-seed`: genau ein reales Artefakt, kein Framework — als Reaktivierungsregel in den Stub-Namespaces festgehalten.
+- [x] Reactive Loop: dormant lassen bis echter Staleness-Fall existiert — bleibt durch Phase-1-Driftbericht und Stub-Grenze ausgesperrt.
 - [x] Catalog-Staleness: dormant bis Semantik per Decision festgelegt
 
 ## Verifikation

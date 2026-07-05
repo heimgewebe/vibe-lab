@@ -2,7 +2,7 @@
 title: "Decisions/Export (Stub-Namespace)"
 status: active
 canonicality: navigation
-updated: "2026-05-18"
+updated: "2026-07-05"
 relations:
   - type: references
     target: ../../docs/foundations/repo-plan.md
@@ -11,6 +11,12 @@ relations:
 # Decisions / Export — Stub-Namespace
 
 Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
+
+**Stub-Status:** `dormant`.
+
+- Grund: Export-Logik ist aktuell über bestehende Artefaktverträge abgedeckt; kein eigener Export-Decision-Fall erzwingt diesen Namespace.
+- Reaktivierung: Wenn ein realer Export-Target- oder Format-Migrationsentscheid ansteht, darf genau ein konkretes Decision-Artefakt als `minimal-seed` entstehen.
+- Grenze: `dormant` bedeutet nicht `queued`; aus diesem Stub folgt keine Pflicht, den Namespace künstlich zu befüllen.
 
 `decisions/export/` ist Teil der **typisierten Decision-Namespaces**
 (`process/`, `system/`, `export/`, `policy/`, `benchmark/`), die im Repo-Plan
