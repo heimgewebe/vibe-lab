@@ -24,6 +24,15 @@ claims:
     evidence:
       - path: "scripts/docmeta/test_validate_bundle_freshness_receipt.py"
         evidence_status: repo_local
+metrics:
+  scope_drift_count: 0
+  unsupported_claim_count: 0
+  missing_locator_count: 0
+  validation_gap_count: 1
+  review_friction_count: 0
+  rework_count: 0
+  false_block_count: 0
+  task_completion_time_observed: "not_measured"
 decision: "iterate"
 does_not_establish:
   - "fresh_bundle_generated"
