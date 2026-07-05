@@ -49,4 +49,4 @@ context:
 
 evidence:
   format: jsonl
-  path: results/result.md
+  path: results/evidence.jsonl
