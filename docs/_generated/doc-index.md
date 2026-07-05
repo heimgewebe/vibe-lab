@@ -249,6 +249,7 @@
 | `experiments/2026-07-01_operator-lab-loop/failure_modes.md` | Failure Modes: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/method.md` | Methode: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/results/result.md` | Result: Operator Lab Loop Anchor Run | active | operative |
+| `experiments/2026-07-05_ecosystem-organ-preflight/CONTEXT.md` | Ecosystem Organ Preflight — Kontext | active | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
