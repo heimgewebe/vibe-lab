@@ -3,13 +3,15 @@ schema_version: "0.1.0"
 experiment:
   name: "Ecosystem Organ Preflight"
   hypothesis: "A short, evidence-bound organ preflight before substantial ecosystem tasks reduces wrong-organ routing, rework, and next-step ambiguity compared with unstructured task intake."
-  status: designed
+  status: testing
   cognitive_mode: executable
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "results/runs/run-001.yml"
+    - "results/evidence.jsonl"
   created: "2026-07-05"
-  updated: "2026-07-05"
+  updated: "2026-07-06"
   author: "ChatGPT / Grabowski"
   iteration: 1
   evidence_level: anecdotal

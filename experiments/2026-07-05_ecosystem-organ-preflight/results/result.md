@@ -8,7 +8,7 @@ canonicality: operative
 
 ## Zusammenfassung
 
-Der aktuelle Stand ist ein Experiment-Seed, kein Wirksamkeitsnachweis. Der PR verankert Hypothese, Kontext, Methode, Fehlmodi und eine erste Auswertungsgrenze für künftige Ökosystem-Arbeiten.
+Der aktuelle Stand ist ein instrumentierter Seed mit genau einem realen Run, kein Wirksamkeitsnachweis. Der PR verankert Hypothese, Kontext, Methode, Fehlmodi, eine strukturierte Run-Erfassung (`results/runs/`) samt Validator und eine erste Auswertungsgrenze für künftige Ökosystem-Arbeiten.
 
 ## Beobachtungen aus dem Seed-Slice
 
@@ -19,13 +19,22 @@ Der aktuelle Stand ist ein Experiment-Seed, kein Wirksamkeitsnachweis. Der PR ve
 - Die Ergänzung von Methode, Fehlmodi, Resultat und `results/evidence.jsonl` trennt narrative Auswertung von strukturiertem Evidenzstrom.
 - Die Seed-Evidence ist an PR und Head-SHA gebunden, bleibt aber ausdrücklich keine Treatment-Serie.
 
+## Erster realer Run (run-001)
+
+`results/runs/run-001.yml` erfasst die aktuelle Aufgabe selbst — die Entscheidung und Umsetzung des nächsten PR-#292-Schritts — als ersten realen Instrumentierungs-Run. Dieser Run ist ein **Nutzbarkeitsbeleg** (`verdict: usability_only`), kein Wirksamkeitsnachweis.
+
+- Primäres Wahrheitsorgan `repo_pr_ci` wurde vorab benannt und blieb maßgeblich; `predicted_primary_organ == actual_primary_organ`.
+- Die Achsen wurden run-lokal und self_reported kodiert (Details und Zahlen liegen strukturiert im Run-YAML, nicht in dieser Narrative).
+- `safety_value` ist bewusst `none`: ein vor Arbeitsbeginn korrigierter veralteter Checkout wird als generische state-first-Sorgfalt gewertet, nicht dem Organ-Preflight-Mechanismus zugeschrieben.
+- Der Run steht ausdrücklich für sich (n=1); er trägt keinen Vergleich gegen unstrukturierten Task-Intake.
+
 ## Deutung
 
 Der Seed ist methodisch brauchbarer, wenn er nicht nur eine Hypothese ablegt, sondern auch Scheitensbedingungen, Messachsen und Coding-Regeln enthält. Damit wird späteres Schönrechnen schwerer. Ein Protokoll ohne Fehlermodell ist ein Regenschirm ohne Stoff: formal handlich, meteorologisch beleidigt.
 
 ## Verdict
 
-`designed`: Das Experiment ist vorbereitet. Es darf noch keinen Nutzenclaim tragen und soll erst nach mehreren realen, vergleichbaren Aufgaben ausgewertet werden.
+`testing` / `execution_status: executed`: Das Experiment ist von einem reinen Seed zu einer realen Run-Erfassung übergegangen (run-001). Es darf weiterhin **keinen Wirksamkeits-/Nutzenclaim** tragen; ein Nutzenverdikt braucht mehrere reale, vergleichbare Aufgaben mit codierter Baseline oder kontrastierbarer Behandlung. `evidence_level` bleibt `anecdotal`.
 
 ## Interpretation Budget
 
@@ -43,5 +52,6 @@ Der Seed ist methodisch brauchbarer, wenn er nicht nur eine Hypothese ablegt, so
 
 ### Evidence Basis
 
-- Direkt beobachtet: neue repo-lokale Artefakte und PR-CI für diesen Slice.
+- Direkt beobachtet: neue repo-lokale Artefakte, PR-CI für diesen Slice und ein realer, schema-konformer Instrumentierungs-Run (`results/runs/run-001.yml`, `results/evidence.jsonl`).
+- Nur run-lokal / self_reported: die Metrikwerte aus run-001 (kein externes Timing, keine zweite Kodierung).
 - Nicht getestet: Vergleich gegen unstrukturierten Task-Intake, echte Treatment-Serie, Reibungskosten über mehrere Aufgaben.

@@ -1,0 +1,16 @@
+# Ecosystem Organ Preflight — run-001 execution capture
+# captured_at: 2026-07-06T02:59:25Z
+# executor: operator:claude-grabowski (local worktree, PR #292 head 70bf8ba)
+
+$ python3 scripts/docmeta/validate_ecosystem_organ_preflight.py
+🧭 Validating Ecosystem-Organ-Preflight run records...
+✅ Ecosystem-Organ-Preflight run records are structured and claim-safe.
+-- exit=0 --
+
+$ python3 scripts/docmeta/test_validate_ecosystem_organ_preflight.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.063s
+
+OK
+-- exit=0 --

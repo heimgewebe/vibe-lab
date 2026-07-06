@@ -106,3 +106,17 @@ promotion_readiness_freeze:
         inconclusive assessment (one PR, not yet sufficient evidence for confirmation).
         Remove insufficient_proof_assessment once decision.yml verdict reflects
         sufficient evidence after at least three comparable PRs.
+
+    - path: experiments/2026-07-05_ecosystem-organ-preflight
+      allowed_missing:
+        - falsifiability.assessment_not_checked
+      review_date: "2026-09-01"
+      reason: >-
+        First executed instrumentation run captured (results/runs/run-001.yml,
+        artifacts/run-001-pr292-execution-slice/). The two counter-hypotheses
+        (complexity_selection, attention_effect) remain assessment.status=pending
+        / outcome=not_checked because they cannot be checked at n=1 — they require
+        multiple comparable ecosystem tasks with a coded baseline. This run is a
+        usability/instrumentation record, not an efficacy claim. Remove this entry
+        once the counter-hypotheses reach checked/partially_checked with evidence
+        after enough comparable runs.

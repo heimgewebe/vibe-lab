@@ -1,0 +1,65 @@
+# run-001 — Erster realer Instrumentierungs-Run des Ecosystem Organ Preflight.
+#
+# WICHTIG: Dieser Run ist Nutzbarkeits-/Instrumentierungsbeleg, KEIN
+# Wirksamkeitsnachweis. Die Aufgabe war die Entscheidung/Umsetzung des
+# naechsten PR-#292-Schritts selbst (Meta-Task). Keine rueckwirkende
+# Schoenrechnung: unsichere Punkte stehen unter epistemic_gaps.
+
+schema_version: "0.1.0"
+
+task_id: "run-001-pr292-execution-slice"
+timestamp: "2026-07-06T02:53:53Z"
+
+repo: "heimgewebe/vibe-lab"
+pr: 292
+issue: null
+slice: "organ-preflight execution slice (designed -> run capture)"
+
+active_ball: "vibe-lab PR #292 — ecosystem organ preflight experiment seed"
+task_class: "experiment_instrumentation"
+perceived_complexity: "medium"
+
+primary_truth_source: "repo_pr_ci"
+allowed_context_organs:
+  - "vibe_lab"       # Experiment-/Evidenzflaeche fuer diesen PR
+blocked_organs:
+  - "bureau"         # in dieser Iteration nicht operativ geschaltet
+  - "cabinet"        # nur Kontextkandidat, hier nicht genutzt
+  - "steuerboard"    # kein Steuersignal als operative Wahrheit
+stop_rules:
+  - "Kein Merge/Undraft ohne finalen Review-/CI-Gate."
+  - "Kein Taskwechsel, solange PR #292 aktiver Ball ist."
+  - "Kein Wirksamkeitsclaim aus einem einzelnen Run."
+  - "Kein Arbeiten auf zufaelligem Checkout: nur auf verifiziertem PR-Head-SHA."
+
+predicted_primary_organ: "repo_pr_ci"
+actual_primary_organ: "repo_pr_ci"
+
+evidence_refs:
+  - "results/evidence.jsonl"
+  - "github:heimgewebe/vibe-lab#292@70bf8ba694e5810f5ec4328535d54239e0a0431a"
+
+metrics:
+  # Beobachtete Achsen dieses Runs. Alle Werte sind run-lokal und self_reported.
+  wrong_organ_corrections: 0
+  rework_loops: 0
+  next_step_ambiguity: "low"
+  friction_cost_minutes: 6
+  safety_value: "none"
+
+verdict: "usability_only"
+
+interpretation_budget:
+  allowed_claims:
+    - "Die Run-Erfassungsstruktur (run-NNN.yml + Validator + Tests) ist real ausgefuehrt und schema-konform."
+    - "Das primaere Wahrheitsorgan wurde vorab benannt (repo_pr_ci) und blieb waehrend des Runs massgeblich."
+    - "Der PR-Head-SHA wurde vor der Arbeit gegen GitHub verifiziert; gearbeitet wurde auf einem isolierten Worktree am PR-Head."
+  disallowed_claims:
+    - "Der Organ-Preflight verbessert bereits Oekosystem-Arbeit."
+    - "Ein einzelner Run belegt Wirksamkeit oder geringere Fehlleitung."
+    - "safety_value=none bedeutet, der Preflight sei nutzlos; es ist nur ein Nicht-Ereignis in n=1."
+  epistemic_gaps:
+    - "friction_cost_minutes=6 ist self_reported und grob geschaetzt, nicht extern gemessen."
+    - "Ein realer Nutzen-Kontrast fehlt: es gibt keine unstrukturierte Baseline-Aufgabe zum Vergleich."
+    - "Ein veralteter lokaler Checkout (3 Commits hinter PR-Head) wurde vor Arbeitsbeginn korrigiert. Das ist generische state-first-Sorgfalt (vom Auftrag verlangt), nicht zwingend dem Organ-Preflight-Mechanismus zuzuschreiben; daher wrong_organ_corrections=0 und safety_value=none."
+    - "perceived_complexity und next_step_ambiguity sind subjektive Operator-Einschaetzungen ohne zweite Kodierung."
