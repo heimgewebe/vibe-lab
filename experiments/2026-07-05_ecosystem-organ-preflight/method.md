@@ -8,23 +8,26 @@ canonicality: operative
 
 ## Methode
 
-Vor groesseren Oekosystem-Arbeiten wird ein kurzer Organ-Preflight vor die Ausfuehrung gesetzt.
+Vor größeren Ökosystem-Arbeiten wird ein kurzer Organ-Preflight vor die Ausführung gesetzt.
 
 1. Aktiven Ball bestimmen: konkreter PR, Task, Deploy, Audit, Bug oder Slice.
-2. Primaeres Wahrheitsorgan benennen: zum Beispiel Repo/PR/CI, Vibe-Lab, Bureau, Cabinet oder Runtime.
-3. Hilfsorgane begrenzen: Welche Oberflaechen duerfen nur Kontext, Status oder Evidence liefern?
-4. Stop-Regeln erfassen: Was wuerde einen Taskwechsel, Merge, Undraft, Deploy oder eine Runtime-Aktion verbieten?
-5. Kleinsten naechsten Eingriff waehlen und gegen die Stop-Regeln pruefen.
-6. Nach dem Eingriff Evidence notieren: CI-Zustand, Diff-Umfang, rework loops, falsche Organwechsel, offene Leere.
+2. Primäres Wahrheitsorgan benennen: zum Beispiel Repo/PR/CI, Vibe-Lab, Bureau, Cabinet oder Runtime.
+3. Quellenfrische prüfen: PR-Head, Base-SHA, lokale Branch-Lage, CI-Status und verwendete Dumps gegen den aktuellen Arbeitsstand abgleichen.
+4. Hilfsorgane begrenzen: Welche Oberflächen dürfen nur Kontext, Status oder Evidence liefern?
+5. Stop-Regeln erfassen: Was würde einen Taskwechsel, Merge, Undraft, Deploy oder eine Runtime-Aktion verbieten?
+6. Kleinsten nächsten Eingriff wählen und gegen die Stop-Regeln prüfen.
+7. Nach dem Eingriff Evidence notieren: CI-Zustand, Diff-Umfang, rework loops, falsche Organwechsel, offene Leere.
 
 ## Messachsen
 
-- Wrong-organ corrections: Musste waehrend der Arbeit das zustaendige Organ korrigiert werden?
-- Rework loops: Wurde Arbeit wegen falscher Quelle oder falschem Scope zurueckgenommen?
-- Next-step ambiguity: War nach einem Schritt der naechste Schritt unklar?
-- Friction cost: Hat der Preflight mehr Zeit und Text erzeugt als er Orientierung brachte?
-- Safety value: Hat der Preflight Merge-, Deploy-, Runtime- oder Taskwechsel-Fehler verhindert?
+| Metric | Type | Coding |
+| --- | --- | --- |
+| `wrong_organ_corrections` | integer | Zähle jede explizite Korrektur des zuständigen Organs oder der primären Wahrheitsquelle während einer Aufgabe. |
+| `rework_loops` | integer | Zähle zurückgenommene oder wiederholte Arbeit, die durch falsche Quelle, falschen Scope oder falsches Organ entstanden ist. |
+| `next_step_ambiguity` | enum | `none`, `low`, `medium`, `high` nach einem Eingriff; kodiert die Unklarheit des nächsten Schritts. |
+| `friction_cost` | integer_minutes | Geschätzte Zusatzminuten, die der Preflight selbst erzeugt. |
+| `safety_value` | enum | `none`, `potential`, `actual`; mit kurzer Begründung, ob ein Merge-, Deploy-, Runtime- oder Taskwechsel-Fehler verhindert wurde. |
 
 ## Vergleichslogik
 
-Die erste Iteration ist nur ein Seed. Ein Nutzenclaim braucht mehrere vergleichbare Aufgaben mit codierter Baseline oder mindestens kontrastierbarer Behandlung. Einzelne erfolgreiche PRs zaehlen als Nutzbarkeitsbeleg, nicht als Wirksamkeitsnachweis.
+Die erste Iteration ist nur ein Seed. Ein Nutzenclaim braucht mehrere vergleichbare Aufgaben mit codierter Baseline oder mindestens kontrastierbarer Behandlung. Einzelne erfolgreiche PRs zählen als Nutzbarkeitsbeleg, nicht als Wirksamkeitsnachweis.
