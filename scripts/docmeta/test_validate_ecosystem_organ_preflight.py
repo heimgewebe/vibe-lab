@@ -19,6 +19,9 @@ from validate_ecosystem_organ_preflight import (  # noqa: E402
     EXPERIMENT_REL,
     validate_ecosystem_organ_preflight,
 )
+from test_ecosystem_organ_preflight_safety_enum import (  # noqa: E402,F401
+    EcosystemOrganPreflightSafetyEnumTests,
+)
 
 VALID_RUN: dict = {
     "schema_version": "0.1.0",
