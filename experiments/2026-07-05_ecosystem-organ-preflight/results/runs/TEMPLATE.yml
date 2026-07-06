@@ -54,7 +54,6 @@ interpretation_budget:
   allowed_claims:
     - "<was dieser Run belegen darf, run-lokal>"
   disallowed_claims:
-    - "Der Organ-Preflight verbessert bereits Oekosystem-Arbeit."
-    - "Ein einzelner Run belegt Wirksamkeit."
+    - "Keine breite Outcome-Aussage aus einem einzelnen Run."
   epistemic_gaps:
     - "<offene Luecken, unklare Zuordnung, self_reported-Metriken>"
