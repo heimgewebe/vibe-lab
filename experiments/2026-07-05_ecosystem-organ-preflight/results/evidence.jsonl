@@ -1,1 +1,1 @@
-{"event_type":"observation","timestamp":"2026-07-05T13:44:57Z","iteration":1,"metric":"seed_scope","value":"seed created; no treatment run yet","context":"PR 292 organ preflight seed"}
+{"event_type":"observation","timestamp":"2026-07-05T16:13:25Z","iteration":1,"metric":"seed_scope","value":"seed created; no treatment run yet","context":"PR 292 organ preflight seed","pr":292,"head_sha":"c845fbdc97d0067d17037db244f40a76fe122f19"}
