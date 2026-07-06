@@ -11,7 +11,7 @@
 # Enum-Werte:
 #   perceived_complexity:        low | medium | high
 #   metrics.next_step_ambiguity: none | low | medium | high
-#   metrics.safety_value:        none | potential | actual
+#   metrics.safety_value:        none | low | medium | high
 #   verdict:                     usability_only | instrumentation_only | inconclusive
 #     (bewusst KEIN efficacy-Wert: ein Run darf keine Wirksamkeit encodieren)
 
@@ -46,7 +46,7 @@ metrics:
   rework_loops: 0              # int >= 0
   next_step_ambiguity: "low"   # none | low | medium | high
   friction_cost_minutes: 0     # number >= 0 (self_reported, in epistemic_gaps kennzeichnen)
-  safety_value: "none"         # none | potential | actual
+  safety_value: "none"         # none | low | medium | high
 
 verdict: "usability_only"
 
