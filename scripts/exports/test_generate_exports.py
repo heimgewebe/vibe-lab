@@ -18,6 +18,7 @@ from pathlib import Path
 
 # Ensure import path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from export_contract import exportable_source_files, is_exportable_source  # noqa: E402
 from generate_exports import (  # noqa: E402
     EXPORT_TARGETS,
     GENERATOR_ID,
@@ -140,10 +141,10 @@ class TestDeterministicGeneration(unittest.TestCase):
 
 
 class TestCompleteCapture(unittest.TestCase):
-    """Verifies all instruction-blocks/*.md are exported to both targets."""
+    """Verifies all exportable instruction-blocks/*.md are exported to both targets."""
 
     def test_all_sources_exported(self):
-        source_files = sorted(SOURCE_DIR.glob("*.md"))
+        source_files = exportable_source_files(SOURCE_DIR)
         self.assertGreater(len(source_files), 0, "No source files found")
 
         generate_exports()
@@ -158,12 +159,51 @@ class TestCompleteCapture(unittest.TestCase):
             )
 
 
+    def test_draft_sources_are_not_exported(self):
+        """Draft instruction blocks must not be projected into tool exports."""
+        import generate_exports as mod
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            src_dir = tmp_path / "instruction-blocks"
+            src_dir.mkdir()
+            (src_dir / "adopted.md").write_text(
+                "---\ntitle: Adopted\nstatus: adopted\n---\nUse me\n",
+                encoding="utf-8",
+            )
+            (src_dir / "draft.md").write_text(
+                "---\ntitle: Draft\nstatus: draft\n---\nDo not export me\n",
+                encoding="utf-8",
+            )
+
+            original_src = mod.SOURCE_DIR
+            original_targets = mod.EXPORT_TARGETS
+            original_root = mod.REPO_ROOT
+            mod.SOURCE_DIR = src_dir
+            mod.REPO_ROOT = tmp_path
+            mod.EXPORT_TARGETS = {
+                "copilot": tmp_path / "exports" / "copilot",
+                "cursor": tmp_path / "exports" / "cursor",
+            }
+
+            try:
+                self.assertTrue(is_exportable_source(src_dir / "adopted.md"))
+                self.assertFalse(is_exportable_source(src_dir / "draft.md"))
+                mod.generate_exports()
+                for target_dir in mod.EXPORT_TARGETS.values():
+                    self.assertEqual({p.name for p in target_dir.glob("*.md")}, {"adopted.md"})
+            finally:
+                mod.SOURCE_DIR = original_src
+                mod.EXPORT_TARGETS = original_targets
+                mod.REPO_ROOT = original_root
+
+
 class TestStablePathLogic(unittest.TestCase):
     """Verifies filename mapping is stable and predictable."""
 
     def test_filenames_match_source(self):
         generate_exports()
-        source_names = {f.name for f in SOURCE_DIR.glob("*.md")}
+        source_names = {f.name for f in exportable_source_files(SOURCE_DIR)}
 
         for target_system, target_dir in EXPORT_TARGETS.items():
             export_names = {f.name for f in target_dir.iterdir()}
@@ -276,7 +316,7 @@ class TestEdgeCases(unittest.TestCase):
             try:
                 # First: generate with one source file
                 (src_dir / "example.md").write_text(
-                    "---\ntitle: Example\n---\nContent\n", encoding="utf-8"
+                    "---\ntitle: Example\nstatus: adopted\n---\nContent\n", encoding="utf-8"
                 )
                 mod.generate_exports()
                 for td in mod.EXPORT_TARGETS.values():
@@ -307,7 +347,7 @@ class TestEdgeCases(unittest.TestCase):
             src_dir = tmp_path / "instruction-blocks"
             src_dir.mkdir()
             (src_dir / "test.md").write_text(
-                "---\ntitle: Test\n---\nTest body\n", encoding="utf-8"
+                "---\ntitle: Test\nstatus: adopted\n---\nTest body\n", encoding="utf-8"
             )
 
             original_src = mod.SOURCE_DIR
@@ -415,7 +455,7 @@ class TestSourceHashConsistency(unittest.TestCase):
             try:
                 # Write initial source
                 (src_dir / "test.md").write_text(
-                    "---\ntitle: Test\n---\nOriginal body\n", encoding="utf-8"
+                    "---\ntitle: Test\nstatus: adopted\n---\nOriginal body\n", encoding="utf-8"
                 )
                 mod.generate_exports()
                 v1 = (tmp_path / "exports" / "copilot" / "test.md").read_text(
@@ -424,7 +464,7 @@ class TestSourceHashConsistency(unittest.TestCase):
 
                 # Modify source
                 (src_dir / "test.md").write_text(
-                    "---\ntitle: Test\n---\nModified body\n", encoding="utf-8"
+                    "---\ntitle: Test\nstatus: adopted\n---\nModified body\n", encoding="utf-8"
                 )
                 mod.generate_exports()
                 v2 = (tmp_path / "exports" / "copilot" / "test.md").read_text(
@@ -456,7 +496,7 @@ class TestExportDriftGuard(unittest.TestCase):
 
     def test_no_orphaned_exports(self):
         """Every file in exports/ must correspond to a source in instruction-blocks/."""
-        source_names = {f.name for f in SOURCE_DIR.glob("*.md")}
+        source_names = {f.name for f in exportable_source_files(SOURCE_DIR)}
 
         for target_system, target_dir in EXPORT_TARGETS.items():
             if not target_dir.exists():
@@ -476,7 +516,7 @@ class TestExportDriftGuard(unittest.TestCase):
                 if target_dir.exists()
                 else set()
             )
-            for source_file in SOURCE_DIR.glob("*.md"):
+            for source_file in exportable_source_files(SOURCE_DIR):
                 self.assertIn(
                     source_file.name,
                     export_names,

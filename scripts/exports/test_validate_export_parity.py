@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from export_contract import expected_export_name  # noqa: E402
+from export_contract import expected_export_name, exportable_source_files, is_exportable_source  # noqa: E402
 from validate_export_parity import (  # noqa: E402
     _source_name_map,
     check_collisions,
@@ -62,8 +62,8 @@ class TestSourceNameMap(unittest.TestCase):
     def test_flat_files_no_collision(self):
         with tempfile.TemporaryDirectory() as tmp:
             src = Path(tmp)
-            (src / "a.md").write_text("a")
-            (src / "b.md").write_text("b")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / "b.md").write_text("---\nstatus: adopted\n---\nbody\n")
             result = _source_name_map(src)
             self.assertEqual(set(result.keys()), {"a.md", "b.md"})
             for srcs in result.values():
@@ -77,19 +77,30 @@ class TestSourceNameMap(unittest.TestCase):
     def test_non_md_files_ignored(self):
         with tempfile.TemporaryDirectory() as tmp:
             src = Path(tmp)
-            (src / "a.md").write_text("a")
-            (src / "notes.txt").write_text("txt")
-            (src / ".gitkeep").write_text("")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / "notes.txt").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / ".gitkeep").write_text("---\nstatus: adopted\n---\nbody\n")
             result = _source_name_map(src)
             self.assertEqual(set(result.keys()), {"a.md"})
+
+
+    def test_draft_source_is_not_in_name_map(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp)
+            (src / "adopted.md").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / "draft.md").write_text("---\nstatus: draft\n---\nbody\n")
+            result = _source_name_map(src)
+            self.assertEqual(set(result.keys()), {"adopted.md"})
+            self.assertTrue(is_exportable_source(src / "adopted.md"))
+            self.assertFalse(is_exportable_source(src / "draft.md"))
 
 
 class TestCheckCollisions(unittest.TestCase):
     def test_no_collision(self):
         with tempfile.TemporaryDirectory() as tmp:
             src = Path(tmp)
-            (src / "a.md").write_text("a")
-            (src / "b.md").write_text("b")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / "b.md").write_text("---\nstatus: adopted\n---\nbody\n")
             name_map = _source_name_map(src)
             self.assertEqual(check_collisions(name_map), [])
 
@@ -119,7 +130,7 @@ class TestCheckOrphans(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "a.md").write_text("a")
             name_map = _source_name_map(src)
             self.assertEqual(check_orphans(name_map, "copilot", tgt), [])
@@ -130,7 +141,7 @@ class TestCheckOrphans(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "a.md").write_text("a")
             (tgt / "orphan.md").write_text("orphan")
             name_map = _source_name_map(src)
@@ -146,7 +157,7 @@ class TestCheckOrphans(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "a.md").write_text("a")
             (tgt / ".gitkeep").write_text("")
             (tgt / "notes.txt").write_text("txt")
@@ -158,7 +169,7 @@ class TestCheckOrphans(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             src = Path(tmp) / "src"
             src.mkdir()
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             name_map = _source_name_map(src)
             nonexistent = Path(tmp) / "nonexistent"
             self.assertEqual(check_orphans(name_map, "copilot", nonexistent), [])
@@ -171,7 +182,7 @@ class TestCheckMissing(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "a.md").write_text("a")
             name_map = _source_name_map(src)
             self.assertEqual(check_missing(name_map, "copilot", tgt), [])
@@ -182,8 +193,8 @@ class TestCheckMissing(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
-            (src / "b.md").write_text("b")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / "b.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "a.md").write_text("a")
             name_map = _source_name_map(src)
             errors = check_missing(name_map, "copilot", tgt)
@@ -197,8 +208,8 @@ class TestCheckMissing(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
-            (src / "b.md").write_text("b")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
+            (src / "b.md").write_text("---\nstatus: adopted\n---\nbody\n")
             name_map = _source_name_map(src)
             errors = check_missing(name_map, "copilot", tgt)
             self.assertEqual(len(errors), 2)
@@ -210,7 +221,7 @@ class TestCheckMissing(unittest.TestCase):
             tgt = Path(tmp) / "tgt"
             src.mkdir()
             tgt.mkdir()
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / ".gitkeep").write_text("")
             name_map = _source_name_map(src)
             errors = check_missing(name_map, "copilot", tgt)
@@ -229,7 +240,7 @@ class TestValidateIntegration(unittest.TestCase):
             tgt_cursor.mkdir(parents=True)
 
             for name in ["a.md", "b.md"]:
-                (src / name).write_text(name)
+                (src / name).write_text("---\nstatus: adopted\n---\nbody\n")
                 (tgt_copilot / name).write_text(name)
                 (tgt_cursor / name).write_text(name)
 
@@ -243,7 +254,7 @@ class TestValidateIntegration(unittest.TestCase):
             src.mkdir(parents=True)
             tgt.mkdir(parents=True)
 
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "orphan.md").write_text("orphan")
 
             errors = validate(src, {"copilot": tgt})
@@ -269,7 +280,7 @@ class TestValidateIntegration(unittest.TestCase):
             src.mkdir(parents=True)
             tgt.mkdir(parents=True)
 
-            (src / "a.md").write_text("a")
+            (src / "a.md").write_text("---\nstatus: adopted\n---\nbody\n")
             (tgt / "a.md").write_text("a")
             (tgt / ".gitkeep").write_text("")
 

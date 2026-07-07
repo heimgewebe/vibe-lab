@@ -28,7 +28,7 @@ from _paths import write_if_changed  # noqa: E402
 
 # Export-Contract: SOURCE_DIR, EXPORT_TARGETS und Namenslogik aus zentraler Quelle.
 # Validator und Generator müssen dieselbe Konfiguration sehen.
-from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name  # noqa: E402
+from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name, exportable_source_files  # noqa: E402
 
 GENERATOR_ID = "scripts/exports/generate_exports.py"
 
@@ -150,7 +150,7 @@ def generate_exports() -> dict[str, int]:
     Returns:
         dict mit target_system → Anzahl exportierter Dateien.
     """
-    source_files = sorted(SOURCE_DIR.glob("*.md"))
+    source_files = exportable_source_files(SOURCE_DIR)
 
     collisions = detect_collisions(source_files)
     if collisions:
@@ -203,9 +203,9 @@ def main() -> int:
 
     stats = generate_exports()
 
-    source_files = sorted(SOURCE_DIR.glob("*.md"))
+    source_files = exportable_source_files(SOURCE_DIR)
     if not source_files:
-        print(f"WARNING: No *.md files found in {SOURCE_DIR} — export directories cleared", file=sys.stderr)
+        print(f"WARNING: No exportable *.md files found in {SOURCE_DIR} — export directories cleared", file=sys.stderr)
         return 0
 
     for target, count in sorted(stats.items()):

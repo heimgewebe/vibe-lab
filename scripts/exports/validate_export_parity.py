@@ -25,7 +25,7 @@ from pathlib import Path
 # Nie hier duplizieren — Validator und Generator müssen dieselbe Konfiguration sehen.
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
-from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name  # noqa: E402
+from export_contract import EXPORT_TARGETS, SOURCE_DIR, expected_export_name, exportable_source_files  # noqa: E402
 
 REPO_ROOT = SOURCE_DIR.parent
 
@@ -38,9 +38,9 @@ def _rel(p: Path) -> str:
 
 
 def _source_name_map(source_dir: Path) -> dict[str, list[Path]]:
-    """Mapping ziel_dateiname → [quelldateien] für alle *.md in source_dir."""
+    """Mapping ziel_dateiname → [quelldateien] für exportfähige *.md in source_dir."""
     result: dict[str, list[Path]] = {}
-    for f in sorted(source_dir.glob("*.md")):
+    for f in exportable_source_files(source_dir):
         target_name = expected_export_name(f)
         result.setdefault(target_name, []).append(f)
     return result
@@ -70,13 +70,13 @@ def check_orphans(name_map: dict[str, list[Path]], target_system: str, target_di
     for export_file in sorted(target_dir.glob("*.md")):
         if export_file.name not in source_names:
             errors.append(
-                f"Orphan in exports/{target_system}/: '{export_file.name}' hat keine Quelle in instruction-blocks/"
+                f"Orphan in exports/{target_system}/: '{export_file.name}' hat keine exportfähige Quelle in instruction-blocks/"
             )
     return errors
 
 
 def check_missing(name_map: dict[str, list[Path]], target_system: str, target_dir: Path) -> list[str]:
-    """Missing: Quelldatei existiert, aber der Export fehlt."""
+    """Missing: Exportfähige Quelldatei existiert, aber der Export fehlt."""
     export_names = {f.name for f in target_dir.glob("*.md")} if target_dir.exists() else set()
     errors: list[str] = []
     for name in sorted(name_map.keys()):
@@ -123,7 +123,7 @@ def main() -> int:
         return 1
 
     print(
-        f"✅ Export-Parität OK ({len(list(SOURCE_DIR.glob('*.md')))} Quelldatei(en), "
+        f"✅ Export-Parität OK ({len(_source_name_map(SOURCE_DIR))} Quelldatei(en), "
         f"{len(EXPORT_TARGETS)} Ziel(e))"
     )
     return 0
