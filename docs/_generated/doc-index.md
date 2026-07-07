@@ -266,6 +266,7 @@
 | `exports/cursor/validate-against-spec.md` | validate-against-spec | — | — |
 | `instruction-blocks/constraint-before-code.md` | Constraint-Before-Code | adopted | operative |
 | `instruction-blocks/edge-case-enumeration.md` | Edge-Case-Enumeration | adopted | operative |
+| `instruction-blocks/evidence-bound-status.md` | Evidence-Bound Status | draft | operative |
 | `instruction-blocks/no-vague-prompts.md` | No-Vague-Prompts | adopted | operative |
 | `instruction-blocks/spec-first.md` | Spec-First | adopted | operative |
 | `instruction-blocks/validate-against-spec.md` | Validate-Against-Spec | adopted | operative |
