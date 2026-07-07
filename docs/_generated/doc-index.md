@@ -256,16 +256,19 @@
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
+| `exports/copilot/evidence-bound-status.md` | evidence-bound-status | — | — |
 | `exports/copilot/no-vague-prompts.md` | no-vague-prompts | — | — |
 | `exports/copilot/spec-first.md` | spec-first | — | — |
 | `exports/copilot/validate-against-spec.md` | validate-against-spec | — | — |
 | `exports/cursor/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/cursor/edge-case-enumeration.md` | edge-case-enumeration | — | — |
+| `exports/cursor/evidence-bound-status.md` | evidence-bound-status | — | — |
 | `exports/cursor/no-vague-prompts.md` | no-vague-prompts | — | — |
 | `exports/cursor/spec-first.md` | spec-first | — | — |
 | `exports/cursor/validate-against-spec.md` | validate-against-spec | — | — |
 | `instruction-blocks/constraint-before-code.md` | Constraint-Before-Code | adopted | operative |
 | `instruction-blocks/edge-case-enumeration.md` | Edge-Case-Enumeration | adopted | operative |
+| `instruction-blocks/evidence-bound-status.md` | Evidence-Bound Status | draft | operative |
 | `instruction-blocks/no-vague-prompts.md` | No-Vague-Prompts | adopted | operative |
 | `instruction-blocks/spec-first.md` | Spec-First | adopted | operative |
 | `instruction-blocks/validate-against-spec.md` | Validate-Against-Spec | adopted | operative |
