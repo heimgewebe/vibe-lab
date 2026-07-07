@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-001-pr292-execution-slice",
+  "generated_at": "2026-07-06T02:59:25Z",
+  "executor": "operator:claude-grabowski",
+  "command": "python3 scripts/docmeta/validate_ecosystem_organ_preflight.py && python3 scripts/docmeta/test_validate_ecosystem_organ_preflight.py",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-pr292-execution-slice/validator-and-tests.txt",
+  "provenance_level": "self_reported",
+  "notes": "Execution-proof artifact for the first real organ-preflight instrumentation run. The structured organ-preflight record for this run is results/runs/run-001.yml; this run captures the real validator+tests execution. Usability/instrumentation only, no efficacy claim."
+}

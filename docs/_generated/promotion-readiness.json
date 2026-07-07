@@ -297,14 +297,29 @@
       "warnings": [
         "falsifiability_assessment_inconclusive"
       ]
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability.assessment_not_checked"
+      ],
+      "notes": [],
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight",
+      "pre_execution_hold": false,
+      "promotion_ready": false,
+      "status": "testing",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 19,
+    "experiments_checked": 20,
     "historical_escape": 1,
-    "not_ready": 12,
+    "not_ready": 13,
     "pre_execution_hold": 2,
     "ready": 4,
     "warnings": 5

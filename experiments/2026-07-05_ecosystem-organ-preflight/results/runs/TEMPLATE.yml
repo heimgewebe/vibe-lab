@@ -1,0 +1,59 @@
+# TEMPLATE.yml — Ecosystem Organ Preflight run record
+#
+# Diese Datei ist die Vorlage. Sie wird vom Validator NICHT geprueft
+# (Dateiname == TEMPLATE.yml). Kopiere sie nach run-NNN.yml und fuelle
+# reale, nicht rueckwirkend geschoente Werte ein.
+#
+# Ein einzelner Run ist Nutzbarkeits-/Instrumentierungsbeleg,
+# KEIN Wirksamkeitsnachweis. Wirksamkeit braucht mehrere vergleichbare
+# Aufgaben mit codierter Baseline (siehe manifest.yml falsifiability).
+#
+# Enum-Werte:
+#   perceived_complexity:        low | medium | high
+#   metrics.next_step_ambiguity: none | low | medium | high
+#   metrics.safety_value:        none | low | medium | high
+#   verdict:                     usability_only | instrumentation_only | inconclusive
+#     (bewusst KEIN efficacy-Wert: ein Run darf keine Wirksamkeit encodieren)
+
+schema_version: "0.1.0"
+
+task_id: "run-NNN-<slug>"
+timestamp: "YYYY-MM-DDTHH:MM:SSZ"
+
+repo: "heimgewebe/<repo>"
+pr: null            # z.B. 292 oder null
+issue: null         # z.B. 123 oder null
+slice: "<kurzer Slice-Name>"
+
+active_ball: "<der eine aktive Ball: konkreter PR/Task/Deploy/Audit/Bug/Slice>"
+task_class: "<z.B. experiment_instrumentation | repo_pr_work | ci_fix | audit>"
+perceived_complexity: "medium"
+
+primary_truth_source: "<z.B. repo_pr_ci | vibe_lab | runtime>"
+allowed_context_organs: []   # Organe, die nur Kontext/Status/Evidence liefern duerfen
+blocked_organs: []           # Organe, die in diesem Run nicht operativ steuern duerfen
+stop_rules:
+  - "<Bedingung, die Taskwechsel/Merge/Undraft/Deploy/Runtime-Aktion verbietet>"
+
+predicted_primary_organ: "<vor dem Eingriff erwartetes Wahrheitsorgan>"
+actual_primary_organ: "<tatsaechlich massgebliches Wahrheitsorgan>"
+
+evidence_refs:
+  - "results/evidence.jsonl"   # pfadartige Refs muessen relativ zum Experiment-Root existieren
+
+metrics:
+  wrong_organ_corrections: 0   # int >= 0
+  rework_loops: 0              # int >= 0
+  next_step_ambiguity: "low"   # none | low | medium | high
+  friction_cost_minutes: 0     # number >= 0 (self_reported, in epistemic_gaps kennzeichnen)
+  safety_value: "none"         # none | low | medium | high
+
+verdict: "usability_only"
+
+interpretation_budget:
+  allowed_claims:
+    - "<was dieser Run belegen darf, run-lokal>"
+  disallowed_claims:
+    - "Keine breite Outcome-Aussage aus einem einzelnen Run."
+  epistemic_gaps:
+    - "<offene Luecken, unklare Zuordnung, self_reported-Metriken>"

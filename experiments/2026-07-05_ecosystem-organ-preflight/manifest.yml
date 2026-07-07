@@ -1,0 +1,54 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "Ecosystem Organ Preflight"
+  hypothesis: "A short, evidence-bound organ preflight before substantial ecosystem tasks reduces wrong-organ routing, rework, and next-step ambiguity compared with unstructured task intake."
+  status: testing
+  cognitive_mode: executable
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - "results/runs/run-001.yml"
+    - "results/evidence.jsonl"
+  created: "2026-07-05"
+  updated: "2026-07-06"
+  author: "ChatGPT / Grabowski"
+  iteration: 1
+  evidence_level: anecdotal
+  falsifiability:
+    version: 1
+    falsification_criterion: "After 8 to 12 comparable ecosystem tasks, the preflight shows no reduction in wrong-organ corrections, rework loops, or next-step ambiguity, or it adds more friction than it removes."
+    counter_hypotheses:
+      - id: "complexity_selection"
+        statement: "The apparent benefit may come from selecting easier tasks during treatment rather than from the organ preflight itself."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Record task class and perceived complexity for every baseline and treatment task."
+          limitations:
+            - "No baseline dataset has been coded yet."
+          confidence: low
+      - id: "attention_effect"
+        statement: "The benefit may come from the operator paying more attention because a protocol exists, not from the organ/source-of-truth structure."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Compare organ-preflight runs with other structured-intake runs when enough evidence exists."
+          limitations:
+            - "The first iteration cannot isolate attention from protocol content."
+          confidence: low
+
+context:
+  tools:
+    - "ChatGPT"
+    - "Grabowski"
+    - "GitHub connector"
+    - "Vibe-Lab"
+  language: "Documentation / workflow protocol"
+  environment: "heimgewebe/vibe-lab, ecosystem repo and PR work"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
