@@ -256,13 +256,11 @@
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
-| `exports/copilot/evidence-bound-status.md` | evidence-bound-status | — | — |
 | `exports/copilot/no-vague-prompts.md` | no-vague-prompts | — | — |
 | `exports/copilot/spec-first.md` | spec-first | — | — |
 | `exports/copilot/validate-against-spec.md` | validate-against-spec | — | — |
 | `exports/cursor/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/cursor/edge-case-enumeration.md` | edge-case-enumeration | — | — |
-| `exports/cursor/evidence-bound-status.md` | evidence-bound-status | — | — |
 | `exports/cursor/no-vague-prompts.md` | no-vague-prompts | — | — |
 | `exports/cursor/spec-first.md` | spec-first | — | — |
 | `exports/cursor/validate-against-spec.md` | validate-against-spec | — | — |
