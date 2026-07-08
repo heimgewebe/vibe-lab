@@ -11,10 +11,13 @@ experiment:
     - "results/sample.yml"
     - "results/evidence.jsonl"
     - "results/assessment.md"
+    - "artifacts/run-002-friction-ledger/pattern_candidates.yml"
+    - "artifacts/run-002-friction-ledger/friction-events.jsonl"
+    - "artifacts/run-002-friction-ledger/result.md"
   created: "2026-07-08"
   updated: "2026-07-08"
   author: "ChatGPT / Grabowski"
-  iteration: 1
+  iteration: 2
   evidence_level: anecdotal
   falsifiability:
     version: 1

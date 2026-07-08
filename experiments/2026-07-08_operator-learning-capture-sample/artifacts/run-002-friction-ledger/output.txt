@@ -1,0 +1,27 @@
+run-002 Friction Ledger — run output
+
+Scope:
+- Second run of the Operator Learning Capture Sample experiment.
+- Source: live Grabowski friction ledger via grabowski_friction_summary (limit=200).
+- No repository mutation of Grabowski; read-only evidence aggregation only.
+
+Live verification (not trusting the task summary):
+- events scanned: 39, returned: 39
+- unresolved: 34, decision_required: 34
+- by_failure_class: platform_filter 23 (20 unresolved), environment_tooling 7 (6),
+  actionable_failure 5 (4), policy_gate 4 (4)
+- The 34 unresolved decision_required events were re-derived from the full events
+  array (resolved:false) and matched the ledger's own aggregates. Self-consistent.
+
+Result:
+- 34 events mapped to evidence-bound rows (friction-events.jsonl).
+- 11 pattern candidates aggregated (pattern_candidates.yml).
+- Dominant pattern P1 (clean local -> blocked publish/merge/push) is carried by the
+  live ledger with 8 events. Expected top pattern confirmed, not inherited.
+- 5 proposal-ready follow-up candidates recorded (followup-candidates.md); no Bureau
+  write performed from Vibe-Lab.
+
+Claim boundary:
+- Read-only evidence aggregation; single snapshot = usability signal, not effectiveness.
+- No status upgrade, no promotion, no publish/merge/deploy automation or bypass.
+- Suggested owners are suggestions, not directives.
