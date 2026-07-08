@@ -12,7 +12,7 @@ inconclusive
 
 ## Summary
 
-The sample is useful enough to justify one smaller follow-up: a minimal friction-capture contract. It is not sufficient to justify export realignment, Bureau ingestion, Leitstand projection, or Grabowski mutation.
+The sample is useful enough to keep one smaller follow-up under consideration: a minimal friction-capture contract. It is not sufficient to justify export realignment, Bureau ingestion, Leitstand projection, or Grabowski mutation.
 
 ## Result
 
@@ -27,7 +27,7 @@ The strongest observed candidate pattern is boundary-before-claim:
 
 The previous broad plan is reduced.
 
-Proceed with:
+Candidate next step, if this sample is accepted as useful after review:
 
 ```text
 operator-friction-capture-contract-v0
