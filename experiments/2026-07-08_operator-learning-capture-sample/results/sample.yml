@@ -8,6 +8,8 @@ items:
     source:
       repo: "heimgewebe/vibe-lab"
       pr: 294
+      state: "closed"
+      merged: true
       title: "feat: add evidence-bound status instruction block"
       evidence_refs:
         - "github:heimgewebe/vibe-lab#294"
@@ -25,6 +27,8 @@ items:
     source:
       repo: "heimgewebe/vibe-lab"
       pr: 292
+      state: "closed"
+      merged: true
       title: "feat: add ecosystem organ preflight experiment seed"
       evidence_refs:
         - "github:heimgewebe/vibe-lab#292"
@@ -42,21 +46,27 @@ items:
     source:
       repo: "heimgewebe/grabowski"
       pr: 99
+      state: "closed"
+      merged: false
+      closure: "closed_unmerged"
       title: "feat: add rlens context pack query bridge"
       evidence_refs:
         - "github:heimgewebe/grabowski#99"
-    observed_signal: "RepoBrief/rLens context was explicitly bounded as read-only and non-proof-bearing, suggesting recurring need for context-versus-truth separation."
-    evidence_boundary: "observed"
+    observed_signal: "A closed-unmerged rLens/RepoBrief context-pack PR still records a useful bounded-context non-claim: context packs are read-only and non-proof-bearing, but this observation must not be treated as merged-product evidence."
+    evidence_boundary: "observed_closed_unmerged"
     candidate_pattern: "context_not_truth"
     followup_owner: "grabowski"
     non_claims:
       - "Does not prove rLens context improves answer quality."
       - "Does not prove runtime behavior."
+      - "Does not prove the PR landed in Grabowski main."
 
   - id: "bureau-pr-195-open-pr-claim-guard-followups"
     source:
       repo: "heimgewebe/bureau"
       pr: 195
+      state: "closed"
+      merged: true
       title: "fix: harden open PR task matching"
       evidence_refs:
         - "github:heimgewebe/bureau#195"
