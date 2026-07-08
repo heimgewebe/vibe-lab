@@ -265,6 +265,12 @@ jobs:
       - name: Validate promotion-readiness ratchet (Phase 2)
         run: make validate-promotion-readiness-ratchet
 
+      - name: Test rLens agent-context condition validator
+        run: make validate-rlens-agent-context-conditions-tests
+
+      - name: Validate rLens agent-context condition design
+        run: make validate-rlens-agent-context-conditions
+
       - name: Regenerate blocking artifacts
         run: make generate-blocking
 
