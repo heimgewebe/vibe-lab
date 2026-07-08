@@ -1,0 +1,21 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+confidence: "high"
+date: "2026-07-08"
+reviewer: "ChatGPT / Grabowski"
+triggered_by: "bureau:BUR-2026-002-T005"
+rationale: |
+  This experiment is a measurement design and guard seed. It has not executed
+  agent-condition runs and therefore must not promote a default rLens access
+  level or claim condition superiority.
+evidence_summary:
+  observations: 0
+  runs_documented: 0
+  decision_basis:
+    - "measurement-plan.yml defines conditions and metrics"
+    - "validator guards required conditions and metrics"
+next_steps:
+  - "Execute comparable real repo/PR tasks under separate condition-specific run folders."
+  - "Record unsupported_claim_count, hallucinated_path_count, missing_evidence_count, and rework_count per run."
+  - "Assess default-access promotion only after comparable task pairs exist."

@@ -1,0 +1,107 @@
+schema_version: 1
+experiment: rlens-agent-context-conditions
+status: designed
+bureau_task: BUR-2026-002-T005
+conditions:
+  no_rlens:
+    default_candidate: true
+    allowed_context:
+      - user request
+      - live repo/PR/tool evidence available during the task
+    disallowed_context:
+      - rlens_context_ref
+      - RepoBrief reading pack
+      - context pack
+      - full dump
+      - proof-of-reading trace requirement
+  reading_pack:
+    default_candidate: true
+    allowed_context:
+      - bounded required-reading pack
+      - relevant paths
+      - freshness metadata
+    disallowed_context:
+      - broad full dump
+      - trace gate requirement
+  context_pack:
+    default_candidate: true
+    allowed_context:
+      - task-profiled context pack
+      - exact context refs
+      - freshness and non-claims
+    disallowed_context:
+      - broad full dump
+  full_dump:
+    default_candidate: false
+    allowed_context:
+      - broad rLens or RepoBrief dump
+      - freshness warning
+      - non-truth warning
+    disallowed_context:
+      - secret/private context
+    diagnostic_only_reason: token cost, stale-context, and privacy risk require separate review
+  trace_gated:
+    default_candidate: true
+    allowed_context:
+      - context pack
+      - proof-of-reading trace
+      - exact live evidence refs for nontrivial claims
+    disallowed_context:
+      - uncited nontrivial claims
+required_condition_ids:
+  - no_rlens
+  - reading_pack
+  - context_pack
+  - full_dump
+  - trace_gated
+metrics:
+  unsupported_claim_count:
+    type: integer
+    lower_is_better: true
+    definition: Count of substantive claims not supported by live source, PR, CI/log, Bureau state, or run artifact.
+  hallucinated_path_count:
+    type: integer
+    lower_is_better: true
+    definition: Count of paths, files, symbols, commands, or artifacts asserted but not found in the cited source state.
+  missing_evidence_count:
+    type: integer
+    lower_is_better: true
+    definition: Count of required evidence fields or acceptance checks omitted from the output.
+  rework_count:
+    type: integer
+    lower_is_better: true
+    definition: Count of correction rounds required because of unsupported claims, wrong scope, missing evidence, or invalid patch.
+  stale_context_claim_count:
+    type: integer
+    lower_is_better: true
+    definition: Count of claims made from stale or derived context without live verification.
+  context_preparation_minutes:
+    type: number_or_unknown
+    lower_is_better: true
+    definition: Operator time spent preparing the condition input.
+  review_minutes:
+    type: number_or_unknown
+    lower_is_better: true
+    definition: Reviewer time spent validating the agent output.
+  evidence_quality_score:
+    type: integer_0_to_3
+    lower_is_better: false
+    definition: 0 none, 1 partial, 2 adequate, 3 strong evidence binding.
+promotion_gate:
+  default_access_may_be_promoted: false
+  minimum_evidence_before_promotion:
+    comparable_task_pairs: 3
+    required_directional_metrics:
+      - unsupported_claim_count
+      - hallucinated_path_count
+      - missing_evidence_count
+      - rework_count
+    overhead_must_not_worsen_unacceptably: true
+  allowed_pre_execution_claims:
+    - experiment design includes required conditions
+    - metric codebook includes required failure metrics
+  disallowed_pre_execution_claims:
+    - context condition superiority
+    - default rLens access level readiness
+    - agent quality improvement
+    - repo understanding improvement
