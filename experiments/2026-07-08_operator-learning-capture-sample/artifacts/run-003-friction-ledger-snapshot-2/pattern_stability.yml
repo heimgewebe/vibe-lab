@@ -1,0 +1,205 @@
+schema_version: "0.1.0"
+run_id: "run-003-friction-ledger-snapshot-2"
+generated_at: "2026-07-08T17:25:00Z"
+claim_boundary: "repeatability_probe_only"
+purpose: >-
+  Second friction-ledger snapshot to test whether run-002 pattern candidates recur.
+  This is a repeatability probe, NOT an effectiveness claim.
+
+snapshot_1_reference:
+  run: "run-002-friction-ledger"
+  source_ref: "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/"
+  event_count: 39
+  unresolved_count: 34
+  decision_required_count: 34
+  unresolved_by_failure_class:
+    platform_filter: 20
+    environment_tooling: 6
+    actionable_failure: 4
+    policy_gate: 4
+
+snapshot_2:
+  snapshot_id: "friction-ledger-2026-07-08-snapshot-2"
+  snapshot_time_approx: "2026-07-08T~17:25Z"
+  newest_event_unix: 1783530680
+  source_ref: "grabowski_friction_summary(limit=200) @ /home/alex/.local/state/grabowski/friction/events.jsonl"
+  event_count: 40
+  unresolved_count: 35
+  decision_required_count: 35
+  failure_class_distribution_total:
+    platform_filter: 23
+    environment_tooling: 7
+    actionable_failure: 5
+    policy_gate: 5
+  unresolved_by_failure_class:
+    platform_filter: 20
+    environment_tooling: 6
+    actionable_failure: 4
+    policy_gate: 5
+  verified_live: true
+
+# CRITICAL METHOD CAVEAT — read before any stability verdict.
+interval_and_method_caveat:
+  interval: "short (tens of minutes between snapshot_1 and snapshot_2)"
+  ledger_semantics: "append-only; unresolved events do not disappear over time"
+  consequence: >-
+    Because the ledger is append-only and the interval is short, the persistence of
+    the 34 run-002 events is mechanically trivial and does NOT constitute independent
+    re-observation. Persistence != repeatability. No run-002 event resolved or turned
+    over, and only one genuinely new event appeared. Therefore this snapshot provides
+    WEAK repeatability evidence at best.
+  overclaiming_risk: "high if 'persisted' is read as 'repeated'"
+
+delta:
+  persisted_run002_events: 34   # all run-002 unresolved events still present + unresolved (verified)
+  resolved_since_run002: 0
+  new_unresolved_events: 1
+  new_event_ids:
+    - "80ecf62307a54392aab8c7c5411ba331"
+
+recurring_pattern_ids:
+  # All 11 run-002 patterns persist (every member event still present + unresolved).
+  # See interval_and_method_caveat: this is persistence, not proven repeatability.
+  - id: "P1_clean_local_then_blocked_publish"
+    presence: "persisted_all_members"      # 8/8 events still unresolved
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    verdict_reason: "no new publish/merge/push block instance appeared; existing 8 merely persist"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P2_platform_filter_blocks_readonly_inspection"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P3_platform_filter_blocks_write_and_checkout"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P4_capability_contract_mismatch_file_delete"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P5_recovery_backup_gate_fail_closed"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    related_new_event_note: >-
+      The new event 80ecf623 (production secret fail-closed gate) is adjacent to the
+      recovery/secret fail-closed theme but is filed as a distinct new candidate (P12),
+      not counted as a P5 recurrence.
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.25
+  - id: "P6_rlens_context_unavailable"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P7_connector_tool_snapshot_lag"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P8_unbounded_crash_core_artifacts"
+    presence: "persisted_all_members"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.5
+    interpolation: 0.2
+  - id: "P9_task_reconcile_credential_false_positive"
+    presence: "persisted"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.55
+    interpolation: 0.2
+  - id: "P10_runtime_bootstrap_gap"
+    presence: "persisted"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.55
+    interpolation: 0.2
+  - id: "P11_build_clean_ownership_and_path"
+    presence: "persisted"
+    new_instances_in_snapshot_2: 0
+    repeatability_verdict: "inconclusive"
+    boundary: "belegt (persistence); inconclusive (repeatability)"
+    uncertainty: 0.55
+    interpolation: 0.2
+
+new_pattern_candidates:
+  - id: "P12_production_secret_gate_and_exposure"
+    member_event_ids:
+      - "80ecf62307a54392aab8c7c5411ba331"
+    failure_class: "policy_gate"
+    surface: "runtime"
+    operation: "weltgewebe issue #1370 SMTP configure and public login enablement"
+    evidence_ref: >-
+      symptom: production SMTP credential pair is missing so public login cannot be
+      enabled safely; during compose inspection an unredacted JWT secret was exposed in
+      tool output, requiring rotation before further rollout
+    interpretation: >-
+      A fail-closed production gate (missing SMTP creds) blocked safely, but the
+      inspection path itself leaked an unredacted JWT secret into tool output. Two
+      coupled issues: a missing-secret gate AND an accidental secret exposure needing
+      rotation. Security-relevant.
+    suggested_owner: "operator_privileged"
+    owner_note: >-
+      SUGGESTION only. Candidate follow-ups: (1) inject the SMTP credential pair via a
+      privileged path, (2) rotate the exposed JWT secret. Vibe-Lab does not perform
+      secret rotation or privileged injection; this is an Operator/privileged action.
+    security_relevance: "high (exposed secret requires rotation)"
+    stability: "new_single_observation"
+    boundary: "belegt (event recorded); single observation"
+    uncertainty: 0.3
+    interpolation: 0.2
+    non_claims:
+      - "Single observation; not shown to recur."
+      - "Vibe-Lab does not claim to have verified or performed any rotation."
+
+dropped_pattern_candidates: []
+
+evaluation:
+  # Criteria order: repeatability, owner clarity, operational damage,
+  # actionability without new steering authority, overclaiming risk.
+  repeatability: >-
+    Not established. Persistence of append-only unresolved events over a short interval
+    is not repeatability. P1 gained zero new instances.
+  owner_clarity: "unchanged from run-002; owners remain suggestions"
+  operational_damage: >-
+    Unchanged for P1-P11. New P12 adds a high-damage, security-relevant candidate
+    (secret exposure) but as a single observation.
+  actionability_without_new_authority: "unchanged; Vibe-Lab documents, does not steer"
+  overclaiming_risk: >-
+    The central risk this run guards against. Verdict deliberately kept at
+    repeatability_inconclusive to avoid presenting persistence as effectiveness.
+
+overall_verdict:
+  repeatability: "inconclusive"
+  status_change: "none"
+  usability_to_effectiveness_upgrade: false
+  note: >-
+    run-002 patterns persist and none were falsified, but a short-interval append-only
+    second snapshot cannot prove repeatability. Genuine repeatability needs a snapshot
+    separated by real new operator work (fresh P1 instances) or event turnover
+    (resolutions). Do NOT build operator-friction-capture-contract-v0 on this evidence
+    alone; do NOT upgrade usability -> effectiveness.
+  next_lever: >-
+    A later run-004 taken after a materially longer interval and/or after some events
+    resolve, to observe fresh instances and turnover rather than mere persistence.

@@ -262,6 +262,7 @@
 | `experiments/2026-07-08_operator-learning-capture-sample/artifacts/README.md` | Operator Learning Capture Sample Artifacts | active | navigation |
 | `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/followup-candidates.md` | Follow-up Candidates — run-002 Friction Ledger | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/result.md` | Result: Operator Learning Capture — run-002 Friction Ledger | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/result.md` | Result: Operator Learning Capture — run-003 Repeatability Probe | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/failure_modes.md` | Failure Modes: Operator Learning Capture Sample | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/method.md` | Methode: Operator Learning Capture Sample | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md` | Assessment: Operator Learning Capture Sample | active | operative |
