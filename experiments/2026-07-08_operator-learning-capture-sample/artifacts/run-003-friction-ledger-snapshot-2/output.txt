@@ -1,0 +1,27 @@
+run-003 Repeatability Probe — run output
+
+Scope:
+- Second live snapshot of the Grabowski friction ledger vs run-002.
+- Read-only; no Grabowski mutation.
+
+Live snapshot 2:
+- events 40, unresolved 35, decision_required 35
+- unresolved by_failure_class: platform_filter 20, environment_tooling 6,
+  actionable_failure 4, policy_gate 5
+
+Delta vs run-002 (snapshot 1: 39/34/34):
+- persisted run-002 unresolved events: 34 (all still unresolved)
+- resolved since run-002: 0
+- new unresolved: 1 (80ecf623 — weltgewebe SMTP gate + JWT secret exposure)
+- dropped: 0
+
+Verdict: repeatability_inconclusive.
+- Snapshots are minutes apart and the ledger is append-only, so persistence is
+  mechanically trivial and is NOT repeatability. P1 gained 0 new instances.
+- New candidate P12 (production_secret_gate_and_exposure) is security-relevant but a
+  single observation.
+
+Boundary:
+- No status upgrade, no usability->effectiveness upgrade, no contract build.
+- Owners are suggestions; no Bureau mutation; no publish/merge/deploy automation.
+- Security-relevant event documented only; Vibe-Lab does not rotate secrets.

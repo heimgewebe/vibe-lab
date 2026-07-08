@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-003-friction-ledger-snapshot-2",
+  "generated_at": "2026-07-08T17:25:00Z",
+  "executor": "claude-code:grabowski-mcp",
+  "command": "grabowski_friction_summary(limit=200) second live snapshot; diff against run-002 pattern candidates for repeatability",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-003-friction-ledger-snapshot-2/output.txt",
+  "provenance_level": "self_reported"
+}
