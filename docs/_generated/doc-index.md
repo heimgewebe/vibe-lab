@@ -253,6 +253,10 @@
 | `experiments/2026-07-05_ecosystem-organ-preflight/failure_modes.md` | Failure Modes: Ecosystem Organ Preflight | active | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/method.md` | Methode: Ecosystem Organ Preflight | active | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/results/result.md` | Result: Ecosystem Organ Preflight Seed | active | operative |
+| `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md` | Context — rLens Agent Context Conditions | designed | operative |
+| `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` | Initial Prompt — rLens Agent Context Conditions | designed | operative |
+| `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` | Failure Modes — rLens Agent Context Conditions | designed | operative |
+| `experiments/2026-07-08_rlens-agent-context-conditions/method.md` | Method — rLens Agent Context Conditions | designed | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

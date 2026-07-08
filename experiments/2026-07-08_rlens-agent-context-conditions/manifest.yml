@@ -1,0 +1,74 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "rlens-agent-context-conditions"
+  hypothesis: >
+    Different rLens access levels will change agent evidence quality and rework
+    cost in repo/PR tasks, but no default access level should be promoted until
+    comparable runs show lower unsupported claims, hallucinated paths, missing
+    evidence, and rework without unacceptable preparation overhead.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  evidence_level: experimental
+  created: "2026-07-08"
+  updated: "2026-07-08"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "bureau:BUR-2026-002-T005"
+  iteration: 1
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The rLens default-access promotion hypothesis is weakened or refuted if
+      context-pack or trace-gated conditions fail to reduce unsupported claims,
+      hallucinated paths, missing evidence, or rework versus no-rLens and
+      reading-pack conditions across comparable task classes, or if preparation
+      cost exceeds observed quality gains.
+    counter_hypotheses:
+      - id: "task_difficulty_dominates_context"
+        statement: "Task difficulty and PR size may dominate any rLens condition effect."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Record task class, changed-file count, PR size, and required domain context per run."
+            - "Do not compare conditions across incomparable task classes."
+          limitations:
+            - "No executed run series exists yet."
+          confidence: low
+      - id: "trace_gate_ceremony_exceeds_signal"
+        statement: "Trace-gated context may improve formal evidence quality but add more review and preparation overhead than it removes."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Capture context_preparation_minutes, review_minutes, and correction_rounds."
+            - "Compare trace-gated output against context-pack output before promotion."
+          limitations:
+            - "Manual timing is noisy unless session logs or command logs are attached."
+          confidence: low
+      - id: "full_dump_increases_confidence_without_grounding"
+        statement: "Full dumps may increase apparent fluency while increasing stale or hallucinated path claims."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Code hallucinated_path_count and stale_context_claim_count for full-dump runs."
+          limitations:
+            - "A full-dump run is only diagnostic; it is not a proposed default access level."
+          confidence: low
+
+context:
+  tools:
+    - "ChatGPT or comparable coding agent"
+    - "Grabowski"
+    - "Bureau task metadata"
+    - "rLens / RepoBrief artifacts"
+    - "GitHub PR review and CI evidence"
+  language: "Markdown, YAML, shell, repository-local validation output"
+  environment: "heimgewebe ecosystem repo/PR tasks; Vibe-Lab records measurement design and run artifacts"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
