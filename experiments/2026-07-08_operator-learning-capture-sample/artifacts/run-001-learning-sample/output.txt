@@ -1,0 +1,11 @@
+Operator Learning Capture Sample run output
+
+Scope:
+- Manual evidence-bound sample from recent PR artifacts.
+- No local repository mutation was available in the execution environment.
+- GitHub connector was used to create the branch and PR artifacts.
+
+Result:
+- Sample created under experiments/2026-07-08_operator-learning-capture-sample/.
+- Productive role boundary created under docs/ecosystem/.
+- Claim boundary: scoping probe only; no productivity or effectiveness claim.
