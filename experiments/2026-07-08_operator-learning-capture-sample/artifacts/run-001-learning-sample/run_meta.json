@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-001-learning-sample",
+  "generated_at": "2026-07-08T06:20:00Z",
+  "executor": "chatgpt:github-connector",
+  "command": "manual evidence-bound sample from recent GitHub PR artifacts",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-learning-sample/output.txt",
+  "provenance_level": "self_reported"
+}
