@@ -23,12 +23,15 @@ experiment:
       - id: "selection_bias"
         statement: "The sampled items may overrepresent recent process-heavy PRs and therefore exaggerate the need for a learning-capture contract."
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Repeat the sample over ordinary code, deploy, and documentation work before making an adoption claim."
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: "experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml"
+              section: "items"
+          pending_checks: []
           limitations:
             - "This first sample intentionally uses recent accessible PR artifacts only."
+            - "Representativeness remains limited; broader work classes are needed before any adoption claim."
           confidence: low
       - id: "manual_reconstruction_cost"
         statement: "The learning signal may be real but too expensive to capture manually after each operator run."
@@ -38,8 +41,10 @@ experiment:
           evidence_refs:
             - path: "experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md"
               section: "Interpretation"
+          pending_checks: []
           limitations:
             - "Manual reconstruction cost is estimated qualitatively, not timed."
+            - "A later contract must stay smaller than a full validator or generator system."
           confidence: medium
 
 context:
