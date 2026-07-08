@@ -1,0 +1,60 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "Operator Learning Capture Sample"
+  hypothesis: "A small, evidence-bound sample of recent operator work can reveal whether Vibe-Lab should build a lightweight learning-capture contract before adding new export or dashboard integrations."
+  status: testing
+  cognitive_mode: exploratory
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - "results/sample.yml"
+    - "results/evidence.jsonl"
+    - "results/assessment.md"
+  created: "2026-07-08"
+  updated: "2026-07-08"
+  author: "ChatGPT / Grabowski"
+  iteration: 1
+  evidence_level: anecdotal
+  falsifiability:
+    version: 1
+    falsification_criterion: "If the sampled work items do not expose any repeated friction candidate, or if extracting the sample requires more manual reconstruction than the learning signal justifies, Vibe-Lab should not proceed to a capture-contract implementation yet."
+    counter_hypotheses:
+      - id: "selection_bias"
+        statement: "The sampled items may overrepresent recent process-heavy PRs and therefore exaggerate the need for a learning-capture contract."
+        assessment:
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: "experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml"
+              section: "items"
+          pending_checks: []
+          limitations:
+            - "This first sample intentionally uses recent accessible PR artifacts only."
+            - "Representativeness remains limited; broader work classes are needed before any adoption claim."
+          confidence: low
+      - id: "manual_reconstruction_cost"
+        statement: "The learning signal may be real but too expensive to capture manually after each operator run."
+        assessment:
+          status: partially_checked
+          outcome: mixed
+          evidence_refs:
+            - path: "experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md"
+              section: "Interpretation"
+          pending_checks: []
+          limitations:
+            - "Manual reconstruction cost is estimated qualitatively, not timed."
+            - "A later contract must stay smaller than a full validator or generator system."
+          confidence: medium
+
+context:
+  tools:
+    - "ChatGPT"
+    - "GitHub connector"
+    - "Vibe-Lab"
+  language: "Documentation / workflow evidence"
+  environment: "heimgewebe/vibe-lab plus recent ecosystem PR metadata"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

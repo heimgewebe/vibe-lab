@@ -41,6 +41,8 @@
 | `docs/blueprints/blueprint-v2.md` | Blueprint v2 — Delta | active | operative |
 | `docs/concepts/execution-bound-epistemics.md` | Konzept: Execution-Bound Epistemics für Vibe-Lab | draft | exploratory |
 | `docs/concepts/experiment-ontology.md` | Konzept: Iteration, Execution Scope und Reconciliation | active | operative |
+| `docs/ecosystem/README.md` | Ecosystem Docs | active | navigation |
+| `docs/ecosystem/vibe-lab-productive-role.md` | Vibe-Lab Productive Role Boundary | active | operative |
 | `docs/evaluations/agent-skill-file-fruitfulness.md` | Agent/Skill File Fruitfulness | draft | diagnosis |
 | `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` | Cross-Diagnosis RRG-01 / RRG-02 gegen RRG-03-Remediation-Kandidaten | draft | operative |
 | `docs/evaluations/rrg03-remediation-strategy-comparison.md` | RRG-03 Remediation Strategy Comparison with RRG-01/RRG-02 Cross-Check | draft | operative |
@@ -253,6 +255,20 @@
 | `experiments/2026-07-05_ecosystem-organ-preflight/failure_modes.md` | Failure Modes: Ecosystem Organ Preflight | active | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/method.md` | Methode: Ecosystem Organ Preflight | active | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/results/result.md` | Result: Ecosystem Organ Preflight Seed | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/AGENT_NOTE.md` | Agent Note: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/CONTEXT.md` | Operator Learning Capture Sample — Kontext | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/INITIAL.md` | Initiale Situation: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/README.md` | Operator Learning Capture Sample | active | navigation |
+| `experiments/2026-07-08_operator-learning-capture-sample/artifacts/README.md` | Operator Learning Capture Sample Artifacts | active | navigation |
+| `experiments/2026-07-08_operator-learning-capture-sample/failure_modes.md` | Failure Modes: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/method.md` | Methode: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md` | Assessment: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/decision-boundary.md` | Decision Boundary: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/followup.md` | Follow-up: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/nonclaims.md` | Non-Claims: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/result.md` | Result: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/review-questions.md` | Review Questions: Operator Learning Capture Sample | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md` | Scope Stop: Operator Learning Capture Sample | active | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md` | Context — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` | Initial Prompt — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` | Failure Modes — rLens Agent Context Conditions | designed | operative |

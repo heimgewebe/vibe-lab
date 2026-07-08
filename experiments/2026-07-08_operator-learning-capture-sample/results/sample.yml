@@ -1,0 +1,96 @@
+schema_version: "0.1.0"
+sample_id: "operator-learning-capture-sample-2026-07-08"
+timestamp: "2026-07-08T06:20:00Z"
+claim_boundary: "anecdotal_sample_only"
+
+items:
+  - id: "vibe-lab-pr-294-draft-export-boundary"
+    source:
+      repo: "heimgewebe/vibe-lab"
+      pr: 294
+      state: "closed"
+      merged: true
+      title: "feat: add evidence-bound status instruction block"
+      evidence_refs:
+        - "github:heimgewebe/vibe-lab#294"
+        - "instruction-blocks/evidence-bound-status.md"
+        - "scripts/exports/export_contract.py"
+    observed_signal: "Draft instruction content needed an explicit export boundary so non-adopted guidance would not leak into tool-facing exports."
+    evidence_boundary: "observed"
+    candidate_pattern: "claim_or_rule_before_adoption"
+    followup_owner: "vibe_lab"
+    non_claims:
+      - "Does not prove the evidence-bound-status block is effective."
+      - "Does not prove Cursor or Copilot are productive primary consumers."
+
+  - id: "vibe-lab-pr-292-organ-preflight-boundary"
+    source:
+      repo: "heimgewebe/vibe-lab"
+      pr: 292
+      state: "closed"
+      merged: true
+      title: "feat: add ecosystem organ preflight experiment seed"
+      evidence_refs:
+        - "github:heimgewebe/vibe-lab#292"
+        - "experiments/2026-07-05_ecosystem-organ-preflight/manifest.yml"
+        - "experiments/2026-07-05_ecosystem-organ-preflight/results/runs/run-001.yml"
+    observed_signal: "A single run can capture organ and truth-source boundaries, but it must not be promoted as effectiveness evidence."
+    evidence_boundary: "observed"
+    candidate_pattern: "boundary_before_claim"
+    followup_owner: "vibe_lab"
+    non_claims:
+      - "Does not prove organ preflight reduces rework."
+      - "Does not establish a baseline."
+
+  - id: "grabowski-pr-99-rlens-context-nonclaims"
+    source:
+      repo: "heimgewebe/grabowski"
+      pr: 99
+      state: "closed"
+      merged: false
+      closure: "closed_unmerged"
+      title: "feat: add rlens context pack query bridge"
+      evidence_refs:
+        - "github:heimgewebe/grabowski#99"
+    observed_signal: "A closed-unmerged rLens/RepoBrief context-pack PR still records a useful bounded-context non-claim: context packs are read-only and non-proof-bearing, but this observation must not be treated as merged-product evidence."
+    evidence_boundary: "observed_closed_unmerged"
+    candidate_pattern: "context_not_truth"
+    followup_owner: "grabowski"
+    non_claims:
+      - "Does not prove rLens context improves answer quality."
+      - "Does not prove runtime behavior."
+      - "Does not prove the PR landed in Grabowski main."
+
+  - id: "bureau-pr-195-open-pr-claim-guard-followups"
+    source:
+      repo: "heimgewebe/bureau"
+      pr: 195
+      state: "closed"
+      merged: true
+      title: "fix: harden open PR task matching"
+      evidence_refs:
+        - "github:heimgewebe/bureau#195"
+    observed_signal: "Open-PR/task matching produced follow-up tasks for scoped observation failures, structured PR metadata, and pagination, which is a concrete example of operational friction becoming registered follow-up work."
+    evidence_boundary: "observed"
+    candidate_pattern: "friction_to_followup_candidate"
+    followup_owner: "bureau"
+    non_claims:
+      - "Does not prove Bureau task selection is collision-free in all parallel Grabowski runs."
+      - "Does not prove Vibe-Lab should mutate Bureau queues."
+
+candidate_patterns:
+  - id: "boundary_before_claim"
+    item_refs:
+      - "vibe-lab-pr-292-organ-preflight-boundary"
+      - "vibe-lab-pr-294-draft-export-boundary"
+      - "grabowski-pr-99-rlens-context-nonclaims"
+    interpretation: "Recent work repeatedly needed explicit boundaries before treating a result, context pack, or instruction as productive evidence."
+    status: "candidate"
+    suggested_next_step: "Keep using Vibe-Lab as evidence and boundary memory before building any direct productive export."
+
+  - id: "friction_to_followup_candidate"
+    item_refs:
+      - "bureau-pr-195-open-pr-claim-guard-followups"
+    interpretation: "Bureau already has a pattern where operational friction becomes follow-up work; Vibe-Lab should align with that as candidate source only."
+    status: "single_observation"
+    suggested_next_step: "Do not build Bureau export until multiple Vibe-Lab samples show repeated follow-up-worthy friction."

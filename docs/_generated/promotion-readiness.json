@@ -315,6 +315,21 @@
     },
     {
       "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [],
+      "notes": [],
+      "path": "experiments/2026-07-08_operator-learning-capture-sample",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "testing",
+      "warnings": [
+        "falsifiability_assessment_inconclusive"
+      ]
+    },
+    {
+      "adoption_basis": "",
       "execution_status": "designed",
       "falsifiability_triggered": false,
       "historical_escape": false,
@@ -335,12 +350,12 @@
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 21,
+    "experiments_checked": 22,
     "historical_escape": 1,
     "not_ready": 13,
     "pre_execution_hold": 3,
-    "ready": 4,
-    "warnings": 5
+    "ready": 5,
+    "warnings": 6
   },
   "trigger": "need_for_reproducibility"
 }
