@@ -1,0 +1,387 @@
+schema_version: "0.1.0"
+run_id: "run-002-friction-ledger"
+generated_at: "2026-07-08T17:00:00Z"
+claim_boundary: "read_only_evidence_aggregation"
+
+source:
+  organ: "grabowski"
+  tool: "grabowski_friction_summary"
+  ledger_path: "/home/alex/.local/state/grabowski/friction/events.jsonl"
+  snapshot:
+    scanned_lines: 39
+    returned_events: 39
+    unresolved: 34
+    decision_required: 34
+    verified_live: true
+    verification_note: >-
+      The 34 unresolved decision_required events were re-derived from the full
+      events array (resolved:false) and cross-checked against the ledger's own
+      by_failure_class aggregates. They are self-consistent
+      (platform_filter 20, environment_tooling 6, actionable_failure 4, policy_gate 4).
+  ledger_authority: "read_only_evidence"
+  ledger_does_not_establish:
+    - "task_resume_permission"
+    - "root_cause"
+    - "merge_readiness"
+    - "policy_exception"
+    - "raw_log_safety"
+
+# Two taxonomies exist in the ledger: `kind` (raw) and `failure_class` (normalized).
+# This run aggregates by `failure_class` and by operation semantics.
+taxonomy_note:
+  kind_to_failure_class:
+    platform_filter: "platform_filter"
+    operator_bug: "actionable_failure"
+    execution_context: "environment_tooling"
+    connector_snapshot: "environment_tooling"
+    fail_closed_gate: "policy_gate"
+
+# Priority axes (in the order requested):
+#   1 frequency  2 repeatability  3 operational_damage
+#   4 owner_clarity  5 actionability_without_new_steering_authority
+# Scores are Vibe-Lab estimates, not ledger facts (see boundary per pattern).
+
+patterns:
+  - id: "P1_clean_local_then_blocked_publish"
+    priority_rank: 1
+    title: "Clean local work -> publish/merge/push/land step blocked by platform safety filter"
+    member_event_ids:
+      - "15eac059d4b64a1083bb9ad520a55a64"  # push after clean rebase
+      - "267cf730f4524fe0b1ad210ede3ea1ab"  # push after commit
+      - "c6ebcdc7ced6437294ec898bdab37396"  # force-with-lease push
+      - "b76fda53c288495ba84280cb1847c6e9"  # push corrected PR #99 branch
+      - "61654db60a97417e845610a115c9425b"  # merge PR #27 (clean + CI green)
+      - "f25644c5c5f744ab99e3c537abf73f67"  # merge PR #98 (mergeable + green)
+      - "6a536fc8da374345b27502f84546814f"  # commit+push after validation
+      - "ec080824eb9d4a06b720e306c0853f6a"  # publish-workflow write (review trigger)
+    frequency: 8
+    failure_class: "platform_filter"
+    surfaces: ["local_shell", "terminal", "github"]
+    axes:
+      frequency: "high"
+      repeatability: "high"          # reproducible on push/merge/commit verbs after clean state
+      operational_damage: "high"     # work is complete but cannot land -> delivery stalls
+      owner_clarity: "high"
+      actionability_without_new_authority: "high"
+    interpretation: >-
+      The single dominant, repeatable pattern. Across at least 8 events the operator
+      completed clean local work (rebase, commit, green CI) and the landing action
+      (git push, force-with-lease, gh pr merge / REST merge, or a PR review-trigger
+      comment) was blocked by the platform safety filter before execution.
+    suggested_owner: "grabowski"
+    owner_note: >-
+      SUGGESTION only, not a directive. Candidate direction: a narrower, typed,
+      receipt-bound publish/merge surface that expresses intent explicitly instead of
+      raw git/gh command strings that trip the filter. Policy scope (whether any
+      auto-merge is ever permitted) is a human/Operator decision, not Vibe-Lab's.
+    do_not:
+      - "Do NOT build a bypass of the safety filter."
+      - "Do NOT auto-push, auto-merge, or auto-deploy from Vibe-Lab."
+    boundary: "belegt"              # events + class are ledger-given
+    uncertainty: 0.12
+    interpolation: 0.2
+    non_claims:
+      - "Does not prove the filter mis-fires (root cause is not established by the ledger)."
+      - "Does not prove a typed surface would pass the filter."
+
+  - id: "P2_platform_filter_blocks_readonly_inspection"
+    priority_rank: 2
+    title: "Read-only inspection / precheck / validation intermittently blocked by platform filter"
+    member_event_ids:
+      - "8729a6c8ef9044e3b13e1b1df67fbe2a"
+      - "64d7c6083f474f0cbb2f8d2139786426"
+      - "01aac3d30b7745e5be11ba843d2d3ac6"
+      - "f24796c50cd4492dbbece96312413831"
+      - "c0b1809b915248dea05b5ded49bfc5fb"
+      - "098fae3d2be94c1bbba0ede62f1b44f7"
+    frequency: 6
+    failure_class: "platform_filter"
+    surfaces: ["github", "chat_tool", "terminal"]
+    axes:
+      frequency: "high"
+      repeatability: "low"          # ledger itself notes "adjacent equivalent reads succeeded"
+      operational_damage: "low_medium"  # typed grabowski read tools exist as fallback
+      owner_clarity: "medium"
+      actionability_without_new_authority: "high"
+    interpretation: >-
+      Read-only PR/check inspection, git status/file reads, gh metadata probes and
+      `make validate` were intermittently blocked. The intermittency is the notable
+      part: equivalent adjacent reads succeeded.
+    suggested_owner: "grabowski"
+    owner_note: >-
+      SUGGESTION: prefer the typed read tools (grabowski_git_status, grabowski_github_*,
+      grabowski_read_text) over raw shell/gh strings; investigate filter non-determinism.
+    boundary: "belegt"             # that reads were blocked
+    root_cause_boundary: "spekulativ"  # why intermittent is unproven
+    uncertainty: 0.3
+    interpolation: 0.3
+    non_claims:
+      - "Does not establish why the filter is non-deterministic."
+
+  - id: "P3_platform_filter_blocks_write_and_checkout"
+    priority_rank: 3
+    title: "Generic repo write/edit and non-deleting checkout-lifecycle ops blocked by platform filter"
+    member_event_ids:
+      - "579ffe9d3a2d48d888fff888715cf869"
+      - "6e06d4f1771c4376b3b4bfda96aab7a5"
+      - "58913e1385564947932db0090abb354a"
+      - "49bc0e147f71429a82c602f9f86bbfdd"
+      - "a46e257bc0b84a349d2fee2a225a29a7"
+    frequency: 5
+    failure_class: "platform_filter"
+    surfaces: ["chat_tool", "github"]
+    axes:
+      frequency: "medium"
+      repeatability: "medium"
+      operational_damage: "medium"
+      owner_clarity: "medium"
+      actionability_without_new_authority: "high"
+    interpretation: >-
+      Bounded repo edits, context/friction writes, multi-file experiment-seed creation,
+      and non-deleting checkout normalization/cleanup-apply were blocked even with
+      persisted dry-run plan_id, expected sha256 and confirmation.
+    suggested_owner: "grabowski"
+    owner_note: "SUGGESTION: route through typed create/replace/checkout tools rather than raw shell/contents calls."
+    boundary: "belegt"
+    uncertainty: 0.3
+    interpolation: 0.3
+    non_claims:
+      - "Does not prove a single filter rule causes all sub-cases."
+
+  - id: "P4_capability_contract_mismatch_file_delete"
+    priority_rank: 4
+    title: "Capability contract mismatch: file_delete not enabled, so remove_path / reversible-remove is unusable"
+    member_event_ids:
+      - "8ad7833a486a466e9791ce31f438695c"
+      - "bdcbdb7032fe4b3fac19cae746cf2b08"
+    frequency: 2
+    failure_class: ["policy_gate", "actionable_failure"]
+    surfaces: ["filesystem"]
+    axes:
+      frequency: "low"
+      repeatability: "high"         # deterministic capability gap
+      operational_damage: "medium"  # reversible-remove/restore path unusable
+      owner_clarity: "very_high"
+      actionability_without_new_authority: "high"
+    interpretation: >-
+      grabowski_remove_path fails because the trusted-owner access profile enables
+      file_move/file_destroy but not the file_delete capability that remove_path's
+      reversible-remove + restore_removed_path semantics require. Two independent smokes
+      report the same contract gap.
+    quick_win: true
+    quick_win_note: >-
+      Low frequency but deterministic, single clear owner, and small fix surface -
+      a strong quick win despite not topping the frequency axis.
+    suggested_owner: "grabowski"
+    owner_note: >-
+      SUGGESTION: reconcile the access profile (enable file_delete) OR change the
+      remove_path/restore contract so it does not depend on an unavailable capability.
+    boundary: "belegt"
+    uncertainty: 0.1
+    interpolation: 0.1
+    non_claims:
+      - "Does not decide whether enabling file_delete is desirable; that is an owner policy choice."
+
+  - id: "P5_recovery_backup_gate_fail_closed"
+    priority_rank: 5
+    title: "Recovery/backup gate stuck fail-closed (heimserver down, wg-prod-1 restic refused, rclone gdrive OAuth revoked)"
+    member_event_ids:
+      - "344a310859744cc284fc9bdc15bb0766"  # heimserver no route to host
+      - "e4623d1f8c3441178d1c53d94762ee5b"  # heimserver down posture
+      - "309cb40a84774a979cc1a0de5bbec1f2"  # wg-prod-1 restic probe refused
+      - "3b600b7731294faf8c8ba53af98dbcce"  # rclone gdrive invalid_grant -> stale backup
+    frequency: 4
+    failure_class: ["environment_tooling", "policy_gate"]
+    surfaces: ["recovery"]
+    axes:
+      frequency: "medium"
+      repeatability: "high"
+      operational_damage: "high"    # no fresh backups + recovery-gated privileged paths blocked
+      owner_clarity: "high"
+      actionability_without_new_authority: "medium"  # fixes are infra/external, not Vibe-Lab
+    interpretation: >-
+      The recovery gate cannot go green: heimserver is unreachable, the wg-prod-1
+      fallback rest-server refuses connection, and the local restic backup is stale
+      because rclone's Google Drive OAuth token is revoked (invalid_grant). Highest
+      operational-damage cluster because it silently disables backups and any
+      recovery-gated privileged action.
+    suggested_owner: "operator_infra"
+    owner_note: >-
+      SUGGESTION: reconnect rclone gdrive OAuth (restores backup freshness), and stand
+      up either heimserver or the wg-prod-1 rest-server as a recovery target. External
+      to Vibe-Lab and to Grabowski's tool contract.
+    boundary: "belegt"
+    uncertainty: 0.15
+    interpolation: 0.2
+    non_claims:
+      - "Does not establish which recovery target should be canonical."
+
+  - id: "P6_rlens_context_unavailable"
+    priority_rank: 6
+    title: "rLens/RepoBrief context unavailable: auth 401 + bundle discovery/registry mismatch"
+    member_event_ids:
+      - "b312e8da91d44c31b3917b7cb8183d12"  # 401 on authenticated run
+      - "9a4e4f4e162c42339388168d16cd5247"  # bundle discovery no_bundle_found
+    frequency: 2
+    failure_class: "actionable_failure"
+    surfaces: ["runtime"]
+    axes:
+      frequency: "low"
+      repeatability: "medium"
+      operational_damage: "medium"
+      owner_clarity: "high"
+      actionability_without_new_authority: "medium"
+    interpretation: >-
+      Fresh rLens dumps cannot be produced (HTTP 401) and the legacy registry points at
+      bundle stems/paths that discover/status can no longer resolve, so context packs
+      are effectively unavailable.
+    suggested_owner: "lenskit_rlens"
+    owner_note: "SUGGESTION: fix the run auth token and reconcile bundle discovery/registry path semantics."
+    boundary: "belegt"
+    uncertainty: 0.15
+    interpolation: 0.2
+    non_claims:
+      - "Does not prove rLens context improves answer quality (orthogonal to availability)."
+
+  - id: "P7_connector_tool_snapshot_lag"
+    priority_rank: 7
+    title: "Connector tool snapshot lag: client sees 91 tools vs runtime-declared 97"
+    member_event_ids:
+      - "9964b2c18a7e45a9bb3a4baf68e388ad"
+      - "7b25c8714ebf4204a0d7418a6372e74b"
+    frequency: 2
+    failure_class: ["platform_filter", "environment_tooling"]
+    surfaces: ["connector"]
+    axes:
+      frequency: "low"
+      repeatability: "medium"
+      operational_damage: "medium"    # six runtime tools uncallable from client
+      owner_clarity: "high"
+      actionability_without_new_authority: "medium"
+    interpretation: >-
+      The ChatGPT connector's frozen client-side tool snapshot lags the runtime
+      contract; six declared tools (incl. grip_list, grip_run, rlens_*) are not callable
+      until the snapshot refreshes after deployment. This is a known, self-declared gap.
+    suggested_owner: "connector_deployment"
+    owner_note: "SUGGESTION: redeploy from the fixing PR and re-run contract + client-snapshot smoke before closing."
+    boundary: "belegt"
+    uncertainty: 0.2
+    interpolation: 0.2
+    non_claims:
+      - "Does not affect Vibe-Lab's own tool access; scoped to the ChatGPT operator client."
+
+  - id: "P8_unbounded_crash_core_artifacts"
+    priority_rank: 8
+    title: "Unbounded crash/core artifacts in home dir from GUI/Electron session churn"
+    member_event_ids:
+      - "087b5b6446054895aba2bb7bb06bf087"
+      - "58cf823e30c8434da7c2bb3e00ec9d1a"
+    frequency: 2
+    failure_class: "environment_tooling"
+    surfaces: ["filesystem", "runtime"]
+    axes:
+      frequency: "low"
+      repeatability: "medium"
+      operational_damage: "medium"    # disk pressure + sensitive memory images
+      owner_clarity: "high"
+      actionability_without_new_authority: "medium"
+    interpretation: >-
+      Home directory accumulates large ELF crash artifacts because the user-session
+      core-file policy is unbounded; correlated with Chromium/Electron SIGTRAP dumps and
+      a portal heap abort. A DefaultLimitCORE=0 guard and one cleanup already happened
+      (a related event is resolved), but the two here remain open.
+    suggested_owner: "operator_environment"
+    owner_note: "SUGGESTION: confirm the core-file guard holds for future sessions; decide on retention policy."
+    boundary: "belegt"
+    uncertainty: 0.2
+    interpolation: 0.2
+    non_claims:
+      - "Does not establish a single root process for all crashes."
+
+  - id: "P9_task_reconcile_credential_false_positive"
+    priority_rank: 9
+    title: "Task reconcile blocked by credential-pattern false positive on stored argv"
+    member_event_ids:
+      - "3695939ca40647a6ab2dc2f0cda981e6"
+    frequency: 1
+    failure_class: "actionable_failure"
+    surfaces: ["runtime"]
+    axes:
+      frequency: "single_observation"
+      repeatability: "unknown"
+      operational_damage: "medium"    # task state cannot be reconciled
+      owner_clarity: "high"
+      actionability_without_new_authority: "high"
+    interpretation: >-
+      Task reconcile preview refuses to run because a stored task argv trips the
+      runtime's credential-pattern classifier. Single observation.
+    suggested_owner: "grabowski"
+    owner_note: "SUGGESTION: narrow the credential-pattern classifier or sanitize stored argv descriptors."
+    boundary: "belegt"
+    uncertainty: 0.2
+    interpolation: 0.2
+    non_claims:
+      - "Single observation; not shown to recur."
+
+  - id: "P10_runtime_bootstrap_gap"
+    priority_rank: 10
+    title: "New service has no persistent runtime wiring after passing a temporary smoke"
+    member_event_ids:
+      - "0f5cb8619dde41fcbf0baa664c3e21ef"
+    frequency: 1
+    failure_class: "environment_tooling"
+    surfaces: ["runtime"]
+    axes:
+      frequency: "single_observation"
+      repeatability: "unknown"
+      operational_damage: "low_medium"
+      owner_clarity: "medium"
+      actionability_without_new_authority: "medium"
+    interpretation: >-
+      Endpoint smoke passed in a temporary process, but no persistent service exists and
+      neighboring repos have active dirty work; persistent wiring was deferred. Single
+      observation.
+    suggested_owner: "operator_runtime"
+    owner_note: "SUGGESTION: dedicated follow-up for persistent wiring after active worktrees are clean."
+    boundary: "belegt"
+    uncertainty: 0.3
+    interpolation: 0.3
+    non_claims:
+      - "Single observation; not a pattern yet."
+
+  - id: "P11_build_clean_ownership_and_path"
+    priority_rank: 11
+    title: "Build/clean blocked by mixed target ownership + missing systemd PATH + safety filter"
+    member_event_ids:
+      - "30891e4375c848d487c2922c6e9afb70"
+    frequency: 1
+    failure_class: "policy_gate"
+    surfaces: ["filesystem"]
+    axes:
+      frequency: "single_observation"
+      repeatability: "unknown"
+      operational_damage: "low_medium"
+      owner_clarity: "medium"
+      actionability_without_new_authority: "medium"
+    interpretation: >-
+      cargo clean on weltgewebe failed on permission-denied target objects; direct
+      terminal cargo clean was also filter-blocked and the first task attempt lacked
+      cargo on the systemd PATH. Single observation, multiple compounding causes.
+    suggested_owner: "operator_environment"
+    owner_note: "SUGGESTION: targeted ownership/permission audit of the weltgewebe target before cleanup."
+    boundary: "belegt"
+    uncertainty: 0.3
+    interpolation: 0.3
+    non_claims:
+      - "Single observation; compounding causes not isolated."
+
+aggregate:
+  total_unresolved_events_mapped: 34
+  patterns_count: 11
+  dominant_pattern: "P1_clean_local_then_blocked_publish"
+  dominant_pattern_carried_by_live_ledger: true
+  platform_filter_share_of_unresolved: "20 of 34"
+  note: >-
+    The expected top pattern (clean local -> blocked publish/merge/push) is confirmed by
+    the live ledger, not merely inherited from the task summary. Owners are suggestions;
+    Vibe-Lab does not steer, merge, deploy, or mutate Bureau queues.

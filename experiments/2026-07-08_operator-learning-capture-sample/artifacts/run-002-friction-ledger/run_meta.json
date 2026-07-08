@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-002-friction-ledger",
+  "generated_at": "2026-07-08T17:00:00Z",
+  "executor": "claude-code:grabowski-mcp",
+  "command": "grabowski_friction_summary(limit=200) live read; manual evidence-bound aggregation of 34 unresolved decision_required events into 11 pattern candidates",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-002-friction-ledger/output.txt",
+  "provenance_level": "self_reported"
+}
