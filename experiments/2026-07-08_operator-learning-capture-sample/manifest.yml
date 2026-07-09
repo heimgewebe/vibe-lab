@@ -17,10 +17,14 @@ experiment:
     - "artifacts/run-003-friction-ledger-snapshot-2/pattern_stability.yml"
     - "artifacts/run-003-friction-ledger-snapshot-2/snapshot-2-new-events.jsonl"
     - "artifacts/run-003-friction-ledger-snapshot-2/result.md"
+    - "artifacts/run-004-friction-ledger-turnover/trigger_evaluation.yml"
+    - "artifacts/run-004-friction-ledger-turnover/pattern_stability.yml"
+    - "artifacts/run-004-friction-ledger-turnover/snapshot-3-new-events.jsonl"
+    - "artifacts/run-004-friction-ledger-turnover/result.md"
   created: "2026-07-08"
-  updated: "2026-07-08"
+  updated: "2026-07-09"
   author: "ChatGPT / Grabowski"
-  iteration: 3
+  iteration: 4
   evidence_level: anecdotal
   falsifiability:
     version: 1
