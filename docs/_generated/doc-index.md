@@ -265,6 +265,8 @@
 | `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/result.md` | Result: Operator Learning Capture — run-003 Repeatability Probe | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/result.md` | Result: Operator Learning Capture — run-004 Turnover Re-Check | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-trigger-rule.md` | run-004 Trigger Rule — Friction-Ledger Repeatability | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/followup-candidate.md` | Follow-up Candidate — P13 Connector Transport Diagnostics | active | operative |
+| `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/result.md` | Result: Operator Learning Capture — run-005 Connector Transport Diagnostics | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/failure_modes.md` | Failure Modes: Operator Learning Capture Sample | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/method.md` | Methode: Operator Learning Capture Sample | active | operative |
 | `experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md` | Assessment: Operator Learning Capture Sample | active | operative |

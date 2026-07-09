@@ -21,10 +21,14 @@ experiment:
     - "artifacts/run-004-friction-ledger-turnover/pattern_stability.yml"
     - "artifacts/run-004-friction-ledger-turnover/snapshot-3-new-events.jsonl"
     - "artifacts/run-004-friction-ledger-turnover/result.md"
+    - "artifacts/run-005-connector-transport-diagnostics/diagnostic-proposal.yml"
+    - "artifacts/run-005-connector-transport-diagnostics/transport-events.jsonl"
+    - "artifacts/run-005-connector-transport-diagnostics/followup-candidate.md"
+    - "artifacts/run-005-connector-transport-diagnostics/result.md"
   created: "2026-07-08"
   updated: "2026-07-09"
   author: "ChatGPT / Grabowski"
-  iteration: 4
+  iteration: 5
   evidence_level: anecdotal
   falsifiability:
     version: 1

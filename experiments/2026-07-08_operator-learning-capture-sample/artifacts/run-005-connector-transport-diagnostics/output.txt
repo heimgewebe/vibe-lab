@@ -1,0 +1,2 @@
+run-005 executed at 2026-07-09T16:44:32Z
+event_count=6 unresolved=4 resolved=2 recommendation=proposal_ready_connector_transport_diagnostics
