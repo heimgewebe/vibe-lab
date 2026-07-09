@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+run_id: "run-004-friction-ledger-turnover"
+generated_at: "2026-07-09T15:34:06Z"
+claim_boundary: "repeatability_probe_only"
+patterns:
+  - id: "P1_clean_local_then_blocked_publish"
+    prior_baseline_instances: 8
+    new_instances_in_run_004: 0
+    stability: "not_repeated_fresh"
+    boundary: "belegt (new event count and text-classification); plausibel (semantic grouping)"
+    uncertainty: 0.45
+    interpolation: 0.25
+  - id: "P12_production_secret_gate_and_exposure"
+    status: "tracked_separately"
+    source_issue: "heimgewebe/weltgewebe#1375"
+    stability: "not_advanced_by_vibe_lab"
+    boundary: "belegt (ledger event exists); action outside Vibe-Lab"
+new_pattern_candidates:
+  - id: "P13_connector_transport_502_after_broad_or_long_calls"
+    evidence_new_event_count: 4
+    stability: "candidate"
+    boundary: "plausibel"
+  - id: "P14_recovery_gate_and_backup_readiness_still_blocking_high_impact_paths"
+    evidence_new_event_count: 1
+    stability: "candidate"
+    boundary: "plausibel"

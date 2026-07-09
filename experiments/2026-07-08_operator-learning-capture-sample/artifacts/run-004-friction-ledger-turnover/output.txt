@@ -1,0 +1,2 @@
+run-004 executed at 2026-07-09T15:34:06Z
+returned=50 unresolved=41 decision_required=41 new_unresolved=6 new_p1=0

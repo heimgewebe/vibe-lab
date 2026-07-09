@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+run_id: "run-004-friction-ledger-turnover"
+generated_at: "2026-07-09T15:34:06Z"
+claim_boundary: "repeatability_probe_only"
+source_ref: "grabowski_friction_summary(limit=200) @ /home/alex/.local/state/grabowski/friction/events.jsonl"
+baseline:
+  run: "run-003-friction-ledger-snapshot-2"
+  generated_at: "2026-07-08T17:25:00Z"
+  event_count: 40
+  unresolved_count: 35
+  decision_required_count: 35
+  baseline_event_id_count: 35
+fresh_snapshot:
+  snapshot_id: "friction-ledger-2026-07-09-run-004"
+  snapshot_time: "2026-07-09T15:34:06Z"
+  event_count: 50
+  unresolved_count: 41
+  decision_required_count: 41
+  by_kind: {"connector_snapshot": 1, "connector_transport": 4, "execution_context": 9, "fail_closed_gate": 6, "operator_bug": 7, "platform_filter": 23}
+  by_surface: {"chat_tool": 9, "connector": 8, "filesystem": 5, "github": 8, "local_shell": 2, "recovery": 5, "runtime": 8, "terminal": 5}
+trigger_evaluation:
+  interval_24h_utc_met: false
+  interval_note: "Strict run-003 timestamp is 2026-07-08T17:25Z; local scheduled check occurred before 2026-07-09T17:25Z, so interval alone is not used."
+  ledger_turnover_met: true
+  unresolved_threshold_met: true
+  new_unresolved_event_count: 6
+  resolved_baseline_event_count: 0
+  new_p1_instance_count: 0
+  live_recurrence_proxy_met: false
+verdict: "trigger_met_run004_executed"
+method_caveat: >-
+  This run is triggered by ledger turnover, not by the 24h interval. It provides better
+  evidence than run-003 because several new unresolved decision_required events appeared,
+  but it still does not establish effectiveness or justify a governance/status upgrade.
+non_claims:
+  - "no usability-to-effectiveness upgrade"
+  - "no operator-friction-capture-contract-v0"
+  - "no Bureau mutation"
+  - "no secret rotation or privileged repair inside Vibe-Lab"

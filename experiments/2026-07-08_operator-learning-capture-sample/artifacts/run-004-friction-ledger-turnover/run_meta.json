@@ -1,0 +1,10 @@
+{
+  "command": "Evaluate run-004 trigger rule with grabowski_friction_summary(limit=200); run because ledger-turnover condition is met.",
+  "executor": "scheduled ChatGPT automation + grabowski_mcp",
+  "exit_code": 0,
+  "generated_at": "2026-07-09T15:34:06Z",
+  "provenance_level": "machine_verified",
+  "run_id": "run-004-friction-ledger-turnover",
+  "schema_version": "0.1.0",
+  "test_output_file": "artifacts/run-004-friction-ledger-turnover/output.txt"
+}
