@@ -8,16 +8,17 @@ experiment:
     miss diagnostics compared with no-rLens/no-RepoBrief operation, but no
     default workbench surface should be promoted until comparable executed runs
     show improvement without hiding stale evidence or increasing false confidence.
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: reconstructed
+  execution_refs:
+    - "results/run-series.yml"
   evidence_level: experimental
   created: "2026-07-09"
   updated: "2026-07-09"
   author: "ChatGPT / Grabowski"
   triggered_by: "bureau:RPU-V1-T012"
-  iteration: 1
+  iteration: 2
   falsifiability:
     version: 1
     falsification_criterion: >
@@ -37,7 +38,7 @@ experiment:
             - "Pair tasks by task_kind, changed-file count, expected contracts and baseline difficulty."
             - "Reject comparisons across non-comparable task classes."
           limitations:
-            - "No executed condition series exists in this seed."
+            - "Only a limited reconstructed run series exists; no paired counterfactuals yet."
           confidence: low
       - id: "full_context_increases_false_confidence"
         statement: "Full/resolved evidence may increase apparent fluency while increasing stale-source or uncited claims."

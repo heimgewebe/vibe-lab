@@ -282,7 +282,7 @@
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md` | README | — | — |
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md` | Failure Modes — RepoBrief Workbench Usefulness Evaluation | designed | operative |
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md` | RepoBrief Workbench Usefulness Evaluation — Method | designed | operative |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` | RepoBrief Workbench Usefulness Evaluation — Result | draft | operative |
+| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` | RepoBrief Workbench Usefulness Evaluation — Result | inconclusive | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

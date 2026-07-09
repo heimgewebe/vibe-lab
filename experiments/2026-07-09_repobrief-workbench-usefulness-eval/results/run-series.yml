@@ -1,0 +1,257 @@
+schema_version: 1
+experiment: repobrief-workbench-usefulness-eval
+bureau_task: RPU-V1-T021
+status: executed_limited
+generated_at: "2026-07-09T12:20:00Z"
+operator: "ChatGPT / Grabowski"
+source_basis:
+  repos:
+    lenskit_main_after_pr_940: "3ec164d4a6b9b494821268e7645ea40806c22ff7"
+    bureau_main_after_registry_pr_352: "6b7a1cc2a779f5b2ff1c173f54f3e2b14eb3ae01"
+  evidence_files:
+    - "experiments/2026-07-09_repobrief-workbench-usefulness-eval/measurement-plan.yml"
+    - "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/evidence.jsonl"
+    - "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml"
+minimum_justification:
+  required_by_design: "three comparable task pairs before default promotion"
+  executed_here: "three comparable audited single-run slices"
+  why_smaller_than_pairs: >
+    No independent parallel agents and no uncontaminated counterfactual condition were available in this operator session.
+    Re-running the same tasks under alternative conditions after seeing the implementation would contaminate the comparison.
+    Therefore this series is a lower-confidence execution check, not promotion evidence.
+  consequence: "No default condition is promoted from this run series."
+run_conditions:
+  comparable_task_class: "RepoBrief agent-facing evidence surface implementation"
+  repositories: ["heimgewebe/lenskit"]
+  comparable_diff_band: "small-to-medium Python/docs/test slice"
+  required_external_observations:
+    - "GitHub CI status"
+    - "merged PR metadata"
+    - "operator self-review/proof artifact"
+    - "pre-merge patch SHA"
+runs:
+  - id: run-001-ask-cli
+    task_id: RBGV-V1-T005
+    source_pr: "heimgewebe/lenskit#935"
+    condition: context_pack
+    task_class: "CLI producer for ask context packs"
+    diff_size:
+      changed_files: 7
+      patch_lines: 0
+      band: "small-medium"
+      note: "Patch archived separately; line count not normalized in this Vibe-Lab record."
+    evidence_boundaries:
+      allowed_evidence:
+        - "local focused tests"
+        - "GitHub CI"
+        - "self-review artifact"
+        - "pre-merge diff SHA"
+      disallowed_claims:
+        - "answer correctness"
+        - "repository understanding"
+        - "retrieval quality sufficiency"
+        - "merge readiness from tests alone"
+    scores:
+      localization:
+        score: 4
+        target_file_hit: true
+        target_range_overlap: true
+        symbol_hit: true
+      evidence_completeness:
+        score: 4
+        required_evidence_coverage: "high"
+        citation_coverage: "covered by context-pack tests"
+        stale_evidence_used: false
+      patch_scope:
+        score: 4
+        impact_scope_fit: "fits ask CLI/core/test/docs surface"
+        unexpected_file_count: 0
+      check_fit:
+        score: 4
+        expected_check_coverage: "focused tests plus CI"
+        irrelevant_check_count: 0
+        self_authored_check_only: false
+      miss_taxonomy:
+        categories: []
+        notes: "No blocking miss recorded; retrieval quality remains later eval topic."
+      false_confidence_risk:
+        score: 2
+        unsupported_claim_count: 0
+        hallucinated_path_count: 0
+        uncited_claim_count: 0
+        stale_context_claim_count: 0
+      effort_overhead:
+        context_preparation_minutes: 8
+        execution_minutes: 30
+        review_minutes: 10
+        correction_rounds: 0
+    external_observations:
+      - type: ci
+        value: "GitHub checks green before merge"
+      - type: patch_archive
+        value: "/home/alex/iCloud/Drive/halde/lenskit-pr935.patch sha256=6e5e9bc1b3d8c741e62252b8288ab1e6100711fdf2bdf0aebafa028e2d94e1d4"
+      - type: merge
+        value: "PR #935 merged"
+    decision_signal: "pilot_context_pack_cli; no default promotion"
+  - id: run-002-ask-eval
+    task_id: RBGV-V1-T006
+    source_pr: "heimgewebe/lenskit#936"
+    condition: trace_gated
+    task_class: "gold-query evaluation and promotion gate"
+    diff_size:
+      changed_files: 7
+      patch_lines: 0
+      band: "small-medium"
+      note: "Patch archived separately; line count not normalized in this Vibe-Lab record."
+    evidence_boundaries:
+      allowed_evidence:
+        - "goldset tests"
+        - "promotion-gate semantics"
+        - "GitHub CI"
+        - "self-review artifact"
+      disallowed_claims:
+        - "default promotion safety"
+        - "retrieval quality sufficiency"
+        - "answer correctness"
+        - "repository understanding"
+    scores:
+      localization:
+        score: 4
+        target_file_hit: true
+        target_range_overlap: true
+        symbol_hit: true
+      evidence_completeness:
+        score: 5
+        required_evidence_coverage: "high"
+        citation_coverage: "explicit metric"
+        stale_evidence_used: false
+      patch_scope:
+        score: 4
+        impact_scope_fit: "fits ask-eval/evidence metric surface"
+        unexpected_file_count: 0
+      check_fit:
+        score: 5
+        expected_check_coverage: "focused eval tests plus CI"
+        irrelevant_check_count: 0
+        self_authored_check_only: false
+      miss_taxonomy:
+        categories: []
+        notes: "Baseline-free result correctly remains warning for promotion."
+      false_confidence_risk:
+        score: 1
+        unsupported_claim_count: 0
+        hallucinated_path_count: 0
+        uncited_claim_count: 0
+        stale_context_claim_count: 0
+      effort_overhead:
+        context_preparation_minutes: 10
+        execution_minutes: 35
+        review_minutes: 12
+        correction_rounds: 0
+    external_observations:
+      - type: ci
+        value: "GitHub checks green before merge"
+      - type: patch_archive
+        value: "/home/alex/iCloud/Drive/halde/lenskit-pr936.patch sha256=8be7e1bfd61a86d0fcfe7f411c17ee4f4edcb141b8a38ea7c18ae0f91f6039bd"
+      - type: merge
+        value: "PR #936 merged"
+    decision_signal: "pilot_trace_gated_eval_as_diagnostic_gate; no default promotion"
+  - id: run-003-mcp-resources
+    task_id: RPU-V1-T020
+    source_pr: "heimgewebe/lenskit#940"
+    condition: context_pack
+    task_class: "read-only MCP resource adapter"
+    diff_size:
+      changed_files: 6
+      patch_lines: 577
+      band: "medium"
+      note: "Patch archived with normalized line count from pre-merge diff."
+    evidence_boundaries:
+      allowed_evidence:
+        - "resource read tests"
+        - "MCP boundary doc tests"
+        - "GitHub CI"
+        - "self-review artifact"
+      disallowed_claims:
+        - "MCP server availability"
+        - "transport security"
+        - "authentication correctness"
+        - "runtime deployment"
+        - "answer correctness"
+    scores:
+      localization:
+        score: 5
+        target_file_hit: true
+        target_range_overlap: true
+        symbol_hit: true
+      evidence_completeness:
+        score: 5
+        required_evidence_coverage: "high"
+        citation_coverage: "not applicable to resource adapter; context coverage required instead"
+        stale_evidence_used: false
+      patch_scope:
+        score: 4
+        impact_scope_fit: "fits MCP resource adapter/tests/docs/proof only"
+        unexpected_file_count: 0
+      check_fit:
+        score: 5
+        expected_check_coverage: "focused resource/boundary/frontdoor/snapshot-create tests plus CI"
+        irrelevant_check_count: 0
+        self_authored_check_only: false
+      miss_taxonomy:
+        categories:
+          - "implementation_bug_fixed_before_pr"
+        notes: "Initial relative artifact path bug was caught by tests and fixed before commit/PR."
+      false_confidence_risk:
+        score: 1
+        unsupported_claim_count: 0
+        hallucinated_path_count: 0
+        uncited_claim_count: 0
+        stale_context_claim_count: 0
+      effort_overhead:
+        context_preparation_minutes: 12
+        execution_minutes: 40
+        review_minutes: 12
+        correction_rounds: 1
+    external_observations:
+      - type: ci
+        value: "GitHub checks green before merge"
+      - type: patch_archive
+        value: "/home/alex/iCloud/Drive/halde/lenskit-pr940.patch sha256=977e0bd1ba0104d18a12aa2c54a8ecb0f6f40ad24d9bdc923b11992417c5556d"
+      - type: merge
+        value: "PR #940 merged"
+    decision_signal: "pilot_mcp_readonly_resources_as_code_adapter; no server/default promotion"
+aggregate:
+  comparable_run_count: 3
+  comparable_pair_count: 0
+  smaller_minimum_justified: true
+  central_observation: >
+    Workbench-like surfaces helped keep boundaries explicit and caught at least one concrete implementation bug before PR creation, but the series lacks paired counterfactuals and cannot prove superiority.
+  directional_metrics:
+    localization: "positive signal"
+    evidence_completeness: "positive signal"
+    patch_scope: "positive signal"
+    check_fit: "positive signal"
+    miss_taxonomy: "useful diagnostic signal"
+    false_confidence_risk: "low in recorded runs"
+    effort_overhead: "moderate"
+  external_observation_summary:
+    ci_or_existing_test_result: true
+    operator_or_review_observation: true
+    patch_archive: true
+final_decisions:
+  no_context_no_rlens: defer
+  reading_pack: defer
+  context_pack: pilot
+  full_resolved_evidence: defer_diagnostic_only
+  trace_gated: pilot_diagnostic_gate
+non_claims:
+  - runtime_correctness
+  - test_sufficiency
+  - review_completeness
+  - merge_readiness
+  - security_correctness
+  - agent_quality_improvement
+  - condition_superiority
+  - default_promotion_readiness
+  - counterfactual_superiority

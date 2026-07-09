@@ -1,6 +1,6 @@
 ---
 title: "RepoBrief Workbench Usefulness Evaluation — Result"
-status: draft
+status: inconclusive
 canonicality: operative
 ---
 
@@ -8,32 +8,43 @@ canonicality: operative
 
 ## Summary
 
-This experiment is currently a designed measurement harness. It does not yet
-contain executed comparable agent runs and therefore does not establish whether
-RepoBrief or Agent Workbench surfaces improve agent code work.
+This experiment now contains a limited executed run series for Bureau task `RPU-V1-T021`.
+It records three comparable audited single-run slices from recent Lenskit RepoBrief work:
+
+1. `RBGV-V1-T005` / Lenskit PR #935 — `repobrief ask` CLI under `context_pack`.
+2. `RBGV-V1-T006` / Lenskit PR #936 — ask gold-query evaluation under `trace_gated`.
+3. `RPU-V1-T020` / Lenskit PR #940 — read-only MCP resource adapter under `context_pack`.
+
+The series is deliberately marked `executed_limited`, not promotion-grade. It has three comparable implementation slices, but zero uncontaminated paired counterfactuals. Re-running the same tasks under another condition after seeing the implementation would contaminate the comparison.
 
 ## Observations
 
-- A condition matrix exists in `measurement-plan.yml`.
-- Required metrics cover localization, evidence completeness, patch scope, check
-  fit, miss taxonomy, false-confidence risk and effort overhead.
-- The no-self-proof rule is explicit.
-- Promotion is blocked before executed comparable runs and external observations.
+- The recorded runs show positive diagnostic signal for localization, evidence completeness, patch-scope discipline, check fit and explicit boundary handling.
+- One concrete implementation bug was caught by tests before PR creation in the MCP resources run: artifact paths initially resolved relative to the process working directory instead of the manifest directory.
+- Each run includes external observations such as GitHub CI, merged PR metadata and archived pre-merge patch SHA.
+- Self-authored tests are treated as observations, not proof of correctness.
 
-## Verdict
+## Decision
 
-`inconclusive`: design is ready for future runs; usefulness is not measured yet.
+- `context_pack`: `pilot`
+- `trace_gated`: `pilot_diagnostic_gate`
+- `reading_pack`: `defer`
+- `no_context_no_rlens`: `defer`
+- `full_resolved_evidence`: `defer_diagnostic_only`
+
+No condition is promoted to default access. The evidence supports careful pilots only.
 
 ## Allowed claims
 
-- The evaluation design compares the required evidence conditions.
-- The design specifies the required metrics and miss taxonomy.
-- The design prevents pre-execution default promotion and self-proof claims.
+- A limited run series exists and validates structurally.
+- The recorded runs provide useful diagnostic signals for some RepoBrief/Workbench surfaces.
+- Context-pack and trace-gated surfaces are plausible pilot candidates.
+- The series preserves non-claims and blocks default promotion.
 
 ## Disallowed claims
 
-- RepoBrief improves agent quality.
-- Any condition is superior.
+- RepoBrief or Agent Workbench is proven to improve agent quality.
+- Any condition is superior to all alternatives.
 - Full/resolved evidence is safe as a default.
-- Passing generated checks proves correctness.
-- This design establishes merge readiness, runtime correctness or test sufficiency.
+- Generated or local green checks prove correctness.
+- This series establishes runtime correctness, test sufficiency, review completeness, security correctness or merge readiness.
