@@ -1,14 +1,32 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
-verdict: "not_executed"
+verdict: "insufficient_proof"
+pilot_decision: "pilot_without_promotion"
 date: "2026-07-09"
 reviewer: "ChatGPT / Grabowski"
+source_run_series: "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/run-series.yml"
 rationale: |
-  The measurement design is present and validates the comparison conditions,
-  metrics and no-self-proof rule, but no executed comparable run series exists.
-  Therefore the only defensible execution assessment is not_executed. No result
-  assessment or adoption assessment is justified yet.
+  Three comparable audited single-run slices were recorded with task class,
+  evidence boundaries, metric scores and external observations. The series is
+  useful as a limited execution check, but it has zero uncontaminated paired
+  counterfactuals. Therefore it cannot establish condition superiority or justify
+  default promotion.
+condition_decisions:
+  no_context_no_rlens: "defer"
+  reading_pack: "defer"
+  context_pack: "pilot"
+  full_resolved_evidence: "defer_diagnostic_only"
+  trace_gated: "pilot_diagnostic_gate"
 next_steps: |
-  Execute paired code-task runs under the defined conditions, then score metrics
-  and run the promotion gate. Do not promote any default before comparable run
-  evidence exists.
+  Continue with deliberately paired tasks only if a default-promotion decision is
+  desired. For now, allow context-pack and trace-gated surfaces as pilot diagnostics,
+  while preserving live GitHub/CI/PR checks and non-claims.
+non_claims:
+  - runtime_correctness
+  - test_sufficiency
+  - review_completeness
+  - merge_readiness
+  - security_correctness
+  - agent_quality_improvement
+  - condition_superiority
+  - default_promotion_readiness

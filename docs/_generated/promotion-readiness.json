@@ -348,20 +348,17 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
+      "execution_status": "reconstructed",
       "falsifiability_triggered": false,
       "historical_escape": false,
-      "missing": [
-        "designed_not_executed"
-      ],
+      "missing": [],
       "notes": [
-        "designed_not_executed",
         "falsifiability_voluntary"
       ],
       "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval",
-      "pre_execution_hold": true,
-      "promotion_ready": false,
-      "status": "designed",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "testing",
       "warnings": []
     }
   ],
@@ -371,8 +368,8 @@
     "experiments_checked": 23,
     "historical_escape": 1,
     "not_ready": 13,
-    "pre_execution_hold": 4,
-    "ready": 5,
+    "pre_execution_hold": 3,
+    "ready": 6,
     "warnings": 6
   },
   "trigger": "need_for_reproducibility"
