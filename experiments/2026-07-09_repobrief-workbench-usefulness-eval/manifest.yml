@@ -1,0 +1,75 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "repobrief-workbench-usefulness-eval"
+  hypothesis: >
+    RepoBrief/Agent Workbench evidence conditions may improve agent code-work
+    localization, evidence completeness, patch-scope discipline, check fit and
+    miss diagnostics compared with no-rLens/no-RepoBrief operation, but no
+    default workbench surface should be promoted until comparable executed runs
+    show improvement without hiding stale evidence or increasing false confidence.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  evidence_level: experimental
+  created: "2026-07-09"
+  updated: "2026-07-09"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "bureau:RPU-V1-T012"
+  iteration: 1
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The usefulness hypothesis is weakened or refuted if reading-pack,
+      context-pack, full/resolved evidence, or trace-gated conditions fail to
+      reduce localization misses, missing required evidence, scope creep, check
+      misses, or false-confidence risk versus no-context/no-rLens across
+      comparable task classes, or if preparation/review overhead exceeds the
+      observed diagnostic value.
+    counter_hypotheses:
+      - id: "task_class_dominates_surface_effect"
+        statement: "Task type, diff size and repo familiarity may dominate any workbench condition effect."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Pair tasks by task_kind, changed-file count, expected contracts and baseline difficulty."
+            - "Reject comparisons across non-comparable task classes."
+          limitations:
+            - "No executed condition series exists in this seed."
+          confidence: low
+      - id: "full_context_increases_false_confidence"
+        statement: "Full/resolved evidence may increase apparent fluency while increasing stale-source or uncited claims."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Track unsupported_claim_count, stale_evidence_used and citation coverage per run."
+          limitations:
+            - "Requires independent review of agent output."
+          confidence: low
+      - id: "trace_gate_overhead_exceeds_gain"
+        statement: "Trace-gated evidence may improve auditability but cost more than it saves."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Record preparation, execution, review and correction effort separately."
+          limitations:
+            - "Manual timing is noisy unless session logs are attached."
+          confidence: low
+
+context:
+  tools:
+    - "ChatGPT or comparable coding agent"
+    - "Grabowski"
+    - "Bureau"
+    - "RepoBrief / rLens / Agent Workbench artifacts"
+    - "GitHub PR review and CI evidence"
+  language: "Markdown, YAML, shell, Python, repository-local validation output"
+  environment: "Heimgewebe repo/PR/code tasks; Vibe-Lab stores design and run evidence"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

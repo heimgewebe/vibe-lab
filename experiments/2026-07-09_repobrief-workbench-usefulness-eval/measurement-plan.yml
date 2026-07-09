@@ -1,0 +1,183 @@
+schema_version: 1
+experiment: repobrief-workbench-usefulness-eval
+bureau_task: RPU-V1-T012
+status: designed
+created: "2026-07-09"
+updated: "2026-07-09"
+
+required_condition_ids:
+  - no_context_no_rlens
+  - reading_pack
+  - context_pack
+  - full_resolved_evidence
+  - trace_gated
+
+conditions:
+  no_context_no_rlens:
+    default_candidate: false
+    description: "Agent receives only the task prompt plus live repo/PR/CI checks explicitly performed during the run."
+    allowed_evidence:
+      - live_git_status
+      - live_pr_metadata
+      - user_task_text
+    disallowed_evidence:
+      - repobrief_bundle
+      - agent_reading_pack
+      - context_pack
+      - full_dump
+      - trace_gate
+  reading_pack:
+    default_candidate: true
+    description: "Agent receives the Agent Reading Pack and mandatory live checks."
+    allowed_evidence:
+      - agent_reading_pack
+      - required_reading
+      - live_git_status
+      - live_pr_metadata
+    disallowed_evidence:
+      - full_dump
+      - hidden_refresh
+      - trace_gate
+  context_pack:
+    default_candidate: true
+    description: "Agent receives a bounded RepoBrief/rLens context pack plus mandatory live checks."
+    allowed_evidence:
+      - context_pack
+      - citation_map
+      - source_ranges
+      - freshness_status
+      - live_git_status
+      - live_pr_metadata
+    disallowed_evidence:
+      - full_dump
+      - hidden_refresh
+  full_resolved_evidence:
+    default_candidate: false
+    diagnostic_only: true
+    description: "Agent receives maximal resolved evidence/full dump for diagnostic comparison only."
+    allowed_evidence:
+      - full_dump
+      - resolved_evidence
+      - citation_map
+      - source_ranges
+      - freshness_status
+      - live_git_status
+      - live_pr_metadata
+    disallowed_evidence:
+      - hidden_refresh
+      - default_promotion_without_false_confidence_review
+  trace_gated:
+    default_candidate: true
+    description: "Agent receives context only when required-reading/proof-of-reading trace gates are satisfied."
+    allowed_evidence:
+      - trace_gate
+      - proof_of_reading_trace
+      - context_pack
+      - citation_map
+      - source_ranges
+      - live_git_status
+      - live_pr_metadata
+    disallowed_evidence:
+      - hidden_refresh
+      - trace_claim_without_citation
+
+metrics:
+  localization:
+    definition: "Whether expected files, symbols or ranges were selected or cited."
+    lower_is_better: false
+    required_fields:
+      - target_file_hit
+      - target_range_overlap
+      - symbol_hit
+  evidence_completeness:
+    definition: "How much required evidence was read, cited and freshness-checked."
+    lower_is_better: false
+    required_fields:
+      - required_evidence_coverage
+      - citation_coverage
+      - stale_evidence_used
+  patch_scope:
+    definition: "Whether changed files stayed within expected impact surfaces."
+    lower_is_better: false
+    required_fields:
+      - impact_scope_fit
+      - unexpected_file_count
+  check_fit:
+    definition: "Whether selected or executed checks matched the task and expected evidence."
+    lower_is_better: false
+    required_fields:
+      - expected_check_coverage
+      - irrelevant_check_count
+      - self_authored_check_only
+  miss_taxonomy:
+    definition: "Structured causes for failures or weak evidence."
+    lower_is_better: false
+    required_categories:
+      - localization_miss
+      - evidence_gap
+      - freshness_miss
+      - live_state_gap
+      - scope_creep
+      - check_miss
+      - contract_miss
+      - boundary_miss
+      - self_proof
+      - external_regression
+  false_confidence_risk:
+    definition: "Unsupported certainty introduced by the condition."
+    lower_is_better: true
+    required_fields:
+      - unsupported_claim_count
+      - hallucinated_path_count
+      - uncited_claim_count
+      - stale_context_claim_count
+  effort_overhead:
+    definition: "Human and agent overhead needed to prepare, use and review the condition."
+    lower_is_better: true
+    required_fields:
+      - context_preparation_minutes
+      - execution_minutes
+      - review_minutes
+      - correction_rounds
+
+no_self_proof_rule:
+  required: true
+  violation_fields:
+    - self_authored_check_only
+    - self_proof_violation
+  statement: >
+    Agent-authored tests, local green checks or generated evaluation notes are
+    observations only. They are not independent correctness proof.
+
+promotion_gate:
+  default_access_may_be_promoted: false
+  minimum_evidence_before_promotion:
+    comparable_task_pairs: 3
+    required_directional_metrics:
+      - localization
+      - evidence_completeness
+      - patch_scope
+      - check_fit
+      - miss_taxonomy
+      - false_confidence_risk
+    required_external_observations:
+      - ci_or_existing_test_result
+      - operator_or_review_observation
+  disallowed_pre_execution_claims:
+    - condition superiority
+    - default workbench readiness
+    - agent quality improvement
+    - repo understanding improvement
+    - patch correctness
+    - test sufficiency
+    - merge readiness
+
+non_claims:
+  - runtime_correctness
+  - test_sufficiency
+  - review_completeness
+  - merge_readiness
+  - security_correctness
+  - agent_quality_improvement
+  - condition_superiority
+  - default_promotion_readiness
