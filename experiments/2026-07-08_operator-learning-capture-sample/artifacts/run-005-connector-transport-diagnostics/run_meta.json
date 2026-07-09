@@ -1,0 +1,10 @@
+{
+  "command": "Evaluate P13 connector_transport candidate from grabowski_friction_summary(limit=200) and derive a proposal-ready diagnostic boundary.",
+  "executor": "ChatGPT / Grabowski MCP",
+  "exit_code": 0,
+  "generated_at": "2026-07-09T16:44:32Z",
+  "provenance_level": "machine_verified",
+  "run_id": "run-005-connector-transport-diagnostics",
+  "schema_version": "0.1.0",
+  "test_output_file": "artifacts/run-005-connector-transport-diagnostics/output.txt"
+}

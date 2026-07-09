@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+run_id: "run-005-connector-transport-diagnostics"
+claim_boundary: "diagnostic_proposal_only"
+source_ref: "grabowski_friction_summary(limit=200) @ /home/alex/.local/state/grabowski/friction/events.jsonl"
+pattern_id: "P13_connector_transport_502_after_broad_or_long_calls"
+fresh_snapshot:
+  event_count: 50
+  unresolved_count: 41
+  decision_required_count: 41
+connector_transport:
+  event_count: 6
+  unresolved_event_count: 4
+  resolved_event_count: 2
+  event_ids:
+    - "56ece2af1ac748829864323834d54c71"
+    - "03e95ce240f943c891fd67fdeceb7b82"
+    - "bb9c3fd6d4e5406cb6d85c9b0a518ec2"
+    - "7e59ea3dbfd24d639329c73218db9dbb"
+    - "b13a752d49a14548809def3fd6c9fc7b"
+    - "5c0d68fde9694d0ea002ca1f304c71c2"
+observed_runtime_state:
+  grabowski_runtime_contract_valid: true
+  operator_service: "active/running"
+  tunnel_client_grabowski_service: "active/running"
+  recent_operator_journal_shape: "POST /mcp 200/202 and CallToolRequest lines observed in bounded recent journal sample"
+recommended_probe:
+  - "capture grabowski_status runtime contract validity"
+  - "capture grabowski-operator.service and tunnel-client-grabowski.service status"
+  - "capture bounded recent journal search for MCP/stream/timeouts without raw secret output"
+  - "run one adjacent small typed read-only call to determine whether failure is still active"
+split_retry_policy:
+  read_only_retry_limit: 1
+  retry_shape: "smaller typed or single-purpose read-only calls"
+  mutation_rule: "do not retry mutating work after transport failure until target state is re-read"
+  false_green_warning: "a successful retry does not prove the first failure was harmless"
+non_claims:
+  - "no root-cause proof"
+  - "no connector/vendor fix"
+  - "no runtime policy change"
+  - "no proof of command success or failure when the connector failed"
+  - "no safe mutation retry from a 502 alone"
+  - "no transport reliability proof"
+uncertainty: 0.37
+interpolation: 0.28

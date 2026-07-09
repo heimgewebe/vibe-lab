@@ -10,3 +10,4 @@ No large artifacts are stored for this sample.
 
 The sample intentionally relies on existing PR and repository references rather than copying external logs or dumps into Vibe-Lab.
 - `run-004-friction-ledger-turnover/` — turnover-triggered re-check against live Grabowski friction ledger.
+- `run-005-connector-transport-diagnostics/` — P13 connector-transport 502 diagnostic proposal from live Grabowski friction ledger.
