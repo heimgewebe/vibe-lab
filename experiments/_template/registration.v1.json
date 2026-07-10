@@ -1,0 +1,31 @@
+{
+  "schema_version": "experiment.registration.v1",
+  "experiment_id": "2099-01-01_replace-with-stable-slug",
+  "consumer": {
+    "organ": "replace-with-consumer",
+    "use": "Describe the concrete downstream use of the experiment result."
+  },
+  "decision_target": {
+    "question": "Which reviewed decision will this experiment inform?",
+    "owner": "replace-with-decision-owner"
+  },
+  "measurement": {
+    "metric": "replace-with-primary-metric",
+    "method": "Describe the reproducible measurement method and comparison window.",
+    "success": "Define the success threshold.",
+    "falsification": "Define the falsification threshold."
+  },
+  "expires_at": "2099-04-01T00:00:00Z",
+  "closure": {
+    "review_at": "2099-03-01T00:00:00Z",
+    "allowed_outcomes": ["promote", "reject", "archive"],
+    "archive_path": "experiments/_archive/2099-01-01_replace-with-stable-slug"
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true
+  }
+}

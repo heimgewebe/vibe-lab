@@ -6,6 +6,11 @@ canonicality: navigation
 
 # 🔬 Experimenten-Labor
 
+## Consumer- und Ablauf-Gate für neue Experimente
+
+Experimentordner ab dem 10. Juli 2026 benötigen zusätzlich `registration.v1.json` nach `schemas/experiment.registration.v1.schema.json`. Die Registrierung benennt Consumer, Entscheidungsfrage, Mess- und Falsifikationskriterium, Review-/Ablaufdatum sowie den deterministischen Abschlussweg. Ohne diese Angaben blockiert CI. Historische Experimente bleiben lesbar, erhalten daraus aber keine neue Gültigkeit oder Autorität.
+
+
 Dies ist das operative Labor des Vibe-Labs. Hier werden Hypothesen getestet und evaluierte Techniken auf ihre Robustheit geprüft.
 
 ## Abgeschlossene Vorstudien
