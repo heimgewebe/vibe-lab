@@ -76,3 +76,45 @@ body:
       options:
         - label: "Dies ist ein **Experiment**-Beitrag gemäß dem Contribution Contract."
           required: true
+
+  - type: input
+    id: consumer
+    attributes:
+      label: "Downstream-Consumer"
+      description: "Welches Organ oder Team wird das Ergebnis für welche konkrete Entscheidung nutzen?"
+      placeholder: "Grabowski — Review der PR-Review-Strategie"
+    validations:
+      required: true
+
+  - type: textarea
+    id: decision_target
+    attributes:
+      label: "Entscheidungsziel und Owner"
+      description: "Welche konkrete reviewed Entscheidung wird informiert, und wer besitzt sie?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: falsification_criteria
+    attributes:
+      label: "Falsifikationskriterium"
+      description: "Welche messbare Beobachtung widerlegt oder stoppt die Hypothese?"
+    validations:
+      required: true
+
+  - type: input
+    id: expiry
+    attributes:
+      label: "Review- und Ablaufdatum"
+      description: "Bis wann wird entschieden; wann wird das Experiment spätestens archiviert?"
+      placeholder: "Review 2026-08-15; Ablauf 2026-09-01"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: authority_boundary
+    attributes:
+      label: "Autoritätsgrenze"
+      options:
+        - label: "Das Experiment darf Policy, Routing, Queue oder Runtime nicht automatisch verändern."
+          required: true
