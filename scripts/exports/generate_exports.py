@@ -12,7 +12,6 @@ from export_contract import (  # noqa: E402
     EXPORT_TARGETS,
     SOURCE_DIR,
     build_tombstone,
-    expected_export_name,
     exportable_source_files,
 )
 
@@ -25,12 +24,14 @@ def generate_exports(
     if export_targets is None:
         export_targets = EXPORT_TARGETS
     sources = exportable_source_files(source_dir)
-    expected = {expected_export_name(src): src for src in sources}
+    expected = {src.name: src for src in sources}
     stats: dict[str, int] = {}
 
     for target_system, target_dir in sorted(export_targets.items()):
         target_dir.mkdir(parents=True, exist_ok=True)
-        for stale in target_dir.rglob("*.md"):
+        for stale in target_dir.rglob("*"):
+            if not stale.is_file():
+                continue
             relative_name = stale.relative_to(target_dir).as_posix()
             if relative_name not in expected:
                 stale.unlink()
