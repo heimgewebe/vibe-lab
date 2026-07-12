@@ -31,7 +31,11 @@ def validate(
     errors: list[str] = []
 
     for target_system, target_dir in sorted(export_targets.items()):
-        actual = {p.name: p for p in target_dir.glob("*.md")} if target_dir.exists() else {}
+        actual = (
+            {p.relative_to(target_dir).as_posix(): p for p in target_dir.rglob("*.md")}
+            if target_dir.exists()
+            else {}
+        )
         missing = sorted(set(expected) - set(actual))
         orphaned = sorted(set(actual) - set(expected))
         errors.extend(f"missing retirement marker: exports/{target_system}/{name}" for name in missing)
