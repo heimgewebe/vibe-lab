@@ -2,16 +2,9 @@
 <!-- source: instruction-blocks/edge-case-enumeration.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- source-hash: 1f1ac431bd0fb1d9cc89316270dd07a1149b5fbde30ddf6e1861d2fda6a30015 -->
 
-# Edge-Case-Enumeration
-Before implementation, enumerate edge cases explicitly:
-1. Empty/null inputs
-2. Maximum/minimum values and boundary conditions
-3. Special characters and encoding edge cases
-4. Concurrent or repeated operations
-5. Invalid or malformed input data
+# Tool projection retired
 
-For each edge case, define the expected behavior. This is not optional padding — explicit edge case enumeration is part of the constraint structure that drives code quality.
+This compatibility file intentionally contains no instruction text. Vibe-Lab no longer publishes default Cursor or Copilot projections.
 
-Missing edge cases in the specification = missing edge cases in the output.
+Reactivation requires a named downstream consumer, a reviewed decision target, measurable success and falsification criteria, and an expiry date.
