@@ -34,6 +34,24 @@ class RetiredExportBoundaryTests(unittest.TestCase):
             errors = validate(source, {"cursor": target})
             self.assertTrue(any("active or drifted" in error for error in errors))
 
+    def test_tombstone_version_drift_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "instruction-blocks"
+            source.mkdir()
+            (source / "rule.md").write_text("---\nstatus: adopted\n---\nbody\n", encoding="utf-8")
+            target = root / "exports/cursor"
+            generate_exports(source, {"cursor": target})
+            marker = target / "rule.md"
+            marker.write_text(
+                marker.read_text(encoding="utf-8").replace(
+                    "retirement-format: 1", "retirement-format: 0"
+                ),
+                encoding="utf-8",
+            )
+            errors = validate(source, {"cursor": target})
+            self.assertTrue(any("active or drifted" in error for error in errors))
+
     def test_nested_instruction_copy_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
