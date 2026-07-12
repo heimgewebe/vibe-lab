@@ -8,6 +8,7 @@ import json
 import math
 import statistics
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -69,6 +70,28 @@ def _t_critical_95(df: int) -> float:
     return _T_95.get(min(df, 30), 2.042)
 
 
+def _scorecard_weights(registration: dict[str, Any]) -> dict[str, float] | None:
+    scorecard = registration["measurement"].get("scorecard")
+    if scorecard is None:
+        return None
+    components = scorecard["components"]
+    weights = {component["id"]: float(component["weight"]) for component in components}
+    if len(weights) != len(components):
+        raise ValueError("scorecard component ids must be unique")
+    return weights
+
+
+def _fatal_scorecard_components(registration: dict[str, Any]) -> set[str]:
+    scorecard = registration["measurement"].get("scorecard")
+    if scorecard is None:
+        return set()
+    return {
+        component["id"]
+        for component in scorecard["components"]
+        if component.get("fatal_when_zero", False)
+    }
+
+
 def _build_base(registration: dict[str, Any], observations: dict[str, Any]) -> dict[str, Any]:
     measurement = registration["measurement"]
     return {
@@ -86,9 +109,11 @@ def _build_base(registration: dict[str, Any], observations: dict[str, Any]) -> d
 
 def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo_root: Path = ROOT) -> dict[str, Any]:
     validate_schema(registration, repo_root / "schemas/experiment.registration.v2.schema.json")
-    validate_schema(observations, repo_root / "schemas/effect-evaluation.observations.v1.schema.json")
+    validate_schema(observations, repo_root / "schemas/effect-evaluation.observations.v2.schema.json")
     if registration["experiment_id"] != observations["experiment_id"]:
         raise ValueError("experiment_id mismatch")
+    if observations["registration_sha256"] != sha256_json(registration):
+        raise ValueError("registration digest mismatch")
     if registration["measurement"]["primary_metric"] != observations["metric"]:
         raise ValueError("primary metric mismatch")
 
@@ -98,6 +123,10 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
     rows = observations["observations"]
     ids: set[str] = set()
     evidence_refs: set[str] = set()
+    evidence_digests: set[str] = set()
+    scorecard_weights = _scorecard_weights(registration)
+    self_scored_rows: list[str] = []
+    unblinded_rows: list[str] = []
     reasons: list[str] = []
     for row in rows:
         if row["observation_id"] in ids:
@@ -106,10 +135,35 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
         if row["evidence_ref"] in evidence_refs:
             raise ValueError("duplicate evidence_ref")
         evidence_refs.add(row["evidence_ref"])
+        if row["evidence_sha256"] in evidence_digests:
+            raise ValueError("duplicate evidence_sha256")
+        evidence_digests.add(row["evidence_sha256"])
         if row["condition"] not in allowed_conditions:
             raise ValueError("unknown condition")
         if not math.isfinite(float(row["value"])):
             raise ValueError("non-finite observation value")
+        effort = float(row["effort_seconds"])
+        if not math.isfinite(effort) or effort < 0:
+            raise ValueError("effort_seconds must be finite and non-negative")
+        if not row["scoring_blinded"]:
+            unblinded_rows.append(row["observation_id"])
+        components = row.get("score_components")
+        if scorecard_weights is None and components is not None:
+            raise ValueError("score_components are not registered for this metric")
+        if scorecard_weights is not None:
+            if not isinstance(components, dict) or set(components) != set(scorecard_weights):
+                raise ValueError("score_components must match the registered scorecard exactly")
+            expected = sum(scorecard_weights[key] * int(components[key]) for key in scorecard_weights)
+            if not math.isclose(float(row["value"]), expected, rel_tol=0.0, abs_tol=1e-12):
+                raise ValueError("observation value does not match registered scorecard")
+        if row["observer_ref"] == row["decision_maker_ref"]:
+            self_scored_rows.append(row["observation_id"])
+        captured_at = datetime.fromisoformat(row["captured_at"].replace("Z", "+00:00"))
+        expires_at = datetime.fromisoformat(registration["expires_at"].replace("Z", "+00:00"))
+        if captured_at.tzinfo is None or expires_at.tzinfo is None:
+            raise ValueError("timestamps must include timezone")
+        if captured_at.astimezone(timezone.utc) > expires_at.astimezone(timezone.utc):
+            raise ValueError("observation captured after experiment expiry")
 
     control = [row for row in rows if row["condition"] == control_id]
     treatment = [row for row in rows if row["condition"] == treatment_id]
@@ -123,11 +177,16 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
 
     independence_met = True
     if registration["evidence_sources"]["independent_observation_required"]:
-        independence_met = all(row["independent"] for row in rows)
-        if not independence_met:
+        independence_met = all(row["independent"] for row in rows) and not self_scored_rows
+        if any(not row["independent"] for row in rows):
             reasons.append("independent observation requirement not met")
+        if self_scored_rows:
+            reasons.append("independent scorer must differ from decision maker")
 
-    comparable = True
+    blinding_met = not unblinded_rows
+    comparable = blinding_met
+    if not blinding_met:
+        reasons.append("condition-label blinding requirement not met")
     paired_differences: list[float] = []
     complete_pairs: int | None = None
     if comparison["mode"] == "paired":
@@ -148,13 +207,24 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
                 if set(bucket) == allowed_conditions
                 and bucket[control_id]["comparison_key"] != bucket[treatment_id]["comparison_key"]
             ]
+            same_decision_maker = [
+                pair
+                for pair, bucket in by_pair.items()
+                if set(bucket) == allowed_conditions
+                and bucket[control_id]["decision_maker_ref"]
+                == bucket[treatment_id]["decision_maker_ref"]
+            ]
             if incomplete:
                 comparable = False
                 reasons.append("paired comparison has incomplete pairs")
             if mismatched_keys:
                 comparable = False
                 reasons.append("paired comparison_key values differ within pairs")
-            if not incomplete and not mismatched_keys:
+            decision_maker_conflict = bool(same_decision_maker)
+            if decision_maker_conflict:
+                independence_met = False
+                reasons.append("paired conditions require distinct decision_maker_ref values")
+            if not incomplete and not mismatched_keys and not decision_maker_conflict:
                 complete_pairs = len(by_pair)
                 for pair in sorted(by_pair):
                     c = float(by_pair[pair][control_id]["value"])
@@ -179,6 +249,16 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
     if raw_difference is not None and control_mean not in (None, 0.0):
         relative_difference = raw_difference / abs(control_mean)
 
+    control_effort = [float(row["effort_seconds"]) for row in control]
+    treatment_effort = [float(row["effort_seconds"]) for row in treatment]
+    control_effort_mean = statistics.fmean(control_effort) if control_effort else None
+    treatment_effort_mean = statistics.fmean(treatment_effort) if treatment_effort else None
+    effort_difference = (
+        treatment_effort_mean - control_effort_mean
+        if control_effort_mean is not None and treatment_effort_mean is not None
+        else None
+    )
+
     ci = None
     if comparable and minimum_sample_met and independence_met:
         if comparison["mode"] == "paired":
@@ -195,6 +275,14 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
             critical = _t_critical_95(min(len(control_values) - 1, len(treatment_values) - 1))
             ci = {"lower": _round(favorable_effect - critical * se), "upper": _round(favorable_effect + critical * se), "method": "student_t_95_unpaired_conservative"}
 
+    fatal_components = _fatal_scorecard_components(registration)
+    triggered_falsifications = sorted({
+        component
+        for row in treatment
+        for component in fatal_components
+        if row.get("score_components", {}).get(component) == 0
+    })
+
     threshold = float(registration["measurement"]["minimum_material_effect"])
     verdict = "insufficient_evidence"
     if ci is not None:
@@ -206,6 +294,9 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
             verdict = "no_material_effect"
         else:
             reasons.append("confidence interval crosses a material-effect boundary")
+    if triggered_falsifications:
+        verdict = "harmful"
+        reasons.append("registered scorecard falsification triggered")
 
     result = {
         **_build_base(registration, observations),
@@ -218,13 +309,25 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
             "relative_difference": _round(relative_difference),
             "confidence_interval_95": ci,
         },
+        "operational_cost": {
+            "metric": registration["measurement"]["cost_metric"]["id"],
+            "unit": registration["measurement"]["cost_metric"]["unit"],
+            "control_mean": _round(control_effort_mean),
+            "treatment_mean": _round(treatment_effort_mean),
+            "raw_difference": _round(effort_difference),
+        },
         "data_quality": {
             "comparable": comparable,
             "minimum_sample_met": minimum_sample_met,
             "independence_met": independence_met,
+            "blinding_met": blinding_met,
             "reasons": reasons,
         },
-        "effect_claim_allowed": verdict != "insufficient_evidence",
+        "registered_falsification": {
+            "triggered": bool(triggered_falsifications),
+            "components": triggered_falsifications,
+        },
+        "effect_claim_allowed": verdict != "insufficient_evidence" and not triggered_falsifications,
         "verdict": verdict,
         "does_not_establish": [
             "causal_generality_beyond_registered_conditions",
@@ -232,6 +335,11 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
             "automatic_routing_change",
             "automatic_bureau_task_creation",
             "caller_supplied_independence_correctness",
+            "caller_supplied_scorecard_judgment_correctness",
+            "cost_effectiveness_or_acceptable_ceremony",
+            "caller_supplied_effort_measurement_correctness",
+            "caller_supplied_blinding_correctness",
+            "caller_supplied_evidence_digest_correctness",
         ],
     }
     result["result_sha256"] = result_sha256(result)

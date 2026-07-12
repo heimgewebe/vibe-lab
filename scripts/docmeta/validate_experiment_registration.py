@@ -68,6 +68,11 @@ def validate_registration(path: Path, *, now: datetime | None = None) -> dict[st
             raise ValueError(f"{path}: control and treatment ids must differ")
         if payload["decision_target"]["owner"] == "":
             raise ValueError(f"{path}: decision owner must be named")
+        scorecard = payload["measurement"].get("scorecard")
+        if scorecard is not None:
+            component_ids = [component["id"] for component in scorecard["components"]]
+            if len(component_ids) != len(set(component_ids)):
+                raise ValueError(f"{path}: scorecard component ids must be unique")
     return payload
 
 

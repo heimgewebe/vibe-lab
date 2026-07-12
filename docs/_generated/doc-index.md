@@ -55,6 +55,7 @@
 | `docs/plans/vibe-lab-optimization-plan-v1.md` | Vibe-Lab Optimization Plan v1 | active | operative |
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
 | `docs/playbooks/bundle-freshness-receipt.md` | bundle-freshness-receipt | — | — |
+| `docs/playbooks/effect-observation-capture.md` | Effect Observation Capture | active | operative |
 | `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` | Evidence-Control-Plane — Diagnose nach Merge PR #189 | draft | diagnosis |
 | `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | Evidence-Control-Plane v1 — Roadmap-Checkliste | draft | exploratory |
 | `docs/playbooks/operator-lab-loop.md` | Playbook: Operator Lab Loop | active | operative |

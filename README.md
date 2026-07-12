@@ -42,7 +42,7 @@ Erst wenn ein Experiment belastbare Evidenz liefert:
 python3 scripts/docmeta/validate_active_experiments.py
 ```
 
-New experiments use `registration.v2.json`: control, treatment, primary metric, material threshold, comparability constraints, review date and expiry are frozen before observation. The review-only evaluator is `tools/vibe-cli/evaluate_effect.py`.
+New experiments use `registration.v2.json`: control, treatment, primary metric, material threshold, comparability constraints, review date and expiry are frozen before observation. `tools/vibe-cli/capture_effect_observation.py` records registration- and evidence-bound observations atomically; the review-only evaluator is `tools/vibe-cli/evaluate_effect.py`.
 
 ### Lokal validieren
 

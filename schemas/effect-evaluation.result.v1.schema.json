@@ -17,7 +17,9 @@
     "comparison_mode",
     "sample",
     "statistics",
+    "operational_cost",
     "data_quality",
+    "registered_falsification",
     "effect_claim_allowed",
     "verdict",
     "does_not_establish"
@@ -168,6 +170,7 @@
         "comparable",
         "minimum_sample_met",
         "independence_met",
+        "blinding_met",
         "reasons"
       ],
       "properties": {
@@ -185,6 +188,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "blinding_met": {
+          "type": "boolean"
         }
       }
     },
@@ -205,6 +211,66 @@
       "uniqueItems": true,
       "items": {
         "type": "string"
+      }
+    },
+    "operational_cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "unit",
+        "control_mean",
+        "treatment_mean",
+        "raw_difference"
+      ],
+      "properties": {
+        "metric": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "unit": {
+          "const": "seconds"
+        },
+        "control_mean": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "treatment_mean": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "raw_difference": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "registered_falsification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "triggered",
+        "components"
+      ],
+      "properties": {
+        "triggered": {
+          "type": "boolean"
+        },
+        "components": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
       }
     }
   }

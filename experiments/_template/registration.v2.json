@@ -28,7 +28,12 @@
     "minimum_material_effect": 1,
     "method": "Describe how the metric is captured from evidence-bound observations.",
     "success": "Define the material success threshold.",
-    "falsification": "Define the harmful or no-effect threshold."
+    "falsification": "Define the harmful or no-effect threshold.",
+    "cost_metric": {
+      "id": "review_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure total elapsed handling effort from condition preparation until the decision and scorecard are sealed, including evaluator report generation when applicable."
+    }
   },
   "comparison": {
     "mode": "paired",
@@ -57,7 +62,13 @@
   "review_at": "2099-03-01T00:00:00Z",
   "expires_at": "2099-04-01T00:00:00Z",
   "closure": {
-    "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
     "archive_path": "experiments/_archive/2099-01-01_replace-with-stable-slug"
   },
   "boundary": {
