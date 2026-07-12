@@ -18,6 +18,16 @@ EXPORT_TARGETS: dict[str, Path] = {
 }
 EXPORTABLE_STATUS = "adopted"
 GENERATOR_ID = "scripts/exports/generate_exports.py"
+TOMBSTONE_FORMAT_VERSION = "1"
+RETIREMENT_DATE = "2026-07-12"
+RETIREMENT_DECISION = "decisions/export/README.md"
+TOMBSTONE_BODY = (
+    "# Tool projection retired\n\n"
+    "This file is a compatibility marker only. Vibe-Lab no longer projects "
+    "instruction blocks into tool-specific directories.\n\n"
+    "Reactivation is handled through the normal experiment registration and "
+    "review path; this marker has no operational authority.\n"
+)
 
 
 def expected_export_name(src: Path) -> str:
@@ -50,6 +60,13 @@ def exportable_source_files(source_dir: Path = SOURCE_DIR) -> list[Path]:
 
 
 def build_tombstone(source_file: Path, target_system: str) -> str:
+    status = read_source_status(source_file)
+    if status != EXPORTABLE_STATUS:
+        raise ValueError(
+            f"cannot build retirement marker for {source_file}: "
+            f"status must be {EXPORTABLE_STATUS!r}, got {status!r}"
+        )
+
     try:
         rel_source = source_file.relative_to(REPO_ROOT).as_posix()
     except ValueError:
@@ -58,10 +75,9 @@ def build_tombstone(source_file: Path, target_system: str) -> str:
         "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->\n"
         f"<!-- source: {rel_source} -->\n"
         f"<!-- target-system: {target_system} -->\n"
-        f"<!-- generator: {GENERATOR_ID} -->\n\n"
-        "# Tool projection retired\n\n"
-        "This compatibility file intentionally contains no instruction text. "
-        "Vibe-Lab no longer publishes default Cursor or Copilot projections.\n\n"
-        "Reactivation requires a named downstream consumer, a reviewed decision "
-        "target, measurable success and falsification criteria, and an expiry date.\n"
+        f"<!-- generator: {GENERATOR_ID} -->\n"
+        f"<!-- retirement-format: {TOMBSTONE_FORMAT_VERSION} -->\n"
+        f"<!-- retired-on: {RETIREMENT_DATE} -->\n"
+        f"<!-- decision: {RETIREMENT_DECISION} -->\n\n"
+        f"{TOMBSTONE_BODY}"
     )
