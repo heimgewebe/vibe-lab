@@ -1,40 +1,34 @@
 ---
-title: "Decisions/Export (Stub-Namespace)"
+title: "Tool-Export-Entscheidung"
 status: active
 canonicality: navigation
-updated: "2026-07-05"
+updated: "2026-07-12"
 relations:
   - type: references
     target: ../../docs/foundations/repo-plan.md
 ---
 
-# Decisions / Export — Stub-Namespace
+# Tool-Exporte: stillgelegt, Kompatibilität erhalten
 
-Dieser Namespace enthält aktuell nur dieses README als Stub-Marker; fachliche Artefakte liegen hier noch nicht.
+Die automatischen Cursor- und Copilot-Projektionen sind stillgelegt. Vibe-Lab
+veröffentlicht dort keine kopierten Instruction Blocks mehr, weil für diese
+Flächen kein hinreichend genutzter Downstream-Consumer belegt ist.
 
-**Stub-Status:** `dormant`.
+Die vorhandenen Dateipfade bleiben vorerst als kleine, deterministisch erzeugte
+Kompatibilitätsmarken bestehen. Dadurch bleiben alte Links nachvollziehbar, ohne
+eine zweite aktive Anweisungswahrheit zu erzeugen.
 
-- Grund: Export-Logik ist aktuell über bestehende Artefaktverträge abgedeckt; kein eigener Export-Decision-Fall erzwingt diesen Namespace.
-- Reaktivierung: Wenn ein realer Export-Target- oder Format-Migrationsentscheid ansteht, darf genau ein konkretes Decision-Artefakt als `minimal-seed` entstehen.
-- Grenze: `dormant` bedeutet nicht `queued`; aus diesem Stub folgt keine Pflicht, den Namespace künstlich zu befüllen.
+## Reaktivierungsgate
 
-`decisions/export/` ist Teil der **typisierten Decision-Namespaces**
-(`process/`, `system/`, `export/`, `policy/`, `benchmark/`), die im Repo-Plan
-als Phase-C-Verstärker angelegt sind
-(`docs/foundations/repo-plan.md` → „Typisierte Decision Artifacts").
+Eine Tool-Projektion darf erst wieder aktive Anweisungen enthalten, wenn vorab
+alle folgenden Punkte feststehen:
 
-**Zweck:** Hier landen Decision Artifacts, die sich auf Export-Targets
-(`exports/copilot/`, `exports/cursor/`, weitere Tool-Ausleitungen) beziehen
-— z. B. Aufnahme oder Stilllegung eines Target-Tools, Änderungen am
-Sanitization-Prinzip für Exports, Format-Migrationen.
+1. benannter Downstream-Consumer und konkrete Verwendung;
+2. reviewed Entscheidungsziel mit Owner;
+3. messbare Erfolgs- und Falsifikationskriterien;
+4. Review- und Ablaufdatum;
+5. Nachweis, dass die Projektion gegenüber der kanonischen Quelle realen Nutzen
+   erzeugt und nicht nur Pflege- oder Driftkosten.
 
-Bislang sind keine solchen Entscheidungen formal abgelegt. Aktive Export-Logik
-ist verankert in:
-
-- `.vibe/generated-artifacts.yml` (objektbasierter Klassifikator)
-- `scripts/exports/generate_exports.py` (Generator + Header-Format)
-- `scripts/exports/validate_export_parity.py` (Konflikt-Gate, CI-blocking)
-
-**Schema:** Decision-Artifacts ohne `decisions/system/`-Bezug haben aktuell
-**keinen** Pflicht-Contract. Erst beim ersten realen Eintrag wird entschieden,
-ob ein eigener Schema-Strang sinnvoll ist.
+Bis dahin sind `exports/copilot/` und `exports/cursor/` reine
+Kompatibilitätsflächen ohne operative Autorität.
