@@ -10,13 +10,18 @@ relations:
 
 # Tool-Exporte: stillgelegt, Kompatibilität erhalten
 
-Die automatischen Cursor- und Copilot-Projektionen sind stillgelegt. Vibe-Lab
-veröffentlicht dort keine kopierten Instruction Blocks mehr, weil für diese
-Flächen kein hinreichend genutzter Downstream-Consumer belegt ist.
+Die automatischen Cursor- und Copilot-Projektionen sind seit dem 12. Juli 2026
+stillgelegt. Vibe-Lab veröffentlicht dort keine kopierten Instruction Blocks
+mehr, weil für diese Flächen kein hinreichend genutzter Downstream-Consumer
+belegt ist.
 
 Die vorhandenen Dateipfade bleiben vorerst als kleine, deterministisch erzeugte
 Kompatibilitätsmarken bestehen. Dadurch bleiben alte Links nachvollziehbar, ohne
 eine zweite aktive Anweisungswahrheit zu erzeugen.
+
+Für die Marker wird bewusst kein künstliches End-of-Life-Datum gesetzt. Eine
+vollständige Entfernung ist ein eigener Survivor-Audit-Entscheid und wird im
+Bureau-Auftrag `heimgewebe/bureau#442` geprüft.
 
 ## Prüfrahmen für eine mögliche Reaktivierung
 
