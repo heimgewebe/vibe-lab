@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/validator-inventory.v1.schema.json",
+  "title": "Vibe-Lab Validator Inventory v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "baseline_commit",
+    "policy",
+    "groups",
+    "supplemental_checks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "validator-inventory.v1"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_active_specialist_targets",
+        "historical_evidence_retained",
+        "pull_request_runs_all_groups",
+        "main_runs_all_groups",
+        "new_target_requires_classification",
+        "classified_target_count",
+        "max_validate_job_named_steps"
+      ],
+      "properties": {
+        "max_active_specialist_targets": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "historical_evidence_retained": {
+          "const": true
+        },
+        "pull_request_runs_all_groups": {
+          "const": true
+        },
+        "main_runs_all_groups": {
+          "const": true
+        },
+        "new_target_requires_classification": {
+          "const": true
+        },
+        "classified_target_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_validate_job_named_steps": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 15
+        }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "consumer",
+          "failure_classes",
+          "scope_paths",
+          "execution_policy",
+          "targets"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "core",
+              "active",
+              "legacy"
+            ]
+          },
+          "consumer": {
+            "type": "string",
+            "minLength": 10
+          },
+          "failure_classes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            }
+          },
+          "scope_paths": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "execution_policy": {
+            "$ref": "#/$defs/execution_policy"
+          },
+          "review_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "retirement_rule": {
+            "type": "string",
+            "minLength": 20
+          },
+          "targets": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^(validate-[a-z0-9-]+|agent-check-tests)$"
+            }
+          }
+        }
+      }
+    },
+    "supplemental_checks": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target",
+          "consumer",
+          "failure_class",
+          "execution_policy"
+        ],
+        "properties": {
+          "target": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "consumer": {
+            "type": "string",
+            "minLength": 10
+          },
+          "failure_class": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "execution_policy": {
+            "$ref": "#/$defs/execution_policy"
+          }
+        }
+      }
+    },
+    "baseline_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    }
+  },
+  "$defs": {
+    "execution_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pull_request",
+        "main"
+      ],
+      "properties": {
+        "pull_request": {
+          "const": "blocking"
+        },
+        "main": {
+          "const": "blocking"
+        }
+      }
+    }
+  }
+}

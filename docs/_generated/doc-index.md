@@ -74,6 +74,7 @@
 | `docs/reference/agent-operability-fixture-matrix.md` | Agent Operability — Fixture-Matrix (v0.1) | active | derived |
 | `docs/reference/manifest-schema.md` | Referenz: Manifest-Schema-Semantik | active | operative |
 | `docs/reference/replay-trace-redaction.md` | Referenz: Replay-Trace-Redaction | active | operative |
+| `docs/reports/vibe-lab-validator-inventory-v1.md` | Vibe-Lab Validator Inventory v1 | active | operative |
 | `docs/roadmap.md` | Roadmap — Koordination offener Arbeitsstränge | active | navigation |
 | `docs/rules/README.md` | Rules (Stub-Namespace) | active | navigation |
 | `docs/syntheses/README.md` | Syntheses (Stub-Namespace) | active | navigation |
