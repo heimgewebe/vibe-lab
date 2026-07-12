@@ -2,13 +2,12 @@
 <!-- source: instruction-blocks/spec-first.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- source-hash: 55df5ea6ad086731fa9a432fb1f8bcb9e384d9af17a57cc49c09acd1e105dc92 -->
+<!-- retirement-format: 1 -->
+<!-- retired-on: 2026-07-12 -->
+<!-- decision: decisions/export/README.md -->
 
-# Spec-First
-Before generating any code:
-1. Define the complete specification in a formal format (OpenAPI, Interface, Schema)
-2. Include all constraints: input validation, error codes, edge cases
-3. Review the specification for completeness
-4. Only then proceed to implementation
+# Tool projection retired
 
-Never skip the specification step — it is not overhead, it is the mechanism that activates structured constraint reasoning in the model.
+This file is a compatibility marker only. Vibe-Lab no longer projects instruction blocks into tool-specific directories.
+
+Reactivation is handled through the normal experiment registration and review path; this marker has no operational authority.

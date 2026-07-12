@@ -2,13 +2,12 @@
 <!-- source: instruction-blocks/constraint-before-code.md -->
 <!-- target-system: cursor -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- source-hash: 3eae2c1ec038297b4394875c035c0d2706b99825dc0b5074da90cc2ae003213c -->
+<!-- retirement-format: 1 -->
+<!-- retired-on: 2026-07-12 -->
+<!-- decision: decisions/export/README.md -->
 
-# Constraint-Before-Code
-Before writing any implementation:
-1. List all input constraints (types, ranges, formats, required fields)
-2. List all output constraints (structure, edge case behavior)
-3. Define error handling (what happens on invalid input?)
-4. Identify edge cases explicitly
+# Tool projection retired
 
-Do NOT substitute this with verbose explanations or essays — only structured constraints activate the right cognitive mode. Token volume without constraint structure has no quality effect.
+This file is a compatibility marker only. Vibe-Lab no longer projects instruction blocks into tool-specific directories.
+
+Reactivation is handled through the normal experiment registration and review path; this marker has no operational authority.

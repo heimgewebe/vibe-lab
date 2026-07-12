@@ -2,14 +2,12 @@
 <!-- source: instruction-blocks/no-vague-prompts.md -->
 <!-- target-system: copilot -->
 <!-- generator: scripts/exports/generate_exports.py -->
-<!-- source-hash: a1c2295964137d6862192ad8a3bf1b2c6e50e444e55a27d718e92ce004af4aa5 -->
+<!-- retirement-format: 1 -->
+<!-- retired-on: 2026-07-12 -->
+<!-- decision: decisions/export/README.md -->
 
-# No-Vague-Prompts
-Never give a vague task description and then iteratively fix the output.
+# Tool projection retired
 
-Instead:
-1. Define what you need precisely before prompting
-2. Include structure, constraints, and expected format upfront
-3. Specify error handling and edge cases explicitly
+This file is a compatibility marker only. Vibe-Lab no longer projects instruction blocks into tool-specific directories.
 
-Vague prompts lead to: inconsistent output, missing edge cases, high rework (5-6× more than structured approach), and false confidence in superficially correct results.
+Reactivation is handled through the normal experiment registration and review path; this marker has no operational authority.
