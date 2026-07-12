@@ -1,18 +1,26 @@
 schema_version: "0.1.0"
 decision_type: "result_assessment"
 verdict: "inconclusive"
-confidence: "medium"
-date: "2026-07-01"
-reviewer: "operator"
+confidence: "high"
+date: "2026-07-12"
+reviewer: "ChatGPT / Grabowski"
 rationale: |
-  The Operator Lab Loop is now anchored as a playbook and experiment skeleton.
-  This is sufficient to start using it on real repo work, but insufficient to
-  claim workflow superiority or adoption readiness.
+  The deterministic cross-run assessment covers all 36 historical run cards.
+  Fourteen cards report that an operator decision changed, twenty report no
+  change, and two omit the field. The series also records 19 review-friction
+  events, 20 rework events, six validation gaps, two scope drifts and one false
+  block. These are real observations, but they do not establish Operator-Lab
+  effectiveness: all 36 cards lack measured completion time, seven lack
+  run_meta.json, and no prospectively bound comparable control/treatment group
+  exists. The appropriate result is insufficient evidence, represented by the
+  schema-compatible `inconclusive` verdict. The anecdotal series is frozen.
 evidence_summary:
-  observations: 3
-  positive: 2
+  observations: 36
+  positive: 14
   negative: 0
-  neutral: 1
+  neutral: 22
 next_steps: |
-  Use the loop on the next real PR or agent delegation. Keep Bureau read-only
-  unless repeated Vibe-Lab run evidence creates a clear cross-repo priority signal.
+  Do not append further anecdotal cards. Any future operator-process evaluation
+  must be a new prospectively registered comparison with a named consumer,
+  decision target, primary metric, minimum material effect, control, treatment,
+  review date, expiry and closure outcome. See cross-run-assessment.v1.json.

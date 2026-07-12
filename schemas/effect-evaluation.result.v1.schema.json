@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/effect-evaluation.result.v1.schema.json",
+  "title": "Vibe-Lab Effect Evaluation Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "registration_sha256",
+    "observations_sha256",
+    "result_sha256",
+    "metric",
+    "direction",
+    "unit",
+    "minimum_material_effect",
+    "comparison_mode",
+    "sample",
+    "statistics",
+    "data_quality",
+    "effect_claim_allowed",
+    "verdict",
+    "does_not_establish"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "effect-evaluation.result.v1"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "registration_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observations_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "result_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "metric": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "direction": {
+      "enum": [
+        "higher_is_better",
+        "lower_is_better"
+      ]
+    },
+    "unit": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.%/-]*$"
+    },
+    "minimum_material_effect": {
+      "type": "number",
+      "minimum": 0
+    },
+    "comparison_mode": {
+      "enum": [
+        "paired",
+        "unpaired"
+      ]
+    },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "control",
+        "treatment",
+        "complete_pairs"
+      ],
+      "properties": {
+        "control": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "treatment": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "complete_pairs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "control_mean",
+        "treatment_mean",
+        "raw_difference",
+        "favorable_effect",
+        "relative_difference",
+        "confidence_interval_95"
+      ],
+      "properties": {
+        "control_mean": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "treatment_mean": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "raw_difference": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "favorable_effect": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "relative_difference": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "confidence_interval_95": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "lower",
+            "upper",
+            "method"
+          ],
+          "properties": {
+            "lower": {
+              "type": "number"
+            },
+            "upper": {
+              "type": "number"
+            },
+            "method": {
+              "enum": [
+                "student_t_95_paired",
+                "student_t_95_unpaired_conservative"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "comparable",
+        "minimum_sample_met",
+        "independence_met",
+        "reasons"
+      ],
+      "properties": {
+        "comparable": {
+          "type": "boolean"
+        },
+        "minimum_sample_met": {
+          "type": "boolean"
+        },
+        "independence_met": {
+          "type": "boolean"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "effect_claim_allowed": {
+      "type": "boolean"
+    },
+    "verdict": {
+      "enum": [
+        "beneficial",
+        "no_material_effect",
+        "harmful",
+        "insufficient_evidence"
+      ]
+    },
+    "does_not_establish": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

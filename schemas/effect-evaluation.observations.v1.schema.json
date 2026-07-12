@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/effect-evaluation.observations.v1.schema.json",
+  "title": "Vibe-Lab Effect Evaluation Observations v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "metric",
+    "observations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "effect-evaluation.observations.v1"
+    },
+    "experiment_id": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9][a-z0-9-]*$"
+    },
+    "metric": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "observation_id",
+          "condition",
+          "value",
+          "comparison_key",
+          "evidence_ref",
+          "independent"
+        ],
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9._:-]+$"
+          },
+          "condition": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]*$"
+          },
+          "value": {
+            "type": "number"
+          },
+          "comparison_key": {
+            "type": "string",
+            "minLength": 3
+          },
+          "pair_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ref": {
+            "type": "string",
+            "pattern": "^(receipt|github|vibe-lab|artifact|chronik):[^\\s]+$"
+          },
+          "independent": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

@@ -34,6 +34,16 @@ Erst wenn ein Experiment belastbare Evidenz liefert:
 2. Alle Pflichtartefakte müssen vollständig sein (`make validate`)
 3. Review + Merge = adoptierte Praxis
 
+### Aktive Experimente
+
+`experiments/active.v1.json` is the bounded active-work truth. At most five experiments may be active; historical experiment directories are not active by implication.
+
+```bash
+python3 scripts/docmeta/validate_active_experiments.py
+```
+
+New experiments use `registration.v2.json`: control, treatment, primary metric, material threshold, comparability constraints, review date and expiry are frozen before observation. The review-only evaluator is `tools/vibe-cli/evaluate_effect.py`.
+
 ### Lokal validieren
 
 ```bash

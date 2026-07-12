@@ -74,6 +74,8 @@ relations:
   - type: references
     target: roadmap.md
   - type: references
+    target: plans/vibe-lab-optimization-plan-v1.md
+  - type: references
     target: onboarding/README.md
   - type: references
     target: rules/README.md

@@ -1,43 +1,39 @@
 ---
-title: "Result: Operator Lab Loop Anchor Run"
-status: active
+title: "Result: Operator-Lab Cross-Run Closeout"
+status: archived
 canonicality: operative
+updated: "2026-07-12"
 ---
 
-# result.md — Operator Lab Loop Anchor Run
+# Operator-Lab Cross-Run Closeout
 
-## Zusammenfassung
+## Result
 
-Der Operator Lab Loop wurde als Playbook und erster Anchoring-Run verankert. Der Run ist eine Nutzbarkeitsverankerung, kein Wirksamkeitsnachweis.
+The historical series is closed with **insufficient evidence**. The decision schema records this as `inconclusive`.
 
-## Beobachtungen
+## Evidence
 
-- `docs/playbooks/operator-lab-loop.md` definiert Ausloeser, Mindestfelder und Stop-Regeln.
-- Die erste Run Card dokumentiert Steuerboard-Nutzung und Nicht-Claims.
-- Evidence bleibt klein und repo-lokal.
+The deterministic assessment covers all 36 run cards:
 
-## Deutung
+- 14 report an operator decision change;
+- 20 report no decision change;
+- 2 omit that field;
+- 19 review-friction events and 20 rework events were recorded;
+- 6 validation gaps, 2 scope drifts and 1 false block were recorded;
+- 7 cards lack `run_meta.json`;
+- 0 cards contain measured task completion time;
+- no prospectively bound comparable control/treatment group exists.
 
-Die Umsetzung passt zur bestehenden Evidence-Pack-Logik. Sie sollte erst nach realen PR- oder Agenten-Runs weiter verhaertet werden.
+The exact counts, input digest, missing metadata and non-claims are in `cross-run-assessment.v1.json`.
 
-## Verdict
+## Interpretation
 
-`iterate`: Den Loop bei den naechsten echten Repo-Arbeiten nutzen, aber keine Adoption oder Condition-Superiority behaupten.
+The cards show that the loop was used and occasionally coincided with changed decisions. They do not show that the loop caused better decisions or saved effort. Aggregating more anecdotal cards would not repair the missing comparison design.
 
-## Interpretation Budget
+## Decision
 
-### Allowed Claims
+Freeze this series. Future operator-process questions require a new prospective experiment rather than additional cards in this directory.
 
-- Der Operator Lab Loop ist als Repo-Playbook und Experiment-Skeleton verankert.
-- Der erste Anchoring-Run dokumentiert die nicht-blockierende Steuerboard-Nutzung.
+## Non-claims
 
-### Disallowed Claims
-
-- Der Loop verbessert PR-Arbeit.
-- Eine Condition ist besser als eine andere.
-- Agentenarbeit ist dadurch allgemein verlaesslicher.
-
-### Evidence Basis
-
-- Direkt beobachtet: neue repo-lokale Artefakte.
-- Nicht getestet: echte PR-Agentenarbeit und Vergleichsbedingungen.
+This closeout does not establish Operator-Lab effectiveness, condition superiority, a causal effect, workflow adoption readiness or automatic Bureau task authority.
