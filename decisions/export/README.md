@@ -18,17 +18,15 @@ Die vorhandenen Dateipfade bleiben vorerst als kleine, deterministisch erzeugte
 Kompatibilitätsmarken bestehen. Dadurch bleiben alte Links nachvollziehbar, ohne
 eine zweite aktive Anweisungswahrheit zu erzeugen.
 
-## Reaktivierungsgate
+## Prüfrahmen für eine mögliche Reaktivierung
 
-Eine Tool-Projektion darf erst wieder aktive Anweisungen enthalten, wenn vorab
-alle folgenden Punkte feststehen:
+Eine spätere Reaktivierung sollte als neues, verbrauchergebundenes Experiment
+behandelt werden. Der vorhandene Experiment-Registrierungsvertrag verlangt dafür
+unter anderem Consumer, Entscheidungsziel, Messung, Falsifikation und Ablaufdatum.
 
-1. benannter Downstream-Consumer und konkrete Verwendung;
-2. reviewed Entscheidungsziel mit Owner;
-3. messbare Erfolgs- und Falsifikationskriterien;
-4. Review- und Ablaufdatum;
-5. Nachweis, dass die Projektion gegenüber der kanonischen Quelle realen Nutzen
-   erzeugt und nicht nur Pflege- oder Driftkosten.
+Dieser Navigationshinweis setzt keine eigenständige Policy. Maßgeblich bleiben die
+kanonischen Verträge und Schemas sowie eine ausdrücklich geprüfte Änderung dieser
+Exportflächen.
 
 Bis dahin sind `exports/copilot/` und `exports/cursor/` reine
 Kompatibilitätsflächen ohne operative Autorität.
