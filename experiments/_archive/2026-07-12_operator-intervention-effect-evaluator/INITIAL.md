@@ -1,6 +1,6 @@
 ---
 title: "Initial State: Operator Intervention Effect Evaluator"
-status: active
+status: archived
 canonicality: operative
 ---
 

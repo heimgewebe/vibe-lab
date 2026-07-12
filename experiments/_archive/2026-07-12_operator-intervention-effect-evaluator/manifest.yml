@@ -5,13 +5,16 @@ experiment:
     A deterministic, fail-closed effect report can improve at least one reviewed
     operator decision across three real intervention pilots without generating
     misleading effect claims or more ceremony than decision value.
-  status: testing
+  status: rejected
   category: workflow
   execution_status: prepared
   execution_refs:
     - registration.v2.json
     - method.md
-    - ../../docs/playbooks/effect-observation-capture.md
+    - ../../../docs/playbooks/effect-observation-capture.md
+    - results/practical-blockade.v1.json
+    - results/practical-blockade.md
+    - results/decision.yml
   evidence_level: experimental
   created: "2026-07-12"
   updated: "2026-07-12"
@@ -27,13 +30,16 @@ experiment:
       - id: "manual_review_is_sufficient"
         statement: "Manual review of the same evidence already reaches the same calibrated decision without the evaluator."
         assessment:
-          status: pending
+          status: blocked
           outcome: not_checked
-          pending_checks:
-            - "Run three paired manual and evaluator-assisted decision reviews."
+          pending_checks: []
           limitations:
-            - "No real paired pilot review exists yet."
-          confidence: low
+            - "The registered comparison could not begin because the treatment report depends on the already scored treatment decision."
+            - "The blockade does not test whether manual review is sufficient."
+          confidence: high
+          evidence_refs:
+            - path: results/practical-blockade.md
+              section: Verified sequence
 context:
   tools:
     - "tools/vibe-cli/capture_effect_observation.py"

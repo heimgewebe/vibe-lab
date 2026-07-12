@@ -1,0 +1,77 @@
+{
+  "schema_version": "practical-blockade.v1",
+  "experiment_id": "2026-07-12_operator-intervention-effect-evaluator",
+  "recorded_at": "2026-07-12T21:04:39Z",
+  "decision": "archive_registered_salvage_experiment",
+  "execution": {
+    "status": "not_executed",
+    "observations": 0,
+    "completed_pairs": 0,
+    "synthetic_cases": 0,
+    "retrospective_cases": 0
+  },
+  "bindings": {
+    "registration_file_sha256": "27041e6364e145924945a29f2264839a99d88e292be370cbdae69df80734209c",
+    "registration_canonical_json_sha256": "2f3afb4e363982b051c3c08677056b37b2a20943e73d14a67e65b4ad9d60845d",
+    "method_file_sha256": "daf25cdae7f3a5536c8f1b71dbb3be06bec4dd806e89b4b0f61a5868cdec035c",
+    "capture_tool_sha256": "09fa2083f63bfff7252781851a025fc8cc588fda412adee5e23903d4e4371ef3",
+    "evaluator_tool_sha256": "b0994729db6a2854a7f74112814ea39fb0425820b0179d0a8a1f4141f23b270a",
+    "vibe_lab_base_head": "8043e7228c11c3dfceaffbd7e1c440ee09b28a98",
+    "vibe_lab_pr": "heimgewebe/vibe-lab#313",
+    "vibe_lab_pr_head": "5b48b943784301593b3d9f261db4c7efec2fe534",
+    "grabowski_runtime_head": "0f5473e117ddc7f6e830b961a49e73fcf3ebb657",
+    "grabowski_governor_summary_sha256": "0cbaec6ea931505381769dee466a3f05b30c846fdb87e5b64c425cc1c59645a0",
+    "heimlern_main_head": "03fa2eb127614cf118a6ce8ccdb0076f5a1271d2",
+    "chronik_origin_main": "de1287423f3156cfae86c3cae6f4538732356c01",
+    "bureau_origin_main": "bafd9f0a14215376b699eadf4624c8f761738c38"
+  },
+  "blockers": [
+    {
+      "id": "causal_ordering_cycle",
+      "registered_treatment": "decision from frozen evidence plus deterministic evaluator report",
+      "implemented_report_input": "captured and independently scored control and treatment decisions",
+      "effect": "the registered report cannot prospectively inform the treatment decision whose score is required to create that report"
+    }
+  ],
+  "rejected_workarounds": [
+    {
+      "id": "second_predecision_reporter",
+      "reason": "would change the frozen intervention and add new machinery instead of testing PR 313"
+    },
+    {
+      "id": "retrospective_refit",
+      "reason": "explicitly forbidden and would manufacture comparability"
+    },
+    {
+      "id": "synthetic_cases",
+      "reason": "explicitly forbidden and would not prove practical operator value"
+    },
+    {
+      "id": "duplicate_production_execution",
+      "reason": "unsafe and unnecessary side effects"
+    }
+  ],
+  "repository_safety": {
+    "heimlern_mutated": false,
+    "chronik_mutated": false,
+    "bureau_mutated": false,
+    "bureau_mutation_blocked_by_foreign_lease_and_dirty_canonical_checkout": true
+  },
+  "conclusion": {
+    "heimlern_as_evaluator": "reject",
+    "generic_tools_location": "vibe-lab_unpromoted_review_only",
+    "automatic_policy_or_routing": false,
+    "runtime_service": false,
+    "dashboard": false,
+    "plexer": false
+  },
+  "does_not_establish": [
+    "evaluator_effectiveness",
+    "manual_review_superiority",
+    "causal_effect",
+    "cost_effectiveness",
+    "production_readiness",
+    "bureau_task_completion",
+    "heimlern_repository_archival_completed"
+  ]
+}

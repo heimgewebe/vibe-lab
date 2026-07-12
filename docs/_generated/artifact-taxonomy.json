@@ -142,22 +142,6 @@
         ".github/agents/*.md"
       ],
       "origin": "handcrafted",
-      "path": ".github/agents/experiment-critic-structure-phase1c.agent.md",
-      "status": "classified"
-    },
-    {
-      "authority": "normative_contract",
-      "catchall_match": false,
-      "enforcement": [
-        "review_required"
-      ],
-      "kind": "agent_definition",
-      "layer": "agent",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        ".github/agents/*.md"
-      ],
-      "origin": "handcrafted",
       "path": ".github/agents/experiment-critic.agent.md",
       "status": "classified"
     },
@@ -208,6 +192,23 @@
       ],
       "origin": "handcrafted",
       "path": ".github/workflows/bundle-freshness-receipt.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking",
+        "review_required"
+      ],
+      "kind": "ci_workflow",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        ".github/workflows/*.yml"
+      ],
+      "origin": "handcrafted",
+      "path": ".github/workflows/claude.yml",
       "status": "classified"
     },
     {
@@ -452,6 +453,18 @@
       "origin": "handcrafted",
       "path": ".vibe/run-bundle-evidence-pack-legacy.yml",
       "status": "classified"
+    },
+    {
+      "authority": "unknown",
+      "catchall_match": false,
+      "enforcement": [],
+      "kind": null,
+      "layer": null,
+      "lifecycle": null,
+      "matched_patterns": [],
+      "origin": null,
+      "path": ".vibe/validator-inventory.v1.json",
+      "status": "unknown"
     },
     {
       "authority": "sovereign_source",
@@ -1392,6 +1405,38 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/ecosystem/README.md",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/ecosystem/vibe-lab-productive-role.md",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -1578,6 +1623,22 @@
       "status": "classified"
     },
     {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/plans/vibe-lab-optimization-plan-v1.md",
+      "status": "classified"
+    },
+    {
       "authority": "unknown",
       "catchall_match": false,
       "enforcement": [],
@@ -1621,6 +1682,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/playbooks/bundle-freshness-receipt.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/playbooks/effect-observation-capture.md",
       "status": "classified"
     },
     {
@@ -1717,6 +1794,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/playbooks/pr-context-capture.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "playbook",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/playbooks/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/playbooks/pr-review-evidence-wait-gate.md",
       "status": "classified"
     },
     {
@@ -1923,6 +2016,22 @@
       ],
       "origin": "handcrafted",
       "path": "docs/reference/replay-trace-redaction.md",
+      "status": "classified"
+    },
+    {
+      "authority": "navigation_surface",
+      "catchall_match": true,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "doc",
+      "layer": "docs",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "docs/**"
+      ],
+      "origin": "handcrafted",
+      "path": "docs/reports/vibe-lab-validator-inventory-v1.md",
       "status": "classified"
     },
     {
@@ -13693,6 +13802,22 @@
       "status": "classified"
     },
     {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/FROZEN.md",
+      "status": "classified"
+    },
+    {
       "authority": "raw_capture",
       "catchall_match": false,
       "enforcement": [
@@ -14461,6 +14586,422 @@
       "status": "classified"
     },
     {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-018-repo-candidate-live-verification/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-019-bureau-candidate-live-refresh/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-020-lenskit-candidate-live-refresh/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-022-relation-check/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-023-summary/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-023-summary/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-024-bureau-plan/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-024-bureau-plan/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-025-bureau-proposal/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-025-bureau-proposal/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-026-proposal-guard/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-026-proposal-guard/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-027-bureau-apply/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-027-bureau-apply/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-028-lenskit-stop/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-028-lenskit-stop/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-029-access-plan/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-029-access-plan/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-031-if-apply/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-031-if-apply/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-032-candidate-refine/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-032-candidate-refine/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-033-verified-history/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-033-verified-history/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-034-lenskit-conflict-stop/run-card.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-01_operator-lab-loop/artifacts/run-034-lenskit-conflict-stop/run_meta.json",
+      "status": "classified"
+    },
+    {
       "authority": "historical_record",
       "catchall_match": true,
       "enforcement": [
@@ -14525,6 +15066,22 @@
       "status": "classified"
     },
     {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-01_operator-lab-loop/results/cross-run-assessment.v1.json",
+      "status": "classified"
+    },
+    {
       "authority": "decision_record",
       "catchall_match": false,
       "enforcement": [
@@ -14571,6 +15128,1145 @@
       ],
       "origin": "handcrafted",
       "path": "experiments/2026-07-01_operator-lab-loop/results/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_context",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/CONTEXT.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/CONTEXT.md",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/artifacts/run-001-pr292-execution-slice/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/artifacts/run-001-pr292-execution-slice/validator-and-tests.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_failure_modes",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/failure_modes.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/failure_modes.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "experiment_manifest",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/manifest.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/manifest.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_method",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/method.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/method.md",
+      "status": "classified"
+    },
+    {
+      "authority": "evidence_log",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "ci_blocking"
+      ],
+      "kind": "evidence_log",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/results/evidence.jsonl"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/results/evidence.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "result_interpretation",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/result.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/results/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/results/runs/TEMPLATE.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-05_ecosystem-organ-preflight/results/runs/run-001.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/AGENT_NOTE.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_context",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/CONTEXT.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/CONTEXT.md",
+      "status": "classified"
+    },
+    {
+      "authority": "raw_capture",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "initial_prompt",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/INITIAL.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/INITIAL.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/README.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/README.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-001-learning-sample/output.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-001-learning-sample/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/followup-candidates.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/friction-events.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/output.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/pattern_candidates.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/output.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/pattern_stability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/snapshot-2-new-events.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/output.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/pattern_stability.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/snapshot-3-new-events.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/trigger_evaluation.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-trigger-rule.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/diagnostic-proposal.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/followup-candidate.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/output.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/transport-events.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_failure_modes",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/failure_modes.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/failure_modes.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "experiment_manifest",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/manifest.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/manifest.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_method",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/method.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/method.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/decision-boundary.md",
+      "status": "classified"
+    },
+    {
+      "authority": "evidence_log",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "ci_blocking"
+      ],
+      "kind": "evidence_log",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/results/evidence.jsonl"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/evidence.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/followup.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/nonclaims.md",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "result_interpretation",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/result.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/review-questions.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_context",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/CONTEXT.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md",
+      "status": "classified"
+    },
+    {
+      "authority": "raw_capture",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "initial_prompt",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/INITIAL.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_failure_modes",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/failure_modes.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "experiment_manifest",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/manifest.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/manifest.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/measurement-plan.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_method",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/method.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/method.md",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "decision_record",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/decision.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-08_rlens-agent-context-conditions/results/decision.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_context",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/CONTEXT.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/CONTEXT.md",
+      "status": "classified"
+    },
+    {
+      "authority": "raw_capture",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "initial_prompt",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/INITIAL.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/INITIAL.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_failure_modes",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/failure_modes.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "experiment_manifest",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/manifest.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/manifest.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/measurement-plan.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_method",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/method.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "decision_record",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/decision.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "evidence_log",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "ci_blocking"
+      ],
+      "kind": "evidence_log",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/results/evidence.jsonl"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/evidence.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "result_interpretation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "result_interpretation",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/result.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/run-series.yml",
       "status": "classified"
     },
     {
@@ -14700,6 +16396,38 @@
       "status": "classified"
     },
     {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/_template/registration.v1.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/_template/registration.v2.json",
+      "status": "classified"
+    },
+    {
       "authority": "decision_record",
       "catchall_match": false,
       "enforcement": [
@@ -14746,6 +16474,22 @@
       ],
       "origin": "handcrafted",
       "path": "experiments/_template/results/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/active.v1.json",
       "status": "classified"
     },
     {
@@ -14948,6 +16692,22 @@
       ],
       "origin": "handcrafted",
       "path": "instruction-blocks/edge-case-enumeration.md",
+      "status": "classified"
+    },
+    {
+      "authority": "normative_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "export_source",
+      "layer": "export",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "instruction-blocks/*.md"
+      ],
+      "origin": "handcrafted",
+      "path": "instruction-blocks/evidence-bound-status.md",
       "status": "classified"
     },
     {
@@ -15236,6 +16996,22 @@
         "schemas/*.json"
       ],
       "origin": "handcrafted",
+      "path": "schemas/active-experiments.v1.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "schemas/agent.handoff.schema.json",
       "status": "classified"
     },
@@ -15380,6 +17156,54 @@
         "schemas/*.json"
       ],
       "origin": "handcrafted",
+      "path": "schemas/effect-evaluation.observations.v1.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "schemas/effect-evaluation.observations.v2.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "schemas/effect-evaluation.result.v1.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
       "path": "schemas/experiment-run-bundle.v1.schema.json",
       "status": "classified"
     },
@@ -15397,6 +17221,38 @@
       ],
       "origin": "handcrafted",
       "path": "schemas/experiment.manifest.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "schemas/experiment.registration.v1.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "schemas/experiment.registration.v2.schema.json",
       "status": "classified"
     },
     {
@@ -15848,6 +17704,22 @@
       "status": "classified"
     },
     {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "schemas/validator-inventory.v1.schema.json",
+      "status": "classified"
+    },
+    {
       "authority": "implementation_behavior",
       "catchall_match": false,
       "enforcement": [
@@ -16132,6 +18004,38 @@
         "scripts/docmeta/*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/operator_lab_closeout.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/operator_lab_metrics.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/prepare_model_lab_run004_workspaces.py",
       "status": "classified"
     },
@@ -16260,6 +18164,22 @@
         "scripts/docmeta/test_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/test_ecosystem_organ_preflight_safety_enum.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_fixture_matrix_audit_surface.py",
       "status": "classified"
     },
@@ -16356,6 +18276,38 @@
         "scripts/docmeta/test_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/test_operator_lab_closeout.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_operator_lab_metrics.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_prepare_model_lab_run004_workspaces.py",
       "status": "classified"
     },
@@ -16405,6 +18357,22 @@
       ],
       "origin": "handcrafted",
       "path": "scripts/docmeta/test_run_model_lab_run004_agent.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_active_experiments.py",
       "status": "classified"
     },
     {
@@ -16549,6 +18517,38 @@
       ],
       "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_doc_freshness_registry.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_ecosystem_organ_preflight.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_experiment_registration.py",
       "status": "classified"
     },
     {
@@ -16820,7 +18820,55 @@
         "scripts/docmeta/test_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_repobrief_workbench_run_series.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_repobrief_workbench_usefulness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_result_assessment_readiness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_rlens_agent_context_conditions.py",
       "status": "classified"
     },
     {
@@ -16869,6 +18917,38 @@
       ],
       "origin": "handcrafted",
       "path": "scripts/docmeta/test_validate_schema_counterevidence.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/test_validate_validator_inventory.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_active_experiments.py",
       "status": "classified"
     },
     {
@@ -17028,7 +19108,39 @@
         "scripts/docmeta/validate_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_ecosystem_organ_preflight.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_execution_proof.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_experiment_registration.py",
       "status": "classified"
     },
     {
@@ -17316,7 +19428,55 @@
         "scripts/docmeta/validate_*.py"
       ],
       "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_repobrief_workbench_run_series.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_repobrief_workbench_usefulness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
       "path": "scripts/docmeta/validate_result_assessment_readiness.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_rlens_agent_context_conditions.py",
       "status": "classified"
     },
     {
@@ -17365,6 +19525,22 @@
       ],
       "origin": "handcrafted",
       "path": "scripts/docmeta/validate_schema.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "implementation_script",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "scripts/docmeta/validate_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "scripts/docmeta/validate_validator_inventory.py",
       "status": "classified"
     },
     {
@@ -23568,6 +25744,38 @@
         "tools/vibe-cli/*.py"
       ],
       "origin": "handcrafted",
+      "path": "tools/vibe-cli/capture_effect_observation.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "implementation_tool",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "tools/vibe-cli/evaluate_effect.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "implementation_tool",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/*.py"
+      ],
+      "origin": "handcrafted",
       "path": "tools/vibe-cli/pr_context_capture.py",
       "status": "classified"
     },
@@ -23585,6 +25793,38 @@
       ],
       "origin": "handcrafted",
       "path": "tools/vibe-cli/replay_minimal.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "tools/vibe-cli/test_capture_effect_observation.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "tools/vibe-cli/test_evaluate_effect.py",
       "status": "classified"
     },
     {
@@ -23639,11 +25879,15 @@
   "conflict_artifacts": [],
   "fallback_classified_artifacts": [
     "docs/doc-freshness-registry.yml",
+    "docs/ecosystem/README.md",
+    "docs/ecosystem/vibe-lab-productive-role.md",
     "docs/evaluations/agent-skill-file-fruitfulness.md",
     "docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md",
     "docs/evaluations/rrg03-remediation-strategy-comparison.md",
     "docs/experiments/README.md",
     "docs/onboarding/README.md",
+    "docs/plans/vibe-lab-optimization-plan-v1.md",
+    "docs/reports/vibe-lab-validator-inventory-v1.md",
     "docs/rules/README.md",
     "docs/syntheses/README.md",
     "experiments/2026-04-12_spec-first-legacy/src/legacy_processor.py",
@@ -24132,6 +26376,7 @@
     "experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-004-minimal-decision-first-checklist/condition-input.md",
     "experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-template.md",
     "experiments/2026-06-10_pr-agent-context-comparison-series/pilot-v1.yml",
+    "experiments/2026-07-01_operator-lab-loop/FROZEN.md",
     "experiments/2026-07-01_operator-lab-loop/artifacts/README.md",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-001-plan-anchor/steuerboard-summary.json",
@@ -24162,8 +26407,64 @@
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-017-repo-audit-third-pass/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-017-repo-audit-third-pass/validation-summary.txt",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-018-repo-candidate-live-verification/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-019-bureau-candidate-live-refresh/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-020-lenskit-candidate-live-refresh/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-022-relation-check/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-023-summary/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-024-bureau-plan/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-025-bureau-proposal/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-026-proposal-guard/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-027-bureau-apply/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-028-lenskit-stop/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-029-access-plan/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-031-if-apply/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-032-candidate-refine/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-033-verified-history/run-card.yml",
+    "experiments/2026-07-01_operator-lab-loop/artifacts/run-034-lenskit-conflict-stop/run-card.yml",
     "experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md",
+    "experiments/2026-07-01_operator-lab-loop/results/cross-run-assessment.v1.json",
+    "experiments/2026-07-05_ecosystem-organ-preflight/artifacts/run-001-pr292-execution-slice/validator-and-tests.txt",
+    "experiments/2026-07-05_ecosystem-organ-preflight/results/runs/TEMPLATE.yml",
+    "experiments/2026-07-05_ecosystem-organ-preflight/results/runs/run-001.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/AGENT_NOTE.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/README.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/README.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-001-learning-sample/output.txt",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/followup-candidates.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/friction-events.jsonl",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/output.txt",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/pattern_candidates.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/result.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/output.txt",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/pattern_stability.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/result.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/snapshot-2-new-events.jsonl",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/output.txt",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/pattern_stability.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/result.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/snapshot-3-new-events.jsonl",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/trigger_evaluation.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-trigger-rule.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/diagnostic-proposal.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/followup-candidate.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/output.txt",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/result.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/transport-events.jsonl",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/decision-boundary.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/followup.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/nonclaims.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/review-questions.md",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md",
+    "experiments/2026-07-08_rlens-agent-context-conditions/measurement-plan.yml",
+    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md",
+    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/measurement-plan.yml",
+    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/run-series.yml",
     "experiments/_template/artifacts/README.md",
+    "experiments/_template/registration.v1.json",
+    "experiments/_template/registration.v2.json",
+    "experiments/active.v1.json",
     "tests/fixtures/challenge_versions/invalid/challenges/missing-version.md",
     "tests/fixtures/challenge_versions/invalid/challenges/wrong-name.md",
     "tests/fixtures/challenge_versions/invalid/decisions/missing-challenge-version.yml",
@@ -24440,19 +26741,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 518,
-      "navigation_surface": 8,
+      "historical_record": 575,
+      "navigation_surface": 12,
       "test_expectation": 273
     },
     "by_layer": {
-      "docs": 8,
-      "experiment": 518,
+      "docs": 12,
+      "experiment": 575,
       "test": 273
     },
     "by_matched_pattern": {
-      "docs/**": 8,
-      "experiments/**": 27,
-      "experiments/*/artifacts/**": 491,
+      "docs/**": 12,
+      "experiments/**": 46,
+      "experiments/*/artifacts/**": 529,
       "tests/fixtures/**": 273
     },
     "high_risk_count": 273,
@@ -24498,7 +26799,7 @@
             "make-validate.txt": 17,
             "measurement.yml": 21,
             "refactored_processor.py": 15,
-            "run-card.yml": 22,
+            "run-card.yml": 36,
             "run.yml": 21,
             "targeted-tests.txt": 14
           },
@@ -24514,7 +26815,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 491
+          "total": 529
         },
         {
           "high_risk_count": 0,
@@ -24522,46 +26823,54 @@
           "top_basenames": {
             ".gitignore": 2,
             "AGENT_INSTRUCTION.md": 2,
-            "README.md": 3,
+            "AGENT_NOTE.md": 1,
+            "FROZEN.md": 1,
+            "README.md": 4,
+            "TEMPLATE.yml": 1,
+            "active.v1.json": 1,
             "app.ts": 1,
-            "condition-contrast-design-gate.yml": 1,
-            "dependency-risk-caveat-scope.yml": 1,
-            "followups.md": 1,
-            "jest-patched.log": 1,
-            "jest-unfixed.log": 1,
-            "legacy_processor.py": 1
+            "assessment.md": 1,
+            "measurement-plan.yml": 2
           },
           "top_parent_dirs": {
             "experiments/2026-04-12_spec-first-legacy/src": 3,
             "experiments/2026-04-14_tdd-vibe": 2,
             "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
             "experiments/2026-04-15_agent-task-validity": 4,
-            "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
-            "experiments/2026-04-23_phase-1-drift-injection/results": 1,
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
-            "experiments/2026-06-10_pr-agent-context-comparison-series": 2
+            "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
+            "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
+            "experiments/2026-07-08_operator-learning-capture-sample": 2,
+            "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
+            "experiments/_template": 2
           },
-          "total": 27
+          "total": 46
         },
         {
           "high_risk_count": 0,
           "matched_pattern": "docs/**",
           "top_basenames": {
-            "README.md": 4,
+            "README.md": 5,
             "agent-skill-file-fruitfulness.md": 1,
             "doc-freshness-registry.yml": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
-            "rrg03-remediation-strategy-comparison.md": 1
+            "rrg03-remediation-strategy-comparison.md": 1,
+            "vibe-lab-optimization-plan-v1.md": 1,
+            "vibe-lab-productive-role.md": 1,
+            "vibe-lab-validator-inventory-v1.md": 1
           },
           "top_parent_dirs": {
             "docs": 1,
+            "docs/ecosystem": 2,
             "docs/evaluations": 3,
             "docs/experiments": 1,
             "docs/onboarding": 1,
+            "docs/plans": 1,
+            "docs/reports": 1,
             "docs/rules": 1,
             "docs/syntheses": 1
           },
-          "total": 8
+          "total": 12
         }
       ],
       "volume_first": [
@@ -24576,7 +26885,7 @@
             "make-validate.txt": 17,
             "measurement.yml": 21,
             "refactored_processor.py": 15,
-            "run-card.yml": 22,
+            "run-card.yml": 36,
             "run.yml": 21,
             "targeted-tests.txt": 14
           },
@@ -24592,7 +26901,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 491
+          "total": 529
         },
         {
           "high_risk_count": 273,
@@ -24629,46 +26938,54 @@
           "top_basenames": {
             ".gitignore": 2,
             "AGENT_INSTRUCTION.md": 2,
-            "README.md": 3,
+            "AGENT_NOTE.md": 1,
+            "FROZEN.md": 1,
+            "README.md": 4,
+            "TEMPLATE.yml": 1,
+            "active.v1.json": 1,
             "app.ts": 1,
-            "condition-contrast-design-gate.yml": 1,
-            "dependency-risk-caveat-scope.yml": 1,
-            "followups.md": 1,
-            "jest-patched.log": 1,
-            "jest-unfixed.log": 1,
-            "legacy_processor.py": 1
+            "assessment.md": 1,
+            "measurement-plan.yml": 2
           },
           "top_parent_dirs": {
             "experiments/2026-04-12_spec-first-legacy/src": 3,
             "experiments/2026-04-14_tdd-vibe": 2,
             "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
             "experiments/2026-04-15_agent-task-validity": 4,
-            "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
-            "experiments/2026-04-23_phase-1-drift-injection/results": 1,
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
-            "experiments/2026-06-10_pr-agent-context-comparison-series": 2
+            "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
+            "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
+            "experiments/2026-07-08_operator-learning-capture-sample": 2,
+            "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
+            "experiments/_template": 2
           },
-          "total": 27
+          "total": 46
         },
         {
           "high_risk_count": 0,
           "matched_pattern": "docs/**",
           "top_basenames": {
-            "README.md": 4,
+            "README.md": 5,
             "agent-skill-file-fruitfulness.md": 1,
             "doc-freshness-registry.yml": 1,
             "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
-            "rrg03-remediation-strategy-comparison.md": 1
+            "rrg03-remediation-strategy-comparison.md": 1,
+            "vibe-lab-optimization-plan-v1.md": 1,
+            "vibe-lab-productive-role.md": 1,
+            "vibe-lab-validator-inventory-v1.md": 1
           },
           "top_parent_dirs": {
             "docs": 1,
+            "docs/ecosystem": 2,
             "docs/evaluations": 3,
             "docs/experiments": 1,
             "docs/onboarding": 1,
+            "docs/plans": 1,
+            "docs/reports": 1,
             "docs/rules": 1,
             "docs/syntheses": 1
           },
-          "total": 8
+          "total": 12
         }
       ]
     },
@@ -24713,7 +27030,7 @@
           "make-validate.txt": 17,
           "measurement.yml": 21,
           "refactored_processor.py": 15,
-          "run-card.yml": 22,
+          "run-card.yml": 36,
           "run.yml": 21,
           "targeted-tests.txt": 14
         },
@@ -24729,7 +27046,7 @@
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
         },
-        "total": 491
+        "total": 529
       },
       {
         "high_risk_count": 0,
@@ -24737,46 +27054,54 @@
         "top_basenames": {
           ".gitignore": 2,
           "AGENT_INSTRUCTION.md": 2,
-          "README.md": 3,
+          "AGENT_NOTE.md": 1,
+          "FROZEN.md": 1,
+          "README.md": 4,
+          "TEMPLATE.yml": 1,
+          "active.v1.json": 1,
           "app.ts": 1,
-          "condition-contrast-design-gate.yml": 1,
-          "dependency-risk-caveat-scope.yml": 1,
-          "followups.md": 1,
-          "jest-patched.log": 1,
-          "jest-unfixed.log": 1,
-          "legacy_processor.py": 1
+          "assessment.md": 1,
+          "measurement-plan.yml": 2
         },
         "top_parent_dirs": {
           "experiments/2026-04-12_spec-first-legacy/src": 3,
           "experiments/2026-04-14_tdd-vibe": 2,
           "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
           "experiments/2026-04-15_agent-task-validity": 4,
-          "experiments/2026-04-23_phase-1-drift-injection/fixtures": 1,
-          "experiments/2026-04-23_phase-1-drift-injection/results": 1,
           "experiments/2026-05-31_model-lab-replication-series/results": 4,
-          "experiments/2026-06-10_pr-agent-context-comparison-series": 2
+          "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
+          "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
+          "experiments/2026-07-08_operator-learning-capture-sample": 2,
+          "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
+          "experiments/_template": 2
         },
-        "total": 27
+        "total": 46
       },
       {
         "high_risk_count": 0,
         "matched_pattern": "docs/**",
         "top_basenames": {
-          "README.md": 4,
+          "README.md": 5,
           "agent-skill-file-fruitfulness.md": 1,
           "doc-freshness-registry.yml": 1,
           "replay-gap-cross-diagnosis-rrg01-rrg02.md": 1,
-          "rrg03-remediation-strategy-comparison.md": 1
+          "rrg03-remediation-strategy-comparison.md": 1,
+          "vibe-lab-optimization-plan-v1.md": 1,
+          "vibe-lab-productive-role.md": 1,
+          "vibe-lab-validator-inventory-v1.md": 1
         },
         "top_parent_dirs": {
           "docs": 1,
+          "docs/ecosystem": 2,
           "docs/evaluations": 3,
           "docs/experiments": 1,
           "docs/onboarding": 1,
+          "docs/plans": 1,
+          "docs/reports": 1,
           "docs/rules": 1,
           "docs/syntheses": 1
         },
-        "total": 8
+        "total": 12
       }
     ]
   },
@@ -24872,7 +27197,6 @@
   ],
   "high_risk_artifacts": [
     ".github/agents/evidence-reconciliation-auditor.agent.md",
-    ".github/agents/experiment-critic-structure-phase1c.agent.md",
     ".github/agents/experiment-critic.agent.md",
     ".github/agents/experiment-operator.agent.md",
     ".vibe/artifact-taxonomy.yml",
@@ -24926,14 +27250,21 @@
     "experiments/2026-06-10_pr-agent-context-comparison-series/results/evidence.jsonl",
     "experiments/2026-07-01_operator-lab-loop/results/decision.yml",
     "experiments/2026-07-01_operator-lab-loop/results/evidence.jsonl",
+    "experiments/2026-07-05_ecosystem-organ-preflight/results/evidence.jsonl",
+    "experiments/2026-07-08_operator-learning-capture-sample/results/evidence.jsonl",
+    "experiments/2026-07-08_rlens-agent-context-conditions/results/decision.yml",
+    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml",
+    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/evidence.jsonl",
     "experiments/_template/results/decision.yml",
     "experiments/_template/results/evidence.jsonl",
     "instruction-blocks/constraint-before-code.md",
     "instruction-blocks/edge-case-enumeration.md",
+    "instruction-blocks/evidence-bound-status.md",
     "instruction-blocks/no-vague-prompts.md",
     "instruction-blocks/spec-first.md",
     "instruction-blocks/validate-against-spec.md",
     "repo.meta.yaml",
+    "schemas/active-experiments.v1.schema.json",
     "schemas/agent.handoff.schema.json",
     "schemas/auditor-output.v1.schema.json",
     "schemas/catalog.entry.schema.json",
@@ -24943,8 +27274,13 @@
     "schemas/command.write_change.schema.json",
     "schemas/decision.schema.json",
     "schemas/dependency-risk-caveat-scope.v1.schema.json",
+    "schemas/effect-evaluation.observations.v1.schema.json",
+    "schemas/effect-evaluation.observations.v2.schema.json",
+    "schemas/effect-evaluation.result.v1.schema.json",
     "schemas/experiment-run-bundle.v1.schema.json",
     "schemas/experiment.manifest.schema.json",
+    "schemas/experiment.registration.v1.schema.json",
+    "schemas/experiment.registration.v2.schema.json",
     "schemas/measurement-run.v1.schema.json",
     "schemas/model-lab-access-policy-freeze-manifest.v1.schema.json",
     "schemas/model-lab-access-policy-probe.v1.schema.json",
@@ -24972,69 +27308,74 @@
     "schemas/review-events.v1.schema.json",
     "schemas/run-evidence-pack.v1.schema.json",
     "schemas/run_meta.schema.json",
-    "schemas/runtime-evidence-gate.v1.schema.json"
+    "schemas/runtime-evidence-gate.v1.schema.json",
+    "schemas/validator-inventory.v1.schema.json"
   ],
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 22,
+      "decision_record": 24,
       "diagnostic_signal": 7,
-      "evidence_log": 20,
+      "evidence_log": 23,
       "generated_projection": 10,
-      "historical_record": 518,
-      "implementation_behavior": 20,
-      "navigation_surface": 24,
+      "historical_record": 575,
+      "implementation_behavior": 24,
+      "navigation_surface": 28,
       "normative_contract": 16,
-      "procedure_contract": 139,
-      "raw_capture": 30,
-      "result_interpretation": 67,
-      "runtime_observation": 103,
-      "schema_truth": 41,
+      "procedure_contract": 161,
+      "raw_capture": 33,
+      "result_interpretation": 74,
+      "runtime_observation": 121,
+      "schema_truth": 48,
       "sovereign_source": 3,
-      "test_expectation": 430,
-      "unknown": 25
+      "test_expectation": 442,
+      "unknown": 26
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 608,
+      "ci_blocking": 647,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 587,
+      "no_rewrite": 647,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 305
+      "review_required": 349
     },
     "by_layer": {
-      "agent": 11,
+      "<none>": 1,
+      "agent": 10,
       "archive": 25,
       "capture": 10,
       "catalog": 12,
-      "contract": 53,
-      "docs": 44,
-      "experiment": 785,
-      "export": 15,
+      "contract": 60,
+      "docs": 50,
+      "experiment": 887,
+      "export": 16,
       "generated": 8,
-      "governance": 82,
-      "test": 430
+      "governance": 94,
+      "test": 442
     },
     "by_lifecycle": {
-      "append_only": 587,
-      "handcrafted": 784,
+      "<none>": 1,
+      "append_only": 647,
+      "handcrafted": 841,
       "regenerated": 18,
-      "revision_with_reason": 84,
+      "revision_with_reason": 106,
       "superseded_not_rewritten": 2
     },
-    "classified": 1475,
+    "classified": 1614,
     "conflict": 0,
-    "fallback_classified": 799,
-    "fallback_share": 0.5416949152542373,
+    "fallback_classified": 860,
+    "fallback_share": 0.5328376703841388,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
-    "total": 1475,
-    "unknown": 0
+    "total": 1615,
+    "unknown": 1
   },
   "transition_risk_hints": [],
-  "unknown_artifacts": []
+  "unknown_artifacts": [
+    ".vibe/validator-inventory.v1.json"
+  ]
 }

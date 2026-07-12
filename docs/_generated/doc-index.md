@@ -290,11 +290,6 @@
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md` | Failure Modes — RepoBrief Workbench Usefulness Evaluation | designed | operative |
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md` | RepoBrief Workbench Usefulness Evaluation — Method | designed | operative |
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` | RepoBrief Workbench Usefulness Evaluation — Result | inconclusive | operative |
-| `experiments/2026-07-12_operator-intervention-effect-evaluator/CONTEXT.md` | Context: Operator Intervention Effect Evaluator | active | operative |
-| `experiments/2026-07-12_operator-intervention-effect-evaluator/INITIAL.md` | Initial State: Operator Intervention Effect Evaluator | active | operative |
-| `experiments/2026-07-12_operator-intervention-effect-evaluator/failure_modes.md` | Failure Modes: Operator Intervention Effect Evaluator | active | operative |
-| `experiments/2026-07-12_operator-intervention-effect-evaluator/method.md` | Method: Operator Intervention Effect Evaluator | active | operative |
-| `experiments/2026-07-12_operator-intervention-effect-evaluator/results/result.md` | Result: Operator Intervention Effect Evaluator | active | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

@@ -1,6 +1,6 @@
 ---
 title: "Context: Operator Intervention Effect Evaluator"
-status: active
+status: archived
 canonicality: operative
 ---
 

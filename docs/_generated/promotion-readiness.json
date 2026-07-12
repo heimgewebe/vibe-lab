@@ -360,33 +360,15 @@
       "promotion_ready": true,
       "status": "testing",
       "warnings": []
-    },
-    {
-      "adoption_basis": "",
-      "execution_status": "prepared",
-      "falsifiability_triggered": false,
-      "historical_escape": false,
-      "missing": [
-        "prepared_not_executed"
-      ],
-      "notes": [
-        "falsifiability_voluntary",
-        "prepared_not_executed"
-      ],
-      "path": "experiments/2026-07-12_operator-intervention-effect-evaluator",
-      "pre_execution_hold": true,
-      "promotion_ready": false,
-      "status": "testing",
-      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 24,
+    "experiments_checked": 23,
     "historical_escape": 1,
     "not_ready": 13,
-    "pre_execution_hold": 4,
+    "pre_execution_hold": 3,
     "ready": 6,
     "warnings": 6
   },

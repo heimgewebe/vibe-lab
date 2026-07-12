@@ -130,9 +130,14 @@ def test_v2_scorecard_component_ids_must_be_unique() -> None:
         raise AssertionError("duplicate scorecard component ids were accepted")
 
 
-def test_repository_contains_v2_active_experiment() -> None:
+def test_repository_v2_count_matches_current_experiment_tree() -> None:
     result = MODULE.validate_all(now=datetime(2026, 7, 12, tzinfo=timezone.utc))
-    assert result["checked_v2"] >= 1
+    expected_v2 = sum(
+        (directory / "registration.v2.json").is_file()
+        for directory in (ROOT / "experiments").iterdir()
+        if directory.is_dir() and not directory.name.startswith("_")
+    )
+    assert result["checked_v2"] == expected_v2
 
 def _run_all_tests() -> None:
     tests = [value for name, value in sorted(globals().items()) if name.startswith("test_") and callable(value)]

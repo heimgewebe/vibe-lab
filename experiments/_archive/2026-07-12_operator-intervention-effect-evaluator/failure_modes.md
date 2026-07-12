@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes: Operator Intervention Effect Evaluator"
-status: active
+status: archived
 canonicality: operative
 ---
 
