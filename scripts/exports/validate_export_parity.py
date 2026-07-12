@@ -12,7 +12,6 @@ from export_contract import (  # noqa: E402
     EXPORT_TARGETS,
     SOURCE_DIR,
     build_tombstone,
-    expected_export_name,
     exportable_source_files,
 )
 
@@ -27,19 +26,23 @@ def validate(
         return [f"missing instruction source directory: {source_dir}"]
 
     sources = exportable_source_files(source_dir)
-    expected = {expected_export_name(src): src for src in sources}
+    expected = {src.name: src for src in sources}
     errors: list[str] = []
 
     for target_system, target_dir in sorted(export_targets.items()):
         actual = (
-            {p.relative_to(target_dir).as_posix(): p for p in target_dir.rglob("*.md")}
+            {
+                path.relative_to(target_dir).as_posix(): path
+                for path in target_dir.rglob("*")
+                if path.is_file()
+            }
             if target_dir.exists()
             else {}
         )
         missing = sorted(set(expected) - set(actual))
         orphaned = sorted(set(actual) - set(expected))
         errors.extend(f"missing retirement marker: exports/{target_system}/{name}" for name in missing)
-        errors.extend(f"orphaned legacy export: exports/{target_system}/{name}" for name in orphaned)
+        errors.extend(f"unexpected file in retired surface: exports/{target_system}/{name}" for name in orphaned)
         for name in sorted(set(expected) & set(actual)):
             wanted = build_tombstone(expected[name], target_system)
             if actual[name].read_text(encoding="utf-8") != wanted:
