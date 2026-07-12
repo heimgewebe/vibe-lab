@@ -1,52 +1,36 @@
-"""export_contract.py — Single source of truth für Export-Pfade, Namenslogik und Exportfähigkeit.
+"""Compatibility contract for retired tool-specific instruction exports.
 
-Importiert von generate_exports.py und validate_export_parity.py.
-Änderungen an Pfaden, Namenslogik oder Export-Gating nur hier vornehmen;
-Generator und Validator nicht separat anpassen.
+The Cursor and Copilot surfaces are kept only as generated tombstones so old
+links remain deterministic. They intentionally contain no executable guidance.
+Reactivation requires a named consumer, a decision target, measurement and an
+expiry/review date through the normal Vibe-Lab experiment gate.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-# Repo-Root relativ zu diesem Skript: scripts/exports/ → ../../
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-
-SOURCE_DIR: Path = REPO_ROOT / "instruction-blocks"
-
+SOURCE_DIR = REPO_ROOT / "instruction-blocks"
 EXPORT_TARGETS: dict[str, Path] = {
     "copilot": REPO_ROOT / "exports" / "copilot",
     "cursor": REPO_ROOT / "exports" / "cursor",
 }
-
 EXPORTABLE_STATUS = "adopted"
+GENERATOR_ID = "scripts/exports/generate_exports.py"
 
 
 def expected_export_name(src: Path) -> str:
-    """Gibt den erwarteten Ziel-Dateinamen für eine Quelldatei zurück.
-
-    Aktuelles Mapping: flaches 1:1 (src.name → target/src.name).
-    Beide, Generator und Validator, müssen diese Funktion nutzen —
-    niemals die Namenlogik inline duplizieren.
-    """
     return src.name
 
 
 def read_source_status(src: Path) -> str | None:
-    """Liest den Frontmatter-Status einer Instruction-Block-Quelldatei.
-
-    Fehlt Frontmatter oder ``status``, ist die Datei nicht exportfähig.
-    Das ist absichtlich fail-closed: Tool-Exports sind konsumierbare
-    Anweisungsflächen und dürfen keine Drafts oder Kandidaten ausspielen.
-    """
     text = src.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return None
-
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
-
     for raw_line in parts[1].splitlines():
         line = raw_line.strip()
         if not line or line.startswith("#") or ":" not in line:
@@ -58,10 +42,26 @@ def read_source_status(src: Path) -> str | None:
 
 
 def is_exportable_source(src: Path) -> bool:
-    """Nur adoptierte Instruction-Blocks werden in Tool-Exports projiziert."""
     return read_source_status(src) == EXPORTABLE_STATUS
 
 
 def exportable_source_files(source_dir: Path = SOURCE_DIR) -> list[Path]:
-    """Gibt sortierte, exportfähige Instruction-Block-Quelldateien zurück."""
     return [src for src in sorted(source_dir.glob("*.md")) if is_exportable_source(src)]
+
+
+def build_tombstone(source_file: Path, target_system: str) -> str:
+    try:
+        rel_source = source_file.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        rel_source = f"instruction-blocks/{source_file.name}"
+    return (
+        "<!-- GENERATED FILE — DO NOT EDIT MANUALLY -->\n"
+        f"<!-- source: {rel_source} -->\n"
+        f"<!-- target-system: {target_system} -->\n"
+        f"<!-- generator: {GENERATOR_ID} -->\n\n"
+        "# Tool projection retired\n\n"
+        "This compatibility file intentionally contains no instruction text. "
+        "Vibe-Lab no longer publishes default Cursor or Copilot projections.\n\n"
+        "Reactivation requires a named downstream consumer, a reviewed decision "
+        "target, measurable success and falsification criteria, and an expiry date.\n"
+    )
