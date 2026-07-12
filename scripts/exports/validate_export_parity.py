@@ -23,6 +23,9 @@ def validate(
 ) -> list[str]:
     if export_targets is None:
         export_targets = EXPORT_TARGETS
+    if not source_dir.is_dir():
+        return [f"missing instruction source directory: {source_dir}"]
+
     sources = exportable_source_files(source_dir)
     expected = {expected_export_name(src): src for src in sources}
     errors: list[str] = []
