@@ -34,6 +34,19 @@ class RetiredExportBoundaryTests(unittest.TestCase):
             errors = validate(source, {"cursor": target})
             self.assertTrue(any("active or drifted" in error for error in errors))
 
+    def test_nested_instruction_copy_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "instruction-blocks"
+            source.mkdir()
+            (source / "rule.md").write_text("---\nstatus: adopted\n---\nbody\n", encoding="utf-8")
+            target = root / "exports/cursor"
+            nested = target / "team/rule.md"
+            nested.parent.mkdir(parents=True)
+            nested.write_text("active nested instruction\n", encoding="utf-8")
+            errors = validate(source, {"cursor": target})
+            self.assertTrue(any("team/rule.md" in error for error in errors))
+
     def test_missing_source_directory_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
