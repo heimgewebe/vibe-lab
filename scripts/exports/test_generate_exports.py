@@ -37,6 +37,20 @@ class RetiredExportGeneratorTests(unittest.TestCase):
             targets = {"cursor": root / "exports/cursor"}
             self.assertEqual(generate_exports(source, targets), generate_exports(source, targets))
 
+    def test_generator_removes_nested_markdown(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "instruction-blocks"
+            source.mkdir()
+            (source / "rule.md").write_text("---\nstatus: adopted\n---\nbody\n", encoding="utf-8")
+            target = root / "exports/cursor"
+            nested = target / "team/rule.md"
+            nested.parent.mkdir(parents=True)
+            nested.write_text("active nested instruction\n", encoding="utf-8")
+            generate_exports(source, {"cursor": target})
+            self.assertFalse(nested.exists())
+            self.assertTrue((target / "rule.md").exists())
+
 
 if __name__ == "__main__":
     unittest.main()
