@@ -52,6 +52,7 @@
 | `docs/index.md` | Dokumentation — Navigation | active | navigation |
 | `docs/masterplan.md` | Masterplan — Vibe-Lab Zielbild | active | operative |
 | `docs/onboarding/README.md` | Onboarding (Stub-Namespace) | active | navigation |
+| `docs/plans/vibe-lab-optimization-plan-v1.md` | Vibe-Lab Optimization Plan v1 | active | operative |
 | `docs/playbooks/build-reliable-prompt.md` | Playbook: Build a Reliable Prompt | active | operative |
 | `docs/playbooks/bundle-freshness-receipt.md` | bundle-freshness-receipt | — | — |
 | `docs/playbooks/evidence-control-plane-post-pr189-diagnosis.md` | Evidence-Control-Plane — Diagnose nach Merge PR #189 | draft | diagnosis |
@@ -244,13 +245,14 @@
 | `experiments/2026-06-10_pr-agent-context-comparison-series/results/cross-run-assessment.md` | Cross-Run Assessment — PR Agent Context Comparison Series | draft | operative |
 | `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` | Results — PR Agent Context Comparison Series | draft | operative |
 | `experiments/2026-07-01_operator-lab-loop/CONTEXT.md` | Kontext: Operator Lab Loop | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/FROZEN.md` | FROZEN | — | — |
 | `experiments/2026-07-01_operator-lab-loop/INITIAL.md` | Initiale Situation: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/README.md` | Operator Lab Loop Artifacts | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/notes.md` | notes | — | — |
 | `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md` | Operator Lab Loop Run Template | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/failure_modes.md` | Failure Modes: Operator Lab Loop | active | operative |
 | `experiments/2026-07-01_operator-lab-loop/method.md` | Methode: Operator Lab Loop | active | operative |
-| `experiments/2026-07-01_operator-lab-loop/results/result.md` | Result: Operator Lab Loop Anchor Run | active | operative |
+| `experiments/2026-07-01_operator-lab-loop/results/result.md` | Result: Operator-Lab Cross-Run Closeout | archived | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/CONTEXT.md` | Ecosystem Organ Preflight — Kontext | active | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/failure_modes.md` | Failure Modes: Ecosystem Organ Preflight | active | operative |
 | `experiments/2026-07-05_ecosystem-organ-preflight/method.md` | Methode: Ecosystem Organ Preflight | active | operative |
@@ -286,6 +288,11 @@
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md` | Failure Modes — RepoBrief Workbench Usefulness Evaluation | designed | operative |
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md` | RepoBrief Workbench Usefulness Evaluation — Method | designed | operative |
 | `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` | RepoBrief Workbench Usefulness Evaluation — Result | inconclusive | operative |
+| `experiments/2026-07-12_operator-intervention-effect-evaluator/CONTEXT.md` | Context: Operator Intervention Effect Evaluator | active | operative |
+| `experiments/2026-07-12_operator-intervention-effect-evaluator/INITIAL.md` | Initial State: Operator Intervention Effect Evaluator | active | operative |
+| `experiments/2026-07-12_operator-intervention-effect-evaluator/failure_modes.md` | Failure Modes: Operator Intervention Effect Evaluator | active | operative |
+| `experiments/2026-07-12_operator-intervention-effect-evaluator/method.md` | Method: Operator Intervention Effect Evaluator | active | operative |
+| `experiments/2026-07-12_operator-intervention-effect-evaluator/results/result.md` | Result: Operator Intervention Effect Evaluator | active | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

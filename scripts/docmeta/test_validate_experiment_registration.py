@@ -72,3 +72,41 @@ def test_repository_historical_experiments_are_grandfathered() -> None:
     result = MODULE.validate_all(now=NOW)
     assert result["status"] == "valid"
     assert result["grandfathered"] >= 1
+
+
+def test_v2_registration_binds_comparison_and_threshold() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        directory = Path(raw) / "2026-07-12_effect-evaluator"
+        directory.mkdir(parents=True)
+        payload = json.loads((ROOT / "experiments/_template/registration.v2.json").read_text(encoding="utf-8"))
+        payload["experiment_id"] = directory.name
+        payload["consumer"] = {"organ": "bureau", "use": "Use the result to decide whether the evaluator remains active."}
+        payload["decision_target"] = {"question": "Should the evaluator remain active after real pilots?", "owner": "bureau"}
+        payload["intervention"] = {"name": "effect_report", "description": "Provide one deterministic effect report to the reviewer."}
+        payload["measurement"]["primary_metric"] = "decision_value_score"
+        payload["measurement"]["method"] = "Compare paired independent review decisions over frozen evidence."
+        payload["measurement"]["success"] = "Material improvement."
+        payload["measurement"]["falsification"] = "No improvement or harm."
+        payload["review_at"] = "2026-09-01T00:00:00Z"
+        payload["expires_at"] = "2026-10-01T00:00:00Z"
+        payload["closure"]["archive_path"] = f"experiments/_archive/{directory.name}"
+        path = directory / "registration.v2.json"
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        result = MODULE.validate_registration(path, now=datetime(2026, 7, 12, tzinfo=timezone.utc))
+        assert result["schema_version"] == "experiment.registration.v2"
+        assert result["measurement"]["minimum_material_effect"] == 1
+
+
+def test_repository_contains_v2_active_experiment() -> None:
+    result = MODULE.validate_all(now=datetime(2026, 7, 12, tzinfo=timezone.utc))
+    assert result["checked_v2"] >= 1
+
+def _run_all_tests() -> None:
+    tests = [value for name, value in sorted(globals().items()) if name.startswith("test_") and callable(value)]
+    for test in tests:
+        test()
+    print(f"registration tests passed: {len(tests)}")
+
+
+if __name__ == "__main__":
+    _run_all_tests()

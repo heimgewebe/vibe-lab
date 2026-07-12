@@ -1,0 +1,28 @@
+{
+  "schema_version": "active-experiments.v1",
+  "max_active": 5,
+  "experiments": [
+    {
+      "experiment_id": "2026-07-09_repobrief-workbench-usefulness-eval",
+      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval",
+      "state": "pilot",
+      "consumer": "Bureau RPU-V1",
+      "decision_target": "Decide whether context-pack or trace-gated RepoBrief evidence should be promoted beyond diagnostic pilot use.",
+      "primary_metric": "operator_decision_changed_with_lower_localization_or_evidence_error",
+      "review_at": "2026-08-15T00:00:00Z",
+      "expires_at": "2026-09-01T00:00:00Z",
+      "source_ref": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml"
+    },
+    {
+      "experiment_id": "2026-07-12_operator-intervention-effect-evaluator",
+      "path": "experiments/2026-07-12_operator-intervention-effect-evaluator",
+      "state": "testing",
+      "consumer": "Bureau VIBE-LAB-OPTIMIZATION-V1",
+      "decision_target": "Decide whether the deterministic effect evaluator remains active after three real reviewed pilots.",
+      "primary_metric": "reviewed_decision_value_score",
+      "review_at": "2026-09-15T00:00:00Z",
+      "expires_at": "2026-10-01T00:00:00Z",
+      "source_ref": "experiments/2026-07-12_operator-intervention-effect-evaluator/results/decision.yml"
+    }
+  ]
+}

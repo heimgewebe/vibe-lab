@@ -3,7 +3,7 @@ schema_version: "0.1.0"
 experiment:
   name: "operator-lab-loop"
   hypothesis: "A minimal operator lab loop can make real repo and PR work traceable without adding a new enforcement layer."
-  status: testing
+  status: inconclusive
   category: workflow
   execution_status: executed
   execution_refs:
@@ -73,8 +73,10 @@ experiment:
     - artifacts/run-034-lenskit-conflict-stop/run_meta.json
     - artifacts/run-034-lenskit-conflict-stop/run-card.yml
     - results/evidence.jsonl
+    - results/cross-run-assessment.v1.json
+    - FROZEN.md
   created: "2026-07-01"
-  updated: "2026-07-04"
+  updated: "2026-07-12"
   author: "heimgewebe"
   iteration: 1
   evidence_level: experimental
@@ -90,14 +92,14 @@ experiment:
           useful signal, while the run card only adds overhead.
         assessment:
           status: partially_checked
-          outcome: inconclusive
+          outcome: mixed
           evidence_refs:
-            - path: "results/evidence.jsonl"
-            - path: "results/result.md"
-            - path: "artifacts/run-001-plan-anchor/run-card.yml"
+            - path: "results/cross-run-assessment.v1.json"
+            - path: "FROZEN.md"
           limitations:
-            - "This anchor run only proves repo anchoring, not workflow benefit."
-          confidence: low
+            - "No run card measured task completion time."
+            - "The series did not prospectively bind comparable control and treatment tasks."
+          confidence: high
 
 context:
   tools:

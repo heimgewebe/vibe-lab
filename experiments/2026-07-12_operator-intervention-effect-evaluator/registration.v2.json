@@ -1,0 +1,73 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-07-12_operator-intervention-effect-evaluator",
+  "consumer": {
+    "organ": "Bureau VIBE-LAB-OPTIMIZATION-V1",
+    "use": "Use three reviewed pilot outcomes to decide whether the deterministic effect evaluator is promoted, kept as a pilot, deferred, rejected or archived."
+  },
+  "decision_target": {
+    "question": "Should the Vibe-Lab effect evaluator remain an active reusable experiment tool after three real operator-intervention pilots?",
+    "owner": "Bureau"
+  },
+  "intervention": {
+    "name": "deterministic_effect_report",
+    "description": "Provide an evidence-bound deterministic effect report in addition to the same underlying pilot evidence."
+  },
+  "control_condition": {
+    "id": "manual_review",
+    "description": "A reviewer decides from the registered pilot evidence without seeing the evaluator report."
+  },
+  "treatment_condition": {
+    "id": "evaluator_assisted_review",
+    "description": "A separate reviewer decides from the same evidence plus the deterministic evaluator report."
+  },
+  "measurement": {
+    "primary_metric": "reviewed_decision_value_score",
+    "direction": "higher_is_better",
+    "unit": "score",
+    "minimum_material_effect": 1,
+    "method": "For each real pilot, compare independently recorded manual and evaluator-assisted decisions for calibration, non-obvious diagnostic value and absence of overclaiming.",
+    "success": "At least one material reviewed decision improvement across three real pilots without a misleading effect claim.",
+    "falsification": "No material decision improvement, any misleading effect claim, or ceremony exceeding the decision value."
+  },
+  "comparison": {
+    "mode": "paired",
+    "unit": "same pilot evidence reviewed under manual and evaluator-assisted conditions",
+    "minimum_control": 3,
+    "minimum_treatment": 3,
+    "comparability_constraints": [
+      "same frozen pilot evidence",
+      "same decision question",
+      "independent review records",
+      "no retrospective metric invention"
+    ],
+    "confounders": [
+      "reviewer expertise",
+      "condition order",
+      "pilot task heterogeneity"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "typed execution receipt",
+      "CI result",
+      "diff-bound review",
+      "operator decision record",
+      "Vibe-Lab effect report"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-09-15T00:00:00Z",
+  "expires_at": "2026-10-01T00:00:00Z",
+  "closure": {
+    "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
+    "archive_path": "experiments/_archive/2026-07-12_operator-intervention-effect-evaluator"
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true
+  }
+}

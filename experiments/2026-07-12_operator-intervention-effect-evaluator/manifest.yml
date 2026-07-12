@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+experiment:
+  name: "operator-intervention-effect-evaluator"
+  hypothesis: >
+    A deterministic, fail-closed effect report can improve at least one reviewed
+    operator decision across three real intervention pilots without generating
+    misleading effect claims or more ceremony than decision value.
+  status: testing
+  category: workflow
+  execution_status: prepared
+  execution_refs:
+    - registration.v2.json
+    - method.md
+  evidence_level: experimental
+  created: "2026-07-12"
+  updated: "2026-07-12"
+  author: "ChatGPT / Grabowski"
+  iteration: 1
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject or archive the evaluator if three real pilots produce no material
+      reviewed decision improvement, if any report overstates the registered
+      evidence, or if preparation and review ceremony exceed the decision value.
+    counter_hypotheses:
+      - id: "manual_review_is_sufficient"
+        statement: "Manual review of the same evidence already reaches the same calibrated decision without the evaluator."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Run three paired manual and evaluator-assisted decision reviews."
+          limitations:
+            - "No real paired pilot review exists yet."
+          confidence: low
+context:
+  tools:
+    - "tools/vibe-cli/evaluate_effect.py"
+    - "Grabowski typed receipts"
+    - "GitHub and CI evidence"
+  language: "JSON, Python, Markdown"
+  environment: "review-only Vibe-Lab evaluation; no runtime service"
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
