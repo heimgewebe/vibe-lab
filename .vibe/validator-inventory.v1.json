@@ -1,0 +1,205 @@
+{
+  "schema_version": "validator-inventory.v1",
+  "policy": {
+    "max_active_specialist_targets": 12,
+    "historical_evidence_retained": true,
+    "pull_request_runs_all_groups": true,
+    "main_runs_all_groups": true,
+    "new_target_requires_classification": true,
+    "classified_target_count": 103,
+    "max_validate_job_named_steps": 10
+  },
+  "groups": [
+    {
+      "id": "core",
+      "consumer": "Vibe-Lab repository contracts and every experiment",
+      "failure_classes": [
+        "schema_or_contract_drift",
+        "evidence_identity_or_readiness_drift",
+        "generated_artifact_or_relation_drift"
+      ],
+      "scope_paths": [
+        "schemas",
+        "contracts",
+        ".vibe",
+        "docs",
+        "experiments"
+      ],
+      "execution_policy": {
+        "pull_request": "blocking",
+        "main": "blocking"
+      },
+      "targets": [
+        "validate-doc-freshness-registry-tests",
+        "validate-doc-freshness-registry",
+        "validate-bundle-freshness-receipt-tests",
+        "validate-generated-artifacts-contract",
+        "validate-generated-artifacts-contract-tests",
+        "validate-artifact-taxonomy",
+        "validate-artifact-taxonomy-tests",
+        "validate-artifact-taxonomy-contract-tests",
+        "validate-schemas",
+        "validate-schemas-counterevidence-tests",
+        "validate-execution-proof",
+        "validate-run-bundle-tests",
+        "validate-run-bundle",
+        "validate-challenge-version-tests",
+        "validate-challenge-versions",
+        "validate-relations",
+        "validate-relations-tests",
+        "validate-backlinks-tests",
+        "validate-orphans-tests",
+        "validate-epistemics",
+        "validate-epistemics-tests",
+        "validate-adoption-completeness",
+        "validate-adoption-completeness-tests",
+        "validate-epistemic-state-tests",
+        "validate-export-parity",
+        "validate-exports-tests",
+        "validate-export-parity-tests",
+        "validate-promotion-readiness-tests",
+        "validate-run-evidence-pack-schema-tests",
+        "validate-claim-evidence-tests",
+        "validate-claim-evidence",
+        "validate-runtime-evidence-gate-tests",
+        "validate-runtime-evidence-gate",
+        "validate-result-assessment-readiness-tests",
+        "validate-result-assessment-readiness",
+        "validate-dependency-risk-caveat-scope-tests",
+        "validate-dependency-risk-caveat-scope",
+        "validate-pr-scope-tests",
+        "validate-pr-scope",
+        "agent-check-tests",
+        "validate-promotion-readiness",
+        "validate-promotion-readiness-ratchet",
+        "validate-validator-inventory-tests",
+        "validate-validator-inventory"
+      ]
+    },
+    {
+      "id": "active",
+      "consumer": "experiments/active.v1.json and the frozen Operator-Lab closeout",
+      "failure_classes": [
+        "active_experiment_registration_drift",
+        "active_effect_evaluation_drift",
+        "operator_lab_closeout_drift",
+        "repobrief_pilot_drift"
+      ],
+      "scope_paths": [
+        "experiments/active.v1.json",
+        "experiments/2026-07-01_operator-lab-loop",
+        "experiments/2026-07-09_repobrief-workbench-usefulness-eval",
+        "experiments/2026-07-12_operator-intervention-effect-evaluator"
+      ],
+      "execution_policy": {
+        "pull_request": "blocking",
+        "main": "blocking"
+      },
+      "targets": [
+        "validate-effect-evaluator-tests",
+        "validate-active-experiments-tests",
+        "validate-active-experiments",
+        "validate-operator-lab-closeout-tests",
+        "validate-operator-lab-closeout",
+        "validate-repobrief-workbench-run-series-tests",
+        "validate-repobrief-workbench-run-series",
+        "validate-repobrief-workbench-usefulness-tests",
+        "validate-repobrief-workbench-usefulness",
+        "validate-experiment-registration-tests",
+        "validate-experiment-registration"
+      ]
+    },
+    {
+      "id": "legacy",
+      "consumer": "Grandfathered historical experiment and agent-operability corpus",
+      "failure_classes": [
+        "historical_fixture_regression",
+        "legacy_experiment_contract_drift",
+        "legacy_replay_or_agent_contract_drift"
+      ],
+      "scope_paths": [
+        "experiments",
+        "tests/fixtures",
+        "tools/vibe-cli",
+        "scripts/docmeta"
+      ],
+      "execution_policy": {
+        "pull_request": "blocking",
+        "main": "blocking"
+      },
+      "review_at": "2026-09-01",
+      "retirement_rule": "A target may be removed only after its protected artifact family is archived or a generic core validator proves equivalent coverage.",
+      "targets": [
+        "validate-operator-lab-run-cards-tests",
+        "validate-operator-lab-run-cards",
+        "validate-operator-lab-metrics-tests",
+        "validate-operator-lab-metrics",
+        "validate-ecosystem-organ-preflight-tests",
+        "validate-ecosystem-organ-preflight",
+        "validate-model-lab-control-tests",
+        "validate-model-lab-control",
+        "validate-agent-handoff",
+        "validate-agent-handoff-tests",
+        "validate-agent-commands",
+        "validate-agent-commands-tests",
+        "validate-command-chain",
+        "validate-command-chain-tests",
+        "validate-command-version-policy-tests",
+        "validate-fixture-matrix-audit-tests",
+        "validate-known-gaps-audit",
+        "validate-cross-contract",
+        "validate-cross-contract-tests",
+        "validate-replay-dry-run",
+        "validate-replay-tests",
+        "validate-replay-trace-contract",
+        "validate-phase1c-fixtures",
+        "validate-phase1c-fixture-tests",
+        "validate-model-lab-next-blocker-triage-tests",
+        "validate-model-lab-next-blocker-triage",
+        "validate-model-lab-condition-contrast-design-gate-tests",
+        "validate-model-lab-condition-contrast-design-gate",
+        "validate-model-lab-condition-design-tests",
+        "validate-model-lab-condition-design",
+        "validate-model-lab-access-policy-tests",
+        "validate-model-lab-access-policy",
+        "validate-model-lab-runtime-binding-tests",
+        "validate-model-lab-runtime-binding",
+        "validate-model-lab-runtime-candidate-tests",
+        "validate-model-lab-runtime-candidate",
+        "validate-model-lab-execution-readiness-tests",
+        "validate-model-lab-execution-readiness",
+        "validate-model-lab-execution-seed-tests",
+        "validate-model-lab-execution-seed",
+        "validate-model-lab-workspace-isolation-tests",
+        "validate-model-lab-workspace-isolation",
+        "validate-outcome-series-tests",
+        "validate-outcome-series",
+        "validate-pr-context-pilot-tests",
+        "validate-pr-context-pilot",
+        "validate-rlens-agent-context-conditions-tests",
+        "validate-rlens-agent-context-conditions"
+      ]
+    }
+  ],
+  "supplemental_checks": [
+    {
+      "target": "validate-replay-mutation-guard",
+      "consumer": "CI clean-checkout non-mutation proof",
+      "failure_class": "replay_filesystem_mutation",
+      "execution_policy": {
+        "pull_request": "blocking",
+        "main": "blocking"
+      }
+    },
+    {
+      "target": "generate-blocking",
+      "consumer": "Committed generated index and projections",
+      "failure_class": "blocking_generated_artifact_drift",
+      "execution_policy": {
+        "pull_request": "blocking",
+        "main": "blocking"
+      }
+    }
+  ],
+  "baseline_commit": "4600f3f467651fcf2cb286321371c341c4dc7136"
+}

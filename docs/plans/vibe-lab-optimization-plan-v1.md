@@ -43,5 +43,5 @@ Stop or remove the optimization slice if it requires a new service, database, da
 
 - Slice A: Operator-Lab closeout, active registry, plan registration.
 - Slice B: prospective comparison contract and effect evaluator.
-- Slice C: validator inventory and CI consolidation.
+- Slice C: validator inventory and CI consolidation. Implemented by `docs/reports/vibe-lab-validator-inventory-v1.md`: 44 core, 11 active and 48 legacy targets remain fully blocking behind a grouped CI frontdoor.
 - Slice D: real pilots and final usefulness decision.
