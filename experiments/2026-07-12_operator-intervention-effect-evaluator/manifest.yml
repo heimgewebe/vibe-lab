@@ -11,6 +11,7 @@ experiment:
   execution_refs:
     - registration.v2.json
     - method.md
+    - ../../docs/playbooks/effect-observation-capture.md
   evidence_level: experimental
   created: "2026-07-12"
   updated: "2026-07-12"
@@ -35,6 +36,7 @@ experiment:
           confidence: low
 context:
   tools:
+    - "tools/vibe-cli/capture_effect_observation.py"
     - "tools/vibe-cli/evaluate_effect.py"
     - "Grabowski typed receipts"
     - "GitHub and CI evidence"

@@ -26,9 +26,40 @@
     "direction": "higher_is_better",
     "unit": "score",
     "minimum_material_effect": 1,
-    "method": "For each real pilot, compare independently recorded manual and evaluator-assisted decisions for calibration, non-obvious diagnostic value and absence of overclaiming.",
+    "method": "For each real pilot, an independent scorer applies the frozen additive binary scorecard to the manual and evaluator-assisted decisions from the same evidence.",
     "success": "At least one material reviewed decision improvement across three real pilots without a misleading effect claim.",
-    "falsification": "No material decision improvement, any misleading effect claim, or ceremony exceeding the decision value."
+    "falsification": "No material decision improvement, any misleading effect claim, or ceremony exceeding the decision value.",
+    "scorecard": {
+      "schema_version": "additive-binary-scorecard.v1",
+      "components": [
+        {
+          "id": "decision_aligned",
+          "weight": 1,
+          "criterion": "The decision agrees with the later evidence-bound adjudication."
+        },
+        {
+          "id": "uncertainty_preserved",
+          "weight": 1,
+          "criterion": "The decision preserves material uncertainty and all registered non-claims."
+        },
+        {
+          "id": "non_obvious_value",
+          "weight": 1,
+          "criterion": "The decision identifies a non-obvious fact that materially affects the disposition."
+        },
+        {
+          "id": "overclaim_free",
+          "weight": 1,
+          "criterion": "The decision contains no misleading effect, causality, readiness or automation claim.",
+          "fatal_when_zero": true
+        }
+      ]
+    },
+    "cost_metric": {
+      "id": "review_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure total elapsed handling effort from condition preparation until the decision and scorecard are sealed, including evaluator report generation when applicable."
+    }
   },
   "comparison": {
     "mode": "paired",
@@ -39,7 +70,8 @@
       "same frozen pilot evidence",
       "same decision question",
       "independent review records",
-      "no retrospective metric invention"
+      "no retrospective metric invention",
+      "condition labels hidden from the independent scorer and decision order randomized"
     ],
     "confounders": [
       "reviewer expertise",
@@ -60,7 +92,13 @@
   "review_at": "2026-09-15T00:00:00Z",
   "expires_at": "2026-10-01T00:00:00Z",
   "closure": {
-    "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
     "archive_path": "experiments/_archive/2026-07-12_operator-intervention-effect-evaluator"
   },
   "boundary": {

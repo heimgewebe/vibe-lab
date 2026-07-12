@@ -97,6 +97,39 @@ def test_v2_registration_binds_comparison_and_threshold() -> None:
         assert result["measurement"]["minimum_material_effect"] == 1
 
 
+def test_v2_scorecard_component_ids_must_be_unique() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        directory = Path(raw) / "2026-07-12_scorecard-ids"
+        directory.mkdir(parents=True)
+        payload = json.loads((ROOT / "experiments/_template/registration.v2.json").read_text(encoding="utf-8"))
+        payload["experiment_id"] = directory.name
+        payload["consumer"] = {"organ": "bureau", "use": "Use the result to decide whether the evaluator remains active."}
+        payload["decision_target"] = {"question": "Should the evaluator remain active after real pilots?", "owner": "bureau"}
+        payload["intervention"] = {"name": "effect_report", "description": "Provide one deterministic effect report to the reviewer."}
+        payload["measurement"]["primary_metric"] = "decision_value_score"
+        payload["measurement"]["method"] = "Compare paired independent review decisions over frozen evidence."
+        payload["measurement"]["success"] = "Material improvement."
+        payload["measurement"]["falsification"] = "No improvement or harm."
+        payload["measurement"]["scorecard"] = {
+            "schema_version": "additive-binary-scorecard.v1",
+            "components": [
+                {"id": "aligned", "weight": 1, "criterion": "Decision aligns with adjudication."},
+                {"id": "aligned", "weight": 2, "criterion": "Decision preserves uncertainty."},
+            ],
+        }
+        payload["review_at"] = "2026-09-01T00:00:00Z"
+        payload["expires_at"] = "2026-10-01T00:00:00Z"
+        payload["closure"]["archive_path"] = f"experiments/_archive/{directory.name}"
+        path = directory / "registration.v2.json"
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        try:
+            MODULE.validate_registration(path, now=datetime(2026, 7, 12, tzinfo=timezone.utc))
+        except ValueError as exc:
+            assert "scorecard component ids must be unique" in str(exc)
+            return
+        raise AssertionError("duplicate scorecard component ids were accepted")
+
+
 def test_repository_contains_v2_active_experiment() -> None:
     result = MODULE.validate_all(now=datetime(2026, 7, 12, tzinfo=timezone.utc))
     assert result["checked_v2"] >= 1
