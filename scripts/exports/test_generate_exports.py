@@ -11,7 +11,7 @@ from generate_exports import generate_exports  # noqa: E402
 
 
 class RetiredExportGeneratorTests(unittest.TestCase):
-    def test_generator_publishes_tombstones_without_instruction_body(self) -> None:
+    def test_generator_publishes_versioned_tombstones_without_instruction_body(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "instruction-blocks"
@@ -26,16 +26,39 @@ class RetiredExportGeneratorTests(unittest.TestCase):
             for target in targets.values():
                 text = (target / "rule.md").read_text(encoding="utf-8")
                 self.assertIn("Tool projection retired", text)
+                self.assertIn("retirement-format: 1", text)
+                self.assertIn("retired-on: 2026-07-12", text)
+                self.assertIn("decision: decisions/export/README.md", text)
                 self.assertNotIn("DO THE ACTIVE THING", text)
 
-    def test_generator_is_idempotent(self) -> None:
+    def test_generator_is_byte_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "instruction-blocks"
             source.mkdir()
             (source / "rule.md").write_text("---\nstatus: adopted\n---\nbody\n", encoding="utf-8")
             targets = {"cursor": root / "exports/cursor"}
-            self.assertEqual(generate_exports(source, targets), generate_exports(source, targets))
+            generate_exports(source, targets)
+            first = (targets["cursor"] / "rule.md").read_bytes()
+            generate_exports(source, targets)
+            second = (targets["cursor"] / "rule.md").read_bytes()
+            self.assertEqual(first, second)
+
+    def test_status_transition_removes_retirement_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "instruction-blocks"
+            source.mkdir()
+            source_file = source / "rule.md"
+            source_file.write_text("---\nstatus: adopted\n---\nbody\n", encoding="utf-8")
+            target = root / "exports/cursor"
+            generate_exports(source, {"cursor": target})
+            marker = target / "rule.md"
+            self.assertTrue(marker.exists())
+
+            source_file.write_text("---\nstatus: retired\n---\nbody\n", encoding="utf-8")
+            generate_exports(source, {"cursor": target})
+            self.assertFalse(marker.exists())
 
     def test_generator_removes_nested_markdown(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
