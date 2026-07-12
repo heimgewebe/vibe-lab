@@ -30,8 +30,9 @@ def generate_exports(
 
     for target_system, target_dir in sorted(export_targets.items()):
         target_dir.mkdir(parents=True, exist_ok=True)
-        for stale in target_dir.glob("*.md"):
-            if stale.name not in expected:
+        for stale in target_dir.rglob("*.md"):
+            relative_name = stale.relative_to(target_dir).as_posix()
+            if relative_name not in expected:
                 stale.unlink()
         for name, src in expected.items():
             content = build_tombstone(src, target_system)
