@@ -1,5 +1,5 @@
 ---
-title: "Tool-Export-Entscheidung"
+title: "Decisions/Export (Stub-Namespace)"
 status: active
 canonicality: navigation
 updated: "2026-07-12"
