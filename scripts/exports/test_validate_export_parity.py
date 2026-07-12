@@ -34,6 +34,25 @@ class RetiredExportBoundaryTests(unittest.TestCase):
             errors = validate(source, {"cursor": target})
             self.assertTrue(any("active or drifted" in error for error in errors))
 
+    def test_missing_source_directory_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            errors = validate(root / "missing", {"cursor": root / "exports/cursor"})
+            self.assertTrue(any("missing instruction source directory" in error for error in errors))
+
+    def test_missing_and_orphaned_markers_are_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "instruction-blocks"
+            source.mkdir()
+            (source / "expected.md").write_text("---\nstatus: adopted\n---\nbody\n", encoding="utf-8")
+            target = root / "exports/cursor"
+            target.mkdir(parents=True)
+            (target / "orphan.md").write_text("retired\n", encoding="utf-8")
+            errors = validate(source, {"cursor": target})
+            self.assertTrue(any("missing retirement marker" in error for error in errors))
+            self.assertTrue(any("orphaned legacy export" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
