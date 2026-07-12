@@ -30,10 +30,6 @@ TOMBSTONE_BODY = (
 )
 
 
-def expected_export_name(src: Path) -> str:
-    return src.name
-
-
 def read_source_status(src: Path) -> str | None:
     text = src.read_text(encoding="utf-8")
     if not text.startswith("---"):
