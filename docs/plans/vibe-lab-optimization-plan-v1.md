@@ -23,7 +23,7 @@ As of 2026-07-13:
 - the 36-card Operator-Lab series is frozen with `insufficient_evidence`;
 - the registered operator-intervention effect-evaluator experiment is archived as practically non-executable;
 - the generic observation capture and deterministic evaluator remain unpromoted review tooling;
-- custom agent profiles and active Cursor/Copilot instruction projections are retired;
+- custom agent profiles and instruction-bearing Cursor/Copilot projections are retired, while generated compatibility markers and their blocking parity contracts remain active;
 - the validator inventory contains 103 classified targets: 45 core, 10 active and 48 legacy, plus two supplemental checks;
 - no Vibe-Lab surface has runtime, queue, merge, deploy, routing or policy authority.
 
@@ -38,7 +38,7 @@ As of 2026-07-13:
 
 ## Current decision gate
 
-No new Vibe-Lab service, agent profile, projection target, specialist validator or effect-analysis feature should be added while the RepoBrief Workbench pilot remains the only active experiment, unless the change closes a demonstrated safety or evidence-integrity gap.
+No new Vibe-Lab service, agent profile, instruction-bearing projection target, specialist validator or effect-analysis feature should be added while the RepoBrief Workbench pilot remains the only active experiment, unless the change closes a demonstrated safety or evidence-integrity gap.
 
 The RepoBrief pilot must be reviewed by `2026-08-15T00:00:00Z` and expires at `2026-09-01T00:00:00Z`. Its closure must choose one of:
 
@@ -56,12 +56,13 @@ The RepoBrief pilot must be reviewed by `2026-08-15T00:00:00Z` and expires at `2
 - generic evidence-, claim-, relation- and promotion-integrity checks;
 - evidence-bound observation capture;
 - deterministic review-only evaluation;
-- reviewed decisions and immutable archive records.
+- reviewed decisions and immutable archive records;
+- generated compatibility markers while their operative contracts remain active.
 
 ### Retired or archived
 
 - active custom-agent instruction layer;
-- active Cursor/Copilot projections;
+- instruction-bearing Cursor/Copilot projection content;
 - anecdotal Operator-Lab continuation;
 - the blocked operator-intervention evaluator experiment;
 - any implied Heimlern, dashboard, Plexer, routing or runtime integration.
@@ -83,7 +84,7 @@ By the legacy review date of 2026-09-01, every legacy target must have one of th
 
 ## Library consumer audit
 
-Catalog entries, prompts, benchmarks and instruction blocks are active library surfaces only when an external consumer, decision target and review rule are named. Unconsumed artifacts remain historical records and must not justify exports or new compatibility layers by themselves.
+Catalog entries, prompts, benchmarks and instruction blocks are active library surfaces only when an external consumer, decision target and review rule are named. Unconsumed artifacts remain historical records and must not justify new instruction-bearing exports or compatibility layers by themselves.
 
 ## Stop rules
 
