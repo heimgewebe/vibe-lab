@@ -6,7 +6,7 @@ schema_version: "0.1.0"
 
 identity:
   name: vibe-lab
-  purpose: "Verbrauchergebundener Experiment- und Evidenzraum für überprüfbare Arbeitsweisen"
+  purpose: "Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken"
   vision: docs/foundations/vision.md
   plan: docs/foundations/repo-plan.md
 
