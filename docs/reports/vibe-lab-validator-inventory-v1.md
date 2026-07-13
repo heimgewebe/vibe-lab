@@ -3,7 +3,7 @@ title: "Vibe-Lab Validator Inventory v1"
 status: active
 canonicality: operative
 created: "2026-07-12"
-updated: "2026-07-12"
+updated: "2026-07-13"
 triggered_by: "vibe-lab-optimization-plan-v1-phase-c"
 relations:
   - type: informs
@@ -12,22 +12,31 @@ relations:
 
 # Vibe-Lab Validator Inventory v1
 
-## Result
+## Current result
 
-The validation surface is classified without deleting historical evidence:
+The current machine-readable source is `.vibe/validator-inventory.v1.json`. After the operator-intervention effect-evaluator experiment was archived, the effect-evaluator test target moved from the active group into the generic core group.
 
-| Group | Targets | Consumer |
+| Group | Targets | Current consumer |
 | --- | ---: | --- |
-| Core | 44 | Repository contracts and all experiments |
-| Active | 11 | Active registry, effect-evaluator pilot, RepoBrief pilot and frozen Operator-Lab closeout |
-| Legacy | 48 | Grandfathered historical experiments and agent-operability corpus |
+| Core | 45 | Repository contracts, generic evidence integrity and every experiment |
+| Active | 10 | Active registry, frozen Operator-Lab closeout and RepoBrief pilot |
+| Legacy | 48 | Grandfathered historical experiments, retired agent-operability corpus and closed specialist families |
 | Supplemental | 2 | Replay non-mutation and committed generated artifacts |
 
-The previous GitHub `validate` job exposed 85 named steps. The grouped job exposes six validation and generation steps—nine named steps including checkout, Python setup and dependency installation—while executing all 103 grouped Make targets, plus both supplemental checks.
+The grouped inventory therefore contains 103 classified `validate-*` targets plus two supplemental checks. GitHub exposes a compact grouped frontdoor while all groups remain blocking on pull requests and `main`.
+
+## Correction of the previous report
+
+The earlier report stated 44 core and 11 active targets and still named the effect-evaluator pilot as active. That became stale when PR #314 archived the registered experiment and reassigned `validate-effect-evaluator-tests` to core. The active experiment truth now contains only the RepoBrief Workbench usefulness pilot.
 
 ## Safety boundary
 
-This slice does not claim that 48 legacy validators are useful forever. It preserves them as blocking evidence until their protected artifact family is archived or equivalent generic coverage is proven. The legacy group has a review date of 2026-09-01 and an explicit retirement rule.
+Classification is not a usefulness claim. In particular:
+
+- 48 legacy targets are not presumed useful forever;
+- historical evidence retention does not require every historical specialist validator to remain permanently blocking;
+- a green validator proves its encoded contract, not practical workflow benefit;
+- full CI does not give Vibe-Lab runtime, routing, queue, merge, deployment or policy authority.
 
 Every new `validate-*` target must be classified. The inventory validator fails when:
 
@@ -37,18 +46,57 @@ Every new `validate-*` target must be classified. The inventory validator fails 
 - GitHub bypasses the grouped frontdoor with direct validator commands;
 - a referenced scope or target disappears.
 
-## Practical effect
+## Survivor disposition
 
-- Current operational surface: 11 active specialist targets instead of an undifferentiated 99-target frontdoor.
-- Full regression coverage: retained on pull requests and `main`.
-- CI presentation: substantially smaller and easier to diagnose by authority group.
-- Historical deletion: none.
-- Runtime, routing, queue or policy authority: none.
+### Keep as active core
 
-## Next reduction gate
+- schemas and schema counterevidence;
+- execution-proof and run-bundle integrity;
+- relation, claim/evidence and promotion-readiness boundaries;
+- active-registry and prospective-registration integrity;
+- evidence-bound observation capture and generic effect-evaluator regression tests;
+- generated-artifact non-mutation and drift protection.
 
-A legacy target may move to removal only with one of these proofs:
+These surfaces have a current consumer or protect a generic failure class used by every experiment.
 
-1. its experiment family is closed and archived and no active contract imports it;
+### Keep temporarily as active specialist surface
+
+- active experiment registry checks;
+- frozen Operator-Lab closeout checks;
+- RepoBrief Workbench usefulness and run-series checks;
+- prospective experiment registration checks.
+
+The specialist group is 10 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class.
+
+### Review for retirement
+
+The 48 legacy targets are reviewed in this order:
+
+1. retired agent-handoff, agent-command and command-chain contracts;
+2. closed Model-Lab control, access, runtime, workspace and condition-design contracts;
+3. historical replay, fixture and cross-contract semantics that may duplicate generic core gates;
+4. rLens and PR-context historical validators after the active RepoBrief pilot closes.
+
+A legacy target may move to removal only when one of these proofs exists:
+
+1. its protected experiment family is closed and archived and no active contract imports it;
 2. a core validator demonstrably covers the same failure class and fixtures;
 3. a head- and diff-bound review confirms removal does not weaken current active or historical evidence integrity.
+
+## Quantitative reduction gate
+
+The legacy review date remains 2026-09-01. By that date each of the 48 targets must be classified as:
+
+- `retain_with_consumer`;
+- `covered_by_core`;
+- `retire`.
+
+The directional objective is a 30–50 percent reduction of the blocking legacy group. It is a review target, not permission for blind deletion.
+
+## Practical effect
+
+- Current active specialist surface: 10 targets instead of an undifferentiated 103-target frontdoor.
+- Current active experiments: one.
+- Full regression breadth: retained while survivor proof is gathered.
+- Retired custom-agent and tool-projection layers: no longer active authority.
+- Next engineering work: remove proven-redundant legacy groups rather than add new Vibe-Lab capabilities.
