@@ -17,10 +17,10 @@
 <!-- Was ist bewusst in Scope, was explizit out of scope?
      Dieser Abschnitt ist Review-Kontext, kein Ersatz für run-lokale Evidence-Artefakte. -->
 
-## Operator Lab Run
+## Experiment / Entscheidungsfläche
 
-Operator-Lab-Run: <!-- vibe-lab: <pfad> oder not applicable - <kurzer Grund> -->
-
+Experiment / Decision Surface: <!-- aktiver Experimentpfad, geprüfter Entscheidungspfad oder not applicable - kurzer Grund -->
+Verbraucher / Entscheidungsziel: <!-- benennen oder not applicable -->
 
 ## Review-Evidence Wait Gate
 
