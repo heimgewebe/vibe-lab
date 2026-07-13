@@ -299,6 +299,11 @@
 
 - ← `docs/index.md` (references)
 
+## `docs/plans/vibe-lab-optimization-plan-v1.md`
+
+- ← `docs/index.md` (references)
+- ← `docs/reports/vibe-lab-validator-inventory-v1.md` (informs)
+
 ## `docs/playbooks/build-reliable-prompt.md`
 
 - ← `docs/index.md` (references)
@@ -343,6 +348,11 @@
 ## `docs/playbooks/pr-context-capture.md`
 
 - ← `docs/index.md` (references)
+- ← `docs/playbooks/operator-lab-loop.md` (references)
+- ← `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md` (references)
+
+## `docs/playbooks/pr-review-evidence-wait-gate.md`
+
 - ← `docs/playbooks/operator-lab-loop.md` (references)
 
 ## `docs/playbooks/pr-run-evidence-pack.md`
@@ -394,6 +404,7 @@
 - ← `docs/playbooks/pr-run-evidence-pack.md` (references)
 - ← `docs/policies/agent-reading-protocol.md` (references)
 - ← `docs/policies/artifact-boundary-policy.md` (references)
+- ← `instruction-blocks/evidence-bound-status.md` (informed_by)
 
 ## `docs/reference/agent-operability-fixture-matrix.md`
 
@@ -714,6 +725,10 @@
 
 - ← `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` (references)
 
+## `experiments/2026-06-10_pr-agent-context-comparison-series/method.md`
+
+- ← `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md` (references)
+
 ## `experiments/2026-06-10_pr-agent-context-comparison-series/pilot-v1.yml`
 
 - ← `docs/playbooks/operator-lab-loop.md` (references)
@@ -736,10 +751,26 @@
 
 - ← `docs/playbooks/operator-lab-loop.md` (references)
 
+## `experiments/2026-07-01_operator-lab-loop/method.md`
+
+- ← `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md` (references)
+
+## `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md`
+
+- ← `experiments/2026-07-08_rlens-agent-context-conditions/method.md` (references)
+
+## `experiments/2026-07-08_rlens-agent-context-conditions/measurement-plan.yml`
+
+- ← `experiments/2026-07-08_rlens-agent-context-conditions/method.md` (references)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
 - ← `docs/experiments/README.md` (references)
+
+## `experiments/_archive/2026-07-12_operator-intervention-effect-evaluator/registration.v2.json`
+
+- ← `docs/playbooks/effect-observation-capture.md` (informs)
 
 ## `instruction-blocks/constraint-before-code.md`
 
@@ -787,6 +818,10 @@
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `experiments/2026-04-23_phase-1-drift-injection/results/README.md` (references)
 
+## `schemas/effect-evaluation.observations.v2.schema.json`
+
+- ← `docs/playbooks/effect-observation-capture.md` (references)
+
 ## `schemas/experiment.manifest.schema.json`
 
 - ← `docs/blueprints/blueprint-model-lab-control-plane-v1.md` (references)
@@ -833,6 +868,10 @@
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 
+## `tools/vibe-cli/capture_effect_observation.py`
+
+- ← `docs/playbooks/effect-observation-capture.md` (references)
+
 ## `tools/vibe-cli/pr_context_capture.py`
 
 - ← `docs/playbooks/pr-context-capture.md` (references)
@@ -840,6 +879,10 @@
 ## `tools/vibe-cli/replay_minimal.py`
 
 - ← `docs/reference/replay-trace-redaction.md` (references)
+
+## `tools/vibe-cli/test_capture_effect_observation.py`
+
+- ← `docs/playbooks/effect-observation-capture.md` (validated_by)
 
 ## `tools/vibe-cli/test_pr_context_capture.py`
 

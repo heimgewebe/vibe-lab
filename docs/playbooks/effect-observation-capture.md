@@ -10,14 +10,14 @@ relations:
   - type: references
     target: ../../schemas/effect-evaluation.observations.v2.schema.json
   - type: informs
-    target: ../../experiments/2026-07-12_operator-intervention-effect-evaluator/registration.v2.json
+    target: ../../experiments/_archive/2026-07-12_operator-intervention-effect-evaluator/registration.v2.json
 ---
 
 # Effect Observation Capture
 
 ## Purpose
 
-`capture_effect_observation.py` is the only supported writer for real effect-evaluation observations. It prepares evidence for review. For a registered scorecard it computes only the frozen weighted sum; it does not judge the criteria, change routing, mutate Bureau, or claim that the evaluator is useful.
+`capture_effect_observation.py` is the only supported writer for real effect-evaluation observations. The archived operator-intervention registration remains historical design evidence only and must not receive new observations. It prepares evidence for review. For a registered scorecard it computes only the frozen weighted sum; it does not judge the criteria, change routing, mutate Bureau, or claim that the evaluator is useful.
 
 ## Preconditions
 
@@ -36,8 +36,8 @@ relations:
 
 ```bash
 python3 tools/vibe-cli/capture_effect_observation.py \
-  --registration experiments/2026-07-12_operator-intervention-effect-evaluator/registration.v2.json \
-  --observations experiments/2026-07-12_operator-intervention-effect-evaluator/results/observations.v2.json \
+  --registration /path/to/active-experiment/registration.v2.json \
+  --observations /path/to/active-experiment/results/observations.v2.json \
   --observation-id pilot-01-manual \
   --condition manual_review \
   --score-component decision_aligned=1 \

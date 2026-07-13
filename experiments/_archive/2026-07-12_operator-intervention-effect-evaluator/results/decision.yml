@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+confidence: "high"
+date: "2026-07-12"
+reviewer: "ChatGPT / Grabowski"
+rationale: |
+  The registered treatment requires an evaluator report before the treatment
+  decision. The implemented evaluator can generate that report only after the
+  manual and evaluator-assisted decisions have both been independently scored
+  and captured. This causal-ordering cycle makes the registered three-pilot
+  comparison non-executable without inventing a second pre-decision evaluator,
+  retrofitting old cases or creating synthetic observations. All three options
+  violate the frozen method or the explicit salvage boundaries. No observation
+  was captured and no usefulness claim is permitted.
+evidence_summary:
+  observations: 0
+  completed_pairs: 0
+  synthetic_cases: 0
+  retrospective_cases: 0
+  practical_blockers: 1
+  misleading_claims: 0
+next_steps:
+  - "Do not promote the evaluator or represent it as a Heimlern capability."
+  - "Keep the generic deterministic capture/evaluation utilities in Vibe-Lab as unpromoted review tooling only."
+  - "Archive the Heimlern salvage direction; keep T004 unpromoted and close T005 as insufficient evidence when Bureau is safe to mutate."

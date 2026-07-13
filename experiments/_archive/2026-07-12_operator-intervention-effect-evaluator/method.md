@@ -1,6 +1,6 @@
 ---
 title: "Method: Operator Intervention Effect Evaluator"
-status: active
+status: archived
 canonicality: operative
 ---
 

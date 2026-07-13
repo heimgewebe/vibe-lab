@@ -30,6 +30,7 @@
         "main": "blocking"
       },
       "targets": [
+        "validate-effect-evaluator-tests",
         "validate-doc-freshness-registry-tests",
         "validate-doc-freshness-registry",
         "validate-bundle-freshness-receipt-tests",
@@ -81,22 +82,19 @@
       "consumer": "experiments/active.v1.json and the frozen Operator-Lab closeout",
       "failure_classes": [
         "active_experiment_registration_drift",
-        "active_effect_evaluation_drift",
         "operator_lab_closeout_drift",
         "repobrief_pilot_drift"
       ],
       "scope_paths": [
         "experiments/active.v1.json",
         "experiments/2026-07-01_operator-lab-loop",
-        "experiments/2026-07-09_repobrief-workbench-usefulness-eval",
-        "experiments/2026-07-12_operator-intervention-effect-evaluator"
+        "experiments/2026-07-09_repobrief-workbench-usefulness-eval"
       ],
       "execution_policy": {
         "pull_request": "blocking",
         "main": "blocking"
       },
       "targets": [
-        "validate-effect-evaluator-tests",
         "validate-active-experiments-tests",
         "validate-active-experiments",
         "validate-operator-lab-closeout-tests",

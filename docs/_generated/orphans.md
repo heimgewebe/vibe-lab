@@ -3,8 +3,12 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (80 found):
+Unexpected orphans (103 found):
 
+- `docs/ecosystem/README.md`
+- `docs/ecosystem/vibe-lab-productive-role.md`
+- `docs/playbooks/effect-observation-capture.md`
+- `docs/reports/vibe-lab-validator-inventory-v1.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/edit_trace.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-002-treatment-legacy/premortem.md`
 - `experiments/2026-04-14_premortem-prompting/artifacts/run-004-treatment-expanded/edit_trace.md`
@@ -64,9 +68,28 @@ Unexpected orphans (80 found):
 - `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-002-vibe-lab-handoff/condition-input.md`
 - `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-003-lenskit-plus-vibe-lab-handoff/condition-input.md`
 - `experiments/2026-06-10_pr-agent-context-comparison-series/artifacts/run-004-minimal-decision-first-checklist/condition-input.md`
+- `experiments/2026-07-01_operator-lab-loop/FROZEN.md`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/README.md`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-009-bundle-freshness-receipt/notes.md`
 - `experiments/2026-07-01_operator-lab-loop/artifacts/run-template.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/AGENT_NOTE.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/README.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/README.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/followup-candidates.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-002-friction-ledger/result.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-003-friction-ledger-snapshot-2/result.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-friction-ledger-turnover/result.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-004-trigger-rule.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/followup-candidate.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/artifacts/run-005-connector-transport-diagnostics/result.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/results/assessment.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/results/decision-boundary.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/results/followup.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/results/nonclaims.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/results/review-questions.md`
+- `experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md`
+- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md`
+- `instruction-blocks/evidence-bound-status.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
 - `tests/fixtures/challenge_versions/invalid/challenges/missing-version.md`
@@ -86,7 +109,7 @@ Unexpected orphans (80 found):
 - `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
 
-Expected orphans (95 found):
+Expected orphans (110 found):
 
 - `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
@@ -166,13 +189,28 @@ Expected orphans (95 found):
 - `experiments/2026-06-10_pr-agent-context-comparison-series/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-06-10_pr-agent-context-comparison-series/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-06-10_pr-agent-context-comparison-series/failure_modes.md` — experiment_bundle_local_analysis
-- `experiments/2026-06-10_pr-agent-context-comparison-series/method.md` — experiment_bundle_method
 - `experiments/2026-06-10_pr-agent-context-comparison-series/results/result.md` — experiment_result_local_surface
 - `experiments/2026-07-01_operator-lab-loop/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-07-01_operator-lab-loop/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-07-01_operator-lab-loop/failure_modes.md` — experiment_bundle_local_analysis
-- `experiments/2026-07-01_operator-lab-loop/method.md` — experiment_bundle_method
 - `experiments/2026-07-01_operator-lab-loop/results/result.md` — experiment_result_local_surface
+- `experiments/2026-07-05_ecosystem-organ-preflight/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-07-05_ecosystem-organ-preflight/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-07-05_ecosystem-organ-preflight/method.md` — experiment_bundle_method
+- `experiments/2026-07-05_ecosystem-organ-preflight/results/result.md` — experiment_result_local_surface
+- `experiments/2026-07-08_operator-learning-capture-sample/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-07-08_operator-learning-capture-sample/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-07-08_operator-learning-capture-sample/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-07-08_operator-learning-capture-sample/method.md` — experiment_bundle_method
+- `experiments/2026-07-08_operator-learning-capture-sample/results/result.md` — experiment_result_local_surface
+- `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-07-08_rlens-agent-context-conditions/method.md` — experiment_bundle_method
+- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md` — experiment_bundle_method
+- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` — experiment_result_local_surface
 - `exports/copilot/constraint-before-code.md` — generated_export_surface
 - `exports/copilot/edge-case-enumeration.md` — generated_export_surface
 - `exports/copilot/no-vague-prompts.md` — generated_export_surface
