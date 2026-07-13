@@ -1,48 +1,54 @@
 # Vibe-Lab
 
-**Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken.**
+**Verbrauchergebundener Experiment- und Evidenzraum für überprüfbare Arbeitsweisen.**
 
-Vibe-Lab sammelt, erprobt und validiert Vibe-Coding-Praktiken. Nicht alles muss sofort ein schweres epistemisches Objekt sein — die meisten Ideen starten roh und werden erst bei Bedarf strukturiert.
+Vibe-Lab hält rohe Beobachtungen fest, registriert begrenzte Vergleiche vor ihrer Ausführung, bindet Ergebnisse an konkrete Evidenz und schließt sie mit einer überprüften Entscheidung ab.
+
+Es ist kein Agentenlaufzeitsystem, Scheduler, Dashboard, zweites Bureau, zweiter Grabowski-Governor oder automatische Lerninstanz. GitHub, CI, Grabowski, RepoBrief und Bureau bleiben die jeweiligen Wahrheits- und Entscheidungsorgane.
 
 ## Schnellstart
 
-### 💡 Rohe Idee festhalten (sofort, ohne Setup)
+### 💡 Rohe Idee festhalten
 
 Lege eine Markdown-Datei in `raw-vibes/` an:
 
 ```bash
-echo "# Meine Beobachtung\n\nChain-of-Thought scheint bei Refactoring besser zu funktionieren als..." \
-  > raw-vibes/chain-of-thought-refactoring.md
+echo "# Meine Beobachtung\n\nEin begrenzter Kontext scheint bei dieser Aufgabenklasse weniger Fehlpfade zu erzeugen ..." \
+  > raw-vibes/context-observation.md
 ```
 
-Kein Schema, kein Frontmatter, keine CI-Prüfung. Einfach festhalten.
+Kein Schema, kein Frontmatter, keine CI-Prüfung. Eine rohe Idee ist noch keine Wirkungsaussage und keine Aufgabe.
 
 ### 🧪 Strukturiertes Experiment starten
 
-Wenn eine Idee reif genug zum Testen ist:
+Nur wenn eine reale Entscheidung und ein Verbraucher benannt sind:
 
-1. Erstelle ein Issue mit dem Formular **🧪 Experiment Proposal**
-2. Kopiere `experiments/_template/` in einen neuen Ordner
-3. Fülle `manifest.yml`, `method.md` und `CONTEXT.md` aus
-4. Sammle Evidenz in `evidence.jsonl`
+1. Erstelle ein Issue mit dem Formular **🧪 Experiment Proposal**.
+2. Kopiere `experiments/_template/` in einen neuen Ordner.
+3. Fülle `manifest.yml`, `method.md`, `CONTEXT.md` und `registration.v2.json` aus.
+4. Friere Kontrolle, Behandlung, primäre Messgröße, Mindestwirkung, Vergleichbarkeit, Reviewdatum und Ablauf vor der Beobachtung ein.
+5. Sammle Evidenz in `evidence.jsonl` oder über die evidenzgebundene Beobachtungsaufnahme.
 
-### 📚 Ergebnis in den Katalog übernehmen
+### 📚 Ergebnis übernehmen
 
-Erst wenn ein Experiment belastbare Evidenz liefert:
+Erst wenn ein Experiment belastbare Evidenz und einen benannten externen Verbraucher besitzt:
 
-1. Erstelle einen Pull Request mit dem Template **Promotion**
-2. Alle Pflichtartefakte müssen vollständig sein (`make validate`)
-3. Review + Merge = adoptierte Praxis
+1. Erstelle einen Pull Request mit dem Template **Promotion**.
+2. Alle Pflichtartefakte müssen vollständig sein (`make validate`).
+3. Review und Merge dokumentieren die Vibe-Lab-Entscheidung.
+4. Die tatsächliche Übernahme in ein Produktrepo, Bureau oder Grabowski bleibt eine eigene Entscheidung des zuständigen Organs.
 
-### Aktive Experimente
+## Aktive Experimente
 
-`experiments/active.v1.json` is the bounded active-work truth. At most five experiments may be active; historical experiment directories are not active by implication.
+`experiments/active.v1.json` ist die einzige begrenzte Wahrheit über laufende Experimente. Historische Verzeichnisse sind nicht automatisch aktiv. Maximal fünf Experimente dürfen gleichzeitig aktiv sein.
+
+Aktueller Stand vom 13. Juli 2026: ein aktiver Pilot zur RepoBrief-Workbench-Nützlichkeit. Der registrierte Operator-Interventions-Effektvergleich wurde als praktisch nicht ausführbar archiviert.
 
 ```bash
 python3 scripts/docmeta/validate_active_experiments.py
 ```
 
-New experiments use `registration.v2.json`: control, treatment, primary metric, material threshold, comparability constraints, review date and expiry are frozen before observation. `tools/vibe-cli/capture_effect_observation.py` records registration- and evidence-bound observations atomically; the review-only evaluator is `tools/vibe-cli/evaluate_effect.py`.
+Neue Experimente verwenden `registration.v2.json`. `tools/vibe-cli/capture_effect_observation.py` erfasst registrierungs- und evidenzgebundene Beobachtungen atomar. `tools/vibe-cli/evaluate_effect.py` wertet begrenzte Vergleiche deterministisch aus. Beide Werkzeuge sind Review-Werkzeuge und besitzen keine automatische Policy-, Routing-, Queue- oder Runtime-Autorität.
 
 ### Lokal validieren
 
@@ -55,59 +61,75 @@ make validate
 
 | Phase | Ort | Anforderung | Charakter |
 |-------|-----|-------------|-----------|
-| **Roh** | `raw-vibes/` | Keine | Spontan, frei, unstrukturiert |
-| **Experiment** | `experiments/` | Manifest, Methode, Evidenz | Strukturiert, reproduzierbar |
-| **Bibliothek** | `catalog/`, `prompts/adopted/` | Volle Validierung, Promotion-Gate | Hart geprüft, evidenzbasiert |
+| **Roh** | `raw-vibes/` | Keine | Beobachtung oder Idee ohne Wirkungsanspruch |
+| **Experiment** | `experiments/` | Verbraucher, Registrierung, Methode, Evidenz, Ablauf | Prospektiv und überprüfbar |
+| **Bibliothek** | `catalog/`, `prompts/adopted/` | Vollständige Validierung und realer Verbraucher | Bewusst übernommene Praxis |
 
 **Prinzip:** Leicht am Eingang, hart am Ausgang.
 
 ## Projektstruktur
 
-```
+```text
 vibe-lab/
   raw-vibes/                      # Rohe Ideen, Notizen, Fragmente
-  experiments/                    # Labor: Strukturierte Testläufe
-  catalog/                        # Bibliothek: Validiertes Wissen
-  prompts/                        # Bibliothek: Menschenlesbare Artefakte
-  benchmarks/                     # Bibliothek: Vergleichsaufgaben
-  instruction-blocks/             # Bibliothek: Portable Denkbausteine
-  decisions/                      # Meta-Entscheidungen
-  docs/                           # Epistemische Dokumentpfade
-  contracts/                      # Kanonische/policy-nahe Schemas
-  schemas/                        # Pipeline-Validierungs-Schemas
-  scripts/                        # Guard-/Generator-Stack
+  experiments/                    # Registrierte Tests und historisches Archiv
+  catalog/                        # Validierte, konsumierte Erkenntnisse
+  prompts/                        # Menschenlesbare Bibliotheksartefakte
+  benchmarks/                     # Vergleichsaufgaben
+  instruction-blocks/             # Portable Denkbausteine
+  decisions/                      # Meta- und Abschlussentscheidungen
+  docs/                           # Grundlagen, Pläne, Berichte und Playbooks
+  contracts/                      # Kanonische und policy-nahe Verträge
+  schemas/                        # Validierungsschemas
+  scripts/                        # Guard- und Generatorstack
   tests/                          # Fixture- und Contract-Tests
-  tools/                          # CLI / Automatisierung
-  exports/                        # Generierte Tool-Projektionen (nie manuell editieren)
+  tools/                          # Begrenzte CLI-Werkzeuge
+  exports/                        # Generierte Kompatibilitätsflächen
   .vibe/                          # Repo-operative Verträge
 ```
 
-## Steuerung & Governance
+## Zuständigkeitsgrenze
 
-<details>
-<summary>Steuerungsdokumente und Wahrheitshierarchie (für Fortgeschrittene)</summary>
+Vibe-Lab darf:
 
-| Dokument              | Zweck                               | Status          |
-| --------------------- | ----------------------------------- | --------------- |
-| `repo.meta.yaml`      | Maschinenlesbare Repo-Verfassung    | Kanonisch       |
-| `AGENTS.md`           | Bindende Leseregeln für Agenten     | Kanonisch       |
-| `agent-policy.yaml`   | Operative Agentensteuerung          | Kanonisch       |
-| `docs/foundations/vision.md`          | Systemvision                        | Grundlagendokument / Zielbild           |
-| `docs/foundations/repo-plan.md`       | Architektur- und Umsetzungsplan     | Grundlagendokument / Umsetzungsrahmen     |
+- eine prospektive Vergleichsfrage registrieren;
+- Beobachtungen an Evidenz binden;
+- Claims, Vergleichbarkeit, Unsicherheit und Nichtaussagen prüfen;
+- wiederkehrende Reibung als Vorschlag für das Bureau dokumentieren;
+- Experimente fördern, pilotieren, zurückstellen, verwerfen oder archivieren.
+
+Vibe-Lab darf nicht:
+
+- die nächste Aufgabe auswählen;
+- Bureau-Queues verändern;
+- Pull Requests mergen oder Dienste deployen;
+- GitHub-, CI-, Runtime- oder RepoBrief-Wahrheit überschreiben;
+- aus einer einzelnen Beobachtung eine allgemeine Regel machen.
+
+## Steuerung und Wahrheitshierarchie
+
+| Dokument | Zweck | Status |
+| --- | --- | --- |
+| `repo.meta.yaml` | Maschinenlesbare Repo-Verfassung | Kanonisch |
+| `AGENTS.md` | Bindende Leseregeln | Kanonisch |
+| `agent-policy.yaml` | Operative Agentengrenzen | Kanonisch |
+| `docs/foundations/vision.md` | Begrenztes Zielbild | Grundlagendokument |
+| `docs/foundations/repo-plan.md` | Architektur- und Umsetzungsrahmen | Grundlagendokument |
+| `experiments/active.v1.json` | Laufende Experimentwahrheit | Operativ, validiert |
 
 **Wahrheitshierarchie:**
 
-1. **Kanonische Steuerungsquellen** — `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`, `contracts/*`, `schemas/*`
-2. **Grundlagenquellen** — `docs/foundations/vision.md`, `docs/foundations/repo-plan.md`
-3. **Operative Dokumente** — `README.md`, `CONTRIBUTING.md`, `.vibe/*`
-4. **Navigation** — `docs/index.md` (Wegweiser, nicht Wahrheit)
-5. **Diagnose** — `docs/_generated/*` (maschinell, read-only)
-
-</details>
+1. kanonische Steuerungsquellen — `repo.meta.yaml`, `AGENTS.md`, `agent-policy.yaml`, `contracts/*`, `schemas/*`;
+2. Grundlagenquellen — `docs/foundations/vision.md`, `docs/foundations/repo-plan.md`;
+3. operative Dokumente und aktive Experimentwahrheit;
+4. Navigation;
+5. generierte Diagnoseflächen.
 
 ## Weiterführend
 
-- [Contributing](CONTRIBUTING.md) — Phasenmodell, Beitragstypen, Qualitätsanforderungen
+- [Contributing](CONTRIBUTING.md)
 - [Vision](docs/foundations/vision.md)
-- [Repo-Plan](docs/foundations/repo-plan.md)
+- [Optimierungsplan](docs/plans/vibe-lab-optimization-plan-v1.md)
+- [Produktive Zuständigkeitsgrenze](docs/ecosystem/vibe-lab-productive-role.md)
+- [Validatorinventar und Survivor-Status](docs/reports/vibe-lab-validator-inventory-v1.md)
 - [Dokumentation](docs/index.md)
