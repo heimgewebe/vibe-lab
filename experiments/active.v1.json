@@ -12,6 +12,17 @@
       "review_at": "2026-08-15T00:00:00Z",
       "expires_at": "2026-09-01T00:00:00Z",
       "source_ref": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml"
+    },
+    {
+      "experiment_id": "2026-07-13_chronik-history-brief-effect",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect",
+      "state": "designed",
+      "consumer": "Grabowski and Bureau",
+      "decision_target": "Decide whether a frozen Chronik history brief should be used for explicit coding task classes.",
+      "primary_metric": "coding_decision_quality_score",
+      "review_at": "2026-08-15T00:00:00Z",
+      "expires_at": "2026-09-01T00:00:00Z",
+      "source_ref": "experiments/2026-07-13_chronik-history-brief-effect/results/decision.yml"
     }
   ]
 }

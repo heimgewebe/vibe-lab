@@ -1,0 +1,16 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-07-13"
+reviewer: "ChatGPT / Grabowski"
+rationale: >
+  Registration and method are frozen before observation. No natural control or
+  treatment cases have yet been completed, so no result or adoption assessment is allowed.
+evidence_summary:
+  observations: 0
+  positive: 0
+  negative: 0
+  neutral: 0
+next_steps: >
+  Collect at least three comparable natural cases per condition, preserve all
+  failed and null cases, run independent blinded scoring, then evaluate.
