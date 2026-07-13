@@ -31,9 +31,9 @@ Vibe-Lab wird nicht zu:
 - zweitem Bureau oder zweitem Grabowski-Governor;
 - allgemeinem Heimlern-, Plexer- oder Chronik-Dienst;
 - automatischer LLM-basierter Mustererkennung;
-- breiter Tool-Projektions- oder Kompatibilitätsschicht.
+- neuer breiter, instruktionsführender Tool-Projektionsschicht.
 
-Historische Dateien, frühere Pläne und vorhandene Validatoren autorisieren diese Nichtziele nicht.
+Bestehende generierte Kompatibilitätsmarker und ihre blocking Paritätsverträge bleiben aktiv, solange die operativen Verträge sie verlangen. Historische Dateien, frühere Pläne und vorhandene Validatoren autorisieren keine neue Expansion.
 
 ## Wahrheit und Zuständigkeit
 
@@ -112,7 +112,8 @@ Der dauerhaft gerechtfertigte Kern besteht aus:
 - evidenzgebundener Beobachtungsaufnahme;
 - deterministischer Review-Auswertung;
 - expliziten Abschlussentscheidungen;
-- generiertem Index und Drift-Schutz für kanonisch abgeleitete Dateien.
+- generiertem Index und Drift-Schutz für kanonisch abgeleitete Dateien;
+- bestehenden Kompatibilitätsmarkern, solange operative Verträge und CI sie verlangen.
 
 Neue dauerhafte Komponenten benötigen einen aktuellen Verbraucher und eine benannte Fehlerklasse. Sie müssen mehr Risiko oder Wartung entfernen, als sie hinzufügen.
 
@@ -126,11 +127,12 @@ Die Prüfoberfläche ist in drei Gruppen getrennt:
 
 Alle `validate-*`-Ziele müssen im maschinenlesbaren Inventar klassifiziert sein. Neue Spezialvalidatoren sind nur erlaubt, wenn eine generische Prüfung den benannten Fehler nicht ausreichend abdeckt.
 
-Ein Legacy-Validator wird entfernt, wenn:
+Ein Legacy-Validator wird nur entfernt, wenn mindestens ein materieller Beleg vorliegt:
 
-- seine Artefaktfamilie geschlossen und archiviert ist und kein aktiver Import besteht;
-- ein Core-Validator dieselbe Fehlerklasse und relevante Fixtures nachweislich abdeckt; oder
-- ein head- und diffgebundener Review seine Entfernung ohne Verlust aktiver oder historischer Evidenzintegrität bestätigt.
+- seine Artefaktfamilie ist geschlossen und archiviert und kein aktiver Import besteht; oder
+- ein Core-Validator deckt dieselbe Fehlerklasse und relevante Fixtures nachweislich ab.
+
+Der head- und diffgebundene Review des Entfernungs-PR prüft diesen Beleg und die Integrationsfolgen; er ersetzt den materiellen Beleg nicht.
 
 Der Reviewtermin für den aktuellen Legacy-Bestand ist 2026-09-01. Zielrichtung ist eine Reduktion um 30–50 Prozent, nicht blindes Löschen.
 
@@ -144,7 +146,7 @@ Stand 13. Juli 2026:
 - evidenzgebundene atomare Beobachtungsaufnahme vorhanden;
 - deterministischer Effekt-Evaluator als unpromotetes Review-Werkzeug vorhanden;
 - praktisch nicht ausführbarer Operator-Interventions-Pilot archiviert;
-- aktive Custom-Agenten und Cursor-/Copilot-Instruktionsprojektionen stillgelegt;
+- aktive Custom-Agenten und instruktionsführende Cursor-/Copilot-Projektionsinhalte stillgelegt; generierte Kompatibilitätsmarker und Paritätsverträge bleiben aktiv;
 - Validatorfläche gruppiert: 45 Core, 10 Active, 48 Legacy und 2 Supplemental;
 - ein aktiver RepoBrief-Workbench-Pilot mit Review am 15. August 2026 und Ablauf am 1. September 2026.
 
@@ -152,11 +154,12 @@ Stand 13. Juli 2026:
 
 ### Phase E1 — Wahrheitsausrichtung
 
-- kanonischen Zweck, Vision, Repository-Plan, README und operative Berichte angleichen;
+- kanonischen Zweck gegen die begrenzte Rolle prüfen; Änderungen an `repo.meta.yaml` bleiben menschlich gepflegt;
+- Vision, Repository-Plan, README, Roadmap und operative Berichte angleichen;
 - veraltete aktive Zahlen und frühere Expansionsziele entfernen;
 - keine neue Funktion hinzufügen.
 
-Erfolg: Alle maßgeblichen Dokumente beschreiben dieselbe begrenzte Rolle.
+Erfolg: Alle agentenseitig änderbaren maßgeblichen Dokumente beschreiben dieselbe begrenzte Rolle; kanonische Quellen bleiben unverändert oder werden separat menschlich gepflegt.
 
 ### Phase E2 — Legacy-Survivor-Audit
 
@@ -167,7 +170,7 @@ Prüfreihenfolge:
 3. historische Replay-, Fixture- und Cross-Contract-Semantik;
 4. rLens- und PR-Context-Prüfungen nach Abschluss des aktiven RepoBrief-Piloten.
 
-Erfolg: Jeder Legacy-Validator besitzt `retain_with_consumer`, `covered_by_core` oder `retire`.
+Erfolg: Jeder Legacy-Validator besitzt `retain_with_consumer`, `covered_by_core` oder `retire`; jede Entfernung beruht auf Archiv- oder Gleichwertigkeitsbeleg.
 
 ### Phase E3 — Aktiven Pilot schließen
 
@@ -177,7 +180,7 @@ Erfolg: klare Entscheidung, aktualisierte Active Registry und keine automatische
 
 ### Phase E4 — Bibliotheksverbrauch prüfen
 
-Katalog, Prompts, Benchmarks und Instruction Blocks auf reale Verbraucher prüfen. Nicht konsumierte Flächen archivieren oder als historisch kennzeichnen; keine neue Exportprojektion allein zur Pfaderhaltung bauen.
+Katalog, Prompts, Benchmarks und Instruction Blocks auf reale Verbraucher prüfen. Nicht konsumierte Flächen archivieren oder als historisch kennzeichnen; keine neue instruktionsführende Exportprojektion allein zur Pfaderhaltung bauen. Bestehende Kompatibilitätsmarker bleiben erhalten, bis ihre operativen Verträge separat geändert werden.
 
 Erfolg: Jede aktive Bibliotheksfläche hat Verbraucher, Entscheidungsziel und Reviewregel.
 
