@@ -2,76 +2,73 @@
 title: "Systemvision"
 status: active
 canonicality: foundational
-updated: "2026-04-19"
+updated: "2026-07-13"
 ---
-# Vibe-Lab: Lernendes, prüfendes und schöpferisches System
+# Vibe-Lab: begrenzter Experiment- und Evidenzraum
 
-Vibe-Lab ist kein passives Ideenarchiv, sondern ein lernendes System zur Sammlung, Erprobung und Weiterentwicklung von Vibe-Coding-Praktiken. **Das System verbessert nicht nur Coding, sondern sich selbst.** Dokumentation, Katalogisierung und Wissensspeicherung sind notwendige Bestandteile, solange sie auf Experimente und konkrete Entscheidungen zielen.
+Vibe-Lab ist ein kleiner, verbrauchergebundener Erkenntnisraum für Arbeitsweisen im KI-gestützten Entwickeln. Sein Zweck ist nicht, Arbeit selbst zu steuern, sondern eine konkrete unsichere Entscheidung durch ein vorab festgelegtes Experiment, gebundene Evidenz und einen überprüften Abschluss zu unterstützen.
 
-Die Vision beruht auf vier Pfeilern: **Sammlung, Erprobung, Validierung und Kreation**. **Das System besteht aus vier Zuständen**, durch die Ideen transformiert werden. Ideen sind keine bloßen Inhalte, sondern **Zustandsobjekte im Wandel**:
-1. **roh** (Sammlung)
-2. **getestet** (Erprobung)
-3. **bewährt** (Validierung)
-4. **systemisch erweitert** (Kreation)
+Vibe-Lab ist insbesondere **kein** Agentenlaufzeitsystem, Scheduler, Dashboard, zweites Bureau, zweiter Grabowski-Governor, Routingdienst oder automatische Lerninstanz.
 
-Diese vier Zustände beschreiben die epistemische Entwicklung einer Idee (Wissenszustand). Davon zu unterscheiden ist der operative Status im System (Lifecycle), der als Entscheidungszustand geführt wird (idea → testing → adopted/rejected).
+## Zustände
 
-Beide Modelle sind gekoppelt, aber nicht identisch:
-– Der epistemische Zustand beschreibt, wie belastbar eine Erkenntnis ist
-– Der Entscheidungsstatus beschreibt, wie das System mit ihr umgeht
+Eine Idee kann vier Zustände durchlaufen:
 
-Typische Zuordnung:
-– roh ↔ idea
-– getestet ↔ testing
-– bewährt ↔ adopted
-– systemisch erweitert ↔ (post-adoption, Einfluss auf neue Experimente)
+1. **roh** — eine noch unverbindliche Beobachtung in `raw-vibes/`;
+2. **registriert** — ein prospektives Experiment mit Verbraucher, Entscheidungsziel, Vergleich, Messung, Reviewdatum und Ablauf;
+3. **abgeschlossen** — ein geprüftes Ergebnis mit expliziten Nichtaussagen und der Entscheidung `promote`, `pilot`, `defer`, `reject` oder `archive`;
+4. **übernommen** — eine außerhalb von Vibe-Lab bewusst konsumierte Praxis oder ein Artefakt mit benanntem Eigentümer.
 
-Rejected hat keinen stabilen epistemischen Zustand, liefert aber explorativen Erkenntniswert.
+Historische Dateien werden nicht allein durch ihre Existenz aktiv. Die einzige Wahrheit über laufende Arbeit ist `experiments/active.v1.json`.
 
-**Das System ist zyklisch: Jede Stufe beeinflusst alle anderen.** Feedback wirkt nicht symmetrisch: Validierte Praktiken beeinflussen neue Experimente (Stabilisierung), Lab-Ergebnisse erzeugen neue Experimente (Innovation) und Experimente können bestehende Praktiken in Frage stellen (Revision). Validierte Praktiken stabilisieren und verdichten die Systemintelligenz; nicht validierte Praktiken liefern explorativen Erkenntniswert. Praktiken und Erkenntnisse werden dabei konsequent bewertet, denn **Qualität zeigt sich primär in reproduzierbarer Verbesserung des Vibes, bleibt jedoch kontextabhängig und teilweise nicht vollständig deterministisch.** Neben Reproduzierbarkeit umfasst Qualität auch Kontextsensitivität (funktioniert unter variierenden Bedingungen) und explorativen Wert (eröffnet neue Möglichkeiten, auch wenn noch nicht stabil). Die Bewertung erfolgt entlang von drei Achsen: Wirksamkeit (Effektivität), Reibung (Aufwand) und Flow (subjektive Qualität).
+## Arbeitsprinzipien
 
-Das System organisiert sich in drei Schichten:
+### Verbraucher vor Experiment
 
-## Layer 1: Core Engine (Der Mechanismus)
+Ein neues Experiment benötigt vor Beginn einen benannten Verbraucher und eine konkrete Entscheidung, die das Ergebnis verändern kann. Beobachtungen ohne Entscheidungsziel bleiben Rohmaterial oder Archiv.
 
-Die Core Engine schafft reproduzierbare Rahmenbedingungen für die Arbeit mit LLMs und Agenten.
+### Vorab festlegen statt nachträglich passend machen
 
-- **Vibe Contracts (.vibe/ als Vertragszone)**
-  Loses Prompting reicht nicht aus; es wird durch Contracts, Kontext, Validierung und Messdisziplin gerahmt. Intentionen, Restriktionen und Quality Gates schaffen explizite und prüfbare Grenzen für Agenten.
-- **Pipeline-Exekution**
-  Wir denken in Workflows, nicht im Einzelprompt: Prepare Context → Generate → Validate → Decide. Diese Pipeline ist eine Transformation, keine bloße Ablage.
-- **Zweizonenlogik: Labor vs. Bibliothek**
-  Eine organisatorische und konzeptionelle Trennung:
-  - **Labor-Schicht:** Eine Zone hoher Freiheit für Exploration, Variation und schnelle Experimente.
-  - **Bibliotheks-Schicht:** Eine Zone hoher Verlässlichkeit für bewährte, übernommene Praktiken und getestete Artefakte.
-- **Guardrails**
-  Architektur- und Sicherheits-Checks finden statt, bevor Code generiert oder übernommen wird.
+Kontrolle, Behandlung, primäre Messgröße, Mindestwirkung, Vergleichbarkeit, Falsifikationsgrenzen, Reviewdatum und Ablauf werden vor der Beobachtung eingefroren. Retrospektiv erfundene Kennzahlen oder künstliche Wiederholungen sind kein Ersatz.
 
-## Layer 2: Practice System (Die Zusammenarbeit)
+### Evidenz binden
 
-Wie Mensch und Maschine strukturiert zusammenarbeiten. Das System trennt hierbei strikt zwischen Beobachtung (Experimentdaten), Bewertung (Interpretation entlang der Achsen), Entscheidung (adopt / reject / iterate) und Wissen (persistierte Praktiken).
+Beobachtungen verweisen auf konkrete Pull Requests, Commits, CI-Prüfungen, Receipts oder Dateien. Identität, Herkunft, Aktualität und Unsicherheit müssen sichtbar bleiben. Vibe-Lab ersetzt keine Live-Wahrheitsquelle.
 
-- **Strukturierte Hypothesen**
-  Praktiken, Techniken, Tools und Workflows werden als strukturierte, testbare Hypothesen gesammelt und weiterverfolgt. Jeder Eintrag durchläuft einen Statuszyklus (idea → testing → adopted/rejected).
-- **Strikte Selektions-Gates und Validierung**
-  Ideen bewegen sich nur durch den Nachweis von Evidenz. Ohne Experiment keine belastbare Practice; ohne Entscheidung kein adoptierter Ansatz. Validierung ist der kritische Filter, der Ideenrauschen in echten Fortschritt verwandelt.
-- **Erkenntniskreislauf**
-  Jedes Experiment produziert auswertbare Daten. Am Ende steht immer eine klare Entscheidung: adopt, reject oder iterate. Dieser Prozess bildet eine iterative Feedback-Schleife.
-- **Aktive Kreation**
-  **Kreation ist nicht Sammlung, sondern gezielte Erzeugung neuer Wege.** Neue Mittel und Wege entstehen aus der Kombination, Variation und dem gezielten Bruch von Bestehendem. Kreation baut auf validierten Praktiken und dokumentierten Erfahrungen auf.
+### Beobachtung, Bewertung und Entscheidung trennen
 
-## Layer 3: Evolution System (Die Selbsterneuerung)
+Eine Beobachtung ist noch keine Wirkung. Ein wiederkehrendes Muster ist noch keine Kausalität. Eine intern korrekte Auswertung ist noch kein praktischer Nutzen. Entscheidungen müssen diese Grenzen ausdrücklich bewahren.
 
-Wie das Repository als Erkenntnisraum lernt und wächst.
+### Leicht am Eingang, hart am Ausgang
 
-- **Exploration und Rückführung**
-  Das Repo dient der systematischen Erprobung (Exploration) und der Selektion. Ziel ist die Beobachtbarkeit von "tribalem" Wissen und die Rückführung von Erkenntnissen in die Praxis.
-- **Sichtbarkeit von Lerngewinnen**
-  Wissen wird konserviert. Auch vorläufige oder abgelehnte Hypothesen tragen zur Systemintelligenz bei, wenn sie gut dokumentiert sind.
-- **Anbindung ans Ökosystem**
-  Erfolgreiche Praktiken sollen nicht im Labor verbleiben, sondern in angrenzende Standards, Templates und Repositories des übergeordneten Ökosystems (z.B. Heimgewebe) zurückfließen.
-- **Selbstoptimierung**
-  Das ultimative Ziel der Feedback-Schleifen und Validierungsmechanismen: Das Vibe-Lab optimiert seine eigenen Prozesse kontinuierlich weiter. Selbstoptimierung bedeutet nicht nur Effizienzsteigerung, sondern auch die kontinuierliche Überprüfung und Anpassung der eigenen Bewertungsmaßstäbe.
+Rohe Ideen dürfen billig sein. Promotionen müssen teuer sein: vollständige Evidenz, benannter Verbraucher, nachvollziehbarer Review und klarer Eigentümer außerhalb von Vibe-Lab.
 
----
-*Vibe-Lab ist der Raum, in dem Ideen systematisch gesammelt, unerbittlich geprüft, validiert und kreativ weiterentwickelt werden.*
+## Zuständigkeitsgrenze im Ökosystem
+
+- **Grabowski** führt Arbeit aus und erzeugt operative Receipts.
+- **GitHub und CI** sind Wahrheit für Code-, Review-, Merge- und Prüfzustände.
+- **RepoBrief / Lenskit** liefern zitierbaren Repository-Kontext.
+- **Bureau** entscheidet über Aufgaben, Prioritäten und Promotionen.
+- **Vibe-Lab** entwirft begrenzte Vergleiche, bindet Beobachtungen, prüft Claims und bewahrt Abschlüsse.
+
+Vibe-Lab darf keine Queue verändern, keine Aufgabe auswählen, keinen Pull Request mergen, keinen Dienst deployen und keine Runtime-, Routing- oder Policy-Entscheidung automatisch autorisieren.
+
+## Erfolgskriterium
+
+Vibe-Lab ist nur dann nützlich, wenn ein Experiment nachweisbar mindestens eines leistet:
+
+- eine reale Entscheidung wird mit weniger Lokalisierungs-, Evidenz- oder Bewertungsfehlern getroffen;
+- eine unzulässige Promotion oder Wirkungsbehauptung wird verhindert;
+- ein wiederkehrendes Problem wird so belegt, dass ein zuständiges Organ eine klarere Folgemaßnahme entscheiden kann.
+
+Dokumentmenge, Validatorzahl und interne Konsistenz sind keine eigenständigen Nutzenbelege.
+
+## Kosten- und Stopregel
+
+Jede aktive Fläche benötigt einen Verbraucher, eine benannte Fehlerklasse und eine Review- oder Ablaufregel. Historische Spezialvalidatoren werden entfernt, sobald ihre Artefaktfamilie archiviert ist oder generische Prüfungen dieselbe Grenze nachweislich schützen.
+
+Ein Vorhaben wird gestoppt oder archiviert, wenn es einen neuen Dienst, eine Datenbank, ein Dashboard, eine LLM-basierte Mustererkennung, automatische Bureau-Mutationen oder mehr dauerhafte Spezialprüfungen als entfernte Altlasten erfordert.
+
+## Selbstverbesserung
+
+Vibe-Lab darf seine Mess- und Prüfverfahren überprüfen. Es darf daraus aber keine allgemeine Selbststeuerungsbehauptung ableiten. Selbstverbesserung ist nur dann belegt, wenn ein prospektiver Vergleich eine reale Entscheidung oder einen realen Fehler messbar verbessert und die zusätzliche Wartung rechtfertigt.
