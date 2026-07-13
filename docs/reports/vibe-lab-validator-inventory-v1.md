@@ -77,11 +77,12 @@ The 48 legacy targets are reviewed in this order:
 3. historical replay, fixture and cross-contract semantics that may duplicate generic core gates;
 4. rLens and PR-context historical validators after the active RepoBrief pilot closes.
 
-A legacy target may move to removal only when one of these proofs exists:
+A legacy target may move to removal only when one of these material proofs exists:
 
-1. its protected experiment family is closed and archived and no active contract imports it;
-2. a core validator demonstrably covers the same failure class and fixtures;
-3. a head- and diff-bound review confirms removal does not weaken current active or historical evidence integrity.
+1. its protected experiment family is closed and archived and no active contract imports it; or
+2. a core validator demonstrably covers the same failure class and relevant fixtures.
+
+A head- and diff-bound review is still mandatory for the removal PR, but it verifies one of those proofs and is not an independent substitute for archive or equivalent core coverage.
 
 ## Quantitative reduction gate
 
@@ -98,5 +99,5 @@ The directional objective is a 30–50 percent reduction of the blocking legacy 
 - Current active specialist surface: 10 targets instead of an undifferentiated 103-target frontdoor.
 - Current active experiments: one.
 - Full regression breadth: retained while survivor proof is gathered.
-- Retired custom-agent and tool-projection layers: no longer active authority.
+- Retired custom-agent and instruction-bearing projection content: no longer active authority; generated compatibility markers and parity contracts remain active.
 - Next engineering work: remove proven-redundant legacy groups rather than add new Vibe-Lab capabilities.
