@@ -78,7 +78,7 @@ Bei jedem Widerspruch gilt die höher eingestufte Quelle. Historische Blueprints
 Stand 13. Juli 2026:
 
 - Vibe-Lab ist auf einen kleinen Experiment- und Evidenzraum verengt.
-- Die Custom-Agent-Schicht und aktiven Cursor-/Copilot-Projektionen sind stillgelegt.
+- Die Custom-Agent-Schicht und instruktionsführende Cursor-/Copilot-Projektionsinhalte sind stillgelegt; generierte Kompatibilitätsmarker und ihre blocking Paritätsverträge bleiben aktiv.
 - Die 36 Operator-Lab-Karten sind mit `insufficient_evidence` eingefroren.
 - Der Operator-Interventions-Effektvergleich ist als praktisch nicht ausführbar archiviert.
 - Ein RepoBrief-Workbench-Pilot ist aktiv; der verbindliche Bestand steht ausschließlich in `experiments/active.v1.json`.
@@ -89,25 +89,27 @@ Stand 13. Juli 2026:
 
 ### RL-001 — Wahrheitsausrichtung und Survivor-Vertrag
 
-**Ziel:** Alle maßgeblichen Vibe-Lab-Dokumente beschreiben dieselbe begrenzte Rolle und dieselben aktuellen Bestandszahlen.
+**Ziel:** Alle agentenseitig änderbaren maßgeblichen Vibe-Lab-Dokumente beschreiben dieselbe begrenzte Rolle und dieselben aktuellen Bestandszahlen.
 
 **Umfang:**
 
-- kanonischer Repo-Zweck;
+- Verträglichkeit des kanonischen Repo-Zwecks prüfen; `repo.meta.yaml` bleibt menschlich gepflegt;
 - Grundlagenvision und Repository-Plan;
 - README;
 - Optimierungsplan und Validatorbericht;
-- diese Roadmap.
+- diese Roadmap;
+- PR-Template und Dokumentfrische-Register.
 
 **Nicht enthalten:**
 
 - neue Runtime- oder Toolfunktion;
 - neue Agentenrolle;
-- neue Exportprojektion;
+- neue instruktionsführende Exportprojektion;
+- Entfernung bestehender Kompatibilitätsmarker oder ihrer operativen Verträge;
 - Änderung an Experimentdaten, Schemas oder Validatorlogik;
 - automatischer Bureau-, Routing-, Merge- oder Deploy-Eingriff.
 
-**Erfolg:** vollständige CI, diffgebundener Review und Merge eines reinen Wahrheits- und Navigationsschnitts.
+**Erfolg:** vollständige CI, diffgebundener Review und Merge eines reinen Wahrheits- und Navigationsschnitts; kanonische menschengepflegte Quellen bleiben unverändert.
 
 ## Nächste Arbeitsstränge
 
@@ -128,7 +130,7 @@ Prüfreihenfolge:
 3. historische Replay-, Fixture- und Cross-Contract-Semantik;
 4. rLens- und PR-Context-Prüfungen nach Abschluss des aktiven RepoBrief-Piloten.
 
-Zielrichtung bis 1. September 2026: 30–50 Prozent weniger blocking Legacy-Ziele, sofern Archiv- oder Äquivalenzevidenz dies trägt.
+Zielrichtung bis 1. September 2026: 30–50 Prozent weniger blocking Legacy-Ziele, sofern Archiv- oder Äquivalenzevidenz dies trägt. Der Review eines Entfernungs-PR prüft diesen materiellen Beleg, ersetzt ihn aber nicht.
 
 ### RL-003 — RepoBrief-Pilot schließen
 
@@ -138,7 +140,7 @@ Ohne prospektive Vergleichsevidenz keine Default-Promotion. Abschluss nur als `p
 
 ### RL-004 — Bibliotheksverbrauch prüfen
 
-Katalog, Prompts, Benchmarks und Instruction Blocks auf reale externe Verbraucher, Entscheidungsziele und Reviewregeln prüfen. Nicht konsumierte Flächen archivieren oder als historisch behandeln.
+Katalog, Prompts, Benchmarks und Instruction Blocks auf reale externe Verbraucher, Entscheidungsziele und Reviewregeln prüfen. Nicht konsumierte Flächen archivieren oder als historisch behandeln. Bestehende Kompatibilitätsmarker bleiben erhalten, bis ihre operativen Verträge separat geändert werden.
 
 ## Historische Quellen
 
@@ -151,7 +153,7 @@ Insbesondere sind folgende frühere Expansionsrichtungen nicht aktiv:
 - Model-Lab-Control-Plane als aktive Runtime;
 - reaktive State→Signal→Policy→Action-Schleifen;
 - automatische Ticketgenerierung;
-- breite Tool-Export-Abdeckung;
+- neue breite instruktionsführende Tool-Export-Abdeckung;
 - Dashboard-, Plexer- oder Heimlern-Integration.
 
 ## Neue-Arbeit-Gate
