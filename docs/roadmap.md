@@ -5,7 +5,7 @@ triggered_by: "user-request-vibe-lab-operator-loop-2026-07-01"
 canonicality: navigation
 role: roadmap_index
 created: "2026-05-10"
-updated: "2026-07-05"
+updated: "2026-07-13"
 relations:
   - type: references
     target: masterplan.md
@@ -59,336 +59,110 @@ relations:
     target: ../decisions/system/2026-04-23-catalog-staleness-dormant.yml
 ---
 
-# Roadmap — Koordination offener Arbeitsstränge
-
-> **Etymologie:** „Roadmap" kommt aus dem Englischen: *road* = Straße/Weg, *map* = Karte. Im Repo-Kontext bedeutet das nicht „Herrschaftsdokument", sondern Wegkarte: Sie zeigt Pfade, Abhängigkeiten und offene Entscheidungen, bleibt aber von den eigentlichen Quellen abhängig.
-
----
-
-## 0. Zweck und Grenzen
-
-Diese Datei koordiniert offene Arbeit im Vibe-Lab-Repository. Sie ist Navigation und Koordinationsfläche — keine normative Wahrheit.
-
-**Was diese Datei darf:**
-- Offene Arbeitsstränge aus bestehenden Quellen sichtbar machen
-- Status und Priorität aus Quellen ableiten oder explizit als Roadmap-Einschätzung kennzeichnen
-- Abhängigkeiten und offene Entscheidungspunkte bündeln
-
-**Was diese Datei nicht darf:**
-- Neue fachliche Wahrheiten, Schlüsse oder Promotion-Entscheidungen erzeugen
-- Quellenwahrheit ersetzen oder überschreiben
-- Statusangaben ohne Quellenbelege machen
-- Generierte Artefakte manuell editieren
-
-**Konflikt-Regel:** Bei Widerspruch zwischen dieser Roadmap und einer referenzierten Quelle gilt die Quelle. Die Roadmap ist abgeleitet, nicht primär.
-
-**Geltende Wahrheitshierarchie** (aus `repo.meta.yaml` und `AGENTS.md`):
-
-```
-Kanonisch: repo.meta.yaml, AGENTS.md, agent-policy.yaml, contracts/*, schemas/*
-Grundlagen: docs/foundations/vision.md, docs/foundations/repo-plan.md
-Operativ:   README.md, CONTRIBUTING.md, .vibe/*
-Navigation: docs/index.md, docs/roadmap.md  ← diese Datei
-Diagnose:   docs/_generated/*
-```
-
----
-
-## 1. Quellenmodell
-
-Die folgende Tabelle listet die Quellen, aus denen diese Roadmap Koordinationsinformationen ableitet.
-
-| Quelle | Typ | Rolle | Darf Roadmap-Status beeinflussen? | Bemerkung |
-|--------|-----|-------|----------------------------------|-----------|
-| `docs/masterplan.md` | operative | Zielbild, Phasenmodell | Ja | Phasen A–D, epistemische Zustände |
-| `docs/foundations/vision.md` | foundational | Systemvision | Ja | Layer-Architektur, Kernprinzipien |
-| `docs/foundations/repo-plan.md` | foundational | Umsetzungsplan mit Checklisten | Ja | Phasenchecklisten mit aktuellem Ist-Stand |
-| `docs/blueprints/blueprint-agent-operability.md` | exploratory | Minimaler Agent-Operability-Kern | Ja | Phasen 1–3, Umsetzungsstand |
-| `docs/blueprints/blueprint-agent-operability-phase-1c.md` | exploratory | Systemverankerung Phase 1c | Ja | Phasen A–F mit Checkboxen |
-| `docs/blueprints/blueprint-evidence-control-plane-v1.md` | exploratory | Evidence-Control-Plane v1 | Ja | Status: draft, nicht aktiv |
-| `docs/blueprints/blueprint-v2-roadmap.md` | navigation | Offene Punkte Blueprint v2 | Ja | Sichtbarkeitskriterien pro Phase |
-| `docs/blueprints/blueprint-v2.md` | operative | Epistemische-Reife-Delta v1→v2 | Ja | Fehlklassen und Hebel |
-| `docs/blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` | exploratory | Agent/Skill Minimal Layer | Ja | Status: draft; PR-1 Scope definiert |
-| `docs/blueprints/blueprint-model-lab-control-plane-v1.md` | exploratory | Model-Lab Control Plane | Ja | Status: draft; Vergleichbarkeit vor Expansion, keine Enforcement-Aktivierung |
-| `docs/evaluations/agent-skill-file-fruitfulness.md` | diagnosis | Fruchtbarkeits-Evaluation Agent/Skill | Ja | Evaluation-Plan, noch kein Verdict |
-| `docs/evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md` | operative | Cross-Diagnose RRG-01/RRG-02 | Ja | RRG-01/02 fixture-proven seit 2026-05-01 |
-| `docs/evaluations/rrg03-remediation-strategy-comparison.md` | operative | Remediation-Strategie-Vergleich | Ja | Kein finaler Gewinner, proposed |
-| `docs/playbooks/evidence-control-plane-roadmap-checklist.md` | exploratory | PR-Checkliste Evidence-Control-Plane | Ja | Enthält ursprüngliche PR-10/11-Checkliste; aktueller Status siehe RM-002 |
-| `docs/playbooks/plan-execution-checklist.md` | operative | Plan-Ausführungscheckliste | Ja | Phase 3/4 teilweise offen |
-| `docs/playbooks/reconciliation.md` | operative | Prozess-Reconciliation | Nein (Methode, kein Arbeitsstrang) | Referenz für Prozess |
-| `docs/playbooks/pr-run-evidence-pack.md` | operative | Evidence-Pack-Struktur | Nein (Methode) | |
-| `docs/playbooks/build-reliable-prompt.md` | operative | Prompt-Qualität | Nein (Bibliothek) | |
-| `docs/policies/interpretation-budget.md` | operative | Claim-Evidence-Guard | Ja, bei Adoption-Entscheidungen | Promotion-Pflicht |
-| `docs/policies/model-lab-control-minimum.md` | operative | Opt-in Lab-Control-Minimum fuer Model-Lab-Runs | Ja | AP-1 Policy/Validator-Vorbau; keine globale Enforcement-Aktivierung |
-| `docs/policies/pr-run-evidence-policy.md` | operative | Normative Claim-Grenzen | Nein (Policy-only) | |
-| `docs/policies/artifact-boundary-policy.md` | operative | Artefaktgrenzen | Nein (Policy-only) | |
-| `docs/policies/privacy-and-ethics.md` | operative | Datenschutz/Ethik | Nein | |
-| `decisions/process/2026-04-30-rrg03-remediation-boundary.yml` | operative | RRG-03 Boundary-Entscheidung | Ja | Status: proposed |
-| `decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml` | operative | RRG-v0.2 Preimage | Ja | Status: proposed, kein Patch |
-| `decisions/process/p5-validator-scope-boundary.yml` | operative | Validator-Scope-Grenzen Phase 5 | Ja | Status: out_of_scope_documented |
-| `decisions/system/2026-04-23-metrics-enabled.yml` | operative | Metrics aktiviert | Ja | Status: active |
-| `decisions/system/2026-04-23-catalog-staleness-dormant.yml` | operative | Catalog-Staleness dormant | Ja | Status: dormant |
-
----
-
-## 2. Aktive Arbeitsstränge
-
-> **Legende zu Spalten:**
-> - *Quelle-Status*: nur aus Quelle übernommen (belegt)
-> - *Roadmap-Einschätzung*: abgeleitet aus Quelle, als Einschätzung gekennzeichnet
-> - *Evidenzgrad*: `belegt` = aus Quelle direkt lesbar; `plausibel` = logisch abgeleitet; `unklar` = unzureichende Datenbasis
-
-| ID | Arbeitsstrang | Quelle(n) | Quelle-Status | Roadmap-Einschätzung | Nächster Schritt | Blocker | Priorität | Evidenzgrad |
-|----|---------------|-----------|---------------|----------------------|-----------------|---------|-----------|-------------|
-| RM-002 | Evidence-Control-Plane — Sufficient Runs gesammelt, Outcome-Evidence weiter offen | `playbooks/evidence-control-plane-roadmap-checklist.md` PR 10/11; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml` (Verdict: insufficient_proof); `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/evidence-pack.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/timing.txt`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/timing.txt`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl` (iteration 13) | PR 10: ✓ abgeschlossen. 3 vergleichbare Runs gesammelt (run-002, run-005, run-006); PR 11 Cross-Run-Assessment liegt vor, Verdict: `insufficient_proof` wegen Metrik-Lücken/Validierungsblockern. ✓ Review/Rework-Archivierungsmechanismus schema-backed (`schemas/review-events.v1.schema.json`, `.vibe/review-rework-artifact.contract.md` v0.2). ✓ Erster echter Outcome-Evidence-Pilot vorhanden: run-007 mit archiviertem `review-events.yml`; `measurement.yml` dokumentiert `review_friction_count`=`repo_local` und `rework_count`=`repo_local` (single-run Pilot, kein generelles Verdict). ✓ Outcome-Evidence-Negativfall pilotiert: run-008 dokumentiert ein schema-valides `CLAIM_NOT_PROVEN` bei nur partieller Auditor-Unabhängigkeit und archiviert `task_completion_time_observed` über `timing.txt` repo-lokal. ✓ Task-Diversität partiell adressiert: run-009 claim-002 PASS (Multi-artifact-Scaffold-Synthesis außerhalb validator-test-hardening-Cluster); Auditor-Unabhängigkeit weiterhin CLAIM_NOT_PROVEN; Timing-Semantik verbessert auf self_reported mit explizitem capture_mode, evidence_status und upgrade_path. ✓ External different-session audit durchgeführt: run-010 `auditor-output.yml` ist PASS für pack-001 bis pack-007; auditor_independence_status ist PARTIAL (gleiche Modellfamilie, unterschiedliche Session). | Nächste Phase: Outcome-Evidence-Mechanismus ist in run-007 pilotiert; Negativfall und repo-lokale Zeitmessung sind in run-008 pilotiert; Task-Diversität ist in run-009 partiell adressiert; run-010 external different-session audit ist PASS für das Evidence-Package. Offen: (1) full auditor independence unter strengerem Kriterium (anderes AI-System oder Human Reviewer), (2) zweiter unabhängiger Run in weiterer Task-Klasse für stärkere Replikation, (3) Timing-Upgrade von self_reported auf repo_local oder external_verified | Vollständig unabhängiger Review bleibt offen: run-008/009 bleiben CLAIM_NOT_PROVEN, run-010 ist external different-session PASS aber nur PARTIAL independence (gleiche Modellfamilie) | P1 | belegt |
-| RM-003 | RRG-v0.2 Remediation — Drei getrennte Drift-Klassen | `evaluations/rrg03-remediation-strategy-comparison.md`; `evaluations/replay-gap-cross-diagnosis-rrg01-rrg02.md`; `decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml` | Alle drei RRGs fixture-proven (2026-05-01); Preimage proposed; kein Patch | Roadmap-Einschätzung: Getrennte Probe-Entscheide für jede Drift-Klasse vor Implementierung nötig | Für jede Drift-Klasse einen separaten v0.2-Probe-Entscheid vorbereiten; mit RRG-01 (`exact_before_hash`) beginnen (stärkster Kandidat laut Preimage) | Hypothesen noch nicht durch Implementierungsbeleg eingegrenzt; keine Probe ohne Strategie-Entscheid | P2 | belegt (fixture_only) |
-| RM-004 | Blueprint v2 — Phase 2 Falsifizierbarkeitsschutz-Ausbau | `blueprints/blueprint-v2-roadmap.md` Phase 2 / Phase 1 (aktiv, Dry-Run) | Phase 1 (Dry-Run): aktiv, Dry-Run-Report stabil; Phase 2 (Freeze-List / Hard-Fail für neue Experimente): offen | Roadmap-Einschätzung: Phase 2 erfordert menschliche Governance-Entscheidung über Staffelungsmechanismus | Erst-Experiment freiwillig mit `falsifiability`-Block promovieren; danach Staffelungsmechanismus (Grandfather-Liste) entscheiden | Staffelungsmechanismus-Design offen (deterministischer Stichtags-Mechanismus nicht festgelegt) | P3 | plausibel |
-| RM-005 | Agent/Skill Minimal Layer — Usefulness-Evaluation (Minimum-Daten erreicht, Outcome-Blocker offen) | `blueprints/blueprint-agent-skill-minimal-layer-v0.1.md`; `evaluations/agent-skill-file-fruitfulness.md`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/decision.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/comparability.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/evidence-pack.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/comparability.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/comparability.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-009-independent-task-diversity-validation/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/audit-request.md`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/independent-auditor-proof.txt`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-010-independent-auditor-validation/comparability.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/evidence.jsonl` (iteration 13) | draft; ✓ Evaluation-Mindestschwelle bleibt über 3 vergleichbare Runs erreicht (run-002, run-005, run-006). run-007, run-008, run-009, run-010 sind `not_comparable` und zählen **nicht** als weitere Usefulness-Runs. Verdict bleibt `insufficient_proof`. Review/Rework-Metriken sind nicht mehr grundsätzlich unmessbar: im run-007-Pilot sind beide Metriken `repo_local` dokumentiert. run-008 pilotiert zusätzlich einen expliziten Outcome-Evidence-Negativfall mit `CLAIM_NOT_PROVEN` und repo-lokalem Timing-Artefakt. run-009 adressiert Task-Diversität partiell (claim-002 PASS: außerhalb validator-test-hardening-Cluster) und verbessert Timing-Semantik auf self_reported mit explizitem capture_mode. run-010 hat external different-session audit PASS für pack-001 bis pack-007; auditor_independence_status bleibt PARTIAL (gleiche Modellfamilie) und vollständige Auditor-Unabhängigkeit bleibt nicht belegt, daher kein Upgrade des Experiment-Verdicts. | Aus Preimage (`experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` §5): Blocker-Beseitigung vor Usefulness-Verdict: (1) ✓ Review/Rework-Mechanismus in run-007 pilotiert, (2) ✓ Task-Diversität partiell adressiert (run-009 claim-002 PASS; weiterer Run für Replikation offen), (3) ✓ Negativfall pilotiert (run-008; nicht voll unabhängig), (4) unabhängige Metrik-Validierung: run-010 external different-session audit PASS liegt vor, auditor_independence_status bleibt PARTIAL und vollständige Auditor-Unabhängigkeit bleibt unter strengem Kriterium nicht belegt | Usefulness-Verdict bleibt blockiert durch fehlende vollständig unabhängige Validierung (run-010 hat auditor_independence_status PARTIAL; vollständige Auditor-Unabhängigkeit bleibt nicht belegt); Task-Diversität einmalig belegt aber nicht repliziert; Zeitmessung ist self_reported, noch nicht unabhängig belastbar | P1 | belegt |
-| RM-006 | Catalog Staleness (dormant) | `decisions/system/2026-04-23-catalog-staleness-dormant.yml`; `playbooks/plan-execution-checklist.md` Phase 4 | dormant — keine vereinbarte Staleness-Semantik, keine `review_cycle`-Felder | Roadmap-Einschätzung: Bewusst inaktiv; kein Handlungsbedarf ohne Semantik-Entscheidung | Semantik per Decision festlegen, wenn erster realer Staleness-Fall vorliegt | Keine vereinbarte Staleness-Semantik; kein realer Staleness-Fall | P3 | belegt |
-| RM-007 | Plan-Execution-Checklist Phase 4 — Stub-Zonen-Restarbeiten | `playbooks/plan-execution-checklist.md` Phase 4; Stub-README-Dateien unter `docs/experiments/`, `docs/onboarding/`, `docs/rules/`, `docs/syntheses/`, `decisions/benchmark/`, `decisions/export/`, `decisions/policy/` | Phase 4: erledigt. Leere Stub-Namespaces sind als `dormant` markiert; `minimal-seed` ist nur mit genau einem realen Artefakt erlaubt; Phase 3 Fixture-Erweiterung ist via RM-001 abgeschlossen | Roadmap-Einschätzung: abgeschlossen; kein weiterer Mechanismus nötig | Kein nächster Schritt. Bei erstem realen Artefakt Stub gezielt auf `minimal-seed` heben, nicht vorab befüllen | none | P3 | belegt |
-| RM-008 | Model-Lab Control Plane — Welle 1: Vergleichbarkeit vor Expansion | `blueprints/blueprint-model-lab-control-plane-v1.md` §8/§13; `policies/model-lab-control-minimum.md`; `benchmarks/challenges/*.md` | Blueprint draft; AP-0 bis AP-4 als vorgeschlagene Welle 1 beschrieben; AP-1 opt-in Policy/Validator-Vorbau vorhanden; AP-2 Challenge-Versioning-Validator-Vorbau begonnen; keine globale Enforcement-Aktivierung und keine globale Decision-Härtung | Roadmap-Einschätzung: sinnvoller nächster P1-Strang, weil Benchmark-Versionierung und Lab-Control-Minimum vor weiterer Experiment-Expansion Vergleichbarkeit herstellen | Lab-Control-Minimum-Validator gegen erste reale aktivierte Runs anwenden; kleine Model-Lab-Replication-Series (AP-4) als Skeleton vorbereiten; ggf. erste reale aktivierte Decision/Run gegen AP-1/AP-2 prüfen | Aktivierungsmodus bleibt opt-in/report-only fuer Repo-Bestand; erste Modell-/Tool-Auswahl offen; keine Staleness-Reaktivierung ohne Systementscheidung | P1 | plausibel |
-
-Ergaenzung 2026-05-20 (ohne Status-Hochstufung):
-- `run-011-external-outcome-audit-prep` ist als External-Audit-Track vorbereitet.
-- RM-002 und RM-005 bleiben offen; kein Upgrade auf erledigt/sufficient/pass.
-
-Ergaenzung 2026-05-23 (ohne Status-Hochstufung):
-- `run-013-replicated-outcome-evidence` dokumentiert einen zweiten
-  Outcome-Metrik-Erfassungsversuch in einer anderen Task-Klasse.
-  Die Metriken bleiben run-lokal und begruenden kein Outcome-Upgrade.
-- Die Auswertung bleibt `CLAIM_NOT_PROVEN`; RM-002 und RM-005 bleiben offen,
-  bis staerkere unabhaengige Outcome-Evidence vorliegt.
-
-Ergaenzung 2026-05-25 (ohne Status-Hochstufung):
-- Neues Planungs-Scaffold: `experiments/2026-05-25_outcome-evidence-replication-series/`
-- Neues Gate-Playbook: `docs/playbooks/outcome-evidence-replication-series-gate.md`
-- RM-002, RM-005 und EP-002 bleiben offen.
-- Keine Promotion, keine Adoption, keine Status-Hochstufung.
-
-Ergaenzung 2026-05-26 (Experiment-Statuswechsel auf `testing`, ohne Outcome-/Promotion-/Adoption-Hochstufung):
-- Erster realer Series-Run ausgefuehrt:
-  `experiments/2026-05-25_outcome-evidence-replication-series/artifacts/run-001-contract-documentation-alignment/`
-- Task-Klasse: `contract_documentation_alignment`; comparability_scope:
-  `same outcome-evidence gate family`; independence_status: `partial`.
-- Outcome-Upgrade bleibt explizit deaktiviert (`outcome_upgrade_allowed: false`).
-- RM-002, RM-005 und EP-002 bleiben offen; keine Promotion, keine Adoption und kein Outcome-Upgrade.
-
-Ergaenzung 2026-05-29 (RM-001 Phase-E-Fixtures reconciled, ohne Promotion/Adoption/Outcome-Upgrade):
-- Die Phase-E-Fixture-/Smoke-Set-Arbeit (RM-001) ist abgeschlossen und in den Quellen
-  belegt: Command-Fixtures auf 7/9/9 ausgebaut (`read_context`/`write_change`/`validate_change`);
-  Handoff-Drift-Smoke-Set mit 11 Fixtures unter `tests/fixtures/agent_handoff/` vollstaendig.
-- Coverage-Kartierung ergaenzt: `docs/reference/agent-operability-fixture-matrix.md`
-  §7 (Handoff-Block-Validator — Standalone Coverage) und §4.8 (Aequivalenzklasse).
-- Quellen reconciled: `blueprints/blueprint-agent-operability-phase-1c.md` §Phase E
-  (Checkboxen [x]) und `playbooks/plan-execution-checklist.md` Phase 3 ([x]).
-- Reproduzierbar über `make validate-agent-commands` + `make validate-agent-commands-tests` (7/9/9 Command-Fixtures) sowie `make validate-agent-handoff` + `make validate-agent-handoff-tests` (11 Handoff-Fixtures, 13 Regressionstests) in `.github/workflows/validate.yml` verdrahtet.
-- Scope-Grenze: betrifft ausschliesslich Phase-E-Fixture-Coverage. Kein Outcome-,
-  Promotion- oder Adoption-Upgrade; RM-002, RM-005 und EP-002 bleiben unberuehrt offen.
-
-Ergaenzung 2026-05-30 zu RM-008 (AP-1 begonnen, ohne Outcome-/Adoption-Hochstufung):
-- Neues Policy-Dokument: `docs/policies/model-lab-control-minimum.md`.
-- Neuer Validator-Vorbau: `scripts/docmeta/validate_model_lab_control.py` prueft nur `run_meta.json` mit `model_lab_control: true`.
-- Fixture-Tests sind blocking; historische Runs ohne explizite Aktivierung bleiben unberuehrt.
-- Kein globales `run_meta`-Schema-Hardening, keine AP-2-Haertung und keine Staleness-Reaktivierung.
-
-Ergaenzung 2026-05-31 zu RM-008 (AP-2 Validator-Vorbau, ohne globale Decision-Haertung):
-- Benchmark-Challenges fuehren standardisiertes Frontmatter mit `challenge_id`, `version`, `task_family`, `expected_outputs`, `evaluation_criteria`, `known_confounders`.
-- Neuer Validator `scripts/docmeta/validate_challenge_versions.py` prueft Challenge-Registry und nur explizit aktivierte Model-Lab-/Vergleichs-Decisions.
-- Keine globale Pflicht fuer alle historischen `decision.yml`; AP-4 Replication-Series-Skeleton bleibt offen.
-
-Ergaenzung 2026-05-31 zu RM-008 (AP-4 Skeleton begonnen, ohne Outcome-/Adoption-/Promotion-Hochstufung):
-- AP-1 vorhanden; AP-2 vorhanden.
-- Neues Skeleton: `experiments/2026-05-31_model-lab-replication-series/`.
-- Enthaelt ersten **aktivierten** Model-Lab-Baseline-Run
-  (`run-001-rest-api-spec-first-baseline`) gegen `challenge_version` rest-api-v1
-  mit `model_lab_control: true`.
-- AP-1/AP-2-Validatoren pruefen die Metadaten- und Challenge-Version-Surface des
-  aktivierten Runs und der aktivierten Decision.
-- Execution-Status `prepared`, Execution-Verdikt `not_executed`: kein echter Run
-  ausgefuehrt; `verdict.outcome` des Run-Bundles ist `CLAIM_NOT_PROVEN`.
-- Keine Modellqualitaetsaussage, keine Promotion, keine Adoption, keine
-  Staleness-Reaktivierung und kein globales Schema-Hardening.
-- Naechster Schritt danach: erster echter Ausfuehrungsrun oder zweiter
-  Vergleichsrun gegen rest-api-v1.
-
-Ergaenzung 2026-06-01 zu RM-008 (Run-001 Baseline ausgefuehrt, ohne Vergleichs-/Outcome-/Adoption-/Promotion-Hochstufung):
-- Run-001 der Model-Lab Replication-Series wurde als erster echter Baseline-Run gegen `rest-api-v1` ausgefuehrt.
-- Evidence bleibt run-lokal in `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline/`.
-- Kein Modellqualitaetsverdikt, kein Vergleichsverdikt, kein Outcome-Upgrade, keine Adoption und keine Promotion.
-- Naechster Schritt: Run-002 mit anderer Bedingung, anderem Modell oder anderem Tool unter `rest-api-v1`, um Vergleichbarkeit herzustellen.
-
-Ergaenzung 2026-05-31 ohne Outcome-/Promotion-/Adoption-Hochstufung:
-- `run-005-agent-handoff-boundary-validation` ergänzt die Outcome-Evidence-Replication-Series um eine weitere echte Task-Klasse.
-- Evidence bleibt run-lokal; independence_status bleibt partial, sofern kein harter Full-Independence-Beleg vorliegt.
-- RM-002, RM-005 und EP-002 bleiben offen.
-- Kein Outcome-Upgrade, keine Promotion, keine Adoption.
-
----
-
-## 3. Entscheidungspunkte
-
-Offene Governance-, Architektur- oder Prozess-Entscheidungen, die in der Roadmap sichtbar sind, aber nicht hier entschieden werden.
-
-| ID | Entscheidung | Warum nötig? | Betroffene Quellen | Entscheidungstyp | Owner/Instanz | Status |
-|----|--------------|--------------|-------------------|-----------------|---------------|--------|
-| EP-001 | RRG-v0.2 Probe-Reihenfolge: Für welche Drift-Klasse wird zuerst eine v0.2-Probe implementiert? | Drei strukturell getrennte Drift-Klassen (RRG-01 Content-Drift, RRG-02 Git-State-Drift, RRG-03 Locator-Positionsdrift) benötigen getrennte Remediation-Pfade | `decisions/process/2026-05-01-rrg-v02-remediation-preimage.yml`; `evaluations/rrg03-remediation-strategy-comparison.md` | Architektur/Prozess | Mensch | offen |
-| EP-002 | Usefulness-Verdict nach Outcome-Evidence-Beseitigung: Soll der Agent/Skill Minimal Layer fortgeführt, revidiert oder superseded werden? | Evaluation-Mindestschwelle (≥3 vergleichbare PRs) erreicht (run-002, run-005, run-006), aber Usefulness-Verdict bleibt `insufficient_proof`. Review/Rework-Outcome-Evidence-Mechanismus ist in run-007 pilotiert (single-run Kontext), zentrale Blocker bleiben offen. Wer entscheidet Fortführung? | `evaluations/agent-skill-file-fruitfulness.md` §Falsifikationskriterien; `blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` §Falsifikationsgrenze; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` §5 Blocker-Liste; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/measurement.yml` | Governance | Mensch (nach Beseitigung der dokumentierten Blocker) | offen — Review/Rework-Mechanismus in run-007 pilotiert; Entscheidung weiter blockiert durch unabhängigen Auditor, Task-Diversität und Negativfall |
-| EP-003 | Soll `docs/roadmap.md` in `AGENTS.md` / `agent-policy.yaml` als Pflichtlektüre verankert werden? | Roadmap ist über `docs/index.md` auffindbar, aber nicht direkt in der Agenten-Lesereihenfolge; Gap dokumentiert in §6 | `AGENTS.md`; `agent-policy.yaml`; `repo.meta.yaml` | Governance | **Mensch** — Agents dürfen AGENTS.md und agent-policy.yaml nicht ändern | **accepted** — PR #177: docs/roadmap.md ist nun Pflichtlektüre in AGENTS.md (Position 4), agent-policy.yaml und repo.meta.yaml (truth_model.navigation) |
-| EP-004 | Blueprint v2 Phase 2: Wann und wie wird Hard-Fail für neue Experimente ohne `falsifiability`-Block eingeführt? | Erfordert deterministischen Stichtags-Mechanismus (Grandfather-Liste als committetes Artefakt) | `blueprints/blueprint-v2-roadmap.md` Phase 2 | Prozess/Governance | Mensch | offen — Design fehlt |
-
----
-
-## 4. Abhängigkeiten
-
-| Von | Nach | Abhängigkeit | Risiko bei falscher Reihenfolge |
-|-----|------|--------------|--------------------------------|
-| EP-001 (RRG Probe-Entscheid) | RM-003 Implementierung | Preimage muss vor Schema/Validator-Patch in accepted-Status übergehen | Kein accepted Decision → Breaking Changes ohne Strategie-Grundlage |
-| RM-002 PR 10/11 (Outcome-Evidence abgeleitet) | RM-005 / EP-002 (Usefulness-Verdict) | Outcome-Evidence-Blocker müssen vor Verdict-Treffen beseitigt sein; RM-005 kann nicht zu Promotion führen ohne Blocker-Resolve | Usefulness-Verdict ohne Outcome-Evidence → falsche Blueprint-Klassifikation; Premature superseded oder continued |
-| EP-004 Staffelungsmechanismus-Entscheid | RM-004 Phase 2 Aktivierung | Phase 2 (Hard-Fail neue Experimente) erfordert festgelegten Mechanismus | Hard-Fail ohne Grandfather-Liste bricht historische Experimente |
-| RM-001 Fixture-Erweiterung | Phase E Stop-Kriterium | Smoke-Set muss typische Drift-Fälle reproduzierbar erkennen | Unvollständiger Smoke-Set schützt nicht vor Regression bei Phase F |
-
----
-
-## 5. Nicht-Ziele
-
-Diese Roadmap trifft explizit **keine** der folgenden Entscheidungen:
-
-- **Keine Promotion-Entscheidungen** — Kein Experiment wird durch diese Datei von `testing` auf `adopted` gesetzt.
-- **Keine Adoption-Entscheidungen** — Kein Catalog-Eintrag, kein Prompt, keine Practice wird hier adoptiert.
-- **Keine Änderung der Wahrheitshierarchie** — Die Roadmap ordnet sich unterhalb von kanonischen, grundlegenden und operativen Dokumenten ein.
-- **Keine manuelle Änderung generierter Artefakte** — `docs/_generated/*` bleibt maschinell erzeugt und wird nicht durch diese Datei beeinflusst.
-- **Keine Statusglättung bei Widersprüchen** — Wenn Quellen widersprüchlichen Status zeigen, wird der Widerspruch sichtbar gemacht, nicht geglättet.
-- **Keine Änderung von AGENTS.md, agent-policy.yaml oder repo.meta.yaml** — Diese Steuerungsdokumente bleiben ausschließlich handgepflegt durch Menschen.
-- **Keine neuen Blueprint-Inhalte oder Policy-Aussagen** — Die Roadmap verweist auf bestehende Dokumente; sie schreibt keine fachlichen Inhalte fort.
-
----
-
-## 6. Governance-Gaps
-
-Beobachtungen, die eine menschliche Governance-Entscheidung erfordern. Diese Gaps werden hier dokumentiert, nicht geschlossen.
-
-| Gap | Quelle / Beobachtung | Warum relevant? | Benötigte Entscheidung | Status |
-|-----|---------------------|-----------------|----------------------|--------|
-| **GAP-001**: Roadmap nicht direkt in Agenten-Lesereihenfolge verankert | Vor PR #177 war `docs/roadmap.md` nur über `docs/index.md` auffindbar. Seit PR #177 ist `docs/roadmap.md` direkt in `AGENTS.md` und `agent-policy.yaml` als Pflichtlektüre eingetragen. | Agenten, die nur die Lesereihenfolge befolgen, finden die Roadmap nur indirekt | Soll `docs/roadmap.md` in `AGENTS.md` und `agent-policy.yaml` als Pflichtlektüre aufgenommen werden? | **resolved** — PR #177: docs/roadmap.md ist nun Position 4 in AGENTS.md und agent-policy.yaml read_order (nach agent-policy.yaml, vor README.md) |
-| **GAP-002**: `blueprint-evidence-control-plane-v1.md` hat keine direkte Relation zu `masterplan.md` | `docs/blueprints/blueprint-evidence-control-plane-v1.md` Frontmatter; `docs/masterplan.md` | Blueprint ohne Masterplan-Relation erschwert Orientierung in der Wahrheitshierarchie | Soll ein `informs`- oder `references`-Link zu `masterplan.md` hinzugefügt werden? | Gap beobachtet; Entscheidung optional |
-| **GAP-003**: Blueprint-Entscheidungspunkt nach Outcome-Evidence | `blueprints/blueprint-agent-skill-minimal-layer-v0.1.md` §Falsifikationsgrenze; `evaluations/agent-skill-file-fruitfulness.md` (Evaluation-Schwelle erreicht); `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/results/cross-run-assessment.md` (§5 Blocker dokumentiert); `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-007-review-rework-outcome-evidence-pilot/review-events.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/auditor-output.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/evidence-pack.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/measurement.yml`; `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-008-negative-case-independent-audit-timing/timing.txt` | Execution-Assessment-Mindestschwelle (3 Runs) ist erreicht. Usefulness-Verdict bleibt `insufficient_proof`. Blueprint deklariert: nach ≥3 PRs und Falsifikationskriterien-Bewertung entscheiden (fortführen, revidieren, superseded). Wer trifft diese Entscheidung auf Basis der dokumentierten Blocker? | Nach Beseitigung von: (1) ✓ Review/Rework-Mechanismus etabliert und pilotiert (run-007), (2) ✓ dokumentierter Negativfall pilotiert (run-008; `CLAIM_NOT_PROVEN`, Auditor-Unabhängigkeit nur partial), (3) Task-Diversitätsnachweis, (4) unabhängiger Auditor bzw. unabhängige Metrik-Validierung — dann Usefulness-Verdict treffen | offen — Mechanismus und negative case pilotiert; partielle Auditor-Unabhängigkeit, fehlende unabhängige Validierung und Task-Diversität bleiben Vorbedingung |
-| **GAP-004**: `docs/roadmap.md` hat keine Relation in bestehenden kanonischen Quellen (nur über `docs/index.md` auffindbar) | Vor PR #177 war `docs/roadmap.md` nicht in `repo.meta.yaml` §truth_model §navigation eingetragen. Seit PR #177 ist `docs/roadmap.md` dort explizit gelistet. | Neue Navigation-Dateien werden in `repo.meta.yaml` nicht explizit gelistet | Soll `docs/roadmap.md` in `repo.meta.yaml` §truth_model §navigation explizit aufgenommen werden? | **resolved** — PR #177: docs/roadmap.md ist nun in repo.meta.yaml §truth_model §navigation eingetragen |
-
----
-
-## 7. Aktualisierungsregeln
-
-**Wann wird diese Roadmap aktualisiert?**
-
-1. **Neue Blueprints, Plans, Roadmap-artige oder Evaluation-Dokumente**: Wenn ein neues Dokument in `docs/blueprints/`, `docs/evaluations/`, `docs/playbooks/` oder `decisions/` angelegt wird, muss geprüft werden, ob ein Arbeitsstrang in §2 oder ein Entscheidungspunkt in §3 ergänzt werden muss.
-
-2. **Statusänderungen in Quellen**: Wenn eine Quelle (Blueprint, Decision, Experiment-Decision) ihren Status ändert (z.B. von `proposed` auf `accepted`, oder ein Checkbox-Status wechselt), muss der betroffene Roadmap-Eintrag aktualisiert werden.
-
-3. **Erledigte Punkte**: Abgeschlossene Arbeitsstränge werden nicht gelöscht, sondern mit `done` und Quellennachweis in einen Abschnitt **§8 Erledigt / Superseded** verschoben (sobald dieser Abschnitt bei Bedarf angelegt wird).
-
-**Regeln für Roadmap-Einträge:**
-
-- Jede Zeile in §2 muss mindestens eine konkrete Quelle mit Pfad nennen.
-- `Quelle-Status` wird nur aus der Quelle übernommen — keine Eigeninterpretation.
-- `Roadmap-Einschätzung` ist explizit als Ableitung zu kennzeichnen.
-- `Nächster Schritt` muss konkret und quellgebunden sein.
-- `Blocker` darf `none` sein, aber nicht leer bleiben.
-- Die Roadmap ändert nur, was sie selbst koordiniert — niemals die Quelldokumente.
-
-**Was diese Roadmap nicht ändert:**
-
-- `AGENTS.md`, `agent-policy.yaml`, `repo.meta.yaml` — nie durch Agents änderbar.
-- `docs/_generated/*` — nur durch Generatoren, nie manuell.
-- Status-Felder in Quell-Experimenten oder Decisions — nur durch Menschen oder belegte Prozesse.
-
-Ergaenzung 2026-06-04 zu RM-008 (Run-001/Run-002 Cross-Run-Assessment vorbereitet, ohne Vergleichs-/Outcome-/Adoption-/Promotion-Hochstufung):
-- Run-001 (`spec_first_baseline`) und Run-002 (`code_first_control`) der Model-Lab Replication-Series sind beide gegen `rest-api-v1` ausgefuehrt.
-- Die Vergleichbarkeitsstruktur ist vorhanden; sie begruendet aber noch kein Modellqualitaets-, Outcome-, Adoption- oder Promotion-Urteil.
-- Neues separates Assessment-Artefakt: `experiments/2026-05-31_model-lab-replication-series/results/cross-run-assessment.md`.
-- Das Assessment bewertet Implementation Shape, Verification Coverage und Evidenzluecken nebeneinander.
-- Runtime-Ausfuehrung der Vitest-Spezifikationen und forced 500 assertion sind inzwischen separat in `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002/` archiviert.
-- Verbleibende wesentliche Grenze: Der Condition-Kontrast zwischen Run-001 und Run-002 ist methodisch schwach.
-
-Ergaenzung 2026-06-05 zu RM-008 (Run-003-Plan statt formaler Hochstufung):
-- Neues Plan-Artefakt: `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-plan-stronger-condition-contrast/`.
-- Naechster methodisch staerkerer Schritt: Run-003 erst ausfuehren, wenn ein konkreter anderer Tool-/Modell-/Condition-Rand dokumentiert ist.
-- Ein formales `decision_type=result_assessment` bleibt bis nach staerkerer Kontrast-Evidence zurueckgestellt.
-- Keine Modellqualitaets-, Outcome-, Adoption-, Promotion-, Production- oder Security-Hochstufung.
-
-Ergaenzung 2026-06-05 zu RM-008 (Run-003 ausgefuehrt, ohne formales Result Assessment):
-- Run-003 execution surface exists; Run-003 runtime validation is deferred; no result assessment is performed.
-- Run-003 wurde gegen `rest-api-v1` unter `independent_model_or_tool_condition` als dritter Execution Surface archiviert; die Runtime-Validation fuer Run-003 ist zurueckgestellt und es gibt kein Result Assessment.
-- Der Rand ist als `self_reported_different_agent_tool_context` mit `external_attestation: false` kalibriert; eine extern attestierte Modellunabhaengigkeit ist nicht belegt. Die Details sind in `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition/condition-input.md` dokumentiert.
-- Kein Modellqualitaets-, Outcome-, Adoption-, Promotion-, Production- oder Security-Readiness-Urteil.
-- Naechster Schritt: separate Runtime-Validation fuer Run-003, danach erst formales `decision_type=result_assessment` pruefen.
-
-Ergaenzung 2026-06-26 zu RM-008 (Run-004 Execution-Readiness-Preflight, ohne Ausfuehrung):
-- Das Run-004 Condition-Design ist abgeschlossen und eingefroren:
-  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-condition-contrast-design/`.
-- Die aktuelle Stufe ist der Run-004-v1 Execution-Readiness-Preflight:
-  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-execution-readiness/`.
-- Der reale Readiness-Status ist `blocked`, `authorization_status=not_authorized`,
-  `runtime_values_bound=false` und `run_004_execution_allowed=false`.
-- Offene Readiness-Blocker betreffen Modell-, Agent-, Sampling-, Seed-, Workspace-/Session-,
-  Blindungs-, Harness-, forced-500-, First-Mutation-Trace-, Zugriffs-, Runtime-, Ausfuehrungsreihenfolge- und Metrik-Bindungen.
-- Run-004 wurde nicht ausgefuehrt; keine Messung, kein Vergleich und keine Ergebnisbewertung
-  wurden erzeugt.
-- Naechster Schritt: echte Runtime-Bindung und Autorisierung erst mit konkret verfuegbaren,
-  pruefbaren Werten; Experimentausfuehrung folgt nur nach Autorisierung.
-
-Ergaenzung 2026-06-27 zu RM-008 (Run-004 deterministischer Execution-Seed):
-- Beide kuenftigen Arme sind an denselben inhaltsadressierten `empty_directory`-Seed gebunden.
-- Der Seed legt weder Framework, Abhaengigkeiten noch Dateistruktur fest und enthaelt keine Experimentmetadaten.
-- `EXECUTION_SEED_UNRESOLVED` ist geschlossen; Session-Isolation, vollstaendige Workspace-Verblindung, Runtime und Harness bleiben offen.
-- Keine Run-004-Ausfuehrung oder Ergebnisbewertung.
-
-Ergaenzung 2026-06-27 zu RM-008 (Run-004 Workspace-/Session-Isolation):
-- Zwei create-only, rollen-neutral benannte Slots werden aus demselben leeren Seed materialisiert.
-- Workspace, Session, Temp, Cache und Port-Lease sind pro Slot eindeutig; vorhandene Ausgabewurzeln werden abgewiesen.
-- Pro Slot wird genau das zugewiesene Promptpaket erzeugt.
-- `SESSION_ISOLATION_UNPROVEN` ist geschlossen; `BLINDED_WORKSPACE_UNRESOLVED` bleibt bis zur technisch gebundenen Access-Policy offen.
-- Keine Run-004-Ausfuehrung oder Ergebnisbewertung.
-
-Ergaenzung 2026-06-27 zu RM-008 (Run-004 Access-Policy/Visibility Boundary):
-- Eine content-bound Bubblewrap/libseccomp-Access-Policy ist fuer die vorbereiteten Slots gebunden:
-  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-access-policy/`.
-- Die Live-Negativprobe prueft nur den Sandboxmechanismus mit einem neutralen Python-Diagnoseprogramm, inklusive EPERM fuer Socket, Namespace-Escape, `io_uring_setup` und `fsopen`; kein Modell-/Agentlauf und keine Run-004-Ausfuehrung.
-- `ACCESS_POLICY_UNRESOLVED` und `BLINDED_WORKSPACE_UNRESOLVED` sind geschlossen.
-- Der reale Readiness-Status bleibt `blocked`, `not_authorized`, `run_004_execution_allowed=false` und `run_004_executed=false`.
-- Modell-, Agent-, Sampling-, Runtime-Environment-, Harness-, forced-500-, First-Mutation-Trace-, Ausfuehrungsreihenfolge- und Metrik-Bindungen bleiben offen.
-
-Ergaenzung 2026-06-28 zu RM-008 (Run-004 Runtime-Binding, ohne Ausfuehrung):
-- Ein geschlossener Runtime-Binding-Bundle liegt vor:
-  `experiments/2026-05-31_model-lab-replication-series/artifacts/run-004-runtime-binding/`.
-- Gebunden sind lokaler Ollama-Provider/Model-Identitaet, content-bound Agent-Broker/Protokoll, identisches Sampling, identisches Runtime-Profil und deterministische Ausfuehrungsreihenfolge (`treatment_first`).
-- `MODEL_BINDING_UNRESOLVED`, `AGENT_BINDING_UNRESOLVED`, `SAMPLING_BINDING_UNRESOLVED` und `EXECUTION_ORDER_UNRESOLVED` sind geschlossen, solange die Bundle-Hashes validieren.
-- `RUNTIME_ENVIRONMENT_UNRESOLVED` bleibt offen, weil Dependency-Resolution, Cache-Policy, volle Execution-Environment und Live-Loopback-Chat unvollstaendig sind.
-- Harness-, forced-500-, First-Mutation-Trace- und Metrik-Bindungen bleiben offen; Status bleibt `blocked`, `not_authorized`, `run_004_execution_allowed=false`, `run_004_executed=false`.
-- Keine Run-004-Ausfuehrung, keine Messung, kein Vergleich und keine Ergebnisbewertung.
-
-Ergaenzung 2026-07-01 zu Operator Lab Loop:
-- Neues Playbook: docs/playbooks/operator-lab-loop.md.
-- Neuer Anchoring-Run: experiments/2026-07-01_operator-lab-loop/.
-- Zweck: kleine Operator-Feedbackschleife fuer echte Repo- und PR-Arbeit.
-- Naechster Schritt: ersten echten Arbeitslauf als Operator-Lab-Run erfassen.
-
-Ergaenzung 2026-07-02 (Roadmap-Pflege nach §7 Regel 3, ohne Status-Hochstufung):
-- triggered_by: user-request-repo-audit-2026-07-02 (Komplettaudit, siehe
-  `raw-vibes/2026-07-02_repo-audit-third-pass.md` und Operator-Lab-Run
-  `experiments/2026-07-01_operator-lab-loop/artifacts/run-016-repo-audit-third-pass/run-card.yml`).
-- §8 „Erledigt / Superseded" wurde erstmals angelegt; RM-001 wurde mit
-  unveraendertem Quellennachweis dorthin verschoben (kein neuer Statuswechsel;
-  der Quelle-Status war bereits seit 2026-05-29 „abgeschlossen/reconciled").
-- Keine Promotion, keine Adoption, kein Outcome-Upgrade; RM-002, RM-005 und
-  EP-002 bleiben unberuehrt offen.
-
----
-
-## 8. Erledigt / Superseded
-
-Abgeschlossene Arbeitsstraenge gemaess §7 Regel 3: nicht geloescht, sondern
-mit `done` und Quellennachweis hierher verschoben.
-
-| ID | Arbeitsstrang | Quelle(n) | Quelle-Status | Abschluss | Evidenzgrad |
-|----|---------------|-----------|---------------|-----------|-------------|
-| RM-001 | Agent-Operability Phase E — Fixture-Erweiterung | `blueprints/blueprint-agent-operability-phase-1c.md` §Phase E; `playbooks/plan-execution-checklist.md` Phase 3; `reference/agent-operability-fixture-matrix.md` §7/§4.8 | Phase E Fixtures/Smoke-Set abgeschlossen (Quellen reconciled 2026-05-29: Blueprint §Phase E + Checklist Phase 3 = [x]) | done — Command-Fixtures 7/9/9, Handoff-Drift-Smoke-Set (11 Fixtures) kartiert in `reference/agent-operability-fixture-matrix.md` §7; reproduzierbar via `make validate-agent-commands(-tests)` + `make validate-agent-handoff(-tests)`; Details siehe Ergaenzung 2026-05-29 in §2 | belegt |
+# Roadmap — begrenzte aktive Navigation
+
+## Zweck und Grenze
+
+Diese Datei ist eine Wegkarte, kein Aufgabenregister und keine Wahrheitsquelle für aktive Experimente.
+
+- Aktive Experimentwahrheit: `experiments/active.v1.json`.
+- Aufgaben, Prioritäten und Promotionsentscheidungen: Bureau.
+- Code-, Review-, Merge- und Prüfzustand: GitHub und CI.
+- Ausgeführte Operatorarbeit: Grabowski-Receipts.
+- Zielbild und Architekturgrenze: `docs/foundations/vision.md` und `docs/foundations/repo-plan.md`.
+
+Bei jedem Widerspruch gilt die höher eingestufte Quelle. Historische Blueprints oder Experimentordner werden nicht durch eine Referenz in dieser Datei reaktiviert.
+
+## Aktueller Zustand
+
+Stand 13. Juli 2026:
+
+- Vibe-Lab ist auf einen kleinen Experiment- und Evidenzraum verengt.
+- Die Custom-Agent-Schicht und aktiven Cursor-/Copilot-Projektionen sind stillgelegt.
+- Die 36 Operator-Lab-Karten sind mit `insufficient_evidence` eingefroren.
+- Der Operator-Interventions-Effektvergleich ist als praktisch nicht ausführbar archiviert.
+- Ein RepoBrief-Workbench-Pilot ist aktiv; der verbindliche Bestand steht ausschließlich in `experiments/active.v1.json`.
+- Die Validatorfläche besteht aus 45 Core-, 10 Active- und 48 Legacy-Zielen sowie zwei ergänzenden Checks.
+- Das Bureau führt den Survivor-Audit unter `heimgewebe/bureau#442`.
+
+## Aktiver Repository-Ball
+
+### RL-001 — Wahrheitsausrichtung und Survivor-Vertrag
+
+**Ziel:** Alle maßgeblichen Vibe-Lab-Dokumente beschreiben dieselbe begrenzte Rolle und dieselben aktuellen Bestandszahlen.
+
+**Umfang:**
+
+- kanonischer Repo-Zweck;
+- Grundlagenvision und Repository-Plan;
+- README;
+- Optimierungsplan und Validatorbericht;
+- diese Roadmap.
+
+**Nicht enthalten:**
+
+- neue Runtime- oder Toolfunktion;
+- neue Agentenrolle;
+- neue Exportprojektion;
+- Änderung an Experimentdaten, Schemas oder Validatorlogik;
+- automatischer Bureau-, Routing-, Merge- oder Deploy-Eingriff.
+
+**Erfolg:** vollständige CI, diffgebundener Review und Merge eines reinen Wahrheits- und Navigationsschnitts.
+
+## Nächste Arbeitsstränge
+
+Die Reihenfolge ist verbindlich, soweit Bureau keine neue Prioritätsentscheidung trifft.
+
+### RL-002 — Legacy-Validator-Survivor-Audit
+
+Jedes der 48 Legacy-Ziele erhält eine Disposition:
+
+- `retain_with_consumer`;
+- `covered_by_core`;
+- `retire`.
+
+Prüfreihenfolge:
+
+1. Agent-Handoff-, Agent-Command- und Command-Chain-Verträge;
+2. geschlossene Model-Lab-Spezialprüfungen;
+3. historische Replay-, Fixture- und Cross-Contract-Semantik;
+4. rLens- und PR-Context-Prüfungen nach Abschluss des aktiven RepoBrief-Piloten.
+
+Zielrichtung bis 1. September 2026: 30–50 Prozent weniger blocking Legacy-Ziele, sofern Archiv- oder Äquivalenzevidenz dies trägt.
+
+### RL-003 — RepoBrief-Pilot schließen
+
+Reviewdatum: 15. August 2026. Ablauf: 1. September 2026.
+
+Ohne prospektive Vergleichsevidenz keine Default-Promotion. Abschluss nur als `promote`, `pilot`, `defer`, `reject` oder `archive`; keine automatische Verlängerung.
+
+### RL-004 — Bibliotheksverbrauch prüfen
+
+Katalog, Prompts, Benchmarks und Instruction Blocks auf reale externe Verbraucher, Entscheidungsziele und Reviewregeln prüfen. Nicht konsumierte Flächen archivieren oder als historisch behandeln.
+
+## Historische Quellen
+
+Die im Frontmatter referenzierten Blueprints, Evaluationen, Playbooks und Entscheidungen bleiben für Provenienz und Survivor-Prüfung erreichbar. Sie sind keine aktiven Arbeitsaufträge, solange sie nicht in `experiments/active.v1.json` oder Bureau ausdrücklich reaktiviert werden.
+
+Insbesondere sind folgende frühere Expansionsrichtungen nicht aktiv:
+
+- Agent-Operability als eigene Agentenschicht;
+- Evidence-Control-Plane als Steuerungsebene;
+- Model-Lab-Control-Plane als aktive Runtime;
+- reaktive State→Signal→Policy→Action-Schleifen;
+- automatische Ticketgenerierung;
+- breite Tool-Export-Abdeckung;
+- Dashboard-, Plexer- oder Heimlern-Integration.
+
+## Neue-Arbeit-Gate
+
+Vor neuer Vibe-Lab-Funktionalität müssen alle Fragen mit Ja beantwortet sein:
+
+1. Gibt es einen aktuellen externen Verbraucher?
+2. Verändert das Ergebnis eine konkrete Entscheidung?
+3. Ist die Fehlerklasse nicht bereits generisch abgedeckt?
+4. Besitzt die Arbeit Reviewdatum oder Ablauf?
+5. Entfernt sie mindestens so viel dauerhafte Oberfläche, wie sie hinzufügt?
+6. Bleiben Bureau, GitHub, CI, Grabowski und RepoBrief die zuständigen Wahrheitsorgane?
+
+Bei einem Nein wird die Idee roh dokumentiert, zurückgestellt oder archiviert.
