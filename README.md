@@ -40,9 +40,7 @@ Erst wenn ein Experiment belastbare Evidenz und einen benannten externen Verbrau
 
 ## Aktive Experimente
 
-`experiments/active.v1.json` ist die einzige begrenzte Wahrheit über laufende Experimente. Historische Verzeichnisse sind nicht automatisch aktiv. Maximal fünf Experimente dürfen gleichzeitig aktiv sein.
-
-Aktueller Stand vom 13. Juli 2026: ein aktiver Pilot zur RepoBrief-Workbench-Nützlichkeit. Der registrierte Operator-Interventions-Effektvergleich wurde als praktisch nicht ausführbar archiviert.
+`experiments/active.v1.json` ist die einzige begrenzte Wahrheit über laufende Experimente. Historische Verzeichnisse sind nicht automatisch aktiv. Maximal fünf Experimente dürfen gleichzeitig aktiv sein. Der aktuelle Bestand wird im README bewusst nicht gespiegelt, damit kein zweiter, schnell veraltender Status entsteht.
 
 ```bash
 python3 scripts/docmeta/validate_active_experiments.py
