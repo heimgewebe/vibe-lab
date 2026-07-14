@@ -21,12 +21,30 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         (self.root / "schemas").mkdir()
-        schema = json.loads((SCRIPT_DIR.parents[1] / "schemas/active-experiments.v1.schema.json").read_text())
+        repo_root = SCRIPT_DIR.parents[1]
+        schema = json.loads((repo_root / "schemas/active-experiments.v1.schema.json").read_text())
         (self.root / "schemas/active-experiments.v1.schema.json").write_text(json.dumps(schema))
         self.exp = self.root / "experiments/2026-07-12_example"
         (self.exp / "results").mkdir(parents=True)
         (self.exp / "manifest.yml").write_text("experiment:\n  status: testing\n")
-        (self.exp / "results/decision.yml").write_text("verdict: inconclusive\n")
+        (self.exp / "results/decision.yml").write_text(
+            "verdict: inconclusive\npilot_decision: pilot_without_promotion\n"
+        )
+
+        template = json.loads(
+            (repo_root / "experiments/_template/registration.v2.json").read_text()
+        )
+        registration = json.loads(json.dumps(template).replace("replace-with", "example"))
+        registration["experiment_id"] = self.exp.name
+        registration["consumer"]["organ"] = "Bureau"
+        registration["decision_target"]["question"] = (
+            "Decide whether the example should continue."
+        )
+        registration["measurement"]["primary_metric"] = "decision_changed"
+        registration["review_at"] = "2026-08-01T00:00:00Z"
+        registration["expires_at"] = "2026-09-01T00:00:00Z"
+        registration["closure"]["archive_path"] = f"experiments/_archive/{self.exp.name}"
+        (self.exp / "registration.v2.json").write_text(json.dumps(registration))
 
     def payload(self) -> dict:
         return {
@@ -50,50 +68,156 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
         path.write_text(json.dumps(payload))
         return path
 
-    def test_valid_registry(self) -> None:
-        result = validate_active_experiments(
-            self.write(self.payload()), repo_root=self.root,
+    def validate(self, payload: dict | None = None) -> dict:
+        return validate_active_experiments(
+            self.write(payload or self.payload()),
+            repo_root=self.root,
             now=datetime(2026, 7, 12, tzinfo=timezone.utc),
         )
+
+    @staticmethod
+    def update_item_for_directory(payload: dict, experiment_dir: Path) -> None:
+        item = payload["experiments"][0]
+        item["experiment_id"] = experiment_dir.name
+        item["path"] = f"experiments/{experiment_dir.name}"
+        item["source_ref"] = f"experiments/{experiment_dir.name}/results/decision.yml"
+
+    def test_valid_registry_is_registration_and_decision_bound(self) -> None:
+        result = self.validate()
         self.assertEqual(result["active_count"], 1)
+        self.assertEqual(result["registration_bound_count"], 1)
+        self.assertEqual(result["grandfathered_count"], 0)
+
+    def test_v1_registration_metric_is_supported(self) -> None:
+        (self.exp / "registration.v2.json").unlink()
+        v1_exp = self.root / "experiments/2026-07-11_example"
+        self.exp.rename(v1_exp)
+        registration = {
+            "schema_version": "experiment.registration.v1",
+            "experiment_id": v1_exp.name,
+            "consumer": {
+                "organ": "Bureau",
+                "use": "Use the result for a bounded reviewed decision.",
+            },
+            "decision_target": {
+                "question": "Decide whether the example should continue.",
+                "owner": "Bureau",
+            },
+            "measurement": {
+                "metric": "decision_changed",
+                "method": "Measure the evidence-bound decision outcome.",
+                "success": "A material improvement is observed.",
+                "falsification": "No material improvement is observed.",
+            },
+            "expires_at": "2026-09-01T00:00:00Z",
+            "closure": {
+                "review_at": "2026-08-01T00:00:00Z",
+                "allowed_outcomes": ["promote", "reject", "archive"],
+                "archive_path": f"experiments/_archive/{v1_exp.name}",
+            },
+            "boundary": {
+                "experiment_only": True,
+                "no_auto_policy": True,
+                "no_auto_routing": True,
+                "no_queue_authority": True,
+                "no_runtime_authority": True,
+            },
+        }
+        (v1_exp / "registration.v1.json").write_text(json.dumps(registration))
+        payload = self.payload()
+        self.update_item_for_directory(payload, v1_exp)
+        result = self.validate(payload)
+        self.assertEqual(result["registration_bound_count"], 1)
+
+    def test_missing_required_registration_fails(self) -> None:
+        (self.exp / "registration.v2.json").unlink()
+        with self.assertRaisesRegex(ValueError, "requires registration"):
+            self.validate()
+
+    def test_pre_enforcement_experiment_remains_supported(self) -> None:
+        (self.exp / "registration.v2.json").unlink()
+        old_exp = self.root / "experiments/2026-07-09_example"
+        self.exp.rename(old_exp)
+        payload = self.payload()
+        self.update_item_for_directory(payload, old_exp)
+        result = self.validate(payload)
+        self.assertEqual(result["registration_bound_count"], 0)
+        self.assertEqual(result["grandfathered_count"], 1)
 
     def test_expired_entry_fails(self) -> None:
         payload = self.payload()
         payload["experiments"][0]["review_at"] = "2026-06-01T00:00:00Z"
         payload["experiments"][0]["expires_at"] = "2026-07-01T00:00:00Z"
         with self.assertRaisesRegex(ValueError, "expired"):
-            validate_active_experiments(
-                self.write(payload), repo_root=self.root,
-                now=datetime(2026, 7, 12, tzinfo=timezone.utc),
-            )
+            self.validate(payload)
 
-    def test_source_ref_must_be_inside_experiment(self) -> None:
+    def test_source_ref_must_be_canonical_decision(self) -> None:
         payload = self.payload()
-        outside = self.root / "outside.yml"
-        outside.write_text("x")
-        payload["experiments"][0]["source_ref"] = "outside.yml"
-        with self.assertRaisesRegex(ValueError, "inside experiment"):
-            validate_active_experiments(
-                self.write(payload), repo_root=self.root,
-                now=datetime(2026, 7, 12, tzinfo=timezone.utc),
-            )
+        alternate = self.exp / "results/alternate.yml"
+        alternate.write_text("verdict: inconclusive\n")
+        payload["experiments"][0]["source_ref"] = (
+            "experiments/2026-07-12_example/results/alternate.yml"
+        )
+        with self.assertRaisesRegex(ValueError, "canonical decision path"):
+            self.validate(payload)
+
+    def test_source_decision_requires_verdict(self) -> None:
+        (self.exp / "results/decision.yml").write_text("pilot_decision: pilot\n")
+        with self.assertRaisesRegex(ValueError, "non-empty verdict"):
+            self.validate()
 
     def test_manifest_state_conflict_fails(self) -> None:
         (self.exp / "manifest.yml").write_text("experiment:\n  status: inconclusive\n")
         with self.assertRaisesRegex(ValueError, "conflicts"):
-            validate_active_experiments(
-                self.write(self.payload()), repo_root=self.root,
-                now=datetime(2026, 7, 12, tzinfo=timezone.utc),
-            )
+            self.validate()
+
+    def test_designed_state_requires_not_executed_decision(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["state"] = "designed"
+        (self.exp / "manifest.yml").write_text("experiment:\n  status: designed\n")
+        with self.assertRaisesRegex(ValueError, "must have verdict not_executed"):
+            self.validate(payload)
+
+    def test_pilot_state_requires_pilot_signal(self) -> None:
+        (self.exp / "results/decision.yml").write_text("verdict: inconclusive\n")
+        with self.assertRaisesRegex(ValueError, "lacks a pilot decision signal"):
+            self.validate()
+
+    def test_primary_metric_must_match_registration(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["primary_metric"] = "other_metric"
+        with self.assertRaisesRegex(ValueError, "primary_metric conflicts"):
+            self.validate(payload)
+
+    def test_consumer_must_match_registration(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["consumer"] = "Bureau RPU-V1"
+        with self.assertRaisesRegex(ValueError, "consumer conflicts"):
+            self.validate(payload)
+
+    def test_decision_target_must_match_registration(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["decision_target"] = "Decide something else entirely."
+        with self.assertRaisesRegex(ValueError, "decision_target conflicts"):
+            self.validate(payload)
+
+    def test_review_at_must_match_registration(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["review_at"] = "2026-08-02T00:00:00Z"
+        with self.assertRaisesRegex(ValueError, "review_at conflicts"):
+            self.validate(payload)
+
+    def test_expires_at_must_match_registration(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["expires_at"] = "2026-09-02T00:00:00Z"
+        with self.assertRaisesRegex(ValueError, "expires_at conflicts"):
+            self.validate(payload)
 
     def test_duplicate_id_fails(self) -> None:
         payload = self.payload()
         payload["experiments"].append(dict(payload["experiments"][0]))
         with self.assertRaises(Exception):
-            validate_active_experiments(
-                self.write(payload), repo_root=self.root,
-                now=datetime(2026, 7, 12, tzinfo=timezone.utc),
-            )
+            self.validate(payload)
 
 
 if __name__ == "__main__":
