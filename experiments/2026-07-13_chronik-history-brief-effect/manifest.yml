@@ -1,0 +1,56 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "chronik-history-brief-effect"
+  hypothesis: >
+    A frozen, historical-only Chronik brief supplied before coding planning may
+    reduce avoidable repeated paths without increasing stale-state assumptions.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-07-13"
+  updated: "2026-07-13"
+  author: "ChatGPT / Grabowski"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The hypothesis is refuted or remains unpromotable if treatment cases do
+      not materially improve the registered score, if ceremony outweighs the
+      benefit, or if history is used as live truth.
+    counter_hypotheses:
+      - id: "live_preflight_already_sufficient"
+        statement: "The normal live-first preflight already prevents the relevant repeat errors."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Compare control and treatment score distributions."
+          limitations:
+            - "Requires at least three natural cases per condition."
+          confidence: low
+      - id: "history_increases_false_confidence"
+        statement: "Historical context may create stale assumptions or encourage unsafe retries."
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Score the fatal history_not_live_truth component independently."
+          limitations:
+            - "Rare harmful cases may not appear in the minimum sample."
+          confidence: low
+
+context:
+  tools:
+    - "Grabowski"
+    - "Chronik"
+    - "GitHub and CI"
+    - "Vibe-Lab deterministic evaluator"
+  language: "Python, JSON, YAML and repository evidence"
+  environment: "Natural Heimgewebe coding tasks; no repeated productive mutation for experiment generation"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

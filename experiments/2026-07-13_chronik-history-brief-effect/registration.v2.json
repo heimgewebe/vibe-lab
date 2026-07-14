@@ -1,0 +1,117 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-07-13_chronik-history-brief-effect",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether a bounded Chronik history brief should remain opt-in, be preferred for explicit coding task classes, or be rejected."
+  },
+  "decision_target": {
+    "question": "Does a frozen repo- and component-specific Chronik history brief reduce avoidable repeated coding errors without causing stale-history or false-confidence regressions?",
+    "owner": "Bureau with operator review"
+  },
+  "intervention": {
+    "name": "pre-decision Chronik history brief",
+    "description": "Before planning, provide a hash-bound historical-only Chronik cohort selected by repo, component and operation; all ordinary live preflight checks remain unchanged."
+  },
+  "control_condition": {
+    "id": "live_preflight_only",
+    "description": "Use the ordinary Grabowski live-first preflight without a Chronik history brief."
+  },
+  "treatment_condition": {
+    "id": "live_preflight_plus_history",
+    "description": "Use the same live-first preflight plus one frozen Chronik history brief before planning and record whether it changes the decision."
+  },
+  "measurement": {
+    "primary_metric": "coding_decision_quality_score",
+    "direction": "higher_is_better",
+    "unit": "points",
+    "minimum_material_effect": 1,
+    "method": "An independent blinded reviewer scores each completed case from immutable execution, review and outcome evidence using the registered additive binary scorecard.",
+    "success": "The conservative 95 percent interval is above one point with no fatal history-as-live-truth failure and proportionate effort.",
+    "falsification": "Any fatal history-as-live-truth failure, materially worse score, or repeated false-confidence regression falsifies promotion.",
+    "scorecard": {
+      "schema_version": "additive-binary-scorecard.v1",
+      "components": [
+        {
+          "id": "avoids_evidenced_failed_path",
+          "weight": 1,
+          "criterion": "The work does not unnecessarily repeat a previously evidenced failed path."
+        },
+        {
+          "id": "correct_target_context",
+          "weight": 1,
+          "criterion": "The target repository, component and operation are identified correctly."
+        },
+        {
+          "id": "live_verifies_history",
+          "weight": 1,
+          "criterion": "Every historical statement used for action is checked against current live state."
+        },
+        {
+          "id": "evidence_bound_outcome",
+          "weight": 1,
+          "criterion": "The final outcome is bound to concrete execution, GitHub, CI or runtime evidence."
+        },
+        {
+          "id": "history_not_live_truth",
+          "weight": 1,
+          "criterion": "Chronik history is never treated as current Git, CI, runtime or safe-retry truth.",
+          "fatal_when_zero": true
+        }
+      ]
+    },
+    "cost_metric": {
+      "id": "preflight_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure elapsed operator handling time from live-preflight start until the initial implementation decision is sealed."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "natural coding task in the same registered task-class, risk and context band",
+    "minimum_control": 3,
+    "minimum_treatment": 3,
+    "comparability_constraints": [
+      "same coding task class distribution",
+      "same risk band distribution",
+      "same repository-familiarity band distribution",
+      "same live-preflight contract"
+    ],
+    "confounders": [
+      "repository drift",
+      "operator familiarity",
+      "model or tool version change",
+      "task difficulty",
+      "availability of prior Chronik events"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "chronik frozen cohort receipt",
+      "Grabowski execution receipt",
+      "GitHub pull request and CI evidence",
+      "diff-bound review evidence",
+      "independent blinded scorecard"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-15T00:00:00Z",
+  "expires_at": "2026-09-01T00:00:00Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-07-13_chronik-history-brief-effect"
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true
+  }
+}
