@@ -46,6 +46,8 @@ Erst wenn ein Experiment belastbare Evidenz und einen benannten externen Verbrau
 python3 scripts/docmeta/validate_active_experiments.py
 ```
 
+Der Validator bindet jeden aktiven Eintrag an `results/decision.yml`. Bei registrierten Experimenten müssen Verbraucher, Entscheidungsfrage, primäre Messgröße, Reviewdatum und Ablaufdatum exakt mit der Registrierung übereinstimmen; nur Experimente vor dem Registrierungsstichtag bleiben ausdrücklich als Altbestand zulässig.
+
 Neue Experimente verwenden `registration.v2.json`. `tools/vibe-cli/capture_effect_observation.py` erfasst registrierungs- und evidenzgebundene Beobachtungen atomar. `tools/vibe-cli/evaluate_effect.py` wertet begrenzte Vergleiche deterministisch aus. Beide Werkzeuge sind Review-Werkzeuge und besitzen keine automatische Policy-, Routing-, Queue- oder Runtime-Autorität.
 
 ### Lokal validieren

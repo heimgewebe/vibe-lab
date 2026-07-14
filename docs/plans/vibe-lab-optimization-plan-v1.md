@@ -3,7 +3,7 @@ title: "Vibe-Lab Optimization Plan v1"
 status: active
 canonicality: operative
 created: "2026-07-12"
-updated: "2026-07-13"
+updated: "2026-07-14"
 triggered_by: "user-request-2026-07-12"
 ---
 
@@ -17,9 +17,9 @@ The primary optimization objective is now **surface reduction**, not new capabil
 
 ## Verified current state
 
-As of 2026-07-13:
+As of 2026-07-14:
 
-- `experiments/active.v1.json` contains one active pilot: RepoBrief Workbench usefulness;
+- `experiments/active.v1.json` contains two active entries: the RepoBrief Workbench diagnostic pilot and the designed Chronik history-brief comparison;
 - the 36-card Operator-Lab series is frozen with `insufficient_evidence`;
 - the registered operator-intervention effect-evaluator experiment is archived as practically non-executable;
 - the generic observation capture and deterministic evaluator remain unpromoted review tooling;
@@ -35,17 +35,22 @@ As of 2026-07-13:
 4. **Build generic capture and evaluation tooling.** Observation capture is evidence- and registration-bound, atomic, deduplicated and expiry-aware. The evaluator reports comparability, uncertainty, effort and non-claims.
 5. **Consolidate validation.** All 103 grouped targets are classified behind core, active and legacy frontdoors; GitHub exposes a smaller CI presentation without dropping coverage.
 6. **Archive the blocked evaluator pilot.** No synthetic or retrospective pilots were manufactured after the registered intervention proved causally non-executable.
+7. **Bind active lifecycle truth.** Active entries now point only to the canonical decision file. Registered entries must exactly match registration consumer, decision question, primary metric, review date and expiry; pre-registration experiments remain explicit grandfathered cases.
 
 ## Current decision gate
 
-No new Vibe-Lab service, agent profile, instruction-bearing projection target, specialist validator or effect-analysis feature should be added while the RepoBrief Workbench pilot remains the only active experiment, unless the change closes a demonstrated safety or evidence-integrity gap.
+No new Vibe-Lab service, agent profile, instruction-bearing projection target, specialist validator or effect-analysis feature should be added while the active registry contains unresolved experiments, unless the change closes a demonstrated safety or evidence-integrity gap.
 
-The RepoBrief pilot must be reviewed by `2026-08-15T00:00:00Z` and expires at `2026-09-01T00:00:00Z`. Its closure must choose one of:
+Both current entries must be reviewed by `2026-08-15T00:00:00Z` and expire at `2026-09-01T00:00:00Z`.
+
+The RepoBrief pilot must close with one of:
 
 - `promote` only with prospective comparative evidence;
 - `pilot` with a bounded diagnostic consumer and another explicit review;
 - `defer` when evidence is still insufficient but collection remains proportionate;
 - `reject` or `archive` when no decision benefit justifies continued maintenance.
+
+The Chronik comparison may advance only after at least three comparable natural cases per condition, independent scoring and no fatal history-as-live-truth failure. Otherwise it must be deferred, rejected or archived rather than expanded into another runtime surface.
 
 ## Survivor program
 

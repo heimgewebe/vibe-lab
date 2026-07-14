@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Validate the bounded active-experiment registry."""
+"""Validate the bounded active-experiment registry and its source coherence."""
 from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import yaml
 from jsonschema import Draft202012Validator, FormatChecker
+
+from validate_experiment_registration import V1_ENFORCEMENT_DATE, validate_registration
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = ROOT / "experiments/active.v1.json"
@@ -23,11 +25,134 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _load_yaml_object(path: Path, label: str) -> dict[str, Any]:
+    value = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"{label} must be an object")
+    return value
+
+
 def _utc(value: str, label: str) -> datetime:
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if parsed.tzinfo is None or parsed.utcoffset() != timezone.utc.utcoffset(parsed):
         raise ValueError(f"{label} must be UTC")
     return parsed.astimezone(timezone.utc)
+
+
+def _experiment_date(experiment_id: str) -> date:
+    try:
+        return date.fromisoformat(experiment_id[:10])
+    except ValueError as exc:
+        raise ValueError(f"{experiment_id}: invalid experiment date prefix") from exc
+
+
+def _registration_path(experiment_dir: Path) -> Path | None:
+    for name in ("registration.v2.json", "registration.v1.json"):
+        candidate = experiment_dir / name
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def _registration_review_at(registration: dict[str, Any]) -> str:
+    if registration["schema_version"] == "experiment.registration.v2":
+        return registration["review_at"]
+    return registration["closure"]["review_at"]
+
+
+def _registration_primary_metric(registration: dict[str, Any]) -> str:
+    measurement = registration["measurement"]
+    if registration["schema_version"] == "experiment.registration.v2":
+        return measurement["primary_metric"]
+    return measurement["metric"]
+
+
+def _validate_registration_binding(
+    *,
+    item: dict[str, Any],
+    experiment_dir: Path,
+    clock: datetime,
+) -> bool:
+    experiment_id = item["experiment_id"]
+    registration_path = _registration_path(experiment_dir)
+    if registration_path is None:
+        if _experiment_date(experiment_id) >= V1_ENFORCEMENT_DATE:
+            raise ValueError(f"{experiment_id}: active experiment requires registration")
+        return False
+
+    registration = validate_registration(registration_path, now=clock)
+    metric = _registration_primary_metric(registration)
+    if item["primary_metric"] != metric:
+        raise ValueError(
+            f"{experiment_id}: active primary_metric conflicts with registration ({metric})"
+        )
+
+    registered_consumer = registration["consumer"]["organ"]
+    if item["consumer"] != registered_consumer:
+        raise ValueError(
+            f"{experiment_id}: active consumer conflicts with registration ({registered_consumer})"
+        )
+
+    registered_question = registration["decision_target"]["question"]
+    if item["decision_target"] != registered_question:
+        raise ValueError(
+            f"{experiment_id}: active decision_target conflicts with registration"
+        )
+
+    registered_review = _utc(
+        _registration_review_at(registration),
+        f"{experiment_id}.registration.review_at",
+    )
+    registered_expiry = _utc(
+        registration["expires_at"],
+        f"{experiment_id}.registration.expires_at",
+    )
+    active_review = _utc(item["review_at"], f"{experiment_id}.review_at")
+    active_expiry = _utc(item["expires_at"], f"{experiment_id}.expires_at")
+    if active_review != registered_review:
+        raise ValueError(f"{experiment_id}: active review_at conflicts with registration")
+    if active_expiry != registered_expiry:
+        raise ValueError(f"{experiment_id}: active expires_at conflicts with registration")
+    return True
+
+
+def _validate_decision_binding(
+    *,
+    item: dict[str, Any],
+    repo_root: Path,
+    experiment_dir: Path,
+) -> None:
+    experiment_id = item["experiment_id"]
+    canonical_ref = f"{item['path']}/results/decision.yml"
+    if item["source_ref"] != canonical_ref:
+        raise ValueError(
+            f"{experiment_id}: source_ref must equal canonical decision path {canonical_ref}"
+        )
+
+    source_ref = (repo_root / item["source_ref"]).resolve()
+    try:
+        source_ref.relative_to(experiment_dir)
+    except ValueError as exc:
+        raise ValueError(f"{experiment_id}: source_ref must stay inside experiment directory") from exc
+    if not source_ref.is_file():
+        raise ValueError(f"{experiment_id}: source_ref is missing")
+
+    decision = _load_yaml_object(source_ref, f"{experiment_id}.source_ref")
+    verdict = decision.get("verdict")
+    if not isinstance(verdict, str) or not verdict.strip():
+        raise ValueError(f"{experiment_id}: source decision must contain a non-empty verdict")
+    if item["state"] == "designed" and verdict != "not_executed":
+        raise ValueError(
+            f"{experiment_id}: designed active experiment must have verdict not_executed"
+        )
+    if item["state"] == "pilot":
+        pilot_decision = decision.get("pilot_decision")
+        if verdict != "pilot" and (
+            not isinstance(pilot_decision, str) or not pilot_decision.strip()
+        ):
+            raise ValueError(
+                f"{experiment_id}: pilot active experiment lacks a pilot decision signal"
+            )
 
 
 def validate_active_experiments(
@@ -44,6 +169,7 @@ def validate_active_experiments(
     ids: set[str] = set()
     paths: set[str] = set()
     checked: list[str] = []
+    registration_bound = 0
 
     for item in payload["experiments"]:
         experiment_id = item["experiment_id"]
@@ -65,14 +191,6 @@ def validate_active_experiments(
         if not experiment_dir.is_dir():
             raise ValueError(f"{experiment_id}: experiment directory is missing")
 
-        source_ref = (repo_root / item["source_ref"]).resolve()
-        try:
-            source_ref.relative_to(experiment_dir)
-        except ValueError as exc:
-            raise ValueError(f"{experiment_id}: source_ref must stay inside experiment directory") from exc
-        if not source_ref.is_file():
-            raise ValueError(f"{experiment_id}: source_ref is missing")
-
         review_at = _utc(item["review_at"], f"{experiment_id}.review_at")
         expires_at = _utc(item["expires_at"], f"{experiment_id}.expires_at")
         if review_at > expires_at:
@@ -83,19 +201,34 @@ def validate_active_experiments(
         manifest_path = experiment_dir / "manifest.yml"
         if not manifest_path.is_file():
             raise ValueError(f"{experiment_id}: manifest.yml is missing")
-        manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
-        status = (manifest or {}).get("experiment", {}).get("status")
+        manifest = _load_yaml_object(manifest_path, f"{experiment_id}.manifest")
+        status = manifest.get("experiment", {}).get("status")
         allowed = {"designed"} if item["state"] == "designed" else {"testing"}
         if status not in allowed:
             raise ValueError(
                 f"{experiment_id}: active state {item['state']} conflicts with manifest status {status}"
             )
+
+        _validate_decision_binding(
+            item=item,
+            repo_root=repo_root,
+            experiment_dir=experiment_dir,
+        )
+        registration_bound += int(
+            _validate_registration_binding(
+                item=item,
+                experiment_dir=experiment_dir,
+                clock=clock,
+            )
+        )
         checked.append(experiment_id)
 
     return {
         "status": "valid",
         "active_count": len(checked),
         "max_active": payload["max_active"],
+        "registration_bound_count": registration_bound,
+        "grandfathered_count": len(checked) - registration_bound,
         "experiments": checked,
     }
 

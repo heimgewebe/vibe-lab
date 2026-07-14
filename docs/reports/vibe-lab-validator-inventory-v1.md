@@ -3,7 +3,7 @@ title: "Vibe-Lab Validator Inventory v1"
 status: active
 canonicality: operative
 created: "2026-07-12"
-updated: "2026-07-13"
+updated: "2026-07-14"
 triggered_by: "vibe-lab-optimization-plan-v1-phase-c"
 relations:
   - type: informs
@@ -25,9 +25,11 @@ The current machine-readable source is `.vibe/validator-inventory.v1.json`. Afte
 
 The grouped inventory therefore contains 103 classified `validate-*` targets plus two supplemental checks. GitHub exposes a compact grouped frontdoor while all groups remain blocking on pull requests and `main`.
 
+The active registry currently contains the RepoBrief diagnostic pilot and the designed Chronik history-brief comparison. Chronik uses the existing generic registration, active-registry and evaluator contracts; it does not add a specialist validator target.
+
 ## Correction of the previous report
 
-The earlier report stated 44 core and 11 active targets and still named the effect-evaluator pilot as active. That became stale when PR #314 archived the registered experiment and reassigned `validate-effect-evaluator-tests` to core. The active experiment truth now contains only the RepoBrief Workbench usefulness pilot.
+The earlier report stated 44 core and 11 active targets and still named the effect-evaluator pilot as active. That became stale when PR #314 archived the registered experiment and reassigned `validate-effect-evaluator-tests` to core. PR #316 then added the prospectively registered Chronik comparison without changing the grouped target counts.
 
 ## Safety boundary
 
@@ -45,6 +47,8 @@ Every new `validate-*` target must be classified. The inventory validator fails 
 - the active specialist budget exceeds 12 targets;
 - GitHub bypasses the grouped frontdoor with direct validator commands;
 - a referenced scope or target disappears.
+
+The existing active-experiment validator additionally requires a canonical `results/decision.yml` source. For registered entries it enforces exact consumer, decision question, primary metric, review date and expiry coherence; missing registration is permitted only before the registration enforcement date.
 
 ## Survivor disposition
 
@@ -66,7 +70,7 @@ These surfaces have a current consumer or protect a generic failure class used b
 - RepoBrief Workbench usefulness and run-series checks;
 - prospective experiment registration checks.
 
-The specialist group is 10 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class.
+The specialist group is 10 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class. The Chronik comparison stays inside the generic contracts rather than consuming one of the two remaining specialist slots.
 
 ### Review for retirement
 
@@ -97,7 +101,7 @@ The directional objective is a 30–50 percent reduction of the blocking legacy 
 ## Practical effect
 
 - Current active specialist surface: 10 targets instead of an undifferentiated 103-target frontdoor.
-- Current active experiments: one.
+- Current active experiments: two — one diagnostic pilot and one designed comparison.
 - Full regression breadth: retained while survivor proof is gathered.
 - Retired custom-agent and instruction-bearing projection content: no longer active authority; generated compatibility markers and parity contracts remain active.
 - Next engineering work: remove proven-redundant legacy groups rather than add new Vibe-Lab capabilities.
