@@ -6,7 +6,7 @@
     "pull_request_runs_all_groups": true,
     "main_runs_all_groups": true,
     "new_target_requires_classification": true,
-    "classified_target_count": 103,
+    "classified_target_count": 104,
     "max_validate_job_named_steps": 10
   },
   "groups": [
@@ -79,22 +79,25 @@
     },
     {
       "id": "active",
-      "consumer": "experiments/active.v1.json and the frozen Operator-Lab closeout",
+      "consumer": "experiments/active.v1.json, frozen Operator-Lab closeout, RepoBrief pilot and operator-routing ML-readiness shadow experiment",
       "failure_classes": [
         "active_experiment_registration_drift",
         "operator_lab_closeout_drift",
-        "repobrief_pilot_drift"
+        "repobrief_pilot_drift",
+        "operator_routing_ml_readiness_audit_drift"
       ],
       "scope_paths": [
         "experiments/active.v1.json",
         "experiments/2026-07-01_operator-lab-loop",
-        "experiments/2026-07-09_repobrief-workbench-usefulness-eval"
+        "experiments/2026-07-09_repobrief-workbench-usefulness-eval",
+        "experiments/2026-07-23_operator-routing-ml-readiness-shadow"
       ],
       "execution_policy": {
         "pull_request": "blocking",
         "main": "blocking"
       },
       "targets": [
+        "validate-operator-routing-ml-readiness-audit-tests",
         "validate-active-experiments-tests",
         "validate-active-experiments",
         "validate-operator-lab-closeout-tests",

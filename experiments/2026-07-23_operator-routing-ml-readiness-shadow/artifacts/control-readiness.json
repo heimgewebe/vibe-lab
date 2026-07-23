@@ -1,0 +1,279 @@
+{
+  "canonical_route_evidence_coverage": {
+    "manifest_count": 46,
+    "manifest_invalid_json": 0,
+    "route_evidence_missing_status": 6,
+    "route_evidence_present": 33,
+    "route_evidence_schema_versions": {
+      "1": 21,
+      "2": 12
+    },
+    "route_evidence_verified": 27,
+    "route_manifests_with_task_references": 17,
+    "source": "Grabowski agent-workspace manifests",
+    "source_available": true,
+    "task_reference_join_available": true,
+    "usable_as_complete_training_label_without_shadow_capture": false,
+    "verified_percent_of_manifests": 58.7,
+    "verified_route_manifest_task_join_coverage_percent": 51.85,
+    "verified_route_manifests_with_matching_task_rows": 14,
+    "verified_route_manifests_with_task_references": 14
+  },
+  "chronik_context_keys": {
+    "host": 5745,
+    "operation": 6167,
+    "repo": 422,
+    "subject_scope": 6167,
+    "task_class": 6167
+  },
+  "cross_source_complete_route_plus_semantic_outcome_training_label_available": false,
+  "diagnostic_only": {
+    "explicit_model_argument_counts_normalized": [
+      [
+        "gemini-3-1-pro-high",
+        115
+      ],
+      [
+        "sonnet",
+        61
+      ],
+      [
+        "opus",
+        49
+      ],
+      [
+        "fable",
+        36
+      ],
+      [
+        "claude-opus-4-6-thinking",
+        21
+      ],
+      [
+        "gpt-oss-120b-medium",
+        19
+      ],
+      [
+        "grok-4-5",
+        17
+      ],
+      [
+        "claude-fable-5",
+        14
+      ],
+      [
+        "gemini-3-5-flash-high",
+        13
+      ],
+      [
+        "gemini-3-1-pro",
+        12
+      ],
+      [
+        "claude-opus-4-8",
+        9
+      ],
+      [
+        "gemini-3-6-flash-high",
+        8
+      ],
+      [
+        "gpt-5-6-sol",
+        7
+      ],
+      [
+        "claude-sonnet-4-6",
+        7
+      ],
+      [
+        "qwen2-5-coder-14b",
+        6
+      ],
+      [
+        "gemini-3-1-pro-low",
+        3
+      ],
+      [
+        "grok-4-5-high",
+        3
+      ],
+      [
+        "gemini-3-6-flash-medium",
+        3
+      ],
+      [
+        "gpt-5-3-codex",
+        2
+      ],
+      [
+        "haiku",
+        1
+      ],
+      [
+        "deepseek-deepseek-v4-flash",
+        1
+      ],
+      [
+        "gpt-5-5",
+        1
+      ],
+      [
+        "gemini-3-5-flash-low",
+        1
+      ],
+      [
+        "claude-sonnet-4-6-thinking",
+        1
+      ],
+      [
+        "gemini-3-5-flash-medium",
+        1
+      ],
+      [
+        "qwen2-5-coder-32k-7b",
+        1
+      ]
+    ],
+    "model_argument_flags_checked": [
+      "--model",
+      "--model-v2",
+      "--routing-model"
+    ],
+    "top_argv_harnesses": [
+      [
+        "bash",
+        7220
+      ],
+      [
+        "python3",
+        3038
+      ],
+      [
+        "make",
+        1062
+      ],
+      [
+        "env",
+        880
+      ],
+      [
+        "python",
+        339
+      ],
+      [
+        "git",
+        291
+      ],
+      [
+        "agy",
+        247
+      ],
+      [
+        "codex",
+        246
+      ],
+      [
+        "claude",
+        219
+      ],
+      [
+        "pnpm",
+        216
+      ],
+      [
+        "gh",
+        205
+      ],
+      [
+        "sudo",
+        200
+      ],
+      [
+        "node",
+        180
+      ],
+      [
+        "npm",
+        129
+      ],
+      [
+        "docker",
+        128
+      ],
+      [
+        "rg",
+        106
+      ],
+      [
+        "ssh",
+        105
+      ],
+      [
+        "gemini",
+        75
+      ],
+      [
+        "bureau",
+        71
+      ],
+      [
+        "true",
+        65
+      ]
+    ],
+    "warning": "argv-derived harness/model values are diagnostic only and are not canonical routing-decision evidence"
+  },
+  "direct_canonical_route_columns": [],
+  "direct_complete_route_plus_semantic_outcome_training_label_available": false,
+  "direct_semantic_outcome_columns": [],
+  "interpretation": {
+    "ready_for_supervised_routing_training_from_current_sources_alone": false,
+    "required_next_evidence": [
+      "versioned shadow capture joining verified route_evidence to one eligible case identity",
+      "independently reviewed semantic outcome or explicit abstention",
+      "primary evidence references for every non-abstaining outcome",
+      "prospective shadow cohort"
+    ],
+    "task_state_is_process_lifecycle_not_semantic_correctness": true,
+    "task_store_has_direct_canonical_route_column": false,
+    "verified_workspace_route_evidence_exists": true,
+    "workspace_route_evidence_has_complete_task_join_coverage": false,
+    "workspace_route_evidence_has_partial_task_reference_join": true
+  },
+  "schema_version": "operator-routing-ml-readiness-audit.v2",
+  "sources": {
+    "agent_workspace_manifests": {
+      "enabled": true,
+      "mode": "read_only",
+      "store": "Grabowski agent-workspace manifests"
+    },
+    "raw_payload_exported": false,
+    "task_store": {
+      "mode": "read_only",
+      "store": "Grabowski tasks SQLite"
+    }
+  },
+  "state_counts": {
+    "cancelled": 156,
+    "completed": 12667,
+    "failed": 2926,
+    "interrupted": 77,
+    "running": 2,
+    "signalled": 2,
+    "timed_out": 22
+  },
+  "structured_coverage": {
+    "acceptance_invalid_json": 0,
+    "acceptance_nonempty": 0,
+    "argv_invalid_json": 0,
+    "chronik_context_invalid_json": 0,
+    "chronik_context_nonnull": 6167,
+    "explicit_model_argument_tasks": 412,
+    "external_run_id_nonnull": 0,
+    "lifecycle_receipt_nonnull": 9309,
+    "origin_ref_nonnull": 0,
+    "request_id_nonnull": 0,
+    "terminalization_nonnull": 9309
+  },
+  "task_count": 15852
+}

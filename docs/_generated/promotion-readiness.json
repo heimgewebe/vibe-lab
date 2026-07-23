@@ -378,15 +378,33 @@
       "promotion_ready": false,
       "status": "designed",
       "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "prepared",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [
+        "prepared_not_executed"
+      ],
+      "notes": [
+        "falsifiability_voluntary",
+        "prepared_not_executed"
+      ],
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow",
+      "pre_execution_hold": true,
+      "promotion_ready": false,
+      "status": "designed",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 24,
+    "experiments_checked": 25,
     "historical_escape": 1,
     "not_ready": 13,
-    "pre_execution_hold": 4,
+    "pre_execution_hold": 5,
     "ready": 6,
     "warnings": 6
   },

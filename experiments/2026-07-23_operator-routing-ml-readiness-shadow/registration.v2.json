@@ -1,0 +1,88 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-07-23_operator-routing-ml-readiness-shadow",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether an offline, shadow-only routing model pilot has sufficiently complete and independently reviewable training labels to begin model comparison."
+  },
+  "decision_target": {
+    "question": "Can evidence-bound shadow capture produce a trustworthy route-plus-outcome cohort without treating process state as task correctness or granting ML operational authority?",
+    "owner": "Bureau with operator review"
+  },
+  "intervention": {
+    "name": "evidence-bound shadow route/outcome capture",
+    "description": "For naturally occurring eligible coding-agent tasks, record canonical route identity, bounded task-class features and an independently reviewed semantic outcome after execution; the record never changes the selected route."
+  },
+  "control_condition": {
+    "id": "current_task_store_projection",
+    "description": "Use current Grabowski task records and lifecycle receipts plus aggregate Agent Workspace manifest coverage reported as canonical_route_evidence_coverage in the frozen control artifact. Verified route_evidence exists in some workspace manifests, but it is not a direct task-table column and is not assumed to be joinable to semantic outcomes."
+  },
+  "treatment_condition": {
+    "id": "shadow_evidence_bound_capture",
+    "description": "Use the same natural task flow plus one proposal-only shadow observation binding canonical route identity to independent semantic outcome evidence after the task."
+  },
+  "measurement": {
+    "primary_metric": "direct_route_plus_reviewed_outcome_completeness",
+    "direction": "higher_is_better",
+    "unit": "percent",
+    "minimum_material_effect": 80,
+    "method": "Compute the share of eligible prospective cohort cases containing one verified canonical route_evidence binding and an independently reviewed semantic outcome with primary evidence references; argv-derived model labels and process-only states do not count. Eligibility is frozen before outcome review. If no defensible semantic outcome can be established, record an explicit abstention; it remains in the eligible denominator and does not count as complete. Canonical route evidence means verified Grabowski Agent Workspace route_evidence v1/v2 or a later deterministically validated versioned successor; argv inference does not qualify.",
+    "success": "At least 90 percent completeness across at least 20 natural eligible treatment cases, with zero automatic routing effects, zero raw transcript capture, and every non-abstaining outcome bound to primary evidence. From 80.0 percent up to but below 90.0 percent is inconclusive and cannot authorize training; extend the frozen cohort or defer.",
+    "falsification": "Below 80 percent completeness, more than 30 percent of non-abstaining semantic outcomes lacking primary evidence references, unresolved reviewer leakage, process-state substitution for semantic correctness, raw private transcript dependence, or any automatic routing effect blocks model training. An explicit abstention is preferred over guessing a semantic label.",
+    "cost_metric": {
+      "id": "capture_review_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure additional elapsed handling effort needed to seal route identity, independent outcome assessment and evidence references for each treatment case."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "natural coding-agent task in the same task-class, risk and repository-context bands",
+    "minimum_control": 20,
+    "minimum_treatment": 20,
+    "comparability_constraints": [
+      "same coding-agent task-class distribution",
+      "same risk-band distribution",
+      "same repository-context distribution",
+      "same operator truth hierarchy"
+    ],
+    "confounders": [
+      "task difficulty",
+      "repository drift",
+      "model catalog changes",
+      "reviewer familiarity",
+      "missing external CI evidence"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "Grabowski task and lifecycle receipt",
+      "verified Grabowski Agent Workspace route_evidence v1/v2 or deterministically validated versioned successor; argv inference excluded",
+      "canonical routing decision evidence",
+      "GitHub pull request and CI evidence",
+      "diff-bound review evidence",
+      "independent operator outcome assessment",
+      "Chronik frozen outcome reference"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-15T00:00:00Z",
+  "expires_at": "2026-09-01T00:00:00Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-07-23_operator-routing-ml-readiness-shadow"
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true
+  }
+}

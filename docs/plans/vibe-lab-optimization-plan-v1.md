@@ -24,7 +24,7 @@ As of 2026-07-14:
 - the registered operator-intervention effect-evaluator experiment is archived as practically non-executable;
 - the generic observation capture and deterministic evaluator remain unpromoted review tooling;
 - custom agent profiles and instruction-bearing Cursor/Copilot projections are retired, while generated compatibility markers and their blocking parity contracts remain active;
-- the validator inventory contains 103 classified targets: 45 core, 10 active and 48 legacy, plus two supplemental checks;
+- the validator inventory contains 104 classified targets: 45 core, 11 active and 48 legacy, plus two supplemental checks;
 - no Vibe-Lab surface has runtime, queue, merge, deploy, routing or policy authority.
 
 ## Completed slices
