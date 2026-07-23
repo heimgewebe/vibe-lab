@@ -1,0 +1,36 @@
+{
+  "schema_version": "operator-routing-shadow-readiness-criteria.v1",
+  "task": "OPERATOR-ML-READINESS-V1-T004",
+  "registered_before_model_comparison": true,
+  "minimum_treatment_cases": 20,
+  "pass_completeness_percent": 90.0,
+  "inconclusive_floor_percent": 80.0,
+  "maximum_missing_primary_evidence_percent_of_non_abstaining": 30.0,
+  "minimum_cases_per_observed_stratum": 3,
+  "coverage_dimensions": [
+    "task_kind",
+    "risk_tier",
+    "repository_context",
+    "actual_route",
+    "recommended_route"
+  ],
+  "route_schema_versions_reported_separately": [1, 2],
+  "require_zero_no_effect_violations": true,
+  "require_zero_integrity_errors": true,
+  "require_zero_unresolved_manifest_bindings_for_pass": true,
+  "require_attempt_accounting_for_pass": true,
+  "capture_error_blocks_pass": true,
+  "capture_rejection_blocks_pass": true,
+  "interpretation": {
+    "PASS": "The frozen prospective cohort meets the preregistered sample, completeness, evidence, integrity, no-effect and observed-stratum coverage criteria. This authorizes only a separate offline baseline comparison.",
+    "FAIL": "A falsification or integrity condition is met. Training remains blocked until a separately reviewed corrective path is completed.",
+    "CONTINUE-COLLECTING": "The cohort is structurally admissible but lacks preregistered sample, completeness or coverage sufficiency. Training remains blocked and thresholds must not be relaxed post hoc."
+  },
+  "does_not_establish": [
+    "model_superiority",
+    "routing_policy_authority",
+    "deployment_authority",
+    "online_learning_authority",
+    "automatic_policy_promotion"
+  ]
+}
