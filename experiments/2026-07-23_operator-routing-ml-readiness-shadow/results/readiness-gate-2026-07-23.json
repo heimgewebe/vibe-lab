@@ -1,0 +1,87 @@
+{
+  "attempt_accounting": {
+    "dangling_prospective_reference_count": 0,
+    "reason_counts": {},
+    "status_counts": {}
+  },
+  "cohort_identity_sha256": "e717db0f0fa5e8e92924fdb102f8295f123140723130a4960fdccb75e0825894",
+  "counts": {
+    "abstained_records": 0,
+    "attempts": 0,
+    "complete_records": 0,
+    "complete_treatment_cases": 0,
+    "eligibility": 0,
+    "eligibility_unsealed": 0,
+    "eligible_treatment_cases": 0,
+    "prospective": 0,
+    "prospective_cases_with_multiple_eligibilities": 0,
+    "prospective_unbound": 0,
+    "records": 0,
+    "reviewed_missing_primary_evidence": 0,
+    "reviewed_records": 0
+  },
+  "coverage": {
+    "dimensions": {
+      "actual_route": {},
+      "recommended_route": {},
+      "repository_context": {},
+      "risk_tier": {},
+      "task_kind": {}
+    },
+    "observed_stratum_deficits": {},
+    "representativeness_claim": "none_for_unobserved_or_undercovered_strata",
+    "route_schema_versions": {
+      "1": 0,
+      "2": 0
+    },
+    "unresolved_manifest_reasons": {}
+  },
+  "criteria_sha256": "33aac46a4d85bd996e937eac9c78155c84280140aa7547abeb9e2d47fb6b03c7",
+  "does_not_establish": [
+    "model_superiority",
+    "routing_policy_authority",
+    "deployment_authority",
+    "online_learning_authority",
+    "automatic_policy_promotion"
+  ],
+  "errors": {},
+  "gate_reasons": [
+    "minimum_treatment_cases_not_met"
+  ],
+  "gate_result": "CONTINUE-COLLECTING",
+  "outcomes": {
+    "lifecycle_state_promoted_to_semantic_label": false,
+    "reviewed_label_counts": {}
+  },
+  "privacy_and_effect_boundary": {
+    "no_effect_expected": {
+      "merge": false,
+      "policy": false,
+      "proposal_only": true,
+      "queue": false,
+      "routing": false,
+      "runtime": false
+    },
+    "raw_argv_exported": false,
+    "raw_prompts_exported": false,
+    "raw_transcripts_exported": false,
+    "raw_workspace_or_task_ids_exported": false
+  },
+  "quality": {
+    "attempt_accounting_gap_count": 0,
+    "capture_rejection_count": 0,
+    "direct_route_plus_reviewed_outcome_completeness_percent": 0.0,
+    "integrity_error_count": 0,
+    "no_effect_violation_count": 0,
+    "reviewed_missing_primary_evidence_percent": 0.0,
+    "unresolved_manifest_binding_count": 0
+  },
+  "schema_version": "operator-routing-shadow-readiness-gate-report.v1",
+  "sources": {
+    "agent_workspace_manifests": "read_only",
+    "cohort": "Grabowski create-only operator-routing-shadow cohort",
+    "model_training_performed": false,
+    "raw_payload_exported": false
+  },
+  "task": "OPERATOR-ML-READINESS-V1-T004"
+}
