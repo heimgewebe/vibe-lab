@@ -3,7 +3,7 @@ title: "Vibe-Lab Validator Inventory v1"
 status: active
 canonicality: operative
 created: "2026-07-12"
-updated: "2026-07-14"
+updated: "2026-07-23"
 triggered_by: "vibe-lab-optimization-plan-v1-phase-c"
 relations:
   - type: informs
@@ -19,13 +19,13 @@ The current machine-readable source is `.vibe/validator-inventory.v1.json`. Afte
 | Group | Targets | Current consumer |
 | --- | ---: | --- |
 | Core | 45 | Repository contracts, generic evidence integrity and every experiment |
-| Active | 10 | Active registry, frozen Operator-Lab closeout and RepoBrief pilot |
+| Active | 11 | Active registry, frozen Operator-Lab closeout, RepoBrief pilot and routing-readiness audit |
 | Legacy | 48 | Grandfathered historical experiments, retired agent-operability corpus and closed specialist families |
 | Supplemental | 2 | Replay non-mutation and committed generated artifacts |
 
-The grouped inventory therefore contains 103 classified `validate-*` targets plus two supplemental checks. GitHub exposes a compact grouped frontdoor while all groups remain blocking on pull requests and `main`.
+The grouped inventory therefore contains 104 classified `validate-*` targets plus two supplemental checks. GitHub exposes a compact grouped frontdoor while all groups remain blocking on pull requests and `main`.
 
-The active registry currently contains the RepoBrief diagnostic pilot and the designed Chronik history-brief comparison. Chronik uses the existing generic registration, active-registry and evaluator contracts; it does not add a specialist validator target.
+The active registry currently contains the RepoBrief diagnostic pilot, the designed Chronik history-brief comparison and the operator-routing ML-readiness shadow experiment. Chronik uses the existing generic registration, active-registry and evaluator contracts. The routing-readiness experiment adds one focused regression target for its aggregate-only audit because the audit has executable parsing, privacy and cross-source coverage semantics that generic registration validation does not exercise.
 
 ## Correction of the previous report
 
@@ -68,9 +68,10 @@ These surfaces have a current consumer or protect a generic failure class used b
 - active experiment registry checks;
 - frozen Operator-Lab closeout checks;
 - RepoBrief Workbench usefulness and run-series checks;
-- prospective experiment registration checks.
+- prospective experiment registration checks;
+- operator-routing ML-readiness aggregate-audit regression checks.
 
-The specialist group is 10 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class. The Chronik comparison stays inside the generic contracts rather than consuming one of the two remaining specialist slots.
+The specialist group is 11 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class. The Chronik comparison stays inside the generic contracts. The routing-readiness audit consumes one specialist slot because it protects executable parsing, privacy redaction and canonical-route coverage logic for an active experiment.
 
 ### Review for retirement
 

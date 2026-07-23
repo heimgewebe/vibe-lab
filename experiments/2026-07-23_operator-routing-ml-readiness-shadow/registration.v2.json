@@ -15,7 +15,7 @@
   },
   "control_condition": {
     "id": "current_task_store_projection",
-    "description": "Use current Grabowski task records and lifecycle receipts only. Route identity may be inferable from argv in some cases; terminal state is not treated as semantic correctness."
+    "description": "Use current Grabowski task records and lifecycle receipts plus aggregate Agent Workspace manifest coverage reported as canonical_route_evidence_coverage in the frozen control artifact. Verified route_evidence exists in some workspace manifests, but it is not a direct task-table column and is not assumed to be joinable to semantic outcomes."
   },
   "treatment_condition": {
     "id": "shadow_evidence_bound_capture",
@@ -26,9 +26,9 @@
     "direction": "higher_is_better",
     "unit": "percent",
     "minimum_material_effect": 80,
-    "method": "Compute the share of eligible cohort cases containing both canonical route identity and an independently reviewed semantic outcome label with evidence references; inferred argv labels and process-only states do not count.",
-    "success": "At least 90 percent completeness across at least 20 natural eligible treatment cases, with zero automatic routing effects and no raw transcript capture.",
-    "falsification": "Below 80 percent completeness, unresolved reviewer leakage, process-state substitution for semantic correctness, raw private transcript dependence, or any automatic routing effect blocks model training.",
+    "method": "Compute the share of eligible prospective cohort cases containing one verified canonical route_evidence binding and an independently reviewed semantic outcome with primary evidence references; argv-derived model labels and process-only states do not count. Eligibility is frozen before outcome review. If no defensible semantic outcome can be established, record an explicit abstention; it remains in the eligible denominator and does not count as complete. Canonical route evidence means verified Grabowski Agent Workspace route_evidence v1/v2 or a later deterministically validated versioned successor; argv inference does not qualify.",
+    "success": "At least 90 percent completeness across at least 20 natural eligible treatment cases, with zero automatic routing effects, zero raw transcript capture, and every non-abstaining outcome bound to primary evidence. From 80.0 percent up to but below 90.0 percent is inconclusive and cannot authorize training; extend the frozen cohort or defer.",
+    "falsification": "Below 80 percent completeness, more than 30 percent of non-abstaining semantic outcomes lacking primary evidence references, unresolved reviewer leakage, process-state substitution for semantic correctness, raw private transcript dependence, or any automatic routing effect blocks model training. An explicit abstention is preferred over guessing a semantic label.",
     "cost_metric": {
       "id": "capture_review_effort_seconds",
       "unit": "seconds",
@@ -57,6 +57,7 @@
   "evidence_sources": {
     "allowed": [
       "Grabowski task and lifecycle receipt",
+      "verified Grabowski Agent Workspace route_evidence v1/v2 or deterministically validated versioned successor; argv inference excluded",
       "canonical routing decision evidence",
       "GitHub pull request and CI evidence",
       "diff-bound review evidence",

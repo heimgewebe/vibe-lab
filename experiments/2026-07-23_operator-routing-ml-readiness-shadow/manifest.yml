@@ -12,16 +12,18 @@ experiment:
   execution_refs: []
   created: "2026-07-23"
   updated: "2026-07-23"
-  author: "ChatGPT / Grabowski"
+  author: "Grabowski / Bureau"
   iteration: 1
   evidence_level: experimental
   falsifiability:
     version: 1
     falsification_criterion: >
-      Do not proceed to model training if treatment capture cannot produce at
-      least 90 percent direct route-plus-reviewed-outcome completeness across the
-      registered cohort, if labels collapse process success into task correctness,
-      or if capture requires raw private transcripts or automatic routing effects.
+      Below 80 percent direct route-plus-reviewed-outcome completeness fails the
+      readiness gate. From 80.0 percent up to but below 90.0 percent is inconclusive
+      and cannot authorize training. Also fail if more than 30 percent of
+      non-abstaining outcomes lack primary evidence, if labels collapse process
+      success into task correctness, or if capture requires raw private transcripts
+      or automatic routing effects.
     counter_hypotheses:
       - id: "task_state_is_sufficient_label"
         statement: "Grabowski task terminal state is already a sufficient model-training outcome label."
@@ -43,12 +45,12 @@ experiment:
           evidence_refs:
             - path: "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json"
           limitations:
-            - "Explicit model flags cover only a subset and argv inference is not canonical route evidence."
+            - "Verified workspace route_evidence exists for a bounded subset, but current task rows expose no direct canonical route column or explicit join binding to reviewed semantic outcomes; argv inference is not canonical route evidence."
           confidence: high
 
 context:
   tools:
-    - "Grabowski task store read-only audit"
+    - "Grabowski task store and Agent Workspace manifest read-only audit"
     - "Chronik outcome evidence"
     - "Vibe-Lab deterministic experiment contracts"
     - "future offline scikit-learn baseline only after readiness gate"
