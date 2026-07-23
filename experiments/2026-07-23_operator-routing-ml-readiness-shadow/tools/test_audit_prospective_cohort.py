@@ -30,6 +30,13 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
     def _write(self, path: Path, value: dict) -> None:
         path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
+    def _criteria_without_structural_capture_gaps(self) -> dict:
+        criteria = dict(CRITERIA)
+        criteria["require_disagreement_observability_for_pass"] = False
+        criteria["require_test_quarantine_provenance_for_pass"] = False
+        criteria["require_execution_failure_provenance_for_pass"] = False
+        return criteria
+
     def _case(self, cohort: Path, workspaces: Path, index: int) -> None:
         workspace_id = f"gaw-test-{index:02d}"
         recommendation_id = module.hashlib.sha256(f"recommendation-{index}".encode()).hexdigest()
@@ -161,13 +168,20 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertEqual(report["counts"]["prospective"], 0)
             self.assertEqual(report["quality"]["integrity_error_count"], 0)
             self.assertIn("minimum_treatment_cases_not_met", report["gate_reasons"])
+            self.assertIn("semantic_reviewer_disagreement_unobservable", report["gate_reasons"])
+            self.assertIn("test_quarantine_provenance_unobservable", report["gate_reasons"])
+            self.assertIn("execution_failure_provenance_unobservable", report["gate_reasons"])
+            self.assertFalse(report["outcomes"]["semantic_review_disagreement"]["observable"])
+            self.assertIsNone(report["cohort_provenance"]["test_or_quarantine_contamination_count"])
 
     def test_twenty_complete_integrity_bound_cases_pass(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             cohort, workspaces = self._roots(tmp)
             for index in range(20):
                 self._case(cohort, workspaces, index)
-            report = module.audit(cohort, workspaces, CRITERIA)
+            report = module.audit(
+                cohort, workspaces, self._criteria_without_structural_capture_gaps()
+            )
             self.assertEqual(report["gate_result"], "PASS")
             self.assertEqual(report["quality"]["direct_route_plus_reviewed_outcome_completeness_percent"], 100.0)
             self.assertEqual(report["quality"]["integrity_error_count"], 0)
@@ -226,7 +240,9 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             }
             record = {"record_id": module._sha256_json(record_payload), **record_payload}
             self._write(cohort / "records" / "extra.json", record)
-            report = module.audit(cohort, workspaces, CRITERIA)
+            report = module.audit(
+                cohort, workspaces, self._criteria_without_structural_capture_gaps()
+            )
             self.assertEqual(report["gate_result"], "PASS")
             self.assertEqual(report["counts"]["eligible_treatment_cases"], 21)
             self.assertEqual(report["counts"]["complete_records"], 21)
@@ -243,7 +259,9 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             manifest = json.loads(path.read_text(encoding="utf-8"))
             manifest["tasks"] = {"writer": "000000000000000000000001"}
             self._write(path, manifest)
-            report = module.audit(cohort, workspaces, CRITERIA)
+            report = module.audit(
+                cohort, workspaces, self._criteria_without_structural_capture_gaps()
+            )
             self.assertEqual(report["gate_result"], "PASS")
             self.assertEqual(report["quality"]["unresolved_manifest_binding_count"], 0)
 

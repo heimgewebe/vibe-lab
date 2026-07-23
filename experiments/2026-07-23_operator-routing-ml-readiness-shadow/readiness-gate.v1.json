@@ -14,7 +14,10 @@
     "actual_route",
     "recommended_route"
   ],
-  "route_schema_versions_reported_separately": [1, 2],
+  "route_schema_versions_reported_separately": [
+    1,
+    2
+  ],
   "require_zero_no_effect_violations": true,
   "require_zero_integrity_errors": true,
   "require_zero_unresolved_manifest_bindings_for_pass": true,
@@ -32,5 +35,8 @@
     "deployment_authority",
     "online_learning_authority",
     "automatic_policy_promotion"
-  ]
+  ],
+  "require_disagreement_observability_for_pass": true,
+  "require_test_quarantine_provenance_for_pass": true,
+  "require_execution_failure_provenance_for_pass": true
 }

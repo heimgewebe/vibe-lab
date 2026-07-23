@@ -38,8 +38,9 @@ triggered_by: "user-request-operator-learning-ml-2026-07-23"
 6. Count created, duplicate, rejected and error capture attempts explicitly. Unsealed and unbound cases remain visible instead of being silently discarded.
 7. Report task kind, risk tier, repository context, actual route, recommended route and route schema v1/v2 separately. No representativeness claim is made for unobserved or under-covered strata.
 8. A reviewed semantic outcome counts as complete only with primary evidence. Abstentions remain in the eligible treatment-case denominator; lifecycle state is never promoted into a semantic label.
-9. Emit exactly `PASS`, `FAIL` or `CONTINUE-COLLECTING`, bound to the criteria SHA-256 and an immutable aggregate cohort identity. Only `PASS` may unblock a separate offline model-comparison task.
-10. The 2026-07-23 live audit returned `CONTINUE-COLLECTING`: the clean live cohort contained zero prospective cases, zero bound eligibility receipts, zero sealed records and zero capture attempts, with zero observed integrity or no-effect violations. This establishes an empty admissible collection surface, not training readiness.
+9. Treat unavailable quality signals as unknown, never zero. Record v2 has no reviewer identity or independent second semantic annotation, so disagreement is currently unobservable. Capture v2 also lacks explicit production/test/quarantine provenance and execution-abort versus infrastructure-failure provenance. Each gap blocks `PASS` until a separately reviewed capture-contract extension makes it measurable.
+10. Emit exactly `PASS`, `FAIL` or `CONTINUE-COLLECTING`, bound to the criteria SHA-256 and an immutable aggregate cohort identity. Only `PASS` may unblock a separate offline model-comparison task.
+11. The 2026-07-23 live audit returned `CONTINUE-COLLECTING`: the clean live cohort contained zero prospective cases, zero bound eligibility receipts, zero sealed records and zero capture attempts, with zero observed integrity or no-effect violations. It also reported the three structural observability gaps above. This establishes an empty admissible collection surface, not training readiness.
 
 ## Stop rules
 

@@ -622,6 +622,11 @@ def audit(cohort_root: Path, workspace_root: Path, criteria: dict[str, Any]) -> 
     capture_error_count = attempt_statuses.get("error", 0)
     capture_rejection_count = attempt_statuses.get("rejected", 0)
 
+    # These signals are structurally absent from capture/record v2. Unknown is not zero.
+    disagreement_observable = False
+    test_quarantine_provenance_observable = False
+    execution_failure_provenance_observable = False
+
     reasons: list[str] = []
     result = "PASS"
     if criteria["require_zero_integrity_errors"] and integrity_error_count:
@@ -640,6 +645,21 @@ def audit(cohort_root: Path, workspace_root: Path, criteria: dict[str, Any]) -> 
         if criteria["capture_rejection_blocks_pass"] and capture_rejection_count:
             result = "CONTINUE-COLLECTING"
             reasons.append("capture_rejections_require_selection_bias_review")
+        if criteria["require_disagreement_observability_for_pass"] and not disagreement_observable:
+            result = "CONTINUE-COLLECTING"
+            reasons.append("semantic_reviewer_disagreement_unobservable")
+        if (
+            criteria["require_test_quarantine_provenance_for_pass"]
+            and not test_quarantine_provenance_observable
+        ):
+            result = "CONTINUE-COLLECTING"
+            reasons.append("test_quarantine_provenance_unobservable")
+        if (
+            criteria["require_execution_failure_provenance_for_pass"]
+            and not execution_failure_provenance_observable
+        ):
+            result = "CONTINUE-COLLECTING"
+            reasons.append("execution_failure_provenance_unobservable")
         if treatment_case_count < int(criteria["minimum_treatment_cases"]):
             result = "CONTINUE-COLLECTING"
             reasons.append("minimum_treatment_cases_not_met")
@@ -702,6 +722,14 @@ def audit(cohort_root: Path, workspace_root: Path, criteria: dict[str, Any]) -> 
             "status_counts": dict(sorted(attempt_statuses.items())),
             "reason_counts": dict(sorted(attempt_reasons.items())),
             "dangling_prospective_reference_count": dangling_attempt_refs,
+            "unbound_prospective_count": len(set(prospectives) - prospective_ids_referenced_by_eligibility),
+            "unsealed_eligibility_count": len(set(eligibilities) - record_eligibility_refs),
+            "execution_abort_reason_observable": execution_failure_provenance_observable,
+            "infrastructure_failure_reason_observable": execution_failure_provenance_observable,
+            "selection_bias_interpretation": (
+                "capture attempts, unbound prospective cases and unsealed eligibility are counted, "
+                "but execution abort versus infrastructure-failure causes are not encoded by capture v2"
+            ),
         },
         "coverage": {
             "route_schema_versions": {version: route_schema_versions.get(str(version), 0) for version in criteria["route_schema_versions_reported_separately"]},
@@ -713,6 +741,25 @@ def audit(cohort_root: Path, workspace_root: Path, criteria: dict[str, Any]) -> 
         "outcomes": {
             "reviewed_label_counts": dict(sorted(outcome_labels.items())),
             "lifecycle_state_promoted_to_semantic_label": False,
+            "semantic_review_disagreement": {
+                "observable": disagreement_observable,
+                "independent_label_pair_count": 0,
+                "disagreement_count": None,
+                "disagreement_rate_percent": None,
+                "limitation": (
+                    "operator-routing-shadow-record.v2 contains one semantic outcome and review_authority "
+                    "but no reviewer identity or independent second annotation"
+                ),
+            },
+        },
+        "cohort_provenance": {
+            "test_quarantine_provenance_observable": test_quarantine_provenance_observable,
+            "test_or_quarantine_contamination_count": None,
+            "execution_failure_provenance_observable": execution_failure_provenance_observable,
+            "limitation": (
+                "prospective capture v2 has no explicit production/test/quarantine source class and no "
+                "execution-abort versus infrastructure-failure provenance field"
+            ),
         },
         "privacy_and_effect_boundary": {
             "raw_transcripts_exported": False,
