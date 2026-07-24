@@ -3,7 +3,7 @@ title: "Vibe-Lab Optimization Plan v1"
 status: active
 canonicality: operative
 created: "2026-07-12"
-updated: "2026-07-14"
+updated: "2026-07-24"
 triggered_by: "user-request-2026-07-12"
 ---
 
@@ -17,14 +17,15 @@ The primary optimization objective is now **surface reduction**, not new capabil
 
 ## Verified current state
 
-As of 2026-07-14:
+As of 2026-07-24:
 
-- `experiments/active.v1.json` contains two active entries: the RepoBrief Workbench diagnostic pilot and the designed Chronik history-brief comparison;
+- `experiments/active.v1.json` contains two active entries: the designed Chronik history-brief comparison and the operator-routing ML-readiness shadow experiment;
+- the former RepoBrief Workbench diagnostic pilot is archived because its named Bureau RPU-V1 consumer is completed; its limited evidence remains historical and is not rebound to RepoGround;
 - the 36-card Operator-Lab series is frozen with `insufficient_evidence`;
 - the registered operator-intervention effect-evaluator experiment is archived as practically non-executable;
 - the generic observation capture and deterministic evaluator remain unpromoted review tooling;
 - custom agent profiles and instruction-bearing Cursor/Copilot projections are retired, while generated compatibility markers and their blocking parity contracts remain active;
-- the validator inventory contains 104 classified targets: 45 core, 11 active and 48 legacy, plus two supplemental checks;
+- the validator inventory contains 100 classified targets: 45 core, 7 active and 48 legacy, plus two supplemental checks;
 - no Vibe-Lab surface has runtime, queue, merge, deploy, routing or policy authority.
 
 ## Completed slices
@@ -43,12 +44,7 @@ No new Vibe-Lab service, agent profile, instruction-bearing projection target, s
 
 Both current entries must be reviewed by `2026-08-15T00:00:00Z` and expire at `2026-09-01T00:00:00Z`.
 
-The RepoBrief pilot must close with one of:
-
-- `promote` only with prospective comparative evidence;
-- `pilot` with a bounded diagnostic consumer and another explicit review;
-- `defer` when evidence is still insufficient but collection remains proportionate;
-- `reject` or `archive` when no decision benefit justifies continued maintenance.
+The former RepoBrief Workbench pilot is archived rather than renamed or rebound. Its named consumer, Bureau RPU-V1, is completed; the historical `insufficient_proof` decision remains intact. RepoGround is a separate current component and requires its own prospective utility decision if Vibe-Lab evidence is ever needed.
 
 The Chronik comparison may advance only after at least three comparable natural cases per condition, independent scoring and no fatal history-as-live-truth failure. Otherwise it must be deferred, rejected or archived rather than expanded into another runtime surface.
 
@@ -79,7 +75,7 @@ The 48 legacy targets remain blocking only until their protected family is archi
 1. retired agent-handoff, agent-command and command-chain contracts;
 2. closed Model-Lab specialist validators;
 3. historical replay and fixture semantics already covered by generic schema, relation, run-bundle and claim/evidence gates;
-4. historical rLens/PR-context validators after the active RepoBrief decision closes.
+4. historical rLens/PR-context validators, now that the former RepoBrief decision is closed.
 
 Each reduction slice must identify the protected failure class, prove archive or equivalent generic coverage, remove more permanent surface than it adds, and keep current active evidence integrity intact.
 
@@ -99,7 +95,7 @@ Stop or remove an optimization slice if it requires a new service, database, das
 
 - Grabowski owns execution and typed receipts.
 - GitHub and CI own code, review, merge and check truth.
-- RepoBrief / Lenskit supplies cited repository context.
+- RepoGround supplies cited, commit-bound repository context.
 - Bureau owns task and promotion decisions.
 - Chronik may own longitudinal append-only history when needed.
 - Vibe-Lab owns bounded prospective experiment design, evidence binding and reviewed closure only.

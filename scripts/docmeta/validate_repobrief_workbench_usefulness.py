@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate the RepoBrief Workbench usefulness evaluation design.
 
-This is a narrow validator for experiments/2026-07-09_repobrief-workbench-usefulness-eval.
+This is a narrow historical validator for the archived 2026-07-09 RepoBrief Workbench experiment.
 It validates the measurement design only. It does not execute runs or claim that
 RepoBrief/Agent Workbench improves agent code work.
 """
@@ -22,6 +22,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PLAN = (
     REPO_ROOT
     / "experiments"
+    / "_archive"
     / "2026-07-09_repobrief-workbench-usefulness-eval"
     / "measurement-plan.yml"
 )

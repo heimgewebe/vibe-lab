@@ -284,12 +284,6 @@
 | `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` | Initial Prompt — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` | Failure Modes — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/method.md` | Method — rLens Agent Context Conditions | designed | operative |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/CONTEXT.md` | RepoBrief Workbench Usefulness Evaluation — Context | designed | operative |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/INITIAL.md` | RepoBrief Workbench Usefulness Evaluation — Initial Setup | designed | operative |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md` | README | — | — |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md` | Failure Modes — RepoBrief Workbench Usefulness Evaluation | designed | operative |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md` | RepoBrief Workbench Usefulness Evaluation — Method | designed | operative |
-| `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` | RepoBrief Workbench Usefulness Evaluation — Result | inconclusive | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/CONTEXT.md` | Chronik History Brief Effect — Context | active | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/INITIAL.md` | Chronik History Brief Effect — Initial State | active | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md` | README | — | — |

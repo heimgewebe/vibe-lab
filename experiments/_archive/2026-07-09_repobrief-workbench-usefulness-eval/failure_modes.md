@@ -1,6 +1,6 @@
 ---
 title: "Failure Modes — RepoBrief Workbench Usefulness Evaluation"
-status: designed
+status: archived
 canonicality: operative
 ---
 

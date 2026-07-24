@@ -8,14 +8,15 @@ experiment:
     miss diagnostics compared with no-rLens/no-RepoBrief operation, but no
     default workbench surface should be promoted until comparable executed runs
     show improvement without hiding stale evidence or increasing false confidence.
-  status: testing
+  status: inconclusive
   category: workflow
   execution_status: reconstructed
   execution_refs:
     - "results/run-series.yml"
+    - "results/archive-decision.md"
   evidence_level: experimental
   created: "2026-07-09"
-  updated: "2026-07-09"
+  updated: "2026-07-24"
   author: "ChatGPT / Grabowski"
   triggered_by: "bureau:RPU-V1-T012"
   iteration: 2

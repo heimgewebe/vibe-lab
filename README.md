@@ -4,7 +4,7 @@
 
 Vibe-Lab hält rohe Beobachtungen fest, registriert begrenzte Vergleiche vor ihrer Ausführung, bindet Ergebnisse an konkrete Evidenz und schließt sie mit einer überprüften Entscheidung ab.
 
-Es ist kein Agentenlaufzeitsystem, Scheduler, Dashboard, zweites Bureau, zweiter Grabowski-Governor oder automatische Lerninstanz. GitHub, CI, Grabowski, RepoBrief und Bureau bleiben die jeweiligen Wahrheits- und Entscheidungsorgane.
+Es ist kein Agentenlaufzeitsystem, Scheduler, Dashboard, zweites Bureau, zweiter Grabowski-Governor oder automatische Lerninstanz. GitHub, CI, Grabowski, RepoGround und Bureau bleiben die jeweiligen Wahrheits- und Entscheidungsorgane.
 
 ## Schnellstart
 
@@ -103,7 +103,7 @@ Vibe-Lab darf nicht:
 - die nächste Aufgabe auswählen;
 - Bureau-Queues verändern;
 - Pull Requests mergen oder Dienste deployen;
-- GitHub-, CI-, Runtime- oder RepoBrief-Wahrheit überschreiben;
+- GitHub-, CI-, Runtime- oder RepoGround-Wahrheit überschreiben;
 - aus einer einzelnen Beobachtung eine allgemeine Regel machen.
 
 ## Steuerung und Wahrheitshierarchie

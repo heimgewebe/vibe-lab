@@ -2,14 +2,14 @@
 title: "Vibe-Lab Productive Role Boundary"
 status: active
 canonicality: operative
-updated: "2026-07-08"
+updated: "2026-07-24"
 ---
 
 # Vibe-Lab Productive Role Boundary
 
 ## Purpose
 
-Vibe-Lab is the ecosystem evidence and learning surface. It records observations from real work, tests whether repeated friction forms a pattern, and turns sufficiently evidenced patterns into proposal-ready follow-up material.
+Vibe-Lab is the ecosystem experiment and evidence surface. It registers bounded comparisons for named consumers, binds observations to evidence and closes experiments with reviewed decisions.
 
 It is not a steering organ.
 
@@ -17,12 +17,12 @@ It is not a steering organ.
 
 Vibe-Lab may:
 
-- record observations from real operator work;
+- register a bounded prospective comparison for a named consumer and decision target;
 - keep evidence references to pull requests, commits, CI checks, run cards, receipts, and cited repository artifacts;
 - classify claim boundaries as observed, self-reported, inferred, stale, missing, or unknown;
-- aggregate repeated friction into candidate patterns;
-- propose follow-up candidates for Bureau review;
-- project condensed learning signals for status surfaces after evidence exists.
+- evaluate comparability and uncertainty without inventing causal proof;
+- close an experiment with a reviewed disposition;
+- propose evidence-bound follow-up candidates for Bureau review.
 
 Vibe-Lab must not:
 
@@ -30,30 +30,23 @@ Vibe-Lab must not:
 - mutate Bureau queues;
 - merge pull requests;
 - deploy runtime services;
-- override GitHub, CI, runtime, or RepoBrief as truth sources;
+- override GitHub, CI, runtime, or RepoGround as truth sources;
 - promote a rule from a single anecdotal run.
 
 ## Cooperation contract
 
 | Organ | Vibe-Lab relation | Boundary |
 | --- | --- | --- |
-| Grabowski | Primary source of operator-work observations. | Grabowski executes work; Vibe-Lab only records learning evidence. |
+| Grabowski | Primary source of operator-work observations. | Grabowski executes work; Vibe-Lab only binds experiment observations to evidence. |
 | Bureau | Receives proposal-ready follow-up candidates. | Bureau decides whether candidates become tasks. |
-| RepoBrief / Lenskit | Supplies cited repository context and freshness information. | Vibe-Lab stores references, not large source dumps. |
+| RepoGround | Supplies cited, commit-bound repository context and freshness information. | Vibe-Lab stores references, not large source dumps and does not grant RepoGround mutation authority. |
 | Leitstand | May display condensed learning signals. | Display only; no steering authority. |
-| Cabinet | Supplies organ-role context. | Cabinet maps context; it is not a truth source for execution claims. |
+| Systemkatalog | Supplies stable organ-role and authority context. | Systemkatalog is read-only catalog truth; it does not own runtime status or execution claims. |
 | GitHub / CI | Primary truth source for PR, review, merge, and check state. | Vibe-Lab does not reinterpret green/red status without evidence. |
 
-## First productive test
+## Current productive gate
 
-The first productive integration must not start with new export targets or dashboards. It must first test whether recent existing artifacts already contain enough evidence to extract useful learning signals.
-
-The first slice is therefore an operator-learning-capture sample:
-
-1. select a small set of recent real ecosystem work items;
-2. bind each observation to named evidence;
-3. identify repeated friction candidates;
-4. decide whether a capture contract is justified.
+`experiments/active.v1.json` is the only current experiment truth. New work enters Vibe-Lab only when a named external consumer, a decision target, a prospective comparison and an expiry are explicit. Historical captures and archived experiments remain evidence, but they do not justify a new active surface by themselves.
 
 ## Adoption rule
 

@@ -14,6 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RUN_SERIES = (
     REPO_ROOT
     / "experiments"
+    / "_archive"
     / "2026-07-09_repobrief-workbench-usefulness-eval"
     / "results"
     / "run-series.yml"
