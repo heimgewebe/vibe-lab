@@ -3,7 +3,7 @@ title: "Vibe-Lab Validator Inventory v1"
 status: active
 canonicality: operative
 created: "2026-07-12"
-updated: "2026-07-23"
+updated: "2026-07-24"
 triggered_by: "vibe-lab-optimization-plan-v1-phase-c"
 relations:
   - type: informs
@@ -19,17 +19,17 @@ The current machine-readable source is `.vibe/validator-inventory.v1.json`. Afte
 | Group | Targets | Current consumer |
 | --- | ---: | --- |
 | Core | 45 | Repository contracts, generic evidence integrity and every experiment |
-| Active | 11 | Active registry, frozen Operator-Lab closeout, RepoBrief pilot and routing-readiness audit |
+| Active | 7 | Active registry, frozen Operator-Lab closeout and routing-readiness audit |
 | Legacy | 48 | Grandfathered historical experiments, retired agent-operability corpus and closed specialist families |
 | Supplemental | 2 | Replay non-mutation and committed generated artifacts |
 
-The grouped inventory therefore contains 104 classified `validate-*` targets plus two supplemental checks. GitHub exposes a compact grouped frontdoor while all groups remain blocking on pull requests and `main`.
+The grouped inventory therefore contains 100 classified `validate-*` targets plus two supplemental checks. GitHub exposes a compact grouped frontdoor while all groups remain blocking on pull requests and `main`.
 
-The active registry currently contains the RepoBrief diagnostic pilot, the designed Chronik history-brief comparison and the operator-routing ML-readiness shadow experiment. Chronik uses the existing generic registration, active-registry and evaluator contracts. The routing-readiness experiment adds one focused regression target for its aggregate-only audit because the audit has executable parsing, privacy and cross-source coverage semantics that generic registration validation does not exercise.
+The active registry currently contains the designed Chronik history-brief comparison and the operator-routing ML-readiness shadow experiment. The former RepoBrief diagnostic pilot is archived because its named Bureau RPU-V1 consumer is completed; its four pilot-only validator targets are no longer part of the blocking grouped frontdoor. Chronik uses the existing generic registration, active-registry and evaluator contracts. The routing-readiness experiment adds one focused regression target for its aggregate-only audit because the audit has executable parsing, privacy and cross-source coverage semantics that generic registration validation does not exercise.
 
 ## Correction of the previous report
 
-The earlier report stated 44 core and 11 active targets and still named the effect-evaluator pilot as active. That became stale when PR #314 archived the registered experiment and reassigned `validate-effect-evaluator-tests` to core. PR #316 then added the prospectively registered Chronik comparison without changing the grouped target counts.
+The earlier report was internally inconsistent after the routing-readiness work: its current-state section correctly named three active experiments and 11 active targets, while its practical-effect section still claimed two experiments and 10 targets. This revision removes that drift. It also archives the former RepoBrief pilot after its named consumer completed and retires the four pilot-only blocking targets without deleting the historical scripts or evidence.
 
 ## Safety boundary
 
@@ -67,11 +67,10 @@ These surfaces have a current consumer or protect a generic failure class used b
 
 - active experiment registry checks;
 - frozen Operator-Lab closeout checks;
-- RepoBrief Workbench usefulness and run-series checks;
 - prospective experiment registration checks;
 - operator-routing ML-readiness aggregate-audit regression checks.
 
-The specialist group is 11 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class. The Chronik comparison stays inside the generic contracts. The routing-readiness audit consumes one specialist slot because it protects executable parsing, privacy redaction and canonical-route coverage logic for an active experiment.
+The specialist group is 7 of the permitted maximum 12 targets. No new specialist target is justified merely by a new idea; it needs an active consumer and named failure class. The Chronik comparison stays inside the generic contracts. The routing-readiness audit consumes one specialist slot because it protects executable parsing, privacy redaction and canonical-route coverage logic for an active experiment.
 
 ### Review for retirement
 
@@ -80,7 +79,7 @@ The 48 legacy targets are reviewed in this order:
 1. retired agent-handoff, agent-command and command-chain contracts;
 2. closed Model-Lab control, access, runtime, workspace and condition-design contracts;
 3. historical replay, fixture and cross-contract semantics that may duplicate generic core gates;
-4. rLens and PR-context historical validators after the active RepoBrief pilot closes.
+4. rLens and PR-context historical validators, now that the former RepoBrief pilot is archived.
 
 A legacy target may move to removal only when one of these material proofs exists:
 
@@ -101,8 +100,8 @@ The directional objective is a 30–50 percent reduction of the blocking legacy 
 
 ## Practical effect
 
-- Current active specialist surface: 10 targets instead of an undifferentiated 103-target frontdoor.
-- Current active experiments: two — one diagnostic pilot and one designed comparison.
-- Full regression breadth: retained while survivor proof is gathered.
+- Current active specialist surface: 7 targets instead of an undifferentiated historical frontdoor.
+- Current active experiments: two — the Chronik comparison and the routing-readiness shadow experiment.
+- Four RepoBrief-pilot-only blocking targets are retired from the grouped frontdoor; their scripts and historical evidence remain available for audit.
 - Retired custom-agent and instruction-bearing projection content: no longer active authority; generated compatibility markers and parity contracts remain active.
 - Next engineering work: remove proven-redundant legacy groups rather than add new Vibe-Lab capabilities.

@@ -6,7 +6,7 @@ schema_version: "0.1.0"
 
 identity:
   name: vibe-lab
-  purpose: "Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken"
+  purpose: "Verbrauchergebundener Experiment- und Evidenzraum für überprüfbare Arbeitsweisen"
   vision: docs/foundations/vision.md
   plan: docs/foundations/repo-plan.md
 
@@ -45,7 +45,7 @@ path_logic:
     paths:
       - "raw-vibes/*"
   lab_zone:
-    description: "Freie Exploration, hohe Varianz"
+    description: "Registrierte, begrenzte Experimente mit Evidenz-, Review- und Ablaufbindung"
     paths:
       - "experiments/*"
   library_zone:

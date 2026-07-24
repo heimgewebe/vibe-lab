@@ -348,21 +348,6 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "reconstructed",
-      "falsifiability_triggered": false,
-      "historical_escape": false,
-      "missing": [],
-      "notes": [
-        "falsifiability_voluntary"
-      ],
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval",
-      "pre_execution_hold": false,
-      "promotion_ready": true,
-      "status": "testing",
-      "warnings": []
-    },
-    {
-      "adoption_basis": "",
       "execution_status": "designed",
       "falsifiability_triggered": false,
       "historical_escape": false,
@@ -401,11 +386,11 @@
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 25,
+    "experiments_checked": 24,
     "historical_escape": 1,
     "not_ready": 13,
     "pre_execution_hold": 5,
-    "ready": 6,
+    "ready": 5,
     "warnings": 6
   },
   "trigger": "need_for_reproducibility"
