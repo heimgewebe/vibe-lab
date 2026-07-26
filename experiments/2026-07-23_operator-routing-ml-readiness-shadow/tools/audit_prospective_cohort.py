@@ -686,7 +686,10 @@ def _validate_direct_task_binding(
         or prospective["workspace_case_id"] != workspace_case["case_id"]
     ):
         raise AuditError("direct task prospective reference is invalid")
-    _canonical_timestamp(binding["created_at"], "direct task binding created_at")
+    binding_created_at = _canonical_timestamp(binding["created_at"], "direct task binding created_at")
+    frozen_at = _canonical_timestamp(receipt["frozen_at"], "direct task prospective frozen_at")
+    if binding_created_at != frozen_at:
+        raise AuditError("direct task binding created_at does not match prospective freeze")
     _validate_no_effect(binding["no_effect"])
     binding_id = _require_sha(binding["binding_id"], "direct task binding_id")
     payload = {key: item for key, item in binding.items() if key != "binding_id"}

@@ -1,39 +1,29 @@
 Operator routing shadow live v3 readiness audit
-Date: 2026-07-26T17:05:58Z
+Date: 2026-07-26T16:10:00Z
 Executor: operator:chatgpt-grabowski
 
 Command:
-python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26-reviewed.json
+python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26.json
 
 Exit code: 0
-Durable finalization receipt SHA-256: c25da0325cd4424d3398b8e3d5e039a94083a783db1fa394e1c82316dd6d9791
 Standard output:
-{"cohort_identity_sha256": "d03d99f490147a7e748ec7db32c796461ab1e806190e97d386a62ee7355e60ab", "gate_result": "CONTINUE-COLLECTING", "output": "/tmp/vibe-lab-readiness-gate-2026-07-26-reviewed.json"}
+{"cohort_identity_sha256": "3e642b4d4ccedd49cd9982228620e6bc9ba6a0ce102deb0289cffb915ada39d2", "gate_result": "CONTINUE-COLLECTING", "output": "/tmp/vibe-lab-readiness-gate-2026-07-26.json"}
 
 Committed aggregate output:
 results/readiness-gate-2026-07-26.json
-SHA-256: f708ca7c710a7e3a068fe60ee9968a031abdc7d3f92c80f43924bbfb6c87855e
+SHA-256: 974e7ee9c4b6864aeabb74c188c5895775673194674b833d26d90684c8e8f954
 
 Observed aggregate state:
 - prospective cases: 1
 - bound eligibility receipts: 1
 - sealed records: 1
 - production treatment cases: 1
-- observed execution provenance: 1 of 1 treatment cases
-- treatment execution provenance missing: 0
 - abstained records: 1
 - complete treatment cases: 0
 - completeness: 0.0 percent
-- source-context bindings included in cohort identity: 1
 - integrity errors: 0
 - no-effect violations: 0
 - gate reason: minimum_treatment_cases_not_met
-
-Review hardening established:
-- unknown execution provenance cannot support PASS
-- direct-task repository context is bound through validated binding identity and aggregate cohort identity
-- aggregate outcome labels must follow deterministic assessment adjudication
-- canonical route source and identity fields remain exact across the receipt chain
 
 Non-claims:
 This run does not establish dataset readiness, model usefulness, routing superiority, training authorization, deployment readiness or automatic policy authority.

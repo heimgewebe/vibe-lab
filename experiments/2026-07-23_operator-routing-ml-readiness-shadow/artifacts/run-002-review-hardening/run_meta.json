@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-002-review-hardening",
+  "generated_at": "2026-07-26T17:05:58Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26-reviewed.json",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-002-review-hardening/execution.txt",
+  "provenance_level": "self_reported",
+  "notes": "Real read-only audit over the current Grabowski v3 routing-shadow cohort after addressing the four exact-head Codex review findings. Coverage-relevant source context is bound into the cohort identity; direct-task binding integrity, observed execution provenance, complete route-reference lineage and deterministic assessment adjudication are enforced. The aggregate report is committed as results/readiness-gate-2026-07-26.json with SHA-256 f708ca7c710a7e3a068fe60ee9968a031abdc7d3f92c80f43924bbfb6c87855e. Durable job finalization receipt SHA-256: c25da0325cd4424d3398b8e3d5e039a94083a783db1fa394e1c82316dd6d9791. The run establishes collection state only, not model or routing readiness. This is a distinct append-only rerun; run-001 remains unchanged."
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-003-prospective-binding-time",
+  "generated_at": "2026-07-26T17:25:15Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26-final.json",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-003-prospective-binding-time/execution.txt",
+  "provenance_level": "self_reported",
+  "notes": "Real read-only audit over the current Grabowski v3 routing-shadow cohort after addressing the four exact-head Codex review findings. Coverage-relevant source context is bound into the cohort identity; direct-task binding integrity, observed execution provenance, complete route-reference lineage and deterministic assessment adjudication are enforced. The aggregate report is committed as results/readiness-gate-2026-07-26.json with SHA-256 f708ca7c710a7e3a068fe60ee9968a031abdc7d3f92c80f43924bbfb6c87855e. Durable job finalization receipt SHA-256: 831beaf6b4c023c9d2195993b4833de6c4c350c47f02a7160fe951cc14c87be8. The run establishes collection state only, not model or routing readiness. Direct-task binding creation time is now required to equal the prospective freeze exactly. This is a distinct append-only rerun after binding-time enforcement; prior runs remain unchanged."
+}

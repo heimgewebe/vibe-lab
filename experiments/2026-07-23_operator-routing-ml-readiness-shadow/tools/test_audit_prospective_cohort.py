@@ -585,6 +585,21 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertEqual(report["quality"]["direct_route_plus_reviewed_outcome_completeness_percent"], 0.0)
             self.assertEqual(report["quality"]["integrity_error_count"], 0)
 
+    def test_direct_binding_created_after_freeze_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=50)
+            binding_path = next(bindings.glob("*.json"))
+            binding = json.loads(binding_path.read_text(encoding="utf-8"))
+            binding["created_at"] = "2026-07-24T10:00:01Z"
+            payload = {key: value for key, value in binding.items() if key != "binding_id"}
+            binding["binding_id"] = module._sha256_json(payload)
+            self._write(binding_path, binding)
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "CONTINUE-COLLECTING")
+            self.assertGreater(report["quality"]["unresolved_manifest_binding_count"], 0)
+            self.assertEqual(report["coverage"]["dimensions"]["repository_context"], {})
+
     def test_v3_unknown_execution_provenance_cannot_pass(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             cohort, workspaces = self._roots(tmp)
