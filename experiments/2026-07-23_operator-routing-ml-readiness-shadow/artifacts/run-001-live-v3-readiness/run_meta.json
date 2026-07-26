@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-001-live-v3-readiness",
+  "generated_at": "2026-07-26T16:10:00Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26.json",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-001-live-v3-readiness/execution.txt",
+  "provenance_level": "self_reported",
+  "notes": "Real read-only audit over the current Grabowski v3 routing-shadow cohort. The generated aggregate report is committed as results/readiness-gate-2026-07-26.json with SHA-256 974e7ee9c4b6864aeabb74c188c5895775673194674b833d26d90684c8e8f954. The run establishes collection state only, not model or routing readiness."
+}

@@ -292,6 +292,7 @@
 | `experiments/2026-07-13_chronik-history-brief-effect/results/result.md` | Chronik History Brief Effect — Result | draft | operative |
 | `experiments/2026-07-23_operator-routing-ml-readiness-shadow/CONTEXT.md` | Operator Routing ML Readiness Shadow — Context | active | operative |
 | `experiments/2026-07-23_operator-routing-ml-readiness-shadow/method.md` | Operator Routing ML Readiness Shadow — Method | active | operative |
+| `experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md` | Operator Routing Shadow — Independent Semantic Review Protocol | active | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

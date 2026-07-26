@@ -366,20 +366,19 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "prepared",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "prepared_not_executed"
+        "insufficient_proof_assessment"
       ],
       "notes": [
-        "falsifiability_voluntary",
-        "prepared_not_executed"
+        "insufficient_proof_assessment"
       ],
       "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow",
-      "pre_execution_hold": true,
+      "pre_execution_hold": false,
       "promotion_ready": false,
-      "status": "designed",
+      "status": "testing",
       "warnings": []
     }
   ],
@@ -388,8 +387,8 @@
   "summary": {
     "experiments_checked": 24,
     "historical_escape": 1,
-    "not_ready": 13,
-    "pre_execution_hold": 5,
+    "not_ready": 14,
+    "pre_execution_hold": 4,
     "ready": 5,
     "warnings": 6
   },

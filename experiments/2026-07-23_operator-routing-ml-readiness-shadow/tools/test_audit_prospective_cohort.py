@@ -160,6 +160,192 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
         attempt = {"attempt_id": module._sha256_json(attempt_payload), **attempt_payload}
         self._write(cohort / "attempts" / f"{index}.json", attempt)
 
+    def _v3_direct_case(
+        self,
+        cohort: Path,
+        *,
+        index: int,
+        origin: str = "production",
+        reviewed: bool = True,
+        disagree: bool = False,
+    ) -> Path:
+        bindings = cohort / "direct-task-bindings"
+        bindings.mkdir(exist_ok=True)
+        task_id = f"{index + 1000:024x}"
+        workspace_id = f"gaw-direct-task-{task_id}"
+        recommendation_id = module.hashlib.sha256(f"v3-recommendation-{index}".encode()).hexdigest()
+        plan_sha256 = module.hashlib.sha256(f"v3-plan-{index}".encode()).hexdigest()
+        route = {
+            "schema_version": 2,
+            "recommendation_id": recommendation_id,
+            "actual_route": "direct_operator",
+            "recommended_route": "direct_operator",
+            "risk_tier": "R1",
+            "input_facts": {
+                "task_kind": "code",
+                "changed_file_estimate": 1,
+                "expected_duration_minutes": 15,
+                "novelty": "low",
+                "risk_flags": [],
+                "connector_instability": False,
+                "user_requested_external": False,
+                "concurrent_external_activity": False,
+                "parallelization_candidate": False,
+                "decision_fork": False,
+                "architecture_hypotheses": 1,
+            },
+        }
+        route_hash = module._sha256_json(route)
+        route_ref = {
+            "source": "direct-task-start",
+            "schema_version": 2,
+            "recommendation_id": recommendation_id,
+            "route_evidence_sha256": route_hash,
+            "manifest_identity_sha256": module._manifest_identity_sha256(
+                workspace_id, plan_sha256, route_hash, route_source="direct-task-start"
+            ),
+        }
+        workspace_case_id = module._workspace_case_id(
+            workspace_id, plan_sha256, route_hash, route_source="direct-task-start"
+        )
+        provenance = {"case_origin": origin, "capture_path": "direct_task_prestart"}
+        frozen_at = "2026-07-24T10:00:00Z"
+        prospective_payload = {
+            "schema_version": module.PROSPECTIVE_SCHEMA_V2,
+            "workspace_case": {
+                "workspace_id": workspace_id,
+                "plan_sha256": plan_sha256,
+                "case_id": workspace_case_id,
+            },
+            "canonical_route_evidence": route_ref,
+            "features": module._bounded_features(route),
+            "case_provenance": provenance,
+            "frozen_at": frozen_at,
+            "no_effect": dict(module.NO_EFFECT),
+        }
+        prospective = {
+            "prospective_eligibility_id": module._sha256_json(prospective_payload),
+            **prospective_payload,
+        }
+        prospective_id = prospective["prospective_eligibility_id"]
+        self._write(cohort / "prospective" / f"v3-{index}.json", prospective)
+        case_id = module._case_id(task_id, recommendation_id)
+        eligibility_payload = {
+            "schema_version": module.ELIGIBILITY_SCHEMA_V3,
+            "prospective_eligibility": {
+                "schema_version": module.PROSPECTIVE_SCHEMA_V2,
+                "prospective_eligibility_id": prospective_id,
+                "workspace_id": workspace_id,
+                "plan_sha256": plan_sha256,
+                "workspace_case_id": workspace_case_id,
+                "frozen_at": frozen_at,
+            },
+            "eligible_case": {"task_id": task_id, "case_id": case_id},
+            "canonical_route_evidence": route_ref,
+            "features": dict(prospective["features"]),
+            "case_provenance": provenance,
+            "frozen_at": frozen_at,
+            "no_effect": dict(module.NO_EFFECT),
+        }
+        eligibility = {"eligibility_id": module._sha256_json(eligibility_payload), **eligibility_payload}
+        self._write(cohort / "eligibility" / f"v3-{index}.json", eligibility)
+        observed_at = "2026-07-24T11:00:00Z"
+        if reviewed:
+            outcome = {
+                "status": "reviewed",
+                "kind": "task_correctness",
+                "label": "success",
+                "observed_at": observed_at,
+                "review_authority": "diff_bound_review",
+            }
+            refs = ["diff-review:v3-fixture"]
+            assessments = sorted([
+                {
+                    "reviewer_pseudonym_sha256": module.hashlib.sha256(b"reviewer-a").hexdigest(),
+                    "kind": "task_correctness",
+                    "label": "success",
+                    "observed_at": observed_at,
+                    "review_authority": "diff_bound_review",
+                    "primary_evidence_refs": ["diff-review:v3-fixture-a"],
+                },
+                {
+                    "reviewer_pseudonym_sha256": module.hashlib.sha256(b"reviewer-b").hexdigest(),
+                    "kind": "task_correctness",
+                    "label": "partial" if disagree else "success",
+                    "observed_at": observed_at,
+                    "review_authority": "ci_and_review",
+                    "primary_evidence_refs": ["github-ci:v3-fixture-b"],
+                },
+            ], key=lambda item: item["reviewer_pseudonym_sha256"])
+        else:
+            outcome = {
+                "status": "abstained",
+                "reason_code": "no_semantic_review",
+                "observed_at": observed_at,
+            }
+            refs = []
+            assessments = []
+        record_payload = {
+            "schema_version": module.RECORD_SCHEMA_V3,
+            "eligibility": {
+                "schema_version": module.ELIGIBILITY_SCHEMA_V3,
+                "eligibility_id": eligibility["eligibility_id"],
+                "prospective_eligibility_id": prospective_id,
+                "workspace_id": workspace_id,
+                "plan_sha256": plan_sha256,
+                "workspace_case_id": workspace_case_id,
+                "frozen_at": frozen_at,
+            },
+            "eligible_case": dict(eligibility["eligible_case"]),
+            "canonical_route_evidence": route_ref,
+            "features": dict(prospective["features"]),
+            "case_provenance": provenance,
+            "execution_provenance": {
+                "status": "completed",
+                "observed_at": "2026-07-24T10:55:00Z",
+                "evidence_refs": ["artifact:v3-lifecycle"],
+            },
+            "outcome": outcome,
+            "primary_evidence_refs": refs,
+            "semantic_assessments": assessments,
+            "captured_at": "2026-07-24T12:00:00Z",
+            "no_effect": dict(module.NO_EFFECT),
+        }
+        record = {"record_id": module._sha256_json(record_payload), **record_payload}
+        self._write(cohort / "records" / f"v3-{index}.json", record)
+        attempt_identity = {
+            "schema_version": "operator-routing-shadow-capture-attempt-identity.v1",
+            "workspace_id": workspace_id,
+            "plan_sha256": plan_sha256,
+            "stage": "prospective_eligibility_freeze",
+            "status": "created",
+            "reason_code": "eligible_verified_route",
+            "prospective_eligibility_id": prospective_id,
+        }
+        attempt = {
+            "schema_version": module.ATTEMPT_SCHEMA,
+            "attempt_id": module._sha256_json(attempt_identity),
+            "workspace_id": workspace_id,
+            "plan_sha256": plan_sha256,
+            "stage": "prospective_eligibility_freeze",
+            "status": "created",
+            "reason_code": "eligible_verified_route",
+            "prospective_eligibility_id": prospective_id,
+            "attempted_at": frozen_at,
+            "no_effect": dict(module.NO_EFFECT),
+        }
+        self._write(cohort / "attempts" / f"v3-{index}.json", attempt)
+        binding = {
+            "schema_version": "operator-routing-shadow-direct-task-binding.v1",
+            "task_id": task_id,
+            "workspace_id": workspace_id,
+            "plan_sha256": plan_sha256,
+            "route_evidence": route,
+            "task_identity": {"cwd_sha256": module.hashlib.sha256(b"/example/repo-v3").hexdigest()},
+        }
+        self._write(bindings / f"{task_id}.json", binding)
+        return bindings
+
     def test_empty_live_shape_requires_continued_collection(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             cohort, workspaces = self._roots(tmp)
@@ -348,6 +534,59 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertEqual(report["gate_result"], "FAIL")
             self.assertEqual(report["errors"]["prospective:duplicate_identity"], 1)
             self.assertGreater(report["quality"]["integrity_error_count"], 0)
+
+    def test_v3_direct_case_exposes_provenance_reviews_and_route_coverage(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=1)
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "CONTINUE-COLLECTING")
+            self.assertEqual(report["counts"]["eligible_treatment_cases"], 1)
+            self.assertEqual(report["counts"]["complete_treatment_cases"], 1)
+            self.assertTrue(report["cohort_provenance"]["test_quarantine_provenance_observable"])
+            self.assertTrue(report["cohort_provenance"]["execution_failure_provenance_observable"])
+            self.assertTrue(report["outcomes"]["semantic_review_disagreement"]["observable"])
+            self.assertEqual(report["outcomes"]["semantic_review_disagreement"]["independent_label_pair_count"], 1)
+            self.assertEqual(report["coverage"]["dimensions"]["actual_route"], {"direct_operator": 1})
+            self.assertEqual(report["quality"]["integrity_error_count"], 0)
+
+    def test_v3_abstention_stays_in_denominator_but_is_incomplete(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=2, reviewed=False)
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["counts"]["eligible_treatment_cases"], 1)
+            self.assertEqual(report["counts"]["abstained_records"], 1)
+            self.assertEqual(report["counts"]["complete_treatment_cases"], 0)
+            self.assertEqual(report["quality"]["direct_route_plus_reviewed_outcome_completeness_percent"], 0.0)
+            self.assertEqual(report["quality"]["integrity_error_count"], 0)
+
+    def test_v3_semantic_assessment_before_freeze_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=4)
+            record_path = cohort / "records" / "v3-4.json"
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            record["semantic_assessments"][0]["observed_at"] = "2026-07-24T09:59:59Z"
+            payload = {key: value for key, value in record.items() if key != "record_id"}
+            record["record_id"] = module._sha256_json(payload)
+            self._write(record_path, record)
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "FAIL")
+            self.assertGreater(report["quality"]["integrity_error_count"], 0)
+            self.assertTrue(
+                any("semantic assessment predates prospective eligibility freeze" in key for key in report["errors"])
+            )
+
+    def test_v3_nonproduction_case_is_excluded_from_treatment_denominator(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=3, origin="test")
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["counts"]["eligible_treatment_cases"], 0)
+            self.assertEqual(report["counts"]["excluded_nonproduction_cases"], 1)
+            self.assertEqual(report["cohort_provenance"]["test_or_quarantine_contamination_count"], 0)
+            self.assertEqual(report["quality"]["integrity_error_count"], 0)
 
     def test_capture_rejection_prevents_pass_pending_bias_review(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

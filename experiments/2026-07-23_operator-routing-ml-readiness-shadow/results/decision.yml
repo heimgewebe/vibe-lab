@@ -1,18 +1,37 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
-verdict: "not_executed"
-date: "2026-07-23"
+verdict: "insufficient_proof"
+date: "2026-07-26"
 reviewer: "ChatGPT / Grabowski"
+gate_result: "CONTINUE-COLLECTING"
+criteria_sha256: "2507258fe107441f150290cf7cd2158a652d1557e7c5af528aab5966654d1fa9"
+cohort_identity_sha256: "3e642b4d4ccedd49cd9982228620e6bc9ba6a0ce102deb0289cffb915ada39d2"
+source_gate_report: "results/readiness-gate-2026-07-26.json"
 rationale: >
-  The control readiness audit is complete and bound to an aggregate artifact, but
-  the registered shadow treatment cohort has not yet been captured. Therefore no
-  result assessment, model comparison or adoption claim is allowed.
+  The live v3 Grabowski cohort is now readable by the Vibe-Lab readiness audit.
+  It contains one prospectively frozen production case, one bound eligibility,
+  one sealed record and two capture attempts. The record preserves a completed
+  execution separately from an abstained semantic outcome because no independent
+  semantic review was available. The cohort has zero integrity errors and zero
+  no-effect violations, but zero complete treatment cases and 0.0 percent
+  route-plus-reviewed-outcome completeness. The preregistered minimum of twenty
+  natural treatment cases is therefore not met and model training remains blocked.
 evidence_summary:
-  observations: 0
+  observations: 1
   positive: 0
   negative: 0
-  neutral: 0
+  neutral: 1
+  eligible_production_cases: 1
+  abstained_records: 1
+  complete_treatment_cases: 0
+  completeness_percent: 0.0
+  integrity_errors: 0
+  no_effect_violations: 0
 next_steps: >
-  Implement the minimal canonical route/outcome shadow-capture bridge as a
-  separate Bureau-controlled change, collect at least 20 natural treatment
-  cases, then reassess dataset readiness before installing or training an ML stack.
+  Preserve the existing abstained record unchanged. Prospectively capture at
+  least nineteen additional natural production cases and, whenever a defensible
+  semantic outcome exists, bind two independently attributable assessments with
+  primary evidence before sealing the create-only record. Re-run the same frozen
+  readiness gate after at least twenty eligible production cases. Only a
+  separately reviewed PASS may authorize an offline model comparison; no result
+  here authorizes training, routing, policy, queue, merge or runtime effects.
