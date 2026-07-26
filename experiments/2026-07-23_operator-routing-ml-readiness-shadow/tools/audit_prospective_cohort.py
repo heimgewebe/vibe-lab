@@ -470,6 +470,15 @@ def _validate_semantic_assessments(value: Any) -> list[dict[str, Any]]:
     return assessments
 
 
+def _adjudicated_assessment_label(assessments: list[dict[str, Any]]) -> str:
+    labels = {item["label"] for item in assessments}
+    if len(labels) == 1:
+        return next(iter(labels))
+    # Individual labels remain visible and disagreement remains counted. The
+    # aggregate label is conservatively partial rather than optimistic success.
+    return "partial"
+
+
 def _validate_record(value: dict[str, Any]) -> dict[str, Any]:
     schema = value.get("schema_version")
     expected = {
@@ -542,6 +551,8 @@ def _validate_record(value: dict[str, Any]) -> dict[str, Any]:
         if assessments:
             if outcome["status"] != "reviewed" or any(item["kind"] != outcome["kind"] for item in assessments):
                 raise AuditError("semantic assessments are not bound to the reviewed outcome kind")
+            if outcome["label"] != _adjudicated_assessment_label(assessments):
+                raise AuditError("reviewed outcome label contradicts semantic assessment adjudication")
         if outcome["status"] == "reviewed" and not refs:
             # Retained as a valid-but-incomplete observation so the gate can quantify missingness.
             pass
@@ -615,66 +626,170 @@ def _repository_context(repository: Any) -> str:
     return "repo-sha256:" + hashlib.sha256(repository.encode("utf-8")).hexdigest()[:12]
 
 
+def _direct_task_plan_sha256(task_id: str, task_identity: dict[str, Any], route: dict[str, Any]) -> str:
+    return _sha256_json(
+        {
+            "schema_version": "operator-routing-shadow-direct-task-plan.v1",
+            "task_id": task_id,
+            "task_identity": task_identity,
+            "route_evidence_sha256": _sha256_json(route),
+        }
+    )
+
+
+def _validate_direct_task_binding(
+    value: Any,
+    *,
+    receipt: dict[str, Any],
+    eligibility: dict[str, Any],
+) -> dict[str, Any]:
+    expected = {
+        "schema_version", "binding_id", "task_id", "workspace_id", "plan_sha256",
+        "task_identity", "route_evidence", "prospective", "created_at", "no_effect",
+    }
+    binding = _exact(value, expected, "direct task binding")
+    if binding["schema_version"] != "operator-routing-shadow-direct-task-binding.v1":
+        raise AuditError("direct task binding schema is invalid")
+    task_id = eligibility["eligible_case"]["task_id"]
+    workspace_case = receipt["workspace_case"]
+    if (
+        binding["task_id"] != task_id
+        or binding["workspace_id"] != workspace_case["workspace_id"]
+        or binding["workspace_id"] != f"gaw-direct-task-{task_id}"
+        or binding["plan_sha256"] != workspace_case["plan_sha256"]
+    ):
+        raise AuditError("direct task binding identity does not match eligibility")
+    identity = _exact(
+        binding["task_identity"],
+        {"host_sha256", "argv_sha256", "cwd_sha256", "resource_keys_sha256", "runtime_seconds"},
+        "direct task identity",
+    )
+    for field in ("host_sha256", "argv_sha256", "cwd_sha256", "resource_keys_sha256"):
+        _require_sha(identity[field], f"direct task identity {field}")
+    runtime_seconds = identity["runtime_seconds"]
+    if isinstance(runtime_seconds, bool) or not isinstance(runtime_seconds, int) or not 1 <= runtime_seconds <= 604800:
+        raise AuditError("direct task runtime_seconds is invalid")
+    route = binding["route_evidence"]
+    if not isinstance(route, dict):
+        raise AuditError("direct task route evidence is invalid")
+    _bounded_features(route)
+    if binding["plan_sha256"] != _direct_task_plan_sha256(task_id, identity, route):
+        raise AuditError("direct task plan identity is invalid")
+    prospective = _exact(
+        binding["prospective"],
+        {"status", "prospective_eligibility_id", "workspace_case_id"},
+        "direct task prospective reference",
+    )
+    if (
+        prospective["status"] != "created"
+        or prospective["prospective_eligibility_id"] != receipt["prospective_eligibility_id"]
+        or prospective["workspace_case_id"] != workspace_case["case_id"]
+    ):
+        raise AuditError("direct task prospective reference is invalid")
+    _canonical_timestamp(binding["created_at"], "direct task binding created_at")
+    _validate_no_effect(binding["no_effect"])
+    binding_id = _require_sha(binding["binding_id"], "direct task binding_id")
+    payload = {key: item for key, item in binding.items() if key != "binding_id"}
+    if binding_id != _sha256_json(payload):
+        raise AuditError("direct task binding_id does not match payload")
+    return binding
+
+
+def _source_context_binding_sha256(
+    *,
+    route_ref: dict[str, Any],
+    workspace_id: str,
+    plan_sha256: str,
+    repository_context: str,
+    source_binding_id: str,
+) -> str:
+    return _sha256_json(
+        {
+            "schema_version": "operator-routing-shadow-source-context-binding.v1",
+            "route_source": route_ref["source"],
+            "workspace_id": workspace_id,
+            "plan_sha256": plan_sha256,
+            "canonical_route_evidence": route_ref,
+            "repository_context": repository_context,
+            "source_binding_id": source_binding_id,
+        }
+    )
+
+
 def _resolve_route_context(
     receipt: dict[str, Any],
     eligibility: dict[str, Any],
     workspace_root: Path,
     direct_task_binding_root: Path | None,
-) -> tuple[dict[str, Any] | None, str | None, str | None]:
+) -> tuple[dict[str, Any] | None, str | None, str | None, str | None]:
     workspace_case = receipt["workspace_case"]
     workspace_id = workspace_case["workspace_id"]
     route_ref = receipt["canonical_route_evidence"]
     if route_ref["source"] == "direct-task-start":
         if direct_task_binding_root is None:
-            return None, None, "direct_task_binding_root_unavailable"
+            return None, None, None, "direct_task_binding_root_unavailable"
         task_id = eligibility["eligible_case"]["task_id"]
         path = direct_task_binding_root / f"{task_id}.json"
         try:
             binding = _read_json(path)
         except AuditError:
-            return None, None, "direct_task_binding_unavailable"
-        if (
-            binding.get("schema_version") != "operator-routing-shadow-direct-task-binding.v1"
-            or binding.get("task_id") != task_id
-            or binding.get("workspace_id") != workspace_id
-            or binding.get("plan_sha256") != workspace_case["plan_sha256"]
-        ):
-            return None, None, "direct_task_binding_identity_mismatch"
-        route = binding.get("route_evidence")
+            return None, None, None, "direct_task_binding_unavailable"
+        try:
+            binding = _validate_direct_task_binding(binding, receipt=receipt, eligibility=eligibility)
+        except AuditError:
+            return None, None, None, "direct_task_binding_invalid"
+        route = binding["route_evidence"]
         if not isinstance(route, dict) or _sha256_json(route) != route_ref["route_evidence_sha256"]:
-            return None, None, "route_hash_mismatch"
+            return None, None, None, "route_hash_mismatch"
         if route.get("schema_version") != route_ref["schema_version"] or route.get("recommendation_id") != route_ref["recommendation_id"]:
-            return None, None, "route_identity_mismatch"
+            return None, None, None, "route_identity_mismatch"
         try:
             current_features = _bounded_features(route)
         except AuditError:
-            return None, None, "route_features_invalid"
+            return None, None, None, "route_features_invalid"
         if current_features != receipt["features"]:
-            return None, None, "route_feature_binding_mismatch"
-        identity = binding.get("task_identity")
-        cwd_sha256 = identity.get("cwd_sha256") if isinstance(identity, dict) else None
-        repository_context = f"cwd-sha256:{cwd_sha256[:12]}" if isinstance(cwd_sha256, str) and SHA256_RE.fullmatch(cwd_sha256) else "unavailable"
-        return route, repository_context, None
+            return None, None, None, "route_feature_binding_mismatch"
+        identity = binding["task_identity"]
+        cwd_sha256 = identity["cwd_sha256"]
+        repository_context = f"cwd-sha256:{cwd_sha256[:12]}"
+        source_context_sha256 = _source_context_binding_sha256(
+            route_ref=route_ref,
+            workspace_id=workspace_id,
+            plan_sha256=workspace_case["plan_sha256"],
+            repository_context=repository_context,
+            source_binding_id=binding["binding_id"],
+        )
+        return route, repository_context, source_context_sha256, None
 
     path = workspace_root / workspace_id / "manifest.json"
     try:
         manifest = _read_json(path)
     except AuditError:
-        return None, None, "manifest_unavailable"
+        return None, None, None, "manifest_unavailable"
     if manifest.get("workspace_id") != workspace_id or manifest.get("plan_sha256") != workspace_case["plan_sha256"]:
-        return None, None, "manifest_workspace_or_plan_mismatch"
+        return None, None, None, "manifest_workspace_or_plan_mismatch"
     route = manifest.get("route_evidence")
     if not isinstance(route, dict) or _sha256_json(route) != route_ref["route_evidence_sha256"]:
-        return None, None, "route_hash_mismatch"
+        return None, None, None, "route_hash_mismatch"
     if route.get("schema_version") != route_ref["schema_version"] or route.get("recommendation_id") != route_ref["recommendation_id"]:
-        return None, None, "route_identity_mismatch"
+        return None, None, None, "route_identity_mismatch"
     try:
         current_features = _bounded_features(route)
     except AuditError:
-        return None, None, "route_features_invalid"
+        return None, None, None, "route_features_invalid"
     if current_features != receipt["features"]:
-        return None, None, "route_feature_binding_mismatch"
-    return route, _repository_context(manifest.get("repository")), None
+        return None, None, None, "route_feature_binding_mismatch"
+    repository_context = _repository_context(manifest.get("repository"))
+    source_binding_id = route_ref.get("manifest_sha256") or route_ref.get("manifest_identity_sha256")
+    assert isinstance(source_binding_id, str)
+    source_context_sha256 = _source_context_binding_sha256(
+        route_ref=route_ref,
+        workspace_id=workspace_id,
+        plan_sha256=workspace_case["plan_sha256"],
+        repository_context=repository_context,
+        source_binding_id=source_binding_id,
+    )
+    return route, repository_context, source_context_sha256, None
 
 def _percent(numerator: int, denominator: int) -> float:
     return round(100.0 * numerator / denominator, 2) if denominator else 0.0
@@ -692,7 +807,7 @@ def audit(
         category: sorted(_sha256_json(value) for value in raw[category])
         for category in CATEGORIES
     }
-    cohort_identity_sha256 = _sha256_json({"criteria_sha256": criteria_sha256, "content_hashes": content_hashes})
+    source_context_binding_hashes: list[str] = []
 
     errors: collections.Counter[str] = collections.Counter()
     no_effect_violations = 0
@@ -783,22 +898,30 @@ def audit(
             errors["eligibility:case_provenance_binding_mismatch"] += 1
         source_route = source["canonical_route_evidence"]
         bound_route = eligibility["canonical_route_evidence"]
-        route_binding_valid = True
-        for field in ("schema_version", "recommendation_id", "route_evidence_sha256"):
-            if source_route[field] != bound_route[field]:
-                errors["eligibility:route_binding_mismatch"] += 1
-                route_binding_valid = False
-                break
+        route_binding_valid = source_route == bound_route
+        if not route_binding_valid:
+            errors["eligibility:route_binding_mismatch"] += 1
         prospective_eligibility_counts[ref] += 1
         if route_binding_valid:
             route_schema_versions[str(bound_route["schema_version"])] += 1
-            route, repository_context, problem = _resolve_route_context(
+            route, repository_context, source_context_sha256, problem = _resolve_route_context(
                 source, eligibility, workspace_root, direct_task_binding_root
             )
             if problem:
                 unresolved_manifests[problem] += 1
+                source_context_binding_hashes.append(
+                    _sha256_json(
+                        {
+                            "schema_version": "operator-routing-shadow-source-context-observation.v1",
+                            "eligibility_id": eligibility["eligibility_id"],
+                            "status": "unresolved",
+                            "reason": problem,
+                        }
+                    )
+                )
             else:
-                assert route is not None
+                assert route is not None and source_context_sha256 is not None
+                source_context_binding_hashes.append(source_context_sha256)
                 task_kind = eligibility["features"].get("task_kind")
                 if isinstance(task_kind, str) and task_kind:
                     coverage["task_kind"][task_kind] += 1
@@ -824,6 +947,8 @@ def audit(
     independent_label_pair_count = 0
     disagreement_count = 0
     v3_record_count = 0
+    observed_execution_eligibility_ids: set[str] = set()
+    unknown_execution_eligibility_ids: set[str] = set()
     orphan_records = 0
     for record in records:
         eligibility_id = record["eligibility"]["eligibility_id"]
@@ -868,11 +993,12 @@ def audit(
                 reviewed_missing_primary_evidence += 1
             elif record["schema_version"] == RECORD_SCHEMA_V3:
                 assessments = record["semantic_assessments"]
+                execution_observed = record["execution_provenance"]["status"] in EXECUTION_STATUSES
                 if len(assessments) >= 2:
                     independent_label_pair_count += 1
                     if len({item["label"] for item in assessments}) > 1:
                         disagreement_count += 1
-                    complete = True
+                    complete = execution_observed or not criteria["require_execution_failure_provenance_for_pass"]
             elif not criteria["require_disagreement_observability_for_pass"]:
                 complete = True
         else:
@@ -882,7 +1008,12 @@ def audit(
             provenance = record["case_provenance"]
             case_origin_counts[provenance["case_origin"]] += 1
             capture_path_counts[provenance["capture_path"]] += 1
-            execution_statuses[record["execution_provenance"]["status"]] += 1
+            execution_status = record["execution_provenance"]["status"]
+            execution_statuses[execution_status] += 1
+            if execution_status in EXECUTION_STATUSES:
+                observed_execution_eligibility_ids.add(eligibility_id)
+            else:
+                unknown_execution_eligibility_ids.add(eligibility_id)
         if complete:
             complete_records += 1
             if eligibility is not None:
@@ -915,6 +1046,9 @@ def audit(
         1 for value in eligibilities.values()
         if value.get("case_provenance", {}).get("case_origin") in {"test", "synthetic", "quarantined"}
     )
+    treatment_execution_provenance_missing_count = len(
+        treatment_eligibility_ids - observed_execution_eligibility_ids
+    )
     prospective_count = len(prospectives)
     treatment_case_count = len(treatment_eligibility_ids)
     complete_treatment_case_count = len(complete_eligibility_ids & treatment_eligibility_ids)
@@ -935,8 +1069,18 @@ def audit(
     test_quarantine_provenance_observable = any(
         value["schema_version"] == ELIGIBILITY_SCHEMA_V3 for value in eligibilities.values()
     )
-    execution_failure_provenance_observable = v3_record_count > 0
+    execution_failure_provenance_observable = (
+        bool(treatment_eligibility_ids)
+        and treatment_execution_provenance_missing_count == 0
+    )
     disagreement_rate = _percent(disagreement_count, independent_label_pair_count) if independent_label_pair_count else None
+    cohort_identity_sha256 = _sha256_json(
+        {
+            "criteria_sha256": criteria_sha256,
+            "content_hashes": content_hashes,
+            "source_context_binding_hashes": sorted(source_context_binding_hashes),
+        }
+    )
 
     reasons: list[str] = []
     result = "PASS"
@@ -1000,6 +1144,7 @@ def audit(
         "sources": {
             "cohort": "Grabowski create-only operator-routing-shadow cohort",
             "agent_workspace_manifests": "read_only",
+            "source_context_binding_count": len(source_context_binding_hashes),
             "raw_payload_exported": False,
             "model_training_performed": False,
         },
@@ -1040,6 +1185,7 @@ def audit(
             "execution_abort_reason_observable": execution_failure_provenance_observable,
             "infrastructure_failure_reason_observable": execution_failure_provenance_observable,
             "execution_status_counts": dict(sorted(execution_statuses.items())),
+            "treatment_execution_provenance_missing_count": treatment_execution_provenance_missing_count,
             "selection_bias_interpretation": (
                 "capture attempts, unbound prospective cases and unsealed eligibility are counted; "
                 "v3 records additionally separate completion, execution abort and infrastructure failure"

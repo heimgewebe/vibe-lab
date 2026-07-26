@@ -168,13 +168,15 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
         origin: str = "production",
         reviewed: bool = True,
         disagree: bool = False,
+        execution_unknown: bool = False,
+        outcome_label: str | None = None,
+        assessment_labels: tuple[str, str] | None = None,
     ) -> Path:
         bindings = cohort / "direct-task-bindings"
         bindings.mkdir(exist_ok=True)
         task_id = f"{index + 1000:024x}"
         workspace_id = f"gaw-direct-task-{task_id}"
         recommendation_id = module.hashlib.sha256(f"v3-recommendation-{index}".encode()).hexdigest()
-        plan_sha256 = module.hashlib.sha256(f"v3-plan-{index}".encode()).hexdigest()
         route = {
             "schema_version": 2,
             "recommendation_id": recommendation_id,
@@ -196,6 +198,14 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             },
         }
         route_hash = module._sha256_json(route)
+        task_identity = {
+            "host_sha256": module.hashlib.sha256(b"host-v3").hexdigest(),
+            "argv_sha256": module.hashlib.sha256(f"argv-v3-{index}".encode()).hexdigest(),
+            "cwd_sha256": module.hashlib.sha256(b"/example/repo-v3").hexdigest(),
+            "resource_keys_sha256": module._sha256_json(["repo:/example/repo-v3"]),
+            "runtime_seconds": 60,
+        }
+        plan_sha256 = module._direct_task_plan_sha256(task_id, task_identity, route)
         route_ref = {
             "source": "direct-task-start",
             "schema_version": 2,
@@ -251,10 +261,12 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
         self._write(cohort / "eligibility" / f"v3-{index}.json", eligibility)
         observed_at = "2026-07-24T11:00:00Z"
         if reviewed:
+            labels = assessment_labels or ("success", "partial" if disagree else "success")
+            adjudicated_label = labels[0] if labels[0] == labels[1] else "partial"
             outcome = {
                 "status": "reviewed",
                 "kind": "task_correctness",
-                "label": "success",
+                "label": outcome_label or adjudicated_label,
                 "observed_at": observed_at,
                 "review_authority": "diff_bound_review",
             }
@@ -263,7 +275,7 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
                 {
                     "reviewer_pseudonym_sha256": module.hashlib.sha256(b"reviewer-a").hexdigest(),
                     "kind": "task_correctness",
-                    "label": "success",
+                    "label": labels[0],
                     "observed_at": observed_at,
                     "review_authority": "diff_bound_review",
                     "primary_evidence_refs": ["diff-review:v3-fixture-a"],
@@ -271,7 +283,7 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
                 {
                     "reviewer_pseudonym_sha256": module.hashlib.sha256(b"reviewer-b").hexdigest(),
                     "kind": "task_correctness",
-                    "label": "partial" if disagree else "success",
+                    "label": labels[1],
                     "observed_at": observed_at,
                     "review_authority": "ci_and_review",
                     "primary_evidence_refs": ["github-ci:v3-fixture-b"],
@@ -300,11 +312,15 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             "canonical_route_evidence": route_ref,
             "features": dict(prospective["features"]),
             "case_provenance": provenance,
-            "execution_provenance": {
-                "status": "completed",
-                "observed_at": "2026-07-24T10:55:00Z",
-                "evidence_refs": ["artifact:v3-lifecycle"],
-            },
+            "execution_provenance": (
+                {"status": "unknown", "reason_code": "not_observed"}
+                if execution_unknown
+                else {
+                    "status": "completed",
+                    "observed_at": "2026-07-24T10:55:00Z",
+                    "evidence_refs": ["artifact:v3-lifecycle"],
+                }
+            ),
             "outcome": outcome,
             "primary_evidence_refs": refs,
             "semantic_assessments": assessments,
@@ -335,14 +351,22 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             "no_effect": dict(module.NO_EFFECT),
         }
         self._write(cohort / "attempts" / f"v3-{index}.json", attempt)
-        binding = {
+        binding_payload = {
             "schema_version": "operator-routing-shadow-direct-task-binding.v1",
             "task_id": task_id,
             "workspace_id": workspace_id,
             "plan_sha256": plan_sha256,
+            "task_identity": task_identity,
             "route_evidence": route,
-            "task_identity": {"cwd_sha256": module.hashlib.sha256(b"/example/repo-v3").hexdigest()},
+            "prospective": {
+                "status": "created",
+                "prospective_eligibility_id": prospective_id,
+                "workspace_case_id": workspace_case_id,
+            },
+            "created_at": frozen_at,
+            "no_effect": dict(module.NO_EFFECT),
         }
+        binding = {"binding_id": module._sha256_json(binding_payload), **binding_payload}
         self._write(bindings / f"{task_id}.json", binding)
         return bindings
 
@@ -560,6 +584,71 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertEqual(report["counts"]["complete_treatment_cases"], 0)
             self.assertEqual(report["quality"]["direct_route_plus_reviewed_outcome_completeness_percent"], 0.0)
             self.assertEqual(report["quality"]["integrity_error_count"], 0)
+
+    def test_v3_unknown_execution_provenance_cannot_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = None
+            for index in range(20):
+                bindings = self._v3_direct_case(cohort, index=100 + index, execution_unknown=True)
+            assert bindings is not None
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertNotEqual(report["gate_result"], "PASS")
+            self.assertIn("execution_failure_provenance_unobservable", report["gate_reasons"])
+            self.assertEqual(report["attempt_accounting"]["treatment_execution_provenance_missing_count"], 20)
+            self.assertEqual(report["counts"]["complete_treatment_cases"], 0)
+
+    def test_direct_binding_repository_context_is_identity_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=200)
+            before = module.audit(cohort, workspaces, CRITERIA, bindings)
+            binding_path = next(bindings.glob("*.json"))
+            binding = json.loads(binding_path.read_text(encoding="utf-8"))
+            binding["task_identity"]["cwd_sha256"] = module.hashlib.sha256(b"/tampered/repo").hexdigest()
+            payload = {key: value for key, value in binding.items() if key != "binding_id"}
+            binding["binding_id"] = module._sha256_json(payload)
+            self._write(binding_path, binding)
+            after = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertNotEqual(before["cohort_identity_sha256"], after["cohort_identity_sha256"])
+            self.assertGreater(after["quality"]["unresolved_manifest_binding_count"], 0)
+            self.assertNotEqual(after["gate_result"], "PASS")
+
+    def test_v3_outcome_label_must_follow_assessment_adjudication(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(
+                cohort,
+                index=300,
+                outcome_label="success",
+                assessment_labels=("failure", "failure"),
+            )
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "FAIL")
+            self.assertTrue(
+                any("reviewed outcome label contradicts semantic assessment adjudication" in key for key in report["errors"])
+            )
+
+    def test_route_source_and_manifest_identity_remain_exactly_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=400)
+            eligibility_path = next((cohort / "eligibility").glob("*.json"))
+            record_path = next((cohort / "records").glob("*.json"))
+            eligibility = json.loads(eligibility_path.read_text(encoding="utf-8"))
+            eligibility["canonical_route_evidence"]["source"] = "agent-workspace-manifest"
+            eligibility_payload = {key: value for key, value in eligibility.items() if key != "eligibility_id"}
+            eligibility["eligibility_id"] = module._sha256_json(eligibility_payload)
+            self._write(eligibility_path, eligibility)
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            record["eligibility"]["eligibility_id"] = eligibility["eligibility_id"]
+            record["canonical_route_evidence"] = dict(eligibility["canonical_route_evidence"])
+            record_payload = {key: value for key, value in record.items() if key != "record_id"}
+            record["record_id"] = module._sha256_json(record_payload)
+            self._write(record_path, record)
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "FAIL")
+            self.assertGreater(report["errors"].get("eligibility:route_binding_mismatch", 0), 0)
 
     def test_v3_semantic_assessment_before_freeze_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

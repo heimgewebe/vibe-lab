@@ -14,10 +14,11 @@
       "created": 1,
       "duplicate": 1
     },
+    "treatment_execution_provenance_missing_count": 0,
     "unbound_prospective_count": 0,
     "unsealed_eligibility_count": 0
   },
-  "cohort_identity_sha256": "3e642b4d4ccedd49cd9982228620e6bc9ba6a0ce102deb0289cffb915ada39d2",
+  "cohort_identity_sha256": "d03d99f490147a7e748ec7db32c796461ab1e806190e97d386a62ee7355e60ab",
   "cohort_provenance": {
     "capture_path_counts": {
       "direct_task_prestart": 1
@@ -132,7 +133,8 @@
     "agent_workspace_manifests": "read_only",
     "cohort": "Grabowski create-only operator-routing-shadow cohort",
     "model_training_performed": false,
-    "raw_payload_exported": false
+    "raw_payload_exported": false,
+    "source_context_binding_count": 1
   },
   "task": "OPERATOR-ML-READINESS-V1-T004"
 }

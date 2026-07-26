@@ -52,14 +52,17 @@ Both reviewers assess the same outcome kind:
 - `decision_quality`.
 
 Each reviewer chooses exactly one label: `success`, `partial` or `failure`.
-Disagreement is preserved and measured; it is never averaged away or silently
-converted to success.
+Disagreement is preserved and measured. The aggregate outcome keeps a unanimous
+label; when reviewers disagree, its deterministic adjudicated label is `partial`.
+A contradictory aggregate label is an integrity error, and the individual labels
+remain visible rather than being erased by the adjudication.
 
 ## Seal rule
 
 A new reviewed v3 record counts as complete only when:
 
 - execution and semantic outcome remain separate;
+- execution provenance is observed rather than `unknown`;
 - at least two distinct reviewer assessments are present;
 - every assessment has primary evidence;
 - the top-level reviewed outcome has primary evidence;

@@ -5,7 +5,7 @@ date: "2026-07-26"
 reviewer: "ChatGPT / Grabowski"
 gate_result: "CONTINUE-COLLECTING"
 criteria_sha256: "2507258fe107441f150290cf7cd2158a652d1557e7c5af528aab5966654d1fa9"
-cohort_identity_sha256: "3e642b4d4ccedd49cd9982228620e6bc9ba6a0ce102deb0289cffb915ada39d2"
+cohort_identity_sha256: "d03d99f490147a7e748ec7db32c796461ab1e806190e97d386a62ee7355e60ab"
 source_gate_report: "results/readiness-gate-2026-07-26.json"
 rationale: >
   The live v3 Grabowski cohort is now readable by the Vibe-Lab readiness audit.
@@ -13,7 +13,8 @@ rationale: >
   one sealed record and two capture attempts. The record preserves a completed
   execution separately from an abstained semantic outcome because no independent
   semantic review was available. The cohort has zero integrity errors and zero
-  no-effect violations, but zero complete treatment cases and 0.0 percent
+  no-effect violations, complete observed execution provenance for the single
+  treatment case, but zero complete treatment cases and 0.0 percent
   route-plus-reviewed-outcome completeness. The preregistered minimum of twenty
   natural treatment cases is therefore not met and model training remains blocked.
 evidence_summary:
@@ -27,6 +28,8 @@ evidence_summary:
   completeness_percent: 0.0
   integrity_errors: 0
   no_effect_violations: 0
+  treatment_execution_provenance_missing: 0
+  source_context_bindings: 1
 next_steps: >
   Preserve the existing abstained record unchanged. Prospectively capture at
   least nineteen additional natural production cases and, whenever a defensible
