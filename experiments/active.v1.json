@@ -16,7 +16,7 @@
     {
       "experiment_id": "2026-07-23_operator-routing-ml-readiness-shadow",
       "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow",
-      "state": "designed",
+      "state": "testing",
       "consumer": "Grabowski",
       "decision_target": "Can evidence-bound shadow capture produce a trustworthy route-plus-outcome cohort without treating process state as task correctness or granting ML operational authority?",
       "primary_metric": "direct_route_plus_reviewed_outcome_completeness",

@@ -1,0 +1,29 @@
+Operator routing shadow live v3 readiness audit
+Date: 2026-07-26T16:10:00Z
+Executor: operator:chatgpt-grabowski
+
+Command:
+python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26.json
+
+Exit code: 0
+Standard output:
+{"cohort_identity_sha256": "3e642b4d4ccedd49cd9982228620e6bc9ba6a0ce102deb0289cffb915ada39d2", "gate_result": "CONTINUE-COLLECTING", "output": "/tmp/vibe-lab-readiness-gate-2026-07-26.json"}
+
+Committed aggregate output:
+results/readiness-gate-2026-07-26.json
+SHA-256: 974e7ee9c4b6864aeabb74c188c5895775673194674b833d26d90684c8e8f954
+
+Observed aggregate state:
+- prospective cases: 1
+- bound eligibility receipts: 1
+- sealed records: 1
+- production treatment cases: 1
+- abstained records: 1
+- complete treatment cases: 0
+- completeness: 0.0 percent
+- integrity errors: 0
+- no-effect violations: 0
+- gate reason: minimum_treatment_cases_not_met
+
+Non-claims:
+This run does not establish dataset readiness, model usefulness, routing superiority, training authorization, deployment readiness or automatic policy authority.

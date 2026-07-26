@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-005-falsification-precedence",
+  "generated_at": "2026-07-26T19:21:39Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-005-falsification-precedence/execution.txt",
+  "provenance_level": "self_reported",
+  "finalization_receipt_sha256": "9abeef0156f8efa7dfba6b81c48bf6426a6cd080cbe2baf8922df30d5558b7ea",
+  "notes": "Exact-head Codex review found that source_bindings_unresolved could overwrite a criteria-mandated FAIL below the 80 percent falsification floor. The gate now preserves FAIL and appends source_bindings_unresolved only as an additional reason. The 20-case unresolved-provenance regression asserts FAIL with completeness_below_falsification_floor, execution_failure_provenance_unobservable and source_bindings_unresolved. The live one-case report remains unchanged."
+}

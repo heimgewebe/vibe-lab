@@ -1,0 +1,128 @@
+{
+  "attempt_accounting": {
+    "dangling_prospective_reference_count": 0,
+    "execution_abort_reason_observable": true,
+    "execution_status_counts": {
+      "completed": 1
+    },
+    "infrastructure_failure_reason_observable": true,
+    "reason_counts": {
+      "eligible_verified_route": 2
+    },
+    "selection_bias_interpretation": "capture attempts, unbound prospective cases and unsealed eligibility are counted; v3 records additionally separate completion, execution abort and infrastructure failure",
+    "status_counts": {
+      "created": 1,
+      "duplicate": 1
+    },
+    "treatment_execution_provenance_missing_count": 0,
+    "unbound_prospective_count": 0,
+    "unsealed_eligibility_count": 0
+  },
+  "cohort_identity_sha256": "65ae60aa3c868861ffd386d59119223ea404026c97d257f1662f23d2fb0f52b3",
+  "cohort_provenance": {
+    "capture_path_counts": {
+      "direct_task_prestart": 1
+    },
+    "case_origin_counts": {
+      "production": 1
+    },
+    "excluded_case_origin_counts": {},
+    "execution_failure_provenance_observable": true,
+    "limitation": "v3 provenance is observable and non-production cases are excluded from the treatment denominator",
+    "test_or_quarantine_contamination_count": 0,
+    "test_quarantine_provenance_observable": true
+  },
+  "counts": {
+    "abstained_records": 1,
+    "attempts": 2,
+    "complete_records": 0,
+    "complete_treatment_cases": 0,
+    "eligibility": 1,
+    "eligibility_unsealed": 0,
+    "eligible_treatment_cases": 1,
+    "excluded_nonproduction_cases": 0,
+    "legacy_provenance_unobservable_cases": 0,
+    "prospective": 1,
+    "prospective_cases_with_multiple_eligibilities": 0,
+    "prospective_unbound": 0,
+    "records": 1,
+    "reviewed_missing_primary_evidence": 0,
+    "reviewed_records": 0
+  },
+  "coverage": {
+    "dimensions": {
+      "actual_route": {},
+      "recommended_route": {},
+      "repository_context": {},
+      "risk_tier": {},
+      "task_kind": {}
+    },
+    "observed_stratum_deficits": {},
+    "representativeness_claim": "none_for_unobserved_or_undercovered_strata",
+    "route_schema_versions": {
+      "1": 0,
+      "2": 1
+    },
+    "unresolved_manifest_reasons": {
+      "direct_task_binding_not_prospectively_committed": 1
+    }
+  },
+  "criteria_sha256": "2507258fe107441f150290cf7cd2158a652d1557e7c5af528aab5966654d1fa9",
+  "does_not_establish": [
+    "model_superiority",
+    "routing_policy_authority",
+    "deployment_authority",
+    "online_learning_authority",
+    "automatic_policy_promotion"
+  ],
+  "errors": {},
+  "gate_reasons": [
+    "minimum_treatment_cases_not_met",
+    "source_bindings_unresolved"
+  ],
+  "gate_result": "CONTINUE-COLLECTING",
+  "outcomes": {
+    "lifecycle_state_promoted_to_semantic_label": false,
+    "reviewed_label_counts": {},
+    "semantic_review_disagreement": {
+      "disagreement_count": 0,
+      "disagreement_rate_percent": null,
+      "independent_label_pair_count": 0,
+      "limitation": "v3 makes independent pseudonymized assessments observable; records without two assessments remain incomplete",
+      "observable": true
+    }
+  },
+  "privacy_and_effect_boundary": {
+    "no_effect_expected": {
+      "merge": false,
+      "policy": false,
+      "proposal_only": true,
+      "queue": false,
+      "routing": false,
+      "runtime": false
+    },
+    "raw_argv_exported": false,
+    "raw_prompts_exported": false,
+    "raw_transcripts_exported": false,
+    "raw_workspace_or_task_ids_exported": false
+  },
+  "quality": {
+    "attempt_accounting_gap_count": 0,
+    "capture_rejection_count": 0,
+    "direct_route_plus_reviewed_outcome_completeness_percent": 0.0,
+    "integrity_error_count": 0,
+    "no_effect_violation_count": 0,
+    "reviewed_missing_primary_evidence_percent": 0.0,
+    "unresolved_manifest_binding_count": 1
+  },
+  "schema_version": "operator-routing-shadow-readiness-gate-report.v1",
+  "sources": {
+    "agent_workspace_manifests": "read_only",
+    "cohort": "Grabowski create-only operator-routing-shadow cohort",
+    "model_training_performed": false,
+    "prospective_direct_task_binding_commitment_required": true,
+    "raw_payload_exported": false,
+    "source_context_binding_count": 1
+  },
+  "task": "OPERATOR-ML-READINESS-V1-T004"
+}

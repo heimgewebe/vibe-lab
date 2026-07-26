@@ -1,18 +1,44 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
-verdict: "not_executed"
-date: "2026-07-23"
+verdict: "insufficient_proof"
+date: "2026-07-26"
 reviewer: "ChatGPT / Grabowski"
+gate_result: "CONTINUE-COLLECTING"
+criteria_sha256: "2507258fe107441f150290cf7cd2158a652d1557e7c5af528aab5966654d1fa9"
+cohort_identity_sha256: "65ae60aa3c868861ffd386d59119223ea404026c97d257f1662f23d2fb0f52b3"
+source_gate_report: "results/readiness-gate-2026-07-26.json"
 rationale: >
-  The control readiness audit is complete and bound to an aggregate artifact, but
-  the registered shadow treatment cohort has not yet been captured. Therefore no
-  result assessment, model comparison or adoption claim is allowed.
+  The live Grabowski cohort contains one natural production case, one bound
+  eligibility, one sealed abstention and two capture attempts. Execution
+  provenance is observed and the record has zero integrity or no-effect
+  violations. However, the current prospective v2 receipt does not commit the
+  later direct-task binding bytes, and the verified audit chain records task
+  start rather than the exact binding identity. A self-reported created_at value
+  is not prospective evidence. The direct-task route and repository context are
+  therefore excluded from coverage and route-plus-outcome completeness. The gate
+  remains CONTINUE-COLLECTING for both insufficient treatment volume and unresolved
+  source-binding authority; model training remains blocked.
 evidence_summary:
-  observations: 0
+  observations: 1
   positive: 0
   negative: 0
-  neutral: 0
+  neutral: 1
+  eligible_production_cases: 1
+  abstained_records: 1
+  complete_records: 0
+  complete_treatment_cases: 0
+  completeness_percent: 0.0
+  admitted_route_strata: 0
+  unresolved_source_bindings: 1
+  integrity_errors: 0
+  no_effect_violations: 0
+  treatment_execution_provenance_missing: 0
 next_steps: >
-  Implement the minimal canonical route/outcome shadow-capture bridge as a
-  separate Bureau-controlled change, collect at least 20 natural treatment
-  cases, then reassess dataset readiness before installing or training an ML stack.
+  Preserve the existing abstained record unchanged. Extend the Grabowski producer
+  contract so a future prospective artifact commits the direct-task binding
+  identity at freeze time, or emits a durable independent creation receipt bound
+  to the exact binding bytes. Then collect at least nineteen additional natural
+  production cases and bind two independently attributable semantic assessments
+  with primary evidence whenever a defensible outcome exists. Only a separately
+  reviewed PASS may authorize an offline model comparison; no result here
+  authorizes training, routing, policy, queue, merge or runtime effects.

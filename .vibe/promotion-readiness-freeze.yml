@@ -120,3 +120,16 @@ promotion_readiness_freeze:
         usability/instrumentation record, not an efficacy claim. Remove this entry
         once the counter-hypotheses reach checked/partially_checked with evidence
         after enough comparable runs.
+
+    - path: experiments/2026-07-23_operator-routing-ml-readiness-shadow
+      allowed_missing:
+        - insufficient_proof_assessment
+      review_date: "2026-08-15"
+      reason: >-
+        The first real production cohort audit is executed and evidence-bound,
+        but the cohort contains only one eligible production case, one explicit
+        semantic abstention and zero complete independently reviewed cases. The
+        preregistered minimum is twenty natural production cases with at least
+        90 percent route-plus-reviewed-outcome completeness. Keep promotion
+        blocked and remove this exact freeze entry only after a separately
+        reviewed readiness PASS or experiment closure.

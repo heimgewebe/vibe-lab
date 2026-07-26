@@ -20,6 +20,7 @@ validate-legacy: validate-operator-lab-run-cards-tests validate-operator-lab-run
 validate-operator-routing-ml-readiness-audit-tests:
 	@echo "🧪 Running operator routing ML readiness audit regression tests..."
 	@python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_task_store.py
+	@python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py
 
 validate-experiment-registration:
 	@echo "🧭 Validating consumer-bound experiment registrations..."

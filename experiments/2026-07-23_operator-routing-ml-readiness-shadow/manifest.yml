@@ -6,14 +6,31 @@ experiment:
     An evidence-bound shadow capture path can make naturally occurring operator
     routing cases suitable for offline model comparison without granting automatic
     routing, policy, queue, merge or runtime authority.
-  status: designed
+  status: testing
   category: workflow
-  execution_status: prepared
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "results/readiness-gate-2026-07-23.json"
+    - "artifacts/run-001-live-v3-readiness/run_meta.json"
+    - "artifacts/run-001-live-v3-readiness/execution.txt"
+    - "artifacts/run-001-live-v3-readiness/readiness-gate.json"
+    - "artifacts/run-002-review-hardening/run_meta.json"
+    - "artifacts/run-002-review-hardening/execution.txt"
+    - "artifacts/run-002-review-hardening/readiness-gate.json"
+    - "artifacts/run-003-prospective-binding-time/run_meta.json"
+    - "artifacts/run-003-prospective-binding-time/execution.txt"
+    - "artifacts/run-003-prospective-binding-time/readiness-gate.json"
+    - "artifacts/run-004-prospective-source-authority/run_meta.json"
+    - "artifacts/run-004-prospective-source-authority/execution.txt"
+    - "artifacts/run-004-prospective-source-authority/readiness-gate.json"
+    - "artifacts/run-005-falsification-precedence/run_meta.json"
+    - "artifacts/run-005-falsification-precedence/execution.txt"
+    - "results/readiness-gate-2026-07-26.json"
+    - "results/evidence.jsonl"
   created: "2026-07-23"
-  updated: "2026-07-23"
+  updated: "2026-07-26"
   author: "Grabowski / Bureau"
-  iteration: 1
+  iteration: 6
   evidence_level: experimental
   falsifiability:
     version: 1
