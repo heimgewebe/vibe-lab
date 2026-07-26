@@ -171,20 +171,31 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
         execution_unknown: bool = False,
         outcome_label: str | None = None,
         assessment_labels: tuple[str, str] | None = None,
+        task_id_override: str | None = None,
+        recommendation_id_override: str | None = None,
+        route_source: str = "direct-task-start",
+        task_kind: str = "code",
+        risk_tier: str = "R1",
     ) -> Path:
         bindings = cohort / "direct-task-bindings"
         bindings.mkdir(exist_ok=True)
-        task_id = f"{index + 1000:024x}"
-        workspace_id = f"gaw-direct-task-{task_id}"
-        recommendation_id = module.hashlib.sha256(f"v3-recommendation-{index}".encode()).hexdigest()
+        task_id = task_id_override or f"{index + 1000:024x}"
+        workspace_id = (
+            f"gaw-direct-task-{task_id}"
+            if route_source == "direct-task-start"
+            else f"gaw-v3-workspace-{index}"
+        )
+        recommendation_id = recommendation_id_override or module.hashlib.sha256(
+            f"v3-recommendation-{index}".encode()
+        ).hexdigest()
         route = {
             "schema_version": 2,
             "recommendation_id": recommendation_id,
             "actual_route": "direct_operator",
             "recommended_route": "direct_operator",
-            "risk_tier": "R1",
+            "risk_tier": risk_tier,
             "input_facts": {
-                "task_kind": "code",
+                "task_kind": task_kind,
                 "changed_file_estimate": 1,
                 "expected_duration_minutes": 15,
                 "novelty": "low",
@@ -205,20 +216,31 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             "resource_keys_sha256": module._sha256_json(["repo:/example/repo-v3"]),
             "runtime_seconds": 60,
         }
-        plan_sha256 = module._direct_task_plan_sha256(task_id, task_identity, route)
+        plan_sha256 = (
+            module._direct_task_plan_sha256(task_id, task_identity, route)
+            if route_source == "direct-task-start"
+            else module.hashlib.sha256(f"workspace-plan-v3-{index}".encode()).hexdigest()
+        )
         route_ref = {
-            "source": "direct-task-start",
+            "source": route_source,
             "schema_version": 2,
             "recommendation_id": recommendation_id,
             "route_evidence_sha256": route_hash,
             "manifest_identity_sha256": module._manifest_identity_sha256(
-                workspace_id, plan_sha256, route_hash, route_source="direct-task-start"
+                workspace_id, plan_sha256, route_hash, route_source=route_source
             ),
         }
         workspace_case_id = module._workspace_case_id(
-            workspace_id, plan_sha256, route_hash, route_source="direct-task-start"
+            workspace_id, plan_sha256, route_hash, route_source=route_source
         )
-        provenance = {"case_origin": origin, "capture_path": "direct_task_prestart"}
+        provenance = {
+            "case_origin": origin,
+            "capture_path": (
+                "direct_task_prestart"
+                if route_source == "direct-task-start"
+                else "agent_workspace_prestart"
+            ),
+        }
         frozen_at = "2026-07-24T10:00:00Z"
         prospective_payload = {
             "schema_version": module.PROSPECTIVE_SCHEMA_V2,
@@ -351,23 +373,36 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             "no_effect": dict(module.NO_EFFECT),
         }
         self._write(cohort / "attempts" / f"v3-{index}.json", attempt)
-        binding_payload = {
-            "schema_version": "operator-routing-shadow-direct-task-binding.v1",
-            "task_id": task_id,
-            "workspace_id": workspace_id,
-            "plan_sha256": plan_sha256,
-            "task_identity": task_identity,
-            "route_evidence": route,
-            "prospective": {
-                "status": "created",
-                "prospective_eligibility_id": prospective_id,
-                "workspace_case_id": workspace_case_id,
-            },
-            "created_at": frozen_at,
-            "no_effect": dict(module.NO_EFFECT),
-        }
-        binding = {"binding_id": module._sha256_json(binding_payload), **binding_payload}
-        self._write(bindings / f"{task_id}.json", binding)
+        if route_source == "direct-task-start":
+            binding_payload = {
+                "schema_version": "operator-routing-shadow-direct-task-binding.v1",
+                "task_id": task_id,
+                "workspace_id": workspace_id,
+                "plan_sha256": plan_sha256,
+                "task_identity": task_identity,
+                "route_evidence": route,
+                "prospective": {
+                    "status": "created",
+                    "prospective_eligibility_id": prospective_id,
+                    "workspace_case_id": workspace_case_id,
+                },
+                "created_at": frozen_at,
+                "no_effect": dict(module.NO_EFFECT),
+            }
+            binding = {"binding_id": module._sha256_json(binding_payload), **binding_payload}
+            self._write(bindings / f"{task_id}.json", binding)
+        else:
+            workspace = cohort.parent / "workspaces" / workspace_id
+            workspace.mkdir(parents=True, exist_ok=True)
+            self._write(
+                workspace / "manifest.json",
+                {
+                    "workspace_id": workspace_id,
+                    "plan_sha256": plan_sha256,
+                    "repository": f"/example/repo-v3-{index}",
+                    "route_evidence": route,
+                },
+            )
         return bindings
 
     def test_empty_live_shape_requires_continued_collection(self) -> None:
@@ -713,6 +748,80 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertEqual(report["counts"]["eligible_treatment_cases"], 0)
             self.assertEqual(report["counts"]["excluded_nonproduction_cases"], 1)
             self.assertEqual(report["cohort_provenance"]["test_or_quarantine_contamination_count"], 0)
+            self.assertEqual(report["quality"]["integrity_error_count"], 0)
+
+    def test_duplicate_natural_task_cannot_inflate_treatment_denominator(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            shared_task_id = f"{9999:024x}"
+            shared_recommendation_id = module.hashlib.sha256(b"shared-natural-task-route").hexdigest()
+            bindings = self._v3_direct_case(
+                cohort,
+                index=500,
+                task_id_override=shared_task_id,
+                recommendation_id_override=shared_recommendation_id,
+            )
+            self._v3_direct_case(
+                cohort,
+                index=501,
+                task_id_override=shared_task_id,
+                recommendation_id_override=shared_recommendation_id,
+            )
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "FAIL")
+            self.assertEqual(report["counts"]["eligibility"], 2)
+            self.assertEqual(report["counts"]["eligible_treatment_cases"], 1)
+            self.assertEqual(report["counts"]["duplicate_natural_treatment_cases"], 1)
+            self.assertEqual(report["errors"]["eligibility:duplicate_natural_case"], 1)
+            self.assertEqual(report["counts"]["reviewed_records"], 1)
+            self.assertEqual(report["counts"]["complete_records"], 1)
+
+    def test_nonproduction_records_do_not_affect_readiness_metrics_or_coverage(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(
+                cohort,
+                index=600,
+                route_source="agent-workspace-manifest",
+                task_kind="code",
+                risk_tier="R1",
+            )
+            self._v3_direct_case(
+                cohort,
+                index=601,
+                origin="test",
+                route_source="agent-workspace-manifest",
+                task_kind="test-only",
+                risk_tier="R9",
+                outcome_label="failure",
+                assessment_labels=("failure", "failure"),
+            )
+            test_record_path = cohort / "records" / "v3-601.json"
+            test_record = json.loads(test_record_path.read_text(encoding="utf-8"))
+            test_record["primary_evidence_refs"] = []
+            test_record_payload = {
+                key: value for key, value in test_record.items() if key != "record_id"
+            }
+            test_record["record_id"] = module._sha256_json(test_record_payload)
+            self._write(test_record_path, test_record)
+
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["counts"]["eligible_treatment_cases"], 1)
+            self.assertEqual(report["counts"]["excluded_nonproduction_cases"], 1)
+            self.assertEqual(report["counts"]["reviewed_records"], 1)
+            self.assertEqual(report["counts"]["reviewed_missing_primary_evidence"], 0)
+            self.assertEqual(
+                report["quality"]["reviewed_missing_primary_evidence_percent"], 0.0
+            )
+            self.assertEqual(report["outcomes"]["reviewed_label_counts"], {"success": 1})
+            self.assertEqual(
+                report["outcomes"]["semantic_review_disagreement"]["independent_label_pair_count"],
+                1,
+            )
+            self.assertEqual(report["coverage"]["dimensions"]["task_kind"], {"code": 1})
+            self.assertEqual(report["coverage"]["dimensions"]["risk_tier"], {"R1": 1})
+            self.assertNotIn("test-only", report["coverage"]["dimensions"]["task_kind"])
+            self.assertNotIn("R9", report["coverage"]["dimensions"]["risk_tier"])
             self.assertEqual(report["quality"]["integrity_error_count"], 0)
 
     def test_capture_rejection_prevents_pass_pending_bias_review(self) -> None:

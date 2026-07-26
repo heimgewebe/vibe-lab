@@ -876,16 +876,43 @@ def audit(
     validate_many(raw["records"], _validate_record, add_record, "records")
     validate_many(raw["attempts"], _validate_attempt, add_attempt, "attempts")
 
+    production_eligibility_ids = {
+        key for key, value in eligibilities.items()
+        if value.get("case_provenance", {}).get("case_origin") == "production"
+    }
+    legacy_eligibility_ids = {
+        key for key, value in eligibilities.items() if value["schema_version"] == ELIGIBILITY_SCHEMA
+    }
+    treatment_eligibility_ids = set(production_eligibility_ids)
+    if not criteria["require_test_quarantine_provenance_for_pass"]:
+        treatment_eligibility_ids |= legacy_eligibility_ids
+
+    treatment_eligibilities_by_case: dict[str, list[str]] = collections.defaultdict(list)
+    for eligibility_id in sorted(treatment_eligibility_ids):
+        treatment_eligibilities_by_case[
+            eligibilities[eligibility_id]["eligible_case"]["case_id"]
+        ].append(eligibility_id)
+    canonical_treatment_eligibility_ids: set[str] = set()
+    duplicate_natural_case_count = 0
+    for eligibility_ids in treatment_eligibilities_by_case.values():
+        canonical_treatment_eligibility_ids.add(eligibility_ids[0])
+        duplicate_natural_case_count += max(0, len(eligibility_ids) - 1)
+    if duplicate_natural_case_count:
+        errors["eligibility:duplicate_natural_case"] += duplicate_natural_case_count
+
     coverage: dict[str, collections.Counter[str]] = {
         dimension: collections.Counter() for dimension in criteria["coverage_dimensions"]
     }
     route_schema_versions: collections.Counter[str] = collections.Counter()
     unresolved_manifests: collections.Counter[str] = collections.Counter()
+    treatment_unresolved_manifests: collections.Counter[str] = collections.Counter()
     resolved_route_eligibility_ids: set[str] = set()
     orphan_eligibility = 0
     prospective_ids_referenced_by_eligibility: set[str] = set()
     prospective_eligibility_counts: collections.Counter[str] = collections.Counter()
     for eligibility in eligibilities.values():
+        eligibility_id = eligibility["eligibility_id"]
+        is_treatment_eligibility = eligibility_id in canonical_treatment_eligibility_ids
         ref = eligibility["prospective_eligibility"]["prospective_eligibility_id"]
         prospective_ids_referenced_by_eligibility.add(ref)
         source = prospectives.get(ref)
@@ -915,12 +942,15 @@ def audit(
             errors["eligibility:route_binding_mismatch"] += 1
         prospective_eligibility_counts[ref] += 1
         if route_binding_valid:
-            route_schema_versions[str(bound_route["schema_version"])] += 1
+            if is_treatment_eligibility:
+                route_schema_versions[str(bound_route["schema_version"])] += 1
             route, repository_context, source_context_sha256, problem = _resolve_route_context(
                 source, eligibility, workspace_root, direct_task_binding_root
             )
             if problem:
                 unresolved_manifests[problem] += 1
+                if is_treatment_eligibility:
+                    treatment_unresolved_manifests[problem] += 1
                 source_context_binding_hashes.append(
                     _sha256_json(
                         {
@@ -934,17 +964,18 @@ def audit(
             else:
                 assert route is not None and source_context_sha256 is not None
                 source_context_binding_hashes.append(source_context_sha256)
-                resolved_route_eligibility_ids.add(eligibility["eligibility_id"])
-                task_kind = eligibility["features"].get("task_kind")
-                if isinstance(task_kind, str) and task_kind:
-                    coverage["task_kind"][task_kind] += 1
-                risk_tier = route.get("risk_tier") or eligibility["features"].get("risk_tier") or "legacy-v1-unspecified"
-                actual_route = route.get("actual_route") or "unavailable"
-                recommended_route = route.get("recommended_route") or "unavailable"
-                coverage["risk_tier"][str(risk_tier)] += 1
-                coverage["actual_route"][str(actual_route)] += 1
-                coverage["recommended_route"][str(recommended_route)] += 1
-                coverage["repository_context"][str(repository_context or "unavailable")] += 1
+                resolved_route_eligibility_ids.add(eligibility_id)
+                if is_treatment_eligibility:
+                    task_kind = eligibility["features"].get("task_kind")
+                    if isinstance(task_kind, str) and task_kind:
+                        coverage["task_kind"][task_kind] += 1
+                    risk_tier = route.get("risk_tier") or eligibility["features"].get("risk_tier") or "legacy-v1-unspecified"
+                    actual_route = route.get("actual_route") or "unavailable"
+                    recommended_route = route.get("recommended_route") or "unavailable"
+                    coverage["risk_tier"][str(risk_tier)] += 1
+                    coverage["actual_route"][str(actual_route)] += 1
+                    coverage["recommended_route"][str(recommended_route)] += 1
+                    coverage["repository_context"][str(repository_context or "unavailable")] += 1
 
     record_eligibility_refs: set[str] = set()
     record_eligibility_counts: collections.Counter[str] = collections.Counter()
@@ -997,37 +1028,40 @@ def audit(
                 or record.get("case_provenance") != eligibility.get("case_provenance")
             ):
                 errors["records:eligibility_binding_mismatch"] += 1
+        is_treatment_record = eligibility_id in canonical_treatment_eligibility_ids
         outcome = record["outcome"]
         complete = False
         if outcome["status"] == "reviewed":
-            reviewed_records += 1
-            outcome_labels[str(outcome.get("label", "unknown"))] += 1
-            if not record["primary_evidence_refs"]:
-                reviewed_missing_primary_evidence += 1
-            elif record["schema_version"] == RECORD_SCHEMA_V3:
-                assessments = record["semantic_assessments"]
-                execution_observed = record["execution_provenance"]["status"] in EXECUTION_STATUSES
-                if len(assessments) >= 2:
-                    independent_label_pair_count += 1
-                    if len({item["label"] for item in assessments}) > 1:
-                        disagreement_count += 1
-                    complete = execution_observed or not criteria["require_execution_failure_provenance_for_pass"]
-            elif not criteria["require_disagreement_observability_for_pass"]:
-                complete = True
-        else:
+            if is_treatment_record:
+                reviewed_records += 1
+                outcome_labels[str(outcome.get("label", "unknown"))] += 1
+                if not record["primary_evidence_refs"]:
+                    reviewed_missing_primary_evidence += 1
+                elif record["schema_version"] == RECORD_SCHEMA_V3:
+                    assessments = record["semantic_assessments"]
+                    execution_observed = record["execution_provenance"]["status"] in EXECUTION_STATUSES
+                    if len(assessments) >= 2:
+                        independent_label_pair_count += 1
+                        if len({item["label"] for item in assessments}) > 1:
+                            disagreement_count += 1
+                        complete = execution_observed or not criteria["require_execution_failure_provenance_for_pass"]
+                elif not criteria["require_disagreement_observability_for_pass"]:
+                    complete = True
+        elif is_treatment_record:
             abstained_records += 1
         if record["schema_version"] == RECORD_SCHEMA_V3:
-            v3_record_count += 1
             provenance = record["case_provenance"]
             case_origin_counts[provenance["case_origin"]] += 1
             capture_path_counts[provenance["capture_path"]] += 1
-            execution_status = record["execution_provenance"]["status"]
-            execution_statuses[execution_status] += 1
-            if execution_status in EXECUTION_STATUSES:
-                observed_execution_eligibility_ids.add(eligibility_id)
-            else:
-                unknown_execution_eligibility_ids.add(eligibility_id)
-        if complete:
+            if is_treatment_record:
+                v3_record_count += 1
+                execution_status = record["execution_provenance"]["status"]
+                execution_statuses[execution_status] += 1
+                if execution_status in EXECUTION_STATUSES:
+                    observed_execution_eligibility_ids.add(eligibility_id)
+                else:
+                    unknown_execution_eligibility_ids.add(eligibility_id)
+        if complete and is_treatment_record:
             complete_records += 1
             if eligibility is not None and eligibility_id in resolved_route_eligibility_ids:
                 complete_eligibility_ids.add(eligibility_id)
@@ -1045,26 +1079,18 @@ def audit(
             if ref not in prospectives:
                 dangling_attempt_refs += 1
 
-    production_eligibility_ids = {
-        key for key, value in eligibilities.items()
-        if value.get("case_provenance", {}).get("case_origin") == "production"
-    }
-    legacy_eligibility_ids = {
-        key for key, value in eligibilities.items() if value["schema_version"] == ELIGIBILITY_SCHEMA
-    }
-    treatment_eligibility_ids = set(production_eligibility_ids)
-    if not criteria["require_test_quarantine_provenance_for_pass"]:
-        treatment_eligibility_ids |= legacy_eligibility_ids
     nonproduction_eligibility_count = sum(
         1 for value in eligibilities.values()
         if value.get("case_provenance", {}).get("case_origin") in {"test", "synthetic", "quarantined"}
     )
     treatment_execution_provenance_missing_count = len(
-        treatment_eligibility_ids - observed_execution_eligibility_ids
+        canonical_treatment_eligibility_ids - observed_execution_eligibility_ids
     )
     prospective_count = len(prospectives)
-    treatment_case_count = len(treatment_eligibility_ids)
-    complete_treatment_case_count = len(complete_eligibility_ids & treatment_eligibility_ids)
+    treatment_case_count = len(treatment_eligibilities_by_case)
+    complete_treatment_case_count = len(
+        complete_eligibility_ids & canonical_treatment_eligibility_ids
+    )
     completeness_percent = _percent(complete_treatment_case_count, treatment_case_count)
     missing_evidence_percent = _percent(reviewed_missing_primary_evidence, reviewed_records)
     observed_stratum_deficits: dict[str, int] = {}
@@ -1083,7 +1109,7 @@ def audit(
         value["schema_version"] == ELIGIBILITY_SCHEMA_V3 for value in eligibilities.values()
     )
     execution_failure_provenance_observable = (
-        bool(treatment_eligibility_ids)
+        bool(canonical_treatment_eligibility_ids)
         and treatment_execution_provenance_missing_count == 0
     )
     disagreement_rate = _percent(disagreement_count, independent_label_pair_count) if independent_label_pair_count else None
@@ -1137,7 +1163,7 @@ def audit(
         elif completeness_percent < float(criteria["pass_completeness_percent"]):
             result = "CONTINUE-COLLECTING"
             reasons.append("pass_completeness_not_met")
-        if unresolved_manifests and criteria["require_zero_unresolved_manifest_bindings_for_pass"]:
+        if treatment_unresolved_manifests and criteria["require_zero_unresolved_manifest_bindings_for_pass"]:
             if result != "FAIL":
                 result = "CONTINUE-COLLECTING"
             reasons.append("source_bindings_unresolved")
@@ -1167,6 +1193,7 @@ def audit(
             "prospective": prospective_count,
             "eligibility": len(eligibilities),
             "eligible_treatment_cases": treatment_case_count,
+            "duplicate_natural_treatment_cases": duplicate_natural_case_count,
             "excluded_nonproduction_cases": nonproduction_eligibility_count,
             "legacy_provenance_unobservable_cases": len(legacy_eligibility_ids),
             "records": len(records),
@@ -1188,6 +1215,9 @@ def audit(
             "integrity_error_count": integrity_error_count,
             "no_effect_violation_count": no_effect_violations,
             "unresolved_manifest_binding_count": sum(unresolved_manifests.values()),
+            "treatment_unresolved_manifest_binding_count": sum(
+                treatment_unresolved_manifests.values()
+            ),
             "attempt_accounting_gap_count": attempt_accounting_gap_count,
             "capture_rejection_count": capture_rejection_count,
         },
@@ -1213,6 +1243,9 @@ def audit(
             "dimensions": {dimension: dict(sorted(counts.items())) for dimension, counts in coverage.items()},
             "observed_stratum_deficits": dict(sorted(observed_stratum_deficits.items())),
             "unresolved_manifest_reasons": dict(sorted(unresolved_manifests.items())),
+            "treatment_unresolved_manifest_reasons": dict(
+                sorted(treatment_unresolved_manifests.items())
+            ),
             "representativeness_claim": "none_for_unobserved_or_undercovered_strata",
         },
         "outcomes": {
