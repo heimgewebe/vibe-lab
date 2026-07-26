@@ -1138,7 +1138,8 @@ def audit(
             result = "CONTINUE-COLLECTING"
             reasons.append("pass_completeness_not_met")
         if unresolved_manifests and criteria["require_zero_unresolved_manifest_bindings_for_pass"]:
-            result = "CONTINUE-COLLECTING"
+            if result != "FAIL":
+                result = "CONTINUE-COLLECTING"
             reasons.append("source_bindings_unresolved")
         if attempt_accounting_gap_count and criteria["require_attempt_accounting_for_pass"] and result == "PASS":
             result = "CONTINUE-COLLECTING"

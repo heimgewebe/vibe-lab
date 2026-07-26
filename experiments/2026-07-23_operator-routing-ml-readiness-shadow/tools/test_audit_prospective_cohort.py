@@ -628,8 +628,10 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
                 bindings = self._v3_direct_case(cohort, index=100 + index, execution_unknown=True)
             assert bindings is not None
             report = module.audit(cohort, workspaces, CRITERIA, bindings)
-            self.assertNotEqual(report["gate_result"], "PASS")
+            self.assertEqual(report["gate_result"], "FAIL")
             self.assertIn("execution_failure_provenance_unobservable", report["gate_reasons"])
+            self.assertIn("completeness_below_falsification_floor", report["gate_reasons"])
+            self.assertIn("source_bindings_unresolved", report["gate_reasons"])
             self.assertEqual(report["attempt_accounting"]["treatment_execution_provenance_missing_count"], 20)
             self.assertEqual(report["counts"]["complete_treatment_cases"], 0)
 

@@ -1,0 +1,20 @@
+Operator routing shadow falsification-precedence regression
+Date: 2026-07-26T19:21:39Z
+Executor: operator:chatgpt-grabowski
+
+Command:
+python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py
+
+Exit code: 0
+Durable finalization receipt SHA-256: 9abeef0156f8efa7dfba6b81c48bf6426a6cd080cbe2baf8922df30d5558b7ea
+
+Result:
+- 20 prospective-cohort regression tests passed.
+- The 20-case unresolved direct-task scenario returns FAIL.
+- Gate reasons include completeness_below_falsification_floor.
+- Gate reasons also preserve execution_failure_provenance_unobservable and source_bindings_unresolved.
+- source_bindings_unresolved no longer downgrades an existing FAIL to CONTINUE-COLLECTING.
+- The natural one-case live cohort result is unchanged by this rule-precedence patch.
+
+Non-claims:
+This regression establishes gate-result precedence only. It does not establish dataset readiness, model usefulness, routing superiority, training authorization, deployment readiness or automatic policy authority.
