@@ -17,7 +17,9 @@ confidence into an automatic correctness label.
 
 A task saying “finished” only proves that the process stopped normally. It does
 not prove that the code or decision was good. Vibe-Lab therefore requires two
-separate judgements about the result before a case counts as complete.
+separate judgements about the result before a case counts as complete. It also
+requires proof that direct-task route evidence existed before the result was known;
+a date written into the same later file is not such proof.
 
 ## Roles
 
@@ -62,6 +64,7 @@ remain visible rather than being erased by the adjudication.
 A new reviewed v3 record counts as complete only when:
 
 - execution and semantic outcome remain separate;
+- direct-task route identity was committed prospectively or is backed by durable independent creation evidence;
 - execution provenance is observed rather than `unknown`;
 - at least two distinct reviewer assessments are present;
 - every assessment has primary evidence;
@@ -77,8 +80,9 @@ The case remains in the denominator and does not count as complete.
 ## Existing records
 
 Create-only cohort history is immutable. The existing 2026-07-24 production
-record remains an abstention and is not backfilled with later reviews. This
-prevents outcome-aware rewriting of the prospective cohort.
+record remains an abstention and is not backfilled with later reviews. Its current
+direct-task binding is structurally readable but not retrospectively promoted to
+prospective route evidence. This prevents outcome-aware rewriting of the cohort.
 
 ## Authority boundary
 

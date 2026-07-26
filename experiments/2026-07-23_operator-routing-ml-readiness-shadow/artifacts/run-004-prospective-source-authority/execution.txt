@@ -1,0 +1,41 @@
+Operator routing shadow live v3 readiness audit
+Date: 2026-07-26T18:33:54Z
+Executor: operator:chatgpt-grabowski
+
+Command:
+python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26-run4.json
+
+Exit code: 0
+Grabowski task: 9188b5e50e984ec8b4989de7
+Task lifecycle receipt SHA-256: 3bc43a6125cb3d253edd4e6abe35d6d460a1d0f797fb91d48b4e299fef69fcad
+Standard output:
+{"cohort_identity_sha256": "65ae60aa3c868861ffd386d59119223ea404026c97d257f1662f23d2fb0f52b3", "gate_result": "CONTINUE-COLLECTING", "output": "/tmp/vibe-lab-readiness-gate-2026-07-26-run4.json"}
+
+Committed aggregate output:
+results/readiness-gate-2026-07-26.json
+SHA-256: 7628d1467e60a2e407097306aedbf93ac765b489bdfa2b576c90fe29ff25c548
+
+Observed aggregate state:
+- prospective cases: 1
+- bound eligibility receipts: 1
+- sealed records: 1
+- production treatment cases: 1
+- abstained records: 1
+- complete records: 0
+- complete treatment cases: 0
+- completeness: 0.0 percent
+- unresolved source bindings: 1
+- unresolved reason: direct_task_binding_not_prospectively_committed
+- integrity errors: 0
+- no-effect violations: 0
+- gate reasons: minimum_treatment_cases_not_met, source_bindings_unresolved
+
+Hardening established:
+- a self-reported binding timestamp cannot establish prospective creation
+- unresolved direct-task route provenance cannot contribute route coverage
+- unresolved direct-task route provenance cannot contribute route-plus-outcome completeness
+- the natural production case remains visible in the denominator
+- earlier runs and create-only cohort history remain unchanged
+
+Non-claims:
+This run does not establish dataset readiness, model usefulness, routing superiority, training authorization, deployment readiness or automatic policy authority.

@@ -20,12 +20,15 @@ experiment:
     - "artifacts/run-003-prospective-binding-time/run_meta.json"
     - "artifacts/run-003-prospective-binding-time/execution.txt"
     - "artifacts/run-003-prospective-binding-time/readiness-gate.json"
+    - "artifacts/run-004-prospective-source-authority/run_meta.json"
+    - "artifacts/run-004-prospective-source-authority/execution.txt"
+    - "artifacts/run-004-prospective-source-authority/readiness-gate.json"
     - "results/readiness-gate-2026-07-26.json"
     - "results/evidence.jsonl"
   created: "2026-07-23"
   updated: "2026-07-26"
   author: "Grabowski / Bureau"
-  iteration: 4
+  iteration: 5
   evidence_level: experimental
   falsifiability:
     version: 1

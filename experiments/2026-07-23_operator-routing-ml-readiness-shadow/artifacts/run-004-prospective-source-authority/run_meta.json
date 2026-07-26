@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-004-prospective-source-authority",
+  "generated_at": "2026-07-26T18:33:54Z",
+  "executor": "operator:chatgpt-grabowski",
+  "command": "python3 experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py --cohort-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort --agent-workspace-root /home/alex/.local/state/grabowski/agent-workspaces --direct-task-binding-root /home/alex/.local/state/grabowski/operator-routing-shadow-cohort/direct-task-bindings --criteria experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json --output /tmp/vibe-lab-readiness-gate-2026-07-26-run4.json",
+  "exit_code": 0,
+  "test_output_file": "artifacts/run-004-prospective-source-authority/execution.txt",
+  "provenance_level": "self_reported",
+  "cohort_identity_sha256": "65ae60aa3c868861ffd386d59119223ea404026c97d257f1662f23d2fb0f52b3",
+  "aggregate_report_sha256": "7628d1467e60a2e407097306aedbf93ac765b489bdfa2b576c90fe29ff25c548",
+  "grabowski_task_id": "9188b5e50e984ec8b4989de7",
+  "lifecycle_receipt_sha256": "3bc43a6125cb3d253edd4e6abe35d6d460a1d0f797fb91d48b4e299fef69fcad",
+  "notes": "Append-only live rerun after exact-head Codex P1 review. Current prospective v2 direct-task receipts do not commit the later binding bytes or durable independent creation evidence. The structurally valid binding remains visible but is excluded from route/repository coverage and route-plus-outcome completeness. Runs 1 through 3 remain unchanged. This run establishes collection state only, not model, routing, training or deployment readiness."
+}

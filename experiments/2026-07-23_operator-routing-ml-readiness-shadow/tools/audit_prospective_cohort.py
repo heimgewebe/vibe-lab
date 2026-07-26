@@ -741,6 +741,14 @@ def _resolve_route_context(
             binding = _validate_direct_task_binding(binding, receipt=receipt, eligibility=eligibility)
         except AuditError:
             return None, None, None, "direct_task_binding_invalid"
+        # v2 freezes route and plan identity, but it does not commit to the later
+        # direct-task binding bytes or to an independent creation receipt. A
+        # self-reported created_at value is therefore not prospective evidence.
+        # Keep the case in the natural treatment denominator, but exclude its
+        # route/repository context and route-plus-outcome completeness until the
+        # producer emits a prospectively committed binding identity.
+        if receipt["schema_version"] == PROSPECTIVE_SCHEMA_V2:
+            return None, None, None, "direct_task_binding_not_prospectively_committed"
         route = binding["route_evidence"]
         if not isinstance(route, dict) or _sha256_json(route) != route_ref["route_evidence_sha256"]:
             return None, None, None, "route_hash_mismatch"
@@ -873,6 +881,7 @@ def audit(
     }
     route_schema_versions: collections.Counter[str] = collections.Counter()
     unresolved_manifests: collections.Counter[str] = collections.Counter()
+    resolved_route_eligibility_ids: set[str] = set()
     orphan_eligibility = 0
     prospective_ids_referenced_by_eligibility: set[str] = set()
     prospective_eligibility_counts: collections.Counter[str] = collections.Counter()
@@ -925,6 +934,7 @@ def audit(
             else:
                 assert route is not None and source_context_sha256 is not None
                 source_context_binding_hashes.append(source_context_sha256)
+                resolved_route_eligibility_ids.add(eligibility["eligibility_id"])
                 task_kind = eligibility["features"].get("task_kind")
                 if isinstance(task_kind, str) and task_kind:
                     coverage["task_kind"][task_kind] += 1
@@ -1019,7 +1029,7 @@ def audit(
                 unknown_execution_eligibility_ids.add(eligibility_id)
         if complete:
             complete_records += 1
-            if eligibility is not None:
+            if eligibility is not None and eligibility_id in resolved_route_eligibility_ids:
                 complete_eligibility_ids.add(eligibility_id)
 
     attempt_statuses: collections.Counter[str] = collections.Counter()
@@ -1127,9 +1137,9 @@ def audit(
         elif completeness_percent < float(criteria["pass_completeness_percent"]):
             result = "CONTINUE-COLLECTING"
             reasons.append("pass_completeness_not_met")
-        if unresolved_manifests and criteria["require_zero_unresolved_manifest_bindings_for_pass"] and result == "PASS":
+        if unresolved_manifests and criteria["require_zero_unresolved_manifest_bindings_for_pass"]:
             result = "CONTINUE-COLLECTING"
-            reasons.append("manifest_bindings_unresolved")
+            reasons.append("source_bindings_unresolved")
         if attempt_accounting_gap_count and criteria["require_attempt_accounting_for_pass"] and result == "PASS":
             result = "CONTINUE-COLLECTING"
             reasons.append("attempt_accounting_incomplete")
@@ -1148,6 +1158,7 @@ def audit(
             "cohort": "Grabowski create-only operator-routing-shadow cohort",
             "agent_workspace_manifests": "read_only",
             "source_context_binding_count": len(source_context_binding_hashes),
+            "prospective_direct_task_binding_commitment_required": True,
             "raw_payload_exported": False,
             "model_training_performed": False,
         },

@@ -559,19 +559,25 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertEqual(report["errors"]["prospective:duplicate_identity"], 1)
             self.assertGreater(report["quality"]["integrity_error_count"], 0)
 
-    def test_v3_direct_case_exposes_provenance_reviews_and_route_coverage(self) -> None:
+    def test_v3_direct_case_without_prospective_binding_commitment_is_incomplete(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             cohort, workspaces = self._roots(tmp)
             bindings = self._v3_direct_case(cohort, index=1)
             report = module.audit(cohort, workspaces, CRITERIA, bindings)
             self.assertEqual(report["gate_result"], "CONTINUE-COLLECTING")
+            self.assertIn("source_bindings_unresolved", report["gate_reasons"])
             self.assertEqual(report["counts"]["eligible_treatment_cases"], 1)
-            self.assertEqual(report["counts"]["complete_treatment_cases"], 1)
+            self.assertEqual(report["counts"]["complete_records"], 1)
+            self.assertEqual(report["counts"]["complete_treatment_cases"], 0)
             self.assertTrue(report["cohort_provenance"]["test_quarantine_provenance_observable"])
             self.assertTrue(report["cohort_provenance"]["execution_failure_provenance_observable"])
             self.assertTrue(report["outcomes"]["semantic_review_disagreement"]["observable"])
             self.assertEqual(report["outcomes"]["semantic_review_disagreement"]["independent_label_pair_count"], 1)
-            self.assertEqual(report["coverage"]["dimensions"]["actual_route"], {"direct_operator": 1})
+            self.assertEqual(report["coverage"]["dimensions"]["actual_route"], {})
+            self.assertEqual(
+                report["coverage"]["unresolved_manifest_reasons"],
+                {"direct_task_binding_not_prospectively_committed": 1},
+            )
             self.assertEqual(report["quality"]["integrity_error_count"], 0)
 
     def test_v3_abstention_stays_in_denominator_but_is_incomplete(self) -> None:
@@ -600,6 +606,20 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             self.assertGreater(report["quality"]["unresolved_manifest_binding_count"], 0)
             self.assertEqual(report["coverage"]["dimensions"]["repository_context"], {})
 
+    def test_self_reported_freeze_timestamp_cannot_make_direct_binding_prospective(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cohort, workspaces = self._roots(tmp)
+            bindings = self._v3_direct_case(cohort, index=51)
+            report = module.audit(cohort, workspaces, CRITERIA, bindings)
+            self.assertEqual(report["gate_result"], "CONTINUE-COLLECTING")
+            self.assertEqual(report["counts"]["complete_records"], 1)
+            self.assertEqual(report["counts"]["complete_treatment_cases"], 0)
+            self.assertEqual(report["coverage"]["dimensions"]["repository_context"], {})
+            self.assertEqual(
+                report["coverage"]["unresolved_manifest_reasons"],
+                {"direct_task_binding_not_prospectively_committed": 1},
+            )
+
     def test_v3_unknown_execution_provenance_cannot_pass(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             cohort, workspaces = self._roots(tmp)
@@ -627,6 +647,7 @@ class ProspectiveCohortAuditTests(unittest.TestCase):
             after = module.audit(cohort, workspaces, CRITERIA, bindings)
             self.assertNotEqual(before["cohort_identity_sha256"], after["cohort_identity_sha256"])
             self.assertGreater(after["quality"]["unresolved_manifest_binding_count"], 0)
+            self.assertEqual(after["coverage"]["dimensions"]["repository_context"], {})
             self.assertNotEqual(after["gate_result"], "PASS")
 
     def test_v3_outcome_label_must_follow_assessment_adjudication(self) -> None:
