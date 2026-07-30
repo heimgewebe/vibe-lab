@@ -18,6 +18,7 @@
     "review_at",
     "expires_at",
     "closure",
+    "surface_budget",
     "boundary"
   ],
   "properties": {
@@ -33,7 +34,10 @@
       "additionalProperties": false,
       "required": [
         "organ",
-        "use"
+        "use",
+        "relation",
+        "status",
+        "evidence_ref"
       ],
       "properties": {
         "organ": {
@@ -43,6 +47,17 @@
         "use": {
           "type": "string",
           "minLength": 10
+        },
+        "relation": {
+          "const": "external"
+        },
+        "status": {
+          "const": "current"
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "^(bureau-task|github|decision|contract):\\S+$"
         }
       }
     },
@@ -360,6 +375,110 @@
           "const": true
         }
       }
+    },
+    "surface_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "durable_units_added",
+        "durable_units_removed_or_replaced",
+        "balance"
+      ],
+      "properties": {
+        "durable_units_added": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        },
+        "durable_units_removed_or_replaced": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        },
+        "balance": {
+          "enum": [
+            "non_positive",
+            "reviewed_exception"
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reviewer",
+            "reviewed_at",
+            "rationale",
+            "evidence_ref"
+          ],
+          "properties": {
+            "status": {
+              "const": "reviewed"
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reviewed_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "rationale": {
+              "type": "string",
+              "minLength": 20
+            },
+            "evidence_ref": {
+              "type": "string",
+              "minLength": 3,
+              "pattern": "^(bureau-task|github|decision|contract):\\S+$"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "balance": {
+                "const": "non_positive"
+              }
+            },
+            "required": [
+              "balance"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "exception"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "balance": {
+                "const": "reviewed_exception"
+              }
+            },
+            "required": [
+              "balance"
+            ]
+          },
+          "then": {
+            "required": [
+              "exception"
+            ]
+          }
+        }
+      ]
     }
   },
   "$defs": {

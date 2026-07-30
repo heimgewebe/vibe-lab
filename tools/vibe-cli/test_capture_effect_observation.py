@@ -25,6 +25,9 @@ class CaptureEffectObservationTests(unittest.TestCase):
             "consumer": {
                 "organ": "bureau",
                 "use": "Use reviewed results to decide whether the intervention remains active.",
+                "relation": "external",
+                "status": "current",
+                "evidence_ref": "bureau-task:TEST-T001",
             },
             "decision_target": {
                 "question": "Should the intervention remain active after the pilot?",
@@ -76,6 +79,11 @@ class CaptureEffectObservationTests(unittest.TestCase):
             "closure": {
                 "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
                 "archive_path": "experiments/_archive/2026-07-12_capture-example",
+            },
+            "surface_budget": {
+                "durable_units_added": [],
+                "durable_units_removed_or_replaced": [],
+                "balance": "non_positive",
             },
             "boundary": {
                 "experiment_only": True,

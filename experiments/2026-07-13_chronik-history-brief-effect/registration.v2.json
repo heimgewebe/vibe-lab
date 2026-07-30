@@ -3,7 +3,10 @@
   "experiment_id": "2026-07-13_chronik-history-brief-effect",
   "consumer": {
     "organ": "Grabowski",
-    "use": "Decide whether a bounded Chronik history brief should remain opt-in, be preferred for explicit coding task classes, or be rejected."
+    "use": "Decide whether a bounded Chronik history brief should remain opt-in, be preferred for explicit coding task classes, or be rejected.",
+    "relation": "external",
+    "status": "current",
+    "evidence_ref": "bureau-task:CCM-V1-T005"
   },
   "decision_target": {
     "question": "Does a frozen repo- and component-specific Chronik history brief reduce avoidable repeated coding errors without causing stale-history or false-confidence regressions?",
@@ -106,6 +109,11 @@
       "archive"
     ],
     "archive_path": "experiments/_archive/2026-07-13_chronik-history-brief-effect"
+  },
+  "surface_budget": {
+    "durable_units_added": [],
+    "durable_units_removed_or_replaced": [],
+    "balance": "non_positive"
   },
   "boundary": {
     "experiment_only": true,

@@ -3,7 +3,10 @@
   "experiment_id": "2026-07-23_operator-routing-ml-readiness-shadow",
   "consumer": {
     "organ": "Grabowski",
-    "use": "Decide whether an offline, shadow-only routing model pilot has sufficiently complete and independently reviewable training labels to begin model comparison."
+    "use": "Decide whether an offline, shadow-only routing model pilot has sufficiently complete and independently reviewable training labels to begin model comparison.",
+    "relation": "external",
+    "status": "current",
+    "evidence_ref": "bureau-task:OPERATOR-ML-READINESS-V1-T001"
   },
   "decision_target": {
     "question": "Can evidence-bound shadow capture produce a trustworthy route-plus-outcome cohort without treating process state as task correctness or granting ML operational authority?",
@@ -77,6 +80,11 @@
       "archive"
     ],
     "archive_path": "experiments/_archive/2026-07-23_operator-routing-ml-readiness-shadow"
+  },
+  "surface_budget": {
+    "durable_units_added": [],
+    "durable_units_removed_or_replaced": [],
+    "balance": "non_positive"
   },
   "boundary": {
     "experiment_only": true,

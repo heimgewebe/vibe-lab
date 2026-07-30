@@ -3,7 +3,10 @@
   "experiment_id": "2099-01-01_replace-with-stable-slug",
   "consumer": {
     "organ": "replace-with-consumer",
-    "use": "Describe the reviewed downstream decision that will use the result."
+    "use": "Describe the reviewed downstream decision that will use the result.",
+    "relation": "external",
+    "status": "current",
+    "evidence_ref": "contract:consumer-evidence"
   },
   "decision_target": {
     "question": "Which concrete decision will this experiment inform?",
@@ -70,6 +73,11 @@
       "archive"
     ],
     "archive_path": "experiments/_archive/2099-01-01_replace-with-stable-slug"
+  },
+  "surface_budget": {
+    "durable_units_added": [],
+    "durable_units_removed_or_replaced": [],
+    "balance": "non_positive"
   },
   "boundary": {
     "experiment_only": true,

@@ -17,7 +17,13 @@ class EffectEvaluatorTests(unittest.TestCase):
         return {
             "schema_version": "experiment.registration.v2",
             "experiment_id": "2026-07-12_example-effect",
-            "consumer": {"organ": "bureau", "use": "Use the effect result to decide whether to promote the intervention."},
+            "consumer": {
+                "organ": "bureau",
+                "use": "Use the effect result to decide whether to promote the intervention.",
+                "relation": "external",
+                "status": "current",
+                "evidence_ref": "bureau-task:TEST-T001",
+            },
             "decision_target": {"question": "Should the intervention be promoted after the pilot?", "owner": "bureau"},
             "intervention": {"name": "typed_grip", "description": "Use one typed grip instead of the baseline command sequence."},
             "control_condition": {"id": "control", "description": "Use the existing baseline operator workflow."},
@@ -48,6 +54,11 @@ class EffectEvaluatorTests(unittest.TestCase):
             "review_at": "2026-09-01T00:00:00Z",
             "expires_at": "2026-10-01T00:00:00Z",
             "closure": {"allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"], "archive_path": "experiments/_archive/2026-07-12_example-effect"},
+            "surface_budget": {
+                "durable_units_added": [],
+                "durable_units_removed_or_replaced": [],
+                "balance": "non_positive",
+            },
             "boundary": {"experiment_only": True, "no_auto_policy": True, "no_auto_routing": True, "no_queue_authority": True, "no_runtime_authority": True},
         }
 

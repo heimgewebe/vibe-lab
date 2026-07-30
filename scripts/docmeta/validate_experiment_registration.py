@@ -68,6 +68,35 @@ def validate_registration(path: Path, *, now: datetime | None = None) -> dict[st
             raise ValueError(f"{path}: control and treatment ids must differ")
         if payload["decision_target"]["owner"] == "":
             raise ValueError(f"{path}: decision owner must be named")
+
+        consumer_organ = re.sub(r"[-_\s]+", "", payload["consumer"]["organ"]).casefold()
+        if consumer_organ == "vibelab":
+            raise ValueError(f"{path}: consumer must be external to Vibe-Lab")
+
+        surface_budget = payload["surface_budget"]
+        added = surface_budget["durable_units_added"]
+        removed = surface_budget["durable_units_removed_or_replaced"]
+        balance = surface_budget["balance"]
+        if balance == "non_positive" and len(removed) < len(added):
+            raise ValueError(
+                f"{path}: non_positive surface budget requires at least as many "
+                "removed or replaced durable units as added units"
+            )
+        if balance == "reviewed_exception":
+            if len(removed) >= len(added):
+                raise ValueError(
+                    f"{path}: reviewed_exception is only valid for positive net "
+                    "durable surface"
+                )
+            reviewed_at = _utc(
+                surface_budget["exception"]["reviewed_at"],
+                f"{path}.surface_budget.exception.reviewed_at",
+            )
+            if reviewed_at > clock:
+                raise ValueError(
+                    f"{path}: surface budget exception cannot be reviewed in the future"
+                )
+
         scorecard = payload["measurement"].get("scorecard")
         if scorecard is not None:
             component_ids = [component["id"] for component in scorecard["components"]]
