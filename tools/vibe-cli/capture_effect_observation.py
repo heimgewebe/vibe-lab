@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import fcntl
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -18,12 +19,31 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
-REGISTRATION_SCHEMA = ROOT / "schemas/experiment.registration.v2.schema.json"
 OBSERVATIONS_SCHEMA = ROOT / "schemas/effect-evaluation.observations.v2.schema.json"
+REGISTRATION_GATE_PATH = ROOT / "scripts/docmeta/validate_experiment_registration.py"
+
+
+def _load_registration_gate() -> Any:
+    spec = importlib.util.spec_from_file_location("vibe_registration_gate_capture", REGISTRATION_GATE_PATH)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load registration gate from {REGISTRATION_GATE_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+REGISTRATION_GATE = _load_registration_gate()
 
 
 class CaptureError(RuntimeError):
     pass
+
+
+def validate_registration_contract(path: Path) -> dict[str, Any]:
+    try:
+        return REGISTRATION_GATE.validate_registration(path)
+    except Exception as exc:
+        raise CaptureError(f"registration contract invalid: {exc}") from exc
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -174,7 +194,11 @@ def validate_observation_semantics(
         and observation["observer_ref"] == observation["decision_maker_ref"]
     ):
         raise CaptureError("independent scorer must differ from decision maker")
-    if parse_timestamp(observation["captured_at"]) > parse_timestamp(registration["expires_at"]):
+    captured_at = parse_timestamp(observation["captured_at"])
+    if not REGISTRATION_GATE.is_pre_t005_experiment(registration["experiment_id"]):
+        if captured_at < parse_timestamp(registration["registered_at"]):
+            raise CaptureError("observation was captured before experiment registration")
+    if captured_at > parse_timestamp(registration["expires_at"]):
         raise CaptureError("observation was captured after experiment expiry")
 
 
@@ -273,8 +297,7 @@ def capture(
     observations_path: Path,
     observation: dict[str, Any],
 ) -> dict[str, Any]:
-    registration = load_object(registration_path)
-    validate_schema(registration, REGISTRATION_SCHEMA)
+    registration = validate_registration_contract(registration_path)
     validate_schema(
         {
             **initial_document(registration),
@@ -437,7 +460,6 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         registration = load_object(args.registration)
-        validate_schema(registration, REGISTRATION_SCHEMA)
         result = capture(
             args.registration,
             args.observations,

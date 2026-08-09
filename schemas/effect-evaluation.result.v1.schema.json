@@ -205,6 +205,22 @@
         "insufficient_evidence"
       ]
     },
+    "registered_result": {
+      "enum": [
+        "success",
+        "harm_or_falsification",
+        "inconclusive"
+      ]
+    },
+    "registered_closure_outcome": {
+      "enum": [
+        "promote",
+        "pilot",
+        "defer",
+        "reject",
+        "archive"
+      ]
+    },
     "does_not_establish": {
       "type": "array",
       "minItems": 1,

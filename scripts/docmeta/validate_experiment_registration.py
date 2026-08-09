@@ -143,6 +143,7 @@ def _validate_t005_contract(
     review: datetime,
     expires: datetime,
     clock: datetime,
+    require_current: bool,
 ) -> None:
     required_paths = (
         ("registered_at",),
@@ -178,7 +179,7 @@ def _validate_t005_contract(
     )
     if confirmed_at > registered_at:
         raise ValueError(f"{path}: consumer commitment must be confirmed by registered_at")
-    if valid_until <= clock:
+    if require_current and valid_until <= clock:
         raise ValueError(f"{path}: consumer commitment is not current")
     if valid_until < expires:
         raise ValueError(f"{path}: consumer commitment must remain current through expires_at")
@@ -238,8 +239,13 @@ def _validate_t005_contract(
         raise ValueError(f"{path}: review_at must be after registered_at")
 
 
-def validate_registration(path: Path, *, now: datetime | None = None) -> dict[str, Any]:
-    payload = _load(path)
+def validate_registration_payload(
+    payload: dict[str, Any],
+    *,
+    path: Path,
+    now: datetime | None = None,
+    require_current: bool = True,
+) -> dict[str, Any]:
     version = payload.get("schema_version")
     schema_path = SCHEMAS.get(str(version))
     if schema_path is None:
@@ -264,7 +270,7 @@ def validate_registration(path: Path, *, now: datetime | None = None) -> dict[st
     review = _utc(review_value, f"{path}.review_at")
     expires = _utc(payload["expires_at"], f"{path}.expires_at")
     clock = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    if expires <= clock:
+    if require_current and expires <= clock:
         raise ValueError(f"{path}: registration already expired")
     if review > expires:
         raise ValueError(f"{path}: review_at must not be after expires_at")
@@ -286,8 +292,23 @@ def validate_registration(path: Path, *, now: datetime | None = None) -> dict[st
                 review=review,
                 expires=expires,
                 clock=clock,
+                require_current=require_current,
             )
     return payload
+
+
+def validate_registration(
+    path: Path,
+    *,
+    now: datetime | None = None,
+    require_current: bool = True,
+) -> dict[str, Any]:
+    return validate_registration_payload(
+        _load(path),
+        path=path,
+        now=now,
+        require_current=require_current,
+    )
 
 
 def validate_all(*, now: datetime | None = None) -> dict[str, Any]:
