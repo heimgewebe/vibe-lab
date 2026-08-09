@@ -5,7 +5,7 @@
     {
       "experiment_id": "2026-07-13_chronik-history-brief-effect",
       "path": "experiments/2026-07-13_chronik-history-brief-effect",
-      "state": "designed",
+      "state": "testing",
       "consumer": "Grabowski",
       "decision_target": "Does a frozen repo- and component-specific Chronik history brief reduce avoidable repeated coding errors without causing stale-history or false-confidence regressions?",
       "primary_metric": "coding_decision_quality_score",

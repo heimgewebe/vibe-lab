@@ -584,6 +584,7 @@ validate-operator-lab-closeout-tests:
 	python3 scripts/docmeta/test_operator_lab_closeout.py
 
 validate-effect-evaluator-tests:
+	python3 tools/vibe-cli/test_admit_natural_case.py
 	python3 tools/vibe-cli/test_capture_effect_observation.py
 	python3 tools/vibe-cli/test_evaluate_effect.py
 

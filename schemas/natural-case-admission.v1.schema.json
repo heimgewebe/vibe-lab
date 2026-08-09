@@ -1,0 +1,394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/vibe-lab/schemas/natural-case-admission.v1.schema.json",
+  "title": "Vibe-Lab Prospective Natural-Case Admission v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "registration_sha256",
+    "admission_id",
+    "admitted_at",
+    "request_sha256",
+    "frozen_request",
+    "comparability_sha256",
+    "assignment_evidence",
+    "review_preparation",
+    "boundary",
+    "traceability",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "natural-case-admission.v1"
+    },
+    "experiment_id": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9][a-z0-9-]*$"
+    },
+    "registration_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "admission_id": {
+      "$ref": "#/$defs/sha256"
+    },
+    "admitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "frozen_request": {
+      "$ref": "#/$defs/request"
+    },
+    "comparability_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "assignment_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition",
+        "mode",
+        "automatic",
+        "fairness_claim",
+        "registration_rule_status"
+      ],
+      "properties": {
+        "condition": {
+          "$ref": "#/$defs/condition_id"
+        },
+        "mode": {
+          "const": "explicit_preplanning_assignment"
+        },
+        "automatic": {
+          "const": false
+        },
+        "fairness_claim": {
+          "const": "not_established_by_registration_v2"
+        },
+        "registration_rule_status": {
+          "const": "automatic_assignment_not_frozen"
+        }
+      }
+    },
+    "review_preparation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "blinded_case_id",
+        "blinding_required",
+        "condition_disclosure",
+        "independent_observation_required",
+        "measurement_sha256",
+        "allowed_evidence_sources",
+        "minimum_control",
+        "minimum_treatment",
+        "review_at"
+      ],
+      "properties": {
+        "status": {
+          "const": "pending_independent_review"
+        },
+        "blinded_case_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "blinding_required": {
+          "const": true
+        },
+        "condition_disclosure": {
+          "const": "after_score_seal"
+        },
+        "independent_observation_required": {
+          "const": true
+        },
+        "measurement_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "allowed_evidence_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          }
+        },
+        "minimum_control": {
+          "type": "integer",
+          "minimum": 3
+        },
+        "minimum_treatment": {
+          "type": "integer",
+          "minimum": 3
+        },
+        "review_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "experiment_only",
+        "no_auto_policy",
+        "no_auto_routing",
+        "no_queue_authority",
+        "no_runtime_authority"
+      ],
+      "properties": {
+        "experiment_only": {
+          "const": true
+        },
+        "no_auto_policy": {
+          "const": true
+        },
+        "no_auto_routing": {
+          "const": true
+        },
+        "no_queue_authority": {
+          "const": true
+        },
+        "no_runtime_authority": {
+          "const": true
+        }
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "triggered_by",
+        "policy",
+        "action",
+        "outcome"
+      ],
+      "properties": {
+        "triggered_by": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "policy": {
+          "const": "registration.v2.json + method.md"
+        },
+        "action": {
+          "const": "prospective_natural_case_admission"
+        },
+        "outcome": {
+          "const": "explicit_condition_assignment_sealed"
+        }
+      }
+    },
+    "non_claims": {
+      "const": [
+        "automatic_assignment",
+        "assignment_fairness",
+        "external_eligibility_truth",
+        "case_execution",
+        "independent_review_completion",
+        "condition_effect",
+        "routing_queue_or_runtime_authority"
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bounded_string": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "condition_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$"
+    },
+    "evidence_ref": {
+      "type": "string",
+      "pattern": "^(receipt|github|vibe-lab|artifact|chronik):[^\\s]+$",
+      "maxLength": 500
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "case_id",
+        "triggered_by",
+        "case_opened_at",
+        "eligibility_evidence",
+        "eligibility",
+        "comparability",
+        "assignment"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "natural-case-admission.request.v1"
+        },
+        "case_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "triggered_by": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "case_opened_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "eligibility_evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ref",
+            "sha256",
+            "captured_at"
+          ],
+          "properties": {
+            "ref": {
+              "$ref": "#/$defs/evidence_ref"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "captured_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "eligibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "natural_case",
+            "within_registered_scope",
+            "planning_started",
+            "execution_started",
+            "outcome_known",
+            "prior_observation"
+          ],
+          "properties": {
+            "natural_case": {
+              "const": true
+            },
+            "within_registered_scope": {
+              "const": true
+            },
+            "planning_started": {
+              "const": false
+            },
+            "execution_started": {
+              "const": false
+            },
+            "outcome_known": {
+              "const": false
+            },
+            "prior_observation": {
+              "const": false
+            }
+          }
+        },
+        "comparability": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "task_class",
+            "risk_band",
+            "repository_familiarity_band",
+            "comparison_key",
+            "target_repository",
+            "target_component",
+            "operation",
+            "live_preflight_contract",
+            "repository_revision",
+            "operator_ref",
+            "model_tool_version",
+            "task_difficulty_band",
+            "prior_chronik_events_band"
+          ],
+          "properties": {
+            "task_class": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "risk_band": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "repository_familiarity_band": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "comparison_key": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "target_repository": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "target_component": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "operation": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "live_preflight_contract": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "repository_revision": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "operator_ref": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "model_tool_version": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "task_difficulty_band": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "prior_chronik_events_band": {
+              "$ref": "#/$defs/bounded_string"
+            }
+          }
+        },
+        "assignment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "assigned_by",
+            "evidence_ref",
+            "evidence_sha256",
+            "recorded_before_planning"
+          ],
+          "properties": {
+            "condition": {
+              "$ref": "#/$defs/condition_id"
+            },
+            "assigned_by": {
+              "$ref": "#/$defs/bounded_string"
+            },
+            "evidence_ref": {
+              "$ref": "#/$defs/evidence_ref"
+            },
+            "evidence_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "recorded_before_planning": {
+              "const": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
