@@ -3,11 +3,19 @@
   "experiment_id": "2099-01-01_replace-with-stable-slug",
   "consumer": {
     "organ": "replace-with-consumer",
-    "use": "Describe the reviewed downstream decision that will use the result."
+    "use": "Describe the reviewed downstream decision that will use the result.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "replace-with-external-source:consumer-commitment",
+      "confirmed_at": "2099-01-01T00:00:00Z",
+      "valid_until": "2099-04-01T00:00:00Z"
+    }
   },
   "decision_target": {
     "question": "Which concrete decision will this experiment inform?",
-    "owner": "replace-with-decision-owner"
+    "owner": "replace-with-decision-owner",
+    "decision_ref": "replace-with-external-source:decision-target"
   },
   "intervention": {
     "name": "replace-with-intervention",
@@ -29,6 +37,10 @@
     "method": "Describe how the metric is captured from evidence-bound observations.",
     "success": "Define the material success threshold.",
     "falsification": "Define the harmful or no-effect threshold.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
     "cost_metric": {
       "id": "review_effort_seconds",
       "unit": "seconds",
@@ -69,13 +81,25 @@
       "reject",
       "archive"
     ],
-    "archive_path": "experiments/_archive/2099-01-01_replace-with-stable-slug"
+    "archive_path": "experiments/_archive/2099-01-01_replace-with-stable-slug",
+    "outcome_by_result": {
+      "success": "promote",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [],
+    "durable_offsets": [],
+    "reviewed_exception": null
   },
   "boundary": {
     "experiment_only": true,
     "no_auto_policy": true,
     "no_auto_routing": true,
     "no_queue_authority": true,
-    "no_runtime_authority": true
+    "no_runtime_authority": true,
+    "no_merge_authority": true
   }
 }

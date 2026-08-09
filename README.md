@@ -26,7 +26,7 @@ Nur wenn eine reale Entscheidung und ein Verbraucher benannt sind:
 1. Erstelle ein Issue mit dem Formular **🧪 Experiment Proposal**.
 2. Kopiere `experiments/_template/` in einen neuen Ordner.
 3. Fülle `manifest.yml`, `method.md`, `CONTEXT.md` und `registration.v2.json` aus.
-4. Friere Kontrolle, Behandlung, primäre Messgröße, Mindestwirkung, Vergleichbarkeit, Reviewdatum und Ablauf vor der Beobachtung ein.
+4. Friere bestätigten externen Consumer, Decision-Referenz, Kontrolle, Behandlung, numerische Ergebnisgrenzen, Surface-Budget, Reviewdatum, Ablauf und reviewed Outcome-Zuordnung vor der Beobachtung ein.
 5. Sammle Evidenz in `evidence.jsonl` oder über die evidenzgebundene Beobachtungsaufnahme.
 
 ### 📚 Ergebnis übernehmen
@@ -46,9 +46,9 @@ Erst wenn ein Experiment belastbare Evidenz und einen benannten externen Verbrau
 python3 scripts/docmeta/validate_active_experiments.py
 ```
 
-Der Validator bindet jeden aktiven Eintrag an `results/decision.yml`. Bei registrierten Experimenten müssen Verbraucher, Entscheidungsfrage, primäre Messgröße, Reviewdatum und Ablaufdatum exakt mit der Registrierung übereinstimmen; nur Experimente vor dem Registrierungsstichtag bleiben ausdrücklich als Altbestand zulässig.
+Der Validator bindet jeden aktiven Eintrag an `results/decision.yml`. Bei registrierten Experimenten müssen Verbraucher, Entscheidungsfrage, primäre Messgröße, Reviewdatum und Ablaufdatum exakt mit der Registrierung übereinstimmen. Neue Ordner benötigen unabhängig von ihrem Datumspräfix den aktuellen v2-Vertrag; nur die beim T005-Preimage bereits vorhandenen Experiment-IDs bleiben als geschlossener Altbestand kompatibel.
 
-Neue Experimente verwenden `registration.v2.json`. `tools/vibe-cli/capture_effect_observation.py` erfasst registrierungs- und evidenzgebundene Beobachtungen atomar. `tools/vibe-cli/evaluate_effect.py` wertet begrenzte Vergleiche deterministisch aus. Beide Werkzeuge sind Review-Werkzeuge und besitzen keine automatische Policy-, Routing-, Queue- oder Runtime-Autorität.
+Neue Experimente verwenden `registration.v2.json`. `tools/vibe-cli/capture_effect_observation.py` erfasst registrierungs- und evidenzgebundene Beobachtungen atomar. `tools/vibe-cli/evaluate_effect.py` wertet begrenzte Vergleiche deterministisch aus. Beide Werkzeuge sind Review-Werkzeuge und besitzen keine automatische Policy-, Routing-, Queue-, Merge- oder Runtime-Autorität.
 
 ### Lokal validieren
 

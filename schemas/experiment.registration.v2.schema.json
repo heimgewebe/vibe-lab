@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/heimgewebe/vibe-lab/schemas/experiment.registration.v2.schema.json",
   "title": "Vibe-Lab Prospective Experiment Registration v2",
+  "$comment": "triggered_by: Bureau task OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T005; new-registration semantics are activated fail-closed by validate_experiment_registration.py without rewriting historical registrations.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -43,6 +44,36 @@
         "use": {
           "type": "string",
           "minLength": 10
+        },
+        "relationship": {
+          "const": "external"
+        },
+        "commitment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "evidence_ref",
+            "confirmed_at",
+            "valid_until"
+          ],
+          "properties": {
+            "status": {
+              "const": "confirmed"
+            },
+            "evidence_ref": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+            },
+            "confirmed_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "valid_until": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
         }
       }
     },
@@ -61,6 +92,10 @@
         "owner": {
           "type": "string",
           "minLength": 1
+        },
+        "decision_ref": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
         }
       }
     },
@@ -131,6 +166,22 @@
         "falsification": {
           "type": "string",
           "minLength": 5
+        },
+        "outcome_criteria": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "success_threshold",
+            "harm_or_falsification_threshold"
+          ],
+          "properties": {
+            "success_threshold": {
+              "type": "number"
+            },
+            "harm_or_falsification_threshold": {
+              "type": "number"
+            }
+          }
         },
         "scorecard": {
           "type": "object",
@@ -330,6 +381,77 @@
         "archive_path": {
           "type": "string",
           "pattern": "^experiments/_archive/[^/]+$"
+        },
+        "outcome_by_result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "success",
+            "harm_or_falsification",
+            "inconclusive",
+            "expired"
+          ],
+          "properties": {
+            "success": {
+              "enum": [
+                "promote",
+                "pilot"
+              ]
+            },
+            "harm_or_falsification": {
+              "enum": [
+                "reject",
+                "archive"
+              ]
+            },
+            "inconclusive": {
+              "enum": [
+                "pilot",
+                "defer",
+                "archive"
+              ]
+            },
+            "expired": {
+              "const": "archive"
+            }
+          }
+        }
+      }
+    },
+    "surface_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "durable_additions",
+        "durable_offsets",
+        "reviewed_exception"
+      ],
+      "properties": {
+        "durable_additions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^add:[^\\s]+$"
+          }
+        },
+        "durable_offsets": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(remove|replace|retire):[^\\s]+$"
+          }
+        },
+        "reviewed_exception": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/reviewedSurfaceException"
+            }
+          ]
         }
       }
     },
@@ -358,11 +480,42 @@
         },
         "no_runtime_authority": {
           "const": true
+        },
+        "no_merge_authority": {
+          "const": true
         }
       }
     }
   },
   "$defs": {
+    "reviewedSurfaceException": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewed_by",
+        "review_ref",
+        "reviewed_at",
+        "rationale"
+      ],
+      "properties": {
+        "reviewed_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_ref": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
     "condition": {
       "type": "object",
       "additionalProperties": false,

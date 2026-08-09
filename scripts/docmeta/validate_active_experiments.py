@@ -11,7 +11,11 @@ from typing import Any
 import yaml
 from jsonschema import Draft202012Validator, FormatChecker
 
-from validate_experiment_registration import V1_ENFORCEMENT_DATE, validate_registration
+from validate_experiment_registration import (
+    V1_ENFORCEMENT_DATE,
+    is_pre_t005_experiment,
+    validate_registration,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = ROOT / "experiments/active.v1.json"
@@ -76,7 +80,10 @@ def _validate_registration_binding(
     experiment_id = item["experiment_id"]
     registration_path = _registration_path(experiment_dir)
     if registration_path is None:
-        if _experiment_date(experiment_id) >= V1_ENFORCEMENT_DATE:
+        if (
+            not is_pre_t005_experiment(experiment_id)
+            or _experiment_date(experiment_id) >= V1_ENFORCEMENT_DATE
+        ):
             raise ValueError(f"{experiment_id}: active experiment requires registration")
         return False
 
