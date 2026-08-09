@@ -208,23 +208,6 @@
         ".github/workflows/*.yml"
       ],
       "origin": "handcrafted",
-      "path": ".github/workflows/claude.yml",
-      "status": "classified"
-    },
-    {
-      "authority": "procedure_contract",
-      "catchall_match": false,
-      "enforcement": [
-        "ci_blocking",
-        "review_required"
-      ],
-      "kind": "ci_workflow",
-      "layer": "governance",
-      "lifecycle": "handcrafted",
-      "matched_patterns": [
-        ".github/workflows/*.yml"
-      ],
-      "origin": "handcrafted",
       "path": ".github/workflows/doc-freshness-registry.yml",
       "status": "classified"
     },
@@ -16105,7 +16088,7 @@
         "experiments/*/CONTEXT.md"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/CONTEXT.md",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/CONTEXT.md",
       "status": "classified"
     },
     {
@@ -16121,7 +16104,7 @@
         "experiments/*/INITIAL.md"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/INITIAL.md",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/INITIAL.md",
       "status": "classified"
     },
     {
@@ -16137,7 +16120,7 @@
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md",
       "status": "classified"
     },
     {
@@ -16153,7 +16136,7 @@
         "experiments/*/failure_modes.md"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/failure_modes.md",
       "status": "classified"
     },
     {
@@ -16169,23 +16152,7 @@
         "experiments/*/manifest.yml"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/manifest.yml",
-      "status": "classified"
-    },
-    {
-      "authority": "historical_record",
-      "catchall_match": true,
-      "enforcement": [
-        "no_rewrite"
-      ],
-      "kind": "experiment_artifact",
-      "layer": "experiment",
-      "lifecycle": "append_only",
-      "matched_patterns": [
-        "experiments/**"
-      ],
-      "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/measurement-plan.yml",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/manifest.yml",
       "status": "classified"
     },
     {
@@ -16201,7 +16168,23 @@
         "experiments/*/method.md"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/method.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json",
       "status": "classified"
     },
     {
@@ -16217,7 +16200,7 @@
         "experiments/*/results/decision.yml"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/results/decision.yml",
       "status": "classified"
     },
     {
@@ -16234,7 +16217,7 @@
         "experiments/*/results/evidence.jsonl"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/evidence.jsonl",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/results/evidence.jsonl",
       "status": "classified"
     },
     {
@@ -16250,7 +16233,300 @@
         "experiments/*/results/result.md"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/results/result.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_context",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/CONTEXT.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/CONTEXT.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-001-live-v3-readiness/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-001-live-v3-readiness/readiness-gate.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-001-live-v3-readiness/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-002-review-hardening/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-002-review-hardening/readiness-gate.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-002-review-hardening/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-003-prospective-binding-time/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-003-prospective-binding-time/readiness-gate.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-003-prospective-binding-time/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-004-prospective-source-authority/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-004-prospective-source-authority/readiness-gate.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-004-prospective-source-authority/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "review_required"
+      ],
+      "kind": "execution_trace",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/execution.txt"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-005-falsification-precedence/execution.txt",
+      "status": "classified"
+    },
+    {
+      "authority": "runtime_observation",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "run_metadata",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/artifacts/**/run_meta.json"
+      ],
+      "origin": "captured",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-005-falsification-precedence/run_meta.json",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "experiment_manifest",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/manifest.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/manifest.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_method",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/method.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/method.md",
       "status": "classified"
     },
     {
@@ -16266,7 +16542,168 @@
         "experiments/**"
       ],
       "origin": "handcrafted",
-      "path": "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/run-series.yml",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/registration.v2.json",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "decision_record",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/decision.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "evidence_log",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "ci_blocking"
+      ],
+      "kind": "evidence_log",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/results/evidence.jsonl"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/evidence.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/readiness-gate-2026-07-23.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/readiness-gate-2026-07-26.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_task_store.py",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_task_store.py",
       "status": "classified"
     },
     {
@@ -26458,9 +26895,22 @@
     "experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml",
     "experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md",
     "experiments/2026-07-08_rlens-agent-context-conditions/measurement-plan.yml",
-    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md",
-    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/measurement-plan.yml",
-    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/run-series.yml",
+    "experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md",
+    "experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-001-live-v3-readiness/readiness-gate.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-002-review-hardening/readiness-gate.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-003-prospective-binding-time/readiness-gate.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-004-prospective-source-authority/readiness-gate.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/registration.v2.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/readiness-gate-2026-07-23.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/readiness-gate-2026-07-26.json",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_task_store.py",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_task_store.py",
     "experiments/_template/artifacts/README.md",
     "experiments/_template/registration.v1.json",
     "experiments/_template/registration.v2.json",
@@ -26741,19 +27191,19 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 575,
+      "historical_record": 588,
       "navigation_surface": 12,
       "test_expectation": 273
     },
     "by_layer": {
       "docs": 12,
-      "experiment": 575,
+      "experiment": 588,
       "test": 273
     },
     "by_matched_pattern": {
       "docs/**": 12,
-      "experiments/**": 46,
-      "experiments/*/artifacts/**": 529,
+      "experiments/**": 54,
+      "experiments/*/artifacts/**": 534,
       "tests/fixtures/**": 273
     },
     "high_risk_count": 273,
@@ -26815,7 +27265,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 529
+          "total": 534
         },
         {
           "high_risk_count": 0,
@@ -26830,7 +27280,7 @@
             "active.v1.json": 1,
             "app.ts": 1,
             "assessment.md": 1,
-            "measurement-plan.yml": 2
+            "registration.v2.json": 3
           },
           "top_parent_dirs": {
             "experiments/2026-04-12_spec-first-legacy/src": 3,
@@ -26840,11 +27290,11 @@
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
             "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
             "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
-            "experiments/2026-07-08_operator-learning-capture-sample": 2,
             "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
-            "experiments/_template": 2
+            "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
+            "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4
           },
-          "total": 46
+          "total": 54
         },
         {
           "high_risk_count": 0,
@@ -26901,7 +27351,7 @@
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
             "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
           },
-          "total": 529
+          "total": 534
         },
         {
           "high_risk_count": 273,
@@ -26945,7 +27395,7 @@
             "active.v1.json": 1,
             "app.ts": 1,
             "assessment.md": 1,
-            "measurement-plan.yml": 2
+            "registration.v2.json": 3
           },
           "top_parent_dirs": {
             "experiments/2026-04-12_spec-first-legacy/src": 3,
@@ -26955,11 +27405,11 @@
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
             "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
             "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
-            "experiments/2026-07-08_operator-learning-capture-sample": 2,
             "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
-            "experiments/_template": 2
+            "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
+            "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4
           },
-          "total": 46
+          "total": 54
         },
         {
           "high_risk_count": 0,
@@ -27046,7 +27496,7 @@
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002": 13,
           "experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-003": 12
         },
-        "total": 529
+        "total": 534
       },
       {
         "high_risk_count": 0,
@@ -27061,7 +27511,7 @@
           "active.v1.json": 1,
           "app.ts": 1,
           "assessment.md": 1,
-          "measurement-plan.yml": 2
+          "registration.v2.json": 3
         },
         "top_parent_dirs": {
           "experiments/2026-04-12_spec-first-legacy/src": 3,
@@ -27071,11 +27521,11 @@
           "experiments/2026-05-31_model-lab-replication-series/results": 4,
           "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
           "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
-          "experiments/2026-07-08_operator-learning-capture-sample": 2,
           "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
-          "experiments/_template": 2
+          "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
+          "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4
         },
-        "total": 46
+        "total": 54
       },
       {
         "high_risk_count": 0,
@@ -27253,8 +27703,10 @@
     "experiments/2026-07-05_ecosystem-organ-preflight/results/evidence.jsonl",
     "experiments/2026-07-08_operator-learning-capture-sample/results/evidence.jsonl",
     "experiments/2026-07-08_rlens-agent-context-conditions/results/decision.yml",
-    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/decision.yml",
-    "experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/evidence.jsonl",
+    "experiments/2026-07-13_chronik-history-brief-effect/results/decision.yml",
+    "experiments/2026-07-13_chronik-history-brief-effect/results/evidence.jsonl",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml",
+    "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/evidence.jsonl",
     "experiments/_template/results/decision.yml",
     "experiments/_template/results/evidence.jsonl",
     "instruction-blocks/constraint-before-code.md",
@@ -27314,18 +27766,18 @@
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 24,
+      "decision_record": 25,
       "diagnostic_signal": 7,
-      "evidence_log": 23,
+      "evidence_log": 24,
       "generated_projection": 10,
-      "historical_record": 575,
+      "historical_record": 588,
       "implementation_behavior": 24,
       "navigation_surface": 28,
       "normative_contract": 16,
-      "procedure_contract": 161,
+      "procedure_contract": 163,
       "raw_capture": 33,
       "result_interpretation": 74,
-      "runtime_observation": 121,
+      "runtime_observation": 131,
       "schema_truth": 48,
       "sovereign_source": 3,
       "test_expectation": 442,
@@ -27334,14 +27786,14 @@
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 647,
+      "ci_blocking": 649,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 647,
+      "no_rewrite": 666,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 349
+      "review_required": 360
     },
     "by_layer": {
       "<none>": 1,
@@ -27351,27 +27803,27 @@
       "catalog": 12,
       "contract": 60,
       "docs": 50,
-      "experiment": 887,
+      "experiment": 915,
       "export": 16,
       "generated": 8,
-      "governance": 94,
+      "governance": 93,
       "test": 442
     },
     "by_lifecycle": {
       "<none>": 1,
-      "append_only": 647,
-      "handcrafted": 841,
+      "append_only": 666,
+      "handcrafted": 843,
       "regenerated": 18,
-      "revision_with_reason": 106,
+      "revision_with_reason": 112,
       "superseded_not_rewritten": 2
     },
-    "classified": 1614,
+    "classified": 1641,
     "conflict": 0,
-    "fallback_classified": 860,
-    "fallback_share": 0.5328376703841388,
+    "fallback_classified": 873,
+    "fallback_share": 0.5319926873857403,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
-    "total": 1615,
+    "total": 1642,
     "unknown": 1
   },
   "transition_risk_hints": [],

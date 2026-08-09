@@ -286,6 +286,7 @@
 | `experiments/2026-07-08_rlens-agent-context-conditions/method.md` | Method — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/CONTEXT.md` | Chronik History Brief Effect — Context | active | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/INITIAL.md` | Chronik History Brief Effect — Initial State | active | operative |
+| `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` | Chronik History Brief Effect — Natural-Case Admission Protocol | active | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md` | README | — | — |
 | `experiments/2026-07-13_chronik-history-brief-effect/failure_modes.md` | Chronik History Brief Effect — Failure Modes | active | operative |
 | `experiments/2026-07-13_chronik-history-brief-effect/method.md` | Chronik History Brief Effect — Method | active | operative |

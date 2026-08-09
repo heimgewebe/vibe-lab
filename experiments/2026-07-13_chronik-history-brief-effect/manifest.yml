@@ -5,13 +5,14 @@ experiment:
   hypothesis: >
     A frozen, historical-only Chronik brief supplied before coding planning may
     reduce avoidable repeated paths without increasing stale-state assumptions.
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
+  execution_status: prepared
   execution_refs: []
   created: "2026-07-13"
-  updated: "2026-07-13"
+  updated: "2026-08-09"
   author: "ChatGPT / Grabowski"
+  triggered_by: "user-request-chronik-natural-case-admission-2026-08-09"
   iteration: 1
   evidence_level: experimental
   falsifiability:
