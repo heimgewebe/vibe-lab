@@ -36,6 +36,7 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
         )
         registration = json.loads(json.dumps(template).replace("replace-with", "example"))
         registration["experiment_id"] = self.exp.name
+        registration["registered_at"] = "2026-07-12T00:00:00Z"
         registration["consumer"]["organ"] = "Bureau"
         registration["consumer"]["commitment"]["confirmed_at"] = "2026-07-12T00:00:00Z"
         registration["consumer"]["commitment"]["valid_until"] = "2026-09-01T00:00:00Z"

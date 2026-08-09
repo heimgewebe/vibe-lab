@@ -145,6 +145,7 @@ def _validate_t005_contract(
     clock: datetime,
 ) -> None:
     required_paths = (
+        ("registered_at",),
         ("consumer", "relationship"),
         ("consumer", "commitment"),
         ("decision_target", "decision_ref"),
@@ -155,6 +156,10 @@ def _validate_t005_contract(
     )
     for keys in required_paths:
         _require_path(payload, keys, path)
+
+    registered_at = _utc(payload["registered_at"], f"{path}.registered_at")
+    if registered_at > clock:
+        raise ValueError(f"{path}: registered_at cannot be in the future")
 
     consumer = payload["consumer"]
     commitment = consumer["commitment"]
@@ -171,8 +176,8 @@ def _validate_t005_contract(
         commitment["valid_until"],
         f"{path}.consumer.commitment.valid_until",
     )
-    if confirmed_at > clock:
-        raise ValueError(f"{path}: consumer commitment cannot be confirmed in the future")
+    if confirmed_at > registered_at:
+        raise ValueError(f"{path}: consumer commitment must be confirmed by registered_at")
     if valid_until <= clock:
         raise ValueError(f"{path}: consumer commitment is not current")
     if valid_until < expires:
@@ -226,11 +231,11 @@ def _validate_t005_contract(
             exception["reviewed_at"],
             f"{path}.surface_budget.reviewed_exception.reviewed_at",
         )
-        if reviewed_at > clock:
-            raise ValueError(f"{path}: surface-budget exception review cannot be in the future")
+        if reviewed_at > registered_at:
+            raise ValueError(f"{path}: surface-budget exception must be reviewed by registered_at")
 
-    if review <= clock:
-        raise ValueError(f"{path}: review_at must be in the future at registration")
+    if review <= registered_at:
+        raise ValueError(f"{path}: review_at must be after registered_at")
 
 
 def validate_registration(path: Path, *, now: datetime | None = None) -> dict[str, Any]:

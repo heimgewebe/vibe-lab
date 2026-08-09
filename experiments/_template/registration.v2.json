@@ -1,6 +1,7 @@
 {
   "schema_version": "experiment.registration.v2",
   "experiment_id": "2099-01-01_replace-with-stable-slug",
+  "registered_at": "2099-01-01T00:00:00Z",
   "consumer": {
     "organ": "replace-with-consumer",
     "use": "Describe the reviewed downstream decision that will use the result.",

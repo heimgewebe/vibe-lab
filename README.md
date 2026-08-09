@@ -26,7 +26,7 @@ Nur wenn eine reale Entscheidung und ein Verbraucher benannt sind:
 1. Erstelle ein Issue mit dem Formular **🧪 Experiment Proposal**.
 2. Kopiere `experiments/_template/` in einen neuen Ordner.
 3. Fülle `manifest.yml`, `method.md`, `CONTEXT.md` und `registration.v2.json` aus.
-4. Friere bestätigten externen Consumer, Decision-Referenz, Kontrolle, Behandlung, numerische Ergebnisgrenzen, Surface-Budget, Reviewdatum, Ablauf und reviewed Outcome-Zuordnung vor der Beobachtung ein.
+4. Friere bestätigten externen Consumer, Decision-Referenz, Kontrolle, Behandlung, numerische Ergebnisgrenzen, Surface-Budget, Registrierungszeitpunkt, Reviewdatum, Ablauf und reviewed Outcome-Zuordnung vor der Beobachtung ein.
 5. Sammle Evidenz in `evidence.jsonl` oder über die evidenzgebundene Beobachtungsaufnahme.
 
 ### 📚 Ergebnis übernehmen

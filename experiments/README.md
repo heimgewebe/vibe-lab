@@ -16,7 +16,7 @@ Die Registrierung bindet das Experiment an:
 
 - einen bestätigten, bis zum Ablauf aktuellen externen Consumer mit referenzierter Commitment-Grundlage;
 - ein extern referenziertes Entscheidungsziel und numerische Erfolgs- sowie Schadens-/Falsifikationsschwellen;
-- einen künftigen Reviewtermin, Ablauf und eine eindeutige reviewed Zuordnung von Ergebniszuständen zu `promote`, `pilot`, `defer`, `reject` oder `archive`;
+- einen zum `registered_at`-Zeitpunkt zukünftigen Reviewtermin, Ablauf und eine eindeutige reviewed Zuordnung von Ergebniszuständen zu `promote`, `pilot`, `defer`, `reject` oder `archive`;
 - einen bilanzierten Durable-Surface-Budget-Nachweis (eine Einheit je eindeutiger `add:`-/`remove:`-/`replace:`-/`retire:`-Referenz) oder eine extern überprüfte Ausnahme;
 - eine explizite Grenze gegen automatische Policy-, Routing-, Queue-, Merge- und Runtime-Autorität.
 

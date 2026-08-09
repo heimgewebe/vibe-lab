@@ -51,6 +51,7 @@ def _valid_v2(directory: Path) -> Path:
     template = (ROOT / "experiments/_template/registration.v2.json").read_text(encoding="utf-8")
     payload = json.loads(template.replace("replace-with", "example"))
     payload["experiment_id"] = directory.name
+    payload["registered_at"] = "2026-08-08T00:00:00Z"
     payload["consumer"]["commitment"]["confirmed_at"] = "2026-08-08T00:00:00Z"
     payload["closure"]["archive_path"] = f"experiments/_archive/{directory.name}"
     path = directory / "registration.v2.json"
@@ -135,6 +136,9 @@ def test_v2_scorecard_component_ids_must_be_unique() -> None:
 
 def test_t005_gate_rejects_bypasses() -> None:
     cases = (
+        ("missing-registered-at", "registered_at", ("registered_at",), DELETE),
+        ("future-registered-at", "registered_at cannot be in the future", ("registered_at",), "2026-08-09T00:00:00Z"),
+        ("consumer-confirmed-after-registration", "consumer commitment must be confirmed by registered_at", ("consumer", "commitment", "confirmed_at"), "2026-08-08T01:00:00Z"),
         ("self-consumer", "external consumer", ("consumer", "organ"), "Vibe-Lab internal team"),
         ("vague-consumer", "external consumer", ("consumer", "organ"), "external team"),
         ("consumer-relationship", "consumer.relationship", ("consumer", "relationship"), DELETE),
@@ -147,7 +151,7 @@ def test_t005_gate_rejects_bypasses() -> None:
         ("metric-overlap", "must not overlap", ("measurement", "outcome_criteria", "harm_or_falsification_threshold"), 0),
         ("metric-finite", "must be finite", ("measurement", "outcome_criteria", "success_threshold"), float("inf")),
         ("closure-map", "closure.outcome_by_result", ("closure", "outcome_by_result"), DELETE),
-        ("stale-review", "review_at must be in the future", ("review_at",), "2026-08-07T00:00:00Z"),
+        ("stale-review", "review_at must be after registered_at", ("review_at",), "2026-08-07T00:00:00Z"),
         ("surface-budget", "surface_budget", ("surface_budget",), DELETE),
         ("surface-cost", "reviewed surface-budget exception", ("surface_budget", "durable_additions"), ["add:scripts/new_specialist_validator.py"]),
         ("duplicate-offset", "surface refs must be unique", ("surface_budget", "durable_offsets"), ["remove:scripts/legacy.py", "retire:scripts/legacy.py"]),
@@ -173,6 +177,12 @@ def test_new_work_cannot_hide_v2_payload_under_v1_filename() -> None:
         disguised = path.with_name("registration.v1.json")
         path.rename(disguised)
         _assert_invalid(disguised, "new experiment requires registration.v2.json", now=T005_NOW)
+
+
+def test_v2_registration_remains_valid_after_review_until_expiry() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        path = _valid_v2(Path(raw) / "2026-08-08_post-review-validity")
+        MODULE.validate_registration(path, now=datetime(2099, 3, 15, tzinfo=timezone.utc))
 
 
 def test_v2_reviewed_surface_exception_passes() -> None:
