@@ -17,8 +17,23 @@ class EffectEvaluatorTests(unittest.TestCase):
         return {
             "schema_version": "experiment.registration.v2",
             "experiment_id": "2026-07-12_example-effect",
-            "consumer": {"organ": "bureau", "use": "Use the effect result to decide whether to promote the intervention."},
-            "decision_target": {"question": "Should the intervention be promoted after the pilot?", "owner": "bureau"},
+            "registered_at": "2026-08-08T00:00:00Z",
+            "consumer": {
+                "organ": "bureau",
+                "use": "Use the effect result to decide whether to promote the intervention.",
+                "relationship": "external",
+                "commitment": {
+                    "status": "confirmed",
+                    "evidence_ref": "bureau:effect-example-consumer",
+                    "confirmed_at": "2026-08-08T00:00:00Z",
+                    "valid_until": "2099-10-01T00:00:00Z",
+                },
+            },
+            "decision_target": {
+                "question": "Should the intervention be promoted after the pilot?",
+                "owner": "bureau",
+                "decision_ref": "bureau:effect-example-decision",
+            },
             "intervention": {"name": "typed_grip", "description": "Use one typed grip instead of the baseline command sequence."},
             "control_condition": {"id": "control", "description": "Use the existing baseline operator workflow."},
             "treatment_condition": {"id": "treatment", "description": "Use the typed-grip operator workflow."},
@@ -35,6 +50,10 @@ class EffectEvaluatorTests(unittest.TestCase):
                 "method": "Compare evidence-bound paired task observations.",
                 "success": "Material favorable effect.",
                 "falsification": "Harm or no material effect.",
+                "outcome_criteria": {
+                    "success_threshold": 3 if direction == "lower_is_better" else 1,
+                    "harm_or_falsification_threshold": 5 if direction == "lower_is_better" else 0,
+                },
             },
             "comparison": {
                 "mode": mode,
@@ -45,10 +64,20 @@ class EffectEvaluatorTests(unittest.TestCase):
                 "confounders": ["operator familiarity"],
             },
             "evidence_sources": {"allowed": ["typed execution receipt"], "independent_observation_required": True},
-            "review_at": "2026-09-01T00:00:00Z",
-            "expires_at": "2026-10-01T00:00:00Z",
-            "closure": {"allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"], "archive_path": "experiments/_archive/2026-07-12_example-effect"},
-            "boundary": {"experiment_only": True, "no_auto_policy": True, "no_auto_routing": True, "no_queue_authority": True, "no_runtime_authority": True},
+            "review_at": "2099-09-01T00:00:00Z",
+            "expires_at": "2099-10-01T00:00:00Z",
+            "closure": {
+                "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
+                "archive_path": "experiments/_archive/2026-07-12_example-effect",
+                "outcome_by_result": {
+                    "success": "promote",
+                    "harm_or_falsification": "reject",
+                    "inconclusive": "defer",
+                    "expired": "archive",
+                },
+            },
+            "surface_budget": {"durable_additions": [], "durable_offsets": [], "reviewed_exception": None},
+            "boundary": {"experiment_only": True, "no_auto_policy": True, "no_auto_routing": True, "no_queue_authority": True, "no_runtime_authority": True, "no_merge_authority": True},
         }
 
     def observations(self, control: list[float], treatment: list[float], *, independent: bool = True) -> dict:
@@ -68,6 +97,8 @@ class EffectEvaluatorTests(unittest.TestCase):
         self.assertEqual(result["verdict"], "beneficial")
         self.assertTrue(result["effect_claim_allowed"])
         self.assertEqual(result["statistics"]["favorable_effect"], 4.0)
+        self.assertEqual(result["registered_result"], "success")
+        self.assertEqual(result["registered_closure_outcome"], "promote")
 
     def test_harmful_effect(self) -> None:
         registration = self.registration()
@@ -75,6 +106,8 @@ class EffectEvaluatorTests(unittest.TestCase):
         observations["registration_sha256"] = EFFECT.sha256_json(registration)
         result = EFFECT.evaluate(registration, observations)
         self.assertEqual(result["verdict"], "harmful")
+        self.assertEqual(result["registered_result"], "harm_or_falsification")
+        self.assertEqual(result["registered_closure_outcome"], "reject")
 
     def test_no_material_effect(self) -> None:
         registration = self.registration(threshold=1.0)
@@ -82,6 +115,60 @@ class EffectEvaluatorTests(unittest.TestCase):
         observations["registration_sha256"] = EFFECT.sha256_json(registration)
         result = EFFECT.evaluate(registration, observations)
         self.assertEqual(result["verdict"], "no_material_effect")
+        self.assertEqual(result["registered_result"], "inconclusive")
+        self.assertEqual(result["registered_closure_outcome"], "defer")
+
+    def test_relative_benefit_without_registered_success_is_inconclusive(self) -> None:
+        registration = self.registration()
+        registration["measurement"]["outcome_criteria"] = {
+            "success_threshold": 0,
+            "harm_or_falsification_threshold": 8,
+        }
+        observations = self.observations([10, 10, 10], [5, 5, 5])
+        observations["registration_sha256"] = EFFECT.sha256_json(registration)
+        result = EFFECT.evaluate(registration, observations)
+        self.assertEqual(result["statistics"]["favorable_effect"], 5.0)
+        self.assertEqual(result["verdict"], "insufficient_evidence")
+        self.assertEqual(result["registered_result"], "inconclusive")
+        self.assertEqual(result["registered_closure_outcome"], "defer")
+        self.assertIn("registered success threshold not met", result["data_quality"]["reasons"])
+
+    def test_registered_closure_mapping_is_consumed(self) -> None:
+        registration = self.registration()
+        registration["closure"]["outcome_by_result"]["success"] = "pilot"
+        observations = self.observations([5, 6, 7], [1, 2, 3])
+        observations["registration_sha256"] = EFFECT.sha256_json(registration)
+        result = EFFECT.evaluate(registration, observations)
+        self.assertEqual(result["registered_result"], "success")
+        self.assertEqual(result["registered_closure_outcome"], "pilot")
+
+    def test_t005_semantic_gate_runs_before_evaluation(self) -> None:
+        registration = self.registration()
+        del registration["registered_at"]
+        observations = self.observations([5, 6, 7], [1, 2, 3])
+        observations["registration_sha256"] = EFFECT.sha256_json(registration)
+        with self.assertRaisesRegex(Exception, "registered_at"):
+            EFFECT.evaluate(registration, observations)
+
+    def test_pre_t005_registration_keeps_legacy_evaluation_contract(self) -> None:
+        registration = self.registration()
+        registration["experiment_id"] = "2026-07-12_operator-intervention-effect-evaluator"
+        registration.pop("registered_at")
+        registration["consumer"].pop("relationship")
+        registration["consumer"].pop("commitment")
+        registration["decision_target"].pop("decision_ref")
+        registration["measurement"].pop("outcome_criteria")
+        registration["closure"].pop("outcome_by_result")
+        registration.pop("surface_budget")
+        registration["boundary"].pop("no_merge_authority")
+        registration["closure"]["archive_path"] = "experiments/_archive/2026-07-12_operator-intervention-effect-evaluator"
+        observations = self.observations([5, 6, 7], [1, 2, 3])
+        observations["experiment_id"] = registration["experiment_id"]
+        observations["registration_sha256"] = EFFECT.sha256_json(registration)
+        result = EFFECT.evaluate(registration, observations)
+        self.assertEqual(result["verdict"], "beneficial")
+        self.assertNotIn("registered_result", result)
+        self.assertNotIn("registered_closure_outcome", result)
 
     def test_minimum_sample_fails_closed(self) -> None:
         registration = self.registration(minimum=3)
@@ -250,7 +337,7 @@ class EffectEvaluatorTests(unittest.TestCase):
     def test_observation_after_expiry_is_rejected(self) -> None:
         registration = self.registration()
         observations = self.observations([5, 6, 7], [1, 2, 3])
-        observations["observations"][0]["captured_at"] = "2026-10-01T00:00:01Z"
+        observations["observations"][0]["captured_at"] = "2099-10-01T00:00:01Z"
         observations["registration_sha256"] = EFFECT.sha256_json(registration)
         with self.assertRaisesRegex(ValueError, "captured after experiment expiry"):
             EFFECT.evaluate(registration, observations)

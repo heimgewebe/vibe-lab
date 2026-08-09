@@ -22,13 +22,22 @@ class CaptureEffectObservationTests(unittest.TestCase):
         return {
             "schema_version": "experiment.registration.v2",
             "experiment_id": "2026-07-12_capture-example",
+            "registered_at": "2026-08-08T00:00:00Z",
             "consumer": {
                 "organ": "bureau",
                 "use": "Use reviewed results to decide whether the intervention remains active.",
+                "relationship": "external",
+                "commitment": {
+                    "status": "confirmed",
+                    "evidence_ref": "bureau:capture-example-consumer",
+                    "confirmed_at": "2026-08-08T00:00:00Z",
+                    "valid_until": "2099-10-01T00:00:00Z",
+                },
             },
             "decision_target": {
                 "question": "Should the intervention remain active after the pilot?",
                 "owner": "bureau",
+                "decision_ref": "bureau:capture-example-decision",
             },
             "intervention": {
                 "name": "effect_capture",
@@ -55,6 +64,10 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 "method": "Compare evidence-bound paired review observations.",
                 "success": "A material favorable effect without overclaiming.",
                 "falsification": "No material effect, harm, or misleading evidence use.",
+                "outcome_criteria": {
+                    "success_threshold": 2,
+                    "harm_or_falsification_threshold": 0,
+                },
             },
             "comparison": {
                 "mode": "paired",
@@ -71,11 +84,22 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 "allowed": ["typed execution receipt"],
                 "independent_observation_required": True,
             },
-            "review_at": "2026-09-15T00:00:00Z",
-            "expires_at": "2026-10-01T00:00:00Z",
+            "review_at": "2099-09-15T00:00:00Z",
+            "expires_at": "2099-10-01T00:00:00Z",
             "closure": {
                 "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
                 "archive_path": "experiments/_archive/2026-07-12_capture-example",
+                "outcome_by_result": {
+                    "success": "promote",
+                    "harm_or_falsification": "reject",
+                    "inconclusive": "defer",
+                    "expired": "archive",
+                },
+            },
+            "surface_budget": {
+                "durable_additions": [],
+                "durable_offsets": [],
+                "reviewed_exception": None,
             },
             "boundary": {
                 "experiment_only": True,
@@ -83,6 +107,7 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 "no_auto_routing": True,
                 "no_queue_authority": True,
                 "no_runtime_authority": True,
+                "no_merge_authority": True,
             },
         }
 
@@ -161,11 +186,21 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 CAPTURE.capture(registration, observations, duplicate)
             self.assertEqual(observations.read_bytes(), before)
 
+    def test_t005_semantic_gate_runs_before_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            registration, observations = self.setup_experiment(Path(raw))
+            invalid = self.registration()
+            del invalid["registered_at"]
+            registration.write_text(json.dumps(invalid), encoding="utf-8")
+            with self.assertRaisesRegex(CAPTURE.CaptureError, "registered_at"):
+                CAPTURE.capture(registration, observations, self.observation())
+            self.assertFalse(observations.exists())
+
     def test_expired_observation_is_rejected_before_file_creation(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             registration, observations = self.setup_experiment(Path(raw))
             row = self.observation()
-            row["captured_at"] = "2026-10-01T00:00:01Z"
+            row["captured_at"] = "2099-10-01T00:00:01Z"
             with self.assertRaisesRegex(CAPTURE.CaptureError, "after experiment expiry"):
                 CAPTURE.capture(registration, observations, row)
             self.assertFalse(observations.exists())

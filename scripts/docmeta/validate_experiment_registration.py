@@ -238,8 +238,12 @@ def _validate_t005_contract(
         raise ValueError(f"{path}: review_at must be after registered_at")
 
 
-def validate_registration(path: Path, *, now: datetime | None = None) -> dict[str, Any]:
-    payload = _load(path)
+def validate_registration_payload(
+    payload: dict[str, Any],
+    *,
+    path: Path,
+    now: datetime | None = None,
+) -> dict[str, Any]:
     version = payload.get("schema_version")
     schema_path = SCHEMAS.get(str(version))
     if schema_path is None:
@@ -288,6 +292,10 @@ def validate_registration(path: Path, *, now: datetime | None = None) -> dict[st
                 clock=clock,
             )
     return payload
+
+
+def validate_registration(path: Path, *, now: datetime | None = None) -> dict[str, Any]:
+    return validate_registration_payload(_load(path), path=path, now=now)
 
 
 def validate_all(*, now: datetime | None = None) -> dict[str, Any]:

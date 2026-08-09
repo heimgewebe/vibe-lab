@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import math
 import statistics
@@ -15,6 +16,19 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
+REGISTRATION_GATE_PATH = ROOT / "scripts/docmeta/validate_experiment_registration.py"
+
+
+def _load_registration_gate() -> Any:
+    spec = importlib.util.spec_from_file_location("vibe_registration_gate_evaluate", REGISTRATION_GATE_PATH)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load registration gate from {REGISTRATION_GATE_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+REGISTRATION_GATE = _load_registration_gate()
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -41,6 +55,22 @@ def load_object(path: Path) -> dict[str, Any]:
 
 def validate_schema(value: dict[str, Any], schema_path: Path) -> None:
     Draft202012Validator(load_object(schema_path), format_checker=FormatChecker()).validate(value)
+
+
+def validate_registration_contract(
+    registration: dict[str, Any],
+    *,
+    repo_root: Path,
+    registration_path: Path | None = None,
+) -> dict[str, Any]:
+    if registration_path is not None:
+        validated = REGISTRATION_GATE.validate_registration(registration_path)
+        if sha256_json(validated) != sha256_json(registration):
+            raise ValueError("registration payload does not match registration path")
+        return validated
+    experiment_id = registration.get("experiment_id")
+    synthetic_path = repo_root / "experiments" / str(experiment_id or "invalid") / "registration.v2.json"
+    return REGISTRATION_GATE.validate_registration_payload(registration, path=synthetic_path)
 
 
 def _round(value: float | None) -> float | None:
@@ -92,6 +122,28 @@ def _fatal_scorecard_components(registration: dict[str, Any]) -> set[str]:
     }
 
 
+def _registered_threshold_result(
+    registration: dict[str, Any],
+    treatment_mean: float | None,
+) -> str:
+    if treatment_mean is None:
+        return "inconclusive"
+    criteria = registration["measurement"]["outcome_criteria"]
+    success = float(criteria["success_threshold"])
+    harm = float(criteria["harm_or_falsification_threshold"])
+    if registration["measurement"]["direction"] == "higher_is_better":
+        if treatment_mean >= success:
+            return "success"
+        if treatment_mean <= harm:
+            return "harm_or_falsification"
+    else:
+        if treatment_mean <= success:
+            return "success"
+        if treatment_mean >= harm:
+            return "harm_or_falsification"
+    return "inconclusive"
+
+
 def _build_base(registration: dict[str, Any], observations: dict[str, Any]) -> dict[str, Any]:
     measurement = registration["measurement"]
     return {
@@ -107,9 +159,20 @@ def _build_base(registration: dict[str, Any], observations: dict[str, Any]) -> d
     }
 
 
-def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo_root: Path = ROOT) -> dict[str, Any]:
-    validate_schema(registration, repo_root / "schemas/experiment.registration.v2.schema.json")
+def evaluate(
+    registration: dict[str, Any],
+    observations: dict[str, Any],
+    *,
+    repo_root: Path = ROOT,
+    registration_path: Path | None = None,
+) -> dict[str, Any]:
+    registration = validate_registration_contract(
+        registration,
+        repo_root=repo_root,
+        registration_path=registration_path,
+    )
     validate_schema(observations, repo_root / "schemas/effect-evaluation.observations.v2.schema.json")
+    t005_contract = not REGISTRATION_GATE.is_pre_t005_experiment(registration["experiment_id"])
     if registration["experiment_id"] != observations["experiment_id"]:
         raise ValueError("experiment_id mismatch")
     if observations["registration_sha256"] != sha256_json(registration):
@@ -284,19 +347,42 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
     })
 
     threshold = float(registration["measurement"]["minimum_material_effect"])
-    verdict = "insufficient_evidence"
+    comparative_verdict = "insufficient_evidence"
     if ci is not None:
         if ci["lower"] > threshold:
-            verdict = "beneficial"
+            comparative_verdict = "beneficial"
         elif ci["upper"] < -threshold:
-            verdict = "harmful"
+            comparative_verdict = "harmful"
         elif ci["lower"] >= -threshold and ci["upper"] <= threshold:
-            verdict = "no_material_effect"
+            comparative_verdict = "no_material_effect"
         else:
             reasons.append("confidence interval crosses a material-effect boundary")
     if triggered_falsifications:
-        verdict = "harmful"
+        comparative_verdict = "harmful"
         reasons.append("registered scorecard falsification triggered")
+
+    verdict = comparative_verdict
+    registered_result: str | None = None
+    registered_closure_outcome: str | None = None
+    if t005_contract:
+        threshold_result = _registered_threshold_result(registration, treatment_mean)
+        if comparative_verdict == "harmful" or (
+            comparative_verdict != "insufficient_evidence"
+            and threshold_result == "harm_or_falsification"
+        ):
+            registered_result = "harm_or_falsification"
+        elif comparative_verdict == "beneficial" and threshold_result == "success":
+            registered_result = "success"
+        else:
+            registered_result = "inconclusive"
+
+        if comparative_verdict == "beneficial" and registered_result != "success":
+            verdict = "insufficient_evidence"
+            if threshold_result == "harm_or_falsification":
+                reasons.append("registered harm_or_falsification threshold reached")
+            else:
+                reasons.append("registered success threshold not met")
+        registered_closure_outcome = registration["closure"]["outcome_by_result"][registered_result]
 
     result = {
         **_build_base(registration, observations),
@@ -334,6 +420,7 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
             "automatic_policy_change",
             "automatic_routing_change",
             "automatic_bureau_task_creation",
+            "automatic_registered_closure_application",
             "caller_supplied_independence_correctness",
             "caller_supplied_scorecard_judgment_correctness",
             "cost_effectiveness_or_acceptable_ceremony",
@@ -342,6 +429,9 @@ def evaluate(registration: dict[str, Any], observations: dict[str, Any], *, repo
             "caller_supplied_evidence_digest_correctness",
         ],
     }
+    if registered_result is not None:
+        result["registered_result"] = registered_result
+        result["registered_closure_outcome"] = registered_closure_outcome
     result["result_sha256"] = result_sha256(result)
     validate_schema(result, repo_root / "schemas/effect-evaluation.result.v1.schema.json")
     return result
@@ -353,7 +443,11 @@ def main() -> int:
     parser.add_argument("--observations", required=True, type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = evaluate(load_object(args.registration), load_object(args.observations))
+    result = evaluate(
+        load_object(args.registration),
+        load_object(args.observations),
+        registration_path=args.registration,
+    )
     rendered = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(rendered, encoding="utf-8")
