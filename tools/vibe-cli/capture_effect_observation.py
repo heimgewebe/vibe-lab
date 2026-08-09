@@ -194,7 +194,11 @@ def validate_observation_semantics(
         and observation["observer_ref"] == observation["decision_maker_ref"]
     ):
         raise CaptureError("independent scorer must differ from decision maker")
-    if parse_timestamp(observation["captured_at"]) > parse_timestamp(registration["expires_at"]):
+    captured_at = parse_timestamp(observation["captured_at"])
+    if not REGISTRATION_GATE.is_pre_t005_experiment(registration["experiment_id"]):
+        if captured_at < parse_timestamp(registration["registered_at"]):
+            raise CaptureError("observation was captured before experiment registration")
+    if captured_at > parse_timestamp(registration["expires_at"]):
         raise CaptureError("observation was captured after experiment expiry")
 
 

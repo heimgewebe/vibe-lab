@@ -180,6 +180,9 @@ def evaluate(
     )
     validate_schema(observations, repo_root / "schemas/effect-evaluation.observations.v2.schema.json")
     t005_contract = not REGISTRATION_GATE.is_pre_t005_experiment(registration["experiment_id"])
+    registered_at = None
+    if t005_contract:
+        registered_at = datetime.fromisoformat(registration["registered_at"].replace("Z", "+00:00")).astimezone(timezone.utc)
     if registration["experiment_id"] != observations["experiment_id"]:
         raise ValueError("experiment_id mismatch")
     if observations["registration_sha256"] != sha256_json(registration):
@@ -232,7 +235,10 @@ def evaluate(
         expires_at = datetime.fromisoformat(registration["expires_at"].replace("Z", "+00:00"))
         if captured_at.tzinfo is None or expires_at.tzinfo is None:
             raise ValueError("timestamps must include timezone")
-        if captured_at.astimezone(timezone.utc) > expires_at.astimezone(timezone.utc):
+        captured_at_utc = captured_at.astimezone(timezone.utc)
+        if registered_at is not None and captured_at_utc < registered_at:
+            raise ValueError("observation predates experiment registration")
+        if captured_at_utc > expires_at.astimezone(timezone.utc):
             raise ValueError("observation captured after experiment expiry")
 
     control = [row for row in rows if row["condition"] == control_id]

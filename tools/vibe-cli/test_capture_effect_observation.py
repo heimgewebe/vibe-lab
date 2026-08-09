@@ -22,7 +22,7 @@ class CaptureEffectObservationTests(unittest.TestCase):
         return {
             "schema_version": "experiment.registration.v2",
             "experiment_id": "2026-07-12_capture-example",
-            "registered_at": "2026-08-08T00:00:00Z",
+            "registered_at": "2026-07-31T00:00:00Z",
             "consumer": {
                 "organ": "bureau",
                 "use": "Use reviewed results to decide whether the intervention remains active.",
@@ -30,7 +30,7 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 "commitment": {
                     "status": "confirmed",
                     "evidence_ref": "bureau:capture-example-consumer",
-                    "confirmed_at": "2026-08-08T00:00:00Z",
+                    "confirmed_at": "2026-07-31T00:00:00Z",
                     "valid_until": "2099-10-01T00:00:00Z",
                 },
             },
@@ -185,6 +185,15 @@ class CaptureEffectObservationTests(unittest.TestCase):
             with self.assertRaisesRegex(CAPTURE.CaptureError, "duplicate condition within pair"):
                 CAPTURE.capture(registration, observations, duplicate)
             self.assertEqual(observations.read_bytes(), before)
+
+    def test_observation_before_registration_is_rejected_before_file_creation(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            registration, observations = self.setup_experiment(Path(raw))
+            row = self.observation()
+            row["captured_at"] = "2026-07-30T23:59:59Z"
+            with self.assertRaisesRegex(CAPTURE.CaptureError, "before experiment registration"):
+                CAPTURE.capture(registration, observations, row)
+            self.assertFalse(observations.exists())
 
     def test_expired_registration_still_blocks_new_capture(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -17,7 +17,7 @@ class EffectEvaluatorTests(unittest.TestCase):
         return {
             "schema_version": "experiment.registration.v2",
             "experiment_id": "2026-07-12_example-effect",
-            "registered_at": "2026-08-08T00:00:00Z",
+            "registered_at": "2026-07-31T00:00:00Z",
             "consumer": {
                 "organ": "bureau",
                 "use": "Use the effect result to decide whether to promote the intervention.",
@@ -25,7 +25,7 @@ class EffectEvaluatorTests(unittest.TestCase):
                 "commitment": {
                     "status": "confirmed",
                     "evidence_ref": "bureau:effect-example-consumer",
-                    "confirmed_at": "2026-08-08T00:00:00Z",
+                    "confirmed_at": "2026-07-31T00:00:00Z",
                     "valid_until": "2099-10-01T00:00:00Z",
                 },
             },
@@ -141,6 +141,14 @@ class EffectEvaluatorTests(unittest.TestCase):
         result = EFFECT.evaluate(registration, observations)
         self.assertEqual(result["registered_result"], "success")
         self.assertEqual(result["registered_closure_outcome"], "pilot")
+
+    def test_observation_before_registration_is_rejected(self) -> None:
+        registration = self.registration()
+        observations = self.observations([5, 6, 7], [1, 2, 3])
+        observations["observations"][0]["captured_at"] = "2026-07-30T23:59:59Z"
+        observations["registration_sha256"] = EFFECT.sha256_json(registration)
+        with self.assertRaisesRegex(ValueError, "predates experiment registration"):
+            EFFECT.evaluate(registration, observations)
 
     def test_expired_registration_remains_reproducibly_evaluable(self) -> None:
         registration = self.registration()
