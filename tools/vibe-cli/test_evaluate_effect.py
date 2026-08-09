@@ -142,6 +142,20 @@ class EffectEvaluatorTests(unittest.TestCase):
         self.assertEqual(result["registered_result"], "success")
         self.assertEqual(result["registered_closure_outcome"], "pilot")
 
+    def test_expired_registration_remains_reproducibly_evaluable(self) -> None:
+        registration = self.registration()
+        registration["registered_at"] = "2026-07-13T00:00:00Z"
+        registration["consumer"]["commitment"]["confirmed_at"] = "2026-07-13T00:00:00Z"
+        registration["consumer"]["commitment"]["valid_until"] = "2026-08-02T00:00:00Z"
+        registration["review_at"] = "2026-07-20T00:00:00Z"
+        registration["expires_at"] = "2026-08-02T00:00:00Z"
+        observations = self.observations([5, 6, 7], [1, 2, 3])
+        observations["registration_sha256"] = EFFECT.sha256_json(registration)
+        result = EFFECT.evaluate(registration, observations)
+        self.assertEqual(result["verdict"], "beneficial")
+        self.assertEqual(result["registered_result"], "success")
+        self.assertEqual(result["registered_closure_outcome"], "promote")
+
     def test_t005_semantic_gate_runs_before_evaluation(self) -> None:
         registration = self.registration()
         del registration["registered_at"]

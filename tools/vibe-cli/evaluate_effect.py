@@ -64,13 +64,20 @@ def validate_registration_contract(
     registration_path: Path | None = None,
 ) -> dict[str, Any]:
     if registration_path is not None:
-        validated = REGISTRATION_GATE.validate_registration(registration_path)
+        validated = REGISTRATION_GATE.validate_registration(
+            registration_path,
+            require_current=False,
+        )
         if sha256_json(validated) != sha256_json(registration):
             raise ValueError("registration payload does not match registration path")
         return validated
     experiment_id = registration.get("experiment_id")
     synthetic_path = repo_root / "experiments" / str(experiment_id or "invalid") / "registration.v2.json"
-    return REGISTRATION_GATE.validate_registration_payload(registration, path=synthetic_path)
+    return REGISTRATION_GATE.validate_registration_payload(
+        registration,
+        path=synthetic_path,
+        require_current=False,
+    )
 
 
 def _round(value: float | None) -> float | None:

@@ -186,6 +186,22 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 CAPTURE.capture(registration, observations, duplicate)
             self.assertEqual(observations.read_bytes(), before)
 
+    def test_expired_registration_still_blocks_new_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            registration, observations = self.setup_experiment(Path(raw))
+            expired = self.registration()
+            expired["registered_at"] = "2026-07-13T00:00:00Z"
+            expired["consumer"]["commitment"]["confirmed_at"] = "2026-07-13T00:00:00Z"
+            expired["consumer"]["commitment"]["valid_until"] = "2026-08-02T00:00:00Z"
+            expired["review_at"] = "2026-07-20T00:00:00Z"
+            expired["expires_at"] = "2026-08-02T00:00:00Z"
+            registration.write_text(json.dumps(expired), encoding="utf-8")
+            row = self.observation()
+            row["captured_at"] = "2026-08-01T00:00:00Z"
+            with self.assertRaisesRegex(CAPTURE.CaptureError, "registration already expired"):
+                CAPTURE.capture(registration, observations, row)
+            self.assertFalse(observations.exists())
+
     def test_t005_semantic_gate_runs_before_capture(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             registration, observations = self.setup_experiment(Path(raw))
