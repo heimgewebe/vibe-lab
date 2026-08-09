@@ -1,0 +1,41 @@
+{
+  "schema_version": "natural-case-admission.request.v1",
+  "case_id": "chronik-natural-001",
+  "triggered_by": "natural-coding-case-receipt-001",
+  "case_opened_at": "2026-08-09T09:00:00Z",
+  "eligibility_evidence": {
+    "ref": "receipt:natural-case-001",
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "captured_at": "2026-08-09T09:00:30Z"
+  },
+  "eligibility": {
+    "natural_case": true,
+    "within_registered_scope": true,
+    "planning_started": false,
+    "execution_started": false,
+    "outcome_known": false,
+    "prior_observation": false
+  },
+  "comparability": {
+    "task_class": "bounded-python-maintenance",
+    "risk_band": "R1",
+    "repository_familiarity_band": "familiar",
+    "comparison_key": "python-maintenance-r1-familiar-live-v1",
+    "target_repository": "fixture-repository",
+    "target_component": "fixture-component",
+    "operation": "modify",
+    "live_preflight_contract": "grabowski-live-first-v1",
+    "repository_revision": "abcdef0",
+    "operator_ref": "operator:fixture-a",
+    "model_tool_version": "fixture-model-v1",
+    "task_difficulty_band": "small",
+    "prior_chronik_events_band": "one-to-three"
+  },
+  "assignment": {
+    "condition": "live_preflight_only",
+    "assigned_by": "operator:fixture-assignment",
+    "evidence_ref": "receipt:natural-case-001-assignment",
+    "evidence_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "recorded_before_planning": true
+  }
+}

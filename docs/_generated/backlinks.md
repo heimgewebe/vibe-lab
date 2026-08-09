@@ -763,6 +763,18 @@
 
 - ← `experiments/2026-07-08_rlens-agent-context-conditions/method.md` (references)
 
+## `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/method.md` (references)
+
+## `experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/method.md` (references)
+
+## `experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
+
 ## `experiments/README.md`
 
 - ← `docs/concepts/experiment-ontology.md` (informs)
@@ -828,6 +840,10 @@
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `docs/reference/manifest-schema.md` (references)
 
+## `schemas/natural-case-admission.v1.schema.json`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
+
 ## `schemas/review-events.v1.schema.json`
 
 - ← `.vibe/review-rework-artifact.contract.md` (references)
@@ -868,9 +884,18 @@
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 
+## `tests/fixtures/natural_case_admission/valid-control-request.json`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
+
+## `tools/vibe-cli/admit_natural_case.py`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
+
 ## `tools/vibe-cli/capture_effect_observation.py`
 
 - ← `docs/playbooks/effect-observation-capture.md` (references)
+- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
 
 ## `tools/vibe-cli/pr_context_capture.py`
 
@@ -879,6 +904,10 @@
 ## `tools/vibe-cli/replay_minimal.py`
 
 - ← `docs/reference/replay-trace-redaction.md` (references)
+
+## `tools/vibe-cli/test_admit_natural_case.py`
+
+- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (validated_by)
 
 ## `tools/vibe-cli/test_capture_effect_observation.py`
 

@@ -88,7 +88,7 @@ Unexpected orphans (103 found):
 - `experiments/2026-07-08_operator-learning-capture-sample/results/nonclaims.md`
 - `experiments/2026-07-08_operator-learning-capture-sample/results/review-questions.md`
 - `experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md`
-- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/artifacts/README.md`
+- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md`
 - `instruction-blocks/evidence-bound-status.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
@@ -109,7 +109,7 @@ Unexpected orphans (103 found):
 - `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
 
-Expected orphans (110 found):
+Expected orphans (112 found):
 
 - `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
@@ -206,11 +206,13 @@ Expected orphans (110 found):
 - `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` — experiment_bundle_local_analysis
 - `experiments/2026-07-08_rlens-agent-context-conditions/method.md` — experiment_bundle_method
-- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/CONTEXT.md` — experiment_bundle_local_context
-- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/INITIAL.md` — experiment_bundle_initial_prompt
-- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/failure_modes.md` — experiment_bundle_local_analysis
-- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/method.md` — experiment_bundle_method
-- `experiments/2026-07-09_repobrief-workbench-usefulness-eval/results/result.md` — experiment_result_local_surface
+- `experiments/2026-07-13_chronik-history-brief-effect/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-07-13_chronik-history-brief-effect/INITIAL.md` — experiment_bundle_initial_prompt
+- `experiments/2026-07-13_chronik-history-brief-effect/failure_modes.md` — experiment_bundle_local_analysis
+- `experiments/2026-07-13_chronik-history-brief-effect/method.md` — experiment_bundle_method
+- `experiments/2026-07-13_chronik-history-brief-effect/results/result.md` — experiment_result_local_surface
+- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/method.md` — experiment_bundle_method
 - `exports/copilot/constraint-before-code.md` — generated_export_surface
 - `exports/copilot/edge-case-enumeration.md` — generated_export_surface
 - `exports/copilot/no-vague-prompts.md` — generated_export_surface
