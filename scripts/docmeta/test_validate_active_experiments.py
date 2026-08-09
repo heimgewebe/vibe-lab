@@ -36,7 +36,10 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
         )
         registration = json.loads(json.dumps(template).replace("replace-with", "example"))
         registration["experiment_id"] = self.exp.name
+        registration["registered_at"] = "2026-07-12T00:00:00Z"
         registration["consumer"]["organ"] = "Bureau"
+        registration["consumer"]["commitment"]["confirmed_at"] = "2026-07-12T00:00:00Z"
+        registration["consumer"]["commitment"]["valid_until"] = "2026-09-01T00:00:00Z"
         registration["decision_target"]["question"] = (
             "Decide whether the example should continue."
         )
@@ -90,7 +93,7 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
 
     def test_v1_registration_metric_is_supported(self) -> None:
         (self.exp / "registration.v2.json").unlink()
-        v1_exp = self.root / "experiments/2026-07-11_example"
+        v1_exp = self.root / "experiments/2026-07-09_repobrief-workbench-usefulness-eval"
         self.exp.rename(v1_exp)
         registration = {
             "schema_version": "experiment.registration.v1",
@@ -134,9 +137,9 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requires registration"):
             self.validate()
 
-    def test_pre_enforcement_experiment_remains_supported(self) -> None:
+    def test_explicit_pre_t005_experiment_remains_supported(self) -> None:
         (self.exp / "registration.v2.json").unlink()
-        old_exp = self.root / "experiments/2026-07-09_example"
+        old_exp = self.root / "experiments/2026-07-08_operator-learning-capture-sample"
         self.exp.rename(old_exp)
         payload = self.payload()
         self.update_item_for_directory(payload, old_exp)
