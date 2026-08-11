@@ -107,6 +107,34 @@
                 1
               ]
             }
+          },
+          "admission_binding": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "case_id",
+              "admission_id",
+              "admission_sha256",
+              "blinded_case_id"
+            ],
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "admission_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "admission_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "blinded_case_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
           }
         }
       }

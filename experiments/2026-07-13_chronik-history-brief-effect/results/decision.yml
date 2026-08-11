@@ -1,13 +1,14 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
 verdict: "not_executed"
-date: "2026-08-09"
+date: "2026-08-11"
 reviewer: "ChatGPT / Grabowski"
 triggered_by: "user-request-chronik-natural-case-admission-2026-08-09"
 rationale: >
-  Registration remains frozen before observation. A create-only prospective
-  admission path is now prepared, but no natural control or treatment case has
-  been admitted or completed, so no execution, result or adoption assessment is allowed.
+  Before the first admitted case, the registration was prospectively revised with
+  a deterministic per-stratum two-case assignment contract and observation-to-admission
+  binding. No natural control or treatment case has yet been admitted or completed,
+  so no execution, result or adoption assessment is allowed.
 assessment_history:
   - date: "2026-07-13"
     verdict: "not_executed"
@@ -20,6 +21,6 @@ evidence_summary:
   negative: 0
   neutral: 0
 next_steps: >
-  Admit only natural pre-planning cases with explicit condition evidence, collect
+  Admit only natural pre-planning cases through the frozen automatic assignment contract, collect
   at least three comparable cases per condition, preserve all failed and null cases,
   run independent blinded scoring, then evaluate at the unchanged 2026-08-15 review.

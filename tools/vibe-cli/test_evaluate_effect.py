@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import hashlib
 import importlib.util
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -10,6 +13,10 @@ SPEC = importlib.util.spec_from_file_location("effect", Path(__file__).with_name
 assert SPEC and SPEC.loader
 EFFECT = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(EFFECT)
+ADMIT_SPEC = importlib.util.spec_from_file_location("admit_for_effect", Path(__file__).with_name("admit_natural_case.py"))
+assert ADMIT_SPEC and ADMIT_SPEC.loader
+ADMISSION = importlib.util.module_from_spec(ADMIT_SPEC)
+ADMIT_SPEC.loader.exec_module(ADMISSION)
 
 
 class EffectEvaluatorTests(unittest.TestCase):
@@ -372,6 +379,86 @@ class EffectEvaluatorTests(unittest.TestCase):
         registration = self.registration()
         observations = self.observations([5, 6, 7], [1, 2, 3])
         self.assertEqual(EFFECT.evaluate(registration, observations), EFFECT.evaluate(registration, observations))
+
+
+class AssignedExperimentEvaluatorTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        source = ROOT / "experiments/2026-07-13_chronik-history-brief-effect"
+        self.exp = self.root / "2026-07-13_chronik-history-brief-effect"
+        self.exp.mkdir()
+        self.registration_path = self.exp / "registration.v2.json"
+        self.registration_path.write_bytes((source / "registration.v2.json").read_bytes())
+        self.registration = json.loads(self.registration_path.read_text())
+        request = json.loads((ROOT / "tests/fixtures/natural_case_admission/valid-control-request.json").read_text())
+        request["case_id"] = "effect-case-1"
+        request_path = self.root / "request.json"
+        request_path.write_text(json.dumps(request, indent=2) + "\n")
+        admitted = ADMISSION.admit(
+            self.registration_path,
+            request_path,
+            self.exp / "artifacts/admissions",
+            now=ADMISSION.utc_timestamp("2026-08-11T06:49:00Z", "test-now"),
+        )
+        self.admission_path = Path(admitted["path"])
+        self.admission = json.loads(self.admission_path.read_text())
+
+    def observations(self) -> dict:
+        scorecard = self.registration["measurement"]["scorecard"]["components"]
+        components = {component["id"]: 1 for component in scorecard}
+        value = sum(float(component["weight"]) for component in scorecard)
+        row = {
+            "observation_id": self.admission["review_preparation"]["blinded_case_id"],
+            "condition": self.admission["assignment_evidence"]["condition"],
+            "value": value,
+            "effort_seconds": 30.0,
+            "scoring_blinded": True,
+            "comparison_key": self.admission["frozen_request"]["comparability"]["comparison_key"],
+            "evidence_ref": "receipt:effect-case-1",
+            "evidence_sha256": "b" * 64,
+            "decision_maker_ref": "receipt:decision-effect-case-1",
+            "observer_ref": "receipt:review-effect-case-1",
+            "independent": True,
+            "captured_at": "2026-08-11T06:50:00Z",
+            "score_components": components,
+            "admission_binding": {
+                "case_id": "effect-case-1",
+                "admission_id": self.admission["admission_id"],
+                "admission_sha256": hashlib.sha256(self.admission_path.read_bytes()).hexdigest(),
+                "blinded_case_id": self.admission["review_preparation"]["blinded_case_id"],
+            },
+        }
+        return {
+            "schema_version": "effect-evaluation.observations.v2",
+            "experiment_id": self.registration["experiment_id"],
+            "registration_sha256": EFFECT.sha256_json(self.registration),
+            "metric": self.registration["measurement"]["primary_metric"],
+            "observations": [row],
+        }
+
+    def test_assigned_observation_is_re_resolved_from_immutable_admission(self) -> None:
+        result = EFFECT.evaluate(
+            self.registration,
+            self.observations(),
+            repo_root=ROOT,
+            registration_path=self.registration_path,
+        )
+        self.assertEqual(result["verdict"], "insufficient_evidence")
+
+    def test_assigned_observation_without_binding_is_rejected(self) -> None:
+        observations = self.observations()
+        observations["observations"][0].pop("admission_binding")
+        with self.assertRaisesRegex(ValueError, "requires admission_binding"):
+            EFFECT.evaluate(self.registration, observations, repo_root=ROOT, registration_path=self.registration_path)
+
+    def test_assigned_observation_with_tampered_admission_digest_is_rejected(self) -> None:
+        observations = self.observations()
+        observations["observations"][0]["admission_binding"]["admission_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "admission file digest mismatch"):
+            EFFECT.evaluate(self.registration, observations, repo_root=ROOT, registration_path=self.registration_path)
+
 
 
 if __name__ == "__main__":

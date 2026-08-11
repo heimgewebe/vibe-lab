@@ -47,32 +47,119 @@
       "$ref": "#/$defs/sha256"
     },
     "assignment_evidence": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "condition",
-        "mode",
-        "automatic",
-        "fairness_claim",
-        "registration_rule_status"
-      ],
-      "properties": {
-        "condition": {
-          "$ref": "#/$defs/condition_id"
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "mode",
+            "automatic",
+            "fairness_claim",
+            "registration_rule_status"
+          ],
+          "properties": {
+            "condition": {
+              "$ref": "#/$defs/condition_id"
+            },
+            "mode": {
+              "const": "explicit_preplanning_assignment"
+            },
+            "automatic": {
+              "const": false
+            },
+            "fairness_claim": {
+              "const": "not_established_by_registration_v2"
+            },
+            "registration_rule_status": {
+              "const": "automatic_assignment_not_frozen"
+            }
+          }
         },
-        "mode": {
-          "const": "explicit_preplanning_assignment"
-        },
-        "automatic": {
-          "const": false
-        },
-        "fairness_claim": {
-          "const": "not_established_by_registration_v2"
-        },
-        "registration_rule_status": {
-          "const": "automatic_assignment_not_frozen"
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "mode",
+            "automatic",
+            "fairness_claim",
+            "registration_rule_status",
+            "sequence_index",
+            "block_index",
+            "block_position",
+            "stratum",
+            "stratum_sha256",
+            "seed_sha256",
+            "block_order_sha256",
+            "balance_invariant"
+          ],
+          "properties": {
+            "condition": {
+              "$ref": "#/$defs/condition_id"
+            },
+            "mode": {
+              "const": "stratified_permuted_blocks.v1"
+            },
+            "automatic": {
+              "const": true
+            },
+            "fairness_claim": {
+              "const": "registration_bound_stratum_balance_only"
+            },
+            "registration_rule_status": {
+              "const": "frozen_prospective_assignment"
+            },
+            "sequence_index": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "block_index": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "block_position": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ]
+            },
+            "stratum": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "task_class",
+                "risk_band",
+                "repository_familiarity_band"
+              ],
+              "properties": {
+                "task_class": {
+                  "$ref": "#/$defs/bounded_string"
+                },
+                "risk_band": {
+                  "$ref": "#/$defs/bounded_string"
+                },
+                "repository_familiarity_band": {
+                  "$ref": "#/$defs/bounded_string"
+                }
+              }
+            },
+            "stratum_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "seed_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "block_order_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "balance_invariant": {
+              "const": "arm_count_difference_at_most_one_per_partial_or_complete_two_case_block"
+            }
+          }
         }
-      }
+      ]
     },
     "review_preparation": {
       "type": "object",
@@ -176,25 +263,45 @@
           "maxLength": 200
         },
         "policy": {
-          "const": "registration.v2.json + method.md"
+          "enum": [
+            "registration.v2.json + method.md",
+            "registration.v2.json assignment + method.md"
+          ]
         },
         "action": {
           "const": "prospective_natural_case_admission"
         },
         "outcome": {
-          "const": "explicit_condition_assignment_sealed"
+          "enum": [
+            "explicit_condition_assignment_sealed",
+            "registered_automatic_assignment_sealed"
+          ]
         }
       }
     },
     "non_claims": {
-      "const": [
-        "automatic_assignment",
-        "assignment_fairness",
-        "external_eligibility_truth",
-        "case_execution",
-        "independent_review_completion",
-        "condition_effect",
-        "routing_queue_or_runtime_authority"
+      "oneOf": [
+        {
+          "const": [
+            "automatic_assignment",
+            "assignment_fairness",
+            "external_eligibility_truth",
+            "case_execution",
+            "independent_review_completion",
+            "condition_effect",
+            "routing_queue_or_runtime_authority"
+          ]
+        },
+        {
+          "const": [
+            "external_eligibility_truth",
+            "case_execution",
+            "independent_review_completion",
+            "condition_effect",
+            "randomization_or_causal_identification",
+            "routing_queue_or_runtime_authority"
+          ]
+        }
       ]
     }
   },
@@ -361,32 +468,52 @@
           }
         },
         "assignment": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "condition",
-            "assigned_by",
-            "evidence_ref",
-            "evidence_sha256",
-            "recorded_before_planning"
-          ],
-          "properties": {
-            "condition": {
-              "$ref": "#/$defs/condition_id"
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "condition",
+                "assigned_by",
+                "evidence_ref",
+                "evidence_sha256",
+                "recorded_before_planning"
+              ],
+              "properties": {
+                "condition": {
+                  "$ref": "#/$defs/condition_id"
+                },
+                "assigned_by": {
+                  "$ref": "#/$defs/bounded_string"
+                },
+                "evidence_ref": {
+                  "$ref": "#/$defs/evidence_ref"
+                },
+                "evidence_sha256": {
+                  "$ref": "#/$defs/sha256"
+                },
+                "recorded_before_planning": {
+                  "const": true
+                }
+              }
             },
-            "assigned_by": {
-              "$ref": "#/$defs/bounded_string"
-            },
-            "evidence_ref": {
-              "$ref": "#/$defs/evidence_ref"
-            },
-            "evidence_sha256": {
-              "$ref": "#/$defs/sha256"
-            },
-            "recorded_before_planning": {
-              "const": true
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "mode",
+                "recorded_before_planning"
+              ],
+              "properties": {
+                "mode": {
+                  "const": "registered_automatic"
+                },
+                "recorded_before_planning": {
+                  "const": true
+                }
+              }
             }
-          }
+          ]
         }
       }
     }

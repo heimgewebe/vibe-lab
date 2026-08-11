@@ -165,6 +165,17 @@ def test_t005_gate_rejects_bypasses() -> None:
         _invalid_v2(*case)
 
 
+def test_assignment_prior_digest_must_match_registration_without_assignment() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        directory = Path(raw) / "2026-07-13_chronik-history-brief-effect"
+        directory.mkdir(parents=True)
+        payload = json.loads((ROOT / "experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json").read_text())
+        payload["assignment"]["prior_registration_sha256"] = "0" * 64
+        path = directory / "registration.v2.json"
+        path.write_text(json.dumps(payload))
+        _assert_invalid(path, "prior_registration_sha256", now=datetime(2026, 8, 11, 7, 0, tzinfo=timezone.utc))
+
+
 def test_new_work_cannot_use_v1_registration_directly() -> None:
     with tempfile.TemporaryDirectory() as raw:
         path = _valid(Path(raw) / "2026-08-08_v1-bypass")

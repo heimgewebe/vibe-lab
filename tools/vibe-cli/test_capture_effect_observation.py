@@ -15,6 +15,11 @@ SPEC = importlib.util.spec_from_file_location("capture_effect_observation", SCRI
 assert SPEC and SPEC.loader
 CAPTURE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CAPTURE)
+ADMIT_SCRIPT = Path(__file__).with_name("admit_natural_case.py")
+ADMIT_SPEC = importlib.util.spec_from_file_location("admit_natural_case_for_capture", ADMIT_SCRIPT)
+assert ADMIT_SPEC and ADMIT_SPEC.loader
+ADMISSION = importlib.util.module_from_spec(ADMIT_SPEC)
+ADMIT_SPEC.loader.exec_module(ADMISSION)
 
 
 class CaptureEffectObservationTests(unittest.TestCase):
@@ -354,6 +359,79 @@ class CaptureEffectObservationTests(unittest.TestCase):
                 [row["observation_id"] for row in document["observations"]],
                 ["obs-0", "obs-1", "obs-2", "obs-3"],
             )
+
+
+class ChronikAdmissionBindingTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        source = CAPTURE.ROOT / "experiments/2026-07-13_chronik-history-brief-effect"
+        self.exp = self.root / "experiments/2026-07-13_chronik-history-brief-effect"
+        (self.exp / "results").mkdir(parents=True)
+        self.registration = self.exp / "registration.v2.json"
+        self.registration.write_bytes((source / "registration.v2.json").read_bytes())
+        request = json.loads((CAPTURE.ROOT / "tests/fixtures/natural_case_admission/valid-control-request.json").read_text())
+        request["case_id"] = "case-1"
+        request_path = self.root / "request.json"
+        request_path.write_text(json.dumps(request, indent=2) + "\n")
+        admissions = self.exp / "artifacts/admissions"
+        result = ADMISSION.admit(
+            self.registration, request_path, admissions,
+            now=ADMISSION.utc_timestamp("2026-08-11T06:49:00Z", "test-now"),
+        )
+        self.admission = Path(result["path"])
+        record = json.loads(self.admission.read_text())
+        self.condition = record["assignment_evidence"]["condition"]
+        self.blinded = record["review_preparation"]["blinded_case_id"]
+        self.comparison_key = record["frozen_request"]["comparability"]["comparison_key"]
+        self.observations = self.exp / "results/observations.v2.json"
+
+    def row(self) -> dict:
+        registration = json.loads(self.registration.read_text())
+        components = {item["id"]: 1 for item in registration["measurement"]["scorecard"]["components"]}
+        return {
+            "observation_id": self.blinded,
+            "condition": self.condition,
+            "value": float(sum(float(item["weight"]) for item in registration["measurement"]["scorecard"]["components"])),
+            "effort_seconds": 30.0,
+            "scoring_blinded": True,
+            "comparison_key": self.comparison_key,
+            "evidence_ref": "receipt:chronik-case-1-outcome",
+            "evidence_sha256": "a" * 64,
+            "decision_maker_ref": "receipt:decision-case-1",
+            "observer_ref": "receipt:reviewer-case-1",
+            "independent": True,
+            "captured_at": "2026-08-11T06:50:00Z",
+            "score_components": components,
+        }
+
+    def test_valid_observation_is_bound_to_admission(self) -> None:
+        CAPTURE.capture(self.registration, self.observations, self.row(), admission_path=self.admission)
+        stored = json.loads(self.observations.read_text())["observations"][0]
+        self.assertEqual(stored["admission_binding"]["case_id"], "case-1")
+        self.assertEqual(stored["admission_binding"]["blinded_case_id"], self.blinded)
+        self.assertEqual(stored["admission_binding"]["admission_sha256"], CAPTURE.sha256_file(self.admission))
+
+    def test_missing_admission_is_rejected(self) -> None:
+        with self.assertRaisesRegex(CAPTURE.CaptureError, "requires --admission"):
+            CAPTURE.capture(self.registration, self.observations, self.row())
+
+    def test_condition_drift_is_rejected(self) -> None:
+        row = self.row(); row["condition"] = "live_preflight_plus_history" if self.condition == "live_preflight_only" else "live_preflight_only"
+        with self.assertRaisesRegex(CAPTURE.CaptureError, "condition does not match"):
+            CAPTURE.capture(self.registration, self.observations, row, admission_path=self.admission)
+
+    def test_comparison_key_drift_is_rejected(self) -> None:
+        row = self.row(); row["comparison_key"] = "other-key"
+        with self.assertRaisesRegex(CAPTURE.CaptureError, "comparison_key does not match"):
+            CAPTURE.capture(self.registration, self.observations, row, admission_path=self.admission)
+
+    def test_unblinded_identifier_is_rejected(self) -> None:
+        row = self.row(); row["observation_id"] = "not-blinded"
+        with self.assertRaisesRegex(CAPTURE.CaptureError, "blinded_case_id"):
+            CAPTURE.capture(self.registration, self.observations, row, admission_path=self.admission)
+
 
 
 if __name__ == "__main__":

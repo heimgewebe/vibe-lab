@@ -20,6 +20,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
 OBSERVATIONS_SCHEMA = ROOT / "schemas/effect-evaluation.observations.v2.schema.json"
+ADMISSION_SCHEMA = ROOT / "schemas/natural-case-admission.v1.schema.json"
 REGISTRATION_GATE_PATH = ROOT / "scripts/docmeta/validate_experiment_registration.py"
 
 
@@ -58,6 +59,11 @@ def canonical_bytes(value: Any) -> bytes:
 
 def sha256_json(value: Any) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
+
+
+def admission_registration_sha256(value: Any) -> str:
+    raw = (json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
 
 
 def sha256_file(path: Path) -> str:
@@ -292,12 +298,61 @@ def validate_binding(document: dict[str, Any], registration: dict[str, Any]) -> 
         raise CaptureError("registration digest mismatch; observations are bound to another registration")
 
 
+def _bind_admission(admission_path: Path | None, registration_path: Path, registration: dict[str, Any], observation: dict[str, Any]) -> None:
+    if registration.get("assignment") is None:
+        if admission_path is not None:
+            raise CaptureError("admission binding is only valid for a registration with prospective assignment")
+        return
+    if admission_path is None:
+        raise CaptureError("prospectively assigned experiment requires --admission")
+    if admission_path.is_symlink() or not admission_path.is_file():
+        raise CaptureError("admission must be a regular non-symlink file")
+    experiment_root = registration_path.resolve().parent
+    admissions_root = (experiment_root / "artifacts" / "admissions").resolve()
+    resolved = admission_path.resolve()
+    try:
+        relative = resolved.relative_to(admissions_root)
+    except ValueError as exc:
+        raise CaptureError("admission must be inside the registered experiment admissions directory") from exc
+    if len(relative.parts) != 2 or relative.parts[1] != "admission.json":
+        raise CaptureError("admission path must be artifacts/admissions/<case-id>/admission.json")
+    admission = load_object(admission_path)
+    validate_schema(admission, ADMISSION_SCHEMA)
+    if admission["experiment_id"] != registration["experiment_id"]:
+        raise CaptureError("admission experiment_id mismatch")
+    if admission["registration_sha256"] != admission_registration_sha256(registration):
+        raise CaptureError("admission registration digest mismatch")
+    if admission["frozen_request"]["case_id"] != relative.parts[0]:
+        raise CaptureError("admission case id does not match its directory")
+    if observation["condition"] != admission["assignment_evidence"]["condition"]:
+        raise CaptureError("observation condition does not match prospective admission")
+    if observation["comparison_key"] != admission["frozen_request"]["comparability"]["comparison_key"]:
+        raise CaptureError("observation comparison_key does not match prospective admission")
+    blinded_case_id = admission["review_preparation"]["blinded_case_id"]
+    if observation["observation_id"] != blinded_case_id:
+        raise CaptureError("observation_id must equal the admission blinded_case_id")
+    if observation["scoring_blinded"] is not True:
+        raise CaptureError("prospective Chronik observation requires blinded scoring")
+    if observation["independent"] is not True:
+        raise CaptureError("prospective Chronik observation requires independent scoring")
+    observation["admission_binding"] = {
+        "case_id": relative.parts[0],
+        "admission_id": admission["admission_id"],
+        "admission_sha256": sha256_file(admission_path),
+        "blinded_case_id": blinded_case_id,
+    }
+
+
 def capture(
     registration_path: Path,
     observations_path: Path,
     observation: dict[str, Any],
+    *,
+    admission_path: Path | None = None,
 ) -> dict[str, Any]:
     registration = validate_registration_contract(registration_path)
+    observation = dict(observation)
+    _bind_admission(admission_path, registration_path, registration, observation)
     validate_schema(
         {
             **initial_document(registration),
@@ -433,6 +488,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--registration", required=True, type=Path)
     parser.add_argument("--observations", required=True, type=Path)
+    parser.add_argument("--admission", type=Path)
     parser.add_argument("--observation-id", required=True)
     parser.add_argument("--condition", required=True)
     parser.add_argument("--value")
@@ -464,6 +520,7 @@ def main(argv: list[str] | None = None) -> int:
             args.registration,
             args.observations,
             build_observation(args, registration),
+            admission_path=args.admission,
         )
     except (CaptureError, KeyError, OSError, ValueError, TypeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
