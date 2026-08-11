@@ -19,7 +19,7 @@ SPEC = importlib.util.spec_from_file_location("admit_natural_case", SCRIPT)
 assert SPEC and SPEC.loader
 ADMISSION = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(ADMISSION)
-FIXED_NOW = datetime(2026, 8, 9, 9, 1, tzinfo=timezone.utc)
+FIXED_NOW = datetime(2026, 8, 11, 6, 49, tzinfo=timezone.utc)
 
 
 def _process_admit(
@@ -74,15 +74,16 @@ class NaturalCaseAdmissionTests(unittest.TestCase):
 
         registration = json.loads(self.registration.read_text(encoding="utf-8"))
         self.assertEqual(result["status"], "admitted")
-        self.assertFalse(result["automatic_assignment"])
+        self.assertTrue(result["automatic_assignment"])
         self.assertEqual(record["registration_sha256"], ADMISSION.sha256_json(registration))
         self.assertEqual(
             record["comparability_sha256"],
             ADMISSION.sha256_json(record["frozen_request"]["comparability"]),
         )
-        self.assertEqual(record["assignment_evidence"]["condition"], "live_preflight_only")
-        self.assertFalse(record["assignment_evidence"]["automatic"])
-        self.assertEqual(record["assignment_evidence"]["fairness_claim"], "not_established_by_registration_v2")
+        self.assertIn(record["assignment_evidence"]["condition"], {"live_preflight_only", "live_preflight_plus_history"})
+        self.assertTrue(record["assignment_evidence"]["automatic"])
+        self.assertEqual(record["assignment_evidence"]["fairness_claim"], "registration_bound_stratum_balance_only")
+        self.assertEqual(record["assignment_evidence"]["sequence_index"], 0)
         self.assertEqual(record["review_preparation"]["status"], "pending_independent_review")
         self.assertTrue(record["review_preparation"]["blinding_required"])
         self.assertEqual(record["review_preparation"]["minimum_control"], 3)
@@ -105,8 +106,7 @@ class NaturalCaseAdmissionTests(unittest.TestCase):
         request = self.request()
         self.admit(request)
         before = self.record_path().read_bytes()
-        request["assignment"]["condition"] = "live_preflight_plus_history"
-        request["assignment"]["evidence_sha256"] = "a" * 64
+        request["comparability"]["task_difficulty_band"] = "medium"
         with self.assertRaisesRegex(ADMISSION.AdmissionError, "immutable conflicting admission"):
             self.admit(request)
         self.assertEqual(self.record_path().read_bytes(), before)
@@ -114,8 +114,6 @@ class NaturalCaseAdmissionTests(unittest.TestCase):
     def test_duplicate_case_evidence_is_refused_across_case_ids(self) -> None:
         self.admit(self.request())
         duplicate = self.request(case_id="chronik-natural-002")
-        duplicate["assignment"]["evidence_ref"] = "receipt:natural-case-002-assignment"
-        duplicate["assignment"]["evidence_sha256"] = "b" * 64
         with self.assertRaisesRegex(ADMISSION.AdmissionError, "eligibility evidence is already bound"):
             self.admit(duplicate)
         self.assertFalse(self.record_path("chronik-natural-002").exists())
@@ -126,6 +124,9 @@ class NaturalCaseAdmissionTests(unittest.TestCase):
         before = self.record_path().read_bytes()
         registration = json.loads(self.registration.read_text(encoding="utf-8"))
         registration["decision_target"]["question"] = "Does a changed question invalidate the frozen admission binding?"
+        prior = dict(registration)
+        prior.pop("assignment", None)
+        registration["assignment"]["prior_registration_sha256"] = ADMISSION.sha256_json(prior)
         self.registration.write_text(json.dumps(registration), encoding="utf-8")
         with self.assertRaisesRegex(ADMISSION.AdmissionError, "immutable conflicting admission"):
             self.admit(request)
@@ -150,19 +151,78 @@ class NaturalCaseAdmissionTests(unittest.TestCase):
             self.admit(self.request(), now=datetime(2026, 9, 1, tzinfo=timezone.utc))
         self.assertFalse(self.admissions.exists())
 
-    def test_assignment_condition_must_be_registered(self) -> None:
+    def test_manual_condition_is_rejected_after_assignment_revision(self) -> None:
         request = self.request()
-        request["assignment"]["condition"] = "automatic_hash_arm"
-        with self.assertRaisesRegex(ADMISSION.AdmissionError, "condition is not registered"):
+        request["assignment"] = {"condition": "live_preflight_only", "assigned_by": "operator:manual", "evidence_ref": "receipt:manual-assignment", "evidence_sha256": "a" * 64, "recorded_before_planning": True}
+        with self.assertRaisesRegex(ADMISSION.AdmissionError, "registered automatic assignment"):
             self.admit(request)
         self.assertFalse(self.admissions.exists())
 
-    def test_missing_explicit_assignment_has_no_automatic_fallback(self) -> None:
+    def test_two_cases_in_same_stratum_are_balanced(self) -> None:
+        first = self.request(case_id="chronik-natural-001")
+        second = self.request(case_id="chronik-natural-002")
+        second["eligibility_evidence"] = {"ref": "receipt:natural-case-002", "sha256": "3" * 64, "captured_at": "2026-08-11T06:48:41Z"}
+        second["triggered_by"] = "natural-coding-case-receipt-002"
+        one = self.admit(first); two = self.admit(second)
+        self.assertNotEqual(one["condition"], two["condition"])
+        record = json.loads(self.record_path("chronik-natural-002").read_text())
+        self.assertEqual(record["assignment_evidence"]["sequence_index"], 1)
+        self.assertEqual(record["assignment_evidence"]["block_index"], 0)
+        self.assertEqual(record["assignment_evidence"]["block_position"], 1)
+
+    def test_different_strata_start_independent_sequences(self) -> None:
+        first = self.request(case_id="chronik-natural-001")
+        second = self.request(case_id="chronik-natural-002")
+        second["eligibility_evidence"] = {"ref": "receipt:natural-case-002", "sha256": "4" * 64, "captured_at": "2026-08-11T06:48:41Z"}
+        second["comparability"]["risk_band"] = "R2"
+        self.admit(first); self.admit(second)
+        record = json.loads(self.record_path("chronik-natural-002").read_text())
+        self.assertEqual(record["assignment_evidence"]["sequence_index"], 0)
+
+    def test_case_opened_before_assignment_revision_is_refused(self) -> None:
         request = self.request()
-        del request["assignment"]
-        with self.assertRaisesRegex(ADMISSION.AdmissionError, "assignment"):
+        request["case_opened_at"] = "2026-08-11T06:47:59Z"
+        request["eligibility_evidence"]["captured_at"] = "2026-08-11T06:48:40Z"
+        with self.assertRaisesRegex(ADMISSION.AdmissionError, "case predates the prospective assignment revision"):
             self.admit(request)
         self.assertFalse(self.admissions.exists())
+
+    def test_older_registration_digest_does_not_advance_new_sequence(self) -> None:
+        first = self.request(case_id="chronik-old-digest-001")
+        self.admit(first)
+        old_path = self.record_path("chronik-old-digest-001")
+        old_path.chmod(0o600)
+        old = json.loads(old_path.read_text())
+        old["registration_sha256"] = "0" * 64
+        old_path.write_text(json.dumps(old, indent=2) + "\n")
+        old_path.chmod(0o444)
+        second = self.request(case_id="chronik-current-001")
+        second["eligibility_evidence"] = {"ref": "receipt:current-001", "sha256": "5" * 64, "captured_at": "2026-08-11T06:48:41Z"}
+        second["triggered_by"] = "natural-coding-case-current-001"
+        self.admit(second)
+        current = json.loads(self.record_path("chronik-current-001").read_text())
+        self.assertEqual(current["assignment_evidence"]["sequence_index"], 0)
+
+    def test_two_concurrent_distinct_cases_get_one_block_each_position(self) -> None:
+        one = self.request(case_id="concurrent-distinct-001")
+        two = self.request(case_id="concurrent-distinct-002")
+        two["eligibility_evidence"] = {"ref": "receipt:concurrent-distinct-002", "sha256": "6" * 64, "captured_at": "2026-08-11T06:48:41Z"}
+        two["triggered_by"] = "natural-coding-case-concurrent-002"
+        paths = [self.write_request(one, "concurrent-one.json"), self.write_request(two, "concurrent-two.json")]
+        context = multiprocessing.get_context("fork")
+        output = context.Queue()
+        processes = [context.Process(target=_process_admit, args=(self.registration, request, self.admissions, output)) for request in paths]
+        for process in processes:
+            process.start()
+        for process in processes:
+            process.join(timeout=20)
+        results = [output.get(timeout=5) for _ in processes]
+        self.assertEqual([process.exitcode for process in processes], [0, 0], results)
+        self.assertEqual([status for status, _payload in results], ["ok", "ok"], results)
+        records = [json.loads(self.record_path(case_id).read_text()) for case_id in ("concurrent-distinct-001", "concurrent-distinct-002")]
+        self.assertEqual({record["assignment_evidence"]["sequence_index"] for record in records}, {0, 1})
+        self.assertEqual({record["assignment_evidence"]["block_position"] for record in records}, {0, 1})
+        self.assertEqual(len({record["assignment_evidence"]["condition"] for record in records}), 2)
 
     def test_writer_is_not_a_generic_runtime_admission_service(self) -> None:
         other = self.root / "experiments/2026-07-13_other-experiment"

@@ -2,11 +2,11 @@
   "schema_version": "natural-case-admission.request.v1",
   "case_id": "chronik-natural-001",
   "triggered_by": "natural-coding-case-receipt-001",
-  "case_opened_at": "2026-08-09T09:00:00Z",
+  "case_opened_at": "2026-08-11T06:48:30Z",
   "eligibility_evidence": {
     "ref": "receipt:natural-case-001",
     "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-    "captured_at": "2026-08-09T09:00:30Z"
+    "captured_at": "2026-08-11T06:48:40Z"
   },
   "eligibility": {
     "natural_case": true,
@@ -32,10 +32,7 @@
     "prior_chronik_events_band": "one-to-three"
   },
   "assignment": {
-    "condition": "live_preflight_only",
-    "assigned_by": "operator:fixture-assignment",
-    "evidence_ref": "receipt:natural-case-001-assignment",
-    "evidence_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "mode": "registered_automatic",
     "recorded_before_planning": true
   }
 }

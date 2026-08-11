@@ -489,6 +489,61 @@
           "const": true
         }
       }
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "registered_at",
+        "prior_registration_sha256",
+        "seed_sha256",
+        "block_size",
+        "strata",
+        "sequence_scope",
+        "arm_order_derivation",
+        "balance_max_difference",
+        "historical_admissions_policy"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "stratified_permuted_blocks.v1"
+        },
+        "registered_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "prior_registration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "seed_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "block_size": {
+          "const": 2
+        },
+        "strata": {
+          "const": [
+            "task_class",
+            "risk_band",
+            "repository_familiarity_band"
+          ]
+        },
+        "sequence_scope": {
+          "const": "per_stratum_create_only"
+        },
+        "arm_order_derivation": {
+          "const": "sha256_seeded_block_parity"
+        },
+        "balance_max_difference": {
+          "const": 1
+        },
+        "historical_admissions_policy": {
+          "const": "never_reassign_or_backfill"
+        }
+      }
     }
   },
   "$defs": {

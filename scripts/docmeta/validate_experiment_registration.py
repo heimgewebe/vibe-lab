@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
@@ -285,6 +286,20 @@ def validate_registration_payload(
             component_ids = [component["id"] for component in scorecard["components"]]
             if len(component_ids) != len(set(component_ids)):
                 raise ValueError(f"{path}: scorecard component ids must be unique")
+        assignment = payload.get("assignment")
+        if assignment is not None:
+            prior_payload = dict(payload)
+            prior_payload.pop("assignment", None)
+            prior_raw = (json.dumps(prior_payload, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
+            if assignment["prior_registration_sha256"] != hashlib.sha256(prior_raw).hexdigest():
+                raise ValueError(f"{path}: assignment prior_registration_sha256 does not match the pre-assignment registration")
+            assigned_at = _utc(assignment["registered_at"], f"{path}.assignment.registered_at")
+            if not is_pre_t005_experiment(experiment_dir) and assigned_at > clock:
+                raise ValueError(f"{path}: assignment registration cannot be in the future")
+            if assigned_at >= review or assigned_at >= expires:
+                raise ValueError(f"{path}: assignment registration must precede review and expiry")
+            if assignment["strata"] != ["task_class", "risk_band", "repository_familiarity_band"]:
+                raise ValueError(f"{path}: assignment strata are not the frozen registered order")
         if not is_pre_t005_experiment(experiment_dir):
             _validate_t005_contract(
                 payload,

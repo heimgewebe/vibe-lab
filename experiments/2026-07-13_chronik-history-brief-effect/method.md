@@ -27,7 +27,7 @@ relations:
 
 ## Admission implementation boundary
 
-`registration.v2.json` contains no assignment algorithm, seed or ordering rule. The admission writer therefore validates and seals only an explicit pre-planning condition; it never computes an arm and records `automatic: false` plus `assignment_fairness` as a non-claim. Automatic deterministic assignment requires a new prospective registration revision as specified in `admission-protocol.md`. Existing admissions must not be reassigned or reinterpreted under that later revision.
+`registration.v2.json` now contains the prospective `stratified_permuted_blocks.v1` assignment revision, frozen before the first admitted case. The admission writer allocates a create-only sequence index per registered `(task_class, risk_band, repository_familiarity_band)` stratum under one cohort lock and derives each two-case block order from the frozen seed digest. Each complete block contains one control and one treatment case; a partial block can differ by at most one. This establishes only registration-bound balance, not randomization or causal identification. Historical admissions from an earlier registration digest would remain immutable and would never be reassigned or backfilled.
 
 An admission is setup evidence, not execution evidence. Until a natural case is completed with a run trace, `execution_status` remains non-executed and `results/evidence.jsonl` remains unchanged.
 

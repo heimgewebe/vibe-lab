@@ -17,6 +17,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRATION_GATE_PATH = ROOT / "scripts/docmeta/validate_experiment_registration.py"
+ADMISSION_SCHEMA_PATH = ROOT / "schemas/natural-case-admission.v1.schema.json"
 
 
 def _load_registration_gate() -> Any:
@@ -166,6 +167,50 @@ def _build_base(registration: dict[str, Any], observations: dict[str, Any]) -> d
     }
 
 
+
+
+def _sha256_file(path: Path) -> str:
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("assigned observation admission must be a regular non-symlink file")
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _validate_assigned_observation(
+    row: dict[str, Any],
+    registration: dict[str, Any],
+    *,
+    registration_path: Path | None,
+    repo_root: Path,
+) -> None:
+    if registration.get("assignment") is None:
+        return
+    if registration_path is None:
+        raise ValueError("assigned experiment evaluation requires registration_path")
+    binding = row.get("admission_binding")
+    if not isinstance(binding, dict):
+        raise ValueError("assigned experiment observation requires admission_binding")
+    if binding["blinded_case_id"] != row["observation_id"]:
+        raise ValueError("admission blinded_case_id does not match observation_id")
+    experiment_root = registration_path.resolve().parent
+    admission_path = experiment_root / "artifacts" / "admissions" / binding["case_id"] / "admission.json"
+    if _sha256_file(admission_path) != binding["admission_sha256"]:
+        raise ValueError("admission file digest mismatch")
+    admission = load_object(admission_path)
+    validate_schema(admission, repo_root / "schemas/natural-case-admission.v1.schema.json")
+    prior_digest = hashlib.sha256((json.dumps(registration, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")).hexdigest()
+    if admission["registration_sha256"] != prior_digest:
+        raise ValueError("admission registration digest mismatch")
+    if admission["admission_id"] != binding["admission_id"]:
+        raise ValueError("admission id mismatch")
+    if admission["frozen_request"]["case_id"] != binding["case_id"]:
+        raise ValueError("admission case id mismatch")
+    if admission["review_preparation"]["blinded_case_id"] != row["observation_id"]:
+        raise ValueError("admission blinded case mismatch")
+    if admission["assignment_evidence"]["condition"] != row["condition"]:
+        raise ValueError("admission condition mismatch")
+    if admission["frozen_request"]["comparability"]["comparison_key"] != row["comparison_key"]:
+        raise ValueError("admission comparison_key mismatch")
+
 def evaluate(
     registration: dict[str, Any],
     observations: dict[str, Any],
@@ -202,6 +247,9 @@ def evaluate(
     unblinded_rows: list[str] = []
     reasons: list[str] = []
     for row in rows:
+        _validate_assigned_observation(
+            row, registration, registration_path=registration_path, repo_root=repo_root
+        )
         if row["observation_id"] in ids:
             raise ValueError("duplicate observation_id")
         ids.add(row["observation_id"])
