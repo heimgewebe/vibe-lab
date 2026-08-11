@@ -187,6 +187,21 @@ class NaturalCaseAdmissionTests(unittest.TestCase):
             self.admit(request)
         self.assertFalse(self.admissions.exists())
 
+    def test_drifted_existing_stratum_digest_fails_closed(self) -> None:
+        first = self.request(case_id="chronik-stratum-drift-001")
+        self.admit(first)
+        first_path = self.record_path("chronik-stratum-drift-001")
+        first_path.chmod(0o600)
+        record = json.loads(first_path.read_text())
+        record["assignment_evidence"]["stratum_sha256"] = "0" * 64
+        first_path.write_text(json.dumps(record, indent=2) + "\n")
+        first_path.chmod(0o444)
+        second = self.request(case_id="chronik-stratum-drift-002")
+        second["eligibility_evidence"] = {"ref": "receipt:stratum-drift-002", "sha256": "7" * 64, "captured_at": "2026-08-11T06:48:41Z"}
+        second["triggered_by"] = "natural-coding-case-stratum-drift-002"
+        with self.assertRaisesRegex(ADMISSION.AdmissionError, "stratum binding drifted"):
+            self.admit(second)
+
     def test_older_registration_digest_does_not_advance_new_sequence(self) -> None:
         first = self.request(case_id="chronik-old-digest-001")
         self.admit(first)

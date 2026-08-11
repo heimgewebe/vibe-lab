@@ -263,16 +263,24 @@ def _automatic_assignment(request: dict[str, Any], registration: dict[str, Any],
         raise AdmissionError("assignment registration contract is unsupported")
     stratum = _assignment_stratum(request)
     stratum_sha = sha256_json(stratum)
+    registration_sha = sha256_json(registration)
     matching = []
     for _path, existing in records:
         evidence = existing["assignment_evidence"]
         if evidence.get("automatic") is not True:
             continue
-        if existing["registration_sha256"] != sha256_json(registration):
+        if existing["registration_sha256"] != registration_sha:
             continue
+        expected_existing_stratum = _assignment_stratum(existing["frozen_request"])
+        expected_existing_stratum_sha = sha256_json(expected_existing_stratum)
+        if (
+            evidence.get("stratum") != expected_existing_stratum
+            or evidence.get("stratum_sha256") != expected_existing_stratum_sha
+        ):
+            raise AdmissionError("existing automatic admission stratum binding drifted")
         if evidence.get("seed_sha256") != contract["seed_sha256"]:
             raise AdmissionError("existing automatic admission seed binding drifted")
-        if evidence.get("stratum_sha256") == stratum_sha:
+        if expected_existing_stratum_sha == stratum_sha:
             matching.append(evidence)
     matching.sort(key=lambda item: item["sequence_index"])
     for expected_index, evidence in enumerate(matching):
