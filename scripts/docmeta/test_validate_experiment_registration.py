@@ -16,10 +16,11 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
-# Repository-tree snapshot clock; triggered_by:
-# conversation:user-request-2026-08-16-outcome-bound-operator-loop;
-# codex-review:heimgewebe/vibe-lab#329-P2.
-REPOSITORY_NOW = datetime(2026, 8, 16, 23, 59, 59, tzinfo=timezone.utc)
+# Repository-tree validation clock pinned to the newest registration timestamp; triggered_by:
+# conversation:user-request-2026-08-16-outcome-bound-successor-s0;
+# github:heimgewebe/vibe-lab#339;
+# codex-review:heimgewebe/vibe-lab#340-P1-P2.
+REPOSITORY_NOW = datetime(2026, 8, 16, 16, 27, tzinfo=timezone.utc)
 DELETE = object()
 OUTCOME_OBSERVATION_SCHEMA_PATH = (
     ROOT

@@ -8,15 +8,19 @@ experiment:
     intervention-under-test and requiring that the intervention identity is
     evidence-bound before its first productive effect, while failing closed on
     ambiguous or retrospectively relabeled cases.
-  status: designed
+  status: rejected
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s0-independent-review/run_meta.json"
+    - "results/evidence.jsonl"
+    - "results/reviewer-b.md"
+    - "results/s0-gate.md"
   created: "2026-08-16"
   updated: "2026-08-16"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-successor-s0; github:heimgewebe/vibe-lab#339"
-  iteration: 1
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-successor-s0; github:heimgewebe/vibe-lab#339; review-task:9be9b949a14e493cb29f6d15"
+  iteration: 2
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -33,26 +37,30 @@ experiment:
           intervention merely relocates the ambiguity because reviewers can still
           disagree about which earlier acts belong to that intervention.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Obtain an independent exact-head semantic review of all six frozen author classifications and the anti-renaming guard."
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Material disagreements"
+            - path: "results/evidence.jsonl"
           limitations:
-            - "S0 is retrospective paper calibration and cannot estimate natural-case handling reliability or overhead."
-          confidence: low
+            - "The rejection is bound to six fixed retrospective calibration cases and one independent semantic reviewer; it rejects this rule revision, not Outcome Cases generally."
+          confidence: high
       - id: "indeterminate_fallback_avoids_false_precision"
         statement: >
           An explicit indeterminate status may resolve uncertain antecedent versus
           intervention boundaries without forcing a false eligible/ineligible
           classification or adding a validator.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Require the independent reviewer to assess S0-04 and whether fail-closed indeterminate is operationally coherent."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Independent classifications"
+            - path: "results/evidence.jsonl"
           limitations:
-            - "One paper case cannot establish the frequency or cost of indeterminate classifications in natural intake."
-          confidence: low
+            - "S0-04 shows the fallback can fail closed, but S0-03 shows that the frozen rule still allows the author to make an unsupported definitive classification before the fallback is reached."
+          confidence: medium
 
 context:
   tools:

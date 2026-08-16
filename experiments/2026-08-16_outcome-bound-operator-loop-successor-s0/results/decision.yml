@@ -1,25 +1,37 @@
 schema_version: "0.1.0"
-decision_type: "execution_assessment"
-verdict: "not_executed"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
 date: "2026-08-16"
-reviewer: "Vibe-Lab S0 paper-test controller"
-triggered_by: "conversation:user-request-2026-08-16-outcome-bound-successor-s0; github:heimgewebe/vibe-lab#339"
+reviewer: "Vibe-Lab S0 controller after independent Reviewer B"
+triggered_by: "conversation:user-request-2026-08-16-outcome-bound-successor-s0; github:heimgewebe/vibe-lab#339; review-task:9be9b949a14e493cb29f6d15"
 rationale: >
-  S0 is a paper calibration of prospective-admission semantics, not a natural
-  Outcome Case run. The protocol and six author classifications can be reviewed
-  for internal determinacy, but no successor cohort has been admitted and no
-  productive intervention was executed for experiment purposes. The correct
-  execution verdict therefore remains not_executed even if the paper gate later
-  passes independent review.
+  The frozen S0 revision preregistered a zero-disagreement/no-renaming-escape
+  semantic gate. Independent Reviewer B, bound to frozen author head
+  b9528665c0a37bb5084bcde8687d987d3bb9ab0a, produced two material
+  disagreements: S0-03 must fail closed as indeterminate rather than eligible,
+  and the frozen intervention identity guard permits a residual-durability
+  relabel after already-successful manual work. This directly satisfies the
+  falsification criterion. The result rejects only this admission-rule revision;
+  it says nothing about Outcome Case efficacy and does not authorize a repaired
+  protocol or successor pilot.
 evidence_summary:
   fixed_paper_cases: 6
+  reviewer_b_agreements: 5
+  reviewer_b_status_disagreements: 1
+  credible_renaming_escapes: 1
+  material_disagreements_total: 2
   natural_successor_cases_admitted: 0
   productive_interventions_executed_for_s0: 0
   predecessor_p1_records_rewritten: 0
+  authority_violations: 0
   s1_authorized: false
   s2_authorized: false
+  p2_validator_authorized: false
   p3_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
 next_steps:
-  - "Obtain an independent exact-head semantic review of protocol.md and s0/paper-cases.md."
-  - "If and only if the paper gate has zero material disagreements, record that bounded S0 result without starting S1."
-  - "Any future S1 requires a separate reviewed experiment/authorization; do not add a validator or productive integration from S0."
+  - "Do not repair or reinterpret the frozen S0 revision to manufacture a pass."
+  - "Do not start S1, add a validator, reopen P1, or authorize S2/P2/P3 from this result."
+  - "A future intervention-boundary revision would be a separate successor experiment and requires separate justification/review."

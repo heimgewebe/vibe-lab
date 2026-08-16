@@ -399,20 +399,17 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "designed_not_executed"
+        "falsifiability.assessment_counterhypothesis_supported"
       ],
-      "notes": [
-        "designed_not_executed",
-        "falsifiability_voluntary"
-      ],
+      "notes": [],
       "path": "experiments/2026-08-16_outcome-bound-operator-loop-successor-s0",
-      "pre_execution_hold": true,
+      "pre_execution_hold": false,
       "promotion_ready": false,
-      "status": "designed",
+      "status": "rejected",
       "warnings": []
     }
   ],
@@ -421,8 +418,8 @@
   "summary": {
     "experiments_checked": 26,
     "historical_escape": 1,
-    "not_ready": 15,
-    "pre_execution_hold": 5,
+    "not_ready": 16,
+    "pre_execution_hold": 4,
     "ready": 5,
     "warnings": 6
   },
