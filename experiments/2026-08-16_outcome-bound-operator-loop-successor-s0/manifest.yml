@@ -1,0 +1,70 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s0"
+  hypothesis: >
+    Prospective Outcome Case admission can be made semantically clearer by
+    distinguishing antecedent productive state from the concrete
+    intervention-under-test and requiring that the intervention identity is
+    evidence-bound before its first productive effect, while failing closed on
+    ambiguous or retrospectively relabeled cases.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-16"
+  updated: "2026-08-16"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-successor-s0; github:heimgewebe/vibe-lab#339"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      The S0 admission definition is not ready for a successor pilot if an
+      independent semantic reviewer materially disagrees with any of the six
+      fixed classifications, identifies a credible intervention-renaming escape,
+      or if applying the definition requires productive authority or a new
+      validation/control surface.
+    counter_hypotheses:
+      - id: "intervention_boundary_remains_ambiguous"
+        statement: >
+          Moving the boundary from any productive mutation to the named
+          intervention merely relocates the ambiguity because reviewers can still
+          disagree about which earlier acts belong to that intervention.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Obtain an independent exact-head semantic review of all six frozen author classifications and the anti-renaming guard."
+          limitations:
+            - "S0 is retrospective paper calibration and cannot estimate natural-case handling reliability or overhead."
+          confidence: low
+      - id: "indeterminate_fallback_avoids_false_precision"
+        statement: >
+          An explicit indeterminate status may resolve uncertain antecedent versus
+          intervention boundaries without forcing a false eligible/ineligible
+          classification or adding a validator.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Require the independent reviewer to assess S0-04 and whether fail-closed indeterminate is operationally coherent."
+          limitations:
+            - "One paper case cannot establish the frequency or cost of indeterminate classifications in natural intake."
+          confidence: low
+
+context:
+  tools:
+    - "paper review"
+    - "read-only Bureau candidate assessment"
+    - "GitHub execution-source and review evidence"
+    - "Grabowski isolated repository work lane"
+  language: "Markdown, JSON, YAML"
+  environment: >
+    Vibe-Lab experiment-only design surface; no productive integration or
+    successor natural cohort
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

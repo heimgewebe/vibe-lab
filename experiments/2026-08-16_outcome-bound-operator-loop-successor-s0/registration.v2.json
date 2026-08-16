@@ -1,0 +1,117 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-16_outcome-bound-operator-loop-successor-s0",
+  "registered_at": "2026-08-16T16:27:00Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether an intervention-relative prospective-admission rule is semantically clear enough to justify a separately reviewed S1 admission-only shadow pilot.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-16-outcome-bound-successor-s0",
+      "confirmed_at": "2026-08-16T16:16:00Z",
+      "valid_until": "2026-08-31T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can six fixed boundary cases be classified without material disagreement when prospective admission is bound to the concrete intervention and its first productive effect rather than to any prior productive mutation?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-16-outcome-bound-successor-s0"
+  },
+  "intervention": {
+    "name": "intervention-relative prospective admission boundary",
+    "description": "Separate pre-existing situation and antecedent productive state from the concrete intervention-under-test, then require that the intervention definition is evidence-bound before its first productive effect and was not selected after observing the result."
+  },
+  "control_condition": {
+    "id": "p1_revision_1_broad_boundary",
+    "description": "Use the frozen P1 revision-1 rule that Stage A must precede any productive mutation, without distinguishing antecedent productive state from execution of the intervention-under-test."
+  },
+  "treatment_condition": {
+    "id": "successor_intervention_relative_boundary",
+    "description": "Allow pre-existing and antecedent productive state that is not materially part of the intervention-under-test; classify eligible only when the intervention is stably evidence-bound before its first productive effect, classify ineligible when that intervention already started, not_applicable for default D0 technical-acceptance cases, and indeterminate when available evidence cannot separate antecedent state from the intervention."
+  },
+  "measurement": {
+    "primary_metric": "material_independent_review_disagreements",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze author classifications for exactly six calibration cases, then obtain an independent exact-head semantic review. Count a disagreement when the reviewer materially changes eligibility/applicability status or finds that the intervention boundary cannot be applied as written to a case the author classified definitively.",
+    "success": "Zero material disagreements across all six fixed cases and zero authority effects. Success establishes paper-level semantic determinacy only and does not start S1.",
+    "falsification": "One or more material disagreements, a viable retrospective intervention-renaming escape, or any productive authority effect means this S0 rule revision is rejected for S1 use.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "paper_review_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure only review handling if a later S1 is proposed; S0 itself does not claim a real-world admission-overhead estimate."
+    }
+  },
+  "comparison": {
+    "mode": "paired",
+    "unit": "same fixed calibration case evaluated against the frozen P1 revision-1 boundary and the successor intervention-relative boundary",
+    "minimum_control": 6,
+    "minimum_treatment": 6,
+    "comparability_constraints": [
+      "same fixed case identity and evidence package for both boundary readings",
+      "no new productive mutation performed to generate a calibration case",
+      "successor classification frozen before independent review",
+      "historical P1 verdicts are referenced and never rewritten"
+    ],
+    "confounders": [
+      "retrospective evidence completeness",
+      "reviewer knowledge of the P1 early-stop outcome",
+      "heterogeneous task classes across boundary cases",
+      "historical source descriptions authored before this successor rule"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen P1 protocol and closeout",
+      "immutable P1 Stage A and Full Spec records",
+      "GitHub issue and review records",
+      "read-only Bureau candidate assessment",
+      "named independent exact-head semantic review"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-17T12:00:00Z",
+  "expires_at": "2026-08-31T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-16_outcome-bound-operator-loop-successor-s0",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-16_outcome-bound-operator-loop-successor-s0"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-16-outcome-bound-successor-s0",
+      "reviewed_at": "2026-08-16T16:16:00Z",
+      "rationale": "The explicit user request authorizes only this bounded S0 successor paper test. It does not authorize S1, a validator, production integration, or a new authority surface."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}
