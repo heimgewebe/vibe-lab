@@ -327,6 +327,14 @@ rules:
     lifecycle: handcrafted
     enforcement: [ci_blocking]
     origin: handcrafted
+  - pattern: experiments/*/p[0-9]*/decision.yml
+    path_regex: '^experiments/[^/]+/p[0-9]+/decision\.yml$'
+    layer: experiment
+    kind: decision_record
+    authority: decision_record
+    lifecycle: handcrafted
+    enforcement: [ci_blocking]
+    origin: handcrafted
   - pattern: experiments/*/results/result.md
     layer: experiment
     kind: result_interpretation

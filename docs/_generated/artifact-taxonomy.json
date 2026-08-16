@@ -16117,6 +16117,22 @@
       "layer": "experiment",
       "lifecycle": "append_only",
       "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
         "experiments/*/artifacts/**"
       ],
       "origin": "handcrafted",
@@ -16704,6 +16720,231 @@
       ],
       "origin": "handcrafted",
       "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_task_store.py",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_context",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/CONTEXT.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/CONTEXT.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-case-spec.v0.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-observation.v0.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "experiment_manifest",
+      "layer": "experiment",
+      "lifecycle": "revision_with_reason",
+      "matched_patterns": [
+        "experiments/*/manifest.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/manifest.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "procedure_contract",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "experiment_method",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/method.md"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cohort-protocol.v1.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "decision_record",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/p[0-9]*/decision.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/decision.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/registration.v2.json",
+      "status": "classified"
+    },
+    {
+      "authority": "decision_record",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "decision_record",
+      "layer": "experiment",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "experiments/*/results/decision.yml"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/decision.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "evidence_log",
+      "catchall_match": false,
+      "enforcement": [
+        "no_rewrite",
+        "ci_blocking"
+      ],
+      "kind": "evidence_log",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/*/results/evidence.jsonl"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/evidence.jsonl",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md",
       "status": "classified"
     },
     {
@@ -18042,6 +18283,22 @@
       ],
       "origin": "handcrafted",
       "path": "schemas/model-lab-workspace-isolation-plan.v1.schema.json",
+      "status": "classified"
+    },
+    {
+      "authority": "schema_truth",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "json_schema",
+      "layer": "contract",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "schemas/*.json"
+      ],
+      "origin": "handcrafted",
+      "path": "schemas/natural-case-admission.v1.schema.json",
       "status": "classified"
     },
     {
@@ -24551,6 +24808,38 @@
         "tests/fixtures/**"
       ],
       "origin": "handcrafted",
+      "path": "tests/fixtures/natural_case_admission/invalid-backfill-request.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": true,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/**"
+      ],
+      "origin": "handcrafted",
+      "path": "tests/fixtures/natural_case_admission/valid-control-request.json",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": true,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_fixture",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tests/fixtures/**"
+      ],
+      "origin": "handcrafted",
       "path": "tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/auditor-output.yml",
       "status": "classified"
     },
@@ -26181,6 +26470,22 @@
         "tools/vibe-cli/*.py"
       ],
       "origin": "handcrafted",
+      "path": "tools/vibe-cli/admit_natural_case.py",
+      "status": "classified"
+    },
+    {
+      "authority": "implementation_behavior",
+      "catchall_match": false,
+      "enforcement": [
+        "review_required"
+      ],
+      "kind": "implementation_tool",
+      "layer": "governance",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/*.py"
+      ],
+      "origin": "handcrafted",
       "path": "tools/vibe-cli/capture_effect_observation.py",
       "status": "classified"
     },
@@ -26230,6 +26535,22 @@
       ],
       "origin": "handcrafted",
       "path": "tools/vibe-cli/replay_minimal.py",
+      "status": "classified"
+    },
+    {
+      "authority": "test_expectation",
+      "catchall_match": false,
+      "enforcement": [
+        "ci_blocking"
+      ],
+      "kind": "test_script",
+      "layer": "test",
+      "lifecycle": "handcrafted",
+      "matched_patterns": [
+        "tools/vibe-cli/test_*.py"
+      ],
+      "origin": "handcrafted",
+      "path": "tools/vibe-cli/test_admit_natural_case.py",
       "status": "classified"
     },
     {
@@ -26895,6 +27216,7 @@
     "experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml",
     "experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md",
     "experiments/2026-07-08_rlens-agent-context-conditions/measurement-plan.yml",
+    "experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md",
     "experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md",
     "experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json",
     "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json",
@@ -26911,6 +27233,14 @@
     "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_task_store.py",
     "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py",
     "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_task_store.py",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-case-spec.v0.schema.json",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-observation.v0.schema.json",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cohort-protocol.v1.yml",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/registration.v2.json",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md",
     "experiments/_template/artifacts/README.md",
     "experiments/_template/registration.v1.json",
     "experiments/_template/registration.v2.json",
@@ -27087,6 +27417,8 @@
     "tests/fixtures/model_lab_next_blocker_triage/invalid/task-shape-mismatch.yml",
     "tests/fixtures/model_lab_next_blocker_triage/invalid/unexpected-scope-blocker.yml",
     "tests/fixtures/model_lab_next_blocker_triage/valid/basic.yml",
+    "tests/fixtures/natural_case_admission/invalid-backfill-request.json",
+    "tests/fixtures/natural_case_admission/valid-control-request.json",
     "tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/auditor-output.yml",
     "tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/changed-files.txt",
     "tests/fixtures/outcome_evidence_replication_series/invalid/fake-task-diversity/artifacts/run-001/comparability.yml",
@@ -27191,26 +27523,26 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 588,
+      "historical_record": 597,
       "navigation_surface": 12,
-      "test_expectation": 273
+      "test_expectation": 275
     },
     "by_layer": {
       "docs": 12,
-      "experiment": 588,
-      "test": 273
+      "experiment": 597,
+      "test": 275
     },
     "by_matched_pattern": {
       "docs/**": 12,
-      "experiments/**": 54,
+      "experiments/**": 63,
       "experiments/*/artifacts/**": 534,
-      "tests/fixtures/**": 273
+      "tests/fixtures/**": 275
     },
-    "high_risk_count": 273,
+    "high_risk_count": 275,
     "residual_cluster_views": {
       "risk_first": [
         {
-          "high_risk_count": 273,
+          "high_risk_count": 275,
           "matched_pattern": "tests/fixtures/**",
           "top_basenames": {
             "auditor-output.yml": 7,
@@ -27236,7 +27568,7 @@
             "tests/fixtures/result_assessment_readiness/invalid": 13,
             "tests/fixtures/runtime_evidence_gate/invalid": 12
           },
-          "total": 273
+          "total": 275
         },
         {
           "high_risk_count": 0,
@@ -27277,10 +27609,10 @@
             "FROZEN.md": 1,
             "README.md": 4,
             "TEMPLATE.yml": 1,
+            "activation.md": 1,
             "active.v1.json": 1,
-            "app.ts": 1,
-            "assessment.md": 1,
-            "registration.v2.json": 3
+            "admission-protocol.md": 1,
+            "registration.v2.json": 4
           },
           "top_parent_dirs": {
             "experiments/2026-04-12_spec-first-legacy/src": 3,
@@ -27289,12 +27621,12 @@
             "experiments/2026-04-15_agent-task-validity": 4,
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
             "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
-            "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
             "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
             "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
-            "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4
+            "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4,
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3
           },
-          "total": 54
+          "total": 63
         },
         {
           "high_risk_count": 0,
@@ -27354,7 +27686,7 @@
           "total": 534
         },
         {
-          "high_risk_count": 273,
+          "high_risk_count": 275,
           "matched_pattern": "tests/fixtures/**",
           "top_basenames": {
             "auditor-output.yml": 7,
@@ -27380,7 +27712,7 @@
             "tests/fixtures/result_assessment_readiness/invalid": 13,
             "tests/fixtures/runtime_evidence_gate/invalid": 12
           },
-          "total": 273
+          "total": 275
         },
         {
           "high_risk_count": 0,
@@ -27392,10 +27724,10 @@
             "FROZEN.md": 1,
             "README.md": 4,
             "TEMPLATE.yml": 1,
+            "activation.md": 1,
             "active.v1.json": 1,
-            "app.ts": 1,
-            "assessment.md": 1,
-            "registration.v2.json": 3
+            "admission-protocol.md": 1,
+            "registration.v2.json": 4
           },
           "top_parent_dirs": {
             "experiments/2026-04-12_spec-first-legacy/src": 3,
@@ -27404,12 +27736,12 @@
             "experiments/2026-04-15_agent-task-validity": 4,
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
             "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
-            "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
             "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
             "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
-            "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4
+            "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4,
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3
           },
-          "total": 54
+          "total": 63
         },
         {
           "high_risk_count": 0,
@@ -27441,7 +27773,7 @@
     },
     "residual_clusters": [
       {
-        "high_risk_count": 273,
+        "high_risk_count": 275,
         "matched_pattern": "tests/fixtures/**",
         "top_basenames": {
           "auditor-output.yml": 7,
@@ -27467,7 +27799,7 @@
           "tests/fixtures/result_assessment_readiness/invalid": 13,
           "tests/fixtures/runtime_evidence_gate/invalid": 12
         },
-        "total": 273
+        "total": 275
       },
       {
         "high_risk_count": 0,
@@ -27508,10 +27840,10 @@
           "FROZEN.md": 1,
           "README.md": 4,
           "TEMPLATE.yml": 1,
+          "activation.md": 1,
           "active.v1.json": 1,
-          "app.ts": 1,
-          "assessment.md": 1,
-          "registration.v2.json": 3
+          "admission-protocol.md": 1,
+          "registration.v2.json": 4
         },
         "top_parent_dirs": {
           "experiments/2026-04-12_spec-first-legacy/src": 3,
@@ -27520,12 +27852,12 @@
           "experiments/2026-04-15_agent-task-validity": 4,
           "experiments/2026-05-31_model-lab-replication-series/results": 4,
           "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
-          "experiments/2026-07-05_ecosystem-organ-preflight/results/runs": 2,
           "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
           "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
-          "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4
+          "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4,
+          "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3
         },
-        "total": 54
+        "total": 63
       },
       {
         "high_risk_count": 0,
@@ -27707,6 +28039,9 @@
     "experiments/2026-07-13_chronik-history-brief-effect/results/evidence.jsonl",
     "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml",
     "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/evidence.jsonl",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/decision.yml",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/decision.yml",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/evidence.jsonl",
     "experiments/_template/results/decision.yml",
     "experiments/_template/results/evidence.jsonl",
     "instruction-blocks/constraint-before-code.md",
@@ -27755,6 +28090,7 @@
     "schemas/model-lab-runtime-candidate-freeze-manifest.v1.schema.json",
     "schemas/model-lab-runtime-candidate.v1.schema.json",
     "schemas/model-lab-workspace-isolation-plan.v1.schema.json",
+    "schemas/natural-case-admission.v1.schema.json",
     "schemas/replay.trace.schema.json",
     "schemas/result-assessment-readiness.v1.schema.json",
     "schemas/review-events.v1.schema.json",
@@ -27766,34 +28102,34 @@
   "summary": {
     "ambiguous": 0,
     "by_authority": {
-      "decision_record": 25,
+      "decision_record": 27,
       "diagnostic_signal": 7,
-      "evidence_log": 24,
+      "evidence_log": 25,
       "generated_projection": 10,
-      "historical_record": 588,
-      "implementation_behavior": 24,
+      "historical_record": 597,
+      "implementation_behavior": 25,
       "navigation_surface": 28,
       "normative_contract": 16,
-      "procedure_contract": 163,
+      "procedure_contract": 166,
       "raw_capture": 33,
       "result_interpretation": 74,
       "runtime_observation": 131,
-      "schema_truth": 48,
+      "schema_truth": 49,
       "sovereign_source": 3,
-      "test_expectation": 442,
+      "test_expectation": 445,
       "unknown": 26
     },
     "by_enforcement": {
       "advisory": 1,
       "best_effort": 1,
-      "ci_blocking": 649,
+      "ci_blocking": 657,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 666,
+      "no_rewrite": 676,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
-      "review_required": 360
+      "review_required": 363
     },
     "by_layer": {
       "<none>": 1,
@@ -27801,29 +28137,29 @@
       "archive": 25,
       "capture": 10,
       "catalog": 12,
-      "contract": 60,
+      "contract": 61,
       "docs": 50,
-      "experiment": 915,
+      "experiment": 930,
       "export": 16,
       "generated": 8,
-      "governance": 93,
-      "test": 442
+      "governance": 94,
+      "test": 445
     },
     "by_lifecycle": {
       "<none>": 1,
-      "append_only": 666,
-      "handcrafted": 843,
+      "append_only": 676,
+      "handcrafted": 852,
       "regenerated": 18,
-      "revision_with_reason": 112,
+      "revision_with_reason": 113,
       "superseded_not_rewritten": 2
     },
-    "classified": 1641,
+    "classified": 1661,
     "conflict": 0,
-    "fallback_classified": 873,
-    "fallback_share": 0.5319926873857403,
+    "fallback_classified": 884,
+    "fallback_share": 0.5322095123419627,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
-    "total": 1642,
+    "total": 1662,
     "unknown": 1
   },
   "transition_risk_hints": [],

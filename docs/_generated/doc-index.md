@@ -296,7 +296,8 @@
 | `experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md` | Operator Routing Shadow — Independent Semantic Review Protocol | active | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/CONTEXT.md` | Outcome-Bound Operator Loop P0 — Context | designed | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md` | Outcome-Bound Operator Loop P0 — Illustrative examples | designed | exploratory |
-| `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` | Outcome-Bound Operator Loop P0 — Method and future protocols | designed | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` | Outcome-Bound Operator Loop P0 — Method and future protocols | testing | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md` | Outcome-Bound Operator Loop P1 — Activation receipt | testing | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md` | Outcome-Bound Operator Loop P0 — Paper/schema-fit gate | designed | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` | Outcome-Bound Operator Loop P0 — Three-case retrospective schema fit | designed | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |

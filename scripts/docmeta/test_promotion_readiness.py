@@ -238,6 +238,43 @@ class IsolatedRepoScenarios(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(_yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
 
+    def _write_execution_decision(self, path: Path, verdict: str) -> None:
+        import yaml as _yaml
+
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            _yaml.safe_dump(
+                {
+                    "decision_type": "execution_assessment",
+                    "verdict": verdict,
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+
+    def _write_active_registry(
+        self,
+        root: Path,
+        experiment_id: str,
+        source_ref: str,
+    ) -> None:
+        registry_path = root / "experiments" / "active.v1.json"
+        registry_path.write_text(
+            json.dumps(
+                {
+                    "experiments": [
+                        {
+                            "experiment_id": experiment_id,
+                            "path": f"experiments/{experiment_id}",
+                            "source_ref": source_ref,
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
     def _evaluate_dir(self, root: Path) -> list[dict]:
         entries = []
         for sub in sorted(root.iterdir()):
@@ -366,6 +403,109 @@ class IsolatedRepoScenarios(unittest.TestCase):
             self.assertFalse(entry["pre_execution_hold"])
             self.assertFalse(entry["falsifiability_triggered"])
             self.assertFalse(entry["historical_escape"])
+
+    def test_active_phase_decision_drives_actual_prepared_p1_shape(self) -> None:
+        """The active binding is sole currentness even with historical/newer records."""
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            experiment_id = "2026-08-16_outcome-loop-fixture"
+            exp_dir = root / "experiments" / experiment_id
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="testing", execution_status="prepared"),
+            )
+            self._write_execution_decision(
+                exp_dir / "results" / "decision.yml",
+                "not_executed",
+            )
+            self._write_execution_decision(
+                exp_dir / "p1" / "decision.yml",
+                "insufficient_proof",
+            )
+            self._write_execution_decision(
+                exp_dir / "p12" / "decision.yml",
+                "not_executed",
+            )
+            self._write_active_registry(
+                root,
+                experiment_id,
+                f"experiments/{experiment_id}/p1/decision.yml",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entry = vpr.evaluate_experiment(exp_dir)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            self.assertIsNotNone(entry)
+            assert entry is not None
+            self.assertFalse(entry["promotion_ready"])
+            self.assertIn("prepared_without_measurement", entry["missing"])
+            self.assertFalse(entry["pre_execution_hold"])
+            self.assertNotIn("prepared_not_executed", entry["missing"])
+
+    def test_inactive_fallback_selects_highest_numeric_phase(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            experiment_id = "2026-08-16_numeric-phase-fixture"
+            exp_dir = root / "experiments" / experiment_id
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="testing", execution_status="prepared"),
+            )
+            self._write_execution_decision(
+                exp_dir / "p2" / "decision.yml",
+                "not_executed",
+            )
+            self._write_execution_decision(
+                exp_dir / "p12" / "decision.yml",
+                "insufficient_proof",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                current = vpr.load_decision_file(exp_dir, repo_root=root)
+                entry = vpr.evaluate_experiment(exp_dir)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            self.assertEqual(current["verdict"], "insufficient_proof")
+            self.assertIsNotNone(entry)
+            assert entry is not None
+            self.assertIn("prepared_without_measurement", entry["missing"])
+            self.assertFalse(entry["pre_execution_hold"])
+
+    def test_unresolvable_active_decision_fails_readiness_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            experiment_id = "2026-08-16_missing-active-decision"
+            exp_dir = root / "experiments" / experiment_id
+            self._write_manifest(
+                exp_dir / "manifest.yml",
+                make_manifest(status="testing", execution_status="prepared"),
+            )
+            self._write_active_registry(
+                root,
+                experiment_id,
+                f"experiments/{experiment_id}/p1/decision.yml",
+            )
+
+            original_root = vpr.REPO_ROOT
+            try:
+                vpr.REPO_ROOT = root
+                entry = vpr.evaluate_experiment(exp_dir)
+            finally:
+                vpr.REPO_ROOT = original_root
+
+            self.assertIsNotNone(entry)
+            assert entry is not None
+            self.assertFalse(entry["promotion_ready"])
+            self.assertIn("current_decision_unresolvable", entry["missing"])
+            self.assertIn("current_decision_unresolvable", entry["notes"])
+            self.assertFalse(entry["pre_execution_hold"])
 
     def test_prepared_without_decision_file_still_ready(self) -> None:
         """prepared without decision.yml → promotion_ready remains True (no change)."""
@@ -1529,6 +1669,27 @@ class RatchetModeTests(unittest.TestCase):
         self.assertFalse(entry["pre_execution_hold"])
         # Verify it's not promotion_ready
         self.assertFalse(entry["promotion_ready"])
+
+    def test_active_prepared_without_measurement_requires_exact_freeze(self) -> None:
+        entry = self._make_prepared_without_measurement_entry(
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0"
+        )
+        unfrozen = self._make_freeze_config([])
+
+        errors, _ = vpr.ratchet_check([entry], unfrozen)
+
+        self.assertTrue(any("unregistered_violation" in e for e in errors))
+
+        exact_freeze = self._make_freeze_config([{
+            "path": entry["path"],
+            "allowed_missing": ["prepared_without_measurement"],
+            "reason": "Active testing is incomplete and remains promotion-blocked.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], exact_freeze)
+
+        self.assertEqual(errors, [])
+        self.assertFalse(entry["promotion_ready"])
+        self.assertFalse(entry["pre_execution_hold"])
 
     def test_stale_freeze_entry_for_ready_experiment_fails(self) -> None:
         entry = self._make_ready_entry("experiments/exp-now-ready")

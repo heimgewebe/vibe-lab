@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+import tempfile
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 from generate_artifact_taxonomy import (
     _build_residual_cluster_views,
@@ -17,6 +20,7 @@ from generate_artifact_taxonomy import (
     classify_file,
     fallback_review_sort_key,
     load_taxonomy,
+    match_rules,
     render_markdown,
 )
 
@@ -41,6 +45,40 @@ class TaxonomyClassificationTest(unittest.TestCase):
         self.assertEqual(c["layer"], "experiment")
         self.assertEqual(c["authority"], "decision_record")
         self.assertEqual(c["kind"], "decision_record")
+
+    def test_phase_decision_yml_classified_as_canonical_decision_record(self) -> None:
+        for path in (
+            "experiments/foo/p1/decision.yml",
+            "experiments/foo/p12/decision.yml",
+        ):
+            with self.subTest(path=path):
+                c = self._classify(path)
+                self.assertEqual(c["status"], "classified")
+                self.assertEqual(c["layer"], "experiment")
+                self.assertEqual(c["kind"], "decision_record")
+                self.assertEqual(c["authority"], "decision_record")
+                self.assertEqual(c["lifecycle"], "handcrafted")
+                self.assertEqual(c["enforcement"], ["ci_blocking"])
+
+    def test_malformed_phase_decision_paths_do_not_match_decision_rule(self) -> None:
+        phase_pattern = "experiments/*/p[0-9]*/decision.yml"
+        for path in (
+            "experiments/foo/p1x/decision.yml",
+            "experiments/foo/p/decision.yml",
+            "experiments/foo/phase1/decision.yml",
+            "experiments/foo/nested/p1/decision.yml",
+            "experiments/foo/p1/nested/decision.yml",
+        ):
+            with self.subTest(path=path):
+                c = self._classify(path)
+                self.assertNotEqual(c["kind"], "decision_record")
+                self.assertNotEqual(c["authority"], "decision_record")
+                self.assertFalse(
+                    any(
+                        rule.get("pattern") == phase_pattern
+                        for rule in match_rules(path, self.rules)
+                    )
+                )
 
     def test_generated_doc_classified(self) -> None:
         # Use a path that has no specific rule; expects the docs/_generated/** catch-all.
@@ -140,6 +178,19 @@ class TaxonomyClassificationTest(unittest.TestCase):
         self.assertEqual(c["kind"], "experiment_metric")
         self.assertEqual(c["authority"], "runtime_observation")
         self.assertFalse(c["catchall_match"])
+
+
+class TaxonomyConfigValidationTest(unittest.TestCase):
+    def test_malformed_path_regex_fails_load(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            taxonomy_file = Path(tmp) / "artifact-taxonomy.yml"
+            taxonomy_file.write_text(
+                "rules:\n  - pattern: '**'\n    path_regex: '['\n",
+                encoding="utf-8",
+            )
+            with patch("generate_artifact_taxonomy.TAXONOMY_FILE", taxonomy_file):
+                with self.assertRaisesRegex(SystemExit, "invalid 'path_regex'"):
+                    load_taxonomy()
 
 
 class FallbackShareTest(unittest.TestCase):

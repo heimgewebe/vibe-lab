@@ -133,3 +133,15 @@ promotion_readiness_freeze:
         90 percent route-plus-reviewed-outcome completeness. Keep promotion
         blocked and remove this exact freeze entry only after a separately
         reviewed readiness PASS or experiment closure.
+
+    - path: experiments/2026-08-16_outcome-bound-operator-loop-p0
+      allowed_missing:
+        - prepared_without_measurement
+      review_date: "2026-09-15"
+      reason: >-
+        P1 is active and testing but intentionally incomplete. The current
+        p1/decision.yml carries the stable insufficient-proof assessment; the
+        six-case P1 completion and independently reviewed closeout are still
+        intentionally pending. This is neither a pre_execution_hold nor an
+        efficacy or adoption claim. Remove this exact freeze entry when
+        prepared_without_measurement no longer applies.

@@ -87,6 +87,7 @@ from typing import Any
 # Gemeinsame Pfad-Logik
 sys.path.insert(0, str(Path(__file__).parent))
 from _paths import write_if_changed  # noqa: E402
+from validate_schema import resolve_current_decision_path  # noqa: E402
 
 try:
     import yaml
@@ -145,10 +146,22 @@ def load_manifest(path: Path) -> dict[str, Any] | None:
     return data
 
 
-def load_decision_file(exp_dir: Path) -> dict[str, Any] | None:
-    """Lädt results/decision.yml eines Experiments oder gibt None zurück."""
-    decision_path = exp_dir / "results" / "decision.yml"
-    if not decision_path.is_file():
+def load_decision_file(
+    exp_dir: Path,
+    *,
+    repo_root: Path | None = None,
+) -> dict[str, Any] | None:
+    """Lädt die aktuelle Decision-Surface oder gibt bei fehlender/invalidem YAML None zurück.
+
+    ``ValueError`` aus der Currentness-Auflösung wird absichtlich propagiert,
+    damit ``evaluate_experiment()`` mit einem deterministischen Signal
+    fail-closed reagieren kann.
+    """
+    decision_path = resolve_current_decision_path(
+        exp_dir,
+        repo_root=repo_root or REPO_ROOT,
+    )
+    if decision_path is None:
         return None
     try:
         with open(decision_path, encoding="utf-8") as f:
@@ -446,6 +459,7 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
     warnings: list[str] = []
     notes: list[str] = []
     pre_execution_hold = False
+    decision: dict[str, Any] | None = None
 
     if historical:
         notes.append("historical_escape")
@@ -463,13 +477,23 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         warnings.extend(w)
         notes.append("falsifiability_voluntary")
 
+    if (
+        not historical
+        and state["execution_status"]
+        in {"prepared", "designed", "executed", "replicated"}
+    ):
+        try:
+            decision = load_decision_file(exp_dir, repo_root=REPO_ROOT)
+        except ValueError:
+            missing.append("current_decision_unresolvable")
+            notes.append("current_decision_unresolvable")
+
     # Enge Sonderregel: prepared/designed + execution_assessment + insufficient_proof
     # → kein Messwert vorhanden, daher nicht promotion-ready.
     if (
         not historical
         and state["execution_status"] in {"prepared", "designed"}
     ):
-        decision = load_decision_file(exp_dir)
         if (
             decision is not None
             and decision.get("decision_type") == "execution_assessment"
@@ -496,7 +520,6 @@ def evaluate_experiment(exp_dir: Path) -> dict[str, Any] | None:
         not historical
         and state["execution_status"] in {"executed", "replicated"}
     ):
-        decision = load_decision_file(exp_dir)
         if (
             decision is not None
             and decision.get("decision_type") == "execution_assessment"
@@ -606,6 +629,7 @@ VALID_ALLOWED_MISSING: frozenset[str] = frozenset({
     "prepared_not_executed",
     "designed_not_executed",
     "insufficient_proof_assessment",
+    "current_decision_unresolvable",
 })
 
 _ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -894,7 +918,10 @@ def main() -> int:
             print(f"    - {err}", file=sys.stderr)
         return 1
 
-    ratchet_errors, ratchet_warnings = ratchet_check(entries, freeze_data)
+    ratchet_errors, ratchet_warnings = ratchet_check(
+        entries,
+        freeze_data,
+    )
     if ratchet_warnings:
         print("  Warnings:")
         for warning in ratchet_warnings:

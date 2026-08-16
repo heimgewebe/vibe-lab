@@ -61,6 +61,18 @@ def load_taxonomy() -> dict:
     for idx, rule in enumerate(rules):
         if not isinstance(rule, dict) or "pattern" not in rule:
             raise SystemExit(f"ERROR: rules[{idx}] missing 'pattern' ({TAXONOMY_FILE})")
+        if "path_regex" in rule:
+            path_regex = rule["path_regex"]
+            if not isinstance(path_regex, str):
+                raise SystemExit(
+                    f"ERROR: rules[{idx}] 'path_regex' must be a string ({TAXONOMY_FILE})"
+                )
+            try:
+                re.compile(path_regex)
+            except re.error as exc:
+                raise SystemExit(
+                    f"ERROR: rules[{idx}] invalid 'path_regex' ({TAXONOMY_FILE}): {exc}"
+                ) from exc
     return data
 
 
@@ -121,6 +133,15 @@ def iter_repo_files(repo_root: Path) -> list[str]:
     return sorted(files)
 
 
+def _rule_matches(rel_path: str, rule: dict) -> bool:
+    """Return whether a rule's coarse pattern and optional path regex match."""
+    pattern = rule.get("pattern")
+    if not isinstance(pattern, str) or not fnmatch.fnmatchcase(rel_path, pattern):
+        return False
+    path_regex = rule.get("path_regex")
+    return path_regex is None or re.fullmatch(path_regex, rel_path) is not None
+
+
 def match_rules(rel_path: str, rules: list[dict]) -> list[dict]:
     """Return all rules whose pattern matches rel_path (for diagnostic use).
 
@@ -130,10 +151,7 @@ def match_rules(rel_path: str, rules: list[dict]) -> list[dict]:
     """
     matched = []
     for rule in rules:
-        pattern = rule.get("pattern")
-        if not isinstance(pattern, str):
-            continue
-        if fnmatch.fnmatchcase(rel_path, pattern):
+        if _rule_matches(rel_path, rule):
             matched.append(rule)
     return matched
 
@@ -156,9 +174,7 @@ def classify_file(rel_path: str, rules: list[dict]) -> dict:
     """
     for rule in rules:
         pattern = rule.get("pattern")
-        if not isinstance(pattern, str):
-            continue
-        if fnmatch.fnmatchcase(rel_path, pattern):
+        if _rule_matches(rel_path, rule):
             return {
                 "path": rel_path,
                 "status": CLASSIFIED,

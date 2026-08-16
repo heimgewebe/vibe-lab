@@ -383,20 +383,20 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
+      "execution_status": "prepared",
       "falsifiability_triggered": false,
       "historical_escape": false,
       "missing": [
-        "designed_not_executed"
+        "prepared_without_measurement"
       ],
       "notes": [
-        "designed_not_executed",
-        "falsifiability_voluntary"
+        "falsifiability_voluntary",
+        "prepared_without_measurement"
       ],
       "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0",
-      "pre_execution_hold": true,
+      "pre_execution_hold": false,
       "promotion_ready": false,
-      "status": "designed",
+      "status": "testing",
       "warnings": []
     }
   ],
@@ -405,8 +405,8 @@
   "summary": {
     "experiments_checked": 25,
     "historical_escape": 1,
-    "not_ready": 14,
-    "pre_execution_hold": 5,
+    "not_ready": 15,
+    "pre_execution_hold": 4,
     "ready": 5,
     "warnings": 6
   },

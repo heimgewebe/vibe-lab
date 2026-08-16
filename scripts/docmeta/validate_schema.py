@@ -6,9 +6,10 @@ Prüft:
 - catalog/**/*.md Frontmatter gegen schemas/catalog.entry.schema.json
 - catalog/combos/**/*.md Frontmatter gegen schemas/combo.schema.json
 - experiments/*/results/evidence.jsonl auf Struktur und Taxonomie
-- experiments/*/results/decision.yml gegen schemas/decision.schema.json,
+- experiments/*/results/decision.yml und experiments/*/pN/decision.yml (N numerisch)
+  gegen schemas/decision.schema.json,
   plus cross-file Regel: decision_type=adoption_assessment erfordert
-  execution_status ∈ {executed, replicated} im Geschwister-manifest.yml
+  execution_status ∈ {executed, replicated} im Manifest des Experiment-Roots
   (gem. docs/concepts/execution-bound-epistemics.md §10.2)
 
 Benötigt: python3 -m pip install pyyaml jsonschema rfc3339-validator
@@ -59,6 +60,9 @@ FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)
 # Hinweis: Nur bei adopted/Promotion Pflicht. Für testing ist failure_modes.md
 # empfohlen, aber nicht erzwungen (siehe CONTRIBUTING.md, quality-gates.yml).
 FAILURE_MODES_REQUIRED_STATUSES: frozenset[str] = frozenset({"adopted"})
+
+# Genau einstufige phasenlokale Decision-Surface unter dem Experiment-Root.
+PHASE_DECISION_DIR_RE = re.compile(r"p[0-9]+")
 
 # Pfad zum docmeta-Kanonicalschema (contracts/, nicht schemas/)
 DOCMETA_SCHEMA_PATH = REPO_ROOT / "contracts" / "docmeta.schema.json"
@@ -297,17 +301,157 @@ def validate_evidence_files():
         print("  (no evidence.jsonl files found outside _template/_archive)")
 
 
-def validate_decision_files():
-    """Validiert experiments/*/results/decision.yml gegen decision.schema.json.
+def canonical_decision_paths(experiments_dir: Path) -> list[Path]:
+    """Entdeckt genau die kanonischen Experiment-Decision-Surfaces.
+
+    Erlaubt sind ``<experiment>/results/decision.yml`` und genau einstufige
+    numerische Phasenpfade ``<experiment>/pN/decision.yml``. Die Set-Nutzung
+    hält die Ausgabe auch dann duplikatfrei, wenn die Discovery später über
+    mehrere äquivalente Suchpfade gespeist wird.
+    """
+    decisions: set[Path] = set()
+    for decision_path in experiments_dir.glob("*/*/decision.yml"):
+        experiment_dir = decision_path.parent.parent
+        if experiment_dir.name.startswith("_"):
+            continue  # Skip _template, _archive
+        surface = decision_path.parent.name
+        if surface == "results" or PHASE_DECISION_DIR_RE.fullmatch(surface):
+            decisions.add(decision_path)
+    return sorted(decisions)
+
+
+def resolve_current_decision_path(
+    exp_dir: Path,
+    *,
+    repo_root: Path = REPO_ROOT,
+) -> Path | None:
+    """Resolve exactly one current canonical decision surface for an experiment.
+
+    An active-registry binding is authoritative and fails closed when it is
+    malformed, ambiguous, escaping, or missing. Outside the active registry,
+    the numerically highest direct ``pN/decision.yml`` wins; only experiments
+    without a phase-local decision fall back to ``results/decision.yml``.
+
+    This helper establishes currentness only. Decision schema and cross-file
+    semantics remain the responsibility of ``validate_decision_files()``.
+    """
+    resolved_root = repo_root.resolve()
+    resolved_exp_dir = exp_dir.resolve()
+    try:
+        rel_exp = resolved_exp_dir.relative_to(resolved_root).as_posix()
+    except ValueError as exc:
+        raise ValueError("experiment directory must stay inside repository") from exc
+
+    registry_path = resolved_root / "experiments" / "active.v1.json"
+    if registry_path.is_file():
+        try:
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            raise ValueError("active registry is unreadable") from exc
+        if not isinstance(registry, dict) or not isinstance(
+            registry.get("experiments"), list
+        ):
+            raise ValueError("active registry must contain an experiments list")
+
+        matches: list[dict] = []
+        for item in registry["experiments"]:
+            if not isinstance(item, dict):
+                raise ValueError("active registry experiment entry must be a mapping")
+            experiment_id = item.get("experiment_id")
+            experiment_path = item.get("path")
+            if not isinstance(experiment_id, str) or not isinstance(
+                experiment_path, str
+            ):
+                raise ValueError(
+                    "active registry experiment binding requires string path and id"
+                )
+            if experiment_id == resolved_exp_dir.name or experiment_path == rel_exp:
+                matches.append(item)
+
+        if len(matches) > 1:
+            raise ValueError(f"duplicate active binding for {rel_exp}")
+        if matches:
+            binding = matches[0]
+            if (
+                binding["experiment_id"] != resolved_exp_dir.name
+                or binding["path"] != rel_exp
+            ):
+                raise ValueError(f"active path/id binding conflicts for {rel_exp}")
+
+            source_ref = binding.get("source_ref")
+            if not isinstance(source_ref, str):
+                raise ValueError(f"active source_ref is malformed for {rel_exp}")
+            prefix = f"{rel_exp}/"
+            relative_ref = source_ref.removeprefix(prefix)
+            parts = relative_ref.split("/")
+            canonical_surface = (
+                len(parts) == 2
+                and parts[1] == "decision.yml"
+                and (
+                    parts[0] == "results"
+                    or PHASE_DECISION_DIR_RE.fullmatch(parts[0]) is not None
+                )
+            )
+            if relative_ref == source_ref or not canonical_surface:
+                raise ValueError(
+                    f"active source_ref for {rel_exp} must be results/decision.yml "
+                    "or pN/decision.yml inside the experiment"
+                )
+
+            decision_path = (resolved_root / source_ref).resolve()
+            try:
+                decision_path.relative_to(resolved_exp_dir)
+            except ValueError as exc:
+                raise ValueError(
+                    f"active source_ref escapes experiment {rel_exp}"
+                ) from exc
+            if not decision_path.is_file():
+                raise ValueError(f"active source_ref is missing for {rel_exp}")
+            return decision_path
+
+    phase_decisions: dict[int, Path] = {}
+    if resolved_exp_dir.is_dir():
+        for phase_dir in resolved_exp_dir.iterdir():
+            if not phase_dir.is_dir() or PHASE_DECISION_DIR_RE.fullmatch(
+                phase_dir.name
+            ) is None:
+                continue
+            decision_path = phase_dir / "decision.yml"
+            if decision_path.is_file():
+                phase_number = int(phase_dir.name[1:])
+                if phase_number in phase_decisions:
+                    other = phase_decisions[phase_number]
+                    raise ValueError(
+                        f"duplicate numeric phase {phase_number} for {rel_exp}: "
+                        f"{other.parent.name} and {phase_dir.name}"
+                    )
+                phase_decisions[phase_number] = decision_path
+    if phase_decisions:
+        return phase_decisions[max(phase_decisions)]
+
+    result_decision = resolved_exp_dir / "results" / "decision.yml"
+    if result_decision.is_file():
+        return result_decision
+    return None
+
+
+def validate_decision_files(
+    *,
+    repo_root: Path = REPO_ROOT,
+    schema_path: Path | None = None,
+):
+    """Validiert kanonische Experiment-Decisions gegen decision.schema.json.
 
     Zusätzlich zur Schema-Validierung erzwingt diese Funktion die cross-file Regel
     aus execution-bound-epistemics.md §10.2:
 
-    Wenn ``decision_type == "adoption_assessment"``, muss das Geschwister-Manifest
-    (``../manifest.yml``) ``experiment.execution_status ∈ {executed, replicated}``
-    tragen. Andere Decision-Typen haben keine execution_status-Bedingung.
+    Wenn ``decision_type == "adoption_assessment"``, muss das Manifest im
+    Experiment-Root ``experiment.execution_status ∈ {executed, replicated}``
+    tragen. Das gilt identisch für ``results/decision.yml`` und
+    ``pN/decision.yml``. Andere Decision-Typen haben keine
+    execution_status-Bedingung.
     """
-    schema_path = SCHEMA_MAP["decision"]
+    schema_path = schema_path or SCHEMA_MAP["decision"]
     if not schema_path.exists():
         errors.append(f"  Schema not found: {schema_path}")
         return
@@ -319,15 +463,12 @@ def validate_decision_files():
         errors.append(f"  ❌ Schema error ({schema_path.name}): {e.message}")
         return
 
-    experiments_dir = REPO_ROOT / "experiments"
+    experiments_dir = repo_root / "experiments"
 
     found = 0
-    for decision_path in sorted(experiments_dir.glob("*/results/decision.yml")):
-        # Skip _template, _archive (parent.parent ist der Experiment-Ordner)
-        if decision_path.parent.parent.name.startswith("_"):
-            continue
+    for decision_path in canonical_decision_paths(experiments_dir):
         found += 1
-        rel = decision_path.relative_to(REPO_ROOT)
+        rel = decision_path.relative_to(repo_root)
 
         try:
             data = load_yaml(decision_path)
@@ -354,7 +495,8 @@ def validate_decision_files():
             if not manifest_path.is_file():
                 errors.append(
                     f"  ❌ {rel}: decision_type=adoption_assessment, "
-                    f"aber Geschwister-manifest.yml fehlt unter {manifest_path.relative_to(REPO_ROOT)}"
+                    f"aber Manifest im Experiment-Root fehlt unter "
+                    f"{manifest_path.relative_to(repo_root)}"
                 )
                 continue
 
@@ -362,7 +504,7 @@ def validate_decision_files():
                 manifest = load_yaml(manifest_path)
             except Exception as e:
                 errors.append(
-                    f"  ❌ {manifest_path.relative_to(REPO_ROOT)}: YAML-Fehler — {e}"
+                    f"  ❌ {manifest_path.relative_to(repo_root)}: YAML-Fehler — {e}"
                 )
                 continue
 
@@ -382,21 +524,30 @@ def validate_decision_files():
         print("  (no decision.yml files found outside _template/_archive)")
 
 
-def validate_adoption_decision_coverage():
-    """Symmetrische cross-file Regel: echte Adoption braucht adoption_assessment.
+def validate_adoption_decision_coverage(*, repo_root: Path = REPO_ROOT):
+    """Symmetrische cross-file Regel: echte Adoption braucht adoption_assessment mit verdict=adopt.
 
     Ergänzt ``validate_decision_files()`` um die Gegenrichtung. Dort wurde nur
     die Eingangsrichtung erzwungen (``adoption_assessment`` → Manifest muss
     ``execution_status ∈ {executed, replicated}`` tragen). Ohne die hier
     implementierte Gegenrichtung bleibt die Umgehung offen, dass ein Manifest
-    Adoption behauptet, während das zugehörige ``decision.yml`` nur
-    ``result_assessment`` ist.
+    Adoption behauptet, während die aktuelle kanonische Decision-Surface des
+    Experiments keine ``adoption_assessment`` mit ``verdict == "adopt"`` trägt.
 
     Pflichtregel:
         experiment.status == "adopted"
         und experiment.adoption_basis ∈ {"executed", "replicated"}
-        → ``results/decision.yml`` muss existieren und
-          ``decision_type == "adoption_assessment"`` tragen.
+        → Die von ``resolve_current_decision_path()`` gelieferte aktuelle
+          Decision-Surface des Experiments muss
+          ``decision_type == "adoption_assessment"`` und ``verdict == "adopt"``
+          tragen. Eine historische ``results/decision.yml`` mit
+          ``result_assessment`` darf neben einer phasenlokalen
+          ``adoption_assessment`` mit ``verdict == "adopt"`` bestehen.
+
+    Abgrenzung:
+        Diese Funktion prüft nur die Abdeckung. Schema- und Semantikvalidierung
+        aller kanonischen Decision-Surfaces verbleibt in
+        ``validate_decision_files()``.
 
     Historische Ausnahme:
         experiment.status == "adopted" und adoption_basis == "reconstructed"
@@ -407,7 +558,7 @@ def validate_adoption_decision_coverage():
 
     Hintergrund: docs/concepts/execution-bound-epistemics.md §10.1–10.2.
     """
-    experiments_dir = REPO_ROOT / "experiments"
+    experiments_dir = repo_root / "experiments"
     checked = 0
 
     for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
@@ -417,7 +568,7 @@ def validate_adoption_decision_coverage():
         try:
             manifest = load_yaml(manifest_path)
         except Exception as e:
-            errors.append(f"  ❌ {manifest_path.relative_to(REPO_ROOT)}: YAML-Fehler — {e}")
+            errors.append(f"  ❌ {manifest_path.relative_to(repo_root)}: YAML-Fehler — {e}")
             continue
 
         experiment = manifest.get("experiment", {})
@@ -432,39 +583,57 @@ def validate_adoption_decision_coverage():
 
         checked += 1
         exp_dir = manifest_path.parent
-        rel_exp = exp_dir.relative_to(REPO_ROOT)
-        decision_path = exp_dir / "results" / "decision.yml"
-
-        if not decision_path.is_file():
+        rel_exp = exp_dir.relative_to(repo_root)
+        try:
+            decision_path = resolve_current_decision_path(
+                exp_dir,
+                repo_root=repo_root,
+            )
+        except ValueError:
             errors.append(
-                f"  ❌ {rel_exp}: Manifest behauptet Adoption "
-                f"(status=adopted, adoption_basis={adoption_basis}), aber "
-                f"results/decision.yml fehlt. Echte Adoption verlangt ein "
-                f"decision.yml mit decision_type=adoption_assessment "
-                f"(siehe docs/concepts/execution-bound-epistemics.md §10.1)."
+                f"  ❌ {rel_exp}: aktuelle Decision-Surface ist nicht eindeutig "
+                "auflösbar; Adoption-Coverage schlägt fail-closed fehl."
             )
             continue
 
-        try:
-            decision = load_yaml(decision_path)
-        except Exception as e:
-            # YAML-Fehler meldet validate_decision_files() bereits separat.
-            # Hier nichts doppelt loggen.
-            continue
+        decision: dict | None = None
+        if decision_path is not None:
+            try:
+                loaded = load_yaml(decision_path)
+            except Exception:
+                # YAML-Fehler meldet validate_decision_files() separat. Für die
+                # Abdeckungsregel ist die aktuelle Surface nicht lesbar.
+                loaded = None
+            if isinstance(loaded, dict):
+                decision = loaded
 
-        decision_type = decision.get("decision_type")
-        if decision_type != "adoption_assessment":
+        if not (
+            decision is not None
+            and decision.get("decision_type") == "adoption_assessment"
+            and decision.get("verdict") == "adopt"
+        ):
+            examined = (
+                decision_path.relative_to(repo_root).as_posix()
+                if decision_path is not None
+                else "keine"
+            )
             errors.append(
-                f"  ❌ {decision_path.relative_to(REPO_ROOT)}: Manifest behauptet "
-                f"Adoption (status=adopted, adoption_basis={adoption_basis}), "
-                f"also muss decision_type=adoption_assessment sein, "
-                f"gefunden: '{decision_type}'. "
+                f"  ❌ {rel_exp}: Manifest behauptet Adoption "
+                f"(status=adopted, adoption_basis={adoption_basis}), aber keine "
+                f"lesbare kanonische Decision-Surface trägt "
+                f"decision_type=adoption_assessment mit verdict=adopt. "
+                f"Aktuelle kanonische Surface: {examined}. "
                 f"Resultatsbewertung ≠ Adoptionsentscheidung "
                 f"(siehe docs/concepts/execution-bound-epistemics.md §10.1)."
             )
             continue
 
-        print(f"  ✅ {rel_exp}: adoption_basis={adoption_basis} ↔ adoption_assessment")
+        assert decision_path is not None
+        adoption_ref = decision_path.relative_to(repo_root).as_posix()
+        print(
+            f"  ✅ {rel_exp}: adoption_basis={adoption_basis} ↔ "
+            f"adoption_assessment mit verdict=adopt ({adoption_ref})"
+        )
 
     if checked == 0:
         print("  (kein Experiment mit status=adopted + adoption_basis ∈ {executed, replicated})")

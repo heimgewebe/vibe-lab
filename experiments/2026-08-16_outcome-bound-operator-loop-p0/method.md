@@ -1,10 +1,10 @@
 ---
 title: "Outcome-Bound Operator Loop P0 — Method and future protocols"
-status: designed
+status: testing
 canonicality: operative
 created: "2026-08-16"
 updated: "2026-08-16"
-triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2"
+triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2; github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
 relations:
   - type: references
     target: contracts/outcome-case-spec.v0.schema.json
@@ -16,6 +16,10 @@ relations:
     target: schema-fit.md
   - type: references
     target: results/p0-gate.md
+  - type: references
+    target: p1/activation.md
+  - type: references
+    target: p1/decision.yml
 ---
 
 # Method and future protocols
@@ -28,8 +32,17 @@ P0 combines two declared goal types without crossing their boundaries:
 2. **Analysis:** map exactly three existing records for compatibility without
    changing them or making prospective, causal or efficacy claims.
 
-P1 and P3 below are designs only. No natural case is admitted, no spec is frozen
-for productive use, no observation is appended and no downstream system changes.
+P0 remains complete paper/schema-fit work. P1 is now prepared under the frozen
+activation at `p1/activation.md` and the protocol `activation_state`; their 0/6
+slots assigned, zero case identities and zero outcome evidence describe only the
+frozen activation snapshot, not mutable current live progress or the current
+decision contents. `p1/decision.yml` deliberately carries the stable
+insufficient-proof assessment for full six-case cohort completion plus its
+independently reviewed closeout; mutable Stage A and Stage B progress lives only
+in separate append-or-create-only capture records. The historical P0 assessment
+remains unchanged at `results/decision.yml`. P3 remains design-only and
+prohibited before an independently reviewed P1 closeout plus separate execution
+authorization. No downstream system changes.
 
 ## One logical Outcome Case
 
@@ -155,30 +168,56 @@ time and reference, may add one or more of:
 `not_reviewed` requires an empty classification list. Error classes explain a
 reviewed assessment; they do not change technical closeout or external authority.
 
-## P1 design — six natural full-form shadow cases
+## P1 activation — six prospective two-stage full-form shadow captures
 
-P1 is encoded but not executed. Slots are not cases or evidence until a naturally
-occurring canonical Bureau intake is admitted prospectively. Each slot uses the
-full form in shadow only and has zero effect on execution.
+P1 protocol revision 1 is frozen at `p1/cohort-protocol.v1.yml`; its
+`activation_state` and the bounded receipt at `p1/activation.md` record the
+frozen activation snapshot: 0/6 slots assigned, zero case identities and zero
+outcome evidence. Those snapshot values are not mutable current live progress
+and are not the current decision contents. `p1/decision.yml` deliberately
+carries the stable insufficient-proof assessment for full six-case cohort
+completion plus its independently reviewed closeout, while mutable Stage A and
+Stage B progress lives only in separate append-or-create-only capture records.
+Activation does not execute an efficacy comparison.
 
-| Slot | Admission requirement | Frozen output | Shadow observation |
+Eligibility is determined from the independently occurring canonical Bureau
+intake before productive mutation. It does **not** require that the full form can
+be completed or frozen. Capture then has two ordered stages:
+
+1. **Stage A — screening and slot assignment.** Before any full-form attempt,
+   create a separate append-or-create-only record that consumes the next ordered
+   slot and binds the canonical intake reference, screening and assignment time,
+   and proof that productive mutation had not begun. The Stage A record neither
+   requires nor contains a full-spec digest.
+2. **Stage B — full-form attempt.** Attempt the full form in shadow. If a complete
+   spec is frozen before productive mutation, record its reference, digest,
+   freeze timing and handling time as the normal form outcome. If completion or
+   freeze cannot occur before productive mutation would naturally begin, record
+   `form_completion_failed_or_not_frozen`, handling time, unclear or redundant
+   fields and a bounded reason, then stop P1 capture for that slot while
+   productive work proceeds unchanged.
+
+| Slot | Activation state | Stage A transition | Stage B outcomes |
 | --- | --- | --- | --- |
-| `P1-01` | first eligible natural intake | one full spec before mutation | append after registered window |
-| `P1-02` | second eligible natural intake | one full spec before mutation | append after registered window |
-| `P1-03` | third eligible natural intake | one full spec before mutation | append after registered window |
-| `P1-04` | fourth eligible natural intake | one full spec before mutation | append after registered window |
-| `P1-05` | fifth eligible natural intake | one full spec before mutation | append after registered window |
-| `P1-06` | sixth eligible natural intake | one full spec before mutation | append after registered window |
+| `P1-01` | vacant | first eligible intake consumes slot | normal or explicit failed/not-frozen outcome |
+| `P1-02` | vacant | second eligible intake consumes slot | normal or explicit failed/not-frozen outcome |
+| `P1-03` | vacant | third eligible intake consumes slot | normal or explicit failed/not-frozen outcome |
+| `P1-04` | vacant | fourth eligible intake consumes slot | normal or explicit failed/not-frozen outcome |
+| `P1-05` | vacant | fifth eligible intake consumes slot | normal or explicit failed/not-frozen outcome |
+| `P1-06` | vacant | sixth eligible intake consumes slot | normal or explicit failed/not-frozen outcome |
 
-Admission order cannot be backfilled with synthetic or retrospective cases.
-Distance and risk are assessed from the admitted intake, not pre-assigned to make
-the sample look balanced. P1 may assess usability and missing fields only; it
-cannot support minimal-versus-full efficacy.
+Every Stage A assignment permanently consumes its slot. A failed or non-frozen
+Stage B attempt stays in the six-slot cohort and cannot be replaced or backfilled.
+It is a P1 usability or observability finding, not an outcome-effect assessment
+and not P3 efficacy evidence. P1 has no minimal-form comparator and cannot support
+minimal-versus-full efficacy. Screening, form handling and findings must never
+block, delay, reroute, reprioritize or otherwise alter productive work.
 
 ## P3 design — six matched minimal/full pairs
 
-P3 is encoded but not executed. After an independently reviewed P1 closeout, use
-six newly admitted or prospectively preserved natural cases. For each pair
+P3 is encoded but not executed. Only after an independently reviewed P1 closeout
+and a separate P3 execution authorization may six newly admitted or
+prospectively preserved natural cases be used. For each pair
 `P3-01` through `P3-06`, render the same intake, desired change and falsifier in
 minimal and full form before outcome review. Freeze both digests and measure form
 handling time separately. Neither rendering may influence route, queue, runtime,
@@ -198,21 +237,28 @@ volume and reviewer preference are not actionable decisions.
 
 ## Stop conditions
 
-Stop admission or assessment and preserve the current records if any condition
+Stop cohort assignment or assessment and preserve the current records if any condition
 occurs:
 
-- productive mutation begins before the applicable spec is frozen;
+- productive mutation had already begun before the applicable Stage A record;
 - a spec or observation digest fails to resolve exactly;
-- an existing observation would need mutation rather than an appended correction;
+- an existing screening, form-outcome or observation record would need mutation
+  rather than an appended correction;
 - technical closeout truth would need to be copied rather than referenced;
 - operator-intake, execution-source identity or authority roles cannot be kept
   distinct;
 - evidence authority or observation window is missing;
-- a case is synthetic, retrospective, backfilled or selected after its outcome;
+- a case is synthetic, retrospective, backfilled, replaced or selected after its
+  outcome;
 - privacy or secrets would require raw transcript or raw response capture;
 - any Vibe-Lab artifact attempts Bureau, Grabowski, Chronik, Leitstand, runtime,
   routing, queue, policy, merge-policy or deployment integration;
-- any automatic policy, routing, queue, merge, deployment or runtime effect occurs;
+- any blocking, delay, rerouting, reprioritization, automatic policy, queue,
+  merge, deployment or runtime effect occurs;
+- P3 starts before an independently reviewed P1 closeout and separate P3
+  execution authorization;
 - P1 or P3 reaches expiry without the registered reviewed closeout.
 
-An authority violation is an immediate failure, not an overhead trade-off.
+A Stage B `form_completion_failed_or_not_frozen` outcome is not a cohort stop: it
+stops capture for that consumed slot and productive work continues unchanged. An
+authority violation is an immediate cohort failure, not an overhead trade-off.
