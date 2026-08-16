@@ -1,0 +1,178 @@
+schema_version: "outcome-bound-operator-loop.p1-cohort-protocol.v1"
+experiment_id: "2026-08-16_outcome-bound-operator-loop-p0"
+phase: "P1"
+triggered_by: "github:heimgewebe/vibe-lab#332"
+frozen_on: "2026-08-16"
+
+purpose:
+  goal_type: "usability_and_observability_preparation"
+  statement: >
+    Prepare six ordered full-form shadow slots for independently occurring
+    eligible canonical Bureau intakes without selecting work or changing any
+    productive decision.
+  efficacy_claim_allowed: false
+  activation_supplies_outcome_evidence: false
+
+activation_state:
+  state: "prepared"
+  slots_total: 6
+  cases_admitted: 0
+  outcome_evidence_records: 0
+  p1_executed_for_efficacy: false
+  case_identities_present: false
+
+authority_boundary:
+  mode: "shadow_observation_only"
+  task_selection_effect: false
+  task_execution_effect: false
+  routing_effect: false
+  queue_effect: false
+  merge_effect: false
+  deployment_effect: false
+  policy_effect: false
+  technical_closeout_effect: false
+  productive_integration_effect: false
+  statement: >
+    P1 artifacts are experiment records only. Bureau, GitHub and CI,
+    Grabowski, Chronik and Leitstand retain their existing authority. Neither
+    form content nor any P1 finding may control productive work.
+
+eligibility:
+  source: "canonical Bureau intake"
+  occurrence: "independently occurring after P1 activation"
+  required:
+    - "The intake is natural and independently created outside this experiment."
+    - "The intake is canonical in Bureau before P1 admission."
+    - "The outcome is not known and the case has not been previously observed."
+    - "A complete full outcome-case spec can be frozen before productive mutation."
+    - "The case can remain shadow-only with every authority boundary preserved."
+  forbidden:
+    - "synthetic case"
+    - "retrospective case"
+    - "backfilled case"
+    - "outcome-selected case"
+    - "case selected, created or reprioritized for this experiment"
+
+admission:
+  order: "first eligible intake to P1-01, then strictly ascending through P1-06"
+  slot_skip_allowed: false
+  prospective_only: true
+  precondition: >
+    Before any productive mutation, freeze the complete full outcome-case spec
+    and its digest. If mutation has begun, stop and do not admit or backfill the
+    slot.
+  evidence_rule: >
+    A future admission is a separate create-only experiment-local record that
+    binds the slot, canonical Bureau intake reference, frozen full-spec
+    reference and digest, and admission time. This frozen protocol is not
+    rewritten to insert case identity.
+  productive_use: >
+    The full spec is shadow evidence only and must not determine scope,
+    intervention, verifier, route, queue, policy, merge, deployment, technical
+    closeout or any other productive action.
+
+slots:
+  - slot_id: "P1-01"
+    ordinal: 1
+    state: "vacant"
+  - slot_id: "P1-02"
+    ordinal: 2
+    state: "vacant"
+  - slot_id: "P1-03"
+    ordinal: 3
+    state: "vacant"
+  - slot_id: "P1-04"
+    ordinal: 4
+    state: "vacant"
+  - slot_id: "P1-05"
+    ordinal: 5
+    state: "vacant"
+  - slot_id: "P1-06"
+    ordinal: 6
+    state: "vacant"
+
+measurements:
+  claim_boundary: >
+    These measures describe P1 full-form usability and outcome observability
+    only. P1 has no minimal-form comparison and cannot establish, estimate or
+    imply minimal-versus-full efficacy. P1 measurements do not count toward the
+    registered P3 efficacy thresholds.
+  fields:
+    - id: "spec_form_handling_time"
+      capture: >
+        Record form-handling start, full-spec freeze time and elapsed duration
+        for the shadow form only; exclude productive implementation time.
+    - id: "unclear_or_redundant_fields"
+      capture: >
+        Record each field identified during handling as unclear or redundant,
+        the classification and a bounded reason; absence is recorded explicitly.
+    - id: "pre_mutation_scope_intervention_verifier_changes"
+      capture: >
+        Before productive mutation, record separately whether full-form handling
+        changed the stated scope, smallest intervention or verifier relative to
+        the canonical intake, with a bounded description. The record is
+        observational and cannot apply the change to productive work.
+    - id: "effect_observation_state"
+      capture: >
+        After the frozen observation window, record supported,
+        partially_supported, not_supported, contradicted, pending or
+        insufficient_evidence under the experiment-local observation contract.
+    - id: "authority_violations"
+      capture: >
+        Record zero or the observed violation count and references. Any nonzero
+        value triggers an immediate stop and cannot be traded against usability.
+    - id: "technical_vs_domain_divergence"
+      capture: >
+        Record whether referenced authoritative technical closeout and the
+        separately reviewed domain-effect observation align, diverge, remain
+        pending or are not observable. Reference technical truth; never copy it.
+    - id: "additional_actionable_finding"
+      capture: >
+        Record whether full-form handling surfaced an additional finding that a
+        reviewer judged concrete and actionable relative to the canonical
+        intake, with its review reference. It is not a minimal-versus-full
+        comparison and is not a P3 additional-actionable-decision count.
+
+stop_rules:
+  action: "stop admission or assessment and preserve all current records"
+  conditions:
+    - "Productive mutation begins before the applicable full spec is frozen."
+    - "A spec or observation digest fails to resolve exactly."
+    - "An existing observation would need mutation instead of an appended correction."
+    - "Technical closeout truth would need to be copied instead of referenced."
+    - "Operator-intake, execution-source identity or authority roles cannot remain distinct."
+    - "Evidence authority or the observation window is missing."
+    - "A case is synthetic, retrospective, backfilled or selected after its outcome."
+    - "Privacy or secrets would require raw transcript or raw response capture."
+    - "A Vibe-Lab artifact attempts Bureau, Grabowski, Chronik, Leitstand, runtime, routing, queue, policy, merge-policy or deployment integration."
+    - "Any automatic policy, routing, queue, merge, deployment or runtime effect occurs."
+    - "Any authority violation occurs."
+    - "P1 reaches expiry without its registered independently reviewed closeout."
+    - "P3 is started before an independently reviewed P1 closeout and separate P3 authorization."
+
+closeout:
+  artifact_path: "p1/closeout.md"
+  current_state: "not_created"
+  separate_from_activation: true
+  independent_review_required: true
+  create_when: >
+    Create the separate closeout only after all six natural slots have complete
+    reviewed P1 records, or when a stop rule or expiry closes the cohort early.
+  required_content:
+    - "admitted slot count and any preserved vacancy"
+    - "P1 usability and observability measurements"
+    - "stop-rule and authority-violation assessment"
+    - "limitations and explicit minimal-versus-full non-claim"
+    - "independent reviewer identity and review reference"
+  p3_effect: >
+    Closeout alone does not execute or authorize P3. P3 remains prohibited until
+    the closeout is independently reviewed and a separate execution step is
+    authorized.
+
+immutability:
+  protocol_revision: 1
+  rule: >
+    This activation freezes protocol revision 1. Do not edit it to admit cases,
+    add identities, change measures or relax stop rules. Future case records and
+    the eventual closeout are separate artifacts; any protocol correction needs
+    an explicit reviewed successor and cannot rewrite prior state.

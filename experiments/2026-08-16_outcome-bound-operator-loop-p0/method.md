@@ -1,10 +1,10 @@
 ---
 title: "Outcome-Bound Operator Loop P0 — Method and future protocols"
-status: designed
+status: testing
 canonicality: operative
 created: "2026-08-16"
 updated: "2026-08-16"
-triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2"
+triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2; github:heimgewebe/vibe-lab#332"
 relations:
   - type: references
     target: contracts/outcome-case-spec.v0.schema.json
@@ -16,6 +16,8 @@ relations:
     target: schema-fit.md
   - type: references
     target: results/p0-gate.md
+  - type: references
+    target: p1/activation.md
 ---
 
 # Method and future protocols
@@ -28,8 +30,10 @@ P0 combines two declared goal types without crossing their boundaries:
 2. **Analysis:** map exactly three existing records for compatibility without
    changing them or making prospective, causal or efficacy claims.
 
-P1 and P3 below are designs only. No natural case is admitted, no spec is frozen
-for productive use, no observation is appended and no downstream system changes.
+P0 remains complete paper/schema-fit work. P1 is now prepared under the frozen
+activation at `p1/activation.md`, with 0/6 natural cases admitted and zero outcome
+evidence. P3 remains design-only and prohibited before an independently reviewed
+P1 closeout plus separate execution authorization. No downstream system changes.
 
 ## One logical Outcome Case
 
@@ -155,11 +159,14 @@ time and reference, may add one or more of:
 `not_reviewed` requires an empty classification list. Error classes explain a
 reviewed assessment; they do not change technical closeout or external authority.
 
-## P1 design — six natural full-form shadow cases
+## P1 activation — six natural full-form shadow cases
 
-P1 is encoded but not executed. Slots are not cases or evidence until a naturally
-occurring canonical Bureau intake is admitted prospectively. Each slot uses the
-full form in shadow only and has zero effect on execution.
+P1 protocol revision 1 is frozen at `p1/cohort-protocol.v1.yml`; the bounded
+activation receipt is `p1/activation.md`. Activation prepares the ordered slots
+but admits 0/6 cases, supplies zero outcome evidence and does not execute an
+efficacy comparison. Slots are not cases or evidence until a naturally occurring
+canonical Bureau intake is admitted prospectively. Each slot uses the full form
+in shadow only and has zero effect on execution.
 
 | Slot | Admission requirement | Frozen output | Shadow observation |
 | --- | --- | --- | --- |

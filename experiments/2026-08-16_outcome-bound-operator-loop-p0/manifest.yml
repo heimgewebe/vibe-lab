@@ -8,15 +8,17 @@ experiment:
     assessment without duplicating authority; the minimal form should remain the
     default unless a later matched comparison demonstrates material decision gain
     within the registered overhead and authority limits.
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: prepared
+  execution_refs:
+    - "p1/cohort-protocol.v1.yml"
+    - "p1/activation.md"
   created: "2026-08-16"
   updated: "2026-08-16"
   author: "Vibe-Lab maintainers / Grabowski consumer"
-  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop"
-  iteration: 1
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332"
+  iteration: 2
   evidence_level: experimental
   falsifiability:
     version: 1

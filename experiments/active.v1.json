@@ -27,7 +27,7 @@
     {
       "experiment_id": "2026-08-16_outcome-bound-operator-loop-p0",
       "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0",
-      "state": "designed",
+      "state": "testing",
       "consumer": "Grabowski",
       "decision_target": "Does the full Outcome Case form produce at least two additional actionable decisions across six matched natural cases while staying within the registered overhead and authority limits?",
       "primary_metric": "additional_actionable_decisions",
