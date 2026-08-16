@@ -17,5 +17,5 @@
   "review_terminalization_sha256": "af1b1535b8377448e6adcb44381ee24dc1b8c14c62518862fe2f388d33d44633",
   "material_disagreements": 2,
   "gate_recommendation": "REJECT_THIS_REVISION",
-  "notes": "Execution-proof metadata for the bounded S0 paper review only. It proves that the preregistered semantic review ran to terminal completion and produced the referenced result artifact. It does not establish Outcome Case efficacy, natural-case admission reliability, S1 authorization, validator justification, P2/P3 authorization, or any production authority change."
+  "notes": "Execution-record metadata for the bounded S0 paper review only. It self-reports that the preregistered semantic review ran to terminal completion and produced the referenced result artifact, with the receipt identifiers recorded above. It does not establish Outcome Case efficacy, natural-case admission reliability, S1 authorization, validator justification, P2/P3 authorization, or any production authority change."
 }

@@ -53,7 +53,7 @@ experiment:
           classification or adding a validator.
         assessment:
           status: checked
-          outcome: supports_primary
+          outcome: mixed
           evidence_refs:
             - path: "results/reviewer-b.md"
               section: "Independent classifications"

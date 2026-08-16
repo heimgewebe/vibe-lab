@@ -410,7 +410,9 @@
       "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "rejected",
-      "warnings": []
+      "warnings": [
+        "falsifiability_assessment_inconclusive"
+      ]
     }
   ],
   "mode": "dry_run",
@@ -421,7 +423,7 @@
     "not_ready": 16,
     "pre_execution_hold": 4,
     "ready": 5,
-    "warnings": 6
+    "warnings": 7
   },
   "trigger": "need_for_reproducibility"
 }
