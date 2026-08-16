@@ -16,6 +16,7 @@ experiment:
     - "p1/cohort-protocol.v1.yml"
     - "p1/activation.md"
     - "p1/decision.yml"
+    - "p1/closeout.md"
     - "p1/cases/P1-01/stage-a-screening.yml"
     - "p1/cases/P1-01/full-spec.json"
     - "p1/cases/P1-01/form-outcome.yml"
@@ -30,8 +31,8 @@ experiment:
   created: "2026-08-16"
   updated: "2026-08-16"
   author: "Vibe-Lab maintainers / Grabowski consumer"
-  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333; github:heimgewebe/vibe-lab#334; codex-review:heimgewebe/vibe-lab#335; github:heimgewebe/vibe-lab#337; grabowski-job:8e1b296f1a7b"
-  iteration: 5
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333; github:heimgewebe/vibe-lab#334; codex-review:heimgewebe/vibe-lab#335; github:heimgewebe/vibe-lab#337; grabowski-job:8e1b296f1a7b; github:heimgewebe/vibe-lab#338"
+  iteration: 6
   evidence_level: experimental
   falsifiability:
     version: 1
