@@ -13,6 +13,9 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
+# Repository-tree snapshot clock; triggered_by:
+# conversation:user-request-2026-08-16-outcome-bound-operator-loop.
+REPOSITORY_NOW = datetime(2026, 8, 16, 7, 0, tzinfo=timezone.utc)
 DELETE = object()
 
 
@@ -105,7 +108,7 @@ def test_archive_path_must_match_directory() -> None:
 
 
 def test_repository_historical_experiments_are_grandfathered() -> None:
-    result = MODULE.validate_all(now=NOW)
+    result = MODULE.validate_all(now=REPOSITORY_NOW)
     assert result["status"] == "valid"
     assert result["grandfathered"] >= 1
 
@@ -231,7 +234,7 @@ def test_backdated_new_directory_cannot_bypass_registration() -> None:
 
 
 def test_repository_v2_count_matches_current_experiment_tree() -> None:
-    result = MODULE.validate_all(now=datetime(2026, 7, 12, tzinfo=timezone.utc))
+    result = MODULE.validate_all(now=REPOSITORY_NOW)
     expected_v2 = sum(
         (directory / "registration.v2.json").is_file()
         for directory in (ROOT / "experiments").iterdir()
