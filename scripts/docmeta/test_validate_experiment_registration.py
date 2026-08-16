@@ -3,8 +3,11 @@ from __future__ import annotations
 import importlib.util
 import json
 import tempfile
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
+
+from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location("registration_gate", ROOT / "scripts/docmeta/validate_experiment_registration.py")
@@ -14,9 +17,20 @@ SPEC.loader.exec_module(MODULE)
 NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
 # Repository-tree snapshot clock; triggered_by:
-# conversation:user-request-2026-08-16-outcome-bound-operator-loop.
+# conversation:user-request-2026-08-16-outcome-bound-operator-loop;
+# codex-review:heimgewebe/vibe-lab#329-P2.
 REPOSITORY_NOW = datetime(2026, 8, 16, 7, 0, tzinfo=timezone.utc)
 DELETE = object()
+OUTCOME_OBSERVATION_SCHEMA_PATH = (
+    ROOT
+    / "experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-observation.v0.schema.json"
+)
+SUBSTANTIVE_OBSERVATION_STATES = (
+    "supported",
+    "partially_supported",
+    "not_supported",
+    "contradicted",
+)
 
 
 def _assert_invalid(path: Path, expected: str | None, *, now: datetime) -> None:
@@ -82,6 +96,59 @@ def _invalid_v2(
         _assert_invalid(path, expected, now=T005_NOW)
 
 
+def _outcome_observation_schema() -> dict[str, object]:
+    return json.loads(OUTCOME_OBSERVATION_SCHEMA_PATH.read_text(encoding="utf-8"))
+
+
+def _valid_outcome_observation() -> dict[str, object]:
+    return {
+        "schema_version": "outcome-observation.v0",
+        "observation_id": "case-001.observation-001",
+        "case_id": "case-001",
+        "append_mode": "append_only",
+        "observed_at": "2026-08-16T08:00:00Z",
+        "spec_binding": {
+            "spec_ref": "repo:experiments/case-001/spec.json",
+            "case_id": "case-001",
+            "spec_sha256": "1" * 64,
+        },
+        "technical_closeout_refs": ["github:heimgewebe/vibe-lab#329"],
+        "assessment": {
+            "state": "supported",
+            "evidence_refs": ["github:heimgewebe/vibe-lab#329-review"],
+            "qualitative_strength": "direct_primary_evidence",
+            "confounders": [],
+            "claims": {
+                "established": ["The frozen desired change occurred in the registered window."],
+                "not_established": ["General efficacy is not established."],
+            },
+            "reviewed_error_taxonomy": {
+                "review_status": "not_reviewed",
+                "classifications": [],
+            },
+            "decision": {
+                "review_status": "reviewed",
+                "decision_ref": "github:heimgewebe/vibe-lab#329-review",
+                "disposition": "Close only the bounded observation.",
+                "follow_up": "No automatic follow-up.",
+            },
+        },
+        "digest_binding": {
+            "algorithm": "sha256",
+            "canonicalization": "rfc8785",
+            "scope": "record_without_record_sha256",
+            "record_sha256": "2" * 64,
+            "previous_record_sha256": "3" * 64,
+        },
+    }
+
+
+def _assert_outcome_observation_invalid(payload: dict[str, object]) -> None:
+    validator = Draft202012Validator(_outcome_observation_schema())
+    errors = list(validator.iter_errors(payload))
+    assert errors, "invalid outcome observation was accepted"
+
+
 def test_valid_registration() -> None:
     with tempfile.TemporaryDirectory() as raw:
         path = _valid(Path(raw) / "2026-07-09_repobrief-workbench-usefulness-eval")
@@ -120,6 +187,88 @@ def test_v2_registration_binds_comparison_and_threshold() -> None:
         assert result["schema_version"] == "experiment.registration.v2"
         assert result["measurement"]["minimum_material_effect"] == 1
         assert result["closure"]["outcome_by_result"]["expired"] == "archive"
+
+
+def test_outcome_observation_schema_is_valid_draft_2020_12() -> None:
+    Draft202012Validator.check_schema(_outcome_observation_schema())
+
+
+def test_substantive_outcome_state_requires_evidence() -> None:
+    for state in SUBSTANTIVE_OBSERVATION_STATES:
+        payload = _valid_outcome_observation()
+        payload["assessment"]["state"] = state
+        payload["assessment"]["evidence_refs"] = []
+        _assert_outcome_observation_invalid(payload)
+
+
+def test_substantive_outcome_state_rejects_insufficient_strength() -> None:
+    for state in SUBSTANTIVE_OBSERVATION_STATES:
+        payload = _valid_outcome_observation()
+        payload["assessment"]["state"] = state
+        payload["assessment"]["qualitative_strength"] = "insufficient"
+        _assert_outcome_observation_invalid(payload)
+
+
+def test_substantive_outcome_state_requires_established_claim() -> None:
+    for state in SUBSTANTIVE_OBSERVATION_STATES:
+        payload = _valid_outcome_observation()
+        payload["assessment"]["state"] = state
+        payload["assessment"]["claims"]["established"] = []
+        _assert_outcome_observation_invalid(payload)
+
+
+def test_compliant_substantive_outcome_states_pass() -> None:
+    validator = Draft202012Validator(_outcome_observation_schema())
+    for state in SUBSTANTIVE_OBSERVATION_STATES:
+        payload = _valid_outcome_observation()
+        payload["assessment"]["state"] = state
+        validator.validate(payload)
+
+
+def test_pending_outcome_state_rejects_established_claim() -> None:
+    payload = _valid_outcome_observation()
+    payload["assessment"]["state"] = "pending"
+    payload["assessment"]["evidence_refs"] = []
+    payload["assessment"]["qualitative_strength"] = "insufficient"
+    _assert_outcome_observation_invalid(payload)
+
+
+def test_insufficient_evidence_with_insufficient_strength_passes() -> None:
+    payload = _valid_outcome_observation()
+    payload["assessment"]["state"] = "insufficient_evidence"
+    payload["assessment"]["qualitative_strength"] = "insufficient"
+    payload["assessment"]["claims"]["established"] = [
+        "The bounded evidence limitation was recorded."
+    ]
+    Draft202012Validator(_outcome_observation_schema()).validate(payload)
+
+
+def test_outcome_observation_digest_scope_binds_predecessor_and_metadata() -> None:
+    schema = _outcome_observation_schema()
+    digest_binding = schema["properties"]["digest_binding"]
+    assert set(digest_binding["required"]) == {
+        "algorithm",
+        "canonicalization",
+        "scope",
+        "record_sha256",
+        "previous_record_sha256",
+    }
+    scope = digest_binding["properties"]["scope"]
+    assert scope["const"] == "record_without_record_sha256"
+    assert "/digest_binding/record_sha256" in scope["description"]
+    for protected_property in (
+        "algorithm",
+        "canonicalization",
+        "scope",
+        "previous_record_sha256",
+    ):
+        assert f"digest_binding.{protected_property}" in scope["description"]
+
+    validator = Draft202012Validator(schema)
+    validator.validate(_valid_outcome_observation())
+    legacy_scope = deepcopy(_valid_outcome_observation())
+    legacy_scope["digest_binding"]["scope"] = "record_without_digest_binding"
+    _assert_outcome_observation_invalid(legacy_scope)
 
 
 def test_v2_scorecard_component_ids_must_be_unique() -> None:

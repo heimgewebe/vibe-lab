@@ -4,7 +4,7 @@ status: designed
 canonicality: operative
 created: "2026-08-16"
 updated: "2026-08-16"
-triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop"
+triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2"
 relations:
   - type: references
     target: contracts/outcome-case-spec.v0.schema.json
@@ -40,11 +40,14 @@ An Outcome Case has two distinct records:
 2. `outcome-observation.v0` is appended after the observation window. It binds the
    exact case id, spec reference and spec digest; references technical closeout;
    records support, evidence quality, limitations and reviewed follow-up; and
-   carries a SHA-256 over the complete record except `digest_binding`.
+   carries a SHA-256 over the complete record after removing only the current
+   `digest_binding.record_sha256` value. RFC 8785 canonicalization therefore
+   covers the digest algorithm, canonicalization mode, scope and predecessor.
 
 The observation ledger is create/append-only. A correction is a new observation
-whose `previous_record_sha256` points to the prior record. Existing bytes are not
-rewritten. The top-level observation `case_id` MUST equal
+whose `previous_record_sha256` points to the prior record; that predecessor link
+is inside the new record's protected payload. Existing bytes are not rewritten.
+The top-level observation `case_id` MUST equal
 `spec_binding.case_id`; `spec_binding.spec_sha256` MUST equal the frozen
 `spec_digest.value`; and the referenced spec MUST resolve to that digest. These
 cross-record equalities are reviewed P0 rules, not a new repository validator.
@@ -120,6 +123,14 @@ Evidence strength is qualitative and limited to
 confidence score. Each record separates established claims from
 not-established claims, retains confounders, and states the reviewed or pending
 decision plus follow-up.
+
+The terminal substantive states `supported`, `partially_supported`,
+`not_supported` and `contradicted` require at least one evidence reference, a
+qualitative strength other than `insufficient`, and at least one established
+claim. `pending` requires `insufficient` strength and no established claim;
+preliminary evidence references may still be retained. `insufficient_evidence`
+also requires `insufficient` strength but may cite limitation evidence and keep
+narrow established facts that do not conclude the desired effect.
 
 When `decision.review_status` is `reviewed`, `decision_ref` is required. When it
 is `pending`, `decision_ref` is omitted so an unmade decision is never assigned a
