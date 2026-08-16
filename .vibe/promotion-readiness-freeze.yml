@@ -149,3 +149,17 @@ promotion_readiness_freeze:
         with a pending comparison that the early-stopped P1 did not authorize.
         Keep only these bounded falsifiability blockers; do not treat early-stop
         execution as efficacy, adoption evidence, or P3 authorization.
+
+    - path: experiments/2026-08-16_outcome-bound-operator-loop-successor-s0
+      allowed_missing:
+        - falsifiability.assessment_counterhypothesis_supported
+      reason: >-
+        S0 executed its preregistered independent semantic review and was
+        terminally rejected: Reviewer B found two material disagreements,
+        including a supported counter-hypothesis that the intervention boundary
+        remains ambiguous. Promotion readiness must therefore stay fail-closed at
+        this exact signal. This freeze records the rejected result; it is not an
+        exception authorizing S1, a validator, P2/P3, adoption, or production
+        integration. Remove only if a separately authorized successor experiment
+        supersedes this experiment's readiness role; do not rewrite the rejected
+        S0 result.

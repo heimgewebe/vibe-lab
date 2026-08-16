@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s0-independent-review",
+  "generated_at": "2026-08-16T16:50:46Z",
+  "executor": "controller:chatgpt+grabowski+claude-opus-reviewer-b",
+  "command": "read-only independent semantic review of frozen author head b9528665c0a37bb5084bcde8687d987d3bb9ab0a against base 5cb93296d42f4162b72652e13258091d11216dd4",
+  "exit_code": 0,
+  "test_output_file": "results/reviewer-b.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "conversation:user-request-2026-08-16-outcome-bound-successor-s0; github:heimgewebe/vibe-lab#339",
+  "work_lane_ref": "grabowski-work-lane:29f43515d895faae9e267dbc607b04a3",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#339",
+  "frozen_author_head": "b9528665c0a37bb5084bcde8687d987d3bb9ab0a",
+  "review_task_id": "9be9b949a14e493cb29f6d15",
+  "review_execution_identity_sha256": "8981a1cbe827b471f5a808ad3f0b787ef337e080068584ceaea4075d47c37b6b",
+  "review_lifecycle_receipt_sha256": "a1550a28070fb730736f518683fc16f869c73f692f2cb762b4353b26b408b33a",
+  "review_terminalization_sha256": "af1b1535b8377448e6adcb44381ee24dc1b8c14c62518862fe2f388d33d44633",
+  "material_disagreements": 2,
+  "gate_recommendation": "REJECT_THIS_REVISION",
+  "notes": "Execution-record metadata for the bounded S0 paper review only. It self-reports that the preregistered semantic review ran to terminal completion and produced the referenced result artifact, with the receipt identifiers recorded above. It does not establish Outcome Case efficacy, natural-case admission reliability, S1 authorization, validator justification, P2/P3 authorization, or any production authority change."
+}
