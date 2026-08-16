@@ -33,11 +33,16 @@ P0 combines two declared goal types without crossing their boundaries:
    changing them or making prospective, causal or efficacy claims.
 
 P0 remains complete paper/schema-fit work. P1 is now prepared under the frozen
-activation at `p1/activation.md` and current activation decision at
-`p1/decision.yml`, with 0/6 slots assigned and zero outcome evidence. The
-historical P0 assessment remains unchanged at `results/decision.yml`. P3 remains
-design-only and prohibited before an independently reviewed P1 closeout plus
-separate execution authorization. No downstream system changes.
+activation at `p1/activation.md` and the protocol `activation_state`; their 0/6
+slots assigned, zero case identities and zero outcome evidence describe only the
+frozen activation snapshot, not mutable current live progress or the current
+decision contents. `p1/decision.yml` deliberately carries the stable
+insufficient-proof assessment for full six-case cohort completion plus its
+independently reviewed closeout; mutable Stage A and Stage B progress lives only
+in separate append-or-create-only capture records. The historical P0 assessment
+remains unchanged at `results/decision.yml`. P3 remains design-only and
+prohibited before an independently reviewed P1 closeout plus separate execution
+authorization. No downstream system changes.
 
 ## One logical Outcome Case
 
@@ -165,11 +170,15 @@ reviewed assessment; they do not change technical closeout or external authority
 
 ## P1 activation — six prospective two-stage full-form shadow captures
 
-P1 protocol revision 1 is frozen at `p1/cohort-protocol.v1.yml`; the bounded
-activation receipt is `p1/activation.md` and the current activation decision is
-`p1/decision.yml`. Activation prepares six ordered vacant slots but assigns 0/6,
-contains no case identities, supplies zero outcome evidence and does not execute
-an efficacy comparison.
+P1 protocol revision 1 is frozen at `p1/cohort-protocol.v1.yml`; its
+`activation_state` and the bounded receipt at `p1/activation.md` record the
+frozen activation snapshot: 0/6 slots assigned, zero case identities and zero
+outcome evidence. Those snapshot values are not mutable current live progress
+and are not the current decision contents. `p1/decision.yml` deliberately
+carries the stable insufficient-proof assessment for full six-case cohort
+completion plus its independently reviewed closeout, while mutable Stage A and
+Stage B progress lives only in separate append-or-create-only capture records.
+Activation does not execute an efficacy comparison.
 
 Eligibility is determined from the independently occurring canonical Bureau
 intake before productive mutation. It does **not** require that the full form can
