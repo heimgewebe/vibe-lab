@@ -16847,6 +16847,54 @@
         "experiments/**"
       ],
       "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/form-outcome.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/full-spec.json",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/stage-a-screening.yml",
+      "status": "classified"
+    },
+    {
+      "authority": "historical_record",
+      "catchall_match": true,
+      "enforcement": [
+        "no_rewrite"
+      ],
+      "kind": "experiment_artifact",
+      "layer": "experiment",
+      "lifecycle": "append_only",
+      "matched_patterns": [
+        "experiments/**"
+      ],
+      "origin": "handcrafted",
       "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cohort-protocol.v1.yml",
       "status": "classified"
     },
@@ -27237,6 +27285,9 @@
     "experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-observation.v0.schema.json",
     "experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md",
     "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/form-outcome.yml",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/full-spec.json",
+    "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/stage-a-screening.yml",
     "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cohort-protocol.v1.yml",
     "experiments/2026-08-16_outcome-bound-operator-loop-p0/registration.v2.json",
     "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md",
@@ -27523,18 +27574,18 @@
   ],
   "fallback_summary": {
     "by_authority": {
-      "historical_record": 597,
+      "historical_record": 600,
       "navigation_surface": 12,
       "test_expectation": 275
     },
     "by_layer": {
       "docs": 12,
-      "experiment": 597,
+      "experiment": 600,
       "test": 275
     },
     "by_matched_pattern": {
       "docs/**": 12,
-      "experiments/**": 63,
+      "experiments/**": 66,
       "experiments/*/artifacts/**": 534,
       "tests/fixtures/**": 275
     },
@@ -27620,13 +27671,13 @@
             "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
             "experiments/2026-04-15_agent-task-validity": 4,
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
-            "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
             "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
             "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
             "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4,
-            "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3,
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01": 3
           },
-          "total": 63
+          "total": 66
         },
         {
           "high_risk_count": 0,
@@ -27735,13 +27786,13 @@
             "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
             "experiments/2026-04-15_agent-task-validity": 4,
             "experiments/2026-05-31_model-lab-replication-series/results": 4,
-            "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
             "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
             "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
             "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4,
-            "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3,
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01": 3
           },
-          "total": 63
+          "total": 66
         },
         {
           "high_risk_count": 0,
@@ -27851,13 +27902,13 @@
           "experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe": 10,
           "experiments/2026-04-15_agent-task-validity": 4,
           "experiments/2026-05-31_model-lab-replication-series/results": 4,
-          "experiments/2026-06-10_pr-agent-context-comparison-series": 2,
           "experiments/2026-07-08_operator-learning-capture-sample/results": 7,
           "experiments/2026-07-23_operator-routing-ml-readiness-shadow": 3,
           "experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools": 4,
-          "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3
+          "experiments/2026-08-16_outcome-bound-operator-loop-p0": 3,
+          "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01": 3
         },
-        "total": 63
+        "total": 66
       },
       {
         "high_risk_count": 0,
@@ -28106,7 +28157,7 @@
       "diagnostic_signal": 7,
       "evidence_log": 25,
       "generated_projection": 10,
-      "historical_record": 597,
+      "historical_record": 600,
       "implementation_behavior": 25,
       "navigation_surface": 28,
       "normative_contract": 16,
@@ -28125,7 +28176,7 @@
       "ci_blocking": 657,
       "diagnostic": 2,
       "no_manual_edit": 18,
-      "no_rewrite": 676,
+      "no_rewrite": 679,
       "no_silent_edit": 3,
       "non_blocking_diagnostic": 6,
       "owner_required": 3,
@@ -28139,7 +28190,7 @@
       "catalog": 12,
       "contract": 61,
       "docs": 50,
-      "experiment": 930,
+      "experiment": 933,
       "export": 16,
       "generated": 8,
       "governance": 94,
@@ -28147,19 +28198,19 @@
     },
     "by_lifecycle": {
       "<none>": 1,
-      "append_only": 676,
+      "append_only": 679,
       "handcrafted": 852,
       "regenerated": 18,
       "revision_with_reason": 113,
       "superseded_not_rewritten": 2
     },
-    "classified": 1661,
+    "classified": 1664,
     "conflict": 0,
-    "fallback_classified": 884,
-    "fallback_share": 0.5322095123419627,
+    "fallback_classified": 887,
+    "fallback_share": 0.5330528846153846,
     "fallback_threshold": 0.5,
     "fallback_threshold_status": "warning",
-    "total": 1662,
+    "total": 1665,
     "unknown": 1
   },
   "transition_risk_hints": [],

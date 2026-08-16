@@ -1,0 +1,70 @@
+schema_version: "outcome-bound-operator-loop.p1-stage-a.v1"
+experiment_id: "2026-08-16_outcome-bound-operator-loop-p0"
+phase: "P1"
+protocol_ref: "../../cohort-protocol.v1.yml"
+protocol_revision: 1
+slot:
+  slot_id: "P1-01"
+  ordinal: 1
+  transition: "vacant_to_assigned_and_consumed"
+  replacement_or_backfill_allowed: false
+screening:
+  screened_at: "2026-08-16T13:17:57Z"
+  timing: "before_full_form_attempt_and_before_productive_mutation"
+  independently_occurring: true
+  prospective_only: true
+  eligibility_result: "eligible"
+  full_form_completion_used_as_filter: false
+natural_intake:
+  authority: "Bureau StateStore"
+  candidate_id: "candidate-6fd0f432803a2a446333d7be"
+  state_event_id: 7735
+  candidate_event_id: "candidate-event-de22df5c5ad2b6852914d9e3"
+  created_at: "2026-08-16T12:46:17.129130Z"
+  source_observed_at: "2026-08-16T12:46:17.021231Z"
+  repo: "repo.bureau"
+  title: "Fresh single-use Bureau runtime-refresh authority after PR #2011"
+  request_sha256: "3fc4886094c19f3b1a572e8c1202b76aa75916f607ba2bd109199201bff633f5"
+  content_fingerprint: "5c0ea5175490370f9236f06b6d9cc1e112096374828bca2096c09c88759a876c"
+  source_fingerprint: "53f52aad4f12e19df2f22cdf3ccd118b92f36548b56afcace56bfc70a82727fc"
+  prior_event_superseded: 7734
+pre_mutation_proof:
+  checked_at: "2026-08-16T13:17:57Z"
+  candidate_status: "observed"
+  candidate_task_id: null
+  candidate_assessment_decision: "promote"
+  publication_approval_present: false
+  runtime_refresh_latest_observation:
+    observation_sha256: "17deea4f1a39512e106d592eb64026a92ecc228bc351268d4fc8ff1573ee5f91"
+    observed_at: "2026-08-16T12:30:48.477982Z"
+    before_intake: true
+    deployed_source_commit: "0ad76828ab403027cdc721a7a616cdb233dfa081"
+    observed_main_commit: "62cbbea1089b0166ffc86f88ec5e3b815c11cdaf"
+    lag_commits: 18
+  newer_runtime_refresh_artifact_observed_after_intake: false
+  evidence_refs:
+    - "bureau-candidate:candidate-6fd0f432803a2a446333d7be"
+    - "bureau-event:7735"
+    - "bureau-runtime-refresh-observation:17deea4f1a39512e106d592eb64026a92ecc228bc351268d4fc8ff1573ee5f91"
+execution_source_identity:
+  github_issue_ref: "github:heimgewebe/vibe-lab#334"
+  work_lane_ref: "grabowski-work-lane:8678c66b5dc2f9c924a19acbdbd2ca47"
+  authority: "execution_source_identity_only"
+authority_boundary:
+  shadow_only: true
+  productive_work_effect_allowed: false
+  blocking_allowed: false
+  delay_allowed: false
+  routing_effect_allowed: false
+  queue_effect_allowed: false
+  priority_effect_allowed: false
+  merge_effect_allowed: false
+  deployment_effect_allowed: false
+  technical_closeout_effect_allowed: false
+prohibited_content:
+  full_spec_digest_present: false
+  full_spec_freeze_claim_present: false
+  outcome_effect_assessment_present: false
+immutability:
+  record_mode: "create_only"
+  statement: "P1-01 is consumed by this Stage A assignment. Corrections must be separate append-only records; this record must not be rewritten to replace, backfill or outcome-select the case."
