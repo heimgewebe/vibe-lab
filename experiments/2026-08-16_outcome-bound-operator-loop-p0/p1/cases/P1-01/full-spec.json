@@ -1,0 +1,66 @@
+{
+  "schema_version": "outcome-case-spec.v0",
+  "case_id": "p1-01-bureau-runtime-refresh-after-pr2011",
+  "form": "full",
+  "freeze": {
+    "status": "frozen",
+    "frozen_at": "2026-08-16T13:20:23.733489Z",
+    "frozen_before_productive_mutation": true
+  },
+  "case_spec": {
+    "identity": {
+      "operator_intake_ref": "bureau-candidate:candidate-6fd0f432803a2a446333d7be",
+      "source_request_digest": "3fc4886094c19f3b1a572e8c1202b76aa75916f607ba2bd109199201bff633f5",
+      "work_lane_ref": "grabowski-work-lane:8678c66b5dc2f9c924a19acbdbd2ca47",
+      "execution_source_identity_refs": [
+        "github:heimgewebe/vibe-lab#334"
+      ]
+    },
+    "distance_and_risk": {
+      "distance": "D2",
+      "risk": "moderate",
+      "rationale": "The immediate technical output is a single-use Bureau runtime-refresh authority, while the claimed benefit is downstream: the stale immutable Bureau runtime converges to the exact current CI-green main and the ordinary atomic pickup path can resume. The authority is tightly bounded but can lead to a production runtime change if separately authorized.",
+      "risk_override": {
+        "applied": false
+      }
+    },
+    "problem": "After PR #2011, the immutable Bureau runtime is still deployed from stale source 0ad76828ab403027cdc721a7a616cdb233dfa081, while a fresher CI-green main exists. Previously consumed runtime-refresh authorities must not be reused, so ordinary atomic Bureau pickup remains blocked on a fresh, exact convergence authority.",
+    "affected_actor": "Bureau operator/controller path that needs the ordinary atomic pickup flow to resume without reusing consumed break-glass authority.",
+    "baseline": {
+      "status": "observed",
+      "description": "Before this intake, the latest authoritative runtime-refresh observation reported deployed source 0ad76828ab403027cdc721a7a616cdb233dfa081, observed main 62cbbea1089b0166ffc86f88ec5e3b815c11cdaf and lag_commits=18; that observation predates the intake and no newer runtime-refresh artifact was observed at Stage A screening.",
+      "evidence_refs": [
+        "bureau-runtime-refresh-observation:17deea4f1a39512e106d592eb64026a92ecc228bc351268d4fc8ff1573ee5f91",
+        "bureau-event:7735"
+      ]
+    },
+    "desired_change": "A fresh single-use, target-bound Bureau runtime-refresh authority exists for the exact then-current CI-green main, can be consumed at most once through the existing separately authorized runtime-refresh path, and leaves readback evidence that the immutable Bureau runtime converged and ordinary atomic pickup is no longer blocked by stale-runtime authority.",
+    "hypothesis": "The remaining blocker is not another Bureau code change but the absence of one fresh unconsumed authority bound to the current target. Creating exactly that bounded authority and using the existing runtime-refresh mechanism once, under its own authorization, will converge runtime state without queue, dispatch or unrelated Grabowski effects.",
+    "smallest_testable_intervention": "Create exactly one fresh single-use Bureau runtime-refresh authority task bound to the exact current CI-green main and existing runtime-refresh preflight/closeout contract; do not add new runtime code, queue edits, routing policy or reusable authority.",
+    "alternative_path": "Do not create a fresh authority and leave the runtime stale until another independently authorized convergence mechanism exists; this avoids the break-glass action but does not test whether missing fresh authority is the actual pickup blocker.",
+    "observation_plan": {
+      "indicator": "After any separately authorized use, authoritative readback shows the deployed Bureau runtime bound to the exact target main, required validation/integrity gates successful, the single-use authority no longer ready or active, and the ordinary atomic pickup path no longer blocked by the stale-runtime condition.",
+      "authority": "Bureau StateStore/runtime-refresh receipts plus deployed runtime identity/readback are primary technical authority; Vibe-Lab only references those records and cannot create, execute or close the authority task.",
+      "window": "From a separately authorized first use of the authority through its terminal closeout and immediate post-closeout runtime/pickup readback. Until those events exist, effect assessment remains pending or insufficient_evidence."
+    },
+    "falsifier": "The authority cannot be bound to the exact current target, is reused or consumable more than once, the post-use deployed source/integrity readback does not match the target, or ordinary atomic pickup remains blocked by the stale-runtime condition after a technically successful use.",
+    "decision_rules": {
+      "if_supported": "Treat this incident's fresh single-use authority as sufficient for runtime convergence and allow the technical Bureau lifecycle to close normally; do not infer a general architecture rule or create an additional effect task solely from P1.",
+      "if_not_supported": "Do not claim runtime convergence or restored pickup from the authority. Preserve the technical closeout truth and let the ordinary reviewed Bureau process create a separate follow-up candidate only if authoritative evidence identifies a remaining blocker.",
+      "if_insufficient_evidence": "Make no effect-success claim, do not reopen or relabel any technically terminal task, and keep the Outcome Observation pending or insufficient_evidence until independent runtime and pickup readbacks become available."
+    },
+    "non_goals": [
+      "Do not promote or execute the Bureau candidate from Vibe-Lab.",
+      "Do not delay productive work to complete P1 capture.",
+      "Do not edit Bureau queue, routing, priority, claims, merge policy or deployment policy.",
+      "Do not change Grabowski runtime or create reusable break-glass authority.",
+      "Do not treat this case as P3 efficacy evidence or generalize from one incident."
+    ]
+  },
+  "spec_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785",
+    "scope": "/case_spec",
+    "value": "90eed748849ae725c21a2adbd68adc7aced4691193075a75bcedff2df113c22e"
+  }
+}

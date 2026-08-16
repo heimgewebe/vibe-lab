@@ -1,0 +1,92 @@
+schema_version: "outcome-bound-operator-loop.p1-form-outcome.v1"
+experiment_id: "2026-08-16_outcome-bound-operator-loop-p0"
+phase: "P1"
+slot_id: "P1-01"
+recorded_at: "2026-08-16T13:21:52.467497Z"
+stage_a_ref: "stage-a-screening.yml"
+stage_a_sha256: "82f2a0ddc4263079850f2c3efb8563dc15bef553054176c731a81f0753a236e4"
+form_attempt:
+  classification: "full_spec_frozen_before_productive_mutation"
+  started_at: "2026-08-16T13:19:01.072807Z"
+  case_spec_frozen_at: "2026-08-16T13:20:23.733489Z"
+  record_materialized_at: "2026-08-16T13:20:48.438545Z"
+  handling_elapsed_seconds: 82.660682
+  elapsed_through_materialization_seconds: 107.365738
+  full_spec_ref: "full-spec.json"
+  full_spec_file_sha256: "ecc6f7a9e5ad11364346b847a52e36c889311a521519a210efefa2edbb617507"
+  full_spec_case_digest: "90eed748849ae725c21a2adbd68adc7aced4691193075a75bcedff2df113c22e"
+  schema_validation: "pass"
+  digest_validation: "pass"
+unclear_or_redundant_fields:
+  - field: "distance_and_risk.distance"
+    classification: "unclear_boundary"
+    reason: >
+      The intake combines an immediate technical artifact (a fresh authority
+      task) with a downstream claimed effect (runtime convergence and restored
+      ordinary pickup). D2 was selected because the claimed benefit is the
+      downstream operational effect, not task creation itself.
+  - field: "distance_and_risk.risk"
+    classification: "context_sensitive"
+    reason: >
+      The shadow spec itself has no productive authority, while a later
+      separately authorized use of the proposed break-glass authority can
+      mutate production runtime state. Moderate was selected for the bounded
+      case; the field requires care to avoid conflating experiment risk with
+      intervention risk.
+  - field: "alternative_path"
+    classification: "possibly_redundant_for_this_d2_case"
+    reason: >
+      It clarified the cost of doing nothing but did not materially reshape
+      this already narrow intake. P1 should test whether this field earns its
+      overhead outside D3/high-risk cases.
+pre_mutation_comparison:
+  scope_change:
+    changed: false
+    note: >
+      The intake already constrained work to exactly one fresh single-use
+      authority. The full form clarified the separation between that technical
+      output and the downstream effect but did not alter productive scope.
+  intervention_change:
+    changed: false
+    note: >
+      The smallest intervention remains creation of exactly one fresh bounded
+      authority using the existing runtime-refresh path; no new runtime code or
+      policy was introduced by the spec.
+  verifier_change:
+    changed: true
+    applied_to_productive_work: false
+    note: >
+      The full form made one downstream verifier explicit: beyond exact runtime
+      convergence and authority closeout, observe whether the ordinary atomic
+      Bureau pickup path is no longer blocked by the stale-runtime condition.
+      This is an experiment finding only and must not alter the productive task
+      unless normal authority independently adopts it.
+authority_violations:
+  count: 0
+  refs: []
+technical_vs_domain_divergence:
+  state: "not_observable_yet"
+  reason: "No independently authorized productive execution or technical closeout for this intake has occurred within the P1 capture record."
+effect_observation:
+  state: "pending"
+  observation_record_present: false
+  reason: "The registered observation window begins only after a separately authorized use and technical closeout."
+additional_actionable_finding:
+  review_status: "pending_independent_review"
+  counts_as_p1_actionable_finding: false
+  candidate: >
+    Distinguish exact runtime convergence/authority consumption from the
+    downstream claim that ordinary atomic pickup is restored; the latter needs
+    its own authoritative readback before effect success can be claimed.
+  counts_as_p3_decision_impact: false
+authority_boundary:
+  productive_work_effect: false
+  bureau_candidate_promoted_by_p1: false
+  bureau_task_created_by_p1: false
+  routing_or_queue_effect: false
+  merge_or_deployment_effect: false
+  technical_closeout_effect: false
+  p3_efficacy_evidence: false
+immutability:
+  record_mode: "create_only"
+  statement: "This Stage B outcome records the first handling attempt for consumed slot P1-01. Corrections or later observations must be separate append-only records."

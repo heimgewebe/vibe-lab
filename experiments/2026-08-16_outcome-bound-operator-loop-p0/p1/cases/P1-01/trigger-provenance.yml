@@ -1,0 +1,38 @@
+schema_version: "outcome-bound-operator-loop.p1-trigger-provenance.v1"
+experiment_id: "2026-08-16_outcome-bound-operator-loop-p0"
+phase: "P1"
+case_id: "p1-01-bureau-runtime-refresh-after-pr2011"
+slot_id: "P1-01"
+created_at: "2026-08-16T13:59:00Z"
+triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop"
+review_trigger: "codex-review:heimgewebe/vibe-lab#335"
+execution_source_identity_ref: "github:heimgewebe/vibe-lab#334"
+execution_source_identity_role: "execution_source_identity_only"
+natural_case_ref: "bureau-candidate:candidate-6fd0f432803a2a446333d7be"
+reason: >
+  The immutable P1-01 Stage A, frozen Full Spec and Stage B form-outcome were
+  created under the user's Outcome-Bound Operator Loop continuation request but
+  omitted an explicit triggered_by field. Their own immutability rules prohibit
+  rewriting them after capture. This append-only provenance record supplies the
+  missing queryable trigger binding without changing, replacing or reinterpreting
+  any frozen case content.
+artifact_bindings:
+  - path: "stage-a-screening.yml"
+    sha256: "82f2a0ddc4263079850f2c3efb8563dc15bef553054176c731a81f0753a236e4"
+    role: "immutable_stage_a_screening"
+  - path: "full-spec.json"
+    sha256: "ecc6f7a9e5ad11364346b847a52e36c889311a521519a210efefa2edbb617507"
+    role: "immutable_frozen_full_spec"
+  - path: "form-outcome.yml"
+    sha256: "50634c3e1b473c6df38ad10c3d2d1e1f7f1aafa126bd6c53a2fa307e6fde0e16"
+    role: "immutable_stage_b_form_outcome"
+authority_boundary:
+  changes_case_content: false
+  changes_bureau_truth: false
+  changes_execution_or_routing: false
+  establishes_effect_success: false
+  establishes_p1_efficacy: false
+  authorizes_p3: false
+immutability:
+  record_mode: "create_only"
+  statement: "This record is an append-only provenance correction bound to exact frozen artifact hashes; later corrections require a new record and must not rewrite this one."
