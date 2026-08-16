@@ -7,6 +7,8 @@
   "exit_code": 0,
   "test_output_file": "p1/cases/P1-01/form-outcome.yml",
   "provenance_level": "self_reported",
+  "triggered_by": "conversation:user-request-2026-08-16-outcome-bound-operator-loop",
+  "trigger_provenance_ref": "p1/cases/P1-01/trigger-provenance.yml",
   "work_lane_ref": "grabowski-work-lane:8678c66b5dc2f9c924a19acbdbd2ca47",
   "execution_source_identity_ref": "github:heimgewebe/vibe-lab#334",
   "natural_case_ref": "bureau-candidate:candidate-6fd0f432803a2a446333d7be",

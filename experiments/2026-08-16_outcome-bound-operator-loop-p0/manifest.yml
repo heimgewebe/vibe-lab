@@ -19,6 +19,7 @@ experiment:
     - "p1/cases/P1-01/stage-a-screening.yml"
     - "p1/cases/P1-01/full-spec.json"
     - "p1/cases/P1-01/form-outcome.yml"
+    - "p1/cases/P1-01/trigger-provenance.yml"
     - "artifacts/run-p1-01-shadow-capture/run_meta.json"
   created: "2026-08-16"
   updated: "2026-08-16"
