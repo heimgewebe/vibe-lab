@@ -20,6 +20,12 @@ relations:
 
 # P1 activation receipt
 
+**Supersession notice (2026-08-16):** This file preserves the activation-time
+snapshot below. It no longer describes the current P1 execution state. The
+operative current state is the terminal early-stop successor in `p1/decision.yml`;
+`p1/closeout.md` records the separate early-stop closeout. No further P1 slot may
+be assigned under protocol revision 1.
+
 P1 protocol revision 1 is frozen in `cohort-protocol.v1.yml`. This receipt
 activates only prospective preparation for six natural two-stage full-form shadow
 captures. All six slots, `P1-01` through `P1-06`, are **vacant**: **0/6 slots are
@@ -57,7 +63,10 @@ deployment, technical closeout or productive integration. Screening and form
 handling must never block, delay, reroute, reprioritize or otherwise alter
 productive work.
 
-The eventual closeout is a distinct artifact at `p1/closeout.md`; it does not
-exist at activation. The current `p1/decision.yml` is an activation decision, not
-that closeout. Even an independently reviewed closeout does not execute or
-authorize P3: P3 additionally requires a separate execution authorization.
+At activation time, the eventual closeout at `p1/closeout.md` did not yet exist
+and `p1/decision.yml` was the activation decision. Those statements are retained
+only as activation-time history. The current `p1/decision.yml` is the terminal
+early-stop successor decision and the closeout now exists separately at
+`p1/closeout.md`. Neither the successor decision nor an independently reviewed
+closeout executes or authorizes P3; P3 additionally requires separate execution
+authorization.

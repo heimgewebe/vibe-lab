@@ -32,17 +32,19 @@ P0 combines two declared goal types without crossing their boundaries:
 2. **Analysis:** map exactly three existing records for compatibility without
    changing them or making prospective, causal or efficacy claims.
 
-P0 remains complete paper/schema-fit work. P1 is now prepared under the frozen
-activation at `p1/activation.md` and the protocol `activation_state`; their 0/6
-slots assigned, zero case identities and zero outcome evidence describe only the
-frozen activation snapshot, not mutable current live progress or the current
-decision contents. `p1/decision.yml` deliberately carries the stable
-insufficient-proof assessment for full six-case cohort completion plus its
-independently reviewed closeout; mutable Stage A and Stage B progress lives only
-in separate append-or-create-only capture records. The historical P0 assessment
-remains unchanged at `results/decision.yml`. P3 remains design-only and
-prohibited before an independently reviewed P1 closeout plus separate execution
-authorization. No downstream system changes.
+P0 remains complete paper/schema-fit work. P1 was activated under the frozen
+snapshot at `p1/activation.md` and protocol revision 1 in
+`p1/cohort-protocol.v1.yml`; their 0/6 slots assigned, zero case identities and
+zero outcome evidence describe only activation-time history. They are superseded
+as live guidance by the current terminal early-stop successor in
+`p1/decision.yml` and the separate `p1/closeout.md`. P1-01 is the only
+protocol-valid prospective normal case; P1-02 is the preserved consumed
+stop-triggering capture after append-only eligibility correction; P1-03 through
+P1-06 remain vacant and may not be assigned under protocol revision 1. The
+historical P0 assessment remains unchanged at `results/decision.yml`. P1 produced
+no minimal-versus-full efficacy result. P2 is not automatically authorized, and
+P3 remains design-only and prohibited without a separately justified and
+authorized future experiment. No downstream system changes.
 
 ## One logical Outcome Case
 
@@ -170,15 +172,20 @@ reviewed assessment; they do not change technical closeout or external authority
 
 ## P1 activation — six prospective two-stage full-form shadow captures
 
-P1 protocol revision 1 is frozen at `p1/cohort-protocol.v1.yml`; its
-`activation_state` and the bounded receipt at `p1/activation.md` record the
-frozen activation snapshot: 0/6 slots assigned, zero case identities and zero
-outcome evidence. Those snapshot values are not mutable current live progress
-and are not the current decision contents. `p1/decision.yml` deliberately
-carries the stable insufficient-proof assessment for full six-case cohort
-completion plus its independently reviewed closeout, while mutable Stage A and
-Stage B progress lives only in separate append-or-create-only capture records.
-Activation does not execute an efficacy comparison.
+P1 protocol revision 1 remains frozen at `p1/cohort-protocol.v1.yml`; its
+`activation_state` and the bounded receipt at `p1/activation.md` preserve the
+activation snapshot: 0/6 slots assigned, zero case identities and zero outcome
+evidence. Those values are historical, not current progress or current decision
+contents. The operative current state is the terminal early-stop successor in
+`p1/decision.yml`, with separate closeout at `p1/closeout.md`. P1-01 remains the
+single protocol-valid prospective normal case. P1-02 remains consumed as the
+preserved stop-triggering capture and is interpreted through its append-only
+`eligibility-correction.yml`; P1-03 through P1-06 remain vacant and cannot be
+assigned. P1 produced no minimal-versus-full efficacy comparison.
+
+The Stage A/Stage B rules and slot table below describe the mechanics frozen at
+activation. After the registered stop condition was established at P1-02, they
+no longer authorize or direct further cohort assignment or assessment.
 
 Eligibility is determined from the independently occurring canonical Bureau
 intake before productive mutation. It does **not** require that the full form can

@@ -94,7 +94,7 @@ The P1-02 error was narrower but important: the controller initially interpreted
 - Only P1-01 is a genuinely prospective, protocol-valid normal case.
 - P1-02 is retained because immutable evidence must not be rewritten, but it cannot count as a valid prospective efficacy case.
 - Four registered slots remain vacant because the stop rule terminates the cohort early.
-- Neither valid case has a completed domain-effect observation in P1; the preserved effect states are pending.
+- P1-01, the single protocol-valid prospective case, has no completed domain-effect observation in P1. Both preserved Stage-B case records carry historical `pending` effect states, but P1-02's state is not interpreted as cohort-valid after the eligibility correction.
 - P1 contains no Minimal-form control arm.
 - There is no six-case valid sample and no matched Minimal-versus-Full comparison.
 - P1 therefore cannot estimate Decision Impact, relative overhead, false-completion prevention, or whether Full form beats Minimal form.
@@ -103,7 +103,7 @@ The P1-02 error was narrower but important: the controller initially interpreted
 
 ## P2 and P3
 
-P2 is **not justified automatically** by this closeout. The repeated preventable problem observed here concerns cohort-admission semantics (`productive mutation` scope), not missing case-schema syntax or digest validation. Building a validator merely because P2 appeared in the original plan would add the kind of meta-infrastructure this experiment is meant to avoid. Any validator proposal needs separate evidence that a small mechanical check can prevent this class of error without inventing a new authority.
+P2 is **not justified automatically** by this closeout. One preventable problem was observed here in cohort-admission semantics (`productive mutation` scope); recurrence is not established, and the problem is not missing case-schema syntax or digest validation. Building a validator merely because P2 appeared in the original plan would add the kind of meta-infrastructure this experiment is meant to avoid. Any validator proposal needs separate evidence that a small mechanical check can prevent this class of error without inventing a new authority.
 
 P3 is **not authorized**. The registered matched Minimal-versus-Full comparison cannot be inferred from or launched by this early-stopped P1. A future comparison would require a separately reviewed successor protocol or experiment and separate execution authorization.
 
