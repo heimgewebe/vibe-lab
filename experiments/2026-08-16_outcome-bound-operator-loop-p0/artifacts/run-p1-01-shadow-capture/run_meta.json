@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-p1-01-shadow-capture",
+  "generated_at": "2026-08-16T13:22:23.150820Z",
+  "executor": "controller:chatgpt+grabowski",
+  "command": "grabowski_create_text(stage-a-screening.yml) -> grabowski_create_text(full-spec.json) -> grabowski_create_text(form-outcome.yml)",
+  "exit_code": 0,
+  "test_output_file": "p1/cases/P1-01/form-outcome.yml",
+  "provenance_level": "self_reported",
+  "work_lane_ref": "grabowski-work-lane:8678c66b5dc2f9c924a19acbdbd2ca47",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#334",
+  "natural_case_ref": "bureau-candidate:candidate-6fd0f432803a2a446333d7be",
+  "stage_a_sha256": "82f2a0ddc4263079850f2c3efb8563dc15bef553054176c731a81f0753a236e4",
+  "full_spec_file_sha256": "ecc6f7a9e5ad11364346b847a52e36c889311a521519a210efefa2edbb617507",
+  "full_spec_case_digest": "90eed748849ae725c21a2adbd68adc7aced4691193075a75bcedff2df113c22e",
+  "form_outcome_sha256": "50634c3e1b473c6df38ad10c3d2d1e1f7f1aafa126bd6c53a2fa307e6fde0e16",
+  "notes": "Execution-proof metadata for the bounded P1-01 Stage A/Stage B shadow capture. The referenced form-outcome report remains the source for handling measurements and non-claims. This run_meta does not establish effect success, Bureau task execution, productive mutation, P1 efficacy, or P3 authorization."
+}

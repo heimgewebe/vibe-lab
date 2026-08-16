@@ -383,15 +383,16 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "prepared",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "prepared_without_measurement"
+        "falsifiability.assessment_not_checked",
+        "falsifiability.assessment_pending_blocking",
+        "insufficient_proof_assessment"
       ],
       "notes": [
-        "falsifiability_voluntary",
-        "prepared_without_measurement"
+        "insufficient_proof_assessment"
       ],
       "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0",
       "pre_execution_hold": false,

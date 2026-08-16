@@ -10,16 +10,21 @@ experiment:
     within the registered overhead and authority limits.
   status: testing
   category: workflow
-  execution_status: prepared
+  execution_status: executed
   execution_refs:
+    - "results/evidence.jsonl"
     - "p1/cohort-protocol.v1.yml"
     - "p1/activation.md"
     - "p1/decision.yml"
+    - "p1/cases/P1-01/stage-a-screening.yml"
+    - "p1/cases/P1-01/full-spec.json"
+    - "p1/cases/P1-01/form-outcome.yml"
+    - "artifacts/run-p1-01-shadow-capture/run_meta.json"
   created: "2026-08-16"
   updated: "2026-08-16"
   author: "Vibe-Lab maintainers / Grabowski consumer"
-  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
-  iteration: 2
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333; github:heimgewebe/vibe-lab#334; codex-review:heimgewebe/vibe-lab#335"
+  iteration: 3
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -38,21 +43,24 @@ experiment:
           status: pending
           outcome: not_checked
           pending_checks:
-            - "Run the separately authorized P3 six-pair comparison; P0 does not execute it."
+            - "Run the separately authorized P3 six-pair comparison; P0/P1 do not execute it."
           limitations:
-            - "P0 demonstrates schema fit only and supplies no efficacy evidence."
+            - "P0 schema fit and the bounded P1-01 full-form usability capture supply no minimal-versus-full efficacy evidence."
           confidence: low
       - id: "full_form_ceremony_exceeds_signal"
         statement: >
           Full-form intake adds handling cost without enough additional
           decision-relevant information to justify escalation.
         assessment:
-          status: pending
-          outcome: not_checked
+          status: partially_checked
+          outcome: inconclusive
+          evidence_refs:
+            - path: "p1/cases/P1-01/form-outcome.yml"
+              section: "form_attempt"
           pending_checks:
-            - "Measure minimal and full elapsed handling time prospectively in P3."
+            - "Complete the remaining natural P1 shadow cases and, only after separate authorization, the P3 matched comparison."
           limitations:
-            - "No P1 or P3 natural case has been admitted or observed."
+            - "P1-01 is one full-form shadow case with no minimal-form comparator and its effect observation remains pending."
           confidence: low
 
 context:

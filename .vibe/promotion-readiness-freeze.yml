@@ -136,12 +136,17 @@ promotion_readiness_freeze:
 
     - path: experiments/2026-08-16_outcome-bound-operator-loop-p0
       allowed_missing:
-        - prepared_without_measurement
+        - falsifiability.assessment_not_checked
+        - falsifiability.assessment_pending_blocking
+        - insufficient_proof_assessment
       review_date: "2026-09-15"
       reason: >-
-        P1 is active and testing but intentionally incomplete. The current
-        p1/decision.yml carries the stable insufficient-proof assessment; the
-        six-case P1 completion and independently reviewed closeout are still
-        intentionally pending. This is neither a pre_execution_hold nor an
-        efficacy or adoption claim. Remove this exact freeze entry when
-        prepared_without_measurement no longer applies.
+        P1-01 is the first executed full-form shadow case. Its handling evidence
+        partially checks one ceremony/overhead counter-hypothesis but provides no
+        minimal-form comparator or effect closeout; another registered
+        counter-hypothesis remains untested. The current p1/decision.yml therefore
+        correctly remains an insufficient-proof assessment while the remaining
+        P1 cohort, independent P1 closeout and separately authorized P3 comparison
+        are pending. These three exact signals keep promotion blocked without
+        treating bounded P1 execution as efficacy or adoption evidence. Remove or
+        narrow this entry as the corresponding signals disappear.
