@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -130,13 +131,19 @@ def _validate_decision_binding(
     experiment_dir: Path,
 ) -> None:
     experiment_id = item["experiment_id"]
-    canonical_ref = f"{item['path']}/results/decision.yml"
-    if item["source_ref"] != canonical_ref:
+    source_ref_value = item["source_ref"]
+    experiment_prefix = f"{item['path']}/"
+    relative_ref = source_ref_value.removeprefix(experiment_prefix)
+    if (
+        relative_ref == source_ref_value
+        or re.fullmatch(r"(?:results|p[0-9]+)/decision\.yml", relative_ref) is None
+    ):
         raise ValueError(
-            f"{experiment_id}: source_ref must equal canonical decision path {canonical_ref}"
+            f"{experiment_id}: source_ref must be exactly results/decision.yml or "
+            "pN/decision.yml within the experiment directory"
         )
 
-    source_ref = (repo_root / item["source_ref"]).resolve()
+    source_ref = (repo_root / source_ref_value).resolve()
     try:
         source_ref.relative_to(experiment_dir)
     except ValueError as exc:

@@ -14,10 +14,11 @@ experiment:
   execution_refs:
     - "p1/cohort-protocol.v1.yml"
     - "p1/activation.md"
+    - "p1/decision.yml"
   created: "2026-08-16"
   updated: "2026-08-16"
   author: "Vibe-Lab maintainers / Grabowski consumer"
-  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332"
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
   iteration: 2
   evidence_level: experimental
   falsifiability:
@@ -61,8 +62,7 @@ context:
     - "repository-owned registration and active-registry checks"
   language: "Markdown, JSON, YAML"
   environment: >
-    Vibe-Lab experiment-only design surface under Grabowski work lane
-    27b77df47fc09ce7b23d361031c03e52; no productive integration
+    Vibe-Lab experiment-only design surface; no productive integration
 
 evidence:
   format: jsonl

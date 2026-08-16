@@ -161,7 +161,90 @@ class ActiveExperimentRegistryTests(unittest.TestCase):
         payload["experiments"][0]["source_ref"] = (
             "experiments/2026-07-12_example/results/alternate.yml"
         )
-        with self.assertRaisesRegex(ValueError, "canonical decision path"):
+        with self.assertRaisesRegex(
+            ValueError,
+            "exactly results/decision.yml or pN/decision.yml",
+        ):
+            self.validate(payload)
+
+    def test_testing_experiment_accepts_phase_local_decision(self) -> None:
+        phase_dir = self.exp / "p1"
+        phase_dir.mkdir()
+        (phase_dir / "decision.yml").write_text(
+            "verdict: prepared_for_prospective_shadow_capture\n"
+        )
+        payload = self.payload()
+        payload["experiments"][0]["state"] = "testing"
+        payload["experiments"][0]["source_ref"] = (
+            "experiments/2026-07-12_example/p1/decision.yml"
+        )
+
+        result = self.validate(payload)
+
+        self.assertEqual(result["active_count"], 1)
+
+    def test_phase_source_ref_rejects_non_decision_name(self) -> None:
+        phase_dir = self.exp / "p1"
+        phase_dir.mkdir()
+        (phase_dir / "alternate.yml").write_text("verdict: inconclusive\n")
+        payload = self.payload()
+        payload["experiments"][0]["source_ref"] = (
+            "experiments/2026-07-12_example/p1/alternate.yml"
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "exactly results/decision.yml or pN/decision.yml",
+        ):
+            self.validate(payload)
+
+    def test_phase_source_ref_rejects_nested_decision(self) -> None:
+        nested_dir = self.exp / "p1/nested"
+        nested_dir.mkdir(parents=True)
+        (nested_dir / "decision.yml").write_text("verdict: inconclusive\n")
+        payload = self.payload()
+        payload["experiments"][0]["source_ref"] = (
+            "experiments/2026-07-12_example/p1/nested/decision.yml"
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "exactly results/decision.yml or pN/decision.yml",
+        ):
+            self.validate(payload)
+
+    def test_phase_source_ref_rejects_malformed_phase_directory(self) -> None:
+        for malformed in ("p", "phase1", "p-one", "p1x"):
+            with self.subTest(malformed=malformed):
+                payload = self.payload()
+                payload["experiments"][0]["source_ref"] = (
+                    f"experiments/2026-07-12_example/{malformed}/decision.yml"
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "exactly results/decision.yml or pN/decision.yml",
+                ):
+                    self.validate(payload)
+
+    def test_phase_source_ref_rejects_escape(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["source_ref"] = (
+            "experiments/2026-07-12_example/p1/../../outside/decision.yml"
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "exactly results/decision.yml or pN/decision.yml",
+        ):
+            self.validate(payload)
+
+    def test_phase_source_ref_requires_existing_file(self) -> None:
+        payload = self.payload()
+        payload["experiments"][0]["source_ref"] = (
+            "experiments/2026-07-12_example/p9/decision.yml"
+        )
+
+        with self.assertRaisesRegex(ValueError, "source_ref is missing"):
             self.validate(payload)
 
     def test_source_decision_requires_verdict(self) -> None:

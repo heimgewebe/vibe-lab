@@ -1,14 +1,14 @@
 schema_version: "outcome-bound-operator-loop.p1-cohort-protocol.v1"
 experiment_id: "2026-08-16_outcome-bound-operator-loop-p0"
 phase: "P1"
-triggered_by: "github:heimgewebe/vibe-lab#332"
+triggered_by: "github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
 frozen_on: "2026-08-16"
 
 purpose:
   goal_type: "usability_and_observability_preparation"
   statement: >
-    Prepare six ordered full-form shadow slots for independently occurring
-    eligible canonical Bureau intakes without selecting work or changing any
+    Prepare six ordered prospective two-stage shadow slots for independently
+    occurring canonical Bureau intakes without selecting work or changing any
     productive decision.
   efficacy_claim_allowed: false
   activation_supplies_outcome_evidence: false
@@ -16,7 +16,9 @@ purpose:
 activation_state:
   state: "prepared"
   slots_total: 6
-  cases_admitted: 0
+  slots_assigned: 0
+  screening_records: 0
+  form_outcome_records: 0
   outcome_evidence_records: 0
   p1_executed_for_efficacy: false
   case_identities_present: false
@@ -27,6 +29,8 @@ authority_boundary:
   task_execution_effect: false
   routing_effect: false
   queue_effect: false
+  prioritization_effect: false
+  delay_effect: false
   merge_effect: false
   deployment_effect: false
   policy_effect: false
@@ -35,21 +39,27 @@ authority_boundary:
   statement: >
     P1 artifacts are experiment records only. Bureau, GitHub and CI,
     Grabowski, Chronik and Leitstand retain their existing authority. Neither
-    form content nor any P1 finding may control productive work.
+    screening, slot assignment, form handling nor any P1 finding may block,
+    delay, reroute, reprioritize or otherwise alter productive work.
 
 eligibility:
   source: "canonical Bureau intake"
   occurrence: "independently occurring after P1 activation"
+  full_form_completion_is_not_an_eligibility_filter: true
   required:
     - "The intake is natural and independently created outside this experiment."
-    - "The intake is canonical in Bureau before P1 admission."
+    - "The intake is canonical in Bureau before Stage A screening and slot assignment."
     - "The outcome is not known and the case has not been previously observed."
-    - "A complete full outcome-case spec can be frozen before productive mutation."
-    - "The case can remain shadow-only with every authority boundary preserved."
+    - "Productive mutation has not begun when the Stage A record is created."
+    - "The capture can remain shadow-only with every authority boundary preserved."
+  not_required:
+    - "successful completion of the full form"
+    - "successful freeze of a complete full spec"
+    - "a full-spec reference or digest at screening time"
   forbidden:
     - "synthetic case"
     - "retrospective case"
-    - "backfilled case"
+    - "backfilled or replacement case"
     - "outcome-selected case"
     - "case selected, created or reprioritized for this experiment"
 
@@ -57,19 +67,65 @@ admission:
   order: "first eligible intake to P1-01, then strictly ascending through P1-06"
   slot_skip_allowed: false
   prospective_only: true
-  precondition: >
-    Before any productive mutation, freeze the complete full outcome-case spec
-    and its digest. If mutation has begun, stop and do not admit or backfill the
-    slot.
-  evidence_rule: >
-    A future admission is a separate create-only experiment-local record that
-    binds the slot, canonical Bureau intake reference, frozen full-spec
-    reference and digest, and admission time. This frozen protocol is not
-    rewritten to insert case identity.
+  stages:
+    stage_a_screening_and_slot_assignment:
+      timing: "before any full-form attempt and before productive mutation"
+      record_mode: "separate experiment-local append-or-create-only record"
+      action: >
+        Create the screening record and consume the next ordered vacant slot
+        before opening or attempting the full form.
+      required_bindings:
+        - "assigned slot id and ordinal"
+        - "independently occurring canonical Bureau intake reference"
+        - "screening and slot-assignment time"
+        - "proof reference that productive mutation had not begun"
+      prohibited_content:
+        - "full-spec digest"
+        - "full-spec freeze claim"
+        - "outcome-effect assessment"
+      slot_effect: "assigned_and_consumed"
+    stage_b_full_form_attempt:
+      timing: "only after the Stage A record exists"
+      action: >
+        Attempt the full form in shadow without extending the time available
+        before productive mutation would naturally begin.
+      outcomes:
+        full_spec_frozen_before_productive_mutation:
+          classification: "normal_form_outcome"
+          required_bindings:
+            - "Stage A screening record reference"
+            - "complete frozen full-spec reference"
+            - "complete frozen full-spec digest"
+            - "form-handling start and freeze times"
+            - "elapsed form-handling time"
+        form_completion_failed_or_not_frozen:
+          classification: "p1_usability_or_observability_finding_only"
+          required_bindings:
+            - "Stage A screening record reference"
+            - "form-handling start and stop times"
+            - "elapsed form-handling time"
+            - "unclear or redundant fields, with an explicit none value when absent"
+            - "bounded failure or non-freeze reason"
+          action: >
+            Record this outcome and stop P1 capture for the consumed slot. Do
+            not block, delay, reroute, reprioritize or otherwise alter the
+            productive work that would naturally begin.
+          outcome_effect_assessment_allowed: false
+          p3_efficacy_evidence: false
+  no_replacement_or_backfill: >
+    Every Stage A assignment permanently consumes its slot. A Stage B failure
+    remains in the six-slot cohort and must never be replaced or backfilled.
   productive_use: >
-    The full spec is shadow evidence only and must not determine scope,
-    intervention, verifier, route, queue, policy, merge, deployment, technical
-    closeout or any other productive action.
+    Screening and the full form are shadow evidence only and must not determine
+    scope, intervention, verifier, route, queue, priority, timing, policy, merge,
+    deployment, technical closeout or any other productive action.
+
+slot_lifecycle:
+  activation_state: "all_vacant"
+  lifecycle: >
+    Each slot moves once from vacant to assigned-and-consumed when its Stage A
+    record is created, then receives exactly one Stage B normal or failure
+    outcome. Neither outcome permits replacement or backfill.
 
 slots:
   - slot_id: "P1-01"
@@ -95,24 +151,39 @@ measurements:
   claim_boundary: >
     These measures describe P1 full-form usability and outcome observability
     only. P1 has no minimal-form comparison and cannot establish, estimate or
-    imply minimal-versus-full efficacy. P1 measurements do not count toward the
-    registered P3 efficacy thresholds.
+    imply minimal-versus-full efficacy. Neither a normal form outcome nor a
+    form_completion_failed_or_not_frozen outcome counts toward registered P3
+    efficacy thresholds.
   fields:
+    - id: "slot_and_form_outcome"
+      capture: >
+        Bind each form outcome to its prior Stage A record and record exactly
+        full_spec_frozen_before_productive_mutation or
+        form_completion_failed_or_not_frozen.
     - id: "spec_form_handling_time"
       capture: >
-        Record form-handling start, full-spec freeze time and elapsed duration
-        for the shadow form only; exclude productive implementation time.
+        Record form-handling start, stop or freeze time and elapsed duration for
+        every Stage B attempt; exclude productive implementation time.
     - id: "unclear_or_redundant_fields"
       capture: >
         Record each field identified during handling as unclear or redundant,
-        the classification and a bounded reason; absence is recorded explicitly.
+        its classification and a bounded reason; absence is recorded explicitly.
+        This field is required for failed or non-frozen attempts as well as
+        normal form outcomes.
+    - id: "form_completion_failure_reason"
+      capture: >
+        For form_completion_failed_or_not_frozen, record why completion or
+        freeze could not occur before productive mutation would naturally begin.
+        Treat it only as a P1 usability or observability finding.
     - id: "pre_mutation_scope_intervention_verifier_changes"
+      applies_to: "full_spec_frozen_before_productive_mutation only"
       capture: >
         Before productive mutation, record separately whether full-form handling
-        changed the stated scope, smallest intervention or verifier relative to
-        the canonical intake, with a bounded description. The record is
-        observational and cannot apply the change to productive work.
+        identified a change to the stated scope, smallest intervention or
+        verifier relative to the canonical intake. The record is observational
+        and cannot apply the change to productive work.
     - id: "effect_observation_state"
+      applies_to: "full_spec_frozen_before_productive_mutation only"
       capture: >
         After the frozen observation window, record supported,
         partially_supported, not_supported, contradicted, pending or
@@ -120,32 +191,46 @@ measurements:
     - id: "authority_violations"
       capture: >
         Record zero or the observed violation count and references. Any nonzero
-        value triggers an immediate stop and cannot be traded against usability.
+        value triggers an immediate cohort stop and cannot be traded against
+        usability.
     - id: "technical_vs_domain_divergence"
+      applies_to: "full_spec_frozen_before_productive_mutation only"
       capture: >
         Record whether referenced authoritative technical closeout and the
         separately reviewed domain-effect observation align, diverge, remain
         pending or are not observable. Reference technical truth; never copy it.
     - id: "additional_actionable_finding"
+      applies_to: "full_spec_frozen_before_productive_mutation only"
       capture: >
         Record whether full-form handling surfaced an additional finding that a
         reviewer judged concrete and actionable relative to the canonical
         intake, with its review reference. It is not a minimal-versus-full
         comparison and is not a P3 additional-actionable-decision count.
 
+local_failure_rule:
+  condition: >
+    The full form cannot be completed and frozen before productive mutation
+    would naturally begin.
+  action: >
+    Record form_completion_failed_or_not_frozen, stop P1 capture for that slot
+    and let productive work proceed unchanged. The slot remains consumed.
+  not_a_cohort_stop: true
+  not_outcome_effect_assessment: true
+  not_p3_efficacy_evidence: true
+
 stop_rules:
-  action: "stop admission or assessment and preserve all current records"
+  action: "stop cohort assignment or assessment and preserve all current records"
   conditions:
-    - "Productive mutation begins before the applicable full spec is frozen."
+    - "Productive mutation had already begun before the applicable Stage A record was created."
     - "A spec or observation digest fails to resolve exactly."
-    - "An existing observation would need mutation instead of an appended correction."
+    - "An existing screening, form-outcome or observation record would need mutation instead of an appended correction."
     - "Technical closeout truth would need to be copied instead of referenced."
     - "Operator-intake, execution-source identity or authority roles cannot remain distinct."
-    - "Evidence authority or the observation window is missing."
-    - "A case is synthetic, retrospective, backfilled or selected after its outcome."
+    - "Evidence authority or the observation window is missing for a normal form outcome."
+    - "A case is synthetic, retrospective, backfilled, replaced or selected after its outcome."
     - "Privacy or secrets would require raw transcript or raw response capture."
-    - "A Vibe-Lab artifact attempts Bureau, Grabowski, Chronik, Leitstand, runtime, routing, queue, policy, merge-policy or deployment integration."
-    - "Any automatic policy, routing, queue, merge, deployment or runtime effect occurs."
+    - "A Vibe-Lab artifact attempts Bureau, Grabowski, Chronik, Leitstand, runtime, routing, queue, priority, policy, merge-policy or deployment integration."
+    - "Any blocking, delay, rerouting, reprioritization, automatic policy, queue, merge, deployment or runtime effect occurs."
     - "Any authority violation occurs."
     - "P1 reaches expiry without its registered independently reviewed closeout."
     - "P3 is started before an independently reviewed P1 closeout and separate P3 authorization."
@@ -153,13 +238,16 @@ stop_rules:
 closeout:
   artifact_path: "p1/closeout.md"
   current_state: "not_created"
-  separate_from_activation: true
+  separate_from_activation_and_current_decision: true
   independent_review_required: true
   create_when: >
-    Create the separate closeout only after all six natural slots have complete
-    reviewed P1 records, or when a stop rule or expiry closes the cohort early.
+    Create the separate closeout only after all six slots have been assigned and
+    consumed and each has a Stage B normal or failure outcome, or when a cohort
+    stop rule or expiry closes the cohort early.
   required_content:
-    - "admitted slot count and any preserved vacancy"
+    - "assigned and consumed slot count, including any preserved vacancy after early stop"
+    - "normal form outcome and form_completion_failed_or_not_frozen counts"
+    - "confirmation that no failed slot was replaced or backfilled"
     - "P1 usability and observability measurements"
     - "stop-rule and authority-violation assessment"
     - "limitations and explicit minimal-versus-full non-claim"
@@ -172,7 +260,8 @@ closeout:
 immutability:
   protocol_revision: 1
   rule: >
-    This activation freezes protocol revision 1. Do not edit it to admit cases,
-    add identities, change measures or relax stop rules. Future case records and
-    the eventual closeout are separate artifacts; any protocol correction needs
-    an explicit reviewed successor and cannot rewrite prior state.
+    This activation freezes protocol revision 1. Do not edit it to assign slots,
+    add identities, insert outcomes, change measures or relax stop rules. Future
+    Stage A, Stage B and closeout records are separate artifacts; any protocol
+    correction needs an explicit reviewed successor and cannot rewrite prior
+    state.

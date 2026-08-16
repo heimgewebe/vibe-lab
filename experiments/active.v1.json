@@ -33,7 +33,7 @@
       "primary_metric": "additional_actionable_decisions",
       "review_at": "2026-09-15T00:00:00Z",
       "expires_at": "2026-10-15T00:00:00Z",
-      "source_ref": "experiments/2026-08-16_outcome-bound-operator-loop-p0/results/decision.yml"
+      "source_ref": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/decision.yml"
     }
   ]
 }

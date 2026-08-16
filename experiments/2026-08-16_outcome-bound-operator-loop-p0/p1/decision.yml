@@ -1,0 +1,61 @@
+schema_version: "outcome-bound-operator-loop.p1-activation-decision.v1"
+artifact_type: "p1_activation_decision"
+verdict: "prepared_for_prospective_shadow_capture"
+date: "2026-08-16"
+triggered_by: "github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
+issue_ref: "github:heimgewebe/vibe-lab#332"
+
+scope:
+  phase: "P1"
+  protocol_ref: "p1/cohort-protocol.v1.yml"
+  protocol_revision: 1
+  preparation_state: "prepared"
+  active_registry_state: "testing"
+  artifact_role: "current_activation_decision"
+
+activation_state:
+  slots_total: 6
+  slots_assigned: 0
+  screening_records: 0
+  form_outcome_records: 0
+  case_identities_present: false
+  outcome_evidence_records: 0
+
+decision: >
+  Prepare the six ordered prospective two-stage P1 shadow slots. Stage A must
+  consume the next slot before Stage B attempts the full form. This decision
+  authorizes preparation and shadow capture only; it records no execution or
+  outcome finding.
+
+evidence_boundary:
+  p1_efficacy_assessment_allowed: false
+  minimal_versus_full_effect_established: false
+  p3_efficacy_evidence_present: false
+  p3_execution_authorized: false
+  statement: >
+    P1 may produce usability and observability findings, including an observable
+    failed or non-frozen form attempt. Neither those findings nor this activation
+    decision assess form efficacy or satisfy any P3 threshold.
+
+authority_boundary:
+  productive_work_effect_allowed: false
+  blocking_allowed: false
+  delay_allowed: false
+  rerouting_allowed: false
+  reprioritization_allowed: false
+  replacement_or_backfill_allowed: false
+
+historical_evidence:
+  - ref: "results/decision.yml"
+    phase: "P0"
+    role: "prior_historical_execution_assessment"
+    treatment: "referenced_without_replacement_or_reinterpretation"
+
+not_closeout:
+  p1_closeout: false
+  closeout_ref: "p1/closeout.md (not created)"
+  closes_p1: false
+  authorizes_p3: false
+  statement: >
+    This is the current P1 activation decision only. It cannot be used as P1
+    closeout, evidence of completed slots or authorization to execute P3.
