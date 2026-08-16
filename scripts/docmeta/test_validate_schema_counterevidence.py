@@ -19,6 +19,7 @@ Testfälle:
 
 from __future__ import annotations
 
+import json
 import sys
 import tempfile
 import unittest
@@ -261,7 +262,7 @@ evidence_summary:
 
 
 class AdoptionDecisionCoverageTests(unittest.TestCase):
-    """Coverage accepts adoption on any canonical experiment decision surface."""
+    """Coverage accepts adoption only on the current canonical decision surface."""
 
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
@@ -283,35 +284,132 @@ experiment:
     def tearDown(self) -> None:
         vs.errors.clear()
 
-    def _write_decision(self, relative_path: str, decision_type: str) -> None:
+    def _write_decision(
+        self, relative_path: str, decision_type: str, verdict: str
+    ) -> None:
         path = self.experiment_dir / relative_path
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(
-            f'decision_type: "{decision_type}"\n',
+            f'decision_type: "{decision_type}"\nverdict: "{verdict}"\n',
             encoding="utf-8",
         )
 
-    def test_phase_adoption_assessment_satisfies_coverage(self) -> None:
+    def _write_active_registry(self, source_ref: str) -> None:
+        registry_path = self.repo_root / "experiments" / "active.v1.json"
+        registry_path.write_text(
+            json.dumps(
+                {
+                    "experiments": [
+                        {
+                            "experiment_id": self.experiment_dir.name,
+                            "path": "experiments/adopted-exp",
+                            "source_ref": source_ref,
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
+    def test_phase_adoption_assessment_with_adopt_satisfies_coverage(self) -> None:
         """A phase adoption may coexist with a historical root result assessment."""
-        self._write_decision("results/decision.yml", "result_assessment")
-        self._write_decision("p1/decision.yml", "adoption_assessment")
+        self._write_decision("results/decision.yml", "result_assessment", "inconclusive")
+        self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
 
         vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
 
         self.assertEqual(vs.errors, [])
 
+    def test_phase_adoption_assessment_with_reject_fails_coverage(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "reject")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("decision_type=adoption_assessment mit verdict=adopt", vs.errors[0])
+
+    def test_phase_adoption_assessment_with_defer_fails_coverage(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "defer")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("decision_type=adoption_assessment mit verdict=adopt", vs.errors[0])
+
+    def test_newer_phase_reject_overrides_older_adopt(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
+        self._write_decision("p2/decision.yml", "adoption_assessment", "reject")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("experiments/adopted-exp/p2/decision.yml", vs.errors[0])
+
+    def test_newer_phase_adopt_overrides_older_reject(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "reject")
+        self._write_decision("p2/decision.yml", "adoption_assessment", "adopt")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(vs.errors, [])
+
+    def test_numeric_phase_ordering_selects_p12_over_p2(self) -> None:
+        self._write_decision("p2/decision.yml", "adoption_assessment", "reject")
+        self._write_decision("p12/decision.yml", "adoption_assessment", "adopt")
+
+        resolved = vs.resolve_current_decision_path(
+            self.experiment_dir,
+            repo_root=self.repo_root,
+        )
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(resolved, self.experiment_dir / "p12" / "decision.yml")
+        self.assertEqual(vs.errors, [])
+
+    def test_active_binding_overrides_numerically_newer_phase(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
+        self._write_decision("p12/decision.yml", "adoption_assessment", "reject")
+        self._write_active_registry(
+            "experiments/adopted-exp/p1/decision.yml"
+        )
+
+        resolved = vs.resolve_current_decision_path(
+            self.experiment_dir,
+            repo_root=self.repo_root,
+        )
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(resolved, self.experiment_dir / "p1" / "decision.yml")
+        self.assertEqual(vs.errors, [])
+
+    def test_unresolvable_active_binding_fails_coverage_closed(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
+        self._write_active_registry(
+            "experiments/adopted-exp/p2/decision.yml"
+        )
+
+        with self.assertRaises(ValueError):
+            vs.resolve_current_decision_path(
+                self.experiment_dir,
+                repo_root=self.repo_root,
+            )
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("fail-closed", vs.errors[0])
+
     def test_no_canonical_adoption_assessment_fails_coverage(self) -> None:
-        self._write_decision("results/decision.yml", "result_assessment")
+        self._write_decision("results/decision.yml", "result_assessment", "inconclusive")
 
         vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
 
         self.assertEqual(len(vs.errors), 1)
         self.assertIn("keine lesbare kanonische Decision-Surface", vs.errors[0])
-        self.assertIn("decision_type=adoption_assessment", vs.errors[0])
+        self.assertIn("decision_type=adoption_assessment mit verdict=adopt", vs.errors[0])
 
     def test_noncanonical_phase_path_does_not_satisfy_coverage(self) -> None:
-        self._write_decision("results/decision.yml", "result_assessment")
-        self._write_decision("phase1/decision.yml", "adoption_assessment")
+        self._write_decision("results/decision.yml", "result_assessment", "inconclusive")
+        self._write_decision("phase1/decision.yml", "adoption_assessment", "adopt")
 
         vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
 
