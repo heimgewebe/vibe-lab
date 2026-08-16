@@ -4,7 +4,7 @@ status: designed
 canonicality: exploratory
 created: "2026-08-16"
 updated: "2026-08-16"
-triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop"
+triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2"
 relations:
   - type: references
     target: contracts/outcome-case-spec.v0.schema.json
@@ -20,6 +20,11 @@ authoritative source refs would be sealed only for a real prospectively admitted
 record. Every full example requires the canonical `operator_intake_ref` and a
 lowercase SHA-256 `source_request_digest`; work-lane and execution-source refs
 remain absent until the case actually acquires those identities.
+
+Every observation uses digest scope `record_without_record_sha256`: remove only
+the current `digest_binding.record_sha256`, then RFC 8785-canonicalize and hash
+the remaining complete record. Algorithm, canonicalization mode, scope and
+`previous_record_sha256` are therefore protected by the current record digest.
 
 ## D1 — one bounded execution
 
@@ -137,3 +142,12 @@ remain absent until the case actually acquires those identities.
   applies the review-bound taxonomy;
 - decision/follow-up: do not guess; append a later correction only if new
   authoritative evidence appears within policy.
+
+## Pending observation
+
+- state: `pending`;
+- strength: `insufficient`;
+- evidence refs: empty or limited to preliminary references;
+- established: empty, because the desired effect has not been concluded;
+- not established: desired change, contradiction, causality and efficacy;
+- decision/follow-up: remains pending with no fabricated `decision_ref`.

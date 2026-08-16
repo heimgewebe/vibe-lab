@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:heimgewebe:vibe-lab:experiment:outcome-observation.v0",
   "title": "Outcome Observation v0 (experiment-local)",
-  "$comment": "triggered_by: conversation:user-request-2026-08-16-outcome-bound-operator-loop. Append-only, digest-bound P0 experiment-local shape; technical closeout is referenced and never duplicated.",
+  "$comment": "triggered_by: conversation:user-request-2026-08-16-outcome-bound-operator-loop; codex-review:heimgewebe/vibe-lab#329-P2. Append-only, digest-bound P0 experiment-local shape; technical closeout is referenced and never duplicated. Substantive terminal states require evidence, non-insufficient qualitative strength and an established claim; pending cannot appear concluded; insufficient_evidence remains explicitly insufficient.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -237,7 +237,84 @@
             }
           ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["state"],
+            "properties": {
+              "state": {
+                "enum": [
+                  "supported",
+                  "partially_supported",
+                  "not_supported",
+                  "contradicted"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              },
+              "qualitative_strength": {
+                "not": {
+                  "const": "insufficient"
+                }
+              },
+              "claims": {
+                "properties": {
+                  "established": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["state"],
+            "properties": {
+              "state": {
+                "const": "pending"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "qualitative_strength": {
+                "const": "insufficient"
+              },
+              "claims": {
+                "properties": {
+                  "established": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["state"],
+            "properties": {
+              "state": {
+                "const": "insufficient_evidence"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "qualitative_strength": {
+                "const": "insufficient"
+              }
+            }
+          }
+        }
+      ]
     },
     "digest_binding": {
       "type": "object",
@@ -257,13 +334,16 @@
           "const": "rfc8785"
         },
         "scope": {
-          "const": "record_without_digest_binding"
+          "const": "record_without_record_sha256",
+          "description": "Hash scope: remove only /digest_binding/record_sha256 from the complete observation, canonicalize the remaining record with RFC 8785, then apply SHA-256. The hashed payload therefore includes digest_binding.algorithm, digest_binding.canonicalization, digest_binding.scope and digest_binding.previous_record_sha256."
         },
         "record_sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Lowercase SHA-256 of the RFC 8785 canonicalized complete observation after removing only this property."
         },
         "previous_record_sha256": {
+          "description": "Digest of the immediate predecessor record for a correction, or null for the first record. This property is part of the record_sha256 payload.",
           "oneOf": [
             {
               "type": "null"
