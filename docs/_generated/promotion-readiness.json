@@ -413,15 +413,33 @@
       "warnings": [
         "falsifiability_assessment_inconclusive"
       ]
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "designed",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [
+        "designed_not_executed"
+      ],
+      "notes": [
+        "designed_not_executed",
+        "falsifiability_voluntary"
+      ],
+      "path": "experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2",
+      "pre_execution_hold": true,
+      "promotion_ready": false,
+      "status": "designed",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 26,
+    "experiments_checked": 27,
     "historical_escape": 1,
     "not_ready": 16,
-    "pre_execution_hold": 4,
+    "pre_execution_hold": 5,
     "ready": 5,
     "warnings": 7
   },

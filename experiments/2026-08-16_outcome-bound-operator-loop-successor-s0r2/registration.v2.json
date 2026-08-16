@@ -1,0 +1,117 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-16_outcome-bound-operator-loop-successor-s0r2",
+  "registered_at": "2026-08-16T18:13:17Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether an effect-lineage prospective-admission rule is semantically stable enough to justify a separately reviewed natural admission-only shadow proposal.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-16-continue-outcome-bound",
+      "confirmed_at": "2026-08-16T18:11:00Z",
+      "valid_until": "2026-08-31T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can eight fixed adversarial cases be classified with zero material disagreement when prior productive work is tested for effect-lineage membership rather than separated only by the latest intervention label?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-16-continue-outcome-bound"
+  },
+  "intervention": {
+    "name": "effect-lineage prospective admission boundary",
+    "description": "Treat earlier productive work as part of the candidate intervention lineage when it already produced the desired change or material sub-effect, exercised the same operative transition/mechanism, or is merely being residualised into automation, durability, hardening, generalisation, repetition or packaging. Require evidence-supported distinctness; otherwise fail closed as indeterminate."
+  },
+  "control_condition": {
+    "id": "rejected_s0_intervention_relative_boundary",
+    "description": "Use the rejected S0 intervention-relative rule whose anti-renaming guard still allowed residual/durability relabelling and classified candidate-05002 as eligible."
+  },
+  "treatment_condition": {
+    "id": "s0r2_effect_lineage_boundary",
+    "description": "Apply the effect-overlap, transition-overlap and residualisation tests with an evidence hierarchy that does not permit later favourable author prose alone to establish distinctness."
+  },
+  "measurement": {
+    "primary_metric": "material_independent_review_disagreements",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze author classifications for exactly eight adversarial paper cases, then obtain an independent exact-head semantic review. Count any changed classification, required indeterminate downgrade, credible lineage-renaming escape, or finding that distinct-transition controls are rejected merely because prior productive work exists.",
+    "success": "Zero material disagreements, zero credible lineage-renaming escapes and zero authority effects. Success establishes paper-level semantic stability only and does not start a natural cohort.",
+    "falsification": "One or more material disagreements, a viable lineage/residualisation escape, collapse to blanket prior-mutation exclusion, need for a new validator/control surface, or any productive authority effect rejects this rule revision for pilot use.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "paper_review_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure the independent semantic review handling time only. Any need for new production/control-plane fields remains a separate falsification condition, not a cost tradeoff."
+    }
+  },
+  "comparison": {
+    "mode": "paired",
+    "unit": "same fixed case shape evaluated against rejected S0 and S0-R2 where applicable",
+    "minimum_control": 8,
+    "minimum_treatment": 8,
+    "comparability_constraints": [
+      "same frozen evidence package used by author and independent reviewer",
+      "no productive mutation performed to generate a case",
+      "author classifications frozen before independent review",
+      "P1 and S0 verdicts referenced and never rewritten",
+      "synthetic controls never count as natural-case evidence"
+    ],
+    "confounders": [
+      "retrospective evidence completeness",
+      "reviewer knowledge of the S0 rejection",
+      "heterogeneous task classes",
+      "synthetic controls are cleaner than natural historical cases"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen P1 records",
+      "merged rejected S0 protocol and independent review",
+      "primary or contemporaneous GitHub/Bureau/StateStore evidence already referenced by those records",
+      "named independent exact-head semantic review"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-17T12:00:00Z",
+  "expires_at": "2026-08-31T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-16_outcome-bound-operator-loop-successor-s0r2",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-16-continue-outcome-bound",
+      "reviewed_at": "2026-08-16T18:11:00Z",
+      "rationale": "The continuation authorizes only this bounded paper successor. It does not authorize S1, a natural cohort, validator, production integration or a new authority surface."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}
