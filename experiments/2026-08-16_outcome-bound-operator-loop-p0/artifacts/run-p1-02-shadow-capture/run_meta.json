@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-p1-02-shadow-capture",
+  "generated_at": "2026-08-16T15:08:31Z",
+  "executor": "controller:chatgpt+grabowski",
+  "command": "grabowski_create_text(stage-a-screening.yml) -> grabowski_create_text(full-spec.json) -> grabowski_create_text(form-outcome.yml) -> grabowski_create_text(trigger-provenance.yml)",
+  "exit_code": 0,
+  "test_output_file": "p1/cases/P1-02/form-outcome.yml",
+  "provenance_level": "self_reported",
+  "triggered_by": "conversation:user-request-2026-08-16-outcome-bound-operator-loop",
+  "trigger_provenance_ref": "p1/cases/P1-02/trigger-provenance.yml",
+  "work_lane_ref": "grabowski-work-lane:79e3b005c655cc5db37991e4f9434332",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#337",
+  "natural_case_ref": "bureau-candidate:candidate-fd9e6910953960cb2349a430",
+  "stage_a_sha256": "2d04b2d54e7fa4f5c2aa95659041a42e17ad4d01ae9e4b86ca22ec40fef211f4",
+  "full_spec_file_sha256": "f1447404c85971fc9eeb135673dc49f0650cf5d715f3a1a8f8ed2140dedb632a",
+  "full_spec_case_digest": "4876d2eb25a210b30cc10a9d55583b70c4f85efd7125b5bd4cb573e88ebdd699",
+  "form_outcome_sha256": "2549f9446ea3cc202148eb6c97190b4ca7fa6be4e4ca2c017d8d9cf1a52b3135",
+  "trigger_provenance_sha256": "eb7401470042ece6aa9be9fe6bac433380d7ded676dc2392be0185f0517f94c9",
+  "notes": "Execution-proof metadata for the bounded P1-02 Stage A/Stage B shadow capture. The referenced form-outcome remains the source for handling measurements and non-claims. This run_meta does not establish effect success, Bureau task execution, productive mutation, P1 efficacy, or P3 authorization."
+}

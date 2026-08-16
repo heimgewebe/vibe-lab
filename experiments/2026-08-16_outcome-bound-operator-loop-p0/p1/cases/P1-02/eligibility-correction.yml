@@ -1,0 +1,68 @@
+schema_version: "outcome-bound-operator-loop.p1-eligibility-correction.v1"
+experiment_id: "2026-08-16_outcome-bound-operator-loop-p0"
+phase: "P1"
+slot_id: "P1-02"
+case_id: "p1-02-bureau-standalone-operator-intake-readiness-promotion"
+created_at: "2026-08-16T15:17:38Z"
+correction_mode: "append_only_interpretation_correction"
+trigger:
+  kind: "independent_protocol_review"
+  reviewer: "codex architecture read-only eligibility audit"
+  review_job_ref: "grabowski-job:8e1b296f1a7b"
+  review_receipt_sha256: "d2a145c94ef647ec2873c119e5eed420c4ac701f5d9d1a3ed5ce835e4825977c"
+  review_payload_sha256: "5c5e28403f2a608a5f7a575858d60a4c72f0c712ccd69ce90fc9019da5e9e896"
+finding:
+  eligibility: "ineligible"
+  cohort_action: "immediate_stop"
+  stop_rule: "Productive mutation had already begun before the applicable Stage A record was created."
+  rationale: >
+    Before canonical candidate candidate-fd9e6910953960cb2349a430 and before its
+    Stage A record, PR #2014 and PR #2015 had already merged and T033/T034 had
+    already been productively published into the authoritative Bureau StateStore
+    as planned TaskSpecs. Protocol revision 1 does not limit productive mutation
+    to implementation of the newly proposed repair and defines no antecedent,
+    diagnostic or recovery exception. Therefore the Stage A eligibility and the
+    later frozen-before-productive-mutation interpretation cannot be endorsed for
+    cohort purposes.
+prior_records:
+  preservation_required: true
+  rewrite_allowed: false
+  bindings:
+    - path: "stage-a-screening.yml"
+      sha256: "2d04b2d54e7fa4f5c2aa95659041a42e17ad4d01ae9e4b86ca22ec40fef211f4"
+      recorded_claim_not_endorsed_after_review: "screening.eligibility_result=eligible and timing before productive mutation"
+    - path: "full-spec.json"
+      sha256: "f1447404c85971fc9eeb135673dc49f0650cf5d715f3a1a8f8ed2140dedb632a"
+      recorded_claim_not_endorsed_after_review: "freeze.frozen_before_productive_mutation=true"
+    - path: "form-outcome.yml"
+      sha256: "2549f9446ea3cc202148eb6c97190b4ca7fa6be4e4ca2c017d8d9cf1a52b3135"
+      recorded_claim_not_endorsed_after_review: "classification=full_spec_frozen_before_productive_mutation"
+    - path: "trigger-provenance.yml"
+      sha256: "eb7401470042ece6aa9be9fe6bac433380d7ded676dc2392be0185f0517f94c9"
+      recorded_claim_not_endorsed_after_review: "reason states prospective admission before productive implementation"
+    - path: "../../../artifacts/run-p1-02-shadow-capture/run_meta.json"
+      sha256: "c80ccda982972b4ce24ff8adfa5528ad673b4e8e029905c72543d8b10628bd6c"
+      recorded_claim_not_endorsed_after_review: "execution proof does not repair eligibility"
+slot_effect:
+  assigned_and_consumed: true
+  replacement_allowed: false
+  backfill_allowed: false
+  p1_03_through_p1_06_state: "preserved_vacant"
+cohort_effect:
+  further_assignment_allowed: false
+  further_assessment_allowed: false
+  early_closeout_required: true
+  p1_efficacy_assessment_allowed: false
+  p3_efficacy_evidence_present: false
+  p3_execution_authorized: false
+authority_boundary:
+  changes_bureau_truth: false
+  changes_productive_work: false
+  changes_routing_or_queue: false
+  changes_merge_or_deployment: false
+  reopens_technical_closeout: false
+  establishes_effect_success: false
+  establishes_minimal_vs_full_efficacy: false
+immutability:
+  record_mode: "create_only"
+  statement: "This append-only correction changes cohort interpretation only. It must not rewrite, delete or replace any prior P1-02 capture record."

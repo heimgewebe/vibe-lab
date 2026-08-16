@@ -1,0 +1,71 @@
+{
+  "schema_version": "outcome-case-spec.v0",
+  "case_id": "p1-02-bureau-standalone-operator-intake-readiness-promotion",
+  "form": "full",
+  "freeze": {
+    "status": "frozen",
+    "frozen_at": "2026-08-16T15:05:32Z",
+    "frozen_before_productive_mutation": true
+  },
+  "case_spec": {
+    "identity": {
+      "operator_intake_ref": "bureau-candidate:candidate-fd9e6910953960cb2349a430",
+      "source_request_digest": "56d7efa544ea9c88cd94ea17f56e5e47ae4dd8012c723218e87f25b40792a3cf",
+      "work_lane_ref": "grabowski-work-lane:79e3b005c655cc5db37991e4f9434332",
+      "execution_source_identity_refs": [
+        "github:heimgewebe/vibe-lab#337"
+      ]
+    },
+    "distance_and_risk": {
+      "distance": "D2",
+      "risk": "moderate",
+      "rationale": "The immediate technical intervention is a bounded post-merge lifecycle transition for an exact standalone Operator-Intake TaskSpec. The claimed benefit is downstream: reviewed standalone tasks such as T033/T034 become normally ready and claimable only after verified merge, without a manual readiness bypass or weakening lifecycle gates. Because the path mutates authoritative readiness and can expose work to normal claiming, intervention risk is moderate even though the Vibe-Lab shadow record itself has no productive authority.",
+      "risk_override": {
+        "applied": false
+      }
+    },
+    "problem": "After PR #2014 and PR #2015 merged, BUREAU-CONTROL-PLANE-V3-T033 and T034 exist in the authoritative StateStore as revision 1 planned TaskSpecs with Git/StateStore digest equality, but the normal lifecycle reconciler intentionally does not infer readiness for standalone planned tasks without dependencies or child gates. Operator-Intake publication also does not establish readiness, and task_specs.put is not a permitted unrestricted lifecycle setter. The merged tasks can therefore remain non-claimable despite satisfying their publication boundary.",
+    "affected_actor": "Bureau operators and workers that need reviewed standalone Operator-Intake tasks to enter the ordinary claimable lifecycle without manual state bypasses or weakened merge, revision, capability or lease gates.",
+    "baseline": {
+      "status": "observed",
+      "description": "At intake, PR #2014 and PR #2015 were already merged; T033/T034 were authoritative StateStore revision 1 planned TaskSpecs with Git/StateStore digest equality. Lifecycle reconciliation refused to promote them because they are standalone planned tasks without deterministic dependency/child-gate readiness evidence, while operator-task-publish explicitly does not establish readiness and direct task_specs.put has no transition policy.",
+      "evidence_refs": [
+        "bureau-event:7759",
+        "github:heimgewebe/bureau#2014",
+        "github:heimgewebe/bureau#2015",
+        "bureau-task:BUREAU-CONTROL-PLANE-V3-T033",
+        "bureau-task:BUREAU-CONTROL-PLANE-V3-T034"
+      ]
+    },
+    "desired_change": "One canonical fail-closed post-merge lifecycle path can CAS-promote an exact reviewed standalone Operator-Intake TaskSpec from planned to ready only after a verified merge receipt and exact TaskSpec digest match. The path preserves divergent authoritative revisions, fails closed on PR/head/spec/StateStore drift, exposes revision-bound readback, and allows T033/T034 to become normally ready without treating publication itself or an unrestricted task_specs.put as readiness authority.",
+    "hypothesis": "The persistent non-claimability of these merged standalone Operator-Intake tasks is caused by a missing explicit post-merge transition contract, not by missing TaskSpec publication or dependency reconciliation. A narrow merge-receipt- and digest-bound CAS promotion path will close that lifecycle gap while preserving the existing fail-closed authority boundaries.",
+    "smallest_testable_intervention": "Add exactly one typed post-merge readiness-promotion path for standalone Operator-Intake TaskSpecs that accepts only an exact merged PR/head/spec binding, verifies the authoritative StateStore revision and digest, performs a planned-to-ready CAS for that one task, rejects divergent or stale state, and returns revision-bound readback. Do not generalize task_specs.put, alter lifecycle inference for other task classes, or weaken normal claim gates.",
+    "alternative_path": "Leave standalone merged Operator-Intake tasks planned and require a separately reviewed manual lifecycle action or a broader lifecycle-reconciler redesign. This avoids adding a dedicated transition path but either preserves the current operational gap or expands the change surface beyond the smallest testable intervention.",
+    "observation_plan": {
+      "indicator": "When the separately authorized path is exercised, an exact already-merged standalone Operator-Intake TaskSpec remains non-claimable before valid merge proof, then only the bound planned task transitions to ready after merge/head/spec/StateStore checks pass; stale or divergent revisions are rejected; authoritative readback reports the new revision/state; and T033/T034 can enter the ordinary claim path without any readiness bypass.",
+      "authority": "Bureau StateStore lifecycle/readback is primary state authority; GitHub merge/head evidence and the normal Operator-Intake publication receipts establish the external merge/spec bindings. Vibe-Lab only references those records and cannot promote, claim, route, merge, deploy or close Bureau work.",
+      "window": "From the first separately authorized exercise of the merge-bound promotion path on an exact merged standalone Operator-Intake TaskSpec through immediate authoritative StateStore and ordinary claimability readback. Until those events exist, effect assessment remains pending or insufficient_evidence."
+    },
+    "falsifier": "The path can make an unmerged or mismatched TaskSpec ready, accepts stale/divergent StateStore state, requires an unrestricted task_specs.put or weakened lifecycle gate, promotes more than the exact bound task, lacks revision-bound readback, or T033/T034 remain unable to enter ordinary claimable lifecycle after a technically successful exact promotion.",
+    "decision_rules": {
+      "if_supported": "Treat the narrow merge-bound CAS transition as sufficient evidence for this standalone Operator-Intake readiness gap; normal Bureau review may retain or reuse the mechanism for the same bounded class, but P1 itself must not change policy, routing or task state.",
+      "if_not_supported": "Do not claim that merge-bound promotion solves standalone readiness. Preserve any technically correct implementation closeout and let normal Bureau authority create or refine a separate follow-up only from the observed remaining blocker; do not broaden task_specs.put or lifecycle inference merely to make the pilot pass.",
+      "if_insufficient_evidence": "Make no effect-success claim, do not relabel any technical closeout, and keep the Outcome Observation pending or insufficient_evidence until exact merge, CAS and post-transition StateStore/claimability readbacks are independently available."
+    },
+    "non_goals": [
+      "Do not promote, publish, claim or execute the Bureau candidate from Vibe-Lab.",
+      "Do not delay productive Bureau work to complete P1 capture.",
+      "Do not make Operator-Intake publication itself establish readiness.",
+      "Do not turn task_specs.put into a generic lifecycle state setter.",
+      "Do not change readiness inference for dependent, child-gated or unrelated task classes.",
+      "Do not alter queue, routing, priority, lease, merge or deployment policy.",
+      "Do not treat this case as P3 efficacy evidence or a minimal-versus-full comparison."
+    ]
+  },
+  "spec_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785",
+    "scope": "/case_spec",
+    "value": "4876d2eb25a210b30cc10a9d55583b70c4f85efd7125b5bd4cb573e88ebdd699"
+  }
+}
