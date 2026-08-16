@@ -1,0 +1,67 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-p0"
+  hypothesis: >
+    A frozen Outcome Case spec and a digest-bound append-only observation can
+    separate intended outcome, technical closeout truth and reviewed outcome
+    assessment without duplicating authority; the minimal form should remain the
+    default unless a later matched comparison demonstrates material decision gain
+    within the registered overhead and authority limits.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-16"
+  updated: "2026-08-16"
+  author: "Vibe-Lab maintainers / Grabowski consumer"
+  triggered_by: "conversation:user-request-2026-08-16-outcome-bound-operator-loop"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject or defer the full-form escalation if six future matched natural
+      cases yield fewer than two additional actionable decisions over the minimal
+      form, if median full-form overhead exceeds twice minimal-form overhead or
+      ten minutes, or if any case duplicates technical truth or grants Vibe-Lab
+      routing, queue, policy, merge, deployment or runtime authority.
+    counter_hypotheses:
+      - id: "minimal_form_is_sufficient"
+        statement: >
+          Desired change and falsifier capture every actionable decision that the
+          full form would add for the bounded natural cases.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Run the separately authorized P3 six-pair comparison; P0 does not execute it."
+          limitations:
+            - "P0 demonstrates schema fit only and supplies no efficacy evidence."
+          confidence: low
+      - id: "full_form_ceremony_exceeds_signal"
+        statement: >
+          Full-form intake adds handling cost without enough additional
+          decision-relevant information to justify escalation.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Measure minimal and full elapsed handling time prospectively in P3."
+          limitations:
+            - "No P1 or P3 natural case has been admitted or observed."
+          confidence: low
+
+context:
+  tools:
+    - "paper review"
+    - "experiment-local JSON Schema Draft 2020-12"
+    - "repository-owned registration and active-registry checks"
+  language: "Markdown, JSON, YAML"
+  environment: >
+    Vibe-Lab experiment-only design surface under Grabowski work lane
+    27b77df47fc09ce7b23d361031c03e52; no productive integration
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

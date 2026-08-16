@@ -1,0 +1,119 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-16_outcome-bound-operator-loop-p0",
+  "registered_at": "2026-08-16T07:00:00Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether Outcome Case intake should keep the minimal form as its default and whether a full-form escalation is justified for bounded higher-distance or risk-overridden cases.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-16-outcome-bound-operator-loop",
+      "confirmed_at": "2026-08-16T00:00:00Z",
+      "valid_until": "2026-10-15T00:00:00Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does the full Outcome Case form produce at least two additional actionable decisions across six matched natural cases while staying within the registered overhead and authority limits?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-16-outcome-bound-operator-loop"
+  },
+  "intervention": {
+    "name": "full Outcome Case form",
+    "description": "For the same natural case, freeze the full outcome-case-spec.v0 fields instead of only desired_change, falsifier and an optional evidence_ref."
+  },
+  "control_condition": {
+    "id": "minimal_form",
+    "description": "Freeze only desired_change, falsifier and an optional evidence_ref before productive mutation."
+  },
+  "treatment_condition": {
+    "id": "full_form",
+    "description": "Freeze request-bound identity, distance and risk, problem and actor, baseline or explicit gap, desired change, hypothesis, smallest intervention, applicable alternative path, observation plan, falsifier, the supported/not-supported/insufficient-evidence decision branches and non-goals before productive mutation."
+  },
+  "measurement": {
+    "primary_metric": "additional_actionable_decisions",
+    "direction": "higher_is_better",
+    "unit": "count",
+    "minimum_material_effect": 2,
+    "method": "After P1 and only under separate execution authorization, compare six prospectively matched natural cases and count distinct reviewed decisions that the full form changes or makes actionable beyond the minimal rendering; field count and prose volume do not count.",
+    "success": "Across all six matched pairs, full form yields at least two additional actionable decisions, median full overhead is no more than twice minimal and no more than ten minutes, and authority violations equal zero.",
+    "falsification": "Full form yields zero additional actionable decisions, breaches either overhead ceiling, duplicates technical truth, or causes any authority violation. One additional decision is inconclusive, and minimal remains the default.",
+    "outcome_criteria": {
+      "success_threshold": 2,
+      "harm_or_falsification_threshold": 0
+    },
+    "cost_metric": {
+      "id": "form_handling_overhead_seconds",
+      "unit": "seconds",
+      "method": "Measure elapsed time from opening each form until its spec is frozen, excluding productive execution and technical closeout work."
+    }
+  },
+  "comparison": {
+    "mode": "paired",
+    "unit": "same prospectively admitted natural Outcome Case rendered once in minimal form and once in full form before outcome review",
+    "minimum_control": 6,
+    "minimum_treatment": 6,
+    "comparability_constraints": [
+      "same natural case identity and operator-intake source",
+      "same desired change and falsifier",
+      "same technical closeout references and observation window",
+      "same reviewer authority and actionable-decision definition"
+    ],
+    "confounders": [
+      "reviewer learning between renderings",
+      "case difficulty and distance mix",
+      "risk override frequency",
+      "technical closeout availability",
+      "repository or external-source drift"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen outcome-case-spec.v0 digest",
+      "append-only outcome-observation.v0 record",
+      "referenced GitHub and CI technical closeout",
+      "Grabowski execution receipt reference",
+      "named human assessment",
+      "reviewed actionable-decision comparison"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-09-15T00:00:00Z",
+  "expires_at": "2026-10-15T00:00:00Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-16_outcome-bound-operator-loop-p0",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-16_outcome-bound-operator-loop-p0"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-16-outcome-bound-operator-loop",
+      "reviewed_at": "2026-08-16T00:00:00Z",
+      "rationale": "The explicit user review authorizes only this bounded experiment-local paper and schema-fit surface; it authorizes no global contract or productive integration."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

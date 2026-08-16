@@ -1,0 +1,340 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:heimgewebe:vibe-lab:experiment:outcome-case-spec.v0",
+  "title": "Outcome Case Spec v0 (experiment-local)",
+  "$comment": "triggered_by: conversation:user-request-2026-08-16-outcome-bound-operator-loop. P0 experiment-local paper/schema-fit contract; no global or productive authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "form",
+    "freeze",
+    "case_spec",
+    "spec_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "outcome-case-spec.v0"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "form": {
+      "enum": ["minimal", "full"]
+    },
+    "freeze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "frozen_at",
+        "frozen_before_productive_mutation"
+      ],
+      "properties": {
+        "status": {
+          "const": "frozen"
+        },
+        "frozen_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "frozen_before_productive_mutation": {
+          "const": true
+        }
+      }
+    },
+    "case_spec": {
+      "type": "object"
+    },
+    "spec_digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "canonicalization", "scope", "value"],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "canonicalization": {
+          "const": "rfc8785"
+        },
+        "scope": {
+          "const": "/case_spec"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "form": {
+            "const": "minimal"
+          }
+        },
+        "required": ["form"]
+      },
+      "then": {
+        "properties": {
+          "case_spec": {
+            "$ref": "#/$defs/minimalSpec"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "form": {
+            "const": "full"
+          }
+        },
+        "required": ["form"]
+      },
+      "then": {
+        "properties": {
+          "case_spec": {
+            "$ref": "#/$defs/fullSpec"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonBlank": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+    },
+    "minimalSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["desired_change", "falsifier"],
+      "properties": {
+        "desired_change": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "falsifier": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "evidence_ref": {
+          "$ref": "#/$defs/ref"
+        }
+      }
+    },
+    "fullSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "distance_and_risk",
+        "problem",
+        "affected_actor",
+        "baseline",
+        "desired_change",
+        "hypothesis",
+        "smallest_testable_intervention",
+        "observation_plan",
+        "falsifier",
+        "decision_rules",
+        "non_goals"
+      ],
+      "properties": {
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operator_intake_ref",
+            "source_request_digest"
+          ],
+          "properties": {
+            "operator_intake_ref": {
+              "$ref": "#/$defs/ref"
+            },
+            "source_request_digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "work_lane_ref": {
+              "$ref": "#/$defs/ref"
+            },
+            "execution_source_identity_refs": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/ref"
+              }
+            }
+          }
+        },
+        "distance_and_risk": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["distance", "risk", "rationale", "risk_override"],
+          "properties": {
+            "distance": {
+              "enum": ["D0", "D1", "D2", "D3", "L"]
+            },
+            "risk": {
+              "enum": ["low", "moderate", "high", "critical"]
+            },
+            "rationale": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "risk_override": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["applied"],
+                  "properties": {
+                    "applied": {
+                      "const": false
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "applied",
+                    "minimum_form",
+                    "reason",
+                    "review_ref"
+                  ],
+                  "properties": {
+                    "applied": {
+                      "const": true
+                    },
+                    "minimum_form": {
+                      "const": "full"
+                    },
+                    "reason": {
+                      "$ref": "#/$defs/nonBlank"
+                    },
+                    "review_ref": {
+                      "$ref": "#/$defs/ref"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "problem": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "affected_actor": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "baseline": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "description", "evidence_refs"],
+              "properties": {
+                "status": {
+                  "const": "observed"
+                },
+                "description": {
+                  "$ref": "#/$defs/nonBlank"
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/ref"
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "description"],
+              "properties": {
+                "status": {
+                  "const": "explicit_gap"
+                },
+                "description": {
+                  "$ref": "#/$defs/nonBlank"
+                }
+              }
+            }
+          ]
+        },
+        "desired_change": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "hypothesis": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "smallest_testable_intervention": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "alternative_path": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "observation_plan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["indicator", "authority", "window"],
+          "properties": {
+            "indicator": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "authority": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "window": {
+              "$ref": "#/$defs/nonBlank"
+            }
+          }
+        },
+        "falsifier": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "decision_rules": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "if_supported",
+            "if_not_supported",
+            "if_insufficient_evidence"
+          ],
+          "properties": {
+            "if_supported": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "if_not_supported": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "if_insufficient_evidence": {
+              "$ref": "#/$defs/nonBlank"
+            }
+          }
+        },
+        "non_goals": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonBlank"
+          }
+        }
+      }
+    }
+  }
+}
