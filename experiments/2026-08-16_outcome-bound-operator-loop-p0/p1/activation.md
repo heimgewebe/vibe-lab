@@ -25,7 +25,10 @@ activates only prospective preparation for six natural two-stage full-form shado
 captures. All six slots, `P1-01` through `P1-06`, are **vacant**: **0/6 slots are
 assigned**, no screening or form-outcome record exists, no case identity is
 present and the activation supplies **zero outcome evidence**. No efficacy run
-has occurred.
+has occurred. These 0/6 and zero-record statements are the frozen activation
+snapshot, not live active state. Mutable Stage A and Stage B progress remains
+only in separate append-or-create-only capture records and is not mirrored into
+this receipt or the current decision.
 
 For each independently occurring eligible canonical Bureau intake, Stage A first
 creates a separate append-or-create-only screening and slot-assignment record.

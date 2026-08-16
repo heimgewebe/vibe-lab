@@ -260,5 +260,65 @@ evidence_summary:
         self.assertEqual(vs.errors, [])
 
 
+class AdoptionDecisionCoverageTests(unittest.TestCase):
+    """Coverage accepts adoption on any canonical experiment decision surface."""
+
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.repo_root = Path(self.tmp.name)
+        self.experiment_dir = self.repo_root / "experiments" / "adopted-exp"
+        self.experiment_dir.mkdir(parents=True)
+        (self.experiment_dir / "manifest.yml").write_text(
+            """\
+experiment:
+  status: adopted
+  adoption_basis: executed
+  execution_status: executed
+""",
+            encoding="utf-8",
+        )
+        vs.errors.clear()
+
+    def tearDown(self) -> None:
+        vs.errors.clear()
+
+    def _write_decision(self, relative_path: str, decision_type: str) -> None:
+        path = self.experiment_dir / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            f'decision_type: "{decision_type}"\n',
+            encoding="utf-8",
+        )
+
+    def test_phase_adoption_assessment_satisfies_coverage(self) -> None:
+        """A phase adoption may coexist with a historical root result assessment."""
+        self._write_decision("results/decision.yml", "result_assessment")
+        self._write_decision("p1/decision.yml", "adoption_assessment")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(vs.errors, [])
+
+    def test_no_canonical_adoption_assessment_fails_coverage(self) -> None:
+        self._write_decision("results/decision.yml", "result_assessment")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("keine lesbare kanonische Decision-Surface", vs.errors[0])
+        self.assertIn("decision_type=adoption_assessment", vs.errors[0])
+
+    def test_noncanonical_phase_path_does_not_satisfy_coverage(self) -> None:
+        self._write_decision("results/decision.yml", "result_assessment")
+        self._write_decision("phase1/decision.yml", "adoption_assessment")
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("keine lesbare kanonische Decision-Surface", vs.errors[0])
+        self.assertNotIn("phase1/decision.yml", vs.errors[0])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

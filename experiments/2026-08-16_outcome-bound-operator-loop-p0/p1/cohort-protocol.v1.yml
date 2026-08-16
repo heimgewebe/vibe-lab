@@ -14,6 +14,7 @@ purpose:
   activation_supplies_outcome_evidence: false
 
 activation_state:
+  snapshot_role: "frozen_activation_snapshot"
   state: "prepared"
   slots_total: 6
   slots_assigned: 0
@@ -22,6 +23,21 @@ activation_state:
   outcome_evidence_records: 0
   p1_executed_for_efficacy: false
   case_identities_present: false
+
+active_decision_freshness:
+  mutable_progress_rule: >
+    Mutable slot-level Stage A and Stage B progress stays in separate
+    append-or-create-only capture records. It is not mirrored into the active
+    decision.
+  active_decision_rule: >
+    The active decision carries no mutable counters and assesses only whether
+    completion of the full six-case P1 cohort plus its independently reviewed
+    closeout is proven. Slot-level Stage A or Stage B progress does not make
+    that scoped insufficient-proof claim false.
+  successor_publication_gate: >
+    Before a reviewed P1 closeout or any other state that makes the scoped claim
+    false, a successor current decision and a coherent active-registry state
+    must be published together.
 
 authority_boundary:
   mode: "shadow_observation_only"

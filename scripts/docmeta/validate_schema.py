@@ -409,21 +409,29 @@ def validate_decision_files(
         print("  (no decision.yml files found outside _template/_archive)")
 
 
-def validate_adoption_decision_coverage():
+def validate_adoption_decision_coverage(*, repo_root: Path = REPO_ROOT):
     """Symmetrische cross-file Regel: echte Adoption braucht adoption_assessment.
 
     Ergänzt ``validate_decision_files()`` um die Gegenrichtung. Dort wurde nur
     die Eingangsrichtung erzwungen (``adoption_assessment`` → Manifest muss
     ``execution_status ∈ {executed, replicated}`` tragen). Ohne die hier
     implementierte Gegenrichtung bleibt die Umgehung offen, dass ein Manifest
-    Adoption behauptet, während das zugehörige ``decision.yml`` nur
-    ``result_assessment`` ist.
+    Adoption behauptet, während keine kanonische Decision-Surface des
+    Experiments eine ``adoption_assessment`` trägt.
 
     Pflichtregel:
         experiment.status == "adopted"
         und experiment.adoption_basis ∈ {"executed", "replicated"}
-        → ``results/decision.yml`` muss existieren und
-          ``decision_type == "adoption_assessment"`` tragen.
+        → Mindestens eine lesbare, von ``canonical_decision_paths()`` gelieferte
+          Decision-Surface des Experiments muss
+          ``decision_type == "adoption_assessment"`` tragen. Eine historische
+          ``results/decision.yml`` mit ``result_assessment`` darf neben einer
+          phasenlokalen ``adoption_assessment`` bestehen.
+
+    Abgrenzung:
+        Diese Funktion prüft nur die Abdeckung. Schema- und Semantikvalidierung
+        aller kanonischen Decision-Surfaces verbleibt in
+        ``validate_decision_files()``.
 
     Historische Ausnahme:
         experiment.status == "adopted" und adoption_basis == "reconstructed"
@@ -434,7 +442,8 @@ def validate_adoption_decision_coverage():
 
     Hintergrund: docs/concepts/execution-bound-epistemics.md §10.1–10.2.
     """
-    experiments_dir = REPO_ROOT / "experiments"
+    experiments_dir = repo_root / "experiments"
+    canonical_paths = canonical_decision_paths(experiments_dir)
     checked = 0
 
     for manifest_path in sorted(experiments_dir.glob("*/manifest.yml")):
@@ -444,7 +453,7 @@ def validate_adoption_decision_coverage():
         try:
             manifest = load_yaml(manifest_path)
         except Exception as e:
-            errors.append(f"  ❌ {manifest_path.relative_to(REPO_ROOT)}: YAML-Fehler — {e}")
+            errors.append(f"  ❌ {manifest_path.relative_to(repo_root)}: YAML-Fehler — {e}")
             continue
 
         experiment = manifest.get("experiment", {})
@@ -459,39 +468,46 @@ def validate_adoption_decision_coverage():
 
         checked += 1
         exp_dir = manifest_path.parent
-        rel_exp = exp_dir.relative_to(REPO_ROOT)
-        decision_path = exp_dir / "results" / "decision.yml"
+        rel_exp = exp_dir.relative_to(repo_root)
+        experiment_decisions = [
+            path for path in canonical_paths if path.parent.parent == exp_dir
+        ]
+        adoption_paths: list[Path] = []
+        for decision_path in experiment_decisions:
+            try:
+                decision = load_yaml(decision_path)
+            except Exception:
+                # YAML-Fehler meldet validate_decision_files() separat. Für die
+                # Abdeckungsregel ist diese Surface nicht lesbar.
+                continue
+            if (
+                isinstance(decision, dict)
+                and decision.get("decision_type") == "adoption_assessment"
+            ):
+                adoption_paths.append(decision_path)
 
-        if not decision_path.is_file():
+        if not adoption_paths:
+            examined = ", ".join(
+                path.relative_to(repo_root).as_posix()
+                for path in experiment_decisions
+            ) or "keine"
             errors.append(
                 f"  ❌ {rel_exp}: Manifest behauptet Adoption "
-                f"(status=adopted, adoption_basis={adoption_basis}), aber "
-                f"results/decision.yml fehlt. Echte Adoption verlangt ein "
-                f"decision.yml mit decision_type=adoption_assessment "
+                f"(status=adopted, adoption_basis={adoption_basis}), aber keine "
+                f"lesbare kanonische Decision-Surface trägt "
+                f"decision_type=adoption_assessment. Geprüfte kanonische "
+                f"Surfaces: {examined}. Resultatsbewertung ≠ Adoptionsentscheidung "
                 f"(siehe docs/concepts/execution-bound-epistemics.md §10.1)."
             )
             continue
 
-        try:
-            decision = load_yaml(decision_path)
-        except Exception as e:
-            # YAML-Fehler meldet validate_decision_files() bereits separat.
-            # Hier nichts doppelt loggen.
-            continue
-
-        decision_type = decision.get("decision_type")
-        if decision_type != "adoption_assessment":
-            errors.append(
-                f"  ❌ {decision_path.relative_to(REPO_ROOT)}: Manifest behauptet "
-                f"Adoption (status=adopted, adoption_basis={adoption_basis}), "
-                f"also muss decision_type=adoption_assessment sein, "
-                f"gefunden: '{decision_type}'. "
-                f"Resultatsbewertung ≠ Adoptionsentscheidung "
-                f"(siehe docs/concepts/execution-bound-epistemics.md §10.1)."
-            )
-            continue
-
-        print(f"  ✅ {rel_exp}: adoption_basis={adoption_basis} ↔ adoption_assessment")
+        adoption_refs = ", ".join(
+            path.relative_to(repo_root).as_posix() for path in adoption_paths
+        )
+        print(
+            f"  ✅ {rel_exp}: adoption_basis={adoption_basis} ↔ "
+            f"adoption_assessment ({adoption_refs})"
+        )
 
     if checked == 0:
         print("  (kein Experiment mit status=adopted + adoption_basis ∈ {executed, replicated})")

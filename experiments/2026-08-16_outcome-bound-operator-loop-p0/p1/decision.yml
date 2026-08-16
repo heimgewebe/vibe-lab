@@ -1,17 +1,16 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
 artifact_type: "p1_activation_decision"
-verdict: "not_executed"
+verdict: "insufficient_proof"
 date: "2026-08-16"
 reviewer: "Vibe-Lab P1 activation review"
 triggered_by: "github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
 issue_ref: "github:heimgewebe/vibe-lab#332"
 rationale: >
-  The testing state means that the prospective P1 cohort is active and its
-  protocol is prepared; it does not mean that a natural P1 slot has executed.
-  The activation state remains 0/6, with zero screening, form-outcome, or
-  outcome-evidence records, so this execution assessment is not_executed. This
-  decision claims no P1 efficacy or closeout and does not authorize P3.
+  P1 testing and capture are active, but complete P1 execution of the full
+  six-case cohort plus its independent closeout are not yet proven. Slot-level
+  Stage A or Stage B progress does not invalidate this bounded claim. This is
+  not an efficacy assessment, P1 closeout or P3 authorization.
 
 scope:
   phase: "P1"
@@ -21,19 +20,20 @@ scope:
   active_registry_state: "testing"
   artifact_role: "current_activation_decision"
 
-activation_state:
-  slots_total: 6
-  slots_assigned: 0
-  screening_records: 0
-  form_outcome_records: 0
-  case_identities_present: false
-  outcome_evidence_records: 0
+assessment_scope:
+  claim: >
+    Proof of completion of the full six-case P1 cohort plus its independently
+    reviewed closeout is insufficient.
+  progress_boundary: >
+    This decision makes no slot-level progress claim. Stage A screening and
+    assignment records or Stage B form-outcome records may accumulate without
+    invalidating the scoped completion-and-closeout assessment.
 
 decision: >
-  Prepare the six ordered prospective two-stage P1 shadow slots. Stage A must
-  consume the next slot before Stage B attempts the full form. This decision
-  authorizes preparation and shadow capture only; it records no execution or
-  outcome finding.
+  Continue the six ordered prospective two-stage P1 shadow cohort under the
+  frozen protocol. Stage A must consume the next slot before Stage B attempts
+  the full form. This decision authorizes shadow capture only and records no
+  efficacy or slot-level progress finding.
 
 evidence_boundary:
   p1_efficacy_assessment_allowed: false
