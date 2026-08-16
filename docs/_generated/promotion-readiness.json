@@ -388,16 +388,13 @@
       "historical_escape": false,
       "missing": [
         "falsifiability.assessment_not_checked",
-        "falsifiability.assessment_pending_blocking",
-        "insufficient_proof_assessment"
+        "falsifiability.assessment_pending_blocking"
       ],
-      "notes": [
-        "insufficient_proof_assessment"
-      ],
+      "notes": [],
       "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0",
       "pre_execution_hold": false,
       "promotion_ready": false,
-      "status": "testing",
+      "status": "inconclusive",
       "warnings": []
     }
   ],

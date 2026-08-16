@@ -138,15 +138,14 @@ promotion_readiness_freeze:
       allowed_missing:
         - falsifiability.assessment_not_checked
         - falsifiability.assessment_pending_blocking
-        - insufficient_proof_assessment
       review_date: "2026-09-15"
       reason: >-
-        P1-01 is the first executed full-form shadow case. Its handling evidence
-        partially checks one ceremony/overhead counter-hypothesis but provides no
-        minimal-form comparator or effect closeout; another registered
-        counter-hypothesis remains untested. The current p1/decision.yml therefore
-        correctly remains an insufficient-proof assessment while the remaining
-        P1 cohort, independent P1 closeout and separately authorized P3 comparison
-        are pending. These three exact signals keep promotion blocked without
-        treating bounded P1 execution as efficacy or adoption evidence. Remove or
-        narrow this entry as the corresponding signals disappear.
+        P1 terminated early under its frozen prospective-cohort stop rule after
+        P1-02 was independently found ineligible because productive mutation had
+        already begun before Stage A. The current execution assessment is terminal
+        rather than insufficient-proof, so that signal has been removed from this
+        freeze. The two remaining exact signals are still real: one registered
+        counter-hypothesis was never checked and another remains partially checked
+        with a pending comparison that the early-stopped P1 did not authorize.
+        Keep only these bounded falsifiability blockers; do not treat early-stop
+        execution as efficacy, adoption evidence, or P3 authorization.

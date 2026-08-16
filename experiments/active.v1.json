@@ -23,17 +23,6 @@
       "review_at": "2026-08-15T00:00:00Z",
       "expires_at": "2026-09-01T00:00:00Z",
       "source_ref": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml"
-    },
-    {
-      "experiment_id": "2026-08-16_outcome-bound-operator-loop-p0",
-      "path": "experiments/2026-08-16_outcome-bound-operator-loop-p0",
-      "state": "testing",
-      "consumer": "Grabowski",
-      "decision_target": "Does the full Outcome Case form produce at least two additional actionable decisions across six matched natural cases while staying within the registered overhead and authority limits?",
-      "primary_metric": "additional_actionable_decisions",
-      "review_at": "2026-09-15T00:00:00Z",
-      "expires_at": "2026-10-15T00:00:00Z",
-      "source_ref": "experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/decision.yml"
     }
   ]
 }

@@ -1,39 +1,73 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
-artifact_type: "p1_activation_decision"
-verdict: "insufficient_proof"
+artifact_type: "p1_early_stop_successor_decision"
+verdict: "executed"
 date: "2026-08-16"
-reviewer: "Vibe-Lab P1 activation review"
-triggered_by: "github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
-issue_ref: "github:heimgewebe/vibe-lab#332"
+reviewer: "Vibe-Lab P1 stop-rule controller"
+triggered_by: "github:heimgewebe/vibe-lab#337; grabowski-job:8e1b296f1a7b"
+issue_ref: "github:heimgewebe/vibe-lab#337"
 rationale: >
-  P1 testing and capture are active, but complete P1 execution of the full
-  six-case cohort plus its independent closeout are not yet proven. Slot-level
-  Stage A or Stage B progress does not invalidate this bounded claim. This is
-  not an efficacy assessment, P1 closeout or P3 authorization.
+  P1 execution reached a terminal registered stop-rule state after the independent
+  protocol review proved that productive mutation for P1-02 had already begun
+  before its Stage A record. The prior current decision to continue the six-slot
+  cohort is therefore no longer current. `executed` here means the activated P1
+  protocol was actually run and terminated through its own stop rule; it does not
+  mean that six valid cases completed, that P1 efficacy was established, or that
+  P3 is authorized.
 
 scope:
   phase: "P1"
   protocol_ref: "p1/cohort-protocol.v1.yml"
   protocol_revision: 1
-  preparation_state: "prepared"
-  active_registry_state: "testing"
-  artifact_role: "current_activation_decision"
+  execution_state: "terminal_early_stop"
+  stop_trigger_slot: "P1-02"
+  active_registry_state: "removed_from_active_registry"
+  artifact_role: "current_successor_decision"
 
 assessment_scope:
   claim: >
-    Proof of completion of the full six-case P1 cohort plus its independently
-    reviewed closeout is insufficient.
-  progress_boundary: >
-    This decision makes no slot-level progress claim. Stage A screening and
-    assignment records or Stage B form-outcome records may accumulate without
-    invalidating the scoped completion-and-closeout assessment.
+    The P1 cohort is terminal for further assignment and assessment under protocol
+    revision 1 because the first stop condition was independently established for
+    P1-02.
+  slot_state: >
+    P1-01 remains the first consumed shadow slot. P1-02 remains permanently
+    consumed with all original records preserved plus an append-only eligibility
+    correction. P1-03 through P1-06 remain vacant and cannot be backfilled after
+    the cohort stop.
+  execution_boundary: >
+    This execution assessment records protocol terminality only. It does not
+    convert P1-02 into a valid prospective case and does not assess whether the
+    full form improves decisions.
 
 decision: >
-  Continue the six ordered prospective two-stage P1 shadow cohort under the
-  frozen protocol. Stage A must consume the next slot before Stage B attempts
-  the full form. This decision authorizes shadow capture only and records no
-  efficacy or slot-level progress finding.
+  Stop all further P1 cohort assignment and assessment. Preserve P1-01 and every
+  P1-02 capture artifact unchanged, use the append-only eligibility correction as
+  the current interpretation, remove the experiment from the active registry,
+  and create the separate early-stop closeout required by the frozen protocol.
+
+next_steps:
+  - "Create p1/closeout.md only after this successor decision and the coherent active-registry removal are committed and published together."
+  - "Obtain an independent exact-head review of the early-stop closeout."
+  - "Do not assign P1-03 through P1-06 and do not replace or backfill P1-02."
+  - "Do not start P2 or P3 from this execution assessment."
+
+evidence_summary:
+  consumed_slots: 2
+  valid_prospective_slots_before_stop: 1
+  stop_triggering_preserved_slots: 1
+  preserved_vacant_slots: 4
+  authority_violations_observed: 0
+  minimal_vs_full_efficacy_established: false
+
+evidence_refs:
+  - "p1/cohort-protocol.v1.yml"
+  - "p1/cases/P1-01/stage-a-screening.yml"
+  - "p1/cases/P1-01/form-outcome.yml"
+  - "p1/cases/P1-02/stage-a-screening.yml"
+  - "p1/cases/P1-02/form-outcome.yml"
+  - "p1/cases/P1-02/eligibility-correction.yml"
+  - "grabowski-job:8e1b296f1a7b"
+  - "grabowski-review-receipt:d2a145c94ef647ec2873c119e5eed420c4ac701f5d9d1a3ed5ce835e4825977c"
 
 evidence_boundary:
   p1_efficacy_assessment_allowed: false
@@ -41,9 +75,9 @@ evidence_boundary:
   p3_efficacy_evidence_present: false
   p3_execution_authorized: false
   statement: >
-    P1 may produce usability and observability findings, including an observable
-    failed or non-frozen form attempt. Neither those findings nor this activation
-    decision assess form efficacy or satisfy any P3 threshold.
+    Early stop is process evidence about the prospective cohort protocol, not a
+    result assessment of the Outcome Case method. P1 has no minimal-form control
+    arm and cannot satisfy any P3 efficacy threshold.
 
 authority_boundary:
   productive_work_effect_allowed: false
@@ -52,18 +86,15 @@ authority_boundary:
   rerouting_allowed: false
   reprioritization_allowed: false
   replacement_or_backfill_allowed: false
+  bureau_truth_changed_by_decision: false
 
-historical_evidence:
-  - ref: "results/decision.yml"
-    phase: "P0"
-    role: "prior_historical_execution_assessment"
-    treatment: "referenced_without_replacement_or_reinterpretation"
-
-not_closeout:
+closeout_state:
   p1_closeout: false
-  closeout_ref: "p1/closeout.md (not created)"
-  closes_p1: false
+  closeout_ref: "p1/closeout.md (not yet created at successor decision publication)"
+  closeout_required: true
+  independent_review_required: true
   authorizes_p3: false
   statement: >
-    This is the current P1 activation decision only. It cannot be used as P1
-    closeout, evidence of completed slots or authorization to execute P3.
+    This successor decision terminalizes cohort assignment before the closeout is
+    created. The later closeout is a distinct artifact and requires independent
+    review; neither this decision nor that closeout alone authorizes P3.
