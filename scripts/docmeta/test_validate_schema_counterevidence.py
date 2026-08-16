@@ -20,6 +20,7 @@ Testfälle:
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -158,6 +159,105 @@ class P2CounterevidenceRuleTests(unittest.TestCase):
         result = vs.check_counterevidence_rule(data, rel)
         self.assertIsNotNone(result)
         self.assertIn(rel, result)
+
+
+class CanonicalDecisionPathTests(unittest.TestCase):
+    """Regressions for canonical root and one-level phase decision surfaces."""
+
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.repo_root = Path(self.tmp.name)
+        self.experiments_dir = self.repo_root / "experiments"
+        self.experiments_dir.mkdir()
+        vs.errors.clear()
+
+    def tearDown(self) -> None:
+        vs.errors.clear()
+
+    def _write(self, relative_path: str, content: str = "verdict: not_executed\n") -> Path:
+        path = self.experiments_dir / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        return path
+
+    def test_discovery_includes_only_root_results_and_numeric_phase_decisions(self) -> None:
+        for valid in (
+            "foo/results/decision.yml",
+            "foo/p1/decision.yml",
+            "foo/p12/decision.yml",
+        ):
+            self._write(valid)
+        for excluded in (
+            "foo/p/decision.yml",
+            "foo/p1x/decision.yml",
+            "foo/phase1/decision.yml",
+            "foo/p1/nested/decision.yml",
+            "foo/nested/p1/decision.yml",
+            "_template/p1/decision.yml",
+            "_archive/results/decision.yml",
+        ):
+            self._write(excluded)
+
+        discovered = {
+            path.relative_to(self.experiments_dir).as_posix()
+            for path in vs.canonical_decision_paths(self.experiments_dir)
+        }
+
+        self.assertEqual(
+            discovered,
+            {
+                "foo/results/decision.yml",
+                "foo/p1/decision.yml",
+                "foo/p12/decision.yml",
+            },
+        )
+
+    def test_phase_decision_uses_same_schema(self) -> None:
+        self._write(
+            "foo/p1/decision.yml",
+            """\
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-08-16"
+rationale: "No phase slot has executed."
+""",
+        )
+
+        vs.validate_decision_files(
+            repo_root=self.repo_root,
+            schema_path=vs.SCHEMA_MAP["decision"],
+        )
+
+        self.assertTrue(any("reviewer" in error for error in vs.errors), vs.errors)
+
+    def test_phase_adoption_semantics_use_experiment_root_manifest(self) -> None:
+        self._write(
+            "foo/manifest.yml",
+            "experiment:\n  execution_status: executed\n",
+        )
+        self._write(
+            "foo/p12/decision.yml",
+            """\
+schema_version: "0.1.0"
+decision_type: "adoption_assessment"
+verdict: "defer"
+confidence: "low"
+date: "2026-08-16"
+reviewer: "test-reviewer"
+rationale: "Execution exists, but adoption remains deferred."
+evidence_summary:
+  observations: 1
+""",
+        )
+
+        vs.validate_decision_files(
+            repo_root=self.repo_root,
+            schema_path=vs.SCHEMA_MAP["decision"],
+        )
+
+        self.assertEqual(vs.errors, [])
 
 
 if __name__ == "__main__":

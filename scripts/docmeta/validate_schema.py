@@ -6,9 +6,10 @@ Prüft:
 - catalog/**/*.md Frontmatter gegen schemas/catalog.entry.schema.json
 - catalog/combos/**/*.md Frontmatter gegen schemas/combo.schema.json
 - experiments/*/results/evidence.jsonl auf Struktur und Taxonomie
-- experiments/*/results/decision.yml gegen schemas/decision.schema.json,
+- experiments/*/results/decision.yml und experiments/*/pN/decision.yml (N numerisch)
+  gegen schemas/decision.schema.json,
   plus cross-file Regel: decision_type=adoption_assessment erfordert
-  execution_status ∈ {executed, replicated} im Geschwister-manifest.yml
+  execution_status ∈ {executed, replicated} im Manifest des Experiment-Roots
   (gem. docs/concepts/execution-bound-epistemics.md §10.2)
 
 Benötigt: python3 -m pip install pyyaml jsonschema rfc3339-validator
@@ -59,6 +60,9 @@ FAILURE_MODES_PLACEHOLDER_RE = re.compile(r"-\s*\[\s*\]\s*TODO", re.IGNORECASE)
 # Hinweis: Nur bei adopted/Promotion Pflicht. Für testing ist failure_modes.md
 # empfohlen, aber nicht erzwungen (siehe CONTRIBUTING.md, quality-gates.yml).
 FAILURE_MODES_REQUIRED_STATUSES: frozenset[str] = frozenset({"adopted"})
+
+# Genau einstufige phasenlokale Decision-Surface unter dem Experiment-Root.
+PHASE_DECISION_DIR_RE = re.compile(r"p[0-9]+")
 
 # Pfad zum docmeta-Kanonicalschema (contracts/, nicht schemas/)
 DOCMETA_SCHEMA_PATH = REPO_ROOT / "contracts" / "docmeta.schema.json"
@@ -297,17 +301,42 @@ def validate_evidence_files():
         print("  (no evidence.jsonl files found outside _template/_archive)")
 
 
-def validate_decision_files():
-    """Validiert experiments/*/results/decision.yml gegen decision.schema.json.
+def canonical_decision_paths(experiments_dir: Path) -> list[Path]:
+    """Entdeckt genau die kanonischen Experiment-Decision-Surfaces.
+
+    Erlaubt sind ``<experiment>/results/decision.yml`` und genau einstufige
+    numerische Phasenpfade ``<experiment>/pN/decision.yml``. Die Set-Nutzung
+    hält die Ausgabe auch dann duplikatfrei, wenn die Discovery später über
+    mehrere äquivalente Suchpfade gespeist wird.
+    """
+    decisions: set[Path] = set()
+    for decision_path in experiments_dir.glob("*/*/decision.yml"):
+        experiment_dir = decision_path.parent.parent
+        if experiment_dir.name.startswith("_"):
+            continue  # Skip _template, _archive
+        surface = decision_path.parent.name
+        if surface == "results" or PHASE_DECISION_DIR_RE.fullmatch(surface):
+            decisions.add(decision_path)
+    return sorted(decisions)
+
+
+def validate_decision_files(
+    *,
+    repo_root: Path = REPO_ROOT,
+    schema_path: Path | None = None,
+):
+    """Validiert kanonische Experiment-Decisions gegen decision.schema.json.
 
     Zusätzlich zur Schema-Validierung erzwingt diese Funktion die cross-file Regel
     aus execution-bound-epistemics.md §10.2:
 
-    Wenn ``decision_type == "adoption_assessment"``, muss das Geschwister-Manifest
-    (``../manifest.yml``) ``experiment.execution_status ∈ {executed, replicated}``
-    tragen. Andere Decision-Typen haben keine execution_status-Bedingung.
+    Wenn ``decision_type == "adoption_assessment"``, muss das Manifest im
+    Experiment-Root ``experiment.execution_status ∈ {executed, replicated}``
+    tragen. Das gilt identisch für ``results/decision.yml`` und
+    ``pN/decision.yml``. Andere Decision-Typen haben keine
+    execution_status-Bedingung.
     """
-    schema_path = SCHEMA_MAP["decision"]
+    schema_path = schema_path or SCHEMA_MAP["decision"]
     if not schema_path.exists():
         errors.append(f"  Schema not found: {schema_path}")
         return
@@ -319,15 +348,12 @@ def validate_decision_files():
         errors.append(f"  ❌ Schema error ({schema_path.name}): {e.message}")
         return
 
-    experiments_dir = REPO_ROOT / "experiments"
+    experiments_dir = repo_root / "experiments"
 
     found = 0
-    for decision_path in sorted(experiments_dir.glob("*/results/decision.yml")):
-        # Skip _template, _archive (parent.parent ist der Experiment-Ordner)
-        if decision_path.parent.parent.name.startswith("_"):
-            continue
+    for decision_path in canonical_decision_paths(experiments_dir):
         found += 1
-        rel = decision_path.relative_to(REPO_ROOT)
+        rel = decision_path.relative_to(repo_root)
 
         try:
             data = load_yaml(decision_path)
@@ -354,7 +380,8 @@ def validate_decision_files():
             if not manifest_path.is_file():
                 errors.append(
                     f"  ❌ {rel}: decision_type=adoption_assessment, "
-                    f"aber Geschwister-manifest.yml fehlt unter {manifest_path.relative_to(REPO_ROOT)}"
+                    f"aber Manifest im Experiment-Root fehlt unter "
+                    f"{manifest_path.relative_to(repo_root)}"
                 )
                 continue
 
@@ -362,7 +389,7 @@ def validate_decision_files():
                 manifest = load_yaml(manifest_path)
             except Exception as e:
                 errors.append(
-                    f"  ❌ {manifest_path.relative_to(REPO_ROOT)}: YAML-Fehler — {e}"
+                    f"  ❌ {manifest_path.relative_to(repo_root)}: YAML-Fehler — {e}"
                 )
                 continue
 

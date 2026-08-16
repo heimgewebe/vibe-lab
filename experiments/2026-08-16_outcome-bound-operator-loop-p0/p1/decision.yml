@@ -1,9 +1,17 @@
-schema_version: "outcome-bound-operator-loop.p1-activation-decision.v1"
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
 artifact_type: "p1_activation_decision"
-verdict: "prepared_for_prospective_shadow_capture"
+verdict: "not_executed"
 date: "2026-08-16"
+reviewer: "Vibe-Lab P1 activation review"
 triggered_by: "github:heimgewebe/vibe-lab#332; codex-review:heimgewebe/vibe-lab#333"
 issue_ref: "github:heimgewebe/vibe-lab#332"
+rationale: >
+  The testing state means that the prospective P1 cohort is active and its
+  protocol is prepared; it does not mean that a natural P1 slot has executed.
+  The activation state remains 0/6, with zero screening, form-outcome, or
+  outcome-evidence records, so this execution assessment is not_executed. This
+  decision claims no P1 efficacy or closeout and does not authorize P3.
 
 scope:
   phase: "P1"
