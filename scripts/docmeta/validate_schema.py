@@ -409,7 +409,7 @@ def resolve_current_decision_path(
                 raise ValueError(f"active source_ref is missing for {rel_exp}")
             return decision_path
 
-    phase_decisions: list[tuple[int, Path]] = []
+    phase_decisions: dict[int, Path] = {}
     if resolved_exp_dir.is_dir():
         for phase_dir in resolved_exp_dir.iterdir():
             if not phase_dir.is_dir() or PHASE_DECISION_DIR_RE.fullmatch(
@@ -418,9 +418,16 @@ def resolve_current_decision_path(
                 continue
             decision_path = phase_dir / "decision.yml"
             if decision_path.is_file():
-                phase_decisions.append((int(phase_dir.name[1:]), decision_path))
+                phase_number = int(phase_dir.name[1:])
+                if phase_number in phase_decisions:
+                    other = phase_decisions[phase_number]
+                    raise ValueError(
+                        f"duplicate numeric phase {phase_number} for {rel_exp}: "
+                        f"{other.parent.name} and {phase_dir.name}"
+                    )
+                phase_decisions[phase_number] = decision_path
     if phase_decisions:
-        return max(phase_decisions, key=lambda item: (item[0], item[1].parent.name))[1]
+        return phase_decisions[max(phase_decisions)]
 
     result_decision = resolved_exp_dir / "results" / "decision.yml"
     if result_decision.is_file():

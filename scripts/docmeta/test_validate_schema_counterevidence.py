@@ -366,9 +366,39 @@ experiment:
         self.assertEqual(resolved, self.experiment_dir / "p12" / "decision.yml")
         self.assertEqual(vs.errors, [])
 
+    def test_inactive_duplicate_numeric_phase_aliases_fail_closed(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
+        self._write_decision("p01/decision.yml", "adoption_assessment", "reject")
+
+        with self.assertRaisesRegex(ValueError, "duplicate numeric phase 1"):
+            vs.resolve_current_decision_path(
+                self.experiment_dir,
+                repo_root=self.repo_root,
+            )
+
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+        self.assertEqual(len(vs.errors), 1)
+        self.assertIn("fail-closed", vs.errors[0])
+
     def test_active_binding_overrides_numerically_newer_phase(self) -> None:
         self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
         self._write_decision("p12/decision.yml", "adoption_assessment", "reject")
+        self._write_active_registry(
+            "experiments/adopted-exp/p1/decision.yml"
+        )
+
+        resolved = vs.resolve_current_decision_path(
+            self.experiment_dir,
+            repo_root=self.repo_root,
+        )
+        vs.validate_adoption_decision_coverage(repo_root=self.repo_root)
+
+        self.assertEqual(resolved, self.experiment_dir / "p1" / "decision.yml")
+        self.assertEqual(vs.errors, [])
+
+    def test_active_exact_binding_precedes_duplicate_numeric_alias_check(self) -> None:
+        self._write_decision("p1/decision.yml", "adoption_assessment", "adopt")
+        self._write_decision("p01/decision.yml", "adoption_assessment", "reject")
         self._write_active_registry(
             "experiments/adopted-exp/p1/decision.yml"
         )

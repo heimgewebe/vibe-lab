@@ -1670,19 +1670,22 @@ class RatchetModeTests(unittest.TestCase):
         # Verify it's not promotion_ready
         self.assertFalse(entry["promotion_ready"])
 
-    def test_active_prepared_without_measurement_does_not_require_historical_freeze(
-        self,
-    ) -> None:
+    def test_active_prepared_without_measurement_requires_exact_freeze(self) -> None:
         entry = self._make_prepared_without_measurement_entry(
-            "experiments/exp-active-prepared"
+            "experiments/2026-08-16_outcome-bound-operator-loop-p0"
         )
-        freeze = self._make_freeze_config([])
+        unfrozen = self._make_freeze_config([])
 
-        errors, _ = vpr.ratchet_check(
-            [entry],
-            freeze,
-            active_paths=frozenset({entry["path"]}),
-        )
+        errors, _ = vpr.ratchet_check([entry], unfrozen)
+
+        self.assertTrue(any("unregistered_violation" in e for e in errors))
+
+        exact_freeze = self._make_freeze_config([{
+            "path": entry["path"],
+            "allowed_missing": ["prepared_without_measurement"],
+            "reason": "Active testing is incomplete and remains promotion-blocked.",
+        }])
+        errors, _ = vpr.ratchet_check([entry], exact_freeze)
 
         self.assertEqual(errors, [])
         self.assertFalse(entry["promotion_ready"])
@@ -1915,11 +1918,7 @@ class RatchetModeTests(unittest.TestCase):
         freeze_data = vpr.load_freeze_config(vpr.FREEZE_PATH)
         self.assertIsInstance(freeze_data, dict)
         assert isinstance(freeze_data, dict)
-        errors, _ = vpr.ratchet_check(
-            entries,
-            freeze_data,
-            active_paths=vpr.active_experiment_paths(repo_root=vpr.REPO_ROOT),
-        )
+        errors, _ = vpr.ratchet_check(entries, freeze_data)
         self.assertEqual(errors, [])
 
     def test_cli_ratchet_passes_with_actual_freeze(self) -> None:

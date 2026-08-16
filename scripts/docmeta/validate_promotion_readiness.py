@@ -759,35 +759,9 @@ def _is_valid_freeze_experiment_path(path: str) -> bool:
     )
 
 
-def active_experiment_paths(*, repo_root: Path = REPO_ROOT) -> frozenset[str]:
-    """Return declared active paths, or an empty set when the registry is unreadable.
-
-    The active-experiment validator remains authoritative for registry validity.
-    An unreadable registry yields no ratchet exemption and therefore fails closed.
-    """
-    registry_path = repo_root / "experiments" / "active.v1.json"
-    if not registry_path.is_file():
-        return frozenset()
-    try:
-        registry = json.loads(registry_path.read_text(encoding="utf-8"))
-    except Exception:
-        return frozenset()
-    if not isinstance(registry, dict) or not isinstance(
-        registry.get("experiments"), list
-    ):
-        return frozenset()
-    return frozenset(
-        item["path"]
-        for item in registry["experiments"]
-        if isinstance(item, dict) and isinstance(item.get("path"), str)
-    )
-
-
 def ratchet_check(
     entries: list[dict[str, Any]],
     freeze_config: dict[str, Any],
-    *,
-    active_paths: frozenset[str] = frozenset(),
 ) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -808,11 +782,6 @@ def ratchet_check(
             continue
         path = entry["path"]
         actual_missing = set(entry["missing"])
-        # An active prepared experiment is already explicitly bounded by the
-        # active registry. Keep its missing signal visible in the dry-run report,
-        # but do not require a historical freeze entry while it remains active.
-        if path in active_paths and actual_missing == {"prepared_without_measurement"}:
-            continue
         if path not in frozen_by_path:
             errors.append(
                 f"ratchet.unregistered_violation: {path!r} is not_ready and not in freeze "
@@ -952,7 +921,6 @@ def main() -> int:
     ratchet_errors, ratchet_warnings = ratchet_check(
         entries,
         freeze_data,
-        active_paths=active_experiment_paths(repo_root=REPO_ROOT),
     )
     if ratchet_warnings:
         print("  Warnings:")
