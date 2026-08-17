@@ -1,0 +1,120 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-17_outcome-bound-operator-loop-successor-s0r3",
+  "registered_at": "2026-08-17T17:12:00Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether an atomic target-effect and transition-signature admission rule is semantically stable enough to justify any separately reviewed future admission-only shadow proposal.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-17-outcome-bound-s0r3",
+      "confirmed_at": "2026-08-17T17:05:00Z",
+      "valid_until": "2026-08-24T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can eight fixed adversarial target-effect cases be classified with zero material independent-review disagreement when the claim snapshot, subject, baseline, atomic effect predicate and transition path are frozen before classification?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-17-outcome-bound-s0r3"
+  },
+  "intervention": {
+    "name": "atomic target-effect prospective admission boundary",
+    "description": "Freeze a pre-intervention claim snapshot C, target subject S, contemporaneous baseline B, one independently falsifiable target-effect predicate E, the minimal ordered transition path T from B to E, and non-outcome delivery qualifiers Q. Treat earlier work as lineage-positive only when it already satisfied E, executed T on the same or evidence-supported equivalent subject, or the later identity is a result-informed residual/qualifier relabel. Treat pure baseline/input establishment as antecedent; fail closed when the frozen evidence cannot bind C/S/B/E/T or subject equivalence; a source-required effect property may not be demoted into Q."
+  },
+  "control_condition": {
+    "id": "three_predecessor_falsification_probes",
+    "description": "Exactly three frozen predecessor failure probes: S0-R2 create-versus-mutate ambiguity, residual/qualifier renaming escape, and the S0-R2 registration/procedure count mismatch. They are failure-context controls only, not invented paired cases."
+  },
+  "treatment_condition": {
+    "id": "s0r3_atomic_target_effect_boundary",
+    "description": "Apply the frozen S/B/E/T/Q decision procedure to exactly eight R3 treatment cases, including two eligible antecedent controls, four lineage-positive ineligible cases, one D0 not-applicable control and one subject-equivalence indeterminate case."
+  },
+  "measurement": {
+    "primary_metric": "material_independent_review_disagreements",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze author classifications for exactly eight R3 treatment cases, then obtain an independent exact-head semantic review that restates C/S/B/E/T/Q, classifies all eight, attacks qualifier/baseline/subject renaming and verifies the exact unpaired 3-control/8-treatment procedure. Count any changed classification, required indeterminate downgrade, non-reproducible contract, credible renaming escape, blanket prior-mutation collapse, procedure mismatch or need for new production authority fields.",
+    "success": "Zero material disagreements, zero credible renaming escapes, exact 3-control/8-treatment procedure coherence and zero authority effects. Success establishes paper-level semantic stability only and does not reopen P1 or start a natural cohort.",
+    "falsification": "One or more material disagreements, non-reproducible C/S/B/E/T bindings, a viable qualifier/baseline/subject escape, blanket prior-mutation exclusion, any count/procedure mismatch, need for a new validator/control surface, or any productive authority effect rejects this revision for pilot use.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "paper_review_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure independent semantic review handling time only. Any need for new production/control-plane fields remains a falsification condition, not a cost tradeoff."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "predeclared semantic boundary probe",
+    "minimum_control": 3,
+    "minimum_treatment": 8,
+    "comparability_constraints": [
+      "control is exactly the three named predecessor falsification probes and is not treated as eight synthetic pairs",
+      "treatment is exactly the eight frozen R3 paper cases",
+      "author C/S/B/E/T/Q bindings and classifications are frozen before independent review",
+      "the independent reviewer classifies all eight treatment cases and reports the 3/8 procedure counts explicitly",
+      "no productive mutation is performed to generate a paper case",
+      "P1, S0 and S0-R2 verdicts are referenced and never rewritten",
+      "synthetic controls never count as natural-case evidence"
+    ],
+    "confounders": [
+      "paper facts are cleaner than natural task evidence",
+      "reviewer knowledge of prior S0 and S0-R2 rejection",
+      "subject-equivalence evidence varies by case",
+      "atomic prose can still hide semantic granularity choices"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen P1 records",
+      "merged rejected S0 and S0-R2 protocols and independent reviews",
+      "primary or contemporaneous GitHub/Bureau/runtime evidence already referenced by predecessor records",
+      "frozen synthetic case facts in the S0-R3 paper set",
+      "named independent exact-head semantic review"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-18T12:00:00Z",
+  "expires_at": "2026-08-24T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-17_outcome-bound-operator-loop-successor-s0r3",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-17_outcome-bound-operator-loop-successor-s0r3"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-17-outcome-bound-s0r3",
+      "reviewed_at": "2026-08-17T17:05:00Z",
+      "rationale": "The explicit continuation authorizes only this bounded paper successor. It does not authorize P1 reopening, a natural cohort, validator, runtime integration or a new authority surface."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}
