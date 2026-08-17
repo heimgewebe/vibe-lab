@@ -4,20 +4,23 @@ experiment:
   name: "outcome-bound-operator-loop-successor-s0r3"
   hypothesis: >
     Prospective Outcome Case admission can make the prerequisite-versus-effect
-    boundary reviewer-reproducible by freezing one pre-intervention claim snapshot, one target subject, one
-    contemporaneous baseline, one atomic target-effect predicate E and one ordered
-    transition path T,
-    while treating automation/durability/repetition as delivery qualifiers that do
-    not create a new lineage when the same T already succeeded.
-  status: designed
+    boundary reviewer-reproducible by freezing one pre-intervention claim snapshot,
+    one target subject, one contemporaneous baseline, one atomic target-effect
+    predicate E and one ordered transition path T, while treating only non-outcome
+    delivery properties as qualifiers.
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s0r3-independent-review/run_meta.json"
+    - "results/evidence.jsonl"
+    - "results/reviewer-b.md"
+    - "results/s0r3-gate.md"
   created: "2026-08-17"
   updated: "2026-08-17"
   author: "ChatGPT / Grabowski"
-  triggered_by: "github:heimgewebe/vibe-lab#343"
-  iteration: 1
+  triggered_by: "github:heimgewebe/vibe-lab#343; grabowski-job:9f4d8d161c6e"
+  iteration: 2
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -25,55 +28,62 @@ experiment:
       Reject this revision for pilot use if an independent exact-head reviewer
       changes any of the eight frozen classifications, cannot bind a unique
       claim/subject/baseline/E/T contract from the frozen case, finds a credible
-      subject-, baseline- or qualifier-renaming escape, finds that the rule
-      collapses to blanket prior-mutation exclusion, finds a registration/review
-      count mismatch, or if applying the rule requires a new validator/control
-      surface or productive authority effect.
+      subject-, baseline-, source-claim- or qualifier-renaming escape, finds that
+      the rule collapses to blanket prior-mutation exclusion, finds a registration/
+      review count mismatch, or if applying the rule requires a new validator/
+      control surface or productive authority effect.
     counter_hypotheses:
       - id: "atomic_effect_predicate_remains_sliceable"
         statement: >
-          An author may still game admission by changing the claim snapshot, wording, baseline or scope of the supposedly atomic
-          target predicate after observing earlier success.
+          An author may still game admission by changing the claim snapshot,
+          wording, baseline or scope of the supposedly atomic target predicate
+          after observing earlier success.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Independent reviewer must attack R3-01, R3-03 and R3-05 with qualifier padding and baseline relabelling."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Adversarial attacks"
+            - path: "results/evidence.jsonl"
           limitations:
-            - "Paper cases cannot establish natural-case handling reliability."
-          confidence: low
+            - "The paper set cannot establish resistance to every ambiguity in natural source requests."
+          confidence: high
       - id: "transition_signature_equivalence_is_ambiguous"
         statement: >
           The same transition may be defensibly treated as different when the
           subject changes from scratch/simulation to production or from one object
           identity to another.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Independent reviewer must test the explicit-equivalence and ambiguous-equivalence boundary represented by R3-07 and R3-08."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Case review"
+            - path: "results/evidence.jsonl"
           limitations:
-            - "The paper set cannot enumerate all subject-equivalence relations."
-          confidence: low
+            - "The result is limited to one explicitly equivalent and one explicitly unresolved paper case."
+          confidence: high
       - id: "target_contract_becomes_metadata_machine"
         statement: >
           Subject, baseline, E and T may require enough ceremony or new authority
-          fields that the method recreates the metadata/control-plane problem it
-          was intended to avoid.
+          fields that the method becomes a new metadata/control plane rather than
+          a small shadow rule.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Reviewer must identify any case that cannot be classified without inventing new production fields, validators or authority records."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Authority / non-claims"
+            - path: "results/evidence.jsonl"
           limitations:
-            - "S0-R3 measures semantic sufficiency, not natural-case handling time."
-          confidence: low
+            - "S0-R3 proves only that the eight paper cases need no new production fields or authority; it does not measure natural-case handling time or metadata overhead."
+          confidence: medium
 
 context:
   tools:
     - "paper review"
     - "existing P1/S0/S0-R2 evidence"
-    - "GitHub review evidence"
+    - "hash-bound Grok 4.5 independent semantic review"
     - "Grabowski isolated repository work lane"
   language: "Markdown, JSON, YAML"
   environment: "Vibe-Lab experiment-only design surface; no natural cohort or production integration"

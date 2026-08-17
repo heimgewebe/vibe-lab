@@ -434,20 +434,15 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [
-        "designed_not_executed"
-      ],
-      "notes": [
-        "designed_not_executed",
-        "falsifiability_voluntary"
-      ],
+      "missing": [],
+      "notes": [],
       "path": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s0r3",
-      "pre_execution_hold": true,
-      "promotion_ready": false,
-      "status": "designed",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "testing",
       "warnings": []
     }
   ],
@@ -457,8 +452,8 @@
     "experiments_checked": 28,
     "historical_escape": 1,
     "not_ready": 17,
-    "pre_execution_hold": 5,
-    "ready": 5,
+    "pre_execution_hold": 4,
+    "ready": 6,
     "warnings": 8
   },
   "trigger": "need_for_reproducibility"
