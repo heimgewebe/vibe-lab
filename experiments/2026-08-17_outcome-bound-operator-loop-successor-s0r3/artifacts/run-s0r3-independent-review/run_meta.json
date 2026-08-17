@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s0r3-independent-review",
+  "generated_at": "2026-08-17T17:37:09Z",
+  "executor": "grok-4.5 via Grabowski read-only evidence-packet review",
+  "command": "independent semantic review of hash-bound S0-R3 evidence packet from frozen author head 8f7189f13f6c6f89c2a7b5e9f288a10b4a9e8e87",
+  "exit_code": 0,
+  "test_output_file": "results/reviewer-b.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "github:heimgewebe/vibe-lab#343; grabowski-job:9f4d8d161c6e",
+  "work_lane_ref": "grabowski-work-lane:eb47d59c1df4647442353806b5d1c980",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#343",
+  "frozen_author_head": "8f7189f13f6c6f89c2a7b5e9f288a10b4a9e8e87",
+  "review_job": "grabowski-job-9f4d8d161c6e",
+  "review_receipt_sha256": "52f383b11426032938d49824c845ccb497655612f992ae433af8bae379aadf98",
+  "review_payload_sha256": "e11559197557fd74ee1690cefb5bf3be5f160871ee8dfeb4d8472142abf03e13",
+  "material_disagreements": 0,
+  "gate_recommendation": "PASS_THIS_REVISION",
+  "notes": "The reviewer received an embedded read-only evidence packet extracted from the exact frozen author commit after two earlier reviewer-harness attempts failed binding/read execution and were excluded from semantic evidence. This run establishes paper-level semantic agreement only. It does not establish natural-case reliability, Outcome Case efficacy, adoption readiness or authority for P1, P2/P3, validator, routing/runtime, Bureau, Chronik, Leitstand, queue, policy, deployment or merge-policy changes."
+}

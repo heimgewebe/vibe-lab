@@ -431,16 +431,29 @@
       "warnings": [
         "falsifiability_assessment_inconclusive"
       ]
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [],
+      "notes": [],
+      "path": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s0r3",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "testing",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 27,
+    "experiments_checked": 28,
     "historical_escape": 1,
     "not_ready": 17,
     "pre_execution_hold": 4,
-    "ready": 5,
+    "ready": 6,
     "warnings": 8
   },
   "trigger": "need_for_reproducibility"
