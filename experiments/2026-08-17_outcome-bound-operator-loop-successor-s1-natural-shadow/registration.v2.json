@@ -1,0 +1,119 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
+  "registered_at": "2026-08-17T20:30:00Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the S0-R3 admission semantics are prospectively usable on a tiny natural sample before any later Outcome Case efficacy proposal is considered.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-17-outcome-bound-s1-natural-shadow",
+      "confirmed_at": "2026-08-17T20:22:00Z",
+      "valid_until": "2026-08-31T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can the unchanged S0-R3 C/S/B/E/T/Q admission rule be frozen prospectively on the first three natural Bureau intakes with zero binding failures, zero material review disagreement, zero authority effects and at most ten minutes median handling effort?",
+    "owner": "Grabowski",
+    "decision_ref": "github:heimgewebe/vibe-lab#345"
+  },
+  "intervention": {
+    "name": "S0-R3 natural-case shadow binding",
+    "description": "Apply the exact S0-R3 C/S/B/E/T/Q admission semantics to the first three canonical Bureau intakes after activation, before productive mutation, without changing or delaying productive work."
+  },
+  "control_condition": {
+    "id": "three_frozen_s0r3_paper_controls",
+    "description": "Exactly three already reviewed S0-R3 paper cases from PR #344: R3-02 create-then-mutate, R3-04 pure-prerequisite-then-transition, and R3-08 unresolved subject equivalence. They establish the frozen paper-semantic benchmark only and never count as natural evidence."
+  },
+  "treatment_condition": {
+    "id": "first_three_natural_bureau_intakes_after_activation",
+    "description": "Exactly the first three canonical Bureau operator-intake candidates after the activation PR merge boundary, ordered by canonical Bureau event id, with every arrival consuming its slot and no replacement, backfill or outcome selection."
+  },
+  "measurement": {
+    "primary_metric": "natural_case_binding_failure_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "For each of three treatment arrivals, attempt a shadow C/S/B/E/T/Q freeze before productive mutation and without delaying work. Count capture-missed, capture-not-frozen-in-time, non-D0 unbindable, retroactive/result-informed, authority-violating or materially review-disagreed slots as failures. After the sample closes, an independent exact-revision reviewer verifies sequence, bindings, classifications, timing and authority boundaries.",
+    "success": "All three natural slots are consumed in canonical order and frozen before productive mutation; failure count is zero; independent material disagreements, authority violations and replacements/backfills are zero; median binding effort is at most 600 seconds; and at least two treatment cases are non-D0 with definitive complete C/S/B/E/T bindings.",
+    "falsification": "One or more binding failures, any integrity/authority violation, any retroactive reconstruction or selection/backfill, any independently confirmed semantic-rule failure, or median natural-case binding effort above 600 seconds rejects this revision. If fewer than two definitive non-D0 cases occur without those failures, the result is inconclusive rather than backfilled.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "natural_case_binding_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure elapsed shadow handling time from case capture start to freeze or stop for each treatment slot. Exclude productive implementation and independent-review time."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "fixed paper-semantic control versus prospectively ordered natural intake",
+    "minimum_control": 3,
+    "minimum_treatment": 3,
+    "comparability_constraints": [
+      "control is exactly R3-02, R3-04 and R3-08 from merged S0-R3 and is not regenerated or relabelled",
+      "treatment is exactly the first three canonical Bureau arrivals after activation and has no replacement or backfill",
+      "the S0-R3 C/S/B/E/T/Q semantics are unchanged between paper control and natural treatment",
+      "natural treatment binding begins before productive mutation and may not delay the underlying task",
+      "paper controls never count toward the natural treatment denominator"
+    ],
+    "confounders": [
+      "natural source evidence is less complete than paper case facts",
+      "the first three arrivals may include D0 or otherwise non-representative work",
+      "observer availability may affect whether a pre-mutation capture is possible",
+      "three natural cases cannot estimate Outcome Case efficacy or broad prevalence"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "exact merged S0-R3 protocol and result from PR #344",
+      "canonical Bureau candidate and event references",
+      "Grabowski work-lane and mutation-state receipts",
+      "GitHub, CI and runtime primary evidence referenced by the underlying task",
+      "experiment-local prospective case capture records",
+      "named independent exact-revision semantic review"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-24T18:00:00Z",
+  "expires_at": "2026-08-31T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-17-outcome-bound-s1-natural-shadow",
+      "reviewed_at": "2026-08-17T20:22:00Z",
+      "rationale": "The direct continuation authorizes only a bounded natural-case external-validity shadow after S0-R3. It does not authorize P1 reopening, an efficacy cohort, a validator, production integration or a new authority surface."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

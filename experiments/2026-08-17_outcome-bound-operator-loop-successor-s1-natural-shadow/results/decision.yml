@@ -1,0 +1,22 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-08-17"
+reviewer: "ChatGPT / Grabowski"
+triggered_by: "github:heimgewebe/vibe-lab#345"
+rationale: >
+  S1 is prospectively registered and designed, but its activation boundary is the
+  merge of the protocol PR. No post-activation natural Bureau intake has therefore
+  been admitted or assessed in this author revision. No execution, external-validity,
+  efficacy or adoption claim is allowed.
+evidence_summary:
+  natural_slots_total: 3
+  natural_slots_consumed: 0
+  natural_case_binding_failures: 0
+  independent_material_disagreements: 0
+  authority_violations: 0
+  replacements_or_backfills: 0
+next_steps: >
+  After the activation PR is merged, consume only the first three canonical Bureau
+  intakes in event-id order without replacement or delay, then obtain an independent
+  exact-revision review and apply the preregistered PASS/REJECT/INCONCLUSIVE gate.

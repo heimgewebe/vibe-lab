@@ -23,6 +23,17 @@
       "review_at": "2026-08-15T00:00:00Z",
       "expires_at": "2026-09-01T00:00:00Z",
       "source_ref": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml"
+    },
+    {
+      "experiment_id": "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
+      "path": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
+      "state": "testing",
+      "consumer": "Grabowski",
+      "decision_target": "Can the unchanged S0-R3 C/S/B/E/T/Q admission rule be frozen prospectively on the first three natural Bureau intakes with zero binding failures, zero material review disagreement, zero authority effects and at most ten minutes median handling effort?",
+      "primary_metric": "natural_case_binding_failure_count",
+      "review_at": "2026-08-24T18:00:00Z",
+      "expires_at": "2026-08-31T23:59:59Z",
+      "source_ref": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/decision.yml"
     }
   ]
 }

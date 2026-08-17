@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s1-natural-shadow"
+  hypothesis: >
+    The S0-R3 C/S/B/E/T/Q admission rule that survived paper review can be
+    prospectively bound on a tiny, deterministically ordered natural Bureau sample
+    before productive mutation with zero material reviewer disagreement and low
+    enough handling overhead to justify a later efficacy proposal.
+  status: testing
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-17"
+  updated: "2026-08-17"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "github:heimgewebe/vibe-lab#345"
+  iteration: 1
+  evidence_level: experimental
+
+context:
+  tools:
+    - "canonical Bureau intake references"
+    - "exact merged S0-R3 protocol and evidence"
+    - "Grabowski isolated repository work lane"
+    - "independent exact-revision semantic review"
+  language: "Markdown, JSON, YAML"
+  environment: "Vibe-Lab experiment-only shadow surface; no productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
