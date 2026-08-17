@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s0r2-exact-head-pr-review",
+  "generated_at": "2026-08-16T18:46:09Z",
+  "executor": "github:chatgpt-codex-connector",
+  "command": "independent exact-head pull-request review of frozen author head 5ecaa9d8eaae6d767c51605f9a0f5c07614a9fb5 against base 8d7f764620ec06fa6bc84fe6ae02ba61f002c4b2 in heimgewebe/vibe-lab#342",
+  "exit_code": 0,
+  "test_output_file": "results/reviewer-b.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "github:heimgewebe/vibe-lab#342; github-review:4947056280",
+  "work_lane_ref": "grabowski-work-lane:77a06bd2ef6c9327d1fa42c0c8fb776d",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#342",
+  "frozen_author_head": "5ecaa9d8eaae6d767c51605f9a0f5c07614a9fb5",
+  "github_review_id": 4947056280,
+  "github_review_comment_ids": [3792553284, 3792553287],
+  "fatal_findings": 2,
+  "gate_recommendation": "REJECT_THIS_REVISION",
+  "notes": "Execution-record metadata for the bounded S0-R2 paper review only. GitHub records independently bind the review to the frozen author head. The review found a fatal semantic ambiguity and a separate registration/procedure mismatch. The run record does not claim that all eight cases were reclassified after the fatal finding, does not establish Outcome Case efficacy, and authorizes no natural cohort, validator, production integration or authority change."
+}

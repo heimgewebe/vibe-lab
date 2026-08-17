@@ -163,3 +163,20 @@ promotion_readiness_freeze:
         integration. Remove only if a separately authorized successor experiment
         supersedes this experiment's readiness role; do not rewrite the rejected
         S0 result.
+
+    - path: experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2
+      allowed_missing:
+        - falsifiability.assessment_blocked
+        - falsifiability.assessment_counterhypothesis_supported
+      reason: >-
+        S0-R2 was terminally rejected after the exact-head PR review found that
+        its effect-lineage rule still leaves the precondition-versus-material-
+        sub-effect boundary ambiguous on R2-02/R2-08. A separate registered
+        comparison/procedure mismatch prevents repairing the frozen revision in
+        place, and the early semantic stop leaves the metadata-overhead
+        counter-hypothesis deliberately unmeasured. These two exact readiness
+        blockers therefore describe the negative result rather than an unfinished
+        promotion candidate. The freeze authorizes no S1, natural cohort,
+        validator, P2/P3, adoption or production integration; remove only if a
+        separately authorized successor supersedes this experiment's readiness
+        role, never by rewriting the rejected R2 result.
