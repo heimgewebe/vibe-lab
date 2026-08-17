@@ -1,0 +1,85 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s0r2"
+  hypothesis: >
+    Prospective Outcome Case admission can avoid both P1's blanket prior-mutation
+    exclusion and S0's residual-renaming escape by classifying prior productive
+    work against an evidence-bound effect lineage rather than the latest
+    intervention label.
+  status: rejected
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s0r2-exact-head-pr-review/run_meta.json"
+    - "results/evidence.jsonl"
+    - "results/reviewer-b.md"
+    - "results/s0r2-gate.md"
+  created: "2026-08-16"
+  updated: "2026-08-17"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "github:heimgewebe/vibe-lab#341; github:heimgewebe/vibe-lab#342; github-review:4947056280"
+  iteration: 2
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject this rule revision for pilot use if an independent exact-head reviewer
+      changes any of the eight frozen classifications, finds a credible way to
+      relabel lineage-positive work as antecedent, finds that the rule collapses
+      back to disqualifying every prior productive act, or if applying the rule
+      requires a new validator/control surface or productive authority effect.
+    counter_hypotheses:
+      - id: "effect_lineage_remains_renamable"
+        statement: >
+          Effect, transition and residualisation language may still leave enough
+          granularity freedom to relabel already-started work as a distinct later
+          intervention.
+        assessment:
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Fatal finding 1 — precondition versus material sub-effect remains ambiguous"
+            - path: "results/evidence.jsonl"
+          limitations:
+            - "The exact-head review found a boundary ambiguity on the two positive distinct-transition controls; it did not run a natural cohort or establish all possible future renaming attacks."
+          confidence: high
+      - id: "lineage_rule_collapses_to_p1_breadth"
+        statement: >
+          A conservative lineage rule may treat every productive precursor as part
+          of the intervention and recreate P1 revision 1 under different wording.
+        assessment:
+          status: checked
+          outcome: mixed
+          evidence_refs:
+            - path: "results/reviewer-b.md"
+              section: "Fatal finding 1 — precondition versus material sub-effect remains ambiguous"
+          limitations:
+            - "R2-02 and R2-08 can be downgraded to indeterminate because object creation and target-effect production are not separated, but the review does not prove that every prior productive act becomes ineligible."
+          confidence: medium
+      - id: "evidence_hierarchy_becomes_metadata_machine"
+        statement: >
+          Requiring lineage evidence may need so much provenance ceremony that the
+          method becomes a new metadata/control plane rather than a small shadow rule.
+        assessment:
+          status: blocked
+          outcome: not_checked
+          pending_checks:
+            - "No further measurement is justified after the frozen revision failed its semantic gate."
+          limitations:
+            - "The exact revision terminated before a natural handling-cost or metadata-overhead measurement."
+          confidence: low
+
+context:
+  tools:
+    - "paper review"
+    - "existing P1/S0 evidence"
+    - "GitHub exact-head review evidence"
+    - "Grabowski isolated repository work lane"
+  language: "Markdown, JSON, YAML"
+  environment: "Vibe-Lab experiment-only design surface; no natural cohort or production integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

@@ -306,6 +306,11 @@
 | `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/results/reviewer-b.md` | Outcome-Bound Operator Loop Successor S0 — Independent Reviewer B | rejected | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/results/s0-gate.md` | Outcome-Bound Operator Loop Successor S0 — Paper gate | rejected | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/s0/paper-cases.md` | Outcome-Bound Operator Loop Successor S0 — Fixed paper cases | designed | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/CONTEXT.md` | Outcome-Bound Operator Loop Successor S0-R2 — Context | designed | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/protocol.md` | Outcome-Bound Operator Loop Successor S0-R2 — Effect-lineage admission protocol | designed | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/results/reviewer-b.md` | Outcome-Bound Operator Loop Successor S0-R2 — Independent exact-head PR review | rejected | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/results/s0r2-gate.md` | Outcome-Bound Operator Loop Successor S0-R2 — Paper gate | rejected | operative |
+| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/s0/paper-cases.md` | Outcome-Bound Operator Loop Successor S0-R2 — Fixed adversarial paper cases | designed | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

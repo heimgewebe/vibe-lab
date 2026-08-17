@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
+date: "2026-08-17"
+reviewer: "Vibe-Lab S0-R2 controller after independent exact-head GitHub review"
+triggered_by: "github:heimgewebe/vibe-lab#342; github-review:4947056280"
+rationale: >
+  The frozen S0-R2 revision required zero material independent-review disagreement
+  before it could justify even a separately reviewed natural admission-only shadow
+  proposal. Exact-head GitHub review 4947056280 found that the written effect-lineage
+  rule does not distinguish an earlier act that creates the exact object later
+  preserved/mutated from an act that already produced a material sub-effect. That
+  ambiguity directly affects the frozen eligible controls R2-02 and R2-08 and makes
+  indeterminate a reasonable classification under the rule. The same review also
+  found that the preregistered eight-pair S0/R2 comparison cannot be executed by the
+  written R2-only reviewer procedure because rejected S0 contains only six fixed
+  cases. The semantic finding alone rejects this rule revision; the comparison
+  mismatch is a separate experiment-integrity defect. Frozen protocol, registration
+  and author classifications are preserved rather than repaired after review.
+evidence_summary:
+  fixed_paper_cases: 8
+  frozen_author_classifications_rewritten: 0
+  exact_head_reviews_with_fatal_findings: 1
+  distinct_transition_controls_affected_by_ambiguity: 2
+  registration_procedure_integrity_failures: 1
+  completed_post_failure_case_reclassifications: 0
+  natural_successor_cases_admitted: 0
+  productive_interventions_executed_for_s0r2: 0
+  predecessor_records_rewritten: 0
+  authority_violations: 0
+  s1_authorized: false
+  s2_authorized: false
+  p2_validator_authorized: false
+  p3_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
+next_steps:
+  - "Do not repair the frozen S0-R2 protocol, registration or author classifications after the fatal exact-head review."
+  - "Do not start S1, a natural cohort, a validator, S2, P2 or P3 from this result."
+  - "If work continues, create a separate prospectively registered successor that binds an explicit target-effect predicate and whose comparison matches its actual review procedure."
