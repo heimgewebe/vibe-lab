@@ -51,12 +51,16 @@ append-or-create-only artifacts and may not mutate the frozen protocol.
 
 ## 4. Natural source universe
 
-Treatment cases come only from canonical Bureau operator-intake candidates that:
+The source universe is every canonical Bureau operator-intake candidate that:
 
-1. were independently created outside this experiment after the activation boundary;
-2. have a stable Bureau candidate/event identity before S1 capture;
-3. were not created, selected, delayed, reprioritized or reshaped for S1;
-4. have not had their outcome observed before capture begins.
+1. was independently created outside this experiment after the activation boundary;
+2. has a stable Bureau candidate/event identity;
+3. was not created, selected, delayed, reprioritized or reshaped for S1.
+
+No capture-state or outcome-state condition may filter this universe. In particular,
+a candidate whose productive mutation or target-effect outcome is already observable
+when S1 first sees it still consumes its canonical slot; it is recorded as a binding
+failure and must not be retrospectively reconstructed or replaced.
 
 The Bureau record remains the authority for intake identity. S1 stores references,
 not a second copy of Bureau truth.
@@ -96,6 +100,10 @@ The capture record must freeze or fail to freeze:
 If productive mutation has already begun before the capture starts, record
 `capture_missed_before_mutation`; do not reconstruct C/S/B/E/T/Q retrospectively.
 The slot is consumed and productive work continues unchanged.
+
+If the target-effect outcome is already observable before capture begins, record a
+result-informed binding failure; do not reconstruct C/S/B/E/T/Q from the observed
+result. The slot is consumed and productive work continues unchanged.
 
 If the capture cannot finish before productive work would naturally begin, record
 `capture_not_frozen_in_time`; do not delay the task. The slot is consumed.
@@ -188,17 +196,23 @@ rule. It does not establish efficacy or adoption readiness.
 
 ### REJECT_THIS_REVISION
 
-If any integrity violation, retroactive reconstruction, selection/backfill,
-productive authority effect or independently confirmed semantic-rule failure occurs.
+Reject if `natural_case_binding_failure_count >= 1`. This includes any missed or
+late pre-mutation capture, retroactive or result-informed binding, material review
+disagreement, authority violation, or non-D0 case whose C/S/B/E/T cannot be frozen
+prospectively.
 
-A binding-effort median above 600 seconds also rejects this revision as too costly
-for the intended lightweight shadow use.
+Also reject if any selection/backfill or other integrity violation occurs, or if the
+median treatment binding effort is above 600 seconds. These conditions are the same
+falsification boundary registered in `registration.v2.json`; no ordinary binding
+failure may fall through to an unclassified or inconclusive disposition.
 
 ### INCONCLUSIVE
 
-Use when the sequence was preserved and no integrity/authority violation occurred,
-but the three natural arrivals do not contain at least two definitive non-D0 cases,
-or the evidence is otherwise too sparse to evaluate external validity honestly.
+Use only when all three slots were consumed in canonical order,
+`natural_case_binding_failure_count == 0`, median binding effort is at most 600
+seconds, material reviewer disagreements are zero, authority violations are zero,
+and replacements/backfills are zero, but PASS fails solely because fewer than two
+of the three treatment cases are non-D0 with definitive complete C/S/B/E/T bindings.
 
 Do not backfill an inconclusive sample.
 
