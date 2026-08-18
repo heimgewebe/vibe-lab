@@ -1,0 +1,70 @@
+schema_version: "outcome-bound-s1-natural-capture.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+slot_id: "S1-N03"
+activation:
+  merge_commit: "5f12ef5bc2a59459ee11b71fd4f8bd434e4386f1"
+  merged_at: "2026-08-17T21:07:25Z"
+canonical_arrival:
+  bureau_event_id: 8148
+  created_at: "2026-08-17T23:37:56.183230Z"
+  candidate_id: "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+  candidate_event_id: "candidate-event-0d48fcbf2ccb99356cd78be1"
+  supersedes_event_id: 8147
+  request_sha256: "fbd7470aff4ac9fa16aca6726a4338a334179300cd0cc49038a375656d935826"
+  content_fingerprint: "06c51f484802469e401c09969db2179319d9e96fd537739934dcd2a0d1c876f6"
+  source_sha256: "65d7f562d5807285a980931c24309d90575a212e9fe1cc3c0c72532ff756cee6"
+  source_observed_at: "2026-08-17T23:37:47.514261Z"
+  order_basis: "third candidate_task/operator_intake StateStore event after the activation boundary, ascending event_id"
+capture_attempt:
+  started_at: "2026-08-18T07:26:20Z"
+  stopped_at: "2026-08-18T07:26:31Z"
+  elapsed_seconds: 11
+  capture_state: "binding_failure"
+  timing_state: "late_first_observation"
+  productive_mutation_state: "not_established"
+  result_state_at_capture: "not_established"
+  authority_violations: 0
+  replacement_or_backfill: false
+s0r3:
+  classification: "indeterminate"
+  definitive_non_d0_binding: false
+  claim_snapshot_c: >
+    Den exakten, digestgebundenen Driftbericht semantisch prüfen, nur bestätigte
+    stabile Katalogaussagen und Quellenbindungen über normale Review-Gates
+    aktualisieren und den Kandidaten erst nach verifiziertem Merge schließen oder
+    anhand neuer Drift verfeinern.
+  subject_s: null
+  baseline_b: null
+  target_effect_e: null
+  transition_path_t: null
+  delivery_qualifiers_q: null
+  failure_kind: "non_d0_atomic_target_unbindable"
+  reasons:
+    - >
+      C again contains multiple separable positive outcomes and no frozen primary
+      atomic target effect. S0-R3 therefore fails closed instead of allowing an
+      observer-selected E after this natural event already occurred.
+    - >
+      The event-bound source digest points to the same rolling drift-report locator.
+      At late capture the locator has advanced, and the bounded state search did not
+      resolve an immutable copy of this historical digest. A contemporaneous B and
+      unique S cannot be reconstructed from the later report.
+    - >
+      Event 8148 belongs to the same superseding candidate lineage as the first two
+      natural arrivals. The protocol consumes arrivals rather than distinct candidate
+      identities, so the repeated identity is evidence and not grounds for backfill.
+primary_metric_effect:
+  natural_case_binding_failure: 1
+  reason: "non-D0 C/S/B/E/T could not be frozen prospectively under the unchanged S0-R3 rule"
+evidence_refs:
+  - "bureau-event:8148"
+  - "bureau-candidate:SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+  - "bureau-event:8240"
+nonclaims:
+  - "No productive-mutation absence is established for event 8148."
+  - "No target effect, causality or Outcome Case efficacy is established."
+  - "No Bureau, Systemkatalog, Grabowski or runtime state was changed by S1."
+  - "This slot may not be replaced or backfilled."
+immutability:
+  record_mode: "create_only"
+  statement: "Corrections require a separate append-only record; do not rewrite this capture to make the cohort pass."

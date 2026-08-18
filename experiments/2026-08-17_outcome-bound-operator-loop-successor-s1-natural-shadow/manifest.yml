@@ -7,16 +7,53 @@ experiment:
     prospectively bound on a tiny, deterministically ordered natural Bureau sample
     before productive mutation with zero material reviewer disagreement and low
     enough handling overhead to justify a later efficacy proposal.
-  status: testing
+  status: rejected
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s1-sampling-integrity-closeout/run_meta.json"
+    - "results/sampling-integrity-closeout.yml"
+    - "results/reviewer-b.md"
+    - "results/s1-gate.md"
+    - "results/evidence.jsonl"
+    - "results/decision.yml"
+    - "results/closeout.md"
   created: "2026-08-17"
-  updated: "2026-08-17"
+  updated: "2026-08-18"
   author: "ChatGPT / Grabowski"
-  triggered_by: "github:heimgewebe/vibe-lab#345"
-  iteration: 1
+  triggered_by: "github:heimgewebe/vibe-lab#345; github:heimgewebe/vibe-lab#347; external-review-sha256:878a6fd4a3328db63a5c89b30a54ad50a43e1556959ded51c9ed7238dc5b197e"
+  iteration: 4
   evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject this S1 revision if the deterministic natural sample sequence cannot
+      be proven from the frozen activation protocol, if any natural-case binding
+      failure occurs, if a material independent-review disagreement remains, if
+      selection/backfill or another integrity violation occurs, if an authority
+      violation occurs, or if median prospective binding effort exceeds 600
+      seconds. No post-observation rule may repair the sample definition.
+    counter_hypotheses:
+      - id: "natural_sampling_unit_is_underspecified"
+        statement: >
+          The S1 protocol's use of canonical Bureau intakes/arrivals plus stable
+          candidate/event identity does not uniquely determine whether successive
+          supersession events for one pre-existing candidate identity are separate
+          natural treatment arrivals.
+        assessment:
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: "results/sampling-integrity-closeout.yml"
+              section: "finding"
+            - path: "results/reviewer-b.md"
+              section: "Load-bearing finding: sampling frame was resolved too late"
+            - path: "results/s1-gate.md"
+              section: "S1 natural-sampling gate"
+          limitations:
+            - "The finding rejects this S1 sampling revision only; it does not establish Outcome Case efficacy or inefficacy."
+            - "No natural-case denominator is inferred after the sampling-unit integrity failure."
+          confidence: high
 
 context:
   tools:

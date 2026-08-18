@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s1-sampling-integrity-closeout",
+  "generated_at": "2026-08-18T08:33:25Z",
+  "executor": "controller:chatgpt+grabowski+independent-grok-review",
+  "command": "frozen S1 method reread -> exact-head external semantic review -> sampling-unit integrity assessment -> preregistered stop/reject gate",
+  "exit_code": 0,
+  "test_output_file": "results/sampling-integrity-closeout.yml",
+  "provenance_level": "self_reported",
+  "triggered_by": "github:heimgewebe/vibe-lab#347",
+  "work_lane_ref": "grabowski-work-lane:16b8b057764e6f9bcf545815b490dee0",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#347",
+  "frozen_method_sha256": "3f8868f02d41c126911e7e13748ea844eb944acb9012e1cf558ce3ca2f03f852",
+  "sampling_integrity_closeout_sha256": "c4d5dc7a35d3db1cba2002f488e9a26b30bd8efff7c06ca12b8bbd5124c0cb6e",
+  "independent_review_head": "ca7ba0970ce66b6915b8ff32ffa00ffa2e80cbec",
+  "independent_review_audit_sha256": "878a6fd4a3328db63a5c89b30a54ad50a43e1556959ded51c9ed7238dc5b197e",
+  "gate_result": "REJECT_THIS_REVISION",
+  "notes": "Execution proof for the S1 sampling-integrity terminal assessment only. It establishes that the frozen protocol cannot prove a unique natural-sample sequence and therefore reaches its own integrity stop/reject boundary. It does not establish Outcome Case efficacy or inefficacy, any natural-case binding-failure count, P1/P2/P3 authorization, Minimal-versus-Full superiority, or production authority."
+}

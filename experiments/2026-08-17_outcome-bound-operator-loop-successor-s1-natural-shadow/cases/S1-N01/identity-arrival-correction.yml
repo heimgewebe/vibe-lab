@@ -1,0 +1,102 @@
+schema_version: "outcome-bound-s1-identity-arrival-correction.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+slot_id: "S1-N01"
+created_at: "2026-08-18T07:43:24Z"
+correction_mode: "append_only_selection_and_timing_correction"
+authority:
+  activation_merge_commit: "5f12ef5bc2a59459ee11b71fd4f8bd434e4386f1"
+  activation_merged_at: "2026-08-17T21:07:25Z"
+  preregistered_operator_obligation: "goo-outcome-bound-s1-n01-first-natural-intake-20260818"
+  preregistration_created_at: "2026-08-18T05:25:06.910865Z"
+  preregistration_close_file_sha256: "3f515f06f89b9fca9aac31e8b996604d780560ba2e5ad085989ba9930dbe7159"
+  selection_rule: >
+    S1-N01 is the first candidate identity whose first canonical candidate_task event
+    occurs after activation. Supersessions or corrections of an identity first seen
+    before activation are not new arrivals.
+selection_finding:
+  excluded_preexisting_identity: "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+  excluded_identity_first_event_id: 302
+  excluded_identity_first_created_at: "2026-07-13T06:19:53.261891Z"
+  excluded_post_activation_supersessions: [8146, 8147, 8148, 8149, 8150, 8151, 8152, 8153, 8192, 8240]
+  first_new_candidate_identity: "candidate-c701b55e34cc9a6a9a6d6752"
+  first_new_candidate_event_id: 8166
+  first_new_candidate_created_at: "2026-08-18T05:33:32.623001Z"
+  candidate_event_id: "candidate-event-9b0d1b07af329f842de0f479"
+  request_sha256: "ed93763b6c276b188c62dca6ab5562e6c088920309b02e7276aaf0dda6506e02"
+  source_sha256: "ad6d6a55ec73817380b29c4f765c7457d749f9564dee39b570f5f89085dcf79b"
+  source_observed_at: "2026-08-18T05:31:00Z"
+  task_id: "BUREAU-CONTROL-PLANE-V3-T012"
+capture_attempt:
+  started_at: "2026-08-18T07:43:24Z"
+  capture_state: "binding_failure"
+  timing_state: "capture_missed_before_mutation"
+  productive_mutation_state: "begun_before_capture"
+  result_state_at_capture: "not_required_for_failure"
+  authority_violations: 0
+  replacement_or_backfill: false
+productive_mutation_evidence:
+  coordinated_claim_intent_event_id: 8220
+  coordinated_claim_intent_at: "2026-08-18T06:17:41.356320Z"
+  workspace_created_event_id: 8223
+  workspace_created_at: "2026-08-18T06:17:51.014271Z"
+  implementation_commit: "2fdba02d5e96646831f3dfd35665acfc3239b2c4"
+  implementation_commit_at: "2026-08-18T06:49:24Z"
+  implementation_commit_subject: "bureau: cut status projection over to StateStore task authority"
+  conclusion: >
+    Productive T012 work was already underway and an implementation commit already
+    existed before this capture began. The preregistered fail-closed rule therefore
+    consumes S1-N01 without retrospective C/S/B/E/T/Q reconstruction.
+s0r3:
+  classification: "indeterminate"
+  definitive_non_d0_binding: false
+  claim_snapshot_c: null
+  subject_s: null
+  baseline_b: null
+  target_effect_e: null
+  transition_path_t: null
+  delivery_qualifiers_q: null
+  failure_kind: "capture_missed_before_mutation"
+  reasons:
+    - "The observer did not freeze C/S/B/E/T/Q before productive T012 work began."
+    - "Retrospective reconstruction, rebasing, replacement and backfill are forbidden."
+slot_effect:
+  assigned_and_consumed: true
+  natural_case_binding_failure: 1
+  replacement_allowed: false
+  backfill_allowed: false
+  further_assignment_allowed: false
+  stop_rule: "Stop assignment immediately after a capture_missed_before_mutation failure."
+  proposed_gate: "REJECT_THIS_REVISION"
+prior_draft_records:
+  preservation_required: true
+  rewrite_allowed: false
+  interpretation: >
+    The earlier local draft counted post-activation supersessions of a preexisting
+    candidate identity as new arrivals. Those draft cohort assignments are not
+    endorsed under the preregistered identity-arrival rule and do not consume N01,
+    N02 or N03.
+  bindings:
+    - path: "capture.yml"
+      sha256: "11c0d272ff8390a2545f61b93fc64771850fafe413694ff5232797a290062347"
+      recorded_claim_not_endorsed_after_correction: "S1-N01=bureau-event:8146"
+    - path: "../S1-N02/capture.yml"
+      sha256: "61e9e19fb516d58d3742a23f87c64132ae7bb3c56c466f466aec5dd34b5c2930"
+      recorded_claim_not_endorsed_after_correction: "S1-N02=bureau-event:8147"
+    - path: "../S1-N03/capture.yml"
+      sha256: "ac99f732218be905e1a473b12e9007bf4b70fd0fbd44d273cdfbc9e79c5b931f"
+      recorded_claim_not_endorsed_after_correction: "S1-N03=bureau-event:8148"
+evidence_refs:
+  - "bureau-event:8166"
+  - "bureau-candidate:candidate-c701b55e34cc9a6a9a6d6752"
+  - "bureau-run:BUR-RUN-20260818T061736Z-663c236a6f"
+  - "bureau-event:8220"
+  - "bureau-event:8223"
+  - "git:bureau@2fdba02d5e96646831f3dfd35665acfc3239b2c4"
+  - "operator-obligation:goo-outcome-bound-s1-n01-first-natural-intake-20260818"
+nonclaims:
+  - "No C/S/B/E/T/Q binding is reconstructed from post-mutation evidence."
+  - "No target-effect outcome, causality or Outcome Case efficacy is established."
+  - "No Bureau, Grabowski, routing, queue, policy, runtime or deployment authority is created."
+immutability:
+  record_mode: "create_only"
+  statement: "This correction is append-only; the prior draft files remain preserved and are not rewritten into passing evidence."

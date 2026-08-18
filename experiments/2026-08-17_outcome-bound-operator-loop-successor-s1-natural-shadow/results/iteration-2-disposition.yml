@@ -1,0 +1,71 @@
+schema_version: "outcome-bound-s1-evidence-disposition.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:11:40Z"
+prior_evidence_snapshot_sha256: "c1069ee3ce5e25629a94019500fc2f12bd6803732791eaf33c00fa09838907db"
+reason: >
+  Iteration 2 used a draft event-arrival interpretation that counted three
+  supersessions of SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1 as S1-N01..N03. The durable
+  preregistered S1-N01 obligation instead binds the first newly created canonical
+  candidate identity after activation. The corrected identity is event 8166,
+  candidate-c701b55e34cc9a6a9a6d6752. Iteration-2 observations remain immutable
+  historical evidence of the abandoned interpretation but are not current cohort
+  truth and must not contribute to any S1 count or gate.
+superseded_records:
+  - prior_line: 1
+    event_type: "observation"
+    metric: "natural_case_binding_failure"
+    prior_value: 1
+    prior_slot: "S1-N01"
+    prior_event_id: 8146
+    endorsed: false
+    current_marker_ref: "../cases/S1-N01/draft-disposition.yml"
+  - prior_line: 2
+    event_type: "observation"
+    metric: "natural_case_binding_failure"
+    prior_value: 1
+    prior_slot: "S1-N02"
+    prior_event_id: 8147
+    endorsed: false
+    current_marker_ref: "../cases/S1-N02/draft-disposition.yml"
+  - prior_line: 3
+    event_type: "observation"
+    metric: "natural_case_binding_failure"
+    prior_value: 1
+    prior_slot: "S1-N03"
+    prior_event_id: 8148
+    endorsed: false
+    current_marker_ref: "../cases/S1-N03/draft-disposition.yml"
+  - prior_line: 4
+    event_type: "measurement"
+    metric: "natural_case_sequence"
+    prior_slots_consumed: 3
+    prior_event_ids: [8146, 8147, 8148]
+    endorsed: false
+    current_authority_ref: "sequence-proof.md"
+  - prior_line: 5
+    event_type: "measurement"
+    metric: "late_stop_classification_effort_seconds"
+    prior_samples: [18, 12, 11]
+    prior_median: 12
+    endorsed: false
+    current_authority_ref: "closeout.md"
+  - prior_line: 6
+    event_type: "decision"
+    metric: "s1_author_gate"
+    prior_value: "reject_this_revision_pending_independent_review"
+    prior_binding_failure_count: 3
+    endorsed: false
+    current_authority_ref: "decision.yml"
+current_interpretation:
+  corrected_slot: "S1-N01"
+  corrected_event_id: 8166
+  corrected_candidate_id: "candidate-c701b55e34cc9a6a9a6d6752"
+  corrected_binding_failure_count: 1
+  corrected_capture_state: "capture_missed_before_mutation"
+  s1_n02_state: "unassigned_after_s1_n01_stop"
+  s1_n03_state: "unassigned_after_s1_n01_stop"
+  replacement_or_backfill: false
+immutability:
+  prior_evidence_rows_rewritten: false
+  record_mode: "create_only"
+  statement: "Consumers must apply this disposition before aggregating iteration-2 S1 evidence."

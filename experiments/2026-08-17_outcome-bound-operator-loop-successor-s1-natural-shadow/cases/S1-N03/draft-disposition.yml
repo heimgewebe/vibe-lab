@@ -1,0 +1,27 @@
+schema_version: "outcome-bound-s1-draft-disposition.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:11:27Z"
+draft_ref: "capture.yml"
+draft_sha256: "ac99f732218be905e1a473b12e9007bf4b70fd0fbd44d273cdfbc9e79c5b931f"
+prior_draft_assignment:
+  slot_id: "S1-N03"
+  bureau_event_id: 8148
+  candidate_id: "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+disposition:
+  endorsed: false
+  status: "preserved_nonendorsed_draft"
+  superseded_by: "../S1-N01/identity-arrival-correction.yml"
+  reason: >
+    Event 8148 is another supersession of the same pre-activation candidate
+    identity and therefore does not consume a natural slot under the preregistered
+    S1 sampling obligation. The corrected S1-N01 binding failure at event 8166
+    stops assignment before S1-N03 can be assigned.
+current_cohort_effect:
+  counts_as_slot_consumed: false
+  counts_as_binding_failure: false
+  counts_as_natural_treatment_case: false
+  slot_state: "unassigned_after_s1_n01_stop"
+immutability:
+  source_capture_rewritten: false
+  record_mode: "create_only"
+  statement: "The preserved capture remains unchanged; this adjacent record is the current endorsement authority for that draft."

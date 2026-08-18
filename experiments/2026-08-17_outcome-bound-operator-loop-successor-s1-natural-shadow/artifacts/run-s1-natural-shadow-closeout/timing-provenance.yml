@@ -1,0 +1,26 @@
+schema_version: "outcome-bound-s1-timing-provenance.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:52:15Z"
+record_mode: "create_only"
+role: "historical_intermediate_timing_provenance_only"
+run_meta_ref: "run_meta.json"
+implementation_commit:
+  repo: "bureau"
+  sha: "2fdba02d5e96646831f3dfd35665acfc3239b2c4"
+  author_date_raw: "2026-08-18T08:48:23+02:00"
+  committer_date_raw: "2026-08-18T08:49:24+02:00"
+  committer_date_utc: "2026-08-18T06:49:24Z"
+  subject: "bureau: cut status projection over to StateStore task authority"
+normalization:
+  normalized_field_in_run_meta: "2026-08-18T06:49:24Z"
+  basis: "UTC conversion of raw committer_date_raw"
+current_disposition:
+  endorsed_for_terminal_gate: false
+  current_authority_ref: "disposition.yml"
+  reason: >
+    This timing provenance makes the preserved intermediate T012 proof auditable,
+    but the terminal S1 result does not depend on T012 or commit-before-capture
+    ordering. The current gate is the frozen-protocol sampling-integrity failure.
+nonclaims:
+  - "This note does not re-endorse the identity-first sampling interpretation."
+  - "It does not contribute any current natural-case binding-failure count."

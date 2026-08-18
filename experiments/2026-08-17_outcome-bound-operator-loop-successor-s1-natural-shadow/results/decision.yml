@@ -1,22 +1,41 @@
 schema_version: "0.1.0"
-decision_type: "execution_assessment"
-verdict: "not_executed"
-date: "2026-08-17"
-reviewer: "ChatGPT / Grabowski"
-triggered_by: "github:heimgewebe/vibe-lab#345"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
+date: "2026-08-18"
+reviewer: "Vibe-Lab S1 controller after independent Grok exact-head semantic review"
+triggered_by: "github:heimgewebe/vibe-lab#347; external-review-sha256:878a6fd4a3328db63a5c89b30a54ad50a43e1556959ded51c9ed7238dc5b197e"
 rationale: >
-  S1 is prospectively registered and designed, but its activation boundary is the
-  merge of the protocol PR. No post-activation natural Bureau intake has therefore
-  been admitted or assessed in this author revision. No execution, external-validity,
-  efficacy or adoption claim is allowed.
+  The frozen S1 revision requires a deterministic first-three natural Bureau
+  intake/arrival sequence and explicitly stops when that sample sequence cannot be
+  proven. Independent exact-head review found that the later identity-first rule
+  used to exclude post-activation events 8146-8148 was not shown to be frozen in
+  the activation revision and cannot retroactively resolve already observed
+  arrivals. Rereading the unchanged method confirms the root defect: it does not
+  specify whether successive canonical events for one pre-existing candidate
+  identity are separate S1 intakes/arrivals. Choosing either event-arrival or
+  first-new-candidate semantics therefore completes the sampling contract after
+  observation. The sample sequence is not provable from the frozen protocol. This
+  is an integrity violation, so the preregistered gate requires
+  REJECT_THIS_REVISION without selecting or backfilling a treatment cohort. The
+  result rejects only this S1 sampling revision; it does not assess Outcome Case
+  efficacy or Minimal-versus-Full superiority.
 evidence_summary:
-  natural_slots_total: 3
-  natural_slots_consumed: 0
-  natural_case_binding_failures: 0
-  independent_material_disagreements: 0
-  authority_violations: 0
+  sample_sequence_provable: false
+  endorsed_natural_slot_assignments: 0
+  independent_material_sampling_findings: 1
+  post_observation_sampling_completion_allowed: false
   replacements_or_backfills: 0
-next_steps: >
-  After the activation PR is merged, consume only the first three canonical Bureau
-  intakes in event-id order without replacement or delay, then obtain an independent
-  exact-revision review and apply the preregistered PASS/REJECT/INCONCLUSIVE gate.
+  authority_violations: 0
+  natural_case_binding_failure_count: null
+  minimal_vs_full_efficacy_established: false
+  p1_reopened: false
+  p2_authorized: false
+  p3_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
+next_steps:
+  - "Do not choose between the event-arrival and identity-first interpretations to manufacture a natural cohort."
+  - "Do not reopen P1, build P2, run P3/Minimal-versus-Full, or add Bureau/Grabowski/Chronik/runtime integration from this result."
+  - "Any future natural-sampling attempt must be a separately justified experiment whose sampling unit is frozen before the first eligible arrival."

@@ -447,19 +447,17 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "designed_not_executed"
+        "falsifiability.assessment_counterhypothesis_supported"
       ],
-      "notes": [
-        "designed_not_executed"
-      ],
+      "notes": [],
       "path": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
-      "pre_execution_hold": true,
+      "pre_execution_hold": false,
       "promotion_ready": false,
-      "status": "testing",
+      "status": "rejected",
       "warnings": []
     }
   ],
@@ -468,8 +466,8 @@
   "summary": {
     "experiments_checked": 29,
     "historical_escape": 1,
-    "not_ready": 17,
-    "pre_execution_hold": 5,
+    "not_ready": 18,
+    "pre_execution_hold": 4,
     "ready": 6,
     "warnings": 8
   },

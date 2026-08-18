@@ -1,0 +1,27 @@
+schema_version: "outcome-bound-s1-draft-disposition.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:10:00Z"
+draft_ref: "capture.yml"
+draft_sha256: "11c0d272ff8390a2545f61b93fc64771850fafe413694ff5232797a290062347"
+prior_draft_assignment:
+  slot_id: "S1-N01"
+  bureau_event_id: 8146
+  candidate_id: "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+disposition:
+  endorsed: false
+  status: "preserved_nonendorsed_draft"
+  superseded_by: "identity-arrival-correction.yml"
+  reason: >
+    The durable preregistered S1-N01 operator obligation binds the first newly
+    created canonical Bureau Operator-Intake candidate identity after S1
+    activation. SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1 existed before activation, so
+    event 8146 is a supersession of a pre-existing identity and does not consume
+    an S1 natural slot.
+current_cohort_effect:
+  counts_as_slot_consumed: false
+  counts_as_binding_failure: false
+  counts_as_natural_treatment_case: false
+immutability:
+  source_capture_rewritten: false
+  record_mode: "create_only"
+  statement: "The preserved capture remains unchanged; this adjacent record is the current endorsement authority for that draft."
