@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s1r1-preactivation-rejection",
+  "generated_at": "2026-08-18T11:26:00Z",
+  "executor": "controller:chatgpt+grabowski+independent-opus-reviews",
+  "command": "freeze author head -> exact-head independent reviews -> canonical Bureau identity live readback -> pre-activation zero-material-finding gate",
+  "exit_code": 0,
+  "test_output_file": "results/preactivation-rejection.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "github:heimgewebe/vibe-lab#348",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#348@9e3033adb2a394fd871e0a1a30f9709afdc35321",
+  "frozen_author_head": "9e3033adb2a394fd871e0a1a30f9709afdc35321",
+  "review_a_job": "grabowski-job-0bad1b9c2b3e",
+  "review_a_receipt_sha256": "81384fd850473fec0f43c260964e35e180da448e3b81c8ee4d99179f2af7db2c",
+  "review_b_job": "grabowski-job-110713c2f555",
+  "review_b_receipt_sha256": "a8aa6c7a6d12dd3f9bc507a80c001bd878e369d426211b01f00ec10da06a1385",
+  "bureau_runtime_source_commit": "fe41fe6e12569eb433542c47b8f2bdd84902789a",
+  "gate_result": "REJECT_THIS_REVISION",
+  "natural_slots_consumed": 0,
+  "authority_violations": 0,
+  "notes": "Execution proof for the S1-R1 pre-activation rejection only. The exact author revision failed its zero-material-finding gate before any natural treatment activation. It does not establish Outcome Case efficacy or inefficacy, authorize P2/P3 or Minimal-versus-Full, or mutate Bureau/Grabowski production authority."
+}

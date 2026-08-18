@@ -196,3 +196,22 @@ promotion_readiness_freeze:
         adoption, routing, runtime or other production integration; remove only if a
         separately authorized successor supersedes S1's readiness role, never by
         rewriting the rejected evidence.
+
+    - path: experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow
+      allowed_missing:
+        - falsifiability.assessment_blocked
+        - falsifiability.assessment_counterhypothesis_supported
+      reason: >-
+        S1-R1 is terminally rejected before natural activation. Exact-head review
+        found that natural-source independence was not frozen, allowing manufactured
+        post-activation candidates to satisfy the formal gate. A separate canonical
+        Bureau StateStore/runtime readback found that legacy candidate events without
+        stored candidate_id are normalized to candidate-event-<event_id>, while the
+        frozen S1-R1 rule groups only events containing the explicit ID and can hide
+        the true legacy identity root. The supported counter-hypothesis and the
+        deliberately blocked natural-informativeness assessment therefore encode the
+        negative result, not an unfinished promotion candidate. This freeze
+        authorizes no replacement cohort, validator, P2/P3, Minimal-versus-Full,
+        adoption, routing, runtime or production integration; remove only if a
+        separately authorized successor supersedes S1-R1's readiness role, never by
+        rewriting the rejected method or registration.

@@ -1,26 +1,56 @@
 schema_version: "0.1.0"
-decision_type: "execution_assessment"
-verdict: "not_executed"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
 date: "2026-08-18"
-reviewer: "ChatGPT / Grabowski"
-triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
+reviewer: "Vibe-Lab S1-R1 controller after exact-head reviews and canonical Bureau identity readback"
+triggered_by: "github:heimgewebe/vibe-lab#348; grabowski-job:0bad1b9c2b3e; grabowski-job:110713c2f555; conversation:user-request-2026-08-18-continue-outcome-bound"
 rationale: >
-  S1-R1 is pre-activation and not executed. The branch declares the experiment as
-  testing only so that a reviewed merge can activate the frozen protocol without a
-  second semantic edit; before merge this branch has no natural-sampling effect.
-  Its candidate-identity sampling unit, U01-U13 adversarial cases and natural-sample
-  gate are frozen for independent exact-head review. No pre-activation review has
-  passed yet, the PR is not merged, activation has not occurred and no natural
-  identity has been selected or captured.
+  S1-R1 never satisfied its pre-activation gate. Reviewer A found a material escape:
+  the protocol did not freeze that natural treatment arrivals must be independently
+  created outside the experiment, so a controller could manufacture three favourable
+  post-activation candidates. A separate live Bureau readback found a second material
+  defect: the frozen method groups history only by events containing an explicit
+  candidate_id, while the deployed Bureau contract canonically assigns legacy events
+  without stored IDs the identity candidate-event-<event_id>. That mismatch can hide
+  an older identity root and misclassify later operator-intake enrichment as a new
+  natural identity. Reviewer B reproduced U01-U13 but explicitly noted the naturalness
+  assumption; its PASS cannot override valid material counterexamples. Both reviews
+  were terminal before PR #348 was merged, so the later merge violated the frozen
+  zero-material-finding merge gate and provides no activation authority. No natural
+  S1-R1 slot was selected or consumed. The frozen method, registration and author cases
+  are preserved rather than repaired in place.
 evidence_summary:
-  pre_activation_review_status: "pending"
-  natural_slots_total: 3
+  frozen_author_head: "9e3033adb2a394fd871e0a1a30f9709afdc35321"
+  pre_activation_reviews_completed: 2
+  review_a_verdict: "reject_this_revision"
+  review_a_material_findings: 1
+  review_a_terminal_at: "2026-08-18T11:18:27Z"
+  review_a_receipt_sha256: "81384fd850473fec0f43c260964e35e180da448e3b81c8ee4d99179f2af7db2c"
+  review_b_verdict: "pass_this_revision"
+  review_b_terminal_at: "2026-08-18T11:19:14Z"
+  review_b_receipt_sha256: "a8aa6c7a6d12dd3f9bc507a80c001bd878e369d426211b01f00ec10da06a1385"
+  controller_additional_material_findings: 1
+  pr_348_merge_gate_satisfied: false
+  pr_348_merged_at: "2026-08-18T11:20:40Z"
+  pr_348_merge_commit: "e142b1d11614abb4f307b6654940b60afb0b2dc3"
+  bureau_runtime_source_commit: "fe41fe6e12569eb433542c47b8f2bdd84902789a"
+  bureau_state_store_schema_version: 5
+  bureau_state_store_integrity: "ok"
+  bureau_candidate_task_events_recorded_snapshot: 3450
+  bureau_candidate_task_events_recheck: 3451
+  bureau_legacy_events_without_stored_candidate_id: 34
+  bureau_legacy_roots_with_direct_identity_bearing_successor: 14
   natural_slots_consumed: 0
-  natural_identity_binding_failures: 0
+  natural_sample_executed: false
   authority_violations: 0
-  replacements_or_backfills: 0
+  p2_validator_authorized: false
+  p3_authorized: false
+  minimal_vs_full_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
 next_steps:
-  - "Validate the exact author revision."
-  - "Obtain one independent exact-head semantic review of the sampling rule and U01-U13."
-  - "Reject the author revision on any material sampling disagreement; merge only a zero-material-finding revision."
-  - "After a valid merge, wait through the frozen 300-second cooling interval before natural identity selection."
+  - "Do not activate or repair the frozen S1-R1 method, registration or U01-U13 cases in place."
+  - "Preserve PR #348 and its merge-gate violation as negative pre-activation evidence."
+  - "If work continues, create a separately registered successor that normalizes every candidate event through Bureau's canonical identity rule before grouping and freezes natural-source independence before activation."
+  - "Do not start P2, P3 or Minimal-versus-Full from this rejection."

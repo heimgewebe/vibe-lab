@@ -7,15 +7,19 @@ experiment:
     candidate identity, anchored only to its first-ever canonical candidate event when that event already carries operator-intake, removes
     the sampling ambiguity that rejected S1 while preserving a no-backfill natural
     shadow over the unchanged S0-R3 C/S/B/E/T/Q semantics.
-  status: testing
+  status: rejected
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s1r1-preactivation-rejection/run_meta.json"
+    - "results/preactivation-rejection.md"
+    - "results/evidence.jsonl"
+    - "results/decision.yml"
   created: "2026-08-18"
   updated: "2026-08-18"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
-  iteration: 1
+  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound; github:heimgewebe/vibe-lab#348; grabowski-job:0bad1b9c2b3e; grabowski-job:110713c2f555"
+  iteration: 2
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -33,25 +37,27 @@ experiment:
           Candidate identity plus identity-first event may still leave a defensible way
           to count later supersessions or deduplicated observations as new units.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Independent exact-head reviewer must reproduce U01-U13 with zero material disagreement before merge."
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: "results/preactivation-rejection.md"
+              section: "Material finding M2 — canonical legacy identity is not normalized"
+          pending_checks: []
           limitations:
-            - "Paper agreement cannot establish live capture reliability."
-          confidence: low
+            - "The observed defect concerns legacy canonical identity normalization; no natural S1-R1 sample was activated."
+          confidence: high
       - id: "identity_sampling_is_naturally_uninformative"
         statement: >
           The first three new identities may often be D0, source-poor, or missed
           before mutation, so a correct sampling unit may still fail to produce a
           useful natural feasibility sample.
         assessment:
-          status: pending
+          status: blocked
           outcome: not_checked
           pending_checks:
-            - "Only a post-activation three-identity natural shadow may test this."
+            - "No natural sample is justified after the pre-activation rule revision failed."
           limitations:
-            - "No replacement or outcome filtering is permitted."
+            - "S1-R1 was rejected before activation; no statement about natural-case informativeness is supported."
           confidence: low
 
 context:
