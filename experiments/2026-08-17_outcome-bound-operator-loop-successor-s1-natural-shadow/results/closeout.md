@@ -1,116 +1,44 @@
----
-title: "Outcome-Bound S1 — Natural-case shadow closeout"
-status: testing
-canonicality: operative
-created: "2026-08-18"
-updated: "2026-08-18"
-triggered_by: "conversation:user-request-2026-08-18-outcome-bound-restplan-implementation"
----
+# Outcome-Bound S1 — corrected pre-review closeout
 
-# S1 Natural-Case Shadow Closeout
+## Status
 
-## Author assessment
+This is an author/controller closeout packet, not the required independent exact-revision review. The corrected sequence consumes **S1-N01 only** and immediately hits the frozen reject threshold.
 
-**Proposed gate result: `REJECT_THIS_REVISION`, pending independent exact-head semantic review.**
+## What changed
 
-S1 consumed exactly its three preregistered natural slots. All three are successive
-canonical Bureau arrivals for the same Systemkatalog drift candidate. None may be
-replaced or backfilled.
+A prior local draft treated Bureau events `8146`, `8147` and `8148` as three natural arrivals. That is not compatible with the preregistered watcher rule fixed before the qualifying arrival: all three belong to `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1`, whose first canonical event is `302` from 13 July 2026. The prior files are preserved; their cohort assignments are superseded by `cases/S1-N01/identity-arrival-correction.yml`.
 
-The unchanged S0-R3 rule cannot produce a definitive complete C/S/B/E/T binding for
-any of the three arrivals from the prospectively registered evidence. Each slot is
-therefore an `indeterminate` non-D0 binding failure and contributes one unit to
-`natural_case_binding_failure_count`.
+## Correct S1-N01
 
-## Cohort accounting
+The first candidate identity whose first canonical `candidate_task` event occurs after activation is:
 
-| Measure | Author finding |
-| --- | ---: |
-| Registered natural slots | 3 |
-| Slots consumed | 3 |
-| Canonical events | 8146, 8147, 8148 |
-| Distinct candidate identities | 1 |
-| Binding failures | 3 |
-| Definitive complete non-D0 bindings | 0 |
-| Replacements/backfills | 0 |
-| S1 authority violations | 0 |
-| Productive tasks delayed or rerouted by S1 | 0 observed |
+- Bureau event: `8166`
+- created: `2026-08-18T05:33:32.623001Z`
+- candidate: `candidate-c701b55e34cc9a6a9a6d6752`
+- task: `BUREAU-CONTROL-PLANE-V3-T012`
 
-The repeated candidate identity is not an exclusion criterion. The frozen protocol
-samples arrivals, not unique candidate identities.
+Capture began at `2026-08-18T07:43:24Z`. Productive T012 activity predates capture:
 
-## Why the bindings fail
+- coordinated claim intent event `8220`: `2026-08-18T06:17:41.356320Z`;
+- workspace created event `8223`: `2026-08-18T06:17:51.014271Z`;
+- implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4`, authored before capture.
 
-The event-bound claim snapshot is the same across the three revisions. It asks to
-review the exact digest-bound drift report, update only confirmed stable catalog and
-source bindings through normal review gates, and close or refine the candidate only
-after verified merge.
+Therefore S1-N01 is `capture_missed_before_mutation`. C/S/B/E/T/Q are not reconstructed. The slot is consumed, replacements/backfills remain zero, and S1 caused zero productive authority effects.
 
-Under S0-R3 this does not preselect one atomic independently falsifiable target-state
-predicate E. It contains separable possible positive effects. Choosing one now would
-be favourable-conjunct selection after the natural event and is prohibited.
+## Gate
 
-The three events additionally reference successive digests at one rolling
-`drift-report.json` path. By closeout time that path contained a newer digest, and
-the bounded normal state search did not resolve immutable copies of the three
-historical reports. Later report bytes or current candidate state cannot be used to
-reconstruct their contemporaneous S/B contract.
+`natural_case_binding_failure_count = 1`. Section 10 of the frozen S1 protocol therefore points mechanically to `REJECT_THIS_REVISION`. Section 11 stops further assignment immediately; N02 and N03 remain unassigned in the corrected cohort.
 
-These two facts are separate:
+## Independent review still required
 
-1. **semantic failure:** C does not bind one atomic E;
-2. **evidence-timing failure:** the late observer cannot recover the event-bound
-   rolling report bytes from the registered source surface.
+Before terminal result publication, an independent exact-revision reviewer must verify:
 
-Either is enough to prevent a definitive prospective C/S/B/E/T binding. The
-closeout does not infer whether productive mutation had begun for each historical
-event because that fact was not established.
+1. activation commit and timestamp;
+2. first-event identity ordering and exclusion of old-identity supersessions;
+3. that event `8166` is the first qualifying identity;
+4. that productive T012 work predates capture;
+5. that no C/S/B/E/T/Q reconstruction, replacement or backfill occurred;
+6. zero S1 production-authority effects;
+7. the mechanical reject threshold.
 
-## Handling-time measurement
-
-Formal late stop-classification attempts took 18 s, 12 s and 11 s; median **12 s**.
-These values are **not** successful prospective binding effort. They measure only
-how quickly the controller could recognize the already-existing failure at closeout
-and therefore cannot satisfy the S1 handling-time success criterion.
-
-## Frozen gate application
-
-S1 section 10 states `REJECT_THIS_REVISION` when
-`natural_case_binding_failure_count >= 1`.
-
-Author count: **3**.
-
-The rejection is therefore mechanical if independent review confirms the sequence,
-bindings and interpretation. No overhead tradeoff can override a binding failure.
-
-## Authority and non-claims
-
-S1:
-
-- did not change Bureau candidate state, task state, queue or claim authority;
-- did not change Systemkatalog code or catalog truth;
-- did not alter Grabowski runtime, routing, policy, merge or deployment;
-- did not reopen P1;
-- did not build P2;
-- did not execute P3 or compare Minimal versus Full;
-- did not establish that Outcome Cases are useless or useful;
-- did not establish target-effect causality for any treatment arrival.
-
-A rejected S1 revision means only that this frozen external-validity design failed
-its own requirement for prospectively complete natural C/S/B/E/T binding.
-
-## Independent review required
-
-Before terminal rejection is published, an independent exact-head reviewer must:
-
-1. verify PR #346 activation time and the 8146/8147/8148 sequence;
-2. verify that repeated candidate identity does not permit replacement/backfill;
-3. independently apply the frozen S0-R3 atomic-effect rule to each claim snapshot;
-4. test whether a unique C/S/B/E/T binding can be recovered without retrospective
-   report reconstruction or later-state rebasing;
-5. challenge the author's `indeterminate` classifications;
-6. verify the three-failure count and frozen reject gate;
-7. verify zero S1 productive authority effects.
-
-Any material disagreement must be recorded rather than repaired in place. The
-current author assessment supplies no successor authorization.
+No P1 reopening, P2/P3, Minimal-versus-Full comparison, Bureau/Grabowski runtime change, routing, queue, policy, merge-policy or deployment authority follows from this result.

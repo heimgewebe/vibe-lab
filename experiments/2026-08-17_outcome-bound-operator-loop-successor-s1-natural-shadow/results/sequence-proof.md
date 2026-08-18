@@ -1,76 +1,23 @@
----
-title: "Outcome-Bound S1 — Canonical natural-arrival sequence proof"
-status: testing
-canonicality: operative
-created: "2026-08-18"
-updated: "2026-08-18"
-triggered_by: "conversation:user-request-2026-08-18-outcome-bound-restplan-implementation"
----
+# S1 identity-arrival sequence correction
 
-# Canonical natural-arrival sequence proof
+## Authority
 
-## Activation boundary
+Activation is fixed at merge commit `5f12ef5bc2a59459ee11b71fd4f8bd434e4386f1` and `2026-08-17T21:07:25Z`. The durable operator preregistration `goo-outcome-bound-s1-n01-first-natural-intake-20260818`, created at `2026-08-18T05:25:06.910865Z`, fixes the watcher rule before the first qualifying identity arrived: only a candidate identity whose **first** canonical `candidate_task` event is after activation can consume S1-N01.
 
-S1 became eligible to observe natural cases only after PR #346 merged at
-`2026-08-17T21:07:25Z`, merge commit
-`5f12ef5bc2a59459ee11b71fd4f8bd434e4386f1`.
+## Excluded supersessions
 
-## Authoritative ordering read
+`SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1` first entered the canonical live register at event `302` on `2026-07-13T06:19:53.261891Z`. Its post-activation events `8146` through `8153`, plus later `8192` and `8240`, are supersessions of that preexisting identity. They are therefore not new S1 arrivals under the preregistered watcher rule.
 
-The canonical Bureau StateStore database
-`/home/alex/.local/state/bureau/bureau.sqlite3` was read without mutation. The
-`events` table was scanned for `live-register` records whose payload kind is
-`candidate_task` and contains the canonical `operator_intake` binding, strictly
-after the activation timestamp and in ascending numeric StateStore event id.
+The local draft commit `84e5fbd740266a744f7272dfde759c909ae34fc4` assigned events `8146/8147/8148` to S1-N01..N03. Those files remain preserved as draft evidence, but the assignments are not endorsed.
 
-The first three matching arrivals are:
+## First qualifying identity
 
-| Slot | StateStore event | Created at | Candidate identity | Supersedes |
-| --- | ---: | --- | --- | ---: |
-| `S1-N01` | `8146` | `2026-08-17T21:31:57.378731Z` | `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1` | `8109` |
-| `S1-N02` | `8147` | `2026-08-17T22:32:43.503381Z` | `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1` | `8146` |
-| `S1-N03` | `8148` | `2026-08-17T23:37:56.183230Z` | `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1` | `8147` |
+| slot | event | created at | candidate identity | task | result |
+| --- | ---: | --- | --- | --- | --- |
+| S1-N01 | 8166 | 2026-08-18T05:33:32.623001Z | `candidate-c701b55e34cc9a6a9a6d6752` | `BUREAU-CONTROL-PLANE-V3-T012` | `capture_missed_before_mutation` |
 
-All three are distinct canonical arrival events even though they are successive
-revisions of the same candidate identity. S1 section 5 freezes the sample as the
-first three arrivals and states that every arrival consumes its ordinal slot.
-Therefore later distinct candidates may not replace these three events.
+At capture start `2026-08-18T07:43:24Z`, productive T012 work had already begun: coordinated claim intent event `8220` was recorded at `06:17:41Z`, workspace creation event `8223` at `06:17:51Z`, and implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4` existed before capture. Consequently C/S/B/E/T/Q are intentionally left unbound rather than reconstructed.
 
-## Event-bound source evidence
+## Stop rule
 
-The three events bind different exact drift-report digests:
-
-- event `8146`: `8d86c385a399d5a072e06a7b5597e6d2b6683c940fe173efce5f541321b918ce`;
-- event `8147`: `5e05f6be5811f7ba3b7ccfeb3510dd2cb9f9c3abce1d6dadd03b0e6d35b5b986`;
-- event `8148`: `65d7f562d5807285a980931c24309d90575a212e9fe1cc3c0c72532ff756cee6`.
-
-Each event names the same rolling source locator:
-`/home/alex/.local/state/heim-pc/systemkatalog-drift-watch/drift-report.json`.
-At the S1 closeout capture that locator had advanced to digest
-`70e8eecfb9c7c566ece248ef93befeb6bb8918e7f083efd01b1e82278e831471`.
-A bounded search of the normal Heim-PC and Bureau state surfaces did not resolve an
-immutable file containing any of the three historical event-bound digests. This
-establishes only that the registered rolling locator and bounded state search no
-longer supply those historical report bytes; it does not prove that no copy exists
-anywhere else.
-
-## Present-state readback is not historical baseline
-
-A fresh canonical assessment of candidate
-`SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1` resolves current event `8240`, status
-`observed`, with advisory decision `promote`; publication approval remains absent.
-That present-state readback is useful only to prove that the candidate lineage has
-continued. It must not be used to reconstruct or rebase B for events 8146–8148.
-
-## Integrity conclusion
-
-- treatment slots consumed: **3/3**;
-- replacements/backfills: **0**;
-- arrival-order ambiguity: **0**;
-- distinct candidate identities required by the protocol: **no**;
-- technical/Bureau truth copied into S1 as a second authority: **no** — the capture
-  records retain identifiers and bounded findings only.
-
-This sequence proof does not establish timely prospective capture, productive
-mutation absence, target-effect success, Outcome Case efficacy, or any production
-authority.
+S1-N01 permanently consumes the first slot as one natural-case binding failure. The preregistered stop rule applies immediately. N02 and N03 are not assigned in the corrected cohort; there is no replacement or backfill. The frozen gate points to `REJECT_THIS_REVISION`, subject to the required independent exact-revision review.

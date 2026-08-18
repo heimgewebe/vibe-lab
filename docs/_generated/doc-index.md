@@ -318,8 +318,8 @@
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s0r3/s0/paper-cases.md` | Outcome-Bound Operator Loop Successor S0-R3 — Fixed adversarial paper cases | designed | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/CONTEXT.md` | Outcome-Bound Operator Loop Successor S1 — Natural-case external-validity shadow | designed | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/method.md` | Outcome-Bound S1 — Natural-case external-validity protocol | designed | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md` | Outcome-Bound S1 — Natural-case shadow closeout | testing | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/sequence-proof.md` | Outcome-Bound S1 — Canonical natural-arrival sequence proof | testing | operative |
+| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md` | closeout | — | — |
+| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/sequence-proof.md` | sequence-proof | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

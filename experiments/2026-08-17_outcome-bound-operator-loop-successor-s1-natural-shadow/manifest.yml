@@ -11,17 +11,16 @@ experiment:
   category: workflow
   execution_status: executed
   execution_refs:
-    - "cases/S1-N01/capture.yml"
-    - "cases/S1-N02/capture.yml"
-    - "cases/S1-N03/capture.yml"
+    - "cases/S1-N01/identity-arrival-correction.yml"
     - "results/sequence-proof.md"
     - "results/evidence.jsonl"
+    - "results/decision.yml"
     - "results/closeout.md"
   created: "2026-08-17"
   updated: "2026-08-18"
   author: "ChatGPT / Grabowski"
-  triggered_by: "github:heimgewebe/vibe-lab#345; conversation:user-request-2026-08-18-outcome-bound-restplan-implementation"
-  iteration: 2
+  triggered_by: "github:heimgewebe/vibe-lab#345; operator-obligation:goo-outcome-bound-s1-n01-first-natural-intake-20260818"
+  iteration: 3
   evidence_level: experimental
 
 context:

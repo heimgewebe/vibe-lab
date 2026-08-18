@@ -3,32 +3,35 @@ decision_type: "execution_assessment"
 verdict: "insufficient_proof"
 date: "2026-08-18"
 reviewer: "S1 author/controller pending independent exact-head review"
-triggered_by: "conversation:user-request-2026-08-18-outcome-bound-restplan-implementation"
+triggered_by: "operator-obligation:goo-outcome-bound-s1-n01-first-natural-intake-20260818"
 rationale: >
-  S1 has now executed its deterministic three-arrival sample. Canonical Bureau
-  StateStore events 8146, 8147 and 8148 consume S1-N01 through S1-N03 without
-  replacement or backfill. The author assessment classifies all three as
-  indeterminate non-D0 binding failures because the frozen natural claim does not
-  preselect one atomic target-effect E and the event-bound rolling report bytes are
-  not available from their registered source locator at late capture. The frozen
-  gate therefore points mechanically to REJECT_THIS_REVISION because the author
-  natural_case_binding_failure_count is 3. Terminal result publication remains
-  insufficiently proved until the required independent exact-head semantic review
-  verifies sequence, classifications, evidence limits and zero S1 authority effect.
+  The preregistered identity-arrival rule excludes post-activation supersessions of
+  candidate identities first seen before activation. The first qualifying new
+  identity is Bureau event 8166 / candidate-c701b55e34cc9a6a9a6d6752. By the time
+  S1 first captured that slot, productive BUREAU-CONTROL-PLANE-V3-T012 work had
+  already begun and implementation commit 2fdba02d5e96646831f3dfd35665acfc3239b2c4
+  existed. S1-N01 is therefore consumed as capture_missed_before_mutation with no
+  retrospective C/S/B/E/T/Q reconstruction. One binding failure reaches the frozen
+  REJECT_THIS_REVISION threshold and stops further assignment. Terminal publication
+  remains pending the required independent exact-revision review.
 evidence_summary:
   natural_slots_total: 3
-  natural_slots_consumed: 3
-  canonical_event_ids: [8146, 8147, 8148]
-  distinct_candidate_identities: 1
-  natural_case_binding_failures_author: 3
+  natural_slots_consumed: 1
+  canonical_event_ids: [8166]
+  first_new_candidate_identity: "candidate-c701b55e34cc9a6a9a6d6752"
+  excluded_preexisting_identity: "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+  excluded_supersession_events: [8146, 8147, 8148, 8149, 8150, 8151, 8152, 8153, 8192, 8240]
+  natural_case_binding_failures_author: 1
   definitive_complete_non_d0_bindings_author: 0
   independent_material_disagreements: null
   authority_violations_author: 0
   replacements_or_backfills: 0
+  assignment_stopped: true
   proposed_gate: "REJECT_THIS_REVISION"
   minimal_vs_full_efficacy_established: false
+correction_ref: "cases/S1-N01/identity-arrival-correction.yml"
 next_steps:
-  - "Freeze and validate this exact author revision."
-  - "Run the required independent exact-head semantic review over sequence, all three captures and the frozen S0-R3/S1 rules."
-  - "Record the review append-only and apply the already frozen S1 gate; do not repair failed natural cases or backfill the cohort."
-  - "Do not start P1, P2, P3, Minimal-versus-Full comparison or production integration from this pre-review assessment."
+  - "Freeze and validate this exact corrected author revision."
+  - "Run the required independent exact-head review over activation, identity sequence, capture timing and the append-only correction."
+  - "If the review reproduces the correction, publish the frozen REJECT_THIS_REVISION result."
+  - "Do not assign S1-N02/S1-N03, backfill, reconstruct C/S/B/E/T/Q, or start P1/P2/P3 or production integration."
