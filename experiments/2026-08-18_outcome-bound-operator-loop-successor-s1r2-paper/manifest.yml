@@ -1,0 +1,77 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s1r2-paper"
+  hypothesis: >
+    A paper contract that canonicalizes every Bureau candidate event before identity
+    grouping and treats natural-source independence as a fail-closed gate on an
+    already fixed ordinal can close S1-R1's two material sampling defects without
+    adding a production field, validator, service or post-observation selector.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-18"
+  updated: "2026-08-18"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject the frozen author revision if either of two independent exact-head
+      reviewers changes any P01-P18 disposition, finds a credible canonical-identity
+      or source-independence escape, finds a way to filter a fixed ordinal after
+      observation, requires a new production/control surface, or if the controller
+      cannot reconcile every review job bound to the merge decision before merge.
+    counter_hypotheses:
+      - id: "canonical_identity_normalization_still_loses_legacy_roots"
+        statement: >
+          Normalizing each event before grouping may still allow a later explicit ID
+          or intake-enrichment event to hide an older legacy root.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Both exact-head reviewers must independently attack P01-P07 and the deployed Bureau identity rule."
+          limitations:
+            - "Paper agreement does not establish future StateStore observability."
+          confidence: low
+      - id: "naturalness_gate_becomes_selection_filter"
+        statement: >
+          Requiring source independence may let the observer skip inconvenient or
+          ambiguous arrivals and cherry-pick later candidates.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Both exact-head reviewers must attack P08-P12 and prove that naturalness is applied only after ordinal fixation."
+          limitations:
+            - "Paper agreement does not establish natural-case feasibility."
+          confidence: low
+      - id: "review_reconciliation_still_allows_partial_read"
+        statement: >
+          A controller may still treat one PASS as sufficient while another exact-head
+          decision-bound review is terminal but unread or materially rejects.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Both reviewers must classify P18, and the controller must inventory and reconcile every decision-bound exact-head review before merge."
+          limitations:
+            - "This paper gate does not harden Grabowski merge-policy runtime; that remains a separate follow-up."
+          confidence: low
+
+context:
+  tools:
+    - "frozen S1-R1 rejection evidence"
+    - "deployed Bureau canonical identity contract"
+    - "Vibe-Lab experiment-only paper artifacts"
+    - "two independent read-only exact-head reviews"
+  language: "Markdown, JSON, YAML"
+  environment: "design-only paper gate; no natural sampling or productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-08-18"
+reviewer: "ChatGPT / Grabowski"
+triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
+rationale: >
+  S1-R2 is a design-only paper experiment. Its method, P01-P18 paper cases and
+  registration are frozen for exact-head review, but no paper review has yet been
+  accepted and no natural sampling is authorized. This revision creates no Bureau
+  candidate selection, activation timestamp, capture or production authority.
+evidence_summary:
+  predecessor_material_defects: 2
+  predecessor_review_gate_incidents: 1
+  fixed_paper_cases: 18
+  required_independent_reviewers: 2
+  completed_independent_reviewers: 0
+  material_sampling_contract_disagreement_count: null
+  natural_sampling_authorized: false
+  natural_slots_consumed: 0
+next_steps:
+  - "Validate the exact author revision."
+  - "Obtain two independent read-only exact-head reviews of P01-P18, M1/M2 and the P18 reconciliation gate."
+  - "Reconcile every decision-bound review job before any merge decision."
+  - "Reject on one material finding; merge only a unanimously clean paper author revision."
+  - "A paper PASS may justify only a separate natural-activation proposal."

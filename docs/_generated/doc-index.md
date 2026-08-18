@@ -326,6 +326,9 @@
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/method.md` | Outcome-Bound S1-R1 — Natural identity sampling protocol | designed | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/preactivation-rejection.md` | Outcome-Bound S1-R1 — Pre-activation rejection | rejected | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/sampling-cases.md` | Outcome-Bound S1-R1 — Fixed sampling-unit adversarial cases | designed | operative |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/CONTEXT.md` | CONTEXT | — | — |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/method.md` | Outcome-Bound S1-R2 — Canonical identity and natural-source paper protocol | designed | operative |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/sampling-cases.md` | sampling-cases | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
