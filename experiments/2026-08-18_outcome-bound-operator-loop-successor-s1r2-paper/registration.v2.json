@@ -1,0 +1,120 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper",
+  "registered_at": "2026-08-18T11:57:00Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the corrected Outcome-Bound natural-sampling contract is semantically stable enough to justify a separate natural-activation proposal.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-18-continue-outcome-bound",
+      "confirmed_at": "2026-08-18T11:50:00Z",
+      "valid_until": "2026-09-15T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does the S1-R2 paper contract close S1-R1's natural-source-independence and canonical-legacy-identity defects without creating another post-observation selector or production/control surface?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-18-continue-outcome-bound"
+  },
+  "intervention": {
+    "name": "canonical-identity plus fixed-slot naturalness gate",
+    "description": "Normalize every Bureau candidate_task event through the deployed canonical identity rule before grouping, define Operator-Intake birth only at the normalized identity-first event, fix ordinal sequence before any naturalness judgment, then treat experiment causation or unprovable source independence as a slot-consuming rejection rather than a filter."
+  },
+  "control_condition": {
+    "id": "s1r1_material_failures",
+    "description": "Exactly three terminal predecessor controls: S1-R1 M1 natural-source independence was unfrozen; S1-R1 M2 legacy no-ID roots were not normalized through Bureau canonical identity before grouping; and PR #348 was merged after two decision-bound reviews were terminal but before a material REJECT had been reconciled."
+  },
+  "treatment_condition": {
+    "id": "s1r2_fixed_paper_cases",
+    "description": "Exactly P01-P18 in sampling-cases.md, including legacy identity, later enrichment, supersession/dedup, manufactured and ambiguous source causation, independent source, timing interference, correction, D0, missed/result-known capture and event-id tie cases."
+  },
+  "measurement": {
+    "primary_metric": "material_sampling_contract_disagreement_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze one author revision, then obtain two independent read-only exact-head reviews. Each reviewer must independently derive P01-P18 and attack M1/M2 plus selection, causation, timing, legacy identity and authority escapes. Before merge, reconcile every review job/receipt bound to the decision. No natural candidate observation is part of this measurement.",
+    "success": "Both exact-head reviewers reproduce all P01-P18 author dispositions, material_sampling_contract_disagreement_count is zero, no reviewer requires a new production field/validator/service/control surface, and all decision-bound review jobs are terminal and explicitly reconciled before merge.",
+    "falsification": "Any changed P01-P18 disposition, credible legacy-identity or natural-source-causation escape, fixed-slot filtering/backfill escape, unresolved contradictory review, unread terminal reviewer, head mismatch, or required new production/control surface rejects the author revision.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "paper_review_elapsed_seconds",
+      "unit": "seconds",
+      "method": "Record bounded elapsed runtime for both exact-head reviewer jobs as descriptive overhead; reviewer time is not an optimization target."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "terminal predecessor sampling/review-gate defect versus fixed S1-R2 paper case",
+    "minimum_control": 3,
+    "minimum_treatment": 18,
+    "comparability_constraints": [
+      "control is exactly S1-R1 M1, S1-R1 M2, and the PR #348 review-reconciliation failure; none is natural evidence",
+      "treatment is exactly P01-P18 frozen before review",
+      "canonical identity normalization occurs before grouping or intake-birth classification",
+      "naturalness is evaluated only after an ordinal is fixed and can never skip or replace it",
+      "S0-R3 C/S/B/E/T/Q semantics remain unchanged",
+      "this paper experiment creates or consumes no Bureau natural-treatment candidate"
+    ],
+    "confounders": [
+      "paper cases cannot establish live StateStore observability",
+      "counterfactual source-independence evidence may be harder in natural work than in paper cases",
+      "two reviewers can share blind spots despite independent runs",
+      "paper stability does not estimate Outcome Case efficacy or prevalence"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "S1-R1 frozen method and terminal pre-activation rejection",
+      "deployed Bureau canonical candidate identity contract",
+      "PR #348 merge-gate incident with both terminal exact-head reviewer receipts",
+      "fixed S1-R2 method and P01-P18 cases",
+      "named read-only exact-head reviewer receipts and outputs",
+      "Git/GitHub/CI exact revision truth"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-25T18:00:00Z",
+  "expires_at": "2026-09-15T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-18-continue-outcome-bound",
+      "reviewed_at": "2026-08-18T11:50:00Z",
+      "rationale": "The successor is bounded to a paper-only repair of the two terminal S1-R1 sampling defects and creates no natural cohort or production integration."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

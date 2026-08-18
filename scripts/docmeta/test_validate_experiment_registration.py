@@ -18,7 +18,7 @@ NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
 # Repository-tree validation clock pinned to the newest registration timestamp; triggered_by:
 # conversation:user-request-2026-08-18-continue-outcome-bound.
-REPOSITORY_NOW = datetime(2026, 8, 18, 10, 34, 46, tzinfo=timezone.utc)
+REPOSITORY_NOW = datetime(2026, 8, 18, 11, 57, 0, tzinfo=timezone.utc)
 DELETE = object()
 OUTCOME_OBSERVATION_SCHEMA_PATH = (
     ROOT
