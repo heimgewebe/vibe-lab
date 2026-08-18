@@ -11,6 +11,7 @@ experiment:
   category: workflow
   execution_status: executed
   execution_refs:
+    - "artifacts/run-s1-natural-shadow-closeout/run_meta.json"
     - "cases/S1-N01/identity-arrival-correction.yml"
     - "results/sequence-proof.md"
     - "results/evidence.jsonl"

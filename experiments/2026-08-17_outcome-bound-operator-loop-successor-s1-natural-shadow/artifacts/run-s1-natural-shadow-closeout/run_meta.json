@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s1-natural-shadow-closeout",
+  "generated_at": "2026-08-18T08:03:59Z",
+  "executor": "controller:chatgpt+grabowski",
+  "command": "read-only Bureau StateStore identity-order and mutation-timing verification -> append-only S1-N01 identity-arrival correction -> frozen S1 stop-gate assessment",
+  "exit_code": 0,
+  "test_output_file": "cases/S1-N01/identity-arrival-correction.yml",
+  "provenance_level": "self_reported",
+  "triggered_by": "operator-obligation:goo-outcome-bound-s1-n01-first-natural-intake-20260818",
+  "work_lane_ref": "grabowski-work-lane:16b8b057764e6f9bcf545815b490dee0",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#347",
+  "natural_case_ref": "bureau-candidate:candidate-c701b55e34cc9a6a9a6d6752",
+  "natural_case_event_ref": "bureau-event:8166",
+  "capture_ref": "cases/S1-N01/identity-arrival-correction.yml",
+  "capture_sha256": "9617a2414132569b7e4732a4ab8818213f1918305acd580fb49b8fbacf8039bb",
+  "productive_mutation_evidence_refs": [
+    "bureau-event:8220",
+    "bureau-event:8223",
+    "git:bureau@2fdba02d5e96646831f3dfd35665acfc3239b2c4"
+  ],
+  "notes": "Execution proof for the bounded S1 natural-shadow capture and stop-gate assessment only. It establishes that the S1 protocol was exercised on its preregistered first new candidate identity and reached capture_missed_before_mutation. It does not establish Outcome Case efficacy, target-effect success, Bureau task correctness, Minimal-versus-Full superiority, P2/P3 authorization, or any production authority."
+}
