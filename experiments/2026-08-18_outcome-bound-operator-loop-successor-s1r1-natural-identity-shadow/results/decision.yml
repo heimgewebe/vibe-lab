@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-08-18"
+reviewer: "ChatGPT / Grabowski"
+triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
+rationale: >
+  S1-R1 is pre-activation and not executed. The branch declares the experiment as
+  testing only so that a reviewed merge can activate the frozen protocol without a
+  second semantic edit; before merge this branch has no natural-sampling effect.
+  Its candidate-identity sampling unit, U01-U13 adversarial cases and natural-sample
+  gate are frozen for independent exact-head review. No pre-activation review has
+  passed yet, the PR is not merged, activation has not occurred and no natural
+  identity has been selected or captured.
+evidence_summary:
+  pre_activation_review_status: "pending"
+  natural_slots_total: 3
+  natural_slots_consumed: 0
+  natural_identity_binding_failures: 0
+  authority_violations: 0
+  replacements_or_backfills: 0
+next_steps:
+  - "Validate the exact author revision."
+  - "Obtain one independent exact-head semantic review of the sampling rule and U01-U13."
+  - "Reject the author revision on any material sampling disagreement; merge only a zero-material-finding revision."
+  - "After a valid merge, wait through the frozen 300-second cooling interval before natural identity selection."

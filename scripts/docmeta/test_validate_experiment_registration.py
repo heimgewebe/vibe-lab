@@ -17,9 +17,8 @@ SPEC.loader.exec_module(MODULE)
 NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
 # Repository-tree validation clock pinned to the newest registration timestamp; triggered_by:
-# conversation:user-request-2026-08-17-outcome-bound-s1-natural-shadow;
-# github:heimgewebe/vibe-lab#345.
-REPOSITORY_NOW = datetime(2026, 8, 17, 20, 30, 0, tzinfo=timezone.utc)
+# conversation:user-request-2026-08-18-continue-outcome-bound.
+REPOSITORY_NOW = datetime(2026, 8, 18, 10, 34, 46, tzinfo=timezone.utc)
 DELETE = object()
 OUTCOME_OBSERVATION_SCHEMA_PATH = (
     ROOT
