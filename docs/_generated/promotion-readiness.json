@@ -451,16 +451,13 @@
       "falsifiability_triggered": true,
       "historical_escape": false,
       "missing": [
-        "falsifiability",
-        "insufficient_proof_assessment"
+        "falsifiability.assessment_counterhypothesis_supported"
       ],
-      "notes": [
-        "insufficient_proof_assessment"
-      ],
+      "notes": [],
       "path": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
       "pre_execution_hold": false,
       "promotion_ready": false,
-      "status": "testing",
+      "status": "rejected",
       "warnings": []
     }
   ],

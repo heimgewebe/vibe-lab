@@ -1,0 +1,23 @@
+schema_version: "outcome-bound-s1-interpretation-disposition.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:33:00Z"
+record_mode: "create_only"
+interpretation_ref: "identity-arrival-correction.yml"
+interpretation_sha256: "0d7886925412feda671cafdffc54fd9664ecf3832814f5966278f4072134ddc6"
+disposition:
+  endorsed: false
+  status: "preserved_nonendorsed_intermediate_interpretation"
+  reason: >
+    The first-new-candidate-identity sampling rule used by this correction was not
+    frozen in the S1 activation protocol before the earlier post-activation events
+    were observed. The later operator obligation cannot retroactively resolve the
+    sampling unit. The current terminal authority is
+    ../../results/sampling-integrity-closeout.yml.
+current_cohort_effect:
+  counts_as_slot_consumed: false
+  counts_as_binding_failure: false
+  counts_as_natural_treatment_case: false
+  t012_timing_is_gate_basis: false
+immutability:
+  source_interpretation_rewritten: false
+  statement: "The intermediate correction remains preserved; this adjacent create-only record withdraws its authority for current S1 cohort and gate calculations."

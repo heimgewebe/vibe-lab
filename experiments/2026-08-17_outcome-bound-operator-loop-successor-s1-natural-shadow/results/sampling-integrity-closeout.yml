@@ -1,0 +1,73 @@
+schema_version: "outcome-bound-s1-sampling-integrity-closeout.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:31:25Z"
+record_mode: "create_only"
+activation:
+  merge_commit: "5f12ef5bc2a59459ee11b71fd4f8bd434e4386f1"
+  merged_at: "2026-08-17T21:07:25Z"
+  frozen_method_sha256: "3f8868f02d41c126911e7e13748ea844eb944acb9012e1cf558ce3ca2f03f852"
+finding:
+  state: "integrity_failure"
+  kind: "sampling_unit_not_provable_from_frozen_protocol"
+  explanation: >
+    The frozen S1 method defines the treatment sample as the first three canonical
+    Bureau intakes or arrivals after activation, ordered by canonical Bureau event
+    id, while also requiring a stable Bureau candidate/event identity. It does not
+    define whether a post-activation supersession of a candidate identity that
+    already existed before activation is itself a new intake/arrival for S1. Both
+    event-arrival and first-new-candidate-identity interpretations therefore require
+    an additional semantic choice not frozen at activation.
+  frozen_protocol_refs:
+    - "method.md#4-natural-source-universe"
+    - "method.md#5-deterministic-sample-and-no-cherry-picking"
+    - "method.md#8-independent-review"
+    - "method.md#10-preregistered-gate"
+    - "method.md#11-stop-rules"
+independent_review:
+  reviewed_head: "ca7ba0970ce66b6915b8ff32ffa00ffa2e80cbec"
+  provider: "grok"
+  requested_model: "grok-4.5"
+  audit_sha256: "878a6fd4a3328db63a5c89b30a54ad50a43e1556959ded51c9ed7238dc5b197e"
+  material_sampling_finding: >
+    The identity-first rule was introduced by an operator obligation created after
+    the earlier post-activation 8146-8148 events and is not cited as an already
+    frozen activation-revision rule; it therefore cannot retroactively exclude
+    those events.
+interpretation_disposition:
+  event_arrival_draft:
+    refs:
+      - "../cases/S1-N01/capture.yml"
+      - "../cases/S1-N02/capture.yml"
+      - "../cases/S1-N03/capture.yml"
+    endorsed: false
+    reason: "The frozen protocol does not prove that repeated supersession events consume distinct natural slots."
+  identity_first_correction:
+    refs:
+      - "../cases/S1-N01/identity-arrival-correction.yml"
+      - "../results/sequence-proof.md"
+      - "../results/iteration-2-disposition.yml"
+    endorsed: false
+    reason: "The identity-first sampling rule was not frozen before the earlier observed arrivals and cannot be applied retroactively."
+current_cohort_truth:
+  endorsed_slot_assignments: 0
+  sample_sequence_provable: false
+  replacement_or_backfill_performed: false
+  authority_violations: 0
+  natural_case_binding_failure_count: null
+  note: >
+    No numeric natural-case failure count is needed for the terminal decision. The
+    frozen gate separately rejects any integrity violation, and the frozen stop
+    rules require stopping when the sample sequence cannot be proven.
+gate:
+  result: "REJECT_THIS_REVISION"
+  basis:
+    - "method.md section 10: reject on any selection/backfill or other integrity violation"
+    - "method.md section 11: stop if the sample sequence cannot be proven"
+nonclaims:
+  - "This does not establish that Outcome Cases are ineffective."
+  - "This does not establish whether events 8146-8148 or event 8166 would have produced a successful prospective Outcome Case under a correctly frozen sampling unit."
+  - "This does not authorize P1 reopening, P2, P3, Minimal-versus-Full comparison, routing, queue, policy, runtime or production integration."
+  - "No prior technical task or closeout is reopened or relabeled."
+immutability:
+  prior_records_rewritten: false
+  statement: "Earlier interpretations remain preserved as historical draft evidence; this create-only closeout is the current S1 sampling-integrity authority."

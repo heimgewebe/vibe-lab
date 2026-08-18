@@ -1,0 +1,22 @@
+schema_version: "outcome-bound-s1-execution-proof-disposition.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:33:09Z"
+record_mode: "create_only"
+execution_proof_ref: "run_meta.json"
+disposition:
+  endorsed_for_terminal_gate: false
+  status: "preserved_intermediate_execution_proof"
+  reason: >
+    This run_meta records the intermediate first-new-candidate-identity/T012
+    interpretation. That sampling interpretation is no longer endorsed because the
+    frozen activation protocol does not resolve the sampling unit and a later
+    obligation cannot do so retroactively. T012 timing is therefore not load-bearing
+    for the terminal S1 decision.
+current_terminal_authority:
+  ref: "../../results/sampling-integrity-closeout.yml"
+  gate_basis: "sample_sequence_not_provable_from_frozen_protocol"
+nonclaims:
+  - "This disposition does not dispute the referenced Bureau or Git timestamps."
+  - "It only removes that intermediate interpretation from the terminal S1 gate basis."
+immutability:
+  prior_run_meta_rewritten: false

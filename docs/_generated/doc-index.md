@@ -319,6 +319,8 @@
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/CONTEXT.md` | Outcome-Bound Operator Loop Successor S1 — Natural-case external-validity shadow | designed | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/method.md` | Outcome-Bound S1 — Natural-case external-validity protocol | designed | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md` | closeout | — | — |
+| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/reviewer-b.md` | Outcome-Bound S1 — Independent sampling-integrity review | rejected | operative |
+| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/s1-gate.md` | Outcome-Bound S1 — Natural-sampling gate | rejected | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/sequence-proof.md` | sequence-proof | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |

@@ -1,44 +1,79 @@
-# Outcome-Bound S1 — corrected pre-review closeout
+# Outcome-Bound S1 — terminal sampling-integrity closeout
 
 ## Status
 
-This is an author/controller closeout packet, not the required independent exact-revision review. The corrected sequence consumes **S1-N01 only** and immediately hits the frozen reject threshold.
+**REJECT_THIS_REVISION.**
 
-## What changed
+S1 terminates on a sampling-integrity failure before any natural treatment cohort
+can be validly enumerated. This is a terminal result for this S1 protocol revision,
+not a statement about Outcome Case efficacy.
 
-A prior local draft treated Bureau events `8146`, `8147` and `8148` as three natural arrivals. That is not compatible with the preregistered watcher rule fixed before the qualifying arrival: all three belong to `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1`, whose first canonical event is `302` from 13 July 2026. The prior files are preserved; their cohort assignments are superseded by `cases/S1-N01/identity-arrival-correction.yml` and the adjacent create-only draft-disposition records.
+## Load-bearing defect
 
-## Correct S1-N01
+The frozen method says that treatment is the first three canonical Bureau
+`intakes`/`arrivals` after activation, ordered by canonical event id, and separately
+requires a stable `candidate/event identity`. It never specifies whether a
+post-activation supersession event for a candidate identity that existed before
+activation is itself a new natural S1 arrival.
 
-The first candidate identity whose first canonical `candidate_task` event occurs after activation is:
+Two incompatible interpretations were explored during closeout:
 
-- Bureau event: `8166`
-- created: `2026-08-18T05:33:32.623001Z`
-- candidate: `candidate-c701b55e34cc9a6a9a6d6752`
-- task: `BUREAU-CONTROL-PLANE-V3-T012`
+1. event-arrival semantics, which assigned `8146/8147/8148`;
+2. first-new-candidate-identity semantics, which later selected event `8166`.
 
-Capture began at `2026-08-18T07:43:24Z`. Productive T012 activity predates capture:
+Neither interpretation was uniquely frozen at activation. Independent exact-head
+review specifically found that the later identity-first obligation postdated the
+earlier observed events and therefore cannot retroactively exclude them. The
+intermediate T012 interpretation and its timing proof are consequently preserved but
+not endorsed and are not part of the terminal gate basis.
 
-- coordinated claim intent event `8220`: `2026-08-18T06:17:41.356320Z`;
-- workspace created event `8223`: `2026-08-18T06:17:51.014271Z`;
-- implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4`: `2026-08-18T06:49:24Z`.
+## Frozen gate application
 
-Therefore S1-N01 is `capture_missed_before_mutation`. C/S/B/E/T/Q are not reconstructed. The slot is consumed, replacements/backfills remain zero, and S1 caused zero productive authority effects.
+Section 11 requires stopping when the sample sequence cannot be proven. Section 10
+separately requires `REJECT_THIS_REVISION` for any selection/backfill or other
+integrity violation.
 
-## Gate
+Current terminal accounting:
 
-`natural_case_binding_failure_count = 1`. Section 10 of the frozen S1 protocol therefore points mechanically to `REJECT_THIS_REVISION`. Section 11 stops further assignment immediately; N02 and N03 remain unassigned in the corrected cohort.
+- sample sequence provable from frozen protocol: **no**;
+- endorsed natural slot assignments: **0**;
+- replacement/backfill performed: **0**;
+- S1 productive authority violations: **0**;
+- natural-case binding-failure count: **not derived** because the treatment sample
+  itself is not validly enumerable;
+- result: **REJECT_THIS_REVISION**.
 
-## Independent review still required
+## Preservation and authority
 
-Before terminal result publication, an independent exact-revision reviewer must verify:
+No historical capture or correction was rewritten to manufacture this result.
+Earlier event-arrival and identity-first interpretations remain as preserved draft
+history, with create-only disposition records and
+`results/sampling-integrity-closeout.yml` as the current S1 authority.
 
-1. activation commit and timestamp;
-2. first-event identity ordering and exclusion of old-identity supersessions;
-3. that event `8166` is the first qualifying identity;
-4. that productive T012 work predates capture;
-5. that no C/S/B/E/T/Q reconstruction, replacement or backfill occurred;
-6. zero S1 production-authority effects;
-7. the mechanical reject threshold.
+Bureau remains authoritative for candidate/task state; Git/GitHub and CI for
+technical revision truth; Grabowski for execution receipts. S1 creates no second
+technical truth and changes no routing, queue, policy, runtime, merge or deployment
+authority.
 
-No P1 reopening, P2/P3, Minimal-versus-Full comparison, Bureau/Grabowski runtime change, routing, queue, policy, merge-policy or deployment authority follows from this result.
+## Independent review
+
+The independent Grok exact-head review was bound to PR #347 head
+`ca7ba0970ce66b6915b8ff32ffa00ffa2e80cbec`; audit SHA-256
+`878a6fd4a3328db63a5c89b30a54ad50a43e1556959ded51c9ed7238dc5b197e`.
+Its sampling-frame finding is the load-bearing external review result. The separate
+review concern about normalized T012 timing is non-load-bearing because the terminal
+S1 gate no longer relies on event `8166` or commit/capture ordering.
+
+## Non-claims
+
+This result does not:
+
+- establish Outcome Case efficacy or inefficacy;
+- choose Minimal over Full or Full over Minimal;
+- reopen P1;
+- authorize P2, P3 or a replacement S1 cohort;
+- authorize Bureau/Grabowski/Chronik integration;
+- reopen or relabel any previously closed technical task.
+
+Any future natural-sampling experiment must freeze its sampling unit before the
+first eligible arrival and requires separate justification and review.

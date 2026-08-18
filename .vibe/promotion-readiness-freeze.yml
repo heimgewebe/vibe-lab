@@ -180,3 +180,19 @@ promotion_readiness_freeze:
         validator, P2/P3, adoption or production integration; remove only if a
         separately authorized successor supersedes this experiment's readiness
         role, never by rewriting the rejected R2 result.
+
+    - path: experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow
+      allowed_missing:
+        - falsifiability.assessment_counterhypothesis_supported
+      reason: >-
+        S1 is terminally rejected because its frozen natural-sampling protocol does
+        not uniquely determine whether post-activation supersession events for a
+        pre-existing candidate identity are separate treatment arrivals. Independent
+        exact-head review confirmed that a later identity-first obligation cannot
+        retroactively resolve the already observed sample. The supported
+        counter-hypothesis is therefore the negative result itself, and promotion
+        readiness must remain fail-closed at exactly this signal. This freeze
+        authorizes no replacement cohort, P1/P2/P3, Minimal-versus-Full comparison,
+        adoption, routing, runtime or other production integration; remove only if a
+        separately authorized successor supersedes S1's readiness role, never by
+        rewriting the rejected evidence.
