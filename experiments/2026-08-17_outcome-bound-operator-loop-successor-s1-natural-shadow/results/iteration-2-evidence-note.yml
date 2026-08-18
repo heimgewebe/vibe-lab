@@ -1,0 +1,38 @@
+schema_version: "outcome-bound-s1-iteration-evidence-note.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:52:00Z"
+record_mode: "create_only"
+role: "historical_iteration_2_attestation_only"
+source_evidence_snapshot_sha256: "c1069ee3ce5e25629a94019500fc2f12bd6803732791eaf33c00fa09838907db"
+historical_measurements:
+  natural_case_sequence:
+    slots_consumed: 3
+    event_ids: [8146, 8147, 8148]
+    distinct_candidate_identities: 1
+    replacements_or_backfills: 0
+  late_stop_classification_effort_seconds:
+    samples: [18, 12, 11]
+    median: 12
+  author_gate:
+    value: "reject_this_revision_pending_independent_review"
+    binding_failure_count: 3
+bindings:
+  - path: "../cases/S1-N01/capture.yml"
+    sha256: "11c0d272ff8390a2545f61b93fc64771850fafe413694ff5232797a290062347"
+  - path: "../cases/S1-N02/capture.yml"
+    sha256: "61e9e19fb516d58d3742a23f87c64132ae7bb3c56c466f466aec5dd34b5c2930"
+  - path: "../cases/S1-N03/capture.yml"
+    sha256: "ac99f732218be905e1a473b12e9007bf4b70fd0fbd44d273cdfbc9e79c5b931f"
+current_disposition:
+  endorsed_for_current_cohort: false
+  current_authority_ref: "sampling-integrity-closeout.yml"
+  reason: >
+    These values faithfully attest the historical iteration-2 event-arrival
+    interpretation only. The terminal S1 sampling-integrity closeout later found
+    that the frozen protocol cannot prove whether those supersession events are
+    distinct treatment arrivals, so these measurements must not enter current
+    cohort or gate aggregates.
+nonclaims:
+  - "This note does not re-endorse iteration 2."
+  - "This note does not establish a valid natural-treatment denominator."
+  - "This note exists only so immutable historical evidence rows retain an auditable artifact reference."
