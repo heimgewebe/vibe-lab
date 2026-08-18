@@ -40,7 +40,7 @@ productive_mutation_evidence:
   workspace_created_event_id: 8223
   workspace_created_at: "2026-08-18T06:17:51.014271Z"
   implementation_commit: "2fdba02d5e96646831f3dfd35665acfc3239b2c4"
-  implementation_commit_at: "2026-08-18T08:49:24+02:00"
+  implementation_commit_at: "2026-08-18T06:49:24Z"
   implementation_commit_subject: "bureau: cut status projection over to StateStore task authority"
   conclusion: >
     Productive T012 work was already underway and an implementation commit already

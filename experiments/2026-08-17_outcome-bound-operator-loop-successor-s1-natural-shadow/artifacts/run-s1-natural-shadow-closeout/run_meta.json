@@ -13,11 +13,11 @@
   "natural_case_ref": "bureau-candidate:candidate-c701b55e34cc9a6a9a6d6752",
   "natural_case_event_ref": "bureau-event:8166",
   "capture_ref": "cases/S1-N01/identity-arrival-correction.yml",
-  "capture_sha256": "9617a2414132569b7e4732a4ab8818213f1918305acd580fb49b8fbacf8039bb",
+  "capture_sha256": "0d7886925412feda671cafdffc54fd9664ecf3832814f5966278f4072134ddc6",
   "productive_mutation_evidence_refs": [
     "bureau-event:8220",
     "bureau-event:8223",
     "git:bureau@2fdba02d5e96646831f3dfd35665acfc3239b2c4"
   ],
-  "notes": "Execution proof for the bounded S1 natural-shadow capture and stop-gate assessment only. It establishes that the S1 protocol was exercised on its preregistered first new candidate identity and reached capture_missed_before_mutation. It does not establish Outcome Case efficacy, target-effect success, Bureau task correctness, Minimal-versus-Full superiority, P2/P3 authorization, or any production authority."
+  "notes": "Execution proof for the bounded S1 natural-shadow capture and stop-gate assessment only. The implementation commit time is normalized to 2026-08-18T06:49:24Z, before capture at 2026-08-18T07:43:24Z. It establishes that the S1 protocol was exercised on its preregistered first new candidate identity and reached capture_missed_before_mutation. It does not establish Outcome Case efficacy, target-effect success, Bureau task correctness, Minimal-versus-Full superiority, P2/P3 authorization, or any production authority."
 }

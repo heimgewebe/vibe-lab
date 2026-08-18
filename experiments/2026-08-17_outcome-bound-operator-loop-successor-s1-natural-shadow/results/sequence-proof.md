@@ -16,7 +16,7 @@ The local draft commit `84e5fbd740266a744f7272dfde759c909ae34fc4` assigned event
 | --- | ---: | --- | --- | --- | --- |
 | S1-N01 | 8166 | 2026-08-18T05:33:32.623001Z | `candidate-c701b55e34cc9a6a9a6d6752` | `BUREAU-CONTROL-PLANE-V3-T012` | `capture_missed_before_mutation` |
 
-At capture start `2026-08-18T07:43:24Z`, productive T012 work had already begun: coordinated claim intent event `8220` was recorded at `06:17:41Z`, workspace creation event `8223` at `06:17:51Z`, and implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4` existed before capture. Consequently C/S/B/E/T/Q are intentionally left unbound rather than reconstructed.
+At capture start `2026-08-18T07:43:24Z`, productive T012 work had already begun: coordinated claim intent event `8220` was recorded at `2026-08-18T06:17:41.356320Z`, workspace creation event `8223` at `2026-08-18T06:17:51.014271Z`, and implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4` was committed at `2026-08-18T06:49:24Z`, before capture. Consequently C/S/B/E/T/Q are intentionally left unbound rather than reconstructed.
 
 ## Stop rule
 

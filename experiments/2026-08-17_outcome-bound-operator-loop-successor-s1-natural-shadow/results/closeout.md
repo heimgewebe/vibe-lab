@@ -6,7 +6,7 @@ This is an author/controller closeout packet, not the required independent exact
 
 ## What changed
 
-A prior local draft treated Bureau events `8146`, `8147` and `8148` as three natural arrivals. That is not compatible with the preregistered watcher rule fixed before the qualifying arrival: all three belong to `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1`, whose first canonical event is `302` from 13 July 2026. The prior files are preserved; their cohort assignments are superseded by `cases/S1-N01/identity-arrival-correction.yml`.
+A prior local draft treated Bureau events `8146`, `8147` and `8148` as three natural arrivals. That is not compatible with the preregistered watcher rule fixed before the qualifying arrival: all three belong to `SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1`, whose first canonical event is `302` from 13 July 2026. The prior files are preserved; their cohort assignments are superseded by `cases/S1-N01/identity-arrival-correction.yml` and the adjacent create-only draft-disposition records.
 
 ## Correct S1-N01
 
@@ -21,7 +21,7 @@ Capture began at `2026-08-18T07:43:24Z`. Productive T012 activity predates captu
 
 - coordinated claim intent event `8220`: `2026-08-18T06:17:41.356320Z`;
 - workspace created event `8223`: `2026-08-18T06:17:51.014271Z`;
-- implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4`, authored before capture.
+- implementation commit `2fdba02d5e96646831f3dfd35665acfc3239b2c4`: `2026-08-18T06:49:24Z`.
 
 Therefore S1-N01 is `capture_missed_before_mutation`. C/S/B/E/T/Q are not reconstructed. The slot is consumed, replacements/backfills remain zero, and S1 caused zero productive authority effects.
 
