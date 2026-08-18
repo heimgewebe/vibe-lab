@@ -1,0 +1,27 @@
+schema_version: "outcome-bound-s1-draft-disposition.v1"
+experiment_id: "2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow"
+recorded_at: "2026-08-18T08:11:10Z"
+draft_ref: "capture.yml"
+draft_sha256: "61e9e19fb516d58d3742a23f87c64132ae7bb3c56c466f466aec5dd34b5c2930"
+prior_draft_assignment:
+  slot_id: "S1-N02"
+  bureau_event_id: 8147
+  candidate_id: "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1"
+disposition:
+  endorsed: false
+  status: "preserved_nonendorsed_draft"
+  superseded_by: "../S1-N01/identity-arrival-correction.yml"
+  reason: >
+    Event 8147 is another supersession of the same candidate identity that existed
+    before S1 activation. It is not a new candidate arrival under the preregistered
+    S1 sampling obligation. After corrected S1-N01 event 8166 produced a binding
+    failure, the frozen stop rule also prohibits assigning S1-N02.
+current_cohort_effect:
+  counts_as_slot_consumed: false
+  counts_as_binding_failure: false
+  counts_as_natural_treatment_case: false
+  slot_state: "unassigned_after_s1_n01_stop"
+immutability:
+  source_capture_rewritten: false
+  record_mode: "create_only"
+  statement: "The preserved capture remains unchanged; this adjacent record is the current endorsement authority for that draft."
