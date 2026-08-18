@@ -23,6 +23,17 @@
       "review_at": "2026-08-15T00:00:00Z",
       "expires_at": "2026-09-01T00:00:00Z",
       "source_ref": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml"
+    },
+    {
+      "experiment_id": "2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow",
+      "path": "experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow",
+      "state": "testing",
+      "consumer": "Grabowski",
+      "decision_target": "Can the unchanged S0-R3 C/S/B/E/T/Q rule be frozen prospectively on the first three newly appearing canonical Bureau candidate identities with zero sampling ambiguity, zero binding failures, zero material review disagreement, zero authority effects and at most ten minutes median capture effort?",
+      "primary_metric": "natural_identity_binding_failure_count",
+      "review_at": "2026-08-25T18:00:00Z",
+      "expires_at": "2026-09-15T23:59:59Z",
+      "source_ref": "experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/decision.yml"
     }
   ]
 }

@@ -1,0 +1,68 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow"
+  hypothesis: >
+    Freezing the natural treatment unit as one newly appearing canonical Bureau
+    candidate identity, anchored only to its first-ever canonical candidate event when that event already carries operator-intake, removes
+    the sampling ambiguity that rejected S1 while preserving a no-backfill natural
+    shadow over the unchanged S0-R3 C/S/B/E/T/Q semantics.
+  status: testing
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-18"
+  updated: "2026-08-18"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject the author revision before activation if an independent exact-head
+      reviewer can derive a different unit or slot outcome for any fixed sampling
+      case, if identity-first event ordering requires a post-observation semantic
+      choice, or if the rule requires a new validator/control surface. After
+      activation, reject on any sampling-integrity ambiguity, natural identity
+      binding failure, material review disagreement, authority violation, or median
+      capture effort above 600 seconds.
+    counter_hypotheses:
+      - id: "identity_unit_still_has_event_degree_of_freedom"
+        statement: >
+          Candidate identity plus identity-first event may still leave a defensible way
+          to count later supersessions or deduplicated observations as new units.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must reproduce U01-U13 with zero material disagreement before merge."
+          limitations:
+            - "Paper agreement cannot establish live capture reliability."
+          confidence: low
+      - id: "identity_sampling_is_naturally_uninformative"
+        statement: >
+          The first three new identities may often be D0, source-poor, or missed
+          before mutation, so a correct sampling unit may still fail to produce a
+          useful natural feasibility sample.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Only a post-activation three-identity natural shadow may test this."
+          limitations:
+            - "No replacement or outcome filtering is permitted."
+          confidence: low
+
+context:
+  tools:
+    - "Bureau authoritative StateStore event journal"
+    - "merged S0-R3 semantic protocol"
+    - "Grabowski isolated work lane"
+    - "independent exact-head semantic review"
+  language: "Markdown, JSON, YAML"
+  environment: "Vibe-Lab experiment-only successor; no productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

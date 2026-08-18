@@ -1,0 +1,112 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow",
+  "registered_at": "2026-08-18T10:34:46Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether a prospectively frozen new-candidate-identity sampling unit makes the S0-R3 admission semantics naturally testable without the sampling ambiguity that rejected S1.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-18-continue-outcome-bound",
+      "confirmed_at": "2026-08-18T10:30:00Z",
+      "valid_until": "2026-09-15T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can the unchanged S0-R3 C/S/B/E/T/Q rule be frozen prospectively on the first three newly appearing canonical Bureau candidate identities with zero sampling ambiguity, zero binding failures, zero material review disagreement, zero authority effects and at most ten minutes median capture effort?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-18-continue-outcome-bound"
+  },
+  "intervention": {
+    "name": "identity-first candidate-identity natural sampling",
+    "description": "Define one natural unit as one canonical Bureau candidate_id whose first-ever canonical candidate_task event of any provenance itself carries operator_intake and occurs at or after the frozen activation time. Anchor the unit only to that first event; later supersessions, corrections, deduplicated observations and replays never create another unit."
+  },
+  "control_condition": {
+    "id": "rejected_s1_sampling_ambiguity",
+    "description": "Exactly three predecessor failure probes from rejected S1: a pre-existing identity receiving post-activation supersessions, a new identity receiving multiple supersessions, and the post-hoc choice between event-arrival and identity-first sampling. These are fixed failure-context controls only."
+  },
+  "treatment_condition": {
+    "id": "first_three_new_candidate_identities",
+    "description": "Exactly the first three canonical Bureau candidate identities whose first-ever canonical candidate_task event itself carries operator_intake and occurs at or after GitHub merged_at plus the frozen 300-second cooling interval, ordered by identity-first event id. Each identity consumes one slot only; there is no replacement or backfill."
+  },
+  "measurement": {
+    "primary_metric": "natural_identity_binding_failure_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Before merge, require zero material disagreement on the fixed U01-U13 sampling cases. After activation, derive the complete candidate-identity history across all candidate_task provenance shapes and its identity-first-event projection from the authoritative Bureau StateStore event journal, require each identity-first event itself to carry operator_intake and select the first three post-activation identities by identity-first event id, attempt one non-blocking S0-R3 C/S/B/E/T/Q capture per identity, then obtain independent exact-revision review of sequence, bindings, timing and authority boundaries.",
+    "success": "Pre-activation sampling review passes with zero material findings; exactly three post-activation identities are selected without replacement/backfill; natural_identity_binding_failure_count is zero; independent natural-sample material disagreements and authority violations are zero; median capture effort is at most 600 seconds; and at least two cases are non-D0 with definitive complete C/S/B/E/T bindings.",
+    "falsification": "Any pre-activation sampling ambiguity, any post-activation sequence ambiguity, one or more binding failures, any selection/backfill or authority violation, any material independent-review disagreement, or median capture effort above 600 seconds rejects this revision. Fewer than two informative non-D0 cases with zero failures is inconclusive and is never backfilled.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "natural_identity_capture_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure elapsed shadow handling time from capture start to freeze or stop for each selected identity; exclude productive implementation and independent-review time."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "fixed predecessor sampling-boundary probe versus prospectively selected new candidate identity",
+    "minimum_control": 3,
+    "minimum_treatment": 3,
+    "comparability_constraints": [
+      "control is exactly the three named rejected-S1 sampling failure probes and is not counted as natural evidence",
+      "treatment is exactly the first three new candidate identities under the frozen identity-first-event rule",
+      "each candidate identity may consume at most one treatment slot",
+      "later operator-intake enrichment, supersessions and corrections never replace the identity-first event or create a treatment unit",
+      "S0-R3 C/S/B/E/T/Q semantics are unchanged",
+      "no productive work is delayed or selected for the experiment"
+    ],
+    "confounders": [
+      "the first three new identities may be D0 or otherwise uninformative",
+      "source evidence may be insufficient for a complete C/S/B/E/T binding",
+      "observer availability may cause a legitimate missed-capture failure",
+      "three identities cannot estimate Outcome Case efficacy or prevalence"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen S1-R1 method and U01-U13 paper cases",
+      "rejected S1 sampling-integrity closeout and exact-head review",
+      "authoritative Bureau StateStore event journal",
+      "exact GitHub merge timestamp and commit for the activation PR",
+      "experiment-local prospective capture records",
+      "named independent exact-head and exact-revision semantic reviews"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-25T18:00:00Z",
+  "expires_at": "2026-09-15T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": ["promote", "pilot", "defer", "reject", "archive"],
+    "archive_path": "experiments/_archive/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": ["add:experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow"],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-18-continue-outcome-bound",
+      "reviewed_at": "2026-08-18T10:30:00Z",
+      "rationale": "The direct continuation authorizes only a bounded successor that fixes the sampling-unit defect found by rejected S1. It authorizes no validator, efficacy comparison or production integration."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

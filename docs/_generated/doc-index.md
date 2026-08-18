@@ -322,6 +322,9 @@
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/reviewer-b.md` | Outcome-Bound S1 — Independent sampling-integrity review | rejected | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/s1-gate.md` | Outcome-Bound S1 — Natural-sampling gate | rejected | operative |
 | `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/sequence-proof.md` | sequence-proof | — | — |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/CONTEXT.md` | Outcome-Bound Operator Loop S1-R1 — Natural identity shadow | designed | operative |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/method.md` | Outcome-Bound S1-R1 — Natural identity sampling protocol | designed | operative |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/sampling-cases.md` | Outcome-Bound S1-R1 — Fixed sampling-unit adversarial cases | designed | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
