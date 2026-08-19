@@ -1,0 +1,64 @@
+---
+title: "Outcome-Bound S1-R2 — Paper gate"
+status: testing
+canonicality: operative
+created: "2026-08-19"
+updated: "2026-08-19"
+triggered_by: "grabowski-job:1a00e6999ebc; grabowski-job:f2b7ea92892b; github:heimgewebe/vibe-lab#350"
+---
+
+# S1-R2 paper gate
+
+## Frozen author revision
+
+The frozen author revision is `e62e168bb97a5a70b95dac9585d6bde2833d0b8d`. Its method, registration and P01-P18 author dispositions remain immutable experiment input. This closeout records review results in a later revision; it does not rewrite the frozen contract.
+
+## Reviewer reconciliation
+
+Four decision-bound reviewer attempts are preserved:
+
+1. Reviewer A initial (`57fb24176513`) failed before analysis with HTTP 529 and produced no semantic verdict.
+2. Reviewer B initial (`674203b60055`) failed without substantive review output and produced no semantic verdict.
+3. Reviewer B2 (`1a00e6999ebc`) completed successfully at `2026-08-18T16:45:55Z`: `PASS_THIS_REVISION`, 0 material findings.
+4. Reviewer A2 (`f2b7ea92892b`) completed successfully at `2026-08-18T16:53:52Z`: `PASS_THIS_REVISION`, 0 material findings.
+
+The two technical failures are not semantic REJECTs and cannot count toward the required reviewer denominator. They were terminally reconciled and replaced by fresh independent jobs rather than resumed or reviewer-shopped after a material finding.
+
+Both valid reviewers were exact-head bound and independently reproduced **P01-P18: 18/18 MATCH, 0 DIFF**. Reviewer A2 could not independently query PR #350 or the pinned Bureau object during an external command outage, but it read the current Bureau source bytes and marked those checks unverified. Reviewer B2 independently verified that PR #350 pointed to the exact author head and that the relevant Bureau source file was byte-identical to the pinned authority commit. This closes the auxiliary binding gap without changing A2's independent semantic verdict.
+
+Both valid reviews were terminal before PR #350 merged at `2026-08-18T17:10:10Z`.
+
+P18's stronger requirement — that every decision-bound reviewer be explicitly read and reconciled by the controller before merge — is bound in `controller-reconciliation-attestation.md`. The contemporaneous controller report at `2026-08-18T17:16:21Z` states that all four reviewer attempts were terminal-read and reconciled before merge. The present closeout did not trust that report alone: it re-read all four archived job artifacts, verified the two successful PASS outputs and two technical no-verdict failures, re-read GitHub merge truth, and traced the lane-bound merge in Grabowski's verified audit chain. These sources are mutually consistent.
+
+There was no dedicated 2026-08-18 machine receipt whose sole semantic was "controller read reviewer X". That limitation is explicit. An independent closeout reviewer must reject this closeout if it interprets the frozen P18 rule as requiring such a dedicated receipt rather than contemporaneous controller reconciliation corroborated by immutable primary evidence.
+
+## Gate result
+
+**PASS_THIS_REVISION**, subject to independent closeout review of the explicit P18 evidence limitation above.
+
+Material sampling-contract disagreements: **0**.
+
+| Frozen requirement | Finding |
+| --- | --- |
+| Two independent exact-head semantic reviews | PASS — A2 and B2 terminal on the frozen author head. |
+| P01-P18 dispositions reproduced | PASS — 18/18 MATCH by both valid reviewers. |
+| Canonical legacy identity escape | PASS — none found. |
+| Naturalness/filter/backfill escape | PASS — none found. |
+| P18 reviewer reconciliation | PASS on reconstructed evidence — contemporaneous controller attestation plus current job/GitHub/audit readback; no standalone historical semantic read receipt. |
+| New production/control surface required | PASS — none required. |
+| Productive authority effect | PASS — none. |
+
+This establishes only that the corrected sampling contract survived the bounded paper attack. It does **not** establish natural-case feasibility, capture timeliness, handling cost, Outcome Case efficacy or decision impact.
+
+## Consequences
+
+- S1 and S1-R1 remain rejected and immutable negative evidence.
+- The S0-R3 C/S/B/E/T/Q semantics remain unchanged.
+- No natural cohort is activated by this closeout.
+- No old Bureau event may be retroactively assigned to a new natural cohort.
+- No N01-N03 slot is consumed or backfilled here.
+- No validator, Bureau field, service, runtime integration, routing effect, queue effect, policy effect, dashboard, confidence score or new control plane is justified.
+- P2/P3 and Minimal-versus-Full remain unauthorized by this result.
+- Only an independently accepted terminal PASS for this closeout may justify a **separate prospective natural-activation revision** that freezes its own activation boundary and first-three sequence before any eligible arrival.
+
+The next unresolved question is external validity: can the corrected rule bind the first three genuinely natural fixed slots prospectively and without material friction?

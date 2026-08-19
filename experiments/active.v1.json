@@ -23,17 +23,6 @@
       "review_at": "2026-08-15T00:00:00Z",
       "expires_at": "2026-09-01T00:00:00Z",
       "source_ref": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml"
-    },
-    {
-      "experiment_id": "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper",
-      "path": "experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper",
-      "state": "designed",
-      "consumer": "Grabowski",
-      "decision_target": "Does the S1-R2 paper contract close S1-R1's natural-source-independence and canonical-legacy-identity defects without creating another post-observation selector or production/control surface?",
-      "primary_metric": "material_sampling_contract_disagreement_count",
-      "review_at": "2026-08-25T18:00:00Z",
-      "expires_at": "2026-09-15T23:59:59Z",
-      "source_ref": "experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/decision.yml"
     }
   ]
 }
