@@ -16,13 +16,14 @@ experiment:
     - "results/reviewer-a2.md"
     - "results/reviewer-b2.md"
     - "results/controller-reconciliation-attestation.md"
+    - "results/closeout-review.md"
     - "results/s1r2-gate.md"
     - "results/decision.yml"
   created: "2026-08-18"
   updated: "2026-08-19"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound; conversation:user-request-2026-08-19-continue-outcome-bound; grabowski-job:1a00e6999ebc; grabowski-job:f2b7ea92892b; github:heimgewebe/vibe-lab#350"
-  iteration: 2
+  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound; conversation:user-request-2026-08-19-continue-outcome-bound; grabowski-job:1a00e6999ebc; grabowski-job:f2b7ea92892b; grabowski-job:3742d6127bc5; github:heimgewebe/vibe-lab#350"
+  iteration: 3
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -82,10 +83,13 @@ experiment:
               section: "Adversarial findings"
             - path: "results/reviewer-b2.md"
               section: "Adversarial findings"
+            - path: "results/closeout-review.md"
+              section: "P18 assessment"
             - path: "results/s1r2-gate.md"
               section: "Reviewer reconciliation"
           limitations:
             - "The historical controller reconciliation has no dedicated machine-generated semantic read receipt; it is attested contemporaneously and corroborated by immutable job, GitHub and Grabowski-audit evidence."
+            - "The independent closeout reviewer judged a controller-verified hash-bound evidence packet rather than independently recollecting every primary file after several source-reading reviewer harnesses failed for infrastructure reasons."
             - "This experiment does not add or harden Grabowski merge-policy runtime."
           confidence: medium
 
@@ -97,6 +101,7 @@ context:
     - "two independent read-only exact-head reviews"
     - "receipt-bound Grabowski reviewer job archive"
     - "verified Grabowski audit chain and GitHub merge truth"
+    - "independent semantic closeout review on a hash-bound primary-evidence packet"
   language: "Markdown, JSON, YAML"
   environment: "paper-gate execution only; no natural sampling or productive integration"
 

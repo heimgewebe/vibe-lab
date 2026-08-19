@@ -328,6 +328,7 @@
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/sampling-cases.md` | Outcome-Bound S1-R1 — Fixed sampling-unit adversarial cases | designed | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/CONTEXT.md` | CONTEXT | — | — |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/method.md` | Outcome-Bound S1-R2 — Canonical identity and natural-source paper protocol | designed | operative |
+| `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/closeout-review.md` | Outcome-Bound S1-R2 — Independent closeout review | testing | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/controller-reconciliation-attestation.md` | controller-reconciliation-attestation | — | — |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-a2.md` | Outcome-Bound S1-R2 — Independent Reviewer A2 | testing | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-b2.md` | Outcome-Bound S1-R2 — Independent Reviewer B2 | testing | operative |
