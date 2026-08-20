@@ -1,26 +1,67 @@
 schema_version: "0.1.0"
-decision_type: "execution_assessment"
-verdict: "not_executed"
-date: "2026-08-18"
-reviewer: "ChatGPT / Grabowski"
-triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
+decision_type: "result_assessment"
+verdict: "confirms"
+confidence: "medium"
+date: "2026-08-19"
+reviewer: "Vibe-Lab S1-R2 controller after two exact-head paper reviews and one independent closeout review"
+triggered_by: "grabowski-job:1a00e6999ebc; grabowski-job:f2b7ea92892b; grabowski-job:3742d6127bc5; github:heimgewebe/vibe-lab#350; conversation:user-request-2026-08-19-continue-outcome-bound"
 rationale: >
-  S1-R2 is a design-only paper experiment. Its method, P01-P18 paper cases and
-  registration are frozen for exact-head review, but no paper review has yet been
-  accepted and no natural sampling is authorized. This revision creates no Bureau
-  candidate selection, activation timestamp, capture or production authority.
+  The frozen S1-R2 author revision e62e168bb97a5a70b95dac9585d6bde2833d0b8d
+  required two independent exact-head reviews, exact reproduction of P01-P18, zero
+  material sampling-contract disagreement, no canonical-identity or natural-source
+  filtering escape, complete reviewer reconciliation and no required production or
+  control surface. Two initial reviewer launches failed technically without a
+  semantic verdict and were terminally replaced. Reviewer B2 and Reviewer A2 then
+  completed independently against the exact author head before PR #350 merged. Both
+  returned PASS_THIS_REVISION with 0 material findings and 18/18 matching paper-case
+  classifications. B2 additionally verified the PR head binding and byte identity of
+  the relevant Bureau source at the pinned authority commit; A2 had marked those
+  auxiliary checks unverified during a transient command outage rather than assuming
+  them. P18 is supported by the contemporaneous controller report that all four
+  attempts were terminal-read and reconciled before merge, corroborated by the
+  immutable job archive, GitHub merge truth and verified Grabowski audit chain. No
+  dedicated historical machine receipt exists whose sole semantic is controller-read
+  reconciliation. The separately frozen closeout head
+  45de7247639edea002e9719c841834d25e2239fc exposed that exact evidence limitation to
+  an independent semantic red-team reviewer. Grok 4.5 job 3742d6127bc5 returned
+  PASS_CLOSEOUT with 0 material findings, explicitly concluding that frozen section 7
+  requires the real reconciliation act rather than a particular receipt type and
+  that the combined contemporaneous attestation plus immutable corroboration is
+  sufficient. The corrected sampling contract is therefore terminally confirmed at
+  paper level only. This does not activate a natural cohort or establish natural
+  handling feasibility, Outcome Case efficacy, decision impact or adoption readiness.
 evidence_summary:
+  frozen_author_head: "e62e168bb97a5a70b95dac9585d6bde2833d0b8d"
+  closeout_reviewed_head: "45de7247639edea002e9719c841834d25e2239fc"
+  merge_commit: "21399adf7bf213df0e996a33fd05c63508031078"
+  pull_request: 350
   predecessor_material_defects: 2
   predecessor_review_gate_incidents: 1
   fixed_paper_cases: 18
   required_independent_reviewers: 2
-  completed_independent_reviewers: 0
-  material_sampling_contract_disagreement_count: null
+  completed_independent_reviewers: 2
+  reviewer_passes: 2
+  reviewer_classification_matches_per_review: 18
+  material_sampling_contract_disagreement_count: 0
+  technical_no_verdict_attempts: 2
+  review_reconciliation_evidence: "contemporaneous_controller_attestation_plus_primary_job_github_audit_readback"
+  dedicated_historical_controller_read_receipt: false
+  closeout_review_job: "3742d6127bc5"
+  closeout_review_verdict: "PASS_CLOSEOUT"
+  closeout_review_material_findings: 0
+  closeout_review_receipt_sha256: "e7d3839e7556de22658d6aba9c2318e6e56da27493e7889cb331fd014cdb5ff8"
+  authority_violations: 0
   natural_sampling_authorized: false
   natural_slots_consumed: 0
+  minimal_vs_full_tested: false
+  p2_authorized: false
+  p3_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_refuted"
+counterevidence_checked: true
 next_steps:
-  - "Validate the exact author revision."
-  - "Obtain two independent read-only exact-head reviews of P01-P18, M1/M2 and the P18 reconciliation gate."
-  - "Reconcile every decision-bound review job before any merge decision."
-  - "Reject on one material finding; merge only a unanimously clean paper author revision."
-  - "A paper PASS may justify only a separate natural-activation proposal."
+  - "Preserve the frozen author method, registration and P01-P18 dispositions unchanged."
+  - "Preserve the independent closeout review bound to head 45de7247639edea002e9719c841834d25e2239fc."
+  - "Do not reuse or backfill any Bureau arrival observed before a separate successor activation boundary."
+  - "A separate natural-activation successor may now test prospective first-three-slot feasibility under the unchanged S1-R2 sampling contract and S0-R3 C/S/B/E/T/Q semantics."
+  - "Do not start Minimal-versus-Full, add a validator or integrate Bureau/Grabowski/Chronik/runtime surfaces until that natural gate passes."

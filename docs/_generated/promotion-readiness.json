@@ -478,20 +478,15 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [
-        "designed_not_executed"
-      ],
-      "notes": [
-        "designed_not_executed",
-        "falsifiability_voluntary"
-      ],
+      "missing": [],
+      "notes": [],
       "path": "experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper",
-      "pre_execution_hold": true,
-      "promotion_ready": false,
-      "status": "designed",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "testing",
       "warnings": []
     }
   ],
@@ -501,8 +496,8 @@
     "experiments_checked": 31,
     "historical_escape": 1,
     "not_ready": 19,
-    "pre_execution_hold": 5,
-    "ready": 6,
+    "pre_execution_hold": 4,
+    "ready": 7,
     "warnings": 8
   },
   "trigger": "need_for_reproducibility"

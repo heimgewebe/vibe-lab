@@ -7,15 +7,23 @@ experiment:
     grouping and treats natural-source independence as a fail-closed gate on an
     already fixed ordinal can close S1-R1's two material sampling defects without
     adding a production field, validator, service or post-observation selector.
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s1r2-independent-reviews/run_meta.json"
+    - "results/evidence.jsonl"
+    - "results/reviewer-a2.md"
+    - "results/reviewer-b2.md"
+    - "results/controller-reconciliation-attestation.md"
+    - "results/closeout-review.md"
+    - "results/s1r2-gate.md"
+    - "results/decision.yml"
   created: "2026-08-18"
-  updated: "2026-08-18"
+  updated: "2026-08-19"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
-  iteration: 1
+  triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound; conversation:user-request-2026-08-19-continue-outcome-bound; grabowski-job:1a00e6999ebc; grabowski-job:f2b7ea92892b; grabowski-job:3742d6127bc5; github:heimgewebe/vibe-lab#350"
+  iteration: 3
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -31,37 +39,59 @@ experiment:
           Normalizing each event before grouping may still allow a later explicit ID
           or intake-enrichment event to hide an older legacy root.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Both exact-head reviewers must independently attack P01-P07 and the deployed Bureau identity rule."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "results/reviewer-a2.md"
+              section: "Adversarial findings"
+            - path: "results/reviewer-b2.md"
+              section: "Adversarial findings"
+            - path: "results/s1r2-gate.md"
+              section: "Gate result"
           limitations:
-            - "Paper agreement does not establish future StateStore observability."
-          confidence: low
+            - "Paper agreement does not establish future StateStore observability or natural-case feasibility."
+          confidence: high
       - id: "naturalness_gate_becomes_selection_filter"
         statement: >
           Requiring source independence may let the observer skip inconvenient or
           ambiguous arrivals and cherry-pick later candidates.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Both exact-head reviewers must attack P08-P12 and prove that naturalness is applied only after ordinal fixation."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "results/reviewer-a2.md"
+              section: "Adversarial findings"
+            - path: "results/reviewer-b2.md"
+              section: "Adversarial findings"
+            - path: "results/s1r2-gate.md"
+              section: "Gate result"
           limitations:
-            - "Paper agreement does not establish natural-case feasibility."
-          confidence: low
+            - "Paper review cannot establish that natural-source independence will be cheaply observable in live work."
+          confidence: high
       - id: "review_reconciliation_still_allows_partial_read"
         statement: >
           A controller may still treat one PASS as sufficient while another exact-head
           decision-bound review is terminal but unread or materially rejects.
         assessment:
-          status: pending
-          outcome: not_checked
-          pending_checks:
-            - "Both reviewers must classify P18, and the controller must inventory and reconcile every decision-bound exact-head review before merge."
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "artifacts/run-s1r2-independent-reviews/run_meta.json"
+            - path: "results/controller-reconciliation-attestation.md"
+              section: "Contemporaneous controller attestation"
+            - path: "results/reviewer-a2.md"
+              section: "Adversarial findings"
+            - path: "results/reviewer-b2.md"
+              section: "Adversarial findings"
+            - path: "results/closeout-review.md"
+              section: "P18 assessment"
+            - path: "results/s1r2-gate.md"
+              section: "Reviewer reconciliation"
           limitations:
-            - "This paper gate does not harden Grabowski merge-policy runtime; that remains a separate follow-up."
-          confidence: low
+            - "The historical controller reconciliation has no dedicated machine-generated semantic read receipt; it is attested contemporaneously and corroborated by immutable job, GitHub and Grabowski-audit evidence."
+            - "The independent closeout reviewer judged a controller-verified hash-bound evidence packet rather than independently recollecting every primary file after several source-reading reviewer harnesses failed for infrastructure reasons."
+            - "This experiment does not add or harden Grabowski merge-policy runtime."
+          confidence: medium
 
 context:
   tools:
@@ -69,8 +99,11 @@ context:
     - "deployed Bureau canonical identity contract"
     - "Vibe-Lab experiment-only paper artifacts"
     - "two independent read-only exact-head reviews"
+    - "receipt-bound Grabowski reviewer job archive"
+    - "verified Grabowski audit chain and GitHub merge truth"
+    - "independent semantic closeout review on a hash-bound primary-evidence packet"
   language: "Markdown, JSON, YAML"
-  environment: "design-only paper gate; no natural sampling or productive integration"
+  environment: "paper-gate execution only; no natural sampling or productive integration"
 
 evidence:
   format: jsonl

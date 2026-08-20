@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s1r2-independent-reviews",
+  "generated_at": "2026-08-19T19:48:00Z",
+  "executor": "controller:chatgpt+grabowski",
+  "command": "reconcile archived exact-head reviewer attempts -> preserve technical failures as non-semantic evidence -> bind two successful independent reviews -> reconstruct P18 controller reconciliation -> apply frozen S1-R2 paper gate",
+  "exit_code": 0,
+  "test_output_file": "results/s1r2-gate.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "conversation:user-request-2026-08-19-continue-outcome-bound",
+  "work_lane_ref": "grabowski-work-lane:4bc91eaec985aadbd6f1cca0236c1b3b",
+  "frozen_author_head": "e62e168bb97a5a70b95dac9585d6bde2833d0b8d",
+  "merge_commit": "21399adf7bf213df0e996a33fd05c63508031078",
+  "pull_request": 350,
+  "reviewer_attempts": [
+    {
+      "role": "reviewer-a-initial",
+      "job_id": "57fb24176513",
+      "final_status": "failed",
+      "finalization_payload_sha256": "7646a2159f597de0a228724624319d05e323b378437b6d64fe15f0e6508bac31",
+      "stdout_sha256": "4a6e1bfd85dcc35c8d8cd0b2c9c969ce4decd73cb3716f6fb0e116321bc594d7",
+      "semantic_verdict": null,
+      "disposition": "technical_failure_before_analysis_http_529"
+    },
+    {
+      "role": "reviewer-b-initial",
+      "job_id": "674203b60055",
+      "final_status": "failed",
+      "finalization_payload_sha256": "576ced854e8b41f727d79f6ca8c2c4e6af32bf941b666172110a5ef90810cd68",
+      "stdout_sha256": "da74d4f9f96f6f707a579503096d4343979608f1860a37f8700eb87222502a70",
+      "semantic_verdict": null,
+      "disposition": "technical_failure_without_substantive_output"
+    },
+    {
+      "role": "reviewer-b2",
+      "job_id": "1a00e6999ebc",
+      "final_status": "succeeded",
+      "finalization_receipt_sha256": "9d79a5bad18130150f23d2df02bed0bd0cba51251d63e2fa9b491592144687e3",
+      "finalization_payload_sha256": "a770324e6462a8a1fc67e242195c30ea0d5266452b4b8f5e9027869a4675393f",
+      "stdout_sha256": "576ebd01d94f393e74d7df0aa28609a65fc57edfee9b5cc4becad718689f08ee",
+      "terminal_at": "2026-08-18T16:45:55Z",
+      "semantic_verdict": "PASS_THIS_REVISION",
+      "material_findings": 0
+    },
+    {
+      "role": "reviewer-a2",
+      "job_id": "f2b7ea92892b",
+      "final_status": "succeeded",
+      "finalization_receipt_sha256": "301d488ddf15523e29473e0c9faf3e9d7e52af79e182426b756a501272846012",
+      "finalization_payload_sha256": "39d67b97eeaf968f2e512b34007af64d4dba4a025e4d9ba0e442bc009eaf47cc",
+      "stdout_sha256": "1b8913b3fd3c53c62bde87a25dca3d316a3a0b28fadeaa083adb11cd55724d21",
+      "terminal_at": "2026-08-18T16:53:52Z",
+      "semantic_verdict": "PASS_THIS_REVISION",
+      "material_findings": 0
+    }
+  ],
+  "controller_reconciliation": {
+    "contemporaneous_report_at": "2026-08-18T17:16:21Z",
+    "contemporaneous_report_ref": "conversation:2026-08-18T17:16:21Z:s1r2-controller-reconciliation-report",
+    "reported_all_decision_bound_attempts_terminal_read_before_merge": true,
+    "current_primary_readback_consistent": true,
+    "dedicated_historical_semantic_read_receipt": false,
+    "attestation_ref": "../../results/controller-reconciliation-attestation.md",
+    "audit_merge_admission_record_sha256": "59ce755028b43e00f46ca0b726f392f0e18f29cf3bcab0e3129c4f799987a0f1",
+    "audit_merge_completion_record_sha256": "2cc560d14e93c8702ef788f265310901c85e6431839b1e479a353fc60409a716"
+  },
+  "merge_observation": {
+    "merged_at": "2026-08-18T17:10:10Z",
+    "both_valid_reviews_terminal_before_merge": true,
+    "head_ref_oid": "e62e168bb97a5a70b95dac9585d6bde2833d0b8d"
+  },
+  "gate_result": "PASS_THIS_REVISION_PENDING_INDEPENDENT_CLOSEOUT_REVIEW",
+  "nonclaims": [
+    "No natural sampling is activated by this closeout.",
+    "No S1 natural slot is consumed or backfilled.",
+    "No Minimal-versus-Full decision impact is established.",
+    "No Bureau, Grabowski runtime, routing, queue, policy, merge-policy or deployment authority is created.",
+    "The absence of a dedicated historical semantic read receipt is not hidden or upgraded to machine proof."
+  ]
+}
