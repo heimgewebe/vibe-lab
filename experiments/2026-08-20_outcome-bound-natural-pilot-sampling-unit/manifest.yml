@@ -1,0 +1,84 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-natural-pilot-sampling-unit"
+  hypothesis: >
+    Defining the Outcome-Bound sampling unit as candidate_identity_birth, anchored on the
+    canonical identity-first event that itself carries operator_intake and ordered by
+    authoritative event id, makes event arrival, identity birth and supersession
+    non-interchangeable without adding any production field, validator, service or
+    post-observation selector.
+  status: designed
+  category: workflow
+  execution_status: designed
+  created: "2026-08-20"
+  updated: "2026-08-20"
+  author: "Claude Opus 5 / Grabowski"
+  triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T035; conversation:user-request-2026-08-20-continue-outcome-bound"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject this revision if a counter-check changes any U01-U09 disposition or slot count,
+      finds a credible way to read event arrival, candidate identity birth and supersession as
+      interchangeable, recovers a sample slot from an incomplete birth proof, skips a fixed
+      ordinal instead of consuming it, or requires a new production or control surface.
+    counter_hypotheses:
+      - id: "supersession_still_reconstructible_as_arrival"
+        statement: >
+          A post-boundary supersession of a pre-boundary identity may still be readable as a new
+          arrival, for example through re-registration, dedup resolution or intake enrichment.
+        assessment:
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "sampling-unit-cases.md"
+              section: "Frozen adversarial sampling-unit cases"
+            - path: "results/counter-check.md"
+              section: "Attack results"
+          limitations:
+            - "Paper agreement does not establish that a live journal read will be complete enough to apply the rule."
+          confidence: medium
+      - id: "incomplete_birth_proof_becomes_a_soft_skip"
+        statement: >
+          An unprovable birth may in practice be treated as a skipped slot rather than a terminal
+          fail-closed stop, restoring a post-observation degree of freedom.
+        assessment:
+          status: checked
+          outcome: supports_primary
+          evidence_refs:
+            - path: "method.md"
+              section: "6. Birth proof — fail closed"
+            - path: "sampling-unit-cases.md"
+              section: "Frozen adversarial sampling-unit cases"
+          limitations:
+            - "The observed Bureau live-register history truncation shows the proof obligation is not trivially satisfiable today."
+          confidence: medium
+      - id: "single_agent_counter_check_shares_blind_spots"
+        statement: >
+          A counter-check performed by the same agent that authored the rule may reproduce its own
+          blind spots and cannot substitute for an independent reviewer.
+        assessment:
+          status: blocked
+          outcome: not_checked
+          evidence_refs:
+            - path: "results/counter-check.md"
+              section: "Independence limitation"
+          limitations:
+            - "No third-party exact-head reviewer was obtained for this revision; the counter-check is explicitly self-performed and is recorded as a limitation rather than as independence."
+          confidence: low
+
+context:
+  tools:
+    - "terminal S0-R3 C/S/B/E/T/Q admission semantics"
+    - "terminal S1-R2 canonical identity and natural-source contract"
+    - "deployed Bureau canonical candidate identity rule"
+    - "observed Bureau live-register history-truncation report"
+    - "frozen U01-U09 adversarial paper cases"
+  language: "Markdown, JSON, YAML"
+  environment: "paper and adversarial reasoning only; no natural sampling, no pilot activation, no productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
