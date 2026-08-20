@@ -9,7 +9,8 @@ rationale: >
   prospective natural-activation revision, but no natural slot may exist until the
   exact author revision first passes one independent exact-head pre-activation review,
   every decision-bound review is terminal and reconciled, that exact reviewed head is then
-  merged to main, and its frozen five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
+  integrated into main with authoritative proof that the exact reviewed commit is an ancestor
+  of the resulting main merge commit, and its frozen five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
   S1-R2-normalized Bureau journal before naturalness; no pre-boundary event may be
   reused or backfilled. No productive authority is created by this design revision.
   This file intentionally remains the prereview design snapshot: the eventual exact-head
@@ -22,7 +23,9 @@ evidence_summary:
   predecessor_merge_commit: "21aee3c984b1a774498df1bcf72c459cd28dfcf0"
   s1r2_method_sha256: "19542aae0a473a8a7c63d24e3aa2909a8e115c50561bfeddd07893394d8003ab"
   s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
-  activation_rule: "author_pr_merged_at_plus_300_seconds"
+  activation_rule: "reviewed_head_ancestor_of_main_merge_commit_then_pr_merged_at_plus_300_seconds"
+  reviewed_head_ancestry_verified: false
+  activation_integrity_failure: null
   activation_timestamp: null
   slot_labels_preregistered: 3
   natural_slot_identities_assigned: 0
@@ -44,8 +47,9 @@ next_steps:
   - "Validate this exact pre-activation contract and obtain one independent exact-head activation review with zero material findings."
   - "Reconcile every decision-bound review job before merge; a terminal-but-unread or material REJECT blocks activation."
   - "Do not commit the review result into the reviewed branch; use the external head-bound receipt as merge evidence."
-  - "Merge only that reviewed exact head before any slot can become eligible."
-  - "After merge, derive activation_at only from GitHub merged_at + 300 seconds."
+  - "Integrate only that reviewed exact commit without losing its commit identity; a squash/rebase/cherry-pick that omits it from main history cannot activate the experiment."
+  - "After integration, prove the reviewed head is an ancestor of the resulting main merge commit; PR MERGED state or tree equality alone is insufficient."
+  - "Only after that ancestry proof, derive activation_at from GitHub merged_at + 300 seconds."
   - "Observe the complete normalized Bureau journal read-only and permanently assign the first three post-activation Operator-Intake births to S1R2-N01..N03."
   - "Never backfill a pre-activation, non-natural, missed, D0 or inconvenient slot."
   - "After the fixed packet terminalizes, obtain one independent exact-revision review before PASS/REJECT/INCONCLUSIVE."

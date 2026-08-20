@@ -27,11 +27,14 @@ This is not an efficacy test and does not compare Minimal versus Full.
 
 The branch introducing this protocol is pre-activation only. No Bureau event observed before the merged author revision becomes eligible.
 
-If and only if the exact author revision passes repository validation, passes the section 8 independent exact-head pre-activation gate with every decision-bound review terminal and reconciled, and that exact reviewed head is then merged to `main`, define:
+If and only if the exact author revision passes repository validation, passes the section 8 independent exact-head pre-activation gate with every decision-bound review terminal and reconciled, and that exact reviewed commit is then integrated into `main` **without losing commit identity**, define:
 
 ```text
-activation_at = GitHub PR merged_at + 300 seconds
+reviewed_head_is_ancestor = git-commit-graph proof that reviewed_head is an ancestor of main_merge_commit
+activation_at = GitHub PR merged_at + 300 seconds   only when reviewed_head_is_ancestor == true
 ```
+
+The integration proof must bind the exact reviewed author head, GitHub `merged_at`, the resulting `main` merge commit and commit ancestry. `git merge-base --is-ancestor <reviewed_head> <main_merge_commit>` or an equivalent authoritative commit-graph proof must succeed. A GitHub PR state of `MERGED`, an identical resulting tree, or a squash/rebase/cherry-pick that omits the reviewed commit from `main` history does **not** satisfy this gate. In that case `activation_at` remains undefined, record `activation_integrity_failure`, consume no natural slots and terminally reject this activation attempt rather than reinterpret tree identity as commit identity.
 
 The five-minute cooling interval is frozen before merge. It prevents merge handling itself from becoming a capture race.
 
@@ -67,7 +70,7 @@ Once an ordinal is determined, no later event may replace it. Corrections and su
 
 After a slot is fixed, apply S1-R2 section 4 unchanged.
 
-Naturalness passes only when pre-existing evidence supports the counterfactual that the source observation/request and Bureau arrival would have occurred at materially the same time and with materially the same content if this Outcome-Bound experiment did not exist.
+Naturalness passes only when pre-existing evidence supports the frozen S1-R2 counterfactual that the source observation/request and Bureau arrival would have occurred at the same time and with materially the same content if this Outcome-Bound experiment did not exist.
 
 Allowed evidence is read-only reference evidence that already exists independently of this experiment, such as the original operator/source observation plus the canonical Bureau intake event.
 
@@ -148,7 +151,7 @@ Guard measures:
 Before merge, the exact final author head must receive one independent read-only exact-head semantic review. The reviewer must verify only activation-specific mechanics around the already frozen authorities:
 
 1. the imported S1-R2 sections 2-5 and S0-R3 protocol hashes are exact and no local wording overrides them;
-2. the merge-plus-300-second boundary is unambiguous and no pre-boundary event can enter;
+2. the merge topology preserves the exact reviewed commit as an ancestor of the resulting `main` merge commit, the merge-plus-300-second boundary is unambiguous, and no pre-boundary event can enter;
 3. the complete canonical identity projection fixes the first three ordinals before naturalness;
 4. source independence is only a slot-consuming gate and never a selector;
 5. the prospective capture failure states and PASS/REJECT/INCONCLUSIVE gate cannot backfill, delay productive work or use result knowledge;
@@ -166,7 +169,7 @@ Passing this gate authorizes only merge of the experiment protocol. Natural elig
 
 After all three fixed slots are recorded, or immediately after an authority/integrity stop, one independent exact-revision reviewer receives the frozen activation protocol and case evidence packet and must independently verify:
 
-1. exact PR merge timestamp and `activation_at`;
+1. exact reviewed-head ancestry in the resulting `main` merge commit, exact PR merge timestamp and `activation_at`;
 2. complete S1-R2 canonical identity projection;
 3. exact first three post-activation Operator-Intake births by identity-first event id;
 4. source-independence gate for each fixed slot;
@@ -197,7 +200,7 @@ PASS establishes only tiny-sample prospective natural handling feasibility for t
 
 ### REJECT_THIS_REVISION
 
-Reject on any source-independence failure, binding/capture failure, material review disagreement, authority/integrity violation, sequence/backfill violation, or median effort above 600 seconds.
+Reject on any pre-activation `activation_integrity_failure`, source-independence failure, binding/capture failure, material review disagreement, authority/integrity violation, sequence/backfill violation, or median effort above 600 seconds.
 
 ### INCONCLUSIVE
 

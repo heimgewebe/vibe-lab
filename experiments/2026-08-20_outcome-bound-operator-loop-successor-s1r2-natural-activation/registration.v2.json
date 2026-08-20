@@ -20,7 +20,7 @@
   },
   "intervention": {
     "name": "prospective S1-R2 natural three-slot capture",
-    "description": "After the protocol PR merge plus a frozen five-minute cooling interval, normalize the complete authoritative Bureau candidate journal under unchanged S1-R2 sections 2-5, fix the first three post-activation Operator-Intake identity births by identity-first event id, apply source independence only as a gate on each fixed slot, and attempt read-only pre-mutation S0-R3 C/S/B/E/T/Q capture without delaying productive work."
+    "description": "After the exact reviewed author commit is integrated into main with authoritative commit-ancestry proof plus a frozen five-minute cooling interval, normalize the complete authoritative Bureau candidate journal under unchanged S1-R2 sections 2-5, fix the first three post-activation Operator-Intake identity births by identity-first event id, apply source independence only as a gate on each fixed slot, and attempt read-only pre-mutation S0-R3 C/S/B/E/T/Q capture without delaying productive work."
   },
   "control_condition": {
     "id": "s0r3_fixed_paper_benchmark",
@@ -35,9 +35,9 @@
     "direction": "lower_is_better",
     "unit": "count",
     "minimum_material_effect": 1,
-    "method": "Before merge, one independent read-only exact-head reviewer must verify the activation-specific boundary, imported frozen authorities, first-three sequence-before-naturalness, slot-consuming source gate, prospective capture/failure semantics and zero productive authority; every decision-bound review job must be terminal and reconciled. Only after that reviewed head is merged plus the frozen five-minute cooling interval, for each of the first three fixed canonical slots establish or fail source independence from pre-existing evidence, then where still prospectively possible freeze C/S/B/E/T/Q before productive mutation/result knowledge without delaying work. After the terminal packet, one independent exact-revision reviewer reproduces activation, sequence, naturalness, capture timing and classifications.",
-    "success": "Pre-activation exact-head review has zero material findings and every decision-bound review job is terminal/reconciled; then exactly three fixed slots are consumed in canonical order; source independence passes for all three; natural_source_binding_failure_count is zero; terminal material review disagreements, authority violations and replacements/backfills are zero; median capture effort is <=600 seconds; at least two slots are non-D0 with definitive complete C/S/B/E/T bindings.",
-    "falsification": "Before activation, any material exact-head review finding, unreconciled decision-bound review, imported-authority mismatch, activation/selection degree of freedom or productive-authority requirement rejects the author revision and blocks merge. After activation, any source-independence failure, missed/late/result-informed capture, non-D0 prospective C/S/B/E/T failure, changed slot identity/classification, sequence/backfill violation, authority violation, material terminal-review disagreement, or median effort >600 seconds rejects the revision.",
+    "method": "Before merge, one independent read-only exact-head reviewer must verify the activation-specific boundary, imported frozen authorities, first-three sequence-before-naturalness, slot-consuming source gate, prospective capture/failure semantics and zero productive authority; every decision-bound review job must be terminal and reconciled. Only after that reviewed head is integrated into main and authoritative commit-graph evidence proves it is an ancestor of the resulting main merge commit, plus the frozen five-minute cooling interval, for each of the first three fixed canonical slots establish or fail source independence from pre-existing evidence, then where still prospectively possible freeze C/S/B/E/T/Q before productive mutation/result knowledge without delaying work. After the terminal packet, one independent exact-revision reviewer reproduces activation, sequence, naturalness, capture timing and classifications.",
+    "success": "Pre-activation exact-head review has zero material findings, every decision-bound review job is terminal/reconciled, and the exact reviewed head is proven an ancestor of the resulting main merge commit; then exactly three fixed slots are consumed in canonical order; source independence passes for all three; natural_source_binding_failure_count is zero; terminal material review disagreements, authority violations and replacements/backfills are zero; median capture effort is <=600 seconds; at least two slots are non-D0 with definitive complete C/S/B/E/T bindings.",
+    "falsification": "Before activation, any material exact-head review finding, unreconciled decision-bound review, imported-authority mismatch, loss of the exact reviewed commit through squash/rebase/cherry-pick or other failed main-history ancestry proof, activation/selection degree of freedom or productive-authority requirement rejects the activation attempt. After activation, any source-independence failure, missed/late/result-informed capture, non-D0 prospective C/S/B/E/T failure, changed slot identity/classification, sequence/backfill violation, authority violation, material terminal-review disagreement, or median effort >600 seconds rejects the revision.",
     "outcome_criteria": {
       "success_threshold": 0,
       "harm_or_falsification_threshold": 1
@@ -59,7 +59,8 @@
       "S1-R2 sections 2-5 are imported unchanged and identified by method SHA-256",
       "S0-R3 C/S/B/E/T/Q semantics are imported unchanged and identified by protocol SHA-256",
       "no source, repository, risk, outcome, capture or task state may select or replace a slot",
-      "the observer causes zero productive work effects"
+      "the observer causes zero productive work effects",
+      "activation requires authoritative proof that the exact reviewed author head is an ancestor of the resulting main merge commit; tree equality or PR MERGED state alone is insufficient"
     ],
     "confounders": [
       "natural source-independence evidence may be unavailable even when an arrival is genuinely independent",
@@ -75,7 +76,7 @@
       "unchanged S0-R3 protocol",
       "authoritative Bureau StateStore live-register journal",
       "independently produced source observation/request references that pre-exist experiment capture",
-      "Git/GitHub exact PR merge timestamp and revision truth",
+      "Git/GitHub exact PR merge timestamp, resulting main merge commit and reviewed-head ancestry truth",
       "Grabowski read-only process/task/resource observations used only to establish capture timing",
       "experiment-local create-only case/evidence artifacts",
       "independent pre-activation exact-head review receipt and reconciled reviewer-job inventory",

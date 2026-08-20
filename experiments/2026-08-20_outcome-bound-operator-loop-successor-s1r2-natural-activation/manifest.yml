@@ -21,8 +21,9 @@ experiment:
     version: 1
     falsification_criterion: >
       Reject before activation if the exact author head fails independent activation-specific
-      review, any decision-bound review remains unread/unreconciled, an imported frozen authority
-      is changed, or an activation/selection/authority degree of freedom remains. After activation,
+      review, any decision-bound review remains unread/unreconciled, the exact reviewed commit is
+      not provably an ancestor of the resulting main merge commit, an imported frozen authority is
+      changed, or an activation/selection/authority degree of freedom remains. After activation,
       reject if any of the first three canonical post-activation Operator-Intake identity births
       fails source independence, is skipped/replaced/backfilled, is captured only after productive
       mutation or result knowledge, cannot prospectively bind non-D0 C/S/B/E/T, produces a material
