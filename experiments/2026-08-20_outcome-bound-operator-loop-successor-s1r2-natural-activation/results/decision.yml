@@ -12,6 +12,9 @@ rationale: >
   merged to main, and its frozen five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
   S1-R2-normalized Bureau journal before naturalness; no pre-boundary event may be
   reused or backfilled. No productive authority is created by this design revision.
+  This file intentionally remains the prereview design snapshot: the eventual exact-head
+  pre-activation review is external receipt-bound merge evidence and must not be committed
+  back into the reviewed branch.
 evidence_summary:
   predecessor_paper_experiment: "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper"
   predecessor_paper_result: "PASS_THIS_REVISION"
@@ -27,6 +30,7 @@ evidence_summary:
   preactivation_independent_review_completed: 0
   preactivation_material_findings: null
   preactivation_reviews_reconciled: false
+  preactivation_review_recording_mode: "external_head_bound_receipt_no_post_review_branch_mutation"
   natural_sampling_active: false
   replacements_backfills: 0
   authority_violations: 0
@@ -39,6 +43,7 @@ counterevidence_checked: false
 next_steps:
   - "Validate this exact pre-activation contract and obtain one independent exact-head activation review with zero material findings."
   - "Reconcile every decision-bound review job before merge; a terminal-but-unread or material REJECT blocks activation."
+  - "Do not commit the review result into the reviewed branch; use the external head-bound receipt as merge evidence."
   - "Merge only that reviewed exact head before any slot can become eligible."
   - "After merge, derive activation_at only from GitHub merged_at + 300 seconds."
   - "Observe the complete normalized Bureau journal read-only and permanently assign the first three post-activation Operator-Intake births to S1R2-N01..N03."

@@ -158,6 +158,8 @@ Any material finding rejects this author revision before activation. Do not repa
 
 Every review job/receipt bound to the merge decision must be terminal and explicitly reconciled before merge. A terminal-but-unread review, a review on another head or one material REJECT blocks merge. No majority or last-read shortcut is allowed.
 
+The pre-activation review result is intentionally **not committed back into the reviewed author branch**. Its terminal head-bound job/receipt is external merge evidence. Once a reviewer binds to a head, any content change -- including adding a review-result artifact -- creates a new author head and invalidates that prior review for merge. `results/decision.yml` therefore remains the prereview design snapshot; it is not live merge-authority state.
+
 Passing this gate authorizes only merge of the experiment protocol. Natural eligibility still begins only at the frozen post-merge `activation_at`.
 
 ## 9. Independent terminal review
