@@ -9,6 +9,8 @@ triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound"
 
 # S1-R2 natural-activation protocol
 
+**Terminal closeout note (2026-08-20): this experiment is rejected before activation.** The official prospective registration remains the d299 preregistration. Later external-trigger/controller-orchestration text in this method is post-finding, unexecuted design work only and confers no activation authority. The terminal result authority is `results/decision.yml` together with `results/preactivation-rejection.md`; the later proposal is preserved separately in `results/post-finding-orchestration-proposal.md`.
+
 ## 1. Purpose and authority
 
 This experiment asks only whether the terminally paper-passed S1-R2 sampling contract can be applied prospectively to the first three real Bureau Operator-Intake births without selection, backfill, observer interference or material capture friction.
@@ -241,7 +243,7 @@ Any material finding rejects this author revision before activation. Do not repa
 
 Every review job/receipt bound to the merge decision must be terminal and explicitly reconciled before merge. A terminal-but-unread review, a review on another head/base/canonical PR diff, a transport binding mismatch or one material REJECT blocks merge. No majority or last-read shortcut is allowed.
 
-The pre-activation review result is intentionally **not committed back into the reviewed author branch**. Its terminal head/base/canonical-diff-bound job/receipt is external merge evidence. Once a reviewer binds to a tuple, any content change, PR-head change, base change or canonical-diff change invalidates that prior review for merge. `results/decision.yml` therefore remains the prereview design snapshot; it is not live merge-authority state.
+For the frozen d299 pre-activation author revision, the review result was external and `results/decision.yml` was still the prereview design snapshot. Once the material pre-arming finding terminally rejected the experiment, that historical prereview rule ceased to describe the live closeout: the current `results/decision.yml` is the terminal result authority, and the prereview-snapshot rule applies only to the frozen author preimage. It must not be used to discard or downgrade the rejection record.
 
 For this activation revision, the repository-required current-head GitHub Codex settlement is the independent pre-activation semantic review. Passing it does not return merge timing to the controller: the already-running orchestration job described in section 2.1 must merge on its first all-gates-PASS observation. Natural eligibility begins only if that same job later proves exact integration, bounded monotonic cooling and the single Bureau journal watermark.
 

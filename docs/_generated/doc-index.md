@@ -337,6 +337,7 @@
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/CONTEXT.md` | CONTEXT | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/cases/README.md` | README | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/method.md` | Outcome-Bound S1-R2 Natural Activation — Prospective three-slot protocol | designed | operative |
+| `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/post-finding-orchestration-proposal.md` | post-finding-orchestration-proposal | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/preactivation-rejection.md` | preactivation-rejection | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
