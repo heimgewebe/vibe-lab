@@ -1,48 +1,51 @@
 schema_version: "0.1.0"
 decision_type: "result_assessment"
-verdict: "confirms"
+verdict: "refutes"
 confidence: "medium"
 date: "2026-08-20"
-reviewer: "Vibe-Lab T035 controller after one independent exact-content counter-check"
+reviewer: "Vibe-Lab T035 controller after Grok counter-check plus Codex exact-head review"
 triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T035; github:heimgewebe/vibe-lab#354"
 rationale: >
-  The frozen author revision 5a73d1ceb130155988863b2695062fa62b565c76 required that an
-  independent counter-check reproduce every U01-U09 disposition and slot count from method.md
-  alone, that material_sampling_unit_disagreement_count be zero, that no credible escape read
-  event arrival, candidate identity birth and supersession as interchangeable, and that no new
-  production or control surface be required. A single-turn read-only Grok 4.5 review through the
-  grok CLI, a different provider family from the authoring agent and without repository or
-  tool access, returned PASS_THIS_REVISION with 0 material findings, 9/9 matching dispositions
-  and slot counts, and no_escape on all ten attacks. Its reasoning independently reconstructed
-  the three load-bearing seams: the anchor is identity_first_event rather than the first event
-  carrying intake, the unit key is canonical identity rather than payload content, and
-  naturalness gates an already fixed ordinal rather than selecting one. The sampling unit is
-  therefore terminally frozen at paper level only. Two limitations are recorded rather than
-  argued away. First, only one reviewer completed, where S1-R2 used two, so this revision claims
-  medium and not high confidence. Second, the birth proof of section 6 is not trivially
-  satisfiable today: Bureau live-register reported 50 of 3694 history records loaded with
-  history_truncated true on 2026-08-20, so a future pilot needs an explicitly
-  completeness-reporting journal read before it can use any slot. This decision does not
-  activate a pilot, does not choose an activation boundary or slot count, and establishes
-  nothing about Outcome Case efficacy, prevalence, natural feasibility or cost.
+  The frozen author revision 5a73d1ceb130155988863b2695062fa62b565c76 preregistered a
+  fail-closed result: any changed U01-U09 disposition or slot count, or any credible escape that
+  reintroduces a post-observation degree of freedom, rejects this revision. Grok 4.5 first returned
+  PASS_THIS_REVISION with 0 material findings and reproduced 9/9 frozen dispositions. A later Codex
+  review inspected the same frozen author commit and found two material defects. First, two
+  manifest counter-hypothesis assessments were already labelled checked/supports_primary before
+  the referenced counter-check evidence existed; those favorable labels therefore cannot count as
+  prospective support. Second, method.md section 4 says an identity yields an in-sample unit only
+  if the self-interference boundary is not violated, while section 7 says an interfered birth has
+  an already-fixed ordinal that is consumed rather than skipped. For the same post-A interfered
+  birth, a protocol-conforming reader can therefore derive either zero units/slots from section 4
+  or one consumed slot from section 7. That is exactly the slot-count ambiguity the experiment
+  claimed to eliminate and it meets the preregistered harm/falsification threshold of 1. The Grok
+  PASS remains valid historical evidence of reviewer disagreement, but it cannot override a later
+  exact-head falsification. The frozen method and U01-U09 cases are deliberately not repaired in
+  place because changing them after review would destroy the prospective test. Any corrected
+  slot-before-interference construction must be a separate successor revision with fresh
+  preregistration and exact-head review. No natural case was taken and no production authority is
+  granted by this result.
 evidence_summary:
   frozen_author_head: "5a73d1ceb130155988863b2695062fa62b565c76"
   pull_request: 354
   predecessor_unit_defects: 3
   frozen_unit_cases: 9
-  required_independent_reviewers: 1
-  completed_independent_reviewers: 1
-  reviewer_provider_family: "xai"
-  reviewer_verdict: "PASS_THIS_REVISION"
-  reviewer_material_findings: 0
-  reviewer_disposition_matches: 9
-  reviewer_attacks_attempted: 10
-  reviewer_escapes_found: 0
+  grok_provider_family: "xai"
+  grok_verdict: "PASS_THIS_REVISION"
+  grok_material_findings: 0
+  grok_disposition_matches: 9
+  grok_attacks_attempted: 10
+  grok_escapes_found: 0
+  codex_reviewed_head: "5a73d1ceb130155988863b2695062fa62b565c76"
+  codex_material_findings: 2
+  codex_slot_count_ambiguities: 1
+  premature_favorable_assessments: 2
+  material_sampling_unit_disagreement_count: 1
+  harm_or_falsification_threshold: 1
+  terminal_revision_result: "REJECT_THIS_REVISION"
+  reviewer_disagreement_present: true
   transmitted_prompt_sha256: "221b7760de0a5f3f7390ed86f10833c9f8233417f5ae64d29495abf8d03f623d"
   raw_review_output_sha256: "b1bc9d0e21edf42e2d21eeabe36745b9fe2a2e20474cece7732e344a3992695b"
-  material_sampling_unit_disagreement_count: 0
-  reviewer_repository_access: false
-  second_independent_reviewer: false
   live_register_history_truncated: true
   authority_violations: 0
   natural_cases_taken: 0
@@ -52,12 +55,12 @@ evidence_summary:
   pilot_authorized: false
   p1_reopened: false
   production_integration_authorized: false
-counter_hypothesis_outcome: "found_and_refuted"
+counter_hypothesis_outcome: "found_and_confirming"
 counterevidence_checked: true
 next_steps:
-  - "Preserve method.md and the U01-U09 dispositions unchanged; they are the frozen unit contract."
-  - "Do not reuse or backfill any Bureau arrival observed before a separate successor activation boundary."
-  - "Before any pilot activation, obtain an explicitly completeness-reporting Bureau event-journal read so the section 6 birth proof is satisfiable; the default live-register projection truncates history."
-  - "A separate successor may choose the activation boundary A and slot count N; that requires its own decision and revision."
-  - "Consider a second independent reviewer before raising confidence above medium."
-  - "Do not start Minimal-versus-Full, add a validator or integrate Bureau/Grabowski/Chronik/runtime surfaces on the basis of this revision."
+  - "Preserve frozen author head 5a73d1ce, method.md and U01-U09 unchanged as negative evidence; do not repair this failed prospective revision in place."
+  - "A successor must construct and ordinal the post-A birth unit before applying naturalness or self-interference, so an interfered birth remains one consumed fixed slot even though it is not accepted as natural evidence."
+  - "A successor manifest must keep counter-hypothesis assessments pending/not_checked until the referenced review evidence actually exists."
+  - "Before any later pilot activation, obtain an explicitly completeness-reporting Bureau event-journal read so the birth proof is satisfiable; the default live-register projection truncates history."
+  - "Require fresh exact-head counter-review evidence for the corrected successor before any sampling unit is called terminal or a natural pilot is activated."
+  - "Do not start Minimal-versus-Full, add a validator or integrate Bureau/Grabowski/Chronik/runtime surfaces on the basis of this rejected revision."

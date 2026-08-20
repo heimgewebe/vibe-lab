@@ -232,3 +232,19 @@ promotion_readiness_freeze:
         adoption, routing, runtime or production integration; remove only if a separately
         registered successor supersedes this readiness role, never by rewriting the
         rejected evidence.
+
+    - path: experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit
+      allowed_missing:
+        - falsifiability.assessment_counterhypothesis_supported
+      reason: >-
+        T035 sampling-unit revision 1 is terminally rejected after exact-head Codex
+        review found a material zero-versus-one fixed-slot ambiguity between the
+        frozen self-interference inclusion rule and the fixed-ordinal consumption
+        rule. The later review also exposed that two favorable assessment labels
+        existed before their referenced counter-check evidence. The supported
+        single-reviewer-blind-spot counter-hypothesis is therefore part of the
+        negative result itself. This exact freeze preserves the rejected prospective
+        revision without rewriting its frozen method or U01-U09 cases and authorizes
+        no natural pilot, validator, routing, runtime, P2/P3 or production integration.
+        Remove only if a separately registered successor supersedes this experiment's
+        readiness role; never by converting the rejected evidence into a pass.

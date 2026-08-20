@@ -8,7 +8,7 @@ experiment:
     authoritative event id, makes event arrival, identity birth and supersession
     non-interchangeable without adding any production field, validator, service or
     post-observation selector.
-  status: testing
+  status: rejected
   category: workflow
   execution_status: executed
   execution_refs:
@@ -35,47 +35,54 @@ experiment:
           A post-boundary supersession of a pre-boundary identity may still be readable as a new
           arrival, for example through re-registration, dedup resolution or intake enrichment.
         assessment:
-          status: checked
-          outcome: supports_primary
+          status: partially_checked
+          outcome: inconclusive
           evidence_refs:
             - path: "sampling-unit-cases.md"
               section: "Frozen adversarial sampling-unit cases"
             - path: "results/counter-check.md"
               section: "Attack results"
+            - path: "results/evidence.jsonl"
           limitations:
             - "Paper agreement does not establish that a live journal read will be complete enough to apply the rule."
-          confidence: medium
+            - "The frozen author commit already labelled this assessment checked/supports_primary before the referenced counter-check existed; that label is excluded from prospective support evidence."
+          confidence: low
       - id: "incomplete_birth_proof_becomes_a_soft_skip"
         statement: >
           An unprovable birth may in practice be treated as a skipped slot rather than a terminal
           fail-closed stop, restoring a post-observation degree of freedom.
         assessment:
-          status: checked
-          outcome: supports_primary
+          status: partially_checked
+          outcome: inconclusive
           evidence_refs:
             - path: "method.md"
               section: "6. Birth proof — fail closed"
             - path: "sampling-unit-cases.md"
               section: "Frozen adversarial sampling-unit cases"
+            - path: "results/evidence.jsonl"
           limitations:
             - "The observed Bureau live-register history truncation shows the proof obligation is not trivially satisfiable today."
-          confidence: medium
+            - "The frozen author commit already labelled this assessment checked/supports_primary before counter-check evidence existed; the later result cannot retroactively make that assessment prospective."
+          confidence: low
       - id: "single_reviewer_shares_blind_spots_with_author"
         statement: >
           One counter-reviewer, even from a different provider family, may share a prior with the
           author and reproduce the same blind spot, so a single PASS is weaker evidence than the
           two-reviewer protocol the predecessor used.
         assessment:
-          status: partially_checked
-          outcome: inconclusive
+          status: checked
+          outcome: supports_counterhypothesis
           evidence_refs:
             - path: "results/counter-check.md"
               section: "Independence limitation"
             - path: "artifacts/run-t035-independent-counter-check/run_meta.json"
+            - path: "results/evidence.jsonl"
+            - path: "results/decision.yml"
           limitations:
-            - "Only one independent reviewer completed; S1-R2 required and obtained two."
-            - "The reviewer had no repository or tool access and verified the frozen text as transmitted, bound by prompt digest rather than by an independent read at the author head."
-          confidence: low
+            - "Only one Grok counter-reviewer completed; S1-R2 required and obtained two."
+            - "A later Codex review of the same frozen author commit found two material defects that Grok missed, including a zero-versus-one fixed-slot ambiguity."
+            - "The Codex review is GitHub-hosted counterevidence recorded into evidence.jsonl; it is not represented as a second run_meta reviewer attempt."
+          confidence: medium
 
 context:
   tools:

@@ -494,12 +494,14 @@
       "execution_status": "executed",
       "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [],
+      "missing": [
+        "falsifiability.assessment_counterhypothesis_supported"
+      ],
       "notes": [],
       "path": "experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit",
       "pre_execution_hold": false,
-      "promotion_ready": true,
-      "status": "testing",
+      "promotion_ready": false,
+      "status": "rejected",
       "warnings": [
         "falsifiability_assessment_inconclusive"
       ]
@@ -525,9 +527,9 @@
   "summary": {
     "experiments_checked": 33,
     "historical_escape": 1,
-    "not_ready": 20,
+    "not_ready": 21,
     "pre_execution_hold": 4,
-    "ready": 8,
+    "ready": 7,
     "warnings": 9
   },
   "trigger": "need_for_reproducibility"
