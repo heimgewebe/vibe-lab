@@ -16,9 +16,10 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
-# Repository-tree validation clock pinned to the newest registration timestamp; triggered_by:
-# conversation:user-request-2026-08-18-continue-outcome-bound.
-REPOSITORY_NOW = datetime(2026, 8, 18, 11, 57, 0, tzinfo=timezone.utc)
+# Repository-tree validation uses the wall clock for the checked-in corpus.
+# Explicit fixed-clock unit cases below still verify future registered_at rejection.
+# triggered_by: conversation:user-request-2026-08-20-continue-outcome-bound
+REPOSITORY_NOW = datetime.now(timezone.utc)
 DELETE = object()
 OUTCOME_OBSERVATION_SCHEMA_PATH = (
     ROOT
