@@ -25,7 +25,7 @@ This is not an efficacy test and does not compare Minimal versus Full.
 
 ## 2. Pre-activation state and boundary
 
-The branch introducing this protocol is pre-activation only. No Bureau event observed before the merged author revision becomes eligible.
+The branch introducing this protocol is pre-activation only. No Bureau identity birth at or below the frozen activation journal watermark becomes eligible.
 
 Before merge, the independent section 8 review must be externally bound to one exact tuple:
 
@@ -51,23 +51,44 @@ reviewed_head is an ancestor of main_merge_commit
 tree(main_merge_commit) == tree(reviewed_head)
 ```
 
-Only when both the pre-merge review binding and the post-merge integration identity are exact may this experiment define:
-
-```text
-activation_at = GitHub PR merged_at + 300 seconds
-```
-
-This deliberately requires more than ancestry. A later descendant tip that merely contains the reviewed commit, a changed base, a changed canonical PR diff, a merge commit with different parents, or a merge tree that differs from the reviewed-head tree leaves `activation_at` undefined. Likewise, PR `MERGED` state, ancestry alone, tree equality alone, squash/rebase/cherry-pick, or conflict-resolution content not already present in the reviewed head does **not** satisfy this gate. Record `activation_integrity_failure`, consume no natural slots and terminally reject this activation attempt rather than reinterpret similar content as reviewed content.
+This deliberately requires more than ancestry. A later descendant tip that merely contains the reviewed commit, a changed base, a changed canonical PR diff, a merge commit with different parents, or a merge tree that differs from the reviewed-head tree fails the activation gate. Likewise, PR `MERGED` state, ancestry alone, tree equality alone, squash/rebase/cherry-pick, or conflict-resolution content not already present in the reviewed head does **not** satisfy this gate. Record `activation_integrity_failure`, consume no natural slots and terminally reject this activation attempt rather than reinterpret similar content as reviewed content.
 
 The strict tree condition means that if `main` advances after review, the branch must first incorporate that new base into a new author head and the resulting exact base/head/canonical-diff tuple must be reviewed again. No stale-base merge is allowed to activate the cohort.
 
-The five-minute cooling interval is frozen before merge. It prevents merge handling itself from becoming a capture race.
+### 2.1 Pre-armed clock-independent activation checkpoint
 
-A candidate identity is post-activation only when its canonical `identity_first_event.created_at >= activation_at`.
+The five-minute cooling interval is frozen before merge, but **no GitHub timestamp is compared to a Bureau timestamp to decide cohort membership**.
 
-If the exact GitHub merge timestamp, exact PR head/base/diff binding, exact merge parents/tree, the exact identity-first event timestamp, or the complete authoritative Bureau journal required by S1-R2 cannot be read, fail closed. Do not infer the boundary from chat time, local file time or observer first-seen time.
+After the final section 8 review is terminally reconciled and before merge dispatch, the controller must start exactly one receipt-bound, read-only `activation_checkpoint_job` bound to the exact reviewed PR/base/head/canonical-diff tuple. The job is armed before merge so no operator can choose a later post-merge checkpoint after observing Bureau arrivals. Once armed, no Bureau journal or candidate observation may be used to decide when to dispatch the merge; merge timing may depend only on the already frozen PR/review/CI/authority gates.
 
-Nothing before `activation_at` may be backfilled.
+The same job owns the entire activation checkpoint:
+
+1. wait for the exact bound PR to reach a terminal merge result while continuously rejecting any head/base/diff drift;
+2. if merged, verify the exact merge-parent, ancestry and reviewed-head-tree conditions above;
+3. on the first successful exact integration verification, record a local monotonic start value;
+4. wait until the same process proves `monotonic_elapsed_seconds >= 300`;
+5. immediately execute exactly one complete read-only SQLite snapshot transaction against the authoritative Bureau StateStore journal;
+6. from that same transaction freeze the journal high-water event id and a digest/receipt binding the complete snapshot read.
+
+The job may not inspect Bureau candidate/journal content before step 5. It may not postpone step 5 after the monotonic threshold in response to observed work. The **first snapshot attempt after the threshold is final**: read failure, incomplete coverage, integrity failure or missing high-water id records `activation_integrity_failure`. A restarted job, later snapshot, manual retry or replacement watermark cannot activate this PR revision.
+
+The checkpoint is valid only when the same job proves:
+
+```text
+monotonic_elapsed_seconds >= 300
+activation_watermark_event_id = authoritative journal high-water event_id in the single snapshot transaction
+activation_snapshot_ref = immutable job/receipt + snapshot digest for that exact transaction
+```
+
+Wall-clock timestamps such as GitHub `merged_at`, the job start/receipt time and Bureau `created_at` remain descriptive evidence only. They are never used to decide whether a Bureau birth is before or after activation.
+
+If the authoritative snapshot exposes no explicit high-water value, use the maximum authoritative Bureau event id present in the complete snapshot transaction. The read must establish complete event coverage through that watermark.
+
+Only identity births whose exact `identity_first_event.event_id > activation_watermark_event_id` are post-activation treatment candidates. Event ids at or below the watermark are permanently pre-activation/cooling history and may never be backfilled.
+
+This event-id watermark is the sole cohort cutoff. It prevents clock skew between GitHub, the Heim-PC and Bureau from changing slot identity. A Bureau `created_at` value on either side of any wall-clock timestamp cannot override the event-id boundary.
+
+If the exact pre-merge tuple, pre-armed checkpoint-job identity, exact merge parents/tree, monotonic 300-second cooling proof, single complete authoritative Bureau snapshot, activation snapshot digest/reference or journal high-water event id cannot be established, record `activation_integrity_failure`, leave the cohort inactive and consume zero natural slots. Do not reconstruct the boundary from chat time, GitHub `merged_at`, local wall time, Bureau `created_at`, a later retry or observer first-seen time.
 
 ## 3. Complete projection before slot naturalness
 
@@ -78,10 +99,10 @@ Only after normalization:
 1. group by canonical candidate identity;
 2. compute each identity's minimum-event `identity_first_event`;
 3. retain only identities whose exact first event itself carries `operator_intake`;
-4. retain only births whose first-event timestamp is post-activation;
+4. retain only births whose `identity_first_event.event_id > activation_watermark_event_id`;
 5. sort by `identity_first_event.event_id` ascending.
 
-Naturalness, repository, risk, distance, outcome, capture state, task state and source convenience are **not** sequence filters.
+Naturalness, repository, risk, distance, outcome, capture state, task state, wall-clock timestamp and source convenience are **not** sequence filters.
 
 The first three births in that ordered projection are permanently:
 
@@ -112,6 +133,7 @@ The slot record must freeze or fail to freeze:
 - slot ordinal;
 - canonical candidate identity;
 - exact identity-first Bureau event id and stable digest/reference;
+- frozen `activation_watermark_event_id` plus `activation_snapshot_ref`;
 - source-independence evidence references and gate result;
 - capture start and freeze/stop timestamps;
 - productive-mutation state at capture start;
@@ -177,11 +199,12 @@ Before merge, the exact final author head on the exact current base must receive
 
 1. the imported S1-R2 sections 2-5 and S0-R3 protocol hashes are exact and no local wording overrides them;
 2. the merge gate requires exact pre-merge PR tip/base/canonical-diff identity and exact post-merge parent/tree identity, so ancestry alone, a descendant tip, a changed base, squash/rebase/cherry-pick or unreviewed conflict-resolution content cannot activate;
-3. the merge-plus-300-second boundary is unambiguous and no pre-boundary event can enter;
-4. the complete canonical identity projection fixes the first three ordinals before naturalness;
-5. source independence is only a slot-consuming gate and never a selector;
-6. the prospective capture failure states and PASS/REJECT/INCONCLUSIVE gate cannot backfill, delay productive work or use result knowledge;
-7. the revision creates zero Bureau/runtime/routing/queue/policy/merge-policy/deployment authority.
+3. exactly one read-only activation-checkpoint job must be armed before merge, bound to the reviewed tuple, forbidden from Bureau candidate/journal observation before exact integration, and responsible for the single post-threshold snapshot attempt;
+4. cooling uses that job's post-integration monotonic interval of at least 300 seconds and then exactly one complete authoritative Bureau journal high-water snapshot, so GitHub/Bureau wall-clock skew or operator-selected snapshot timing cannot change the cohort;
+5. the complete canonical identity projection fixes the first three births strictly above the frozen event-id watermark before naturalness;
+6. source independence is only a slot-consuming gate and never a selector;
+7. the prospective capture failure states and PASS/REJECT/INCONCLUSIVE gate cannot backfill, delay productive work or use result knowledge;
+8. the revision creates zero Bureau/runtime/routing/queue/policy/merge-policy/deployment authority.
 
 Any material finding rejects this author revision before activation. Do not repair a reviewed head in place; create a new author head and review that exact revision/base/diff tuple again.
 
@@ -189,23 +212,25 @@ Every review job/receipt bound to the merge decision must be terminal and explic
 
 The pre-activation review result is intentionally **not committed back into the reviewed author branch**. Its terminal head/base/canonical-diff-bound job/receipt is external merge evidence. Once a reviewer binds to a tuple, any content change, PR-head change, base change or canonical-diff change invalidates that prior review for merge. `results/decision.yml` therefore remains the prereview design snapshot; it is not live merge-authority state.
 
-Passing this gate authorizes only merge of the experiment protocol. Natural eligibility still begins only after the exact integration proof and the frozen post-merge `activation_at`.
+Passing this review gate authorizes only preparation for merge. Before merge dispatch, the exact checkpoint job described in section 2.1 must be armed and its receipt reconciled. Natural eligibility begins only if that same job later proves exact integration, monotonic cooling and the single Bureau journal watermark.
 
 ## 9. Independent terminal review
 
 After all three fixed slots are recorded, or immediately after an authority/integrity stop, one independent exact-revision reviewer receives the frozen activation protocol and case evidence packet and must independently verify:
 
-1. exact pre-merge reviewed base/head/canonical-diff binding, exact merge parent/tree identity, exact PR merge timestamp and `activation_at`;
-2. complete S1-R2 canonical identity projection;
-3. exact first three post-activation Operator-Intake births by identity-first event id;
-4. source-independence gate for each fixed slot;
-5. zero replacement/backfill;
-6. prospective timing and result-known state;
-7. C/S/B/E/T/Q and S0-R3 classification wherever attempted;
-8. capture effort;
-9. zero productive authority effects.
+1. exact pre-merge reviewed base/head/canonical-diff binding and exact merge parent/tree identity;
+2. exact pre-merge checkpoint-job identity plus its uninterrupted binding to the reviewed tuple;
+3. exact post-integration monotonic cooling proof of at least 300 seconds plus the immutable single-attempt authoritative Bureau activation-snapshot reference and high-water event id;
+4. complete S1-R2 canonical identity projection;
+5. exact first three Operator-Intake births whose identity-first event ids are strictly above the activation watermark;
+6. source-independence gate for each fixed slot;
+7. zero replacement/backfill;
+8. prospective timing and result-known state;
+9. C/S/B/E/T/Q and S0-R3 classification wherever attempted;
+10. capture effort;
+11. zero productive authority effects.
 
-A changed slot identity, changed source-independence disposition, changed S0-R3 classification, required retrospective reconstruction, sequence/backfill mismatch or unrecorded authority effect is material.
+A restarted/replaced checkpoint job, later activation snapshot, changed activation watermark, cross-system wall-clock substitution, changed slot identity, changed source-independence disposition, changed S0-R3 classification, required retrospective reconstruction, sequence/backfill mismatch or unrecorded authority effect is material.
 
 ## 10. Preregistered decision gate
 
@@ -213,7 +238,9 @@ A changed slot identity, changed source-independence disposition, changed S0-R3 
 
 PASS only when:
 
-- exactly `S1R2-N01..N03` are consumed in canonical post-activation order;
+- exactly one pre-merge checkpoint job remained bound to the reviewed tuple and produced the activation receipt;
+- the activation snapshot/watermark is valid, immutable and from that job's single post-threshold snapshot attempt;
+- exactly `S1R2-N01..N03` are consumed in canonical event-id order strictly above that watermark;
 - source independence passes for all three fixed slots;
 - `natural_source_binding_failure_count == 0`;
 - zero material independent-review disagreements;
@@ -226,11 +253,11 @@ PASS establishes only tiny-sample prospective natural handling feasibility for t
 
 ### REJECT_THIS_REVISION
 
-Reject on any pre-activation `activation_integrity_failure`, source-independence failure, binding/capture failure, material review disagreement, authority/integrity violation, sequence/backfill violation, or median effort above 600 seconds.
+Reject on any pre-activation `activation_integrity_failure`, missing/restarted/replaced checkpoint job, failed or repeated activation snapshot attempt, invalid/changed activation watermark, cross-system wall-clock substitution for the watermark, source-independence failure, binding/capture failure, material review disagreement, authority/integrity violation, sequence/backfill violation, or median effort above 600 seconds.
 
 ### INCONCLUSIVE
 
-Use only when all three fixed slots and source-independence gates are valid with zero failures, zero disagreements, zero authority/integrity violations, zero replacement/backfill and median effort at most 600 seconds, but fewer than two informative non-D0 definitive C/S/B/E/T cases occur.
+Use only when the activation checkpoint/watermark and all three fixed slots/source-independence gates are valid with zero failures, zero disagreements, zero authority/integrity violations, zero replacement/backfill and median effort at most 600 seconds, but fewer than two informative non-D0 definitive C/S/B/E/T cases occur.
 
 Never backfill an inconclusive cohort.
 
@@ -238,6 +265,9 @@ Never backfill an inconclusive cohort.
 
 Stop rather than widen the experiment if:
 
+- the exact pre-merge checkpoint job cannot be armed and bound before merge;
+- the checkpoint job terminates or must be restarted before freezing its one allowed activation snapshot;
+- the exact activation snapshot/high-water event id cannot be frozen from its single complete authoritative Bureau journal read;
 - the complete normalized sequence cannot be proven;
 - a frozen capture would need in-place rewriting;
 - productive work would need to wait;
