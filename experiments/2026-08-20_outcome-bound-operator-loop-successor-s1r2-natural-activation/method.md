@@ -27,7 +27,7 @@ This is not an efficacy test and does not compare Minimal versus Full.
 
 The branch introducing this protocol is pre-activation only. No Bureau event observed before the merged author revision becomes eligible.
 
-If and only if the exact author revision passes repository validation and is merged to `main`, define:
+If and only if the exact author revision passes repository validation, passes the section 8 independent exact-head pre-activation gate with every decision-bound review terminal and reconciled, and that exact reviewed head is then merged to `main`, define:
 
 ```text
 activation_at = GitHub PR merged_at + 300 seconds

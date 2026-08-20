@@ -8,6 +8,6 @@ Normative authorities are imported, not rewritten:
 - S0-R3 Outcome Case semantics: `../2026-08-17_outcome-bound-operator-loop-successor-s0r3/protocol.md`, SHA-256 `f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af`.
 - S1-R2 terminal closeout is merged in PR #351 / main commit `21aee3c984b1a774498df1bcf72c459cd28dfcf0`.
 
-The author branch is pre-activation. Merging it can activate only the experiment-local read-only observer after the frozen five-minute cooling interval. It does not grant Bureau, Grabowski runtime, routing, queue, policy, merge-policy, deployment, P2/P3 or Minimal-versus-Full authority.
+The author branch is pre-activation. Only an exact head that first passes the independent pre-activation review gate may be merged. Merging that reviewed head can activate only the experiment-local read-only observer after the frozen five-minute cooling interval. It does not grant Bureau, Grabowski runtime, routing, queue, policy, merge-policy, deployment, P2/P3 or Minimal-versus-Full authority.
 
 Case evidence is create-only after activation. No pre-activation Bureau event can be reused as a slot.

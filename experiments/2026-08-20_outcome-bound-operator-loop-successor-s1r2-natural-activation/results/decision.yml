@@ -21,7 +21,8 @@ evidence_summary:
   s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
   activation_rule: "author_pr_merged_at_plus_300_seconds"
   activation_timestamp: null
-  natural_slots_defined: 3
+  slot_labels_preregistered: 3
+  natural_slot_identities_assigned: 0
   natural_slots_consumed: 0
   preactivation_independent_review_completed: 0
   preactivation_material_findings: null
