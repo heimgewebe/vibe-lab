@@ -6,16 +6,18 @@ reviewer: "ChatGPT / Grabowski"
 triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound"
 rationale: >
   This branch is pre-activation only. Terminal S1-R2 paper PASS permits a separate
-  prospective natural-activation revision, but no natural slot may exist until the
-  exact author revision first passes one independent exact-head pre-activation review,
-  every decision-bound review is terminal and reconciled, that exact reviewed head is then
-  integrated into main with authoritative proof that the exact reviewed commit is an ancestor
-  of the resulting main merge commit, and its frozen five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
-  S1-R2-normalized Bureau journal before naturalness; no pre-boundary event may be
-  reused or backfilled. No productive authority is created by this design revision.
-  This file intentionally remains the prereview design snapshot: the eventual exact-head
-  pre-activation review is external receipt-bound merge evidence and must not be committed
-  back into the reviewed branch.
+  prospective natural-activation revision, but no natural slot may exist until one
+  exact author base/head/canonical-PR-diff tuple first passes an independent
+  pre-activation review, every decision-bound review is terminal and reconciled,
+  authoritative pre-merge PR readback still matches that exact tuple, and the resulting
+  main merge commit is proven to have exactly the reviewed base and reviewed head as its
+  two parents with a tree exactly equal to the reviewed-head tree. Only then may the
+  frozen five-minute cooling interval define activation. The first-three sequence is
+  defined deterministically from the complete S1-R2-normalized Bureau journal before
+  naturalness; no pre-boundary event may be reused or backfilled. No productive authority
+  is created by this design revision. This file intentionally remains the prereview
+  design snapshot: the eventual pre-activation review is external receipt-bound merge
+  evidence and must not be committed back into the reviewed branch.
 evidence_summary:
   predecessor_paper_experiment: "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper"
   predecessor_paper_result: "PASS_THIS_REVISION"
@@ -23,8 +25,9 @@ evidence_summary:
   predecessor_merge_commit: "21aee3c984b1a774498df1bcf72c459cd28dfcf0"
   s1r2_method_sha256: "19542aae0a473a8a7c63d24e3aa2909a8e115c50561bfeddd07893394d8003ab"
   s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
-  activation_rule: "reviewed_head_ancestor_of_main_merge_commit_then_pr_merged_at_plus_300_seconds"
-  reviewed_head_ancestry_verified: false
+  activation_rule: "exact_reviewed_base_head_canonical_diff_then_exact_merge_parents_and_reviewed_head_tree_then_merged_at_plus_300_seconds"
+  reviewed_premerge_tuple_verified: false
+  reviewed_merge_identity_verified: false
   activation_integrity_failure: null
   activation_timestamp: null
   slot_labels_preregistered: 3
@@ -33,7 +36,7 @@ evidence_summary:
   preactivation_independent_review_completed: 0
   preactivation_material_findings: null
   preactivation_reviews_reconciled: false
-  preactivation_review_recording_mode: "external_head_bound_receipt_no_post_review_branch_mutation"
+  preactivation_review_recording_mode: "external_base_head_canonical_pr_diff_bound_receipt_no_post_review_branch_mutation"
   natural_sampling_active: false
   replacements_backfills: 0
   authority_violations: 0
@@ -44,12 +47,13 @@ evidence_summary:
 counter_hypothesis_outcome: "not_checked"
 counterevidence_checked: false
 next_steps:
-  - "Validate this exact pre-activation contract and obtain one independent exact-head activation review with zero material findings."
-  - "Reconcile every decision-bound review job before merge; a terminal-but-unread or material REJECT blocks activation."
-  - "Do not commit the review result into the reviewed branch; use the external head-bound receipt as merge evidence."
-  - "Integrate only that reviewed exact commit without losing its commit identity; a squash/rebase/cherry-pick that omits it from main history cannot activate the experiment."
-  - "After integration, prove the reviewed head is an ancestor of the resulting main merge commit; PR MERGED state or tree equality alone is insufficient."
-  - "Only after that ancestry proof, derive activation_at from GitHub merged_at + 300 seconds."
+  - "Validate this exact pre-activation contract and obtain one independent exact-base/head/canonical-PR-diff activation review with zero material findings."
+  - "Reconcile every decision-bound review job before merge; a terminal-but-unread, binding-mismatched or material REJECT blocks activation."
+  - "Do not commit the final review result into the reviewed branch; use the external base/head/canonical-diff-bound receipt as merge evidence."
+  - "Immediately before merge, re-read PR tip, base and canonical diff and require exact equality with the reviewed tuple."
+  - "Merge only as a true merge commit whose first parent is the reviewed base and second parent is the reviewed head; descendant-tip substitution, squash, rebase or cherry-pick cannot activate the experiment."
+  - "After integration, prove the exact merge parents, reviewed-head ancestry and merge-tree equality with the reviewed-head tree."
+  - "Only after that exact integration proof, derive activation_at from GitHub merged_at + 300 seconds."
   - "Observe the complete normalized Bureau journal read-only and permanently assign the first three post-activation Operator-Intake births to S1R2-N01..N03."
   - "Never backfill a pre-activation, non-natural, missed, D0 or inconvenient slot."
   - "After the fixed packet terminalizes, obtain one independent exact-revision review before PASS/REJECT/INCONCLUSIVE."

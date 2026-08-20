@@ -14,15 +14,17 @@ experiment:
   created: "2026-08-20"
   updated: "2026-08-20"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound"
-  iteration: 1
+  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; grabowski-job:25ed348f31f3"
+  iteration: 2
   evidence_level: experimental
   falsifiability:
     version: 1
     falsification_criterion: >
-      Reject before activation if the exact author head fails independent activation-specific
-      review, any decision-bound review remains unread/unreconciled, the exact reviewed commit is
-      not provably an ancestor of the resulting main merge commit, an imported frozen authority is
+      Reject before activation if the exact author base/head/canonical-PR-diff tuple fails
+      independent activation-specific review, any decision-bound review remains unread or
+      unreconciled, pre-merge PR readback differs from that exact tuple, the resulting main
+      merge commit does not have exactly the reviewed base and reviewed head as its two parents
+      with a tree exactly equal to the reviewed-head tree, an imported frozen authority is
       changed, or an activation/selection/authority degree of freedom remains. After activation,
       reject if any of the first three canonical post-activation Operator-Intake identity births
       fails source independence, is skipped/replaced/backfilled, is captured only after productive
@@ -73,7 +75,7 @@ context:
     - "unchanged S1-R2 canonical identity and natural-source contract"
     - "unchanged S0-R3 C/S/B/E/T/Q semantics"
     - "Grabowski isolated experiment work lane"
-    - "independent exact-head pre-activation semantic review"
+    - "independent exact-base/head/canonical-PR-diff pre-activation semantic review"
     - "independent exact-revision terminal review"
   language: "Markdown, JSON, YAML"
   environment: "Vibe-Lab experiment-only prospective natural shadow; no productive integration"

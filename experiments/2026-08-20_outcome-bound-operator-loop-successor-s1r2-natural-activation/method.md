@@ -27,20 +27,45 @@ This is not an efficacy test and does not compare Minimal versus Full.
 
 The branch introducing this protocol is pre-activation only. No Bureau event observed before the merged author revision becomes eligible.
 
-If and only if the exact author revision passes repository validation, passes the section 8 independent exact-head pre-activation gate with every decision-bound review terminal and reconciled, and that exact reviewed commit is then integrated into `main` **without losing commit identity**, define:
+Before merge, the independent section 8 review must be externally bound to one exact tuple:
 
 ```text
-reviewed_head_is_ancestor = git-commit-graph proof that reviewed_head is an ancestor of main_merge_commit
-activation_at = GitHub PR merged_at + 300 seconds   only when reviewed_head_is_ancestor == true
+review_binding = (reviewed_base, reviewed_head, canonical_pr_diff_sha256)
 ```
 
-The integration proof must bind the exact reviewed author head, GitHub `merged_at`, the resulting `main` merge commit and commit ancestry. `git merge-base --is-ancestor <reviewed_head> <main_merge_commit>` or an equivalent authoritative commit-graph proof must succeed. A GitHub PR state of `MERGED`, an identical resulting tree, or a squash/rebase/cherry-pick that omits the reviewed commit from `main` history does **not** satisfy this gate. In that case `activation_at` remains undefined, record `activation_integrity_failure`, consume no natural slots and terminally reject this activation attempt rather than reinterpret tree identity as commit identity.
+`canonical_pr_diff_sha256` is the canonical GitHub PR diff digest for that exact base/head pair. A locally rendered raw `git diff` hash is diagnostic only and cannot substitute for the canonical PR-diff binding used by the merge decision.
+
+Immediately before merge, authoritative PR readback must still prove:
+
+```text
+pr_head_at_merge == reviewed_head
+pr_base_at_merge == reviewed_base
+canonical_pr_diff_sha256_at_merge == reviewed_diff_sha256
+```
+
+After integration, authoritative Git readback must prove all of:
+
+```text
+main_merge_commit.parents == [reviewed_base, reviewed_head]
+reviewed_head is an ancestor of main_merge_commit
+tree(main_merge_commit) == tree(reviewed_head)
+```
+
+Only when both the pre-merge review binding and the post-merge integration identity are exact may this experiment define:
+
+```text
+activation_at = GitHub PR merged_at + 300 seconds
+```
+
+This deliberately requires more than ancestry. A later descendant tip that merely contains the reviewed commit, a changed base, a changed canonical PR diff, a merge commit with different parents, or a merge tree that differs from the reviewed-head tree leaves `activation_at` undefined. Likewise, PR `MERGED` state, ancestry alone, tree equality alone, squash/rebase/cherry-pick, or conflict-resolution content not already present in the reviewed head does **not** satisfy this gate. Record `activation_integrity_failure`, consume no natural slots and terminally reject this activation attempt rather than reinterpret similar content as reviewed content.
+
+The strict tree condition means that if `main` advances after review, the branch must first incorporate that new base into a new author head and the resulting exact base/head/canonical-diff tuple must be reviewed again. No stale-base merge is allowed to activate the cohort.
 
 The five-minute cooling interval is frozen before merge. It prevents merge handling itself from becoming a capture race.
 
 A candidate identity is post-activation only when its canonical `identity_first_event.created_at >= activation_at`.
 
-If the exact GitHub merge timestamp, the exact identity-first event timestamp, or the complete authoritative Bureau journal required by S1-R2 cannot be read, fail closed. Do not infer the boundary from chat time, local file time or observer first-seen time.
+If the exact GitHub merge timestamp, exact PR head/base/diff binding, exact merge parents/tree, the exact identity-first event timestamp, or the complete authoritative Bureau journal required by S1-R2 cannot be read, fail closed. Do not infer the boundary from chat time, local file time or observer first-seen time.
 
 Nothing before `activation_at` may be backfilled.
 
@@ -148,28 +173,29 @@ Guard measures:
 
 ## 8. Pre-activation exact-head review gate
 
-Before merge, the exact final author head must receive one independent read-only exact-head semantic review. The reviewer must verify only activation-specific mechanics around the already frozen authorities:
+Before merge, the exact final author head on the exact current base must receive one independent read-only semantic review bound externally to the exact `(reviewed_base, reviewed_head, canonical_pr_diff_sha256)` tuple. The reviewer must verify only activation-specific mechanics around the already frozen authorities:
 
 1. the imported S1-R2 sections 2-5 and S0-R3 protocol hashes are exact and no local wording overrides them;
-2. the merge topology preserves the exact reviewed commit as an ancestor of the resulting `main` merge commit, the merge-plus-300-second boundary is unambiguous, and no pre-boundary event can enter;
-3. the complete canonical identity projection fixes the first three ordinals before naturalness;
-4. source independence is only a slot-consuming gate and never a selector;
-5. the prospective capture failure states and PASS/REJECT/INCONCLUSIVE gate cannot backfill, delay productive work or use result knowledge;
-6. the revision creates zero Bureau/runtime/routing/queue/policy/merge-policy/deployment authority.
+2. the merge gate requires exact pre-merge PR tip/base/canonical-diff identity and exact post-merge parent/tree identity, so ancestry alone, a descendant tip, a changed base, squash/rebase/cherry-pick or unreviewed conflict-resolution content cannot activate;
+3. the merge-plus-300-second boundary is unambiguous and no pre-boundary event can enter;
+4. the complete canonical identity projection fixes the first three ordinals before naturalness;
+5. source independence is only a slot-consuming gate and never a selector;
+6. the prospective capture failure states and PASS/REJECT/INCONCLUSIVE gate cannot backfill, delay productive work or use result knowledge;
+7. the revision creates zero Bureau/runtime/routing/queue/policy/merge-policy/deployment authority.
 
-Any material finding rejects this author revision before activation. Do not repair a reviewed head in place; create a new author head and review that exact revision again.
+Any material finding rejects this author revision before activation. Do not repair a reviewed head in place; create a new author head and review that exact revision/base/diff tuple again.
 
-Every review job/receipt bound to the merge decision must be terminal and explicitly reconciled before merge. A terminal-but-unread review, a review on another head or one material REJECT blocks merge. No majority or last-read shortcut is allowed.
+Every review job/receipt bound to the merge decision must be terminal and explicitly reconciled before merge. A terminal-but-unread review, a review on another head/base/canonical PR diff, a transport binding mismatch or one material REJECT blocks merge. No majority or last-read shortcut is allowed.
 
-The pre-activation review result is intentionally **not committed back into the reviewed author branch**. Its terminal head-bound job/receipt is external merge evidence. Once a reviewer binds to a head, any content change -- including adding a review-result artifact -- creates a new author head and invalidates that prior review for merge. `results/decision.yml` therefore remains the prereview design snapshot; it is not live merge-authority state.
+The pre-activation review result is intentionally **not committed back into the reviewed author branch**. Its terminal head/base/canonical-diff-bound job/receipt is external merge evidence. Once a reviewer binds to a tuple, any content change, PR-head change, base change or canonical-diff change invalidates that prior review for merge. `results/decision.yml` therefore remains the prereview design snapshot; it is not live merge-authority state.
 
-Passing this gate authorizes only merge of the experiment protocol. Natural eligibility still begins only at the frozen post-merge `activation_at`.
+Passing this gate authorizes only merge of the experiment protocol. Natural eligibility still begins only after the exact integration proof and the frozen post-merge `activation_at`.
 
 ## 9. Independent terminal review
 
 After all three fixed slots are recorded, or immediately after an authority/integrity stop, one independent exact-revision reviewer receives the frozen activation protocol and case evidence packet and must independently verify:
 
-1. exact reviewed-head ancestry in the resulting `main` merge commit, exact PR merge timestamp and `activation_at`;
+1. exact pre-merge reviewed base/head/canonical-diff binding, exact merge parent/tree identity, exact PR merge timestamp and `activation_at`;
 2. complete S1-R2 canonical identity projection;
 3. exact first three post-activation Operator-Intake births by identity-first event id;
 4. source-independence gate for each fixed slot;
