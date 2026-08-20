@@ -1,0 +1,121 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-20_outcome-bound-natural-pilot-sampling-unit",
+  "registered_at": "2026-08-20T12:33:41Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether a future Outcome-Bound natural pilot has a sampling unit precise enough that event arrival, candidate identity birth and supersession can no longer be traded against each other after observation.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T035",
+      "confirmed_at": "2026-08-18T09:10:37Z",
+      "valid_until": "2026-09-20T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does candidate_identity_birth, anchored on the canonical identity-first event that itself carries operator_intake, define one sample element without leaving a post-observation degree of freedom?",
+    "owner": "Grabowski",
+    "decision_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T035"
+  },
+  "intervention": {
+    "name": "candidate_identity_birth sampling unit",
+    "description": "Freeze the sampling unit as one canonical candidate identity whose identity-first event itself carries operator_intake, order units by authoritative event id, require a complete birth proof before a slot may be used, and treat supersession, enrichment, dedup and idempotent replay as never creating a unit."
+  },
+  "control_condition": {
+    "id": "s1_interchangeable_arrival_semantics",
+    "description": "Exactly three terminal predecessor unit-level defects: (1) S1 used event arrival, candidate identity birth and supersession interchangeably, so the same journal supported several different sample counts depending on when the observer looked; (2) S1-R1 M2 did not normalize legacy candidate events without a stored candidate_id before grouping, so the birth anchor of an identity was itself ambiguous; (3) no predecessor imposed a birth-proof obligation, so an incompletely enumerable history could be reinterpreted with a grouping rule chosen after observation."
+  },
+  "treatment_condition": {
+    "id": "u01_u09_frozen_unit_cases",
+    "description": "Exactly U01-U09 in sampling-unit-cases.md, covering pre-boundary birth with later supersessions, post-boundary birth with later supersessions, several births in close succession, content-equivalent distinct identities, incompletely provable history, legacy root with later explicit id, idempotent replay, observer-adjacent operator work, and supersession observed before birth."
+  },
+  "measurement": {
+    "primary_metric": "material_sampling_unit_disagreement_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze one author revision containing method.md and sampling-unit-cases.md, then obtain a counter-check that independently derives every U01-U09 disposition and slot count from method.md alone and attempts the ten listed escapes. No natural candidate is observed and no pilot is activated.",
+    "success": "Every U01-U09 disposition and slot count is reproduced, material_sampling_unit_disagreement_count is zero, no credible escape treats arrival, identity birth and supersession as interchangeable, and no new production field, validator, service or control surface is required.",
+    "falsification": "Any changed disposition or slot count, any credible escape, any recovery of a slot from an incomplete birth proof, any skip of a fixed ordinal, or any required production or control surface rejects this revision.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "counter_check_elapsed_seconds",
+      "unit": "seconds",
+      "method": "Record bounded elapsed runtime of the counter-check as descriptive overhead only."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "terminal predecessor unit-level defect versus one frozen U01-U09 unit case",
+    "minimum_control": 3,
+    "minimum_treatment": 9,
+    "comparability_constraints": [
+      "control is exactly the three predecessor unit-level defects above; none is natural evidence",
+      "treatment is exactly U01-U09 frozen before any counter-check",
+      "S0-R3 C/S/B/E/T/Q semantics remain unchanged",
+      "S1-R2 canonical identity and natural-source semantics remain unchanged",
+      "the activation boundary A and the slot count N are deliberately not chosen here",
+      "this experiment creates or consumes no Bureau candidate"
+    ],
+    "confounders": [
+      "paper cases cannot establish that a live Bureau journal read will satisfy the birth proof",
+      "the observed live-register history truncation suggests the proof obligation is not trivially satisfiable today",
+      "a counter-check performed by the authoring agent can reproduce its own blind spots",
+      "unit precision says nothing about Outcome Case efficacy, prevalence or cost"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "terminal S0-R3 method and gate",
+      "terminal S1-R2 method, P01-P18 cases and decision",
+      "deployed Bureau canonical candidate identity rule",
+      "observed Bureau live-register coverage and truncation report",
+      "frozen U01-U09 unit cases",
+      "named counter-check output bound to the frozen author head",
+      "Git/GitHub/CI exact revision truth"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-27T18:00:00Z",
+  "expires_at": "2026-09-20T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-20_outcome-bound-natural-pilot-sampling-unit",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T035",
+      "reviewed_at": "2026-08-18T09:10:37Z",
+      "rationale": "The successor is bounded to freezing one sampling unit on paper and takes no natural cases, sets no activation boundary and creates no production or control surface."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

@@ -334,6 +334,10 @@
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-b2.md` | Outcome-Bound S1-R2 — Independent Reviewer B2 | testing | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/s1r2-gate.md` | Outcome-Bound S1-R2 — Paper gate | testing | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/sampling-cases.md` | sampling-cases | — | — |
+| `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/CONTEXT.md` | CONTEXT | — | — |
+| `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/method.md` | Outcome-Bound natural pilot — canonical sampling unit (candidate_identity_birth) | designed | operative |
+| `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/results/counter-check.md` | counter-check | — | — |
+| `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/sampling-unit-cases.md` | sampling-unit-cases | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/CONTEXT.md` | CONTEXT | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/cases/README.md` | README | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/method.md` | Outcome-Bound S1-R2 Natural Activation — Prospective three-slot protocol | designed | operative |
