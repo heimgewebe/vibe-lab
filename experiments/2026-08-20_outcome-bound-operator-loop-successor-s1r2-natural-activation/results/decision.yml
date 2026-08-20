@@ -8,8 +8,8 @@ rationale: >
   This branch is pre-activation only. Terminal S1-R2 paper PASS permits a separate
   prospective natural-activation revision, but no natural slot may exist until the
   exact author revision first passes one independent exact-head pre-activation review,
-  every decision-bound review is terminal/reconciled, is then merged to main, and its frozen
-  five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
+  every decision-bound review is terminal and reconciled, that exact reviewed head is then
+  merged to main, and its frozen five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
   S1-R2-normalized Bureau journal before naturalness; no pre-boundary event may be
   reused or backfilled. No productive authority is created by this design revision.
 evidence_summary:
