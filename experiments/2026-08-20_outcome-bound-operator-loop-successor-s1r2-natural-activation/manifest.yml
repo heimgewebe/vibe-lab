@@ -14,8 +14,8 @@ experiment:
   created: "2026-08-20"
   updated: "2026-08-20"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; grabowski-job:25ed348f31f3; github:heimgewebe/vibe-lab#353:discussion_r3819276031"
-  iteration: 3
+  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; grabowski-job:25ed348f31f3; github:heimgewebe/vibe-lab#353:discussion_r3819276031; github:heimgewebe/vibe-lab#353:discussion_r3819467626"
+  iteration: 4
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -25,16 +25,17 @@ experiment:
       unreconciled, exactly one read-only activation-checkpoint job is not armed and bound before
       merge, pre-merge PR readback differs from that exact tuple, the resulting main merge commit
       does not have exactly the reviewed base and reviewed head as its two parents with a tree
-      exactly equal to the reviewed-head tree, that same checkpoint job does not prove at least
-      300 seconds of post-integration monotonic cooling, its single authoritative Bureau SQLite
-      journal snapshot attempt fails or cannot freeze one immutable high-water event id, the job
-      is restarted/replaced, an imported frozen authority is changed, or an activation/selection/
-      authority degree of freedom remains. After activation, reject if any of the first three
-      canonical Operator-Intake identity births strictly above the frozen activation watermark
-      fails source independence, is skipped/replaced/backfilled, is captured only after productive
-      mutation or result knowledge, cannot prospectively bind non-D0 C/S/B/E/T, produces a material
-      terminal-review disagreement or authority effect, or if median capture effort exceeds 600
-      seconds. Cross-system wall-clock timestamps may never select, exclude, replace or reorder a slot.
+      exactly equal to the reviewed-head tree, that same checkpoint job records any consecutive
+      monotonic heartbeat gap above 5 seconds, cannot anchor its single authoritative Bureau SQLite
+      journal snapshot in the closed 300-305 second post-integration window, or that snapshot fails
+      or cannot freeze one immutable high-water event id, the job is restarted/replaced, an imported
+      frozen authority is changed, or an activation/selection/authority degree of freedom remains.
+      After activation, reject if any of the first three canonical Operator-Intake identity births
+      strictly above the frozen activation watermark fails source independence, is skipped/replaced/
+      backfilled, is captured only after productive mutation or result knowledge, cannot prospectively
+      bind non-D0 C/S/B/E/T, produces a material terminal-review disagreement or authority effect, or
+      if median capture effort exceeds 600 seconds. Cross-system wall-clock timestamps may never
+      select, exclude, replace or reorder a slot.
     counter_hypotheses:
       - id: "natural_source_independence_is_not_reliably_observable"
         statement: >
@@ -58,7 +59,7 @@ experiment:
           pending_checks:
             - "Measure capture timing and effort for every fixed slot; missed slots remain consumed."
           limitations:
-            - "No natural slot exists before the pre-armed checkpoint completes monotonic cooling and freezes the Bureau event-id watermark."
+            - "No natural slot exists before the pre-armed checkpoint preserves gap<=5s continuity, reaches the 300-305s snapshot window and freezes the Bureau event-id watermark."
           confidence: low
       - id: "three_fixed_slots_are_too_uninformative"
         statement: >
@@ -82,8 +83,8 @@ context:
     - "Grabowski isolated experiment work lane"
     - "independent exact-base/head/canonical-PR-diff pre-activation semantic review"
     - "pre-merge receipt-bound read-only activation-checkpoint job"
-    - "same-job post-integration monotonic cooling evidence"
-    - "same-job single complete authoritative Bureau SQLite journal snapshot with frozen event-id high-water mark"
+    - "same-job monotonic heartbeat evidence with no gap above 5 seconds"
+    - "same-job single complete authoritative Bureau SQLite journal snapshot anchored between 300 and 305 post-integration monotonic seconds"
     - "independent exact-revision terminal review"
   language: "Markdown, JSON, YAML"
   environment: "Vibe-Lab experiment-only prospective natural shadow; no productive integration"

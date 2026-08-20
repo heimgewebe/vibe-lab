@@ -55,27 +55,40 @@ This deliberately requires more than ancestry. A later descendant tip that merel
 
 The strict tree condition means that if `main` advances after review, the branch must first incorporate that new base into a new author head and the resulting exact base/head/canonical-diff tuple must be reviewed again. No stale-base merge is allowed to activate the cohort.
 
-### 2.1 Pre-armed clock-independent activation checkpoint
+### 2.1 Pre-armed clock- and scheduling-bounded activation checkpoint
 
 The five-minute cooling interval is frozen before merge, but **no GitHub timestamp is compared to a Bureau timestamp to decide cohort membership**.
 
 After the final section 8 review is terminally reconciled and before merge dispatch, the controller must start exactly one receipt-bound, read-only `activation_checkpoint_job` bound to the exact reviewed PR/base/head/canonical-diff tuple. The job is armed before merge so no operator can choose a later post-merge checkpoint after observing Bureau arrivals. Once armed, no Bureau journal or candidate observation may be used to decide when to dispatch the merge; merge timing may depend only on the already frozen PR/review/CI/authority gates.
 
+The checkpoint timing contract is frozen as:
+
+```text
+checkpoint_poll_interval_target_seconds = 1
+checkpoint_max_monotonic_gap_seconds = 5
+cooling_threshold_seconds = 300
+snapshot_deadline_seconds = 305
+```
+
+The same process must record a monotonic heartbeat around every wait/poll iteration. From arming until the activation snapshot is anchored, any consecutive observed monotonic heartbeat gap greater than 5 seconds is `activation_integrity_failure`. A blocking external read, process starvation, SIGSTOP/descheduling or other continuity loss therefore cannot silently move the cutoff forward.
+
 The same job owns the entire activation checkpoint:
 
-1. wait for the exact bound PR to reach a terminal merge result while continuously rejecting any head/base/diff drift;
+1. poll only the exact bound PR at a target cadence of at most one second while continuously rejecting any head/base/diff drift and any monotonic heartbeat gap above 5 seconds;
 2. if merged, verify the exact merge-parent, ancestry and reviewed-head-tree conditions above;
-3. on the first successful exact integration verification, record a local monotonic start value;
-4. wait until the same process proves `monotonic_elapsed_seconds >= 300`;
-5. immediately execute exactly one complete read-only SQLite snapshot transaction against the authoritative Bureau StateStore journal;
-6. from that same transaction freeze the journal high-water event id and a digest/receipt binding the complete snapshot read.
+3. on the first successful exact integration verification, record `cooling_started_monotonic`;
+4. continue the same heartbeat loop without Bureau candidate/journal reads;
+5. on the first loop in which `monotonic_elapsed_seconds >= 300`, require `monotonic_elapsed_seconds <= 305` and immediately begin exactly one complete read-only SQLite snapshot transaction against the authoritative Bureau StateStore journal;
+6. the first journal read in that transaction is the snapshot anchor; record `snapshot_anchor_elapsed_seconds` and require `300 <= snapshot_anchor_elapsed_seconds <= 305`;
+7. from that same transaction freeze the journal high-water event id and a digest/receipt binding the complete snapshot read.
 
-The job may not inspect Bureau candidate/journal content before step 5. It may not postpone step 5 after the monotonic threshold in response to observed work. The **first snapshot attempt after the threshold is final**: read failure, incomplete coverage, integrity failure or missing high-water id records `activation_integrity_failure`. A restarted job, later snapshot, manual retry or replacement watermark cannot activate this PR revision.
+If the process first wakes after the cooling threshold with elapsed time above 305 seconds, or if any heartbeat gap exceeded 5 seconds, it must record `activation_integrity_failure` **without opening the Bureau journal**. The job may not inspect Bureau candidate/journal content before step 5. It may not postpone step 5 after reaching the threshold in response to observed work. The **first snapshot attempt in the closed [300,305]-second window is final**: read failure, incomplete coverage, integrity failure or missing high-water id records `activation_integrity_failure`. A restarted job, later snapshot, manual retry or replacement watermark cannot activate this PR revision.
 
 The checkpoint is valid only when the same job proves:
 
 ```text
-monotonic_elapsed_seconds >= 300
+all_checkpoint_heartbeat_gaps_seconds <= 5
+300 <= snapshot_anchor_elapsed_seconds <= 305
 activation_watermark_event_id = authoritative journal high-water event_id in the single snapshot transaction
 activation_snapshot_ref = immutable job/receipt + snapshot digest for that exact transaction
 ```
@@ -86,9 +99,9 @@ If the authoritative snapshot exposes no explicit high-water value, use the maxi
 
 Only identity births whose exact `identity_first_event.event_id > activation_watermark_event_id` are post-activation treatment candidates. Event ids at or below the watermark are permanently pre-activation/cooling history and may never be backfilled.
 
-This event-id watermark is the sole cohort cutoff. It prevents clock skew between GitHub, the Heim-PC and Bureau from changing slot identity. A Bureau `created_at` value on either side of any wall-clock timestamp cannot override the event-id boundary.
+This event-id watermark is the sole cohort cutoff. It prevents clock skew between GitHub, the Heim-PC and Bureau from changing slot identity, while the closed checkpoint window prevents process scheduling from moving that cutoff without falsifying activation. A Bureau `created_at` value on either side of any wall-clock timestamp cannot override the event-id boundary.
 
-If the exact pre-merge tuple, pre-armed checkpoint-job identity, exact merge parents/tree, monotonic 300-second cooling proof, single complete authoritative Bureau snapshot, activation snapshot digest/reference or journal high-water event id cannot be established, record `activation_integrity_failure`, leave the cohort inactive and consume zero natural slots. Do not reconstruct the boundary from chat time, GitHub `merged_at`, local wall time, Bureau `created_at`, a later retry or observer first-seen time.
+If the exact pre-merge tuple, pre-armed checkpoint-job identity, exact merge parents/tree, heartbeat continuity, closed [300,305]-second snapshot window, single complete authoritative Bureau snapshot, activation snapshot digest/reference or journal high-water event id cannot be established, record `activation_integrity_failure`, leave the cohort inactive and consume zero natural slots. Do not reconstruct the boundary from chat time, GitHub `merged_at`, local wall time, Bureau `created_at`, a later retry, a delayed wake or observer first-seen time.
 
 ## 3. Complete projection before slot naturalness
 
@@ -200,7 +213,7 @@ Before merge, the exact final author head on the exact current base must receive
 1. the imported S1-R2 sections 2-5 and S0-R3 protocol hashes are exact and no local wording overrides them;
 2. the merge gate requires exact pre-merge PR tip/base/canonical-diff identity and exact post-merge parent/tree identity, so ancestry alone, a descendant tip, a changed base, squash/rebase/cherry-pick or unreviewed conflict-resolution content cannot activate;
 3. exactly one read-only activation-checkpoint job must be armed before merge, bound to the reviewed tuple, forbidden from Bureau candidate/journal observation before exact integration, and responsible for the single post-threshold snapshot attempt;
-4. cooling uses that job's post-integration monotonic interval of at least 300 seconds and then exactly one complete authoritative Bureau journal high-water snapshot, so GitHub/Bureau wall-clock skew or operator-selected snapshot timing cannot change the cohort;
+4. that job must preserve monotonic heartbeat continuity with no gap above 5 seconds and anchor its single Bureau snapshot only in the closed [300,305]-second post-integration window; overshoot or continuity loss fails before any later snapshot can move the cutoff;
 5. the complete canonical identity projection fixes the first three births strictly above the frozen event-id watermark before naturalness;
 6. source independence is only a slot-consuming gate and never a selector;
 7. the prospective capture failure states and PASS/REJECT/INCONCLUSIVE gate cannot backfill, delay productive work or use result knowledge;
@@ -212,7 +225,7 @@ Every review job/receipt bound to the merge decision must be terminal and explic
 
 The pre-activation review result is intentionally **not committed back into the reviewed author branch**. Its terminal head/base/canonical-diff-bound job/receipt is external merge evidence. Once a reviewer binds to a tuple, any content change, PR-head change, base change or canonical-diff change invalidates that prior review for merge. `results/decision.yml` therefore remains the prereview design snapshot; it is not live merge-authority state.
 
-Passing this review gate authorizes only preparation for merge. Before merge dispatch, the exact checkpoint job described in section 2.1 must be armed and its receipt reconciled. Natural eligibility begins only if that same job later proves exact integration, monotonic cooling and the single Bureau journal watermark.
+Passing this review gate authorizes only preparation for merge. Before merge dispatch, the exact checkpoint job described in section 2.1 must be armed and its receipt reconciled. Natural eligibility begins only if that same job later proves exact integration, bounded monotonic cooling and the single Bureau journal watermark.
 
 ## 9. Independent terminal review
 
@@ -220,17 +233,18 @@ After all three fixed slots are recorded, or immediately after an authority/inte
 
 1. exact pre-merge reviewed base/head/canonical-diff binding and exact merge parent/tree identity;
 2. exact pre-merge checkpoint-job identity plus its uninterrupted binding to the reviewed tuple;
-3. exact post-integration monotonic cooling proof of at least 300 seconds plus the immutable single-attempt authoritative Bureau activation-snapshot reference and high-water event id;
-4. complete S1-R2 canonical identity projection;
-5. exact first three Operator-Intake births whose identity-first event ids are strictly above the activation watermark;
-6. source-independence gate for each fixed slot;
-7. zero replacement/backfill;
-8. prospective timing and result-known state;
-9. C/S/B/E/T/Q and S0-R3 classification wherever attempted;
-10. capture effort;
-11. zero productive authority effects.
+3. all recorded monotonic heartbeat gaps are at most 5 seconds and the immutable single-attempt Bureau snapshot anchor lies in the closed [300,305]-second post-integration window;
+4. immutable authoritative Bureau activation-snapshot reference and high-water event id;
+5. complete S1-R2 canonical identity projection;
+6. exact first three Operator-Intake births whose identity-first event ids are strictly above the activation watermark;
+7. source-independence gate for each fixed slot;
+8. zero replacement/backfill;
+9. prospective timing and result-known state;
+10. C/S/B/E/T/Q and S0-R3 classification wherever attempted;
+11. capture effort;
+12. zero productive authority effects.
 
-A restarted/replaced checkpoint job, later activation snapshot, changed activation watermark, cross-system wall-clock substitution, changed slot identity, changed source-independence disposition, changed S0-R3 classification, required retrospective reconstruction, sequence/backfill mismatch or unrecorded authority effect is material.
+A heartbeat continuity gap above 5 seconds, snapshot-anchor overshoot above 305 seconds, restarted/replaced checkpoint job, later activation snapshot, changed activation watermark, cross-system wall-clock substitution, changed slot identity, changed source-independence disposition, changed S0-R3 classification, required retrospective reconstruction, sequence/backfill mismatch or unrecorded authority effect is material.
 
 ## 10. Preregistered decision gate
 
@@ -239,6 +253,8 @@ A restarted/replaced checkpoint job, later activation snapshot, changed activati
 PASS only when:
 
 - exactly one pre-merge checkpoint job remained bound to the reviewed tuple and produced the activation receipt;
+- every recorded checkpoint heartbeat gap is at most 5 seconds;
+- the activation snapshot anchor elapsed time is in the closed [300,305]-second window;
 - the activation snapshot/watermark is valid, immutable and from that job's single post-threshold snapshot attempt;
 - exactly `S1R2-N01..N03` are consumed in canonical event-id order strictly above that watermark;
 - source independence passes for all three fixed slots;
@@ -253,7 +269,7 @@ PASS establishes only tiny-sample prospective natural handling feasibility for t
 
 ### REJECT_THIS_REVISION
 
-Reject on any pre-activation `activation_integrity_failure`, missing/restarted/replaced checkpoint job, failed or repeated activation snapshot attempt, invalid/changed activation watermark, cross-system wall-clock substitution for the watermark, source-independence failure, binding/capture failure, material review disagreement, authority/integrity violation, sequence/backfill violation, or median effort above 600 seconds.
+Reject on any pre-activation `activation_integrity_failure`, checkpoint heartbeat gap above 5 seconds, snapshot-anchor elapsed time above 305 seconds, missing/restarted/replaced checkpoint job, failed or repeated activation snapshot attempt, invalid/changed activation watermark, cross-system wall-clock substitution for the watermark, source-independence failure, binding/capture failure, material review disagreement, authority/integrity violation, sequence/backfill violation, or median effort above 600 seconds.
 
 ### INCONCLUSIVE
 
@@ -266,7 +282,8 @@ Never backfill an inconclusive cohort.
 Stop rather than widen the experiment if:
 
 - the exact pre-merge checkpoint job cannot be armed and bound before merge;
-- the checkpoint job terminates or must be restarted before freezing its one allowed activation snapshot;
+- the checkpoint job terminates, loses monotonic heartbeat continuity or must be restarted before freezing its one allowed activation snapshot;
+- the job reaches the post-integration snapshot anchor later than 305 monotonic seconds;
 - the exact activation snapshot/high-water event id cannot be frozen from its single complete authoritative Bureau journal read;
 - the complete normalized sequence cannot be proven;
 - a frozen capture would need in-place rewriting;

@@ -3,7 +3,7 @@ decision_type: "execution_assessment"
 verdict: "not_executed"
 date: "2026-08-20"
 reviewer: "ChatGPT / Grabowski"
-triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; github:heimgewebe/vibe-lab#353:discussion_r3819276031"
+triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; github:heimgewebe/vibe-lab#353:discussion_r3819276031; github:heimgewebe/vibe-lab#353:discussion_r3819467626"
 rationale: >
   This branch is pre-activation only. Terminal S1-R2 paper PASS permits a separate
   prospective natural-activation revision, but no natural slot may exist until one
@@ -12,10 +12,10 @@ rationale: >
   and exactly one receipt-bound read-only activation-checkpoint job is armed against
   that exact tuple before merge. Once armed, Bureau candidate/journal observations
   may not influence merge timing. The same checkpoint job must wait for and verify
-  the exact merge identity, measure at least 300 seconds with one local monotonic
-  clock, and then succeed on exactly one complete authoritative Bureau SQLite journal
-  snapshot transaction that freezes one immutable high-water event id and snapshot
-  receipt. A failed/restarted/replaced checkpoint job or later replacement snapshot
+  the exact merge identity, preserve monotonic heartbeat continuity with no gap above
+  5 seconds, and anchor its single complete authoritative Bureau SQLite journal
+  snapshot in the closed 300-305 second post-integration window. A continuity loss,
+  late anchor, failed/restarted/replaced checkpoint job or later replacement snapshot
   cannot activate this revision. The first-three sequence is then defined
   deterministically from canonical Operator-Intake identity births whose
   identity-first event ids are strictly above that watermark, before naturalness.
@@ -32,15 +32,19 @@ evidence_summary:
   predecessor_merge_commit: "21aee3c984b1a774498df1bcf72c459cd28dfcf0"
   s1r2_method_sha256: "19542aae0a473a8a7c63d24e3aa2909a8e115c50561bfeddd07893394d8003ab"
   s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
-  activation_rule: "exact_reviewed_tuple_then_prearmed_single_checkpoint_job_then_exact_merge_identity_then_same_job_monotonic_300s_then_single_authoritative_bureau_event_id_watermark"
+  activation_rule: "exact_reviewed_tuple_then_prearmed_single_checkpoint_job_then_exact_merge_identity_then_gap_le_5s_then_snapshot_anchor_300_to_305s_then_single_authoritative_bureau_event_id_watermark"
   activation_boundary_kind: "bureau_event_id_watermark"
   reviewed_premerge_tuple_verified: false
   activation_checkpoint_job_armed: false
   activation_checkpoint_job_ref: null
   activation_checkpoint_restart_allowed: false
   activation_snapshot_attempts_allowed: 1
+  checkpoint_max_monotonic_gap_seconds: 5
+  cooling_threshold_seconds: 300
+  snapshot_deadline_seconds: 305
   reviewed_merge_identity_verified: false
   cooling_monotonic_verified: false
+  checkpoint_continuity_verified: false
   activation_snapshot_ref: null
   activation_watermark_event_id: null
   cross_system_wall_clock_membership_allowed: false
@@ -69,9 +73,9 @@ next_steps:
   - "Once the checkpoint job is armed, do not inspect Bureau candidate/journal content to choose merge timing; merge timing may use only the already frozen PR/review/CI/authority gates."
   - "Immediately before merge, re-read PR tip, base and canonical diff and require exact equality with the reviewed tuple."
   - "Merge only as a true merge commit whose first parent is the reviewed base and second parent is the reviewed head; descendant-tip substitution, squash, rebase or cherry-pick cannot activate the experiment."
-  - "The pre-armed checkpoint job must itself verify exact integration, start the monotonic clock on first successful verification, prove at least 300 seconds and immediately perform its one allowed complete Bureau SQLite snapshot transaction."
-  - "If that checkpoint job terminates, restarts, drifts, or its single snapshot attempt fails, record activation_integrity_failure; do not create a replacement job or later watermark."
-  - "Use the frozen high-water event id from that single snapshot as the only activation boundary; never compare GitHub merged_at with Bureau created_at for membership."
+  - "The pre-armed checkpoint job must itself verify exact integration, maintain monotonic heartbeat gaps at or below 5 seconds, and anchor its one allowed Bureau SQLite snapshot between 300 and 305 monotonic seconds after integration verification."
+  - "If the checkpoint job terminates, restarts, drifts, records a heartbeat gap above 5 seconds, wakes past 305 seconds, or its single snapshot attempt fails, record activation_integrity_failure; do not create a replacement job or later watermark."
+  - "Use the frozen high-water event id from that single bounded snapshot as the only activation boundary; never compare GitHub merged_at with Bureau created_at for membership."
   - "Observe the complete normalized Bureau journal read-only and permanently assign the first three Operator-Intake identity births strictly above the activation watermark to S1R2-N01..N03."
   - "Never backfill a pre-watermark, non-natural, missed, D0 or inconvenient slot."
   - "After the fixed packet terminalizes, obtain one independent exact-revision review before PASS/REJECT/INCONCLUSIVE."
