@@ -8,9 +8,14 @@ experiment:
     authoritative event id, makes event arrival, identity birth and supersession
     non-interchangeable without adding any production field, validator, service or
     post-observation selector.
-  status: designed
+  status: testing
   category: workflow
-  execution_status: designed
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-t035-independent-counter-check/run_meta.json"
+    - "results/evidence.jsonl"
+    - "results/counter-check.md"
+    - "results/decision.yml"
   created: "2026-08-20"
   updated: "2026-08-20"
   author: "Claude Opus 5 / Grabowski"
@@ -55,18 +60,21 @@ experiment:
           limitations:
             - "The observed Bureau live-register history truncation shows the proof obligation is not trivially satisfiable today."
           confidence: medium
-      - id: "single_agent_counter_check_shares_blind_spots"
+      - id: "single_reviewer_shares_blind_spots_with_author"
         statement: >
-          A counter-check performed by the same agent that authored the rule may reproduce its own
-          blind spots and cannot substitute for an independent reviewer.
+          One counter-reviewer, even from a different provider family, may share a prior with the
+          author and reproduce the same blind spot, so a single PASS is weaker evidence than the
+          two-reviewer protocol the predecessor used.
         assessment:
-          status: blocked
-          outcome: not_checked
+          status: partially_checked
+          outcome: inconclusive
           evidence_refs:
             - path: "results/counter-check.md"
               section: "Independence limitation"
+            - path: "artifacts/run-t035-independent-counter-check/run_meta.json"
           limitations:
-            - "No third-party exact-head reviewer was obtained for this revision; the counter-check is explicitly self-performed and is recorded as a limitation rather than as independence."
+            - "Only one independent reviewer completed; S1-R2 required and obtained two."
+            - "The reviewer had no repository or tool access and verified the frozen text as transmitted, bound by prompt digest rather than by an independent read at the author head."
           confidence: low
 
 context:

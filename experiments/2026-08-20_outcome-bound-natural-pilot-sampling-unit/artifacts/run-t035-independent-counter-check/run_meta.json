@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-t035-independent-counter-check",
+  "generated_at": "2026-08-20T12:41:00Z",
+  "executor": "controller:claude-opus-5+grabowski",
+  "command": "freeze author revision -> push -> single-turn read-only Grok 4.5 counter-check bound to the transmitted frozen content -> record verdict, dispositions and attack results",
+  "exit_code": 0,
+  "test_output_file": "results/counter-check.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T035",
+  "bureau_run_ref": "bureau-run:BUR-RUN-20260820T122838Z-0b63d253da",
+  "frozen_author_head": "5a73d1ceb130155988863b2695062fa62b565c76",
+  "pull_request": 354,
+  "reviewer_attempts": [
+    {
+      "role": "independent-counter-check",
+      "harness": "grok",
+      "harness_version": "1.0.4 (d846eb93d9)",
+      "model": "grok-4.5",
+      "provider_family": "xai",
+      "repository_access": false,
+      "tool_access": false,
+      "transmitted_prompt_sha256": "221b7760de0a5f3f7390ed86f10833c9f8233417f5ae64d29495abf8d03f623d",
+      "raw_review_output_sha256": "b1bc9d0e21edf42e2d21eeabe36745b9fe2a2e20474cece7732e344a3992695b",
+      "final_status": "succeeded",
+      "terminal_at": "2026-08-20T12:40:46Z",
+      "semantic_verdict": "PASS_THIS_REVISION",
+      "material_findings": 0,
+      "disposition_matches": 9,
+      "attacks_attempted": 10,
+      "escapes_found": 0
+    }
+  ],
+  "does_not_establish": [
+    "two-independent-reviewer evidence level",
+    "organisational reviewer independence",
+    "natural sampling feasibility",
+    "Outcome Case efficacy",
+    "pilot activation authority",
+    "merge or deployment authority"
+  ]
+}
