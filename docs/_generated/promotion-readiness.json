@@ -488,14 +488,29 @@
       "promotion_ready": true,
       "status": "testing",
       "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability.assessment_blocked"
+      ],
+      "notes": [],
+      "path": "experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation",
+      "pre_execution_hold": false,
+      "promotion_ready": false,
+      "status": "rejected",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 31,
+    "experiments_checked": 32,
     "historical_escape": 1,
-    "not_ready": 19,
+    "not_ready": 20,
     "pre_execution_hold": 4,
     "ready": 7,
     "warnings": 8

@@ -1,0 +1,73 @@
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
+date: "2026-08-20"
+reviewer: "ChatGPT / Grabowski after current-head Codex pre-activation review"
+triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; github:heimgewebe/vibe-lab#353:discussion_r3819573067"
+rationale: >
+  This natural-activation revision never satisfied its pre-activation selection gate.
+  The last frozen published author revision before the post-finding repair proposal is
+  d299357c15457994583e93a8608c7366897e84aa on base
+  5e49c38f522df43ca550ba0c908bec5d8a2c4418 with canonical PR diff SHA-256
+  11b83b92bb17b8e213bee8e3db375921808eeb9e0cc24a5dbd51d462ff6aa4bf.
+  Current-head Codex review found a material P1 pre-arming selection window: the
+  protocol forbids work-informed timing only after the activation checkpoint is armed,
+  but freezes no work-blind trigger or automatic non-selectable boundary between review,
+  arming and merge. An independently planned Operator-Intake arrival can still satisfy
+  S1-R2 source independence while a controller with advance timing knowledge changes
+  whether that arrival falls below or above the eventual activation watermark by timing
+  finalization, arming or merge. That can change S1R2-N01..N03 without changing the
+  arrival itself. The preregistered falsification criterion rejects on any remaining
+  activation/selection degree of freedom, so this revision is rejected before activation.
+  A later unexecuted repair proposal using discussion_r3819573067 as an external trigger
+  and a controller orchestration job is retained as historical design work only; it did
+  not activate sampling and is not activation authority. Continuing to harden that
+  proposal after the material finding would test a newly designed control mechanism
+  rather than the prospective usability of the frozen natural successor. No natural
+  slot, activation watermark or productive authority was created. This result refutes
+  only this natural-activation revision; it does not refute S1-R2 canonical identity,
+  S0-R3 Outcome Case semantics or any Minimal-versus-Full efficacy hypothesis.
+evidence_summary:
+  predecessor_paper_experiment: "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper"
+  predecessor_paper_result: "PASS_THIS_REVISION"
+  predecessor_closeout_review: "PASS_CLOSEOUT"
+  predecessor_merge_commit: "21aee3c984b1a774498df1bcf72c459cd28dfcf0"
+  s1r2_method_sha256: "19542aae0a473a8a7c63d24e3aa2909a8e115c50561bfeddd07893394d8003ab"
+  s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
+  frozen_author_head: "d299357c15457994583e93a8608c7366897e84aa"
+  frozen_author_parent: "2435f70524190e2996febc033db10566e3ce60b0"
+  frozen_author_tree: "2614fdf5898d224e86d6415bb1fce82784f6fa0f"
+  reviewed_base_sha: "5e49c38f522df43ca550ba0c908bec5d8a2c4418"
+  canonical_pr_diff_sha256: "11b83b92bb17b8e213bee8e3db375921808eeb9e0cc24a5dbd51d462ff6aa4bf"
+  material_finding_ref: "github:heimgewebe/vibe-lab#353:discussion_r3819573067"
+  material_finding_class: "prearming_selection_window"
+  preactivation_material_findings: 1
+  preactivation_gate_satisfied: false
+  post_finding_orchestration_proposal_executed: false
+  activation_checkpoint_job_armed: false
+  activation_snapshot_ref: null
+  activation_watermark_event_id: null
+  natural_sampling_active: false
+  natural_slot_identities_assigned: 0
+  natural_slots_consumed: 0
+  replacements_backfills: 0
+  authority_violations: 0
+  live_natural_source_evidence_tested: false
+  prospective_csbetq_capture_tested: false
+  handling_effort_tested: false
+  three_slot_informativeness_tested: false
+  p2_authorized: false
+  p3_authorized: false
+  minimal_vs_full_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
+next_steps:
+  - "Preserve d299357c15457994583e93a8608c7366897e84aa and the P1 pre-arming selection finding as negative pre-activation evidence."
+  - "Treat the later external-trigger/orchestration text as an unexecuted repair proposal only; it confers no activation authority."
+  - "Do not arm an activation checkpoint, assign a natural slot, backfill an arrival or manufacture a replacement cohort from this revision."
+  - "Obtain one independent exact-revision closeout review of the negative packet before merging the closeout evidence."
+  - "Merge only the negative closeout; merging the experiment record must not be treated as natural-activation authority."
+  - "Do not start P2, P3, Minimal-versus-Full or productive Bureau/Grabowski integration from this rejection."
+  - "Any future natural-sampling attempt, if separately justified, must be separately registered and freeze a genuinely work-blind activation boundary before eligible arrivals instead of repairing this revision in place."

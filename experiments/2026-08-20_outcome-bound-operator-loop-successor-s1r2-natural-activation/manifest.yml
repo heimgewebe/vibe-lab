@@ -1,0 +1,100 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s1r2-natural-activation"
+  hypothesis: >
+    The terminally paper-passed S1-R2 canonical-identity and fixed-slot natural-source
+    contract can bind the first three real post-activation Bureau Operator-Intake births
+    prospectively, without source-selection, backfill, observer interference or material
+    pre-mutation C/S/B/E/T/Q capture failure, while preserving the unchanged S0-R3 semantics.
+  status: rejected
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-s1r2-natural-preactivation-rejection/run_meta.json"
+    - "results/preactivation-rejection.md"
+    - "results/evidence.jsonl"
+    - "results/decision.yml"
+  created: "2026-08-20"
+  updated: "2026-08-20"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; grabowski-job:25ed348f31f3; github:heimgewebe/vibe-lab#353:discussion_r3819276031; github:heimgewebe/vibe-lab#353:discussion_r3819467626; github:heimgewebe/vibe-lab#353:discussion_r3819573067; controller-self-review:ordered-merge-identity"
+  iteration: 5
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject before activation if the exact author base/head/canonical-PR-diff tuple fails
+      independent activation-specific review, any decision-bound review remains unread or
+      unreconciled, the externally triggered controller orchestration job does not start within
+      900 GitHub-server seconds and before author-head publication, pre-merge PR readback differs
+      from that exact tuple, the resulting main merge commit does not have first parent exactly
+      reviewed_base and second parent exactly reviewed_head, reviewed_head ancestry, and a tree
+      exactly equal to the reviewed-head tree, that same orchestration job does not autonomously
+      publish the exact head, request/reconcile the required current-head Codex review, merge on
+      the first all-gates-PASS observation, or records any consecutive monotonic heartbeat gap
+      above 5 seconds, cannot anchor its single authoritative Bureau SQLite journal snapshot in
+      the closed 300-305 second post-integration window, or that snapshot fails or cannot freeze
+      one immutable high-water event id, the job is restarted/replaced, an imported frozen
+      authority is changed, or an activation/selection/authority degree of freedom remains.
+      After activation, reject if any of the first three canonical Operator-Intake identity births
+      strictly above the frozen activation watermark fails source independence, is skipped/replaced/
+      backfilled, is captured only after productive mutation or result knowledge, cannot prospectively
+      bind non-D0 C/S/B/E/T, produces a material terminal-review disagreement or authority effect, or
+      if median capture effort exceeds 600 seconds. Cross-system wall-clock timestamps may never
+      select, exclude, replace or reorder a slot.
+    counter_hypotheses:
+      - id: "natural_source_independence_is_not_reliably_observable"
+        statement: >
+          Genuine operator arrivals may lack enough pre-existing source evidence to prove the
+          S1-R2 counterfactual without adding a production field or observer-caused metadata.
+        assessment:
+          status: blocked
+          outcome: not_checked
+          pending_checks:
+            - "Not admissible in this revision because the pre-activation selection gate rejected before any natural slot existed."
+          limitations:
+            - "The S1-R2 paper PASS established semantic stability, not live source-evidence availability."
+            - "No live natural-source slot was activated in this revision."
+          confidence: low
+      - id: "prospective_capture_misses_natural_work"
+        statement: >
+          Even correctly fixed natural slots may be observed too late to freeze C/S/B/E/T/Q
+          before productive mutation without delaying normal work.
+        assessment:
+          status: blocked
+          outcome: not_checked
+          pending_checks:
+            - "Not admissible in this revision because the pre-activation selection gate rejected before capture could begin."
+          limitations:
+            - "No natural slot exists because the activation revision retained a material pre-arming selection degree of freedom."
+          confidence: low
+      - id: "three_fixed_slots_are_too_uninformative"
+        statement: >
+          A valid first-three sample may contain too many D0/not-applicable cases to establish
+          natural handling feasibility even with zero integrity failures.
+        assessment:
+          status: blocked
+          outcome: not_checked
+          pending_checks:
+            - "No three-slot packet is admissible after the pre-activation rejection."
+          limitations:
+            - "The revision was rejected before activation, so cohort informativeness is untested."
+          confidence: low
+
+context:
+  tools:
+    - "terminal S1-R2 paper PASS and independent closeout review"
+    - "authoritative Bureau StateStore event journal"
+    - "unchanged S1-R2 canonical identity and natural-source contract"
+    - "unchanged S0-R3 C/S/B/E/T/Q semantics"
+    - "Grabowski isolated experiment work lane"
+    - "exact-head current PR review"
+    - "negative pre-activation closeout evidence"
+    - "independent exact-revision terminal closeout review"
+  language: "Markdown, JSON, YAML"
+  environment: "Vibe-Lab experiment-only rejected natural successor; no productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
