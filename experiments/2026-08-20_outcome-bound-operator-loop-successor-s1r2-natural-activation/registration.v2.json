@@ -1,0 +1,124 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation",
+  "registered_at": "2026-08-20T04:14:35Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the terminally paper-passed S1-R2 sampling rule plus unchanged S0-R3 Outcome Case semantics can be applied prospectively to the first three real post-activation Operator-Intake births without source-selection, capture or authority failure.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "conversation:user-request-2026-08-20-continue-outcome-bound",
+      "confirmed_at": "2026-08-20T04:14:35Z",
+      "valid_until": "2026-09-15T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can the unchanged S1-R2 canonical-identity/fixed-slot natural-source contract bind the first three real post-activation Bureau Operator-Intake births prospectively, with zero sampling/capture failures and acceptable handling cost?",
+    "owner": "Grabowski",
+    "decision_ref": "conversation:user-request-2026-08-20-continue-outcome-bound"
+  },
+  "intervention": {
+    "name": "prospective S1-R2 natural three-slot capture",
+    "description": "After the protocol PR merge plus a frozen five-minute cooling interval, normalize the complete authoritative Bureau candidate journal under unchanged S1-R2 sections 2-5, fix the first three post-activation Operator-Intake identity births by identity-first event id, apply source independence only as a gate on each fixed slot, and attempt read-only pre-mutation S0-R3 C/S/B/E/T/Q capture without delaying productive work."
+  },
+  "control_condition": {
+    "id": "s0r3_fixed_paper_benchmark",
+    "description": "Exactly three already frozen S0-R3 paper-semantic controls used previously by S1: R3-02 create-then-mutate, R3-04 pure prerequisite then distinct transition, and R3-08 unresolved subject equivalence. They are semantic benchmarks only and never natural evidence."
+  },
+  "treatment_condition": {
+    "id": "s1r2_first_three_post_activation_births",
+    "description": "Exactly the first three canonical post-activation Operator-Intake identity births under unchanged S1-R2 sequence-before-naturalness semantics, permanently assigned to S1R2-N01, S1R2-N02 and S1R2-N03 without replacement or backfill."
+  },
+  "measurement": {
+    "primary_metric": "natural_source_binding_failure_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Before merge, one independent read-only exact-head reviewer must verify the activation-specific boundary, imported frozen authorities, first-three sequence-before-naturalness, slot-consuming source gate, prospective capture/failure semantics and zero productive authority; every decision-bound review job must be terminal and reconciled. Only after that reviewed head is merged plus the frozen five-minute cooling interval, for each of the first three fixed canonical slots establish or fail source independence from pre-existing evidence, then where still prospectively possible freeze C/S/B/E/T/Q before productive mutation/result knowledge without delaying work. After the terminal packet, one independent exact-revision reviewer reproduces activation, sequence, naturalness, capture timing and classifications.",
+    "success": "Pre-activation exact-head review has zero material findings and every decision-bound review job is terminal/reconciled; then exactly three fixed slots are consumed in canonical order; source independence passes for all three; natural_source_binding_failure_count is zero; terminal material review disagreements, authority violations and replacements/backfills are zero; median capture effort is <=600 seconds; at least two slots are non-D0 with definitive complete C/S/B/E/T bindings.",
+    "falsification": "Before activation, any material exact-head review finding, unreconciled decision-bound review, imported-authority mismatch, activation/selection degree of freedom or productive-authority requirement rejects the author revision and blocks merge. After activation, any source-independence failure, missed/late/result-informed capture, non-D0 prospective C/S/B/E/T failure, changed slot identity/classification, sequence/backfill violation, authority violation, material terminal-review disagreement, or median effort >600 seconds rejects the revision.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "natural_case_binding_effort_seconds",
+      "unit": "seconds",
+      "method": "Measure each slot from observer capture start to freeze/stop. Exclude productive implementation and reviewer runtime."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "frozen S0-R3 paper-semantic benchmark versus one fixed natural post-activation identity slot",
+    "minimum_control": 3,
+    "minimum_treatment": 3,
+    "comparability_constraints": [
+      "control is exactly R3-02, R3-04 and R3-08 and never counts as natural evidence",
+      "treatment is exactly S1R2-N01..N03 fixed by canonical identity-first event order before naturalness",
+      "S1-R2 sections 2-5 are imported unchanged and identified by method SHA-256",
+      "S0-R3 C/S/B/E/T/Q semantics are imported unchanged and identified by protocol SHA-256",
+      "no source, repository, risk, outcome, capture or task state may select or replace a slot",
+      "the observer causes zero productive work effects"
+    ],
+    "confounders": [
+      "natural source-independence evidence may be unavailable even when an arrival is genuinely independent",
+      "the observer may first see a fixed slot only after productive mutation naturally began",
+      "three slots may be dominated by D0 or otherwise low-information cases",
+      "the tiny sample estimates handling feasibility only, not Outcome Case efficacy or prevalence"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "terminal S1-R2 paper PASS and independent closeout review",
+      "unchanged S1-R2 method sections 2-5",
+      "unchanged S0-R3 protocol",
+      "authoritative Bureau StateStore live-register journal",
+      "independently produced source observation/request references that pre-exist experiment capture",
+      "Git/GitHub exact PR merge timestamp and revision truth",
+      "Grabowski read-only process/task/resource observations used only to establish capture timing",
+      "experiment-local create-only case/evidence artifacts",
+      "independent pre-activation exact-head review receipt and reconciled reviewer-job inventory",
+      "independent exact-revision terminal review"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-27T18:00:00Z",
+  "expires_at": "2026-09-15T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "conversation:user-request-2026-08-20-continue-outcome-bound",
+      "reviewed_at": "2026-08-20T04:14:35Z",
+      "rationale": "This is the separately required prospective natural-activation successor after terminal S1-R2 paper PASS. It adds only experiment-local read-only capture evidence and no productive integration."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

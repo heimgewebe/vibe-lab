@@ -1,0 +1,82 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-operator-loop-successor-s1r2-natural-activation"
+  hypothesis: >
+    The terminally paper-passed S1-R2 canonical-identity and fixed-slot natural-source
+    contract can bind the first three real post-activation Bureau Operator-Intake births
+    prospectively, without source-selection, backfill, observer interference or material
+    pre-mutation C/S/B/E/T/Q capture failure, while preserving the unchanged S0-R3 semantics.
+  status: testing
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-20"
+  updated: "2026-08-20"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject before activation if the exact author head fails independent activation-specific
+      review, any decision-bound review remains unread/unreconciled, an imported frozen authority
+      is changed, or an activation/selection/authority degree of freedom remains. After activation,
+      reject if any of the first three canonical post-activation Operator-Intake identity births
+      fails source independence, is skipped/replaced/backfilled, is captured only after productive
+      mutation or result knowledge, cannot prospectively bind non-D0 C/S/B/E/T, produces a material
+      terminal-review disagreement or authority effect, or if median capture effort exceeds 600 seconds.
+    counter_hypotheses:
+      - id: "natural_source_independence_is_not_reliably_observable"
+        statement: >
+          Genuine operator arrivals may lack enough pre-existing source evidence to prove the
+          S1-R2 counterfactual without adding a production field or observer-caused metadata.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Apply the frozen source-independence gate to S1R2-N01..N03 without mutating Bureau truth."
+          limitations:
+            - "The S1-R2 paper PASS established semantic stability, not live source-evidence availability."
+          confidence: low
+      - id: "prospective_capture_misses_natural_work"
+        statement: >
+          Even correctly fixed natural slots may be observed too late to freeze C/S/B/E/T/Q
+          before productive mutation without delaying normal work.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Measure capture timing and effort for every fixed slot; missed slots remain consumed."
+          limitations:
+            - "No natural slot exists before the merged activation boundary plus cooling interval."
+          confidence: low
+      - id: "three_fixed_slots_are_too_uninformative"
+        statement: >
+          A valid first-three sample may contain too many D0/not-applicable cases to establish
+          natural handling feasibility even with zero integrity failures.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Count definitive non-D0 complete bindings after all three fixed slots are consumed."
+          limitations:
+            - "INCONCLUSIVE rather than backfill is the preregistered outcome for this case."
+          confidence: low
+
+context:
+  tools:
+    - "terminal S1-R2 paper PASS and independent closeout review"
+    - "authoritative Bureau StateStore event journal"
+    - "unchanged S1-R2 canonical identity and natural-source contract"
+    - "unchanged S0-R3 C/S/B/E/T/Q semantics"
+    - "Grabowski isolated experiment work lane"
+    - "independent exact-head pre-activation semantic review"
+    - "independent exact-revision terminal review"
+  language: "Markdown, JSON, YAML"
+  environment: "Vibe-Lab experiment-only prospective natural shadow; no productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

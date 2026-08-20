@@ -334,6 +334,9 @@
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-b2.md` | Outcome-Bound S1-R2 — Independent Reviewer B2 | testing | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/s1r2-gate.md` | Outcome-Bound S1-R2 — Paper gate | testing | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/sampling-cases.md` | sampling-cases | — | — |
+| `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/CONTEXT.md` | CONTEXT | — | — |
+| `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/cases/README.md` | README | — | — |
+| `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/method.md` | Outcome-Bound S1-R2 Natural Activation — Prospective three-slot protocol | designed | operative |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |

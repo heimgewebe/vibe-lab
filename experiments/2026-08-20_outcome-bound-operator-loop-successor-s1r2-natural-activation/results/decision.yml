@@ -1,0 +1,46 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-08-20"
+reviewer: "ChatGPT / Grabowski"
+triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound"
+rationale: >
+  This branch is pre-activation only. Terminal S1-R2 paper PASS permits a separate
+  prospective natural-activation revision, but no natural slot may exist until the
+  exact author revision first passes one independent exact-head pre-activation review,
+  every decision-bound review is terminal/reconciled, is then merged to main, and its frozen
+  five-minute cooling interval has elapsed. The first-three sequence is defined deterministically from the complete
+  S1-R2-normalized Bureau journal before naturalness; no pre-boundary event may be
+  reused or backfilled. No productive authority is created by this design revision.
+evidence_summary:
+  predecessor_paper_experiment: "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper"
+  predecessor_paper_result: "PASS_THIS_REVISION"
+  predecessor_closeout_review: "PASS_CLOSEOUT"
+  predecessor_merge_commit: "21aee3c984b1a774498df1bcf72c459cd28dfcf0"
+  s1r2_method_sha256: "19542aae0a473a8a7c63d24e3aa2909a8e115c50561bfeddd07893394d8003ab"
+  s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
+  activation_rule: "author_pr_merged_at_plus_300_seconds"
+  activation_timestamp: null
+  natural_slots_defined: 3
+  natural_slots_consumed: 0
+  preactivation_independent_review_completed: 0
+  preactivation_material_findings: null
+  preactivation_reviews_reconciled: false
+  natural_sampling_active: false
+  replacements_backfills: 0
+  authority_violations: 0
+  p2_authorized: false
+  p3_authorized: false
+  minimal_vs_full_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "not_checked"
+counterevidence_checked: false
+next_steps:
+  - "Validate this exact pre-activation contract and obtain one independent exact-head activation review with zero material findings."
+  - "Reconcile every decision-bound review job before merge; a terminal-but-unread or material REJECT blocks activation."
+  - "Merge only that reviewed exact head before any slot can become eligible."
+  - "After merge, derive activation_at only from GitHub merged_at + 300 seconds."
+  - "Observe the complete normalized Bureau journal read-only and permanently assign the first three post-activation Operator-Intake births to S1R2-N01..N03."
+  - "Never backfill a pre-activation, non-natural, missed, D0 or inconvenient slot."
+  - "After the fixed packet terminalizes, obtain one independent exact-revision review before PASS/REJECT/INCONCLUSIVE."
+  - "Do not start P2/P3, Minimal-versus-Full or production integration from this pre-activation state."
