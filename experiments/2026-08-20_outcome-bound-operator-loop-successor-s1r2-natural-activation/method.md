@@ -30,17 +30,17 @@ The branch introducing this protocol is pre-activation only. No Bureau identity 
 Before merge, the independent section 8 review must be externally bound to one exact tuple:
 
 ```text
-review_binding = (reviewed_base, reviewed_head, canonical_pr_diff_sha256)
+review_binding = (reviewed_base, reviewed_head, reviewed_pr_diff_sha256)
 ```
 
-`canonical_pr_diff_sha256` is the canonical GitHub PR diff digest for that exact base/head pair. A locally rendered raw `git diff` hash is diagnostic only and cannot substitute for the canonical PR-diff binding used by the merge decision.
+`reviewed_pr_diff_sha256` is the canonical GitHub PR diff digest for that exact base/head pair. A locally rendered raw `git diff` hash is diagnostic only and cannot substitute for the canonical PR-diff binding used by the merge decision.
 
 Immediately before merge, authoritative PR readback must still prove:
 
 ```text
 pr_head_at_merge == reviewed_head
 pr_base_at_merge == reviewed_base
-canonical_pr_diff_sha256_at_merge == reviewed_diff_sha256
+canonical_pr_diff_sha256_at_merge == reviewed_pr_diff_sha256
 ```
 
 After integration, authoritative Git readback must prove all of:
@@ -208,7 +208,7 @@ Guard measures:
 
 ## 8. Pre-activation exact-head review gate
 
-Before merge, the exact final author head on the exact current base must receive one independent read-only semantic review bound externally to the exact `(reviewed_base, reviewed_head, canonical_pr_diff_sha256)` tuple. The reviewer must verify only activation-specific mechanics around the already frozen authorities:
+Before merge, the exact final author head on the exact current base must receive one independent read-only semantic review bound externally to the exact `(reviewed_base, reviewed_head, reviewed_pr_diff_sha256)` tuple. The reviewer must verify only activation-specific mechanics around the already frozen authorities:
 
 1. the imported S1-R2 sections 2-5 and S0-R3 protocol hashes are exact and no local wording overrides them;
 2. the merge gate requires exact pre-merge PR tip/base/canonical-diff identity and exact post-merge parent/tree identity, so ancestry alone, a descendant tip, a changed base, squash/rebase/cherry-pick or unreviewed conflict-resolution content cannot activate;

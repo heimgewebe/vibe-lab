@@ -14,8 +14,8 @@ experiment:
   created: "2026-08-20"
   updated: "2026-08-20"
   author: "ChatGPT / Grabowski"
-  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; grabowski-job:25ed348f31f3; github:heimgewebe/vibe-lab#353:discussion_r3819276031; github:heimgewebe/vibe-lab#353:discussion_r3819467626"
-  iteration: 4
+  triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; grabowski-job:25ed348f31f3; github:heimgewebe/vibe-lab#353:discussion_r3819276031; github:heimgewebe/vibe-lab#353:discussion_r3819467626; controller-self-review:ordered-merge-identity"
+  iteration: 5
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -24,8 +24,8 @@ experiment:
       independent activation-specific review, any decision-bound review remains unread or
       unreconciled, exactly one read-only activation-checkpoint job is not armed and bound before
       merge, pre-merge PR readback differs from that exact tuple, the resulting main merge commit
-      does not have exactly the reviewed base and reviewed head as its two parents with a tree
-      exactly equal to the reviewed-head tree, that same checkpoint job records any consecutive
+      does not have first parent exactly reviewed_base and second parent exactly reviewed_head,
+      reviewed_head ancestry, and a tree exactly equal to the reviewed-head tree, that same checkpoint job records any consecutive
       monotonic heartbeat gap above 5 seconds, cannot anchor its single authoritative Bureau SQLite
       journal snapshot in the closed 300-305 second post-integration window, or that snapshot fails
       or cannot freeze one immutable high-water event id, the job is restarted/replaced, an imported
