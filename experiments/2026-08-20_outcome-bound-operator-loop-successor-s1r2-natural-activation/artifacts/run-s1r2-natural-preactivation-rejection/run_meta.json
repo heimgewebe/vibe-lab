@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-s1r2-natural-preactivation-rejection",
+  "generated_at": "2026-08-20T08:04:30Z",
+  "executor": "controller:chatgpt+grabowski+current-head-codex-review",
+  "command": "freeze published author head -> current-head Codex review -> material pre-arming selection finding -> preregistered pre-activation rejection gate",
+  "exit_code": 0,
+  "test_output_file": "results/preactivation-rejection.md",
+  "provenance_level": "self_reported",
+  "triggered_by": "github:heimgewebe/vibe-lab#353:discussion_r3819573067",
+  "execution_source_identity_ref": "github:heimgewebe/vibe-lab#353@d299357c15457994583e93a8608c7366897e84aa",
+  "frozen_author_head": "d299357c15457994583e93a8608c7366897e84aa",
+  "review_thread_id": "PRRT_kwDOR8ZYIc6aujIL",
+  "review_finding_ref": "github:heimgewebe/vibe-lab#353:discussion_r3819573067",
+  "gate_result": "REJECT_THIS_REVISION",
+  "post_finding_orchestration_proposal_executed": false,
+  "natural_slots_consumed": 0,
+  "activation_watermark_event_id": null,
+  "authority_violations": 0,
+  "notes": "Execution proof for the S1-R2 natural-activation pre-activation rejection only. The frozen author revision failed its no-selection-degree-of-freedom gate before any natural treatment activation. Later external-trigger/orchestration text is retained only as unexecuted post-finding design work. This run does not establish Outcome Case efficacy or inefficacy and does not authorize P2/P3, Minimal-versus-Full, Bureau mutation or Grabowski production authority."
+}

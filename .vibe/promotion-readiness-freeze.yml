@@ -215,3 +215,20 @@ promotion_readiness_freeze:
         adoption, routing, runtime or production integration; remove only if a
         separately authorized successor supersedes S1-R1's readiness role, never by
         rewriting the rejected method or registration.
+
+    - path: experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation
+      allowed_missing:
+        - falsifiability.assessment_blocked
+      reason: >-
+        S1-R2-Natural is terminally rejected before activation because current-head
+        review found a material pre-arming selection window: a controller with advance
+        knowledge of an independently planned Operator-Intake arrival could still time
+        finalization, checkpoint arming or merge so the arrival falls below or above
+        the eventual activation watermark and thereby changes S1R2-N01..N03. The
+        blocked live-source/capture/informativeness counter-hypotheses remain deliberately
+        unmeasured because no natural cohort was activated. This exact freeze preserves
+        the negative result rather than rewriting blocked assessments as checked. It
+        authorizes no replacement cohort, checkpoint, P2/P3, Minimal-versus-Full,
+        adoption, routing, runtime or production integration; remove only if a separately
+        registered successor supersedes this readiness role, never by rewriting the
+        rejected evidence.

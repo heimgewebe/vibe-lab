@@ -1,30 +1,33 @@
 schema_version: "0.1.0"
-decision_type: "execution_assessment"
-verdict: "not_executed"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
 date: "2026-08-20"
-reviewer: "ChatGPT / Grabowski"
-triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; github:heimgewebe/vibe-lab#353:discussion_r3819276031; github:heimgewebe/vibe-lab#353:discussion_r3819467626"
+reviewer: "ChatGPT / Grabowski after current-head Codex pre-activation review"
+triggered_by: "conversation:user-request-2026-08-20-continue-outcome-bound; github:heimgewebe/vibe-lab#353:discussion_r3819573067"
 rationale: >
-  This branch is pre-activation only. Terminal S1-R2 paper PASS permits a separate
-  prospective natural-activation revision, but no natural slot may exist until one
-  exact author base/head/canonical-PR-diff tuple first passes an independent
-  pre-activation review, every decision-bound review is terminal and reconciled,
-  and exactly one receipt-bound read-only activation-checkpoint job is armed against
-  that exact tuple before merge. Once armed, Bureau candidate/journal observations
-  may not influence merge timing. The same checkpoint job must wait for and verify
-  the exact merge identity, preserve monotonic heartbeat continuity with no gap above
-  5 seconds, and anchor its single complete authoritative Bureau SQLite journal
-  snapshot in the closed 300-305 second post-integration window. A continuity loss,
-  late anchor, failed/restarted/replaced checkpoint job or later replacement snapshot
-  cannot activate this revision. The first-three sequence is then defined
-  deterministically from canonical Operator-Intake identity births whose
-  identity-first event ids are strictly above that watermark, before naturalness.
-  GitHub, local and Bureau wall-clock timestamps are descriptive evidence only and
-  never decide cohort membership. No pre-watermark event may be reused or backfilled.
-  No productive authority is created by this design revision. This file intentionally
-  remains the prereview design snapshot: the eventual pre-activation review is
-  external receipt-bound merge evidence and must not be committed back into the
-  reviewed branch.
+  This natural-activation revision never satisfied its pre-activation selection gate.
+  The last frozen published author revision before the post-finding repair proposal is
+  d299357c15457994583e93a8608c7366897e84aa on base
+  5e49c38f522df43ca550ba0c908bec5d8a2c4418 with canonical PR diff SHA-256
+  11b83b92bb17b8e213bee8e3db375921808eeb9e0cc24a5dbd51d462ff6aa4bf.
+  Current-head Codex review found a material P1 pre-arming selection window: the
+  protocol forbids work-informed timing only after the activation checkpoint is armed,
+  but freezes no work-blind trigger or automatic non-selectable boundary between review,
+  arming and merge. An independently planned Operator-Intake arrival can still satisfy
+  S1-R2 source independence while a controller with advance timing knowledge changes
+  whether that arrival falls below or above the eventual activation watermark by timing
+  finalization, arming or merge. That can change S1R2-N01..N03 without changing the
+  arrival itself. The preregistered falsification criterion rejects on any remaining
+  activation/selection degree of freedom, so this revision is rejected before activation.
+  A later unexecuted repair proposal using discussion_r3819573067 as an external trigger
+  and a controller orchestration job is retained as historical design work only; it did
+  not activate sampling and is not activation authority. Continuing to harden that
+  proposal after the material finding would test a newly designed control mechanism
+  rather than the prospective usability of the frozen natural successor. No natural
+  slot, activation watermark or productive authority was created. This result refutes
+  only this natural-activation revision; it does not refute S1-R2 canonical identity,
+  S0-R3 Outcome Case semantics or any Minimal-versus-Full efficacy hypothesis.
 evidence_summary:
   predecessor_paper_experiment: "2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper"
   predecessor_paper_result: "PASS_THIS_REVISION"
@@ -32,51 +35,39 @@ evidence_summary:
   predecessor_merge_commit: "21aee3c984b1a774498df1bcf72c459cd28dfcf0"
   s1r2_method_sha256: "19542aae0a473a8a7c63d24e3aa2909a8e115c50561bfeddd07893394d8003ab"
   s0r3_protocol_sha256: "f60b26a3bcc0f8f6b55f5b89a8d4dfdd1739017d8b228c5adaa82f5a292a30af"
-  activation_rule: "exact_reviewed_tuple_then_prearmed_single_checkpoint_job_then_exact_merge_identity_then_gap_le_5s_then_snapshot_anchor_300_to_305s_then_single_authoritative_bureau_event_id_watermark"
-  activation_boundary_kind: "bureau_event_id_watermark"
-  reviewed_premerge_tuple_verified: false
+  frozen_author_head: "d299357c15457994583e93a8608c7366897e84aa"
+  frozen_author_parent: "2435f70524190e2996febc033db10566e3ce60b0"
+  frozen_author_tree: "2614fdf5898d224e86d6415bb1fce82784f6fa0f"
+  reviewed_base_sha: "5e49c38f522df43ca550ba0c908bec5d8a2c4418"
+  canonical_pr_diff_sha256: "11b83b92bb17b8e213bee8e3db375921808eeb9e0cc24a5dbd51d462ff6aa4bf"
+  material_finding_ref: "github:heimgewebe/vibe-lab#353:discussion_r3819573067"
+  material_finding_class: "prearming_selection_window"
+  preactivation_material_findings: 1
+  preactivation_gate_satisfied: false
+  post_finding_orchestration_proposal_executed: false
   activation_checkpoint_job_armed: false
-  activation_checkpoint_job_ref: null
-  activation_checkpoint_restart_allowed: false
-  activation_snapshot_attempts_allowed: 1
-  checkpoint_max_monotonic_gap_seconds: 5
-  cooling_threshold_seconds: 300
-  snapshot_deadline_seconds: 305
-  reviewed_merge_identity_verified: false
-  cooling_monotonic_verified: false
-  checkpoint_continuity_verified: false
   activation_snapshot_ref: null
   activation_watermark_event_id: null
-  cross_system_wall_clock_membership_allowed: false
-  activation_integrity_failure: null
-  slot_labels_preregistered: 3
+  natural_sampling_active: false
   natural_slot_identities_assigned: 0
   natural_slots_consumed: 0
-  preactivation_independent_review_completed: 0
-  preactivation_material_findings: null
-  preactivation_reviews_reconciled: false
-  preactivation_review_recording_mode: "external_base_head_canonical_pr_diff_bound_receipt_no_post_review_branch_mutation"
-  natural_sampling_active: false
   replacements_backfills: 0
   authority_violations: 0
+  live_natural_source_evidence_tested: false
+  prospective_csbetq_capture_tested: false
+  handling_effort_tested: false
+  three_slot_informativeness_tested: false
   p2_authorized: false
   p3_authorized: false
   minimal_vs_full_authorized: false
   production_integration_authorized: false
-counter_hypothesis_outcome: "not_checked"
-counterevidence_checked: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
 next_steps:
-  - "Validate this exact pre-activation contract and obtain one independent exact-base/head/canonical-PR-diff activation review with zero material findings."
-  - "Reconcile every decision-bound review job before merge; a terminal-but-unread, binding-mismatched or material REJECT blocks activation."
-  - "Do not commit the final review result into the reviewed branch; use the external base/head/canonical-diff-bound receipt as merge evidence."
-  - "After final review and before merge dispatch, arm exactly one receipt-bound read-only activation-checkpoint job against the reviewed tuple."
-  - "Once the checkpoint job is armed, do not inspect Bureau candidate/journal content to choose merge timing; merge timing may use only the already frozen PR/review/CI/authority gates."
-  - "Immediately before merge, re-read PR tip, base and canonical diff and require exact equality with the reviewed tuple."
-  - "Merge only as a true merge commit whose first parent is the reviewed base and second parent is the reviewed head; descendant-tip substitution, squash, rebase or cherry-pick cannot activate the experiment."
-  - "The pre-armed checkpoint job must itself verify exact integration, maintain monotonic heartbeat gaps at or below 5 seconds, and anchor its one allowed Bureau SQLite snapshot between 300 and 305 monotonic seconds after integration verification."
-  - "If the checkpoint job terminates, restarts, drifts, records a heartbeat gap above 5 seconds, wakes past 305 seconds, or its single snapshot attempt fails, record activation_integrity_failure; do not create a replacement job or later watermark."
-  - "Use the frozen high-water event id from that single bounded snapshot as the only activation boundary; never compare GitHub merged_at with Bureau created_at for membership."
-  - "Observe the complete normalized Bureau journal read-only and permanently assign the first three Operator-Intake identity births strictly above the activation watermark to S1R2-N01..N03."
-  - "Never backfill a pre-watermark, non-natural, missed, D0 or inconvenient slot."
-  - "After the fixed packet terminalizes, obtain one independent exact-revision review before PASS/REJECT/INCONCLUSIVE."
-  - "Do not start P2/P3, Minimal-versus-Full or production integration from this pre-activation state."
+  - "Preserve d299357c15457994583e93a8608c7366897e84aa and the P1 pre-arming selection finding as negative pre-activation evidence."
+  - "Treat the later external-trigger/orchestration text as an unexecuted repair proposal only; it confers no activation authority."
+  - "Do not arm an activation checkpoint, assign a natural slot, backfill an arrival or manufacture a replacement cohort from this revision."
+  - "Obtain one independent exact-revision closeout review of the negative packet before merging the closeout evidence."
+  - "Merge only the negative closeout; merging the experiment record must not be treated as natural-activation authority."
+  - "Do not start P2, P3, Minimal-versus-Full or productive Bureau/Grabowski integration from this rejection."
+  - "Any future natural-sampling attempt, if separately justified, must be separately registered and freeze a genuinely work-blind activation boundary before eligible arrivals instead of repairing this revision in place."
