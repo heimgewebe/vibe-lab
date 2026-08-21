@@ -343,6 +343,9 @@
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/method.md` | Outcome-Bound S1-R2 Natural Activation — Prospective three-slot protocol | designed | operative |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/post-finding-orchestration-proposal.md` | post-finding-orchestration-proposal | — | — |
 | `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/preactivation-rejection.md` | preactivation-rejection | — | — |
+| `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/CONTEXT.md` | CONTEXT | — | — |
+| `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/method.md` | Outcome-Bound natural pilot — sampling-unit R2 (slot before interference gates) | designed | exploratory |
+| `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/sampling-unit-cases.md` | sampling-unit-cases | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
