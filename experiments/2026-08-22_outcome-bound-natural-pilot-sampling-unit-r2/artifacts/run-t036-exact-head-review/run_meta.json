@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-t036-exact-head-review",
+  "generated_at": "2026-08-22T02:55:52Z",
+  "executor": "github:chatgpt-codex-connector",
+  "command": "independent exact-head review of frozen PR #355 author head c654a3c707fc4e6aafdc0034b26e2e622e1e1054 -> report material one-slot contradiction -> fail closed as REJECT_THIS_REVISION",
+  "exit_code": 0,
+  "test_output_file": "results/evidence.jsonl",
+  "provenance_level": "self_reported",
+  "triggered_by": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T036; github:heimgewebe/vibe-lab#355",
+  "frozen_author_head": "c654a3c707fc4e6aafdc0034b26e2e622e1e1054",
+  "pull_request": 355,
+  "review": {
+    "thread_node_id": "PRRT_kwDOR8ZYIc6bUOCc",
+    "comment_node_id": "PRRC_kwDOR8ZYIc7killS",
+    "comment_database_id": 3834272082,
+    "author": "chatgpt-codex-connector",
+    "created_at": "2026-08-21T23:05:06Z",
+    "reviewed_head": "c654a3c707fc4e6aafdc0034b26e2e622e1e1054",
+    "material_findings": 1,
+    "semantic_result": "REJECT_THIS_REVISION",
+    "url": "https://github.com/heimgewebe/vibe-lab/pull/355#discussion_r3834272082"
+  },
+  "does_not_establish": [
+    "all preregistered attacks completed",
+    "natural pilot activation authority",
+    "production integration authority",
+    "merge or deployment authority"
+  ]
+}

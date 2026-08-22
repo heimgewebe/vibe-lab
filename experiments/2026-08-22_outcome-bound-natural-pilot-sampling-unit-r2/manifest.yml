@@ -1,0 +1,93 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-natural-pilot-sampling-unit-r2"
+  hypothesis: >
+    Separating birth-slot construction from natural-evidence admission removes T035's zero-versus-one
+    ambiguity: every fully provable post-A candidate_identity_birth is assigned an immutable ordinal
+    before naturalness or self-interference is evaluated, so an experiment-influenced birth consumes
+    exactly one fixed slot while contributing zero natural evidence.
+  status: rejected
+  category: workflow
+  execution_status: executed
+  execution_refs:
+    - "artifacts/run-t036-exact-head-review/run_meta.json"
+    - "results/evidence.jsonl"
+    - "results/decision.yml"
+  created: "2026-08-22"
+  updated: "2026-08-22"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T036; predecessor:OPERATOR-INTEGRATION-LOOP-V1-T035"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject this revision if an exact-head reviewer can derive zero consumed slots or accepted
+      natural evidence for the same experiment-influenced post-A birth, can skip and renumber that
+      birth, can apply naturalness during slot construction, can soften an incomplete birth proof
+      into a skip, or finds any favorable counter-hypothesis/result label written before review
+      evidence existed.
+    counter_hypotheses:
+      - id: "interference_can_erase_the_slot"
+        statement: >
+          Because an interfered birth is inadmissible as natural evidence, a reader may still treat
+          it as absent from the sample sequence and derive zero consumed slots.
+        assessment:
+          status: checked
+          outcome: supports_counterhypothesis
+          evidence_refs:
+            - path: "results/evidence.jsonl"
+          limitations:
+            - "Codex exact-head review found a direct sentence-level contradiction in method.md section 3: the frozen text says the interfered birth cannot be read as one slot immediately before requiring exactly one consumed slot."
+            - "The frozen author method and R01-R09 cases remain unchanged; correcting the sentence in place would invalidate the prospective review contract."
+          confidence: high
+      - id: "interfered_birth_can_count_as_natural"
+        statement: >
+          Once a valid post-A birth owns a slot, a reader may incorrectly infer that slot validity
+          also establishes natural-evidence admissibility.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must try to derive natural_evidence=accepted for R03."
+          limitations:
+            - "No independent review evidence exists at the author revision."
+          confidence: low
+      - id: "prospective_labels_leak_review_results"
+        statement: >
+          Counter-hypothesis or result metadata may again contain favorable checked/PASS-like labels
+          before the evidence they cite exists, defeating prospective falsifiability.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must inspect manifest and result surfaces for premature favorable labels."
+          limitations:
+            - "The author revision intentionally contains no result verdict."
+          confidence: low
+      - id: "birth_proof_failure_becomes_soft_skip"
+        statement: >
+          An incomplete event-journal history may still be converted into a skipped unit, allowing
+          later births to backfill the sequence.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must attack R06 and the no-backfill invariant."
+          limitations:
+            - "A live completeness-capable Bureau event-journal read is a future activation gate and is not claimed by this paper revision."
+          confidence: low
+
+context:
+  tools:
+    - "rejected T035 frozen author revision and exact-head review"
+    - "terminal S1-R2 canonical candidate identity rule"
+    - "authoritative Bureau event-id ordering contract"
+    - "Git/GitHub/CI exact revision truth"
+  language: "Markdown, JSON, YAML"
+  environment: "paper and adversarial reasoning only; no natural sampling, pilot activation or productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

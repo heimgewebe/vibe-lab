@@ -248,3 +248,19 @@ promotion_readiness_freeze:
         no natural pilot, validator, routing, runtime, P2/P3 or production integration.
         Remove only if a separately registered successor supersedes this experiment's
         readiness role; never by converting the rejected evidence into a pass.
+    - path: experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2
+      allowed_missing:
+        - falsifiability.assessment_counterhypothesis_supported
+        - falsifiability.assessment_not_checked
+      reason: >-
+        T036 sampling-unit R2 is terminally rejected after exact-head Codex review
+        found a direct zero-versus-one contradiction in the frozen one-slot rule.
+        The first required attack is therefore material and sufficient under the
+        preregistered fail-closed threshold. Remaining attacks are deliberately left
+        not_checked rather than retroactively claimed after terminal falsification,
+        while the supported erase-the-slot counter-hypothesis remains part of the
+        negative result. This exact freeze preserves the rejected prospective revision
+        without rewriting method.md, registration.v2.json or R01-R09 and authorizes no
+        natural pilot or production integration. Remove only if a separately registered
+        successor supersedes this readiness role; never by converting the rejected
+        evidence into a pass.

@@ -1,0 +1,117 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2",
+  "registered_at": "2026-08-21T22:56:14Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the corrected Outcome-Bound sampling-unit semantics eliminate the zero-versus-one slot ambiguity without activating a natural pilot.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T036",
+      "confirmed_at": "2026-08-21T22:56:14Z",
+      "valid_until": "2026-09-22T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does constructing and ordinaling every fully provable post-A candidate_identity_birth before naturalness/self-interference guarantee that an interfered birth consumes exactly one fixed slot while contributing zero natural evidence?",
+    "owner": "Grabowski",
+    "decision_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T036"
+  },
+  "intervention": {
+    "name": "slot-before-gates sampling semantics",
+    "description": "Construct immutable birth slots solely from canonical identity, authoritative event order, activation boundary and complete birth proof; only afterward gate naturalness and experiment interference."
+  },
+  "control_condition": {
+    "id": "t035_rejected_mixed_unit_and_gate_semantics",
+    "description": "Frozen T035 author head 5a73d1ceb130155988863b2695062fa62b565c76, where exact-head review found that section 4 could yield zero units for an interfered birth while section 7 required one consumed fixed ordinal."
+  },
+  "treatment_condition": {
+    "id": "r01_r09_slot_before_gate_cases",
+    "description": "Exactly R01-R09 in sampling-unit-cases.md, including a post-A experiment-influenced birth whose fixed expected result is one assigned and consumed slot, zero accepted natural evidence and fail-closed rejection."
+  },
+  "measurement": {
+    "primary_metric": "material_slot_semantics_disagreement_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze one author commit containing method.md, sampling-unit-cases.md, manifest.yml and registration.v2.json while every counter-hypothesis assessment is pending/not_checked. Then require an independent reviewer to inspect that exact commit and attempt all six counter-review attacks. No natural candidate is observed and no pilot is activated.",
+    "success": "The exact-head reviewer finds no protocol-conforming zero-versus-one reading for the interfered birth, cannot renumber around it, cannot apply naturalness during slot construction, cannot soften incomplete birth proof into a skip, and confirms that no favorable review/result label existed at the frozen author head.",
+    "falsification": "Any material escape on the six required attacks or any premature favorable assessment/result label rejects this revision without repairing the frozen author files.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "exact_head_review_elapsed_seconds",
+      "unit": "seconds",
+      "method": "Record reviewer runtime as descriptive overhead only."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "three frozen T035 defects versus one frozen R01-R09 adversarial case",
+    "minimum_control": 3,
+    "minimum_treatment": 9,
+    "comparability_constraints": [
+      "T035 frozen author head and U01-U09 remain unchanged negative evidence",
+      "canonical candidate identity and authoritative event-id ordering remain unchanged",
+      "the activation boundary A and sample target N are not chosen here",
+      "no natural candidate is observed or consumed",
+      "review is bound to the exact frozen author commit"
+    ],
+    "confounders": [
+      "paper agreement cannot establish live event-journal completeness",
+      "one independent reviewer may still share conceptual priors with the author",
+      "slot precision does not establish Outcome Case efficacy, prevalence or cost"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen T035 author revision and terminal rejection",
+      "R2 frozen author commit",
+      "independent exact-head review receipt/output",
+      "Git/GitHub/CI exact revision truth",
+      "future completeness-reporting Bureau event-journal receipt only for later activation"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-29T18:00:00Z",
+  "expires_at": "2026-09-22T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T036",
+      "reviewed_at": "2026-08-21T22:56:14Z",
+      "rationale": "The successor is paper/adversarial-only, corrects one falsified semantics seam and grants no pilot or productive authority."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

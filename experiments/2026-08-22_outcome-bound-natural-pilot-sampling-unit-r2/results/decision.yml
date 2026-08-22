@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
+date: "2026-08-22"
+reviewer: "Vibe-Lab T036 controller after Codex exact-head review"
+triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T036; github:heimgewebe/vibe-lab#355"
+rationale: >
+  The frozen author revision c654a3c707fc4e6aafdc0034b26e2e622e1e1054 preregistered a
+  fail-closed result: any material escape on the required exact-head attacks rejects the revision
+  without repairing the frozen author method or cases. Codex reviewed that exact head and found a
+  direct contradiction in method.md section 3. The frozen sentence says an experiment-influenced
+  post-A birth can never be read as either zero slots or one slot, while the next sentence and the
+  Phase-G table require exactly one already-created, consumed slot with zero accepted natural
+  evidence. The one-slot prohibition and one-slot requirement coexist in the same frozen rule, so a
+  reviewer can recover the preregistered zero-versus-one semantic disagreement without adding a
+  rule. That meets the harm/falsification threshold of 1. Editing the sentence after review would
+  destroy the prospective exact-head test, so method.md, registration.v2.json and R01-R09 remain
+  unchanged negative evidence. No natural case was taken and no pilot or productive authority is
+  granted by this result.
+evidence_summary:
+  frozen_author_head: "c654a3c707fc4e6aafdc0034b26e2e622e1e1054"
+  pull_request: 355
+  codex_reviewed_head: "c654a3c707fc4e6aafdc0034b26e2e622e1e1054"
+  codex_review_url: "https://github.com/heimgewebe/vibe-lab/pull/355#discussion_r3834272082"
+  codex_material_findings: 1
+  material_slot_semantics_disagreement_count: 1
+  harm_or_falsification_threshold: 1
+  terminal_revision_result: "REJECT_THIS_REVISION"
+  required_attacks_completed_claimed: false
+  natural_cases_taken: 0
+  pilot_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
+next_steps:
+  - "Preserve frozen author head c654a3c7, method.md, registration.v2.json and R01-R09 unchanged as negative evidence; do not repair this failed prospective revision in place."
+  - "Create a separately registered successor whose one-slot invariant forbids only the zero-slot interpretation while retaining exactly one consumed fixed slot and zero accepted natural evidence for an interfered birth."
+  - "Require fresh exact-head counter-review evidence for that successor before any natural-pilot activation."
+  - "Keep the completeness-reporting Bureau event-journal receipt as a hard future activation gate."
+  - "Do not authorize pilot, routing, queue, runtime, deployment, merge-policy, Chronik, Leitstand or product integration from this rejected revision."
