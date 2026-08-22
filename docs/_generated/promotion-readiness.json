@@ -520,14 +520,30 @@
       "promotion_ready": false,
       "status": "rejected",
       "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
+      "historical_escape": false,
+      "missing": [
+        "falsifiability.assessment_counterhypothesis_supported",
+        "falsifiability.assessment_not_checked"
+      ],
+      "notes": [],
+      "path": "experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2",
+      "pre_execution_hold": false,
+      "promotion_ready": false,
+      "status": "rejected",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 33,
+    "experiments_checked": 34,
     "historical_escape": 1,
-    "not_ready": 21,
+    "not_ready": 22,
     "pre_execution_hold": 4,
     "ready": 7,
     "warnings": 9
