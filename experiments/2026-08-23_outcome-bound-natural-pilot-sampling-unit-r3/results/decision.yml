@@ -1,0 +1,8 @@
+schema_version: "0.1.0"
+experiment: "outcome-bound-natural-pilot-sampling-unit-r3"
+status: pending_review
+author_head: null
+review_head: null
+decision: NOT_YET_REVIEWED
+notes:
+  - "Author-side R3 remains prospective; no review verdict is encoded before exact-head review evidence exists."
