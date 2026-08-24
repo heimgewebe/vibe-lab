@@ -7,10 +7,13 @@ experiment:
     naturalness or self-interference is evaluated. Therefore an experiment-influenced birth consumes
     exactly one fixed slot while contributing zero accepted natural evidence; only the zero-slot
     interpretation is excluded, while one-slot-plus-natural-acceptance remains independently forbidden.
-  status: designed
+  status: rejected
   category: workflow
-  execution_status: designed
-  execution_refs: []
+  execution_status: executed
+  execution_refs:
+    - "results/evidence.jsonl"
+    - "results/decision.yml"
+    - "artifacts/run-t037-r3-exact-head-review/run_meta.json"
   created: "2026-08-24"
   updated: "2026-08-24"
   author: "ChatGPT / Grabowski"

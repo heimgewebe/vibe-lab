@@ -264,3 +264,40 @@ promotion_readiness_freeze:
         natural pilot or production integration. Remove only if a separately registered
         successor supersedes this readiness role; never by converting the rejected
         evidence into a pass.
+
+    - path: experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3
+      allowed_missing:
+        - falsifiability.assessment_not_checked
+      reason: >-
+        T037 R3 v1 is terminally rejected. The frozen author revision deliberately
+        retains all preregistered counter-hypothesis assessments as pending/not_checked;
+        the later exact-head result and review evidence record the rejection separately.
+        This exact freeze prevents that preserved prospective state from being mistaken
+        for unfinished promotion work and authorizes no natural pilot, adoption, routing,
+        runtime or production integration. Remove only if a separately reviewed successor
+        makes this readiness role obsolete; never by rewriting the frozen author assessment.
+
+    - path: experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2
+      allowed_missing:
+        - falsifiability.assessment_not_checked
+      reason: >-
+        T037 R3 v2 is terminally rejected despite a semantic review pass because the exact
+        frozen revision failed the repository clean-fixpoint requirement. Its preregistered
+        assessments remain pending/not_checked at the frozen author revision while the
+        reviewer/controller disagreement and terminal rejection are preserved in separate
+        result evidence. This exact freeze records that negative lifecycle state and grants
+        no pilot, adoption, routing, runtime, merge or production authority.
+
+    - path: experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3
+      allowed_missing:
+        - falsifiability.assessment_not_checked
+      review_date: "2026-09-30"
+      reason: >-
+        T037 R3 v3 completed the paper/adversarial exact-head qualification and independent
+        review successfully, but the frozen author manifest intentionally preserves all nine
+        preregistered assessments as pending/not_checked; post-review verdicts live in the
+        separate result and receipt surfaces. The experiment remains testing rather than
+        adopted and explicitly authorizes no Natural Pilot or productive integration. Freeze
+        only this exact readiness signal so the ratchet remains fail-closed without mutating
+        prospective author metadata after review. Remove only through a separately reviewed
+        lifecycle decision, not by backfilling favorable labels into the frozen author state.

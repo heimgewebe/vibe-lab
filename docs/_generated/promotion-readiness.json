@@ -539,47 +539,47 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [],
-      "notes": [
-        "falsifiability_voluntary"
+      "missing": [
+        "falsifiability.assessment_not_checked"
       ],
+      "notes": [],
       "path": "experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3",
       "pre_execution_hold": false,
-      "promotion_ready": true,
-      "status": "designed",
+      "promotion_ready": false,
+      "status": "rejected",
       "warnings": []
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [],
-      "notes": [
-        "falsifiability_voluntary"
+      "missing": [
+        "falsifiability.assessment_not_checked"
       ],
+      "notes": [],
       "path": "experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2",
       "pre_execution_hold": false,
-      "promotion_ready": true,
-      "status": "designed",
+      "promotion_ready": false,
+      "status": "rejected",
       "warnings": []
     },
     {
       "adoption_basis": "",
-      "execution_status": "designed",
-      "falsifiability_triggered": false,
+      "execution_status": "executed",
+      "falsifiability_triggered": true,
       "historical_escape": false,
-      "missing": [],
-      "notes": [
-        "falsifiability_voluntary"
+      "missing": [
+        "falsifiability.assessment_not_checked"
       ],
+      "notes": [],
       "path": "experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3",
       "pre_execution_hold": false,
-      "promotion_ready": true,
-      "status": "designed",
+      "promotion_ready": false,
+      "status": "testing",
       "warnings": []
     }
   ],
@@ -588,9 +588,9 @@
   "summary": {
     "experiments_checked": 37,
     "historical_escape": 1,
-    "not_ready": 22,
+    "not_ready": 25,
     "pre_execution_hold": 4,
-    "ready": 10,
+    "ready": 7,
     "warnings": 9
   },
   "trigger": "need_for_reproducibility"
