@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-t037-r3-v3-exact-head-review",
+  "generated_at": "2026-08-24T07:57:06Z",
+  "executor": "independent codex:gpt-5.6-terra plus exact-candidate validation and GitHub CI",
+  "command": "prospective exact-candidate qualification followed by read-only exact-head adversarial review",
+  "exit_code": 0,
+  "test_output_file": "results/evidence.jsonl",
+  "provenance_level": "self_reported",
+  "triggered_by": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; github:heimgewebe/vibe-lab#358",
+  "frozen_author_head": "1c6534941795493cec46bc0ef93cefc71689e0c8",
+  "base_head": "f4513b9b47209e44cda79aac1f8a5d089216c370",
+  "pull_request": 358,
+  "diff_sha256": "ea5b60d14bc61b86133b9cdb6a4044ecfd891ce31b59f5f638cf8b891eeddb7c",
+  "candidate_qualification": {
+    "checkout": "detached exact candidate checkout",
+    "job": "grabowski-job-7c5ccdddb0b2",
+    "receipt_sha256": "797abd897e9efc6a08537742e79f9e20880128b6c88e0c28941062466735a427",
+    "command": "make validate-core validate-active validate-legacy",
+    "result": "success",
+    "post_command_git_status": "clean",
+    "replay_mutation_guard": "pass"
+  },
+  "github_ci": {
+    "validate_run": 32703163658,
+    "validate_job": 97358669920,
+    "validate_result": "success",
+    "other_observed_pr_checks": "success"
+  },
+  "review": {
+    "job": "grabowski-job-da4f37ce5002",
+    "receipt_sha256": "f1381af64689f621185582e8fce159bc306cced7ac2cfa5a52f3bcc8a4455e05",
+    "payload_sha256": "116d355d4d4330273fc968726d2deeaf0dfa2e0caf2d9a8f440c9e15f036668a",
+    "verdict": "PASS_THIS_REVISION",
+    "attacks_blocked": 9,
+    "attacks_escaped": 0,
+    "material_findings": 0,
+    "binding": {
+      "repo": "heimgewebe/vibe-lab",
+      "pr": 358,
+      "base_sha": "f4513b9b47209e44cda79aac1f8a5d089216c370",
+      "head_sha": "1c6534941795493cec46bc0ef93cefc71689e0c8",
+      "diff_sha256": "ea5b60d14bc61b86133b9cdb6a4044ecfd891ce31b59f5f638cf8b891eeddb7c",
+      "slot": "t037-r3-v3-author-review"
+    }
+  },
+  "controller_decision": {
+    "verdict": "PASS_THIS_REVISION",
+    "material_findings": 0,
+    "reason": "The exact author head satisfied prospective full-CI clean-fixpoint qualification, exact GitHub CI and all nine independent adversarial attacks."
+  },
+  "does_not_establish": [
+    "live Bureau event-journal completeness for a future pilot",
+    "Natural-Pilot activation",
+    "productive routing or queue authority",
+    "deployment authority",
+    "merge authority"
+  ]
+}
