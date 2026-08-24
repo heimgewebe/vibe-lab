@@ -1,0 +1,50 @@
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
+date: "2026-08-24"
+reviewer: "Vibe-Lab T037 controller after independent exact-head review and exact-head CI reproduction"
+triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; github:heimgewebe/vibe-lab#357"
+rationale: >
+  The frozen R3 v2 author revision 8fca4c7188792a66c7abdaba9dbe6828b7e7b3eb passed all eight
+  preregistered reviewer attacks with zero material findings. Its one-slot semantics are therefore
+  independently supported: a fully provable experiment-influenced post-A birth keeps exactly one
+  consumed slot and contributes zero accepted natural evidence. The exact PR head nevertheless failed
+  repository CI. Before replay mutation guard, the normal validation prefix regenerated tracked
+  docs/_generated/promotion-readiness.json. A detached exact-head reproduction confirmed the same
+  revision-specific drift, while current main f4513b9b47209e44cda79aac1f8a5d089216c370 has green
+  Validate. The v2 falsification contract rejects any other material exact-head finding, so the exact
+  revision is rejected despite semantic/reviewer PASS. The five frozen v2 author files are preserved
+  unchanged. A separate successor must include the promotion-readiness projection before freeze and
+  must prove that the full CI validation prefix leaves its exact candidate head clean. No natural case
+  was taken and no pilot or productive authority is granted by this result.
+evidence_summary:
+  frozen_author_head: "8fca4c7188792a66c7abdaba9dbe6828b7e7b3eb"
+  pull_request: 357
+  reviewed_diff_sha256: "98597691421d4aa2627a57a14f88259524db4bf94465184b955af559f7d07710"
+  review_job: "grabowski-job-f829689015ce"
+  review_finalization_receipt_sha256: "514129b60efa6a08aa3aee269bf963a3f1a67d73b6f4074db5c17f06b5c77503"
+  review_attacks_blocked: 8
+  review_attacks_escaped: 0
+  review_material_findings: 0
+  review_verdict: "PASS_THIS_REVISION"
+  github_validate_run: 32701510102
+  github_validate_job: 97353815418
+  exact_head_ci_reproduction_job: "grabowski-job-9a7f057b937e"
+  exact_head_ci_reproduction_receipt_sha256: "ca7386f62cf8cff54b95c9146bb1ab22ebe71bbd3ec4c31d6704669b8acc24d5"
+  additional_material_findings: 1
+  material_finding_class: "promotion_readiness_generated_projection_drift"
+  terminal_revision_result: "REJECT_THIS_REVISION"
+  natural_cases_taken: 0
+  pilot_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
+next_steps:
+  - "Preserve frozen R3 v2 author head 8fca4c7 and its five author files unchanged as negative evidence."
+  - "Create a separate R3 v3 successor that preserves the reviewed one-slot semantics."
+  - "Generate and commit both document index and promotion-readiness projection before v3 freeze."
+  - "Before designating the v3 author head, run the CI validation prefix in an exact detached candidate checkout and require a clean working tree before replay mutation guard."
+  - "Require a fresh independent exact-head counter-review of v3."
+  - "Keep the completeness-reporting Bureau event-journal receipt as a hard future Natural-Pilot activation gate."
+  - "Do not authorize pilot, routing, queue, runtime, deployment, merge-policy, Chronik, Leitstand or product integration from this rejected revision."

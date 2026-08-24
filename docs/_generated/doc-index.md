@@ -352,6 +352,9 @@
 | `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/CONTEXT.md` | CONTEXT | — | — |
 | `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/method.md` | Outcome-Bound natural pilot — sampling-unit R3 v2 (one-slot invariant) | designed | exploratory |
 | `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/sampling-unit-cases.md` | sampling-unit-cases | — | — |
+| `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/CONTEXT.md` | CONTEXT | — | — |
+| `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/method.md` | Outcome-Bound natural pilot — sampling-unit R3 v3 (one-slot invariant) | designed | exploratory |
+| `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/sampling-unit-cases.md` | sampling-unit-cases | — | — |
 | `experiments/README.md` | Experimenten-Labor (Index) | active | navigation |
 | `exports/copilot/constraint-before-code.md` | constraint-before-code | — | — |
 | `exports/copilot/edge-case-enumeration.md` | edge-case-enumeration | — | — |
