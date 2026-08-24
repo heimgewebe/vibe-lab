@@ -1,0 +1,123 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2",
+  "registered_at": "2026-08-24T07:09:30Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the R3 v2 one-slot invariant preserves the semantically reviewed R3 correction and fixes the rejected author-head publication-completeness defect before any Natural-Pilot activation.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037",
+      "confirmed_at": "2026-08-24T07:09:30Z",
+      "valid_until": "2026-09-24T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does R3 v2 preserve exactly one fixed consumed slot and zero accepted natural evidence for an experiment-influenced fully provable post-A birth, while also freezing every affected commit-required CI-blocking generated projection before review?",
+    "owner": "Grabowski",
+    "decision_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037"
+  },
+  "intervention": {
+    "name": "explicit one-slot-before-gates invariant",
+    "description": "Construct canonical birth identity and fixed ordinal before naturalness/self-interference; explicitly forbid only zero slots for a fully proved interfered birth, while Phase G independently forbids natural-evidence acceptance."
+  },
+  "control_condition": {
+    "id": "r3_v1_rejected_generated_index_omission",
+    "description": "Frozen R3 v1 author head 84ec97c7b76609fa5ef04ccc744de0a030dd8714 on PR #356. Its exact-head review blocked all seven one-slot semantic attacks but returned REJECT_THIS_REVISION because the head omitted the commit-required CI-blocking generated document index; GitHub validate independently failed on the same omission."
+  },
+  "treatment_condition": {
+    "id": "r3_v2_r01_r09_one_slot_plus_publication_complete",
+    "description": "R3 v2 keeps the reviewed R01-R09 semantics, including R03 => assigned=1, consumed=1, accepted_natural_evidence=0, and adds a frozen-head requirement that regeneration of every CI-blocking generated artifact is clean."
+  },
+  "measurement": {
+    "primary_metric": "material_r3_v2_exact_head_review_finding_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze a separate R3 v2 author commit only after running the canonical blocking-artifact generator and committing its output. Keep every counter-hypothesis pending/not_checked and no result verdict. Then require an independent exact-head reviewer to attempt the seven semantic attacks plus an eighth clean-regeneration attack. No natural candidate is observed and no pilot is activated.",
+    "success": "All seven one-slot semantic attacks are blocked, no prospective review label leaks, regeneration of all CI-blocking generated artifacts leaves the frozen author head clean, and the independent reviewer reports zero material findings.",
+    "falsification": "Any protocol-conforming semantic escape, premature favorable label, dirty blocking-artifact regeneration, missing commit-required projection, or other material exact-head finding rejects this revision without repairing the frozen author files.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "exact_head_review_elapsed_seconds",
+      "unit": "seconds",
+      "method": "Record reviewer runtime as descriptive overhead only."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "three frozen R3 v1 publication-failure facts versus one separately frozen R3 v2 protocol and nine adversarial cases",
+    "minimum_control": 3,
+    "minimum_treatment": 9,
+    "comparability_constraints": [
+      "R3 v1 frozen author head 84ec97c7b76609fa5ef04ccc744de0a030dd8714 and its five author files remain unchanged negative evidence",
+      "R3 v1 exact-head review blocked all seven preregistered one-slot semantic attacks",
+      "R3 v1 exact-head review and GitHub CI independently identified the missing commit-required generated document index as material",
+      "canonical candidate identity and authoritative event-id ordering remain unchanged",
+      "R01-R09 one-slot semantics remain unchanged, including R03 = assigned 1, consumed 1, natural 0",
+      "activation boundary A and target N are not chosen here",
+      "no natural candidate is observed or consumed",
+      "R3 v2 review is bound to one exact frozen author commit after blocking generated artifacts are committed"
+    ],
+    "confounders": [
+      "paper agreement cannot establish live event-journal completeness",
+      "one independent reviewer may still share conceptual priors with the author",
+      "slot precision does not establish Outcome Case efficacy, prevalence or cost"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen T036/R2 negative evidence",
+      "frozen rejected R3 v1 author head 84ec97c7b76609fa5ef04ccc744de0a030dd8714 and PR #356 review result",
+      "frozen R3 v2 author commit",
+      "independent R3 v2 exact-head review receipt/output",
+      "canonical blocking generated-artifact regeneration and Git status evidence",
+      "Git/GitHub/CI exact revision truth",
+      "future completeness-reporting Bureau event-journal receipt only for later activation"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-31T18:00:00Z",
+  "expires_at": "2026-09-24T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2",
+      "add:docs/_generated/doc-index.md"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "T037 controller",
+      "review_ref": "grabowski-job:grabowski-job-0d561b2f0949",
+      "reviewed_at": "2026-08-24T07:05:26Z",
+      "rationale": "R3 v2 is a separate paper/adversarial successor to a semantically sound but publication-incomplete rejected author head. It changes no runtime authority and adds the missing generated-projection freeze discipline."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

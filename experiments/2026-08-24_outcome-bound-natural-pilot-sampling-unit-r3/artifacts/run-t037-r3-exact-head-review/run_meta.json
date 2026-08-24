@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-t037-r3-exact-head-review",
+  "generated_at": "2026-08-24T07:05:26Z",
+  "executor": "grabowski-job:grabowski-job-0d561b2f0949; codex:gpt-5.6-terra",
+  "command": "read-only independent exact-head adversarial review",
+  "exit_code": 0,
+  "test_output_file": "results/evidence.jsonl",
+  "provenance_level": "self_reported",
+  "triggered_by": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; github:heimgewebe/vibe-lab#356",
+  "frozen_author_head": "84ec97c7b76609fa5ef04ccc744de0a030dd8714",
+  "base_head": "f4513b9b47209e44cda79aac1f8a5d089216c370",
+  "pull_request": 356,
+  "diff_sha256": "0257f9b309701e9fcbc51fa3a197272b7ac1d37dafdcd0aeecee3d206551ad55",
+  "decision_review_binding": {
+    "slot": "t037-r3-author-review",
+    "verdict": "REJECT_THIS_REVISION",
+    "material_findings": 1,
+    "semantic_attacks_blocked": 7,
+    "semantic_attacks_escaped": 0
+  },
+  "review": {
+    "author": "independent Codex GPT-5.6 Terra process",
+    "reviewed_head": "84ec97c7b76609fa5ef04ccc744de0a030dd8714",
+    "material_findings": 1,
+    "semantic_result": "REJECT_THIS_REVISION",
+    "finding": "The one-slot semantics block all seven preregistered attacks, but the frozen author head omitted the commit-required CI-blocking generated document-index projection for its new Markdown documents."
+  },
+  "receipts": {
+    "job_finalization_receipt_sha256": "e30b67dc1377c5728cc012614d0acfdd398fbf39f8b7b749261643bde6dc0e6d",
+    "job_payload_sha256": "877475a21369e19d686dbfc467efe3ef87c5dec5b5349cb96c4f760523a75c5c"
+  },
+  "does_not_establish": [
+    "live Bureau event-journal completeness",
+    "Natural-Pilot activation",
+    "productive routing or queue authority",
+    "deployment authority",
+    "success of any successor revision"
+  ]
+}
