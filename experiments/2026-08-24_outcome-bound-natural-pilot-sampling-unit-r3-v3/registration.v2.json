@@ -1,0 +1,125 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3",
+  "registered_at": "2026-08-24T07:37:49Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether R3 v3 preserves the independently reviewed one-slot semantics while reaching a clean exact-head fixpoint under the full repository CI validation prefix before any Natural-Pilot activation.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037",
+      "confirmed_at": "2026-08-24T07:37:49Z",
+      "valid_until": "2026-09-24T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does R3 v3 preserve exactly one fixed consumed slot and zero accepted natural evidence for an experiment-influenced fully provable post-A birth, while its exact candidate commit remains clean after validate-core, validate-active and validate-legacy and then passes replay mutation guard?",
+    "owner": "Grabowski",
+    "decision_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037"
+  },
+  "intervention": {
+    "name": "explicit one-slot-before-gates invariant",
+    "description": "Construct canonical birth identity and fixed ordinal before naturalness/self-interference; explicitly forbid only zero slots for a fully proved interfered birth, while Phase G independently forbids natural-evidence acceptance."
+  },
+  "control_condition": {
+    "id": "r3_v2_rejected_full_ci_prefix_drift",
+    "description": "Frozen R3 v2 author head 8fca4c7188792a66c7abdaba9dbe6828b7e7b3eb / PR #357. Independent exact-head review blocked all eight preregistered attacks, but GitHub CI and a detached exact-head reproduction showed validate-core regenerating tracked docs/_generated/promotion-readiness.json, leaving the tree dirty before replay mutation guard. The controller therefore rejected the revision under its material-finding falsification rule."
+  },
+  "treatment_condition": {
+    "id": "r3_v3_one_slot_plus_full_ci_fixpoint",
+    "description": "R3 v3 preserves R01-R09 one-slot semantics and requires canonical document-index and promotion-readiness generation before candidate commit, followed by an exact detached candidate validation prefix that must succeed and leave the tree clean before replay mutation guard and author-head freeze."
+  },
+  "measurement": {
+    "primary_metric": "material_r3_v3_exact_head_review_or_ci_finding_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Prepare the R3 v3 author files prospectively with all counter-hypotheses pending/not_checked. Generate canonical document-index and promotion-readiness outputs, create a candidate commit, then in a detached checkout of that exact commit run make validate-core validate-active validate-legacy; require exit 0 and an empty git status, then run make validate-replay-mutation-guard. Only a passing candidate is designated the frozen author head. Then require an independent exact-head reviewer to attack all nine preregistered claims. No natural candidate is observed and no pilot is activated.",
+    "success": "Candidate qualification is green and clean; the frozen exact-head reviewer blocks all nine attacks with zero material findings; exact PR CI is green.",
+    "falsification": "Any semantic escape, premature favorable label, missing blocking projection, tracked mutation after the full CI validation prefix, replay-guard failure, or other material exact-head finding rejects the revision.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "exact_head_review_elapsed_seconds",
+      "unit": "seconds",
+      "method": "Record reviewer runtime as descriptive overhead only."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "three frozen R3 v2 failure/success facts versus one R3 v3 candidate and nine adversarial attacks",
+    "minimum_control": 3,
+    "minimum_treatment": 9,
+    "comparability_constraints": [
+      "R3 v2 frozen author head 8fca4c7188792a66c7abdaba9dbe6828b7e7b3eb and its five author files remain unchanged negative evidence",
+      "R3 v2 independent exact-head review blocked all eight preregistered attacks with zero material findings",
+      "R3 v2 GitHub CI and detached exact-head reproduction independently established revision-specific promotion-readiness drift before replay mutation guard",
+      "canonical candidate identity, event-id ordering and R01-R09 one-slot semantics remain unchanged",
+      "activation boundary A and target N are not chosen here",
+      "no natural candidate is observed or consumed",
+      "R3 v3 author-head designation occurs only after a clean exact-candidate CI-prefix fixpoint"
+    ],
+    "confounders": [
+      "paper agreement cannot establish live event-journal completeness",
+      "one independent reviewer may still share conceptual priors with the author",
+      "slot precision does not establish Outcome Case efficacy, prevalence or cost"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen T036/R2 negative evidence",
+      "frozen rejected R3 v1 evidence",
+      "frozen rejected R3 v2 head 8fca4c7188792a66c7abdaba9dbe6828b7e7b3eb, exact review receipt, GitHub CI and detached reproduction receipt",
+      "R3 v3 exact candidate/frozen author commit",
+      "canonical generated-artifact outputs including doc-index and promotion-readiness",
+      "exact detached candidate CI-prefix and replay-guard receipts",
+      "independent R3 v3 exact-head review receipt/output",
+      "Git/GitHub/CI exact revision truth",
+      "future completeness-reporting Bureau event-journal receipt only for later activation"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-31T18:00:00Z",
+  "expires_at": "2026-09-24T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3",
+      "add:docs/_generated/doc-index.md",
+      "add:docs/_generated/promotion-readiness.json"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "T037 controller",
+      "review_ref": "grabowski-job:grabowski-job-f829689015ce",
+      "reviewed_at": "2026-08-24T07:33:36Z",
+      "rationale": "R3 v3 is a paper/adversarial successor to R3 v2. It preserves independently reviewed one-slot semantics and narrows the remaining defect to exact-head CI fixpoint completeness without granting runtime authority."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

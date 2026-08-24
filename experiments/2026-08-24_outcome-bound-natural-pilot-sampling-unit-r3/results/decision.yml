@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "refutes"
+confidence: "high"
+date: "2026-08-24"
+reviewer: "Vibe-Lab T037 controller after independent Codex exact-head review"
+triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; github:heimgewebe/vibe-lab#356"
+rationale: >
+  The frozen R3 author revision 84ec97c7b76609fa5ef04ccc744de0a030dd8714 survived all seven
+  preregistered semantic attacks: the reviewer could not recover the R2 contradiction, erase the
+  interfered birth slot, accept natural evidence from that slot, move the naturalness gate into slot
+  construction, renumber around a rejected slot, soft-skip incomplete birth proof, or find a
+  prospective result-label leak. However, the same exact-head review found one material
+  publication-completeness defect: the three new R3 Markdown documents were missing from the
+  commit-required CI-blocking docs/_generated/doc-index.md. GitHub CI independently failed on the
+  same author head before generated-artifact regeneration. The preregistered review contract allows
+  PASS only with zero material findings, so this exact revision is rejected. The five frozen author
+  files are preserved unchanged; the remediation must be a separate successor revision that includes
+  generated blocking projections before its own author-head freeze and review. No natural case was
+  taken and no pilot or productive authority is granted by this result.
+evidence_summary:
+  frozen_author_head: "84ec97c7b76609fa5ef04ccc744de0a030dd8714"
+  pull_request: 356
+  reviewed_head: "84ec97c7b76609fa5ef04ccc744de0a030dd8714"
+  reviewed_diff_sha256: "0257f9b309701e9fcbc51fa3a197272b7ac1d37dafdcd0aeecee3d206551ad55"
+  review_job: "grabowski-job-0d561b2f0949"
+  review_finalization_receipt_sha256: "e30b67dc1377c5728cc012614d0acfdd398fbf39f8b7b749261643bde6dc0e6d"
+  semantic_attacks_blocked: 7
+  semantic_attacks_escaped: 0
+  material_findings: 1
+  material_finding_class: "generated_projection_omission"
+  terminal_revision_result: "REJECT_THIS_REVISION"
+  natural_cases_taken: 0
+  pilot_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_confirming"
+counterevidence_checked: true
+next_steps:
+  - "Preserve frozen R3 author head 84ec97c7 and its five author files unchanged as negative evidence."
+  - "Create a separately registered R3 successor revision with the same one-slot semantics and commit the blocking generated document index before freezing its author head."
+  - "Require a fresh independent exact-head counter-review of the successor, including generated-artifact completeness."
+  - "Keep the completeness-reporting Bureau event-journal receipt as a hard future Natural-Pilot activation gate."
+  - "Do not authorize pilot, routing, queue, runtime, deployment, merge-policy, Chronik, Leitstand or product integration from this rejected revision."

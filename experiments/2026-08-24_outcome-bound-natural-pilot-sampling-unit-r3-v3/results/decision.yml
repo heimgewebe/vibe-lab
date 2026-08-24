@@ -1,0 +1,47 @@
+schema_version: "0.1.0"
+decision_type: "result_assessment"
+verdict: "confirms"
+confidence: "high"
+date: "2026-08-24"
+reviewer: "Vibe-Lab T037 controller after independent exact-head Codex review and exact-head CI"
+triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; github:heimgewebe/vibe-lab#358"
+rationale: >
+  The frozen R3 v3 author revision 1c6534941795493cec46bc0ef93cefc71689e0c8 met the
+  preregistered author-head qualification before independent review: the exact detached candidate
+  passed make validate-core validate-active validate-legacy, the working tree remained clean, and
+  make validate-replay-mutation-guard passed. GitHub CI then passed on that exact author head. A
+  separate read-only reviewer bound to the exact base, head, pull request and canonical diff digest
+  blocked all nine preregistered attacks with zero material findings. The exact revision therefore
+  supports the one-slot invariant: every fully provable post-A candidate identity birth obtains one
+  fixed ordinal before naturalness or self-interference gates; an experiment-influenced birth consumes
+  that one slot while contributing zero accepted natural evidence. This paper/adversarial result takes
+  no natural sample and activates no Natural Pilot or productive authority. Any later Natural-Pilot
+  activation still requires a separate revision-bound, explicitly completeness-reporting Bureau
+  event-journal receipt.
+evidence_summary:
+  frozen_author_head: "1c6534941795493cec46bc0ef93cefc71689e0c8"
+  base_head: "f4513b9b47209e44cda79aac1f8a5d089216c370"
+  pull_request: 358
+  reviewed_diff_sha256: "ea5b60d14bc61b86133b9cdb6a4044ecfd891ce31b59f5f638cf8b891eeddb7c"
+  qualification_job: "grabowski-job-7c5ccdddb0b2"
+  qualification_receipt_sha256: "797abd897e9efc6a08537742e79f9e20880128b6c88e0c28941062466735a427"
+  qualification_result: "success_clean_tree_and_replay_guard_pass"
+  review_job: "grabowski-job-da4f37ce5002"
+  review_finalization_receipt_sha256: "f1381af64689f621185582e8fce159bc306cced7ac2cfa5a52f3bcc8a4455e05"
+  review_verdict: "PASS_THIS_REVISION"
+  review_attacks_blocked: 9
+  review_attacks_escaped: 0
+  review_material_findings: 0
+  github_validate_run: 32703163658
+  github_validate_job: 97358669920
+  exact_author_head_ci: "success"
+  natural_cases_taken: 0
+  pilot_authorized: false
+  production_integration_authorized: false
+counter_hypothesis_outcome: "found_and_refuted"
+counterevidence_checked: true
+next_steps:
+  - "Preserve frozen R3 v3 author head 1c6534941795493cec46bc0ef93cefc71689e0c8 and its five author files unchanged."
+  - "Keep the explicitly completeness-reporting Bureau event-journal receipt as a hard future Natural-Pilot activation gate."
+  - "Treat PR #358 as integration-ready evidence for the experiment result, but do not infer merge authority or Natural-Pilot activation from this task."
+  - "Do not authorize routing, queue, runtime, deployment, merge-policy, Chronik, Leitstand or product integration from this result."

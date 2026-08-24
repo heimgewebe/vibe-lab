@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-t037-r3-v2-exact-head-review",
+  "generated_at": "2026-08-24T07:37:49Z",
+  "executor": "independent codex:gpt-5.6-terra plus GitHub CI and detached exact-head CI reproduction",
+  "command": "read-only exact-head adversarial review plus exact-head repository validation",
+  "exit_code": 0,
+  "test_output_file": "results/evidence.jsonl",
+  "provenance_level": "self_reported",
+  "triggered_by": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; github:heimgewebe/vibe-lab#357",
+  "frozen_author_head": "8fca4c7188792a66c7abdaba9dbe6828b7e7b3eb",
+  "base_head": "f4513b9b47209e44cda79aac1f8a5d089216c370",
+  "pull_request": 357,
+  "diff_sha256": "98597691421d4aa2627a57a14f88259524db4bf94465184b955af559f7d07710",
+  "review": {
+    "job": "grabowski-job-f829689015ce",
+    "receipt_sha256": "514129b60efa6a08aa3aee269bf963a3f1a67d73b6f4074db5c17f06b5c77503",
+    "verdict": "PASS_THIS_REVISION",
+    "attacks_blocked": 8,
+    "attacks_escaped": 0,
+    "material_findings": 0
+  },
+  "repository_validation": {
+    "github_validate_run": 32701510102,
+    "github_validate_job": 97353815418,
+    "github_result": "failure",
+    "failure_step": "Guard replay non-mutation",
+    "failure_precondition": "working tree already dirty before replay",
+    "detached_reproduction_job": "grabowski-job-9a7f057b937e",
+    "detached_reproduction_receipt_sha256": "ca7386f62cf8cff54b95c9146bb1ab22ebe71bbd3ec4c31d6704669b8acc24d5",
+    "detached_reproduction_command": "make validate-core validate-active validate-legacy",
+    "detached_reproduction_result": "success_with_tracked_dirty_output",
+    "dirty_path": "docs/_generated/promotion-readiness.json",
+    "base_main_validate_run": 32548587865,
+    "base_main_validate_result": "success"
+  },
+  "controller_decision": {
+    "verdict": "REJECT_THIS_REVISION",
+    "material_findings": 1,
+    "reason": "The v2 falsification contract rejects any other material exact-head finding; repository CI exposed revision-specific generated promotion-readiness drift outside the narrower reviewer blocking-artifact set."
+  },
+  "does_not_establish": [
+    "live Bureau event-journal completeness",
+    "Natural-Pilot activation",
+    "productive routing or queue authority",
+    "deployment authority",
+    "success of any successor revision"
+  ]
+}
