@@ -1,0 +1,120 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3",
+  "registered_at": "2026-08-24T06:46:08Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the R3 one-slot invariant removes the exact T036/R2 contradiction without weakening interference rejection or activating a natural pilot.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037",
+      "confirmed_at": "2026-08-24T06:46:08Z",
+      "valid_until": "2026-09-24T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Does R3 state a contradiction-free invariant in which every fully provable post-A candidate_identity_birth creates exactly one fixed slot before gates, while an experiment-influenced birth consumes that one slot and contributes zero accepted natural evidence?",
+    "owner": "Grabowski",
+    "decision_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037"
+  },
+  "intervention": {
+    "name": "explicit one-slot-before-gates invariant",
+    "description": "Construct canonical birth identity and fixed ordinal before naturalness/self-interference; explicitly forbid only zero slots for a fully proved interfered birth, while Phase G independently forbids natural-evidence acceptance."
+  },
+  "control_condition": {
+    "id": "t036_r2_rejected_sentence_contradiction",
+    "description": "Frozen T036/R2 author head c654a3c707fc4e6aafdc0034b26e2e622e1e1054 and PR #355 result 640eca602eead54a8022ad6b8077840c29daf103c096c6d7036929c27975ace5, where exact-head review found that one sentence prohibited reading the interfered birth as one slot immediately before the protocol required exactly one consumed slot."
+  },
+  "treatment_condition": {
+    "id": "r3_r01_r09_one_slot_cases",
+    "description": "Exactly R01-R09 in sampling-unit-cases.md, including frozen R03: an experiment-delayed and reprioritized fully proved post-A birth must deterministically yield assigned=1, consumed=1, accepted_natural_evidence=0 and REJECT_THIS_REVISION."
+  },
+  "measurement": {
+    "primary_metric": "material_one_slot_semantics_disagreement_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Freeze one author commit containing CONTEXT.md, method.md, sampling-unit-cases.md, manifest.yml and registration.v2.json while every counter-hypothesis assessment is pending/not_checked and no result verdict exists. Then require an independent reviewer to inspect that exact commit and attempt all seven preregistered counter-review attacks. No natural candidate is observed and no pilot is activated.",
+    "success": "The exact-head reviewer cannot recover the R2 contradiction, cannot derive zero assigned/consumed slots for frozen R03, cannot accept natural evidence from R03, cannot move a Phase-G predicate into Phase S, cannot renumber around a rejected slot, cannot turn incomplete birth proof into a soft skip/speculative slot, and confirms that no checked/favorable review or result label existed at the frozen author head.",
+    "falsification": "Any material protocol-conforming escape on the seven required attacks or any premature checked/favorable assessment/result label rejects this revision without repairing the frozen author files.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "exact_head_review_elapsed_seconds",
+      "unit": "seconds",
+      "method": "Record reviewer runtime as descriptive overhead only."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "three frozen R2 negative-evidence facts versus one frozen R3 protocol and nine adversarial cases",
+    "minimum_control": 3,
+    "minimum_treatment": 9,
+    "comparability_constraints": [
+      "T036/R2 frozen author head c654a3c707fc4e6aafdc0034b26e2e622e1e1054, its method, registration and R01-R09 remain unchanged negative evidence",
+      "the R2 frozen sentence forbids the one-slot reading for the interfered birth",
+      "the same R2 Phase-G contract immediately requires exactly one consumed slot for that birth",
+      "the exact-head review at PR #355 records that contradiction as material and terminally rejects the revision",
+      "canonical candidate identity and authoritative event-id ordering remain unchanged",
+      "the activation boundary A and target N are not chosen here",
+      "no natural candidate is observed or consumed",
+      "review is bound to the exact frozen R3 author commit"
+    ],
+    "confounders": [
+      "paper agreement cannot establish live event-journal completeness",
+      "one independent reviewer may still share conceptual priors with the author",
+      "slot precision does not establish Outcome Case efficacy, prevalence or cost"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "frozen T036/R2 author revision and terminal rejection",
+      "frozen R3 author commit",
+      "independent exact-head review receipt/output",
+      "Git/GitHub/CI exact revision truth",
+      "future completeness-reporting Bureau event-journal receipt only for later activation"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-08-31T18:00:00Z",
+  "expires_at": "2026-09-24T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3"
+    ],
+    "durable_offsets": [],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski",
+      "review_ref": "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037",
+      "reviewed_at": "2026-08-24T06:46:08Z",
+      "rationale": "The successor is paper/adversarial-only, corrects one frozen falsified semantics seam and grants no natural-pilot or productive authority."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

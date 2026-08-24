@@ -1,0 +1,126 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-natural-pilot-sampling-unit-r3"
+  hypothesis: >
+    Every fully provable post-A candidate_identity_birth creates exactly one immutable ordinal before
+    naturalness or self-interference is evaluated. Therefore an experiment-influenced birth consumes
+    exactly one fixed slot while contributing zero accepted natural evidence; only the zero-slot
+    interpretation is excluded, while one-slot-plus-natural-acceptance remains independently forbidden.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-24"
+  updated: "2026-08-24"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "bureau-task:OPERATOR-INTEGRATION-LOOP-V1-T037; predecessor:OPERATOR-INTEGRATION-LOOP-V1-T036; github:heimgewebe/vibe-lab#355"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject this revision if an independent exact-head reviewer can recover the R2 one-slot
+      contradiction, derive zero assigned or consumed slots for a fully proved experiment-influenced
+      post-A birth, accept natural evidence from that interfered birth, apply naturalness or
+      self-interference during slot construction, skip and renumber around an interfered birth, turn
+      incomplete birth proof into a soft skip or speculative slot, or find any checked/favorable
+      counter-hypothesis or result label written before independent review evidence existed.
+    counter_hypotheses:
+      - id: "r2_sentence_contradiction_survives"
+        statement: >
+          R3 may still simultaneously forbid the one-slot reading and require exactly one consumed
+          slot for the same experiment-influenced fully proved birth.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must search method.md and frozen cases for any rule that forbids the required one-slot tuple."
+          limitations:
+            - "No independent review evidence exists at the author revision."
+          confidence: low
+      - id: "interference_can_erase_the_slot"
+        statement: >
+          Because an interfered birth is inadmissible as natural evidence, a reader may still apply
+          the interference gate during Phase S and derive zero assigned or consumed slots.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must attempt R03 => assigned=0, consumed=0."
+          limitations:
+            - "No independent review evidence exists at the author revision."
+          confidence: low
+      - id: "slot_existence_can_admit_natural_evidence"
+        statement: >
+          Once a fully proved birth owns a valid slot, a reader may incorrectly infer that slot
+          validity also proves natural-evidence admissibility despite experiment interference.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must attempt R03 => assigned=1, consumed=1, natural_evidence=accepted."
+          limitations:
+            - "No independent review evidence exists at the author revision."
+          confidence: low
+      - id: "gate_can_precede_slot_construction"
+        statement: >
+          Naturalness or self-interference may still be usable as a selector before the canonical
+          birth identity and ordinal are fully constructed.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must try to move any Phase-G predicate into Phase S without violating the written protocol."
+          limitations:
+            - "No independent review evidence exists at the author revision."
+          confidence: low
+      - id: "rejected_slot_can_be_backfilled"
+        statement: >
+          A later birth may still replace an interfered slot by shifting its ordinal down after the
+          earlier slot fails its evidence gate.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must attack R06 and the no-backfill invariant."
+          limitations:
+            - "No independent review evidence exists at the author revision."
+          confidence: low
+      - id: "birth_proof_failure_becomes_soft_skip"
+        statement: >
+          An incomplete event-journal history may be converted into a skipped unit or speculative
+          slot, allowing later births to continue the sequence without a complete birth proof.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must attack R07 and the construction hard gate."
+          limitations:
+            - "A completeness-reporting Bureau event-journal read is a future activation gate and is not claimed by this paper revision."
+          confidence: low
+      - id: "prospective_labels_leak_review_results"
+        statement: >
+          Counter-hypothesis or result metadata may contain checked, support/PASS-like or other
+          favorable labels before the exact-head review evidence they purport to summarize exists.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Independent exact-head reviewer must inspect all R3 author-head result and assessment surfaces for premature labels."
+          limitations:
+            - "The author revision intentionally contains no result verdict."
+          confidence: low
+
+context:
+  tools:
+    - "rejected T036/R2 frozen author revision c654a3c707fc4e6aafdc0034b26e2e622e1e1054 and PR #355 review"
+    - "terminal S1-R2 canonical candidate identity rule"
+    - "authoritative Bureau event-id ordering contract"
+    - "Git/GitHub/CI exact revision truth"
+  language: "Markdown, JSON, YAML"
+  environment: "paper and adversarial reasoning only; no natural sampling, pilot activation or productive integration"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl
