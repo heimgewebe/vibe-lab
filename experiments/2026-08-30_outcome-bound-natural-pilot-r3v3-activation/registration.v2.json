@@ -45,7 +45,7 @@
     "cost_metric": {
       "id": "median_handling_seconds",
       "unit": "seconds",
-      "method": "For every consumed slot, sample handling_started_at_monotonic_ns immediately before the first authoritative candidate-task read in the scan that discovers the candidate or begins its eligibility proof. Sample handling_finished_at_monotonic_ns only after terminal state, metric increment, required evidence references and timing fields are durably frozen and read back. handling_seconds is their monotonic difference divided by 1e9; detection, completeness scans, proof, analysis, failed-capture classification, persistence and readback are all included and no interval may be subtracted. Loss of monotonic-clock continuity makes the slot indeterminate. PASS requires the three-slot median <= 600 seconds."
+      "method": "For every consumed slot, sample handling_started_at_monotonic_ns immediately before the first authoritative candidate-task read in the scan that discovers the candidate or begins its eligibility proof. After detection, completeness scans, identity/birth proof, evidence reads, analysis and failed-capture classification have produced a complete provisional terminal payload in memory, sample handling_finished_at_monotonic_ns immediately before durable persistence. handling_seconds is their monotonic difference divided by 1e9. Persist the terminal payload and a timing record that binds start, finish, seconds and the payload hash, then read both back as a separate hard persistence-verification gate. Persistence/readback latency is explicitly excluded from handling_seconds to avoid a circular finish definition; failure of that gate makes the slot indeterminate and immediately rejects the revision. PASS requires the three-slot median <= 600 seconds."
     }
   },
   "comparison": {
@@ -75,6 +75,7 @@
       "authoritative Bureau candidate event ids and canonical candidate identities",
       "pre-mutation C/S/B/E/T/Q freeze evidence",
       "monotonic handling-clock boundaries plus UTC provenance timestamps",
+      "hash-bound terminal-payload and timing-record persistence/readback evidence",
       "Git/GitHub exact revision and CI truth",
       "independent exact-head post-cohort review evidence"
     ],
