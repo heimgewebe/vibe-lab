@@ -1,0 +1,87 @@
+schema_version: "0.1.0"
+
+experiment:
+  name: "outcome-bound-natural-pilot-r3v3-activation"
+  hypothesis: >
+    The passed R3 v3 candidate_identity_birth rule can be activated prospectively for exactly three
+    natural Bureau operator-intake births by choosing A as the event id of one post-merge activation
+    marker, without backfill, self-created post-A slots or productive control-plane authority.
+  status: designed
+  category: workflow
+  execution_status: designed
+  execution_refs: []
+  created: "2026-08-30"
+  updated: "2026-08-30"
+  author: "ChatGPT / Grabowski"
+  triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830"
+  iteration: 1
+  evidence_level: experimental
+  falsifiability:
+    version: 1
+    falsification_criterion: >
+      Reject this activation revision if an exact-head reviewer can show that A can be chosen after
+      seeing post-A candidate outcomes, that an experiment-caused repository/PR mutation may occur
+      after A without consuming a slot, that a fully proved birth can be skipped/replaced/backfilled,
+      that incomplete Bureau coverage can be treated as a soft skip, or that the stated PASS/REJECT/
+      INCONCLUSIVE rule differs from the frozen three-slot admission contract.
+    counter_hypotheses:
+      - id: "activation_self_interference_creates_post_a_birth"
+        statement: >
+          The activation procedure itself may create a new candidate identity after A and then ignore
+          that identity, making the natural cohort selectively defined.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Exact-head reviewer must verify that all revision/PR/review/merge mutations precede the Bureau marker and that marker event_id itself equals A."
+          limitations:
+            - "No activation marker exists at the author revision."
+          confidence: low
+      - id: "bounded_history_is_mistaken_for_complete_birth_proof"
+        statement: >
+          A display-truncated live-list may be treated as complete raw history even though only its
+          projection coverage is complete.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Reviewer must distinguish history_truncated from coverage_complete and require projection_source=complete_event_scan at activation."
+          limitations:
+            - "The actual activation observation is intentionally post-merge."
+          confidence: low
+      - id: "failed_or_d0_slot_can_be_backfilled"
+        statement: >
+          A binding failure or uninformative D0 slot may be silently replaced by a later convenient birth.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Reviewer must verify N=3 fixed ordinals and the explicit no-fourth-case rule."
+          limitations:
+            - "No natural slots exist at the author revision."
+          confidence: low
+      - id: "activation_smuggles_full_outcome_or_runtime_authority"
+        statement: >
+          The activation may silently turn an admission-feasibility test into Full Outcome collection or
+          a Bureau/Grabowski control-plane integration.
+        assessment:
+          status: pending
+          outcome: not_checked
+          pending_checks:
+            - "Reviewer must verify that successful captures contain only C/S/B/E/T/Q plus bounded evidence metadata and all runtime/policy integrations remain forbidden."
+          limitations:
+            - "Decision-impact remains a separate future experiment."
+          confidence: low
+
+context:
+  tools:
+    - "passed R3 v3 result at Vibe-Lab main"
+    - "Bureau live-list completeness signals"
+    - "Git/GitHub exact revision truth"
+    - "Grabowski isolated work lane and exact-head review evidence"
+  language: "Markdown, JSON, YAML"
+  environment: "prospective experiment evidence only; zero routing, queue, runtime or product authority"
+
+evidence:
+  format: jsonl
+  path: results/evidence.jsonl

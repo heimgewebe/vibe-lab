@@ -568,16 +568,31 @@
       "promotion_ready": false,
       "status": "testing",
       "warnings": []
+    },
+    {
+      "adoption_basis": "",
+      "execution_status": "designed",
+      "falsifiability_triggered": false,
+      "historical_escape": false,
+      "missing": [],
+      "notes": [
+        "falsifiability_voluntary"
+      ],
+      "path": "experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
+      "pre_execution_hold": false,
+      "promotion_ready": true,
+      "status": "designed",
+      "warnings": []
     }
   ],
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 36,
+    "experiments_checked": 37,
     "historical_escape": 1,
     "not_ready": 25,
     "pre_execution_hold": 4,
-    "ready": 6,
+    "ready": 7,
     "warnings": 9
   },
   "trigger": "need_for_reproducibility"
