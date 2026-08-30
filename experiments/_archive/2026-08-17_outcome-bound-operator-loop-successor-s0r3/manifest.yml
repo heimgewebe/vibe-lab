@@ -17,7 +17,7 @@ experiment:
     - "results/reviewer-b.md"
     - "results/s0r3-gate.md"
   created: "2026-08-17"
-  updated: "2026-08-17"
+  updated: "2026-08-30"
   author: "ChatGPT / Grabowski"
   triggered_by: "github:heimgewebe/vibe-lab#343; grabowski-job:9f4d8d161c6e"
   iteration: 2
