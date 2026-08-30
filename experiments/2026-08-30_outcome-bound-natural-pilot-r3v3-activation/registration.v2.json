@@ -20,7 +20,7 @@
   },
   "intervention": {
     "name": "R3-v3 prospective three-slot admission",
-    "description": "After reviewed merge, set A to one explicit Bureau activation-marker event id; then consume the first three fully provable later candidate identity births in numeric event-id order and attempt C/S/B/E/T/Q binding before productive mutation without delaying work."
+    "description": "The experiment is registered as active testing before A while execution_status remains designed. After reviewed merge, set A to one explicit Bureau activation-marker event id; then consume the first three fully provable later candidate identity births in numeric event-id order and attempt C/S/B/E/T/Q binding before productive mutation without delaying work."
   },
   "control_condition": {
     "id": "pre_activation_boundary_sentinels",
@@ -35,9 +35,9 @@
     "direction": "lower_is_better",
     "unit": "count",
     "minimum_material_effect": 1,
-    "method": "Activate only after exact-head review and merge. Create one idempotent Bureau marker whose numeric event id becomes A. For each of the first three fully proved later identity births, freeze or fail the admission before productive mutation without delaying productive execution. Freeze all three-slot evidence before independent review.",
-    "success": "3/3 canonical slots, zero binding failures, zero material review disagreements, zero authority violations, zero replacement/backfill, median handling <= 10 minutes, and at least two definitive non-D0 cases.",
-    "falsification": "Any binding failure, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering, post-result binding, or material exact-head review disagreement rejects the revision.",
+    "method": "Before A, bind this experiment in experiments/active.v1.json as state testing with results/decision.yml verdict not_executed and manifest execution_status designed. After exact-head review and merge, create one idempotent Bureau marker whose numeric event id becomes A. For each consumed post-A slot, the terminal-state mapping is fixed: frozen and not_applicable add 0; capture_missed_before_mutation, capture_not_frozen_in_time, result_informed_binding_failure, indeterminate, rejected_interference and rejected_ambiguous_causation each add 1 and immediately REJECT. Freeze each admission before productive mutation without delaying productive execution; later slots cannot repair or dilute a failure.",
+    "success": "3/3 canonical slots, binding_failure_count == 0, zero material review disagreements, zero authority violations, zero replacement/backfill, median handling_seconds <= 600, and at least two definitive non-D0 cases.",
+    "falsification": "Any state with binding_failure_increment=1, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering, post-result binding, or material exact-head review disagreement rejects the revision.",
     "outcome_criteria": {
       "success_threshold": 0,
       "harm_or_falsification_threshold": 1
@@ -45,7 +45,7 @@
     "cost_metric": {
       "id": "median_handling_seconds",
       "unit": "seconds",
-      "method": "Measure elapsed admission handling for each consumed slot in seconds; PASS requires median <= 600 seconds (10 minutes)."
+      "method": "For every consumed slot, sample handling_started_at_monotonic_ns immediately before the first authoritative candidate-task read in the scan that discovers the candidate or begins its eligibility proof. Sample handling_finished_at_monotonic_ns only after terminal state, metric increment, required evidence references and timing fields are durably frozen and read back. handling_seconds is their monotonic difference divided by 1e9; detection, completeness scans, proof, analysis, failed-capture classification, persistence and readback are all included and no interval may be subtracted. Loss of monotonic-clock continuity makes the slot indeterminate. PASS requires the three-slot median <= 600 seconds."
     }
   },
   "comparison": {
@@ -69,10 +69,12 @@
   "evidence_sources": {
     "allowed": [
       "Vibe-Lab R3 v3 frozen result and exact-head review evidence",
+      "active-experiment registry and not-executed decision binding frozen before A",
       "fresh Bureau live-list completeness signals with coverage_complete=true and projection_source=complete_event_scan",
       "idempotent Bureau activation marker and exact numeric event id A",
       "authoritative Bureau candidate event ids and canonical candidate identities",
       "pre-mutation C/S/B/E/T/Q freeze evidence",
+      "monotonic handling-clock boundaries plus UTC provenance timestamps",
       "Git/GitHub exact revision and CI truth",
       "independent exact-head post-cohort review evidence"
     ],
@@ -92,16 +94,18 @@
   },
   "surface_budget": {
     "durable_additions": [
-      "add:experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
-      "add:docs/_generated/doc-index.md",
-      "add:docs/_generated/promotion-readiness.json"
+      "add:experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation"
     ],
-    "durable_offsets": [],
+    "durable_offsets": [
+      "replace:experiments/active.v1.json",
+      "replace:docs/_generated/doc-index.md",
+      "replace:docs/_generated/promotion-readiness.json"
+    ],
     "reviewed_exception": {
       "reviewed_by": "Grabowski controller under explicit user authorization",
       "review_ref": "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830",
       "reviewed_at": "2026-08-30T08:05:00Z",
-      "rationale": "This is a bounded experiment-only activation successor to the passed R3 v3 sampling protocol; no new production or control-plane surface is added."
+      "rationale": "This is a bounded experiment-only activation successor to the passed R3 v3 sampling protocol; the active-registry replacement adds lifecycle visibility but no production or control-plane authority."
     }
   },
   "boundary": {

@@ -1,6 +1,6 @@
 ---
 title: "Outcome-Bound natural pilot — R3 v3 prospective activation"
-status: designed
+status: testing
 canonicality: exploratory
 created: "2026-08-30"
 updated: "2026-08-30"
@@ -11,19 +11,21 @@ triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830;
 
 ## 1. Purpose
 
-This revision does not change the passed R3 v3 sampling semantics. It activates exactly one prospective three-slot Natural Pilot only after this revision has been independently reviewed, merged, and a separate authoritative Bureau activation marker has been appended. No natural case may be selected, reconstructed or backfilled before that marker exists.
+This revision does not change the passed R3 v3 sampling semantics. When merged, it registers exactly one active testing experiment while `execution_status` remains `designed`; this makes the experiment visible to active-experiment validation and review-date enforcement before any natural case exists. The prospective three-slot cohort itself starts only after a separate authoritative Bureau activation marker has been appended. No natural case may be selected, reconstructed or backfilled before that marker exists.
 
 The inherited R3 v3 contract remains authoritative for canonical identity, birth proof, Phase-S slot construction, Phase-G naturalness/self-interference and no-backfill semantics. In particular, every fully provable post-A `candidate_identity_birth` creates exactly one fixed ordinal before any gate decision.
 
 ## 2. Activation boundary A
 
-The activation boundary is not a wall-clock timestamp and is not chosen from observed candidate outcomes. After this exact revision is merged, the controller appends exactly one Bureau `candidate_task` operator-intake marker with idempotency key `outcome-bound-natural-pilot-r3v3-activation-20260830-v1`.
+The activation boundary is not a wall-clock timestamp and is not chosen from observed candidate outcomes. After this exact revision is independently reviewed and merged, the controller appends exactly one Bureau `candidate_task` operator-intake marker with idempotency key `outcome-bound-natural-pilot-r3v3-activation-20260830-v1`.
 
 The authoritative numeric Bureau event id returned by that append is **A**. The marker itself is experiment-caused but has `event_id == A`; the cohort admits only births with `identity_first_event.event_id > A`, so the marker cannot consume a pilot slot. No repository, PR or review mutation required to establish this revision may occur after A.
 
 Activation is valid only when the marker records and binds all of the following preconditions observed immediately before append:
 
 - this Vibe-Lab activation revision is merged on `main`;
+- `experiments/active.v1.json` contains this experiment with `state: testing`, `primary_metric: binding_failure_count` and `source_ref` bound to this experiment's `results/decision.yml`;
+- the manifest remains `status: testing` and `execution_status: designed`, and `results/decision.yml` remains `verdict: not_executed`, proving that registry activation did not fabricate a natural run;
 - the R3 v3 result remains `verdict: confirms`, `natural_cases_taken: 0`, `pilot_authorized: false` before this successor activation;
 - a fresh Bureau `live-list --kind candidate_task` observation reports `coverage_complete=true` and `projection_source=complete_event_scan`;
 - the same observation reports the complete projection size and the latest displayed candidate event used as the pre-marker high-water observation;
@@ -41,20 +43,20 @@ For each fully proved birth, Phase S assigns the next ordinal before any admissi
 
 A post-A event that is only a supersession or later event of a pre-existing canonical candidate identity consumes no new slot because it is not an identity birth.
 
-## 4. Slot outcomes
+## 4. Slot outcomes and primary-metric mapping
 
-Each assigned slot terminates in exactly one admission state:
+Each assigned slot terminates in exactly one admission state. The state fixes both its contribution to `binding_failure_count` and its mechanical decision effect before any case is observed:
 
-- `frozen`: C/S/B/E/T/Q were prospectively bound before productive mutation;
-- `capture_missed_before_mutation`: productive mutation had already begun before the required binding;
-- `capture_not_frozen_in_time`: binding would have delayed productive work;
-- `result_informed_binding_failure`: outcome/result knowledge existed before binding;
-- `not_applicable`: D0;
-- `indeterminate`: C/S/B/E/T/Q could not be bound reproducibly;
-- `rejected_interference`: the experiment influenced a fully proved birth;
-- `rejected_ambiguous_causation`: independence from the experiment cannot be proved.
+- `frozen`: C/S/B/E/T/Q were prospectively bound before productive mutation; `binding_failure_increment=0`; continue until the fixed cohort ends. It is informative only when its outcome-distance classification is non-D0.
+- `not_applicable`: D0; `binding_failure_increment=0`; continue. It is explicitly non-informative and can never be replaced.
+- `capture_missed_before_mutation`: productive mutation had already begun before the required binding; `binding_failure_increment=1`; immediate REJECT.
+- `capture_not_frozen_in_time`: binding could not be completed without delaying productive work; `binding_failure_increment=1`; immediate REJECT.
+- `result_informed_binding_failure`: outcome/result knowledge existed before binding; `binding_failure_increment=1`; immediate REJECT.
+- `indeterminate`: C/S/B/E/T/Q or required timing evidence could not be bound reproducibly; `binding_failure_increment=1`; immediate REJECT.
+- `rejected_interference`: the experiment influenced a fully proved birth; `binding_failure_increment=1`; immediate REJECT and zero accepted natural evidence.
+- `rejected_ambiguous_causation`: independence from the experiment cannot be proved; `binding_failure_increment=1`; immediate REJECT and zero accepted natural evidence.
 
-The last two states consume their already-assigned slot and stop this revision immediately. They accept zero natural evidence.
+`binding_failure_count` is the sum of the frozen per-slot increments above. There is no reviewer discretion to reclassify an increment after seeing later slots. Any of the six failure states already falsifies this revision; later births cannot repair, replace or dilute that failure. Authority violations, noncanonical ordering, backfill/replacement or other preregistered material protocol violations also cause REJECT even if `binding_failure_count` remains zero.
 
 ## 5. Successful capture payload
 
@@ -67,33 +69,43 @@ A `frozen` slot records only the already established S0-R3 admission bindings:
 - T — Transition Path
 - Q — Delivery Qualifiers
 
-It additionally records slot/anchor identity, freeze time, handling duration, outcome-distance classification, primary-evidence references and authority violations. It must not copy mutable technical truth and does not create a Full Outcome Case.
+It additionally records slot/anchor identity, the timing fields defined below, outcome-distance classification, primary-evidence references and authority violations. It must not copy mutable technical truth and does not create a Full Outcome Case.
 
 ## 6. Prospective timing rule
 
 For a potentially capturable birth, C/S/B/E/T/Q must be frozen before productive mutation. The capture observer may not delay, reprioritize, split, merge or reshape productive work. If timely capture is impossible, the slot records the corresponding failure state rather than delaying execution.
 
+The handling-time clock is fixed as follows for every consumed slot:
+
+1. `handling_started_at_monotonic_ns` is sampled immediately **before** issuing the first authoritative candidate-task read in the scan that discovers the candidate or begins the proof that it is the next eligible canonical identity birth. Candidate detection, complete-projection checks, identity/birth proof, naturalness checks and all C/S/B/E/T/Q analysis are therefore inside the clock.
+2. `handling_finished_at_monotonic_ns` is sampled only **after** the slot's terminal state, metric increment, required primary-evidence references and timing fields have been durably frozen and successfully read back. Failed-capture classification and its evidence are inside the clock as well.
+3. `handling_seconds = (handling_finished_at_monotonic_ns - handling_started_at_monotonic_ns) / 1_000_000_000`. The slot also records UTC start/end timestamps for provenance, but the monotonic difference is the metric authority.
+4. No analysis interval, completeness scan, evidence read, retry or persistence/readback time between those boundaries may be subtracted. If the observer process loses the monotonic clock continuity before terminal readback, the slot is `indeterminate` and increments `binding_failure_count` by one.
+5. If productive mutation begins before a successful terminal freeze, the state cannot be `frozen`; it must take the applicable failure state. The observer never delays productive execution merely to improve the measured duration.
+
+For a scan that finds no new eligible identity birth, no slot is consumed and no handling duration is recorded. Once a scan discovers or begins proof of a birth that becomes a consumed slot, its request-start boundary above is authoritative and cannot be moved later.
+
 ## 7. Three-slot stop and review
 
-The pilot stops when three ordinals have been consumed or earlier when R3 v3 requires fail-closed termination. No fourth case can replace an uninformative or failed slot.
+The pilot stops when three ordinals have been consumed or immediately when a failure state or inherited R3 v3 rule requires fail-closed termination. No fourth case can replace an uninformative or failed slot.
 
-After termination, freeze the exact evidence revision. An independent exact-head reviewer must verify: activation-marker identity and A; first-three-birth ordering; no replacement/backfill; complete birth proof; capture-before-mutation; C/S/B/E/T/Q reproducibility; classifications; baseline stability; target-effect versus qualifier separation; authority boundaries; and measured handling time.
+After termination, freeze the exact evidence revision. An independent exact-head reviewer must verify: activation-marker identity and A; first-three-birth ordering; no replacement/backfill; complete birth proof; capture-before-mutation; C/S/B/E/T/Q reproducibility; exhaustive state-to-metric mapping; classifications; baseline stability; target-effect versus qualifier separation; authority boundaries; and measured handling time including the fixed clock boundaries.
 
 ## 8. Mechanical S1 decision
 
 PASS requires all of:
 
 - exactly 3/3 slots in canonical order;
-- zero binding failures;
+- `binding_failure_count == 0` under the fixed state mapping;
 - zero material review disagreements;
 - zero authority violations;
 - zero replacement/backfill;
-- median handling time <= 10 minutes;
+- median `handling_seconds` across the three consumed slots <= 600 seconds;
 - at least two definitive non-D0 slots.
 
-REJECT occurs on any real binding failure, experiment interference, ambiguous causation or other preregistered material protocol violation.
+REJECT occurs immediately on any slot with `binding_failure_increment=1`, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering or other preregistered material protocol violation.
 
-INCONCLUSIVE is permitted only when the mechanics succeed but the fixed three slots contain fewer than two informative non-D0 cases. No backfill is allowed; any successor is a new prospective cohort.
+INCONCLUSIVE is permitted only when the mechanics succeed, `binding_failure_count == 0`, all three fixed slots are consumed, and fewer than two are informative non-D0 cases. No backfill is allowed; any successor is a new prospective cohort.
 
 ## 9. Non-claims
 
