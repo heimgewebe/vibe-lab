@@ -35,9 +35,9 @@
     "direction": "lower_is_better",
     "unit": "count",
     "minimum_material_effect": 1,
-    "method": "Before A, bind this experiment in experiments/active.v1.json as state testing with results/decision.yml verdict not_executed and manifest execution_status designed. After exact-head review and merge, create one idempotent Bureau marker whose numeric event id becomes A. For each consumed post-A slot, the terminal-state mapping is fixed: frozen and not_applicable add 0; capture_missed_before_mutation, capture_not_frozen_in_time, result_informed_binding_failure, indeterminate, rejected_interference and rejected_ambiguous_causation each add 1 and immediately REJECT. Freeze each admission before productive mutation without delaying productive execution; later slots cannot repair or dilute a failure.",
-    "success": "3/3 canonical slots, binding_failure_count == 0, zero material review disagreements, zero authority violations, zero replacement/backfill, median handling_seconds <= 600, and at least two definitive non-D0 cases.",
-    "falsification": "Any state with binding_failure_increment=1, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering, post-result binding, or material exact-head review disagreement rejects the revision.",
+    "method": "Before A, bind this experiment in experiments/active.v1.json as state testing with results/decision.yml verdict not_executed and manifest execution_status designed. After exact-head review and merge, create one idempotent Bureau marker whose numeric event id becomes A. For each consumed post-A slot, the terminal-state mapping is fixed: frozen and not_applicable add 0; capture_missed_before_mutation, capture_not_frozen_in_time, result_informed_binding_failure, indeterminate, rejected_interference and rejected_ambiguous_causation each add 1 and immediately REJECT. Each slot gets a deterministic slot_id from experiment id, A, ordinal, canonical candidate id and birth event id. Terminal writes use a deterministic terminal_id and require exact readback; ambiguous writes are reconciled read-only before any new mutation. Proven absence permits exactly one idempotent indeterminate failure record; unresolved persistence ambiguity halts the cohort and forbids PASS or INCONCLUSIVE.",
+    "success": "3/3 canonical slots, binding_failure_count == 0, zero material review disagreements, zero authority violations, zero replacement/backfill, median handling_seconds <= 600, at least two definitive non-D0 cases, and no unresolved persistence_outcome_unknown state.",
+    "falsification": "Any state with binding_failure_increment=1, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering, post-result binding, material exact-head review disagreement, or unresolved persistence_outcome_unknown at closeout rejects the revision.",
     "outcome_criteria": {
       "success_threshold": 0,
       "harm_or_falsification_threshold": 1
@@ -45,7 +45,7 @@
     "cost_metric": {
       "id": "median_handling_seconds",
       "unit": "seconds",
-      "method": "For every consumed slot, sample handling_started_at_monotonic_ns immediately before the first authoritative candidate-task read in the scan that discovers the candidate or begins its eligibility proof. After detection, completeness scans, identity/birth proof, evidence reads, analysis and failed-capture classification have produced a complete provisional terminal payload in memory, sample handling_finished_at_monotonic_ns immediately before durable persistence. handling_seconds is their monotonic difference divided by 1e9. Persist the terminal payload and a timing record that binds start, finish, seconds and the payload hash, then read both back as a separate hard persistence-verification gate. Persistence/readback latency is explicitly excluded from handling_seconds to avoid a circular finish definition; failure of that gate makes the slot indeterminate and immediately rejects the revision. PASS requires the three-slot median <= 600 seconds."
+      "method": "For every consumed slot, sample handling_started_at_monotonic_ns immediately before the first authoritative candidate-task read in the scan that discovers the candidate or begins its eligibility proof. After detection, completeness scans, identity/birth proof, evidence reads, analysis and failed-capture classification have produced a complete provisional terminal payload in memory, sample handling_finished_at_monotonic_ns immediately before terminal persistence. handling_seconds is their monotonic difference divided by 1e9. Durable terminal persistence/readback latency is explicitly excluded from handling_seconds to avoid circular timing, but terminal validity requires exact readback of the deterministic terminal_id and payload/timing hashes. A write failure or ambiguous outcome enters read-only terminal_reconciliation; authoritative absence permits one idempotent indeterminate failure receipt, while unresolved ambiguity halts the experiment as persistence_outcome_unknown. PASS requires the three-slot median <= 600 seconds and no unresolved persistence ambiguity."
     }
   },
   "comparison": {
@@ -75,7 +75,8 @@
       "authoritative Bureau candidate event ids and canonical candidate identities",
       "pre-mutation C/S/B/E/T/Q freeze evidence",
       "monotonic handling-clock boundaries plus UTC provenance timestamps",
-      "hash-bound terminal-payload and timing-record persistence/readback evidence",
+      "deterministic slot_id and terminal_id bindings",
+      "exact terminal-record or terminal-failure-record readback and reconciliation evidence",
       "Git/GitHub exact revision and CI truth",
       "independent exact-head post-cohort review evidence"
     ],

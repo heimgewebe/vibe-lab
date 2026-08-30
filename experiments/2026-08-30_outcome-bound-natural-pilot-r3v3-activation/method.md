@@ -71,18 +71,25 @@ A `frozen` slot records only the already established S0-R3 admission bindings:
 
 It additionally records slot/anchor identity, the timing fields defined below, outcome-distance classification, primary-evidence references and authority violations. It must not copy mutable technical truth and does not create a Full Outcome Case.
 
-## 6. Prospective timing rule
+## 6. Prospective timing and durable terminalization
 
 For a potentially capturable birth, C/S/B/E/T/Q must be frozen before productive mutation. The capture observer may not delay, reprioritize, split, merge or reshape productive work. If timely capture is impossible, the slot records the corresponding failure state rather than delaying execution.
 
-The handling-time clock is fixed as follows for every consumed slot:
+The handling-time and terminalization contract is fixed as follows for every consumed slot:
 
 1. `handling_started_at_monotonic_ns` is sampled immediately **before** issuing the first authoritative candidate-task read in the scan that discovers the candidate or begins the proof that it is the next eligible canonical identity birth. Candidate detection, complete-projection checks, identity/birth proof, naturalness checks and all C/S/B/E/T/Q analysis are therefore inside the clock.
-2. The observer constructs a complete **provisional terminal payload** containing the proposed admission state, fixed `binding_failure_increment`, required primary-evidence references, C/S/B/E/T/Q when applicable, outcome-distance classification, authority findings and UTC provenance timestamps. Failed-capture classification is inside this payload and therefore inside the clock.
-3. `handling_finished_at_monotonic_ns` is sampled immediately after that provisional terminal payload is fully determined in memory and **before** its durable persistence. `handling_seconds = (handling_finished_at_monotonic_ns - handling_started_at_monotonic_ns) / 1_000_000_000`. No candidate detection, completeness scan, identity/birth proof, evidence read, retry or analysis interval before this boundary may be subtracted.
-4. Durable persistence and exact readback of the provisional terminal payload plus the timing record are a separate hard **persistence-verification gate**. They are explicitly excluded from `handling_seconds` to avoid a circular finish-time definition. The persisted timing record contains `handling_started_at_monotonic_ns`, `handling_finished_at_monotonic_ns`, `handling_seconds` and a hash binding to the provisional terminal payload. A separate `persistence_verified_at_monotonic_ns` is sampled after successful readback for audit only and is never part of the cost metric.
-5. The slot becomes terminal only after the persistence-verification gate succeeds. If persistence/readback fails, the hash binding cannot be reproduced, or monotonic-clock continuity is lost before the handling finish sample, the slot is `indeterminate`, increments `binding_failure_count` by one and immediately REJECTS. Persistence latency can therefore invalidate a slot but can never improve or worsen the 600-second handling metric.
-6. If productive mutation begins before a successful C/S/B/E/T/Q freeze, the state cannot be `frozen`; it must take the applicable failure state. The observer never delays productive execution merely to improve the measured duration.
+2. Once the canonical birth and ordinal are proved, the slot receives deterministic identity `slot_id = sha256(experiment_id || A || ordinal || canonical_candidate_id || birth_event_id)`. All terminal persistence and reconciliation keys are derived from this identity; a later retry cannot silently create a different slot.
+3. The observer constructs a complete **provisional terminal payload** containing the proposed admission state, fixed `binding_failure_increment`, required primary-evidence references, C/S/B/E/T/Q when applicable, outcome-distance classification, authority findings and UTC provenance timestamps. Failed-capture classification is inside this payload and therefore inside the clock.
+4. `handling_finished_at_monotonic_ns` is sampled immediately after that provisional terminal payload is fully determined in memory and **before** any terminal persistence. `handling_seconds = (handling_finished_at_monotonic_ns - handling_started_at_monotonic_ns) / 1_000_000_000`. No candidate detection, completeness scan, identity/birth proof, evidence read, retry or analysis interval before this boundary may be subtracted.
+5. The observer constructs one immutable `slot_terminal_intent` with deterministic `terminal_id = "slot-terminal:" + slot_id`. It binds the provisional payload hash, start, finish and `handling_seconds`. The terminal intent is appended idempotently and then read back by exact `terminal_id`. Persistence/readback latency is explicitly excluded from `handling_seconds`; it is a separate hard validity gate.
+6. A slot becomes terminal only when exact readback yields one valid terminal record whose `terminal_id`, `slot_id`, provisional-payload hash, timing fields and state all match the intended record. A returned write error or an unknown/ambiguous write outcome never authorizes an immediate second mutation. It enters `terminal_reconciliation` and first performs read-only lookup by exact `terminal_id`.
+7. Reconciliation has only three outcomes:
+   - matching terminal record found: accept that record and terminalize the slot;
+   - authoritative absence of the intended terminal record proved: append exactly one idempotent failure record with `failure_id = "slot-terminal-failure:" + slot_id`, state `indeterminate`, `binding_failure_increment=1`, reason `terminal_persistence_verification_failed`, and hashes of the intended terminal intent and provisional payload; exact readback of that failure record terminalizes the slot and immediately REJECTS;
+   - neither presence nor absence can be established: set experiment control state `persistence_outcome_unknown`, stop all further slot handling and prohibit PASS or INCONCLUSIVE until reconciliation becomes possible.
+8. If the failure-record append itself has an ambiguous outcome, the controller again performs read-only lookup by exact `failure_id` before any retry. A retry of the same idempotent failure record is permitted only after authoritative absence is proved. While neither a matching terminal record nor a verified failure record exists, the experiment remains halted at `persistence_outcome_unknown`; no later birth can be consumed. If that ambiguity remains unresolved at closeout, it is a preregistered material protocol violation and the cohort cannot pass.
+9. A separate `persistence_verified_at_monotonic_ns` may be sampled after successful readback for audit provenance only and is never part of the cost metric. If monotonic-clock continuity is lost before `handling_finished_at_monotonic_ns`, the intended terminal state is `indeterminate` with increment one and follows the same deterministic terminalization/reconciliation path.
+10. If productive mutation begins before a successful C/S/B/E/T/Q freeze, the state cannot be `frozen`; it must take the applicable failure state. The observer never delays productive execution merely to improve the measured duration.
 
 For a scan that finds no new eligible identity birth, no slot is consumed and no handling duration is recorded. Once a scan discovers or begins proof of a birth that becomes a consumed slot, its request-start boundary above is authoritative and cannot be moved later.
 
@@ -90,7 +97,7 @@ For a scan that finds no new eligible identity birth, no slot is consumed and no
 
 The pilot stops when three ordinals have been consumed or immediately when a failure state or inherited R3 v3 rule requires fail-closed termination. No fourth case can replace an uninformative or failed slot.
 
-After termination, freeze the exact evidence revision. An independent exact-head reviewer must verify: activation-marker identity and A; first-three-birth ordering; no replacement/backfill; complete birth proof; capture-before-mutation; C/S/B/E/T/Q reproducibility; exhaustive state-to-metric mapping; classifications; baseline stability; target-effect versus qualifier separation; authority boundaries; measured handling time with the fixed in-memory finish boundary; and the separate persistence-verification gate.
+After termination, freeze the exact evidence revision. An independent exact-head reviewer must verify: activation-marker identity and A; first-three-birth ordering; no replacement/backfill; complete birth proof; capture-before-mutation; C/S/B/E/T/Q reproducibility; exhaustive state-to-metric mapping; classifications; baseline stability; target-effect versus qualifier separation; authority boundaries; measured handling time with the fixed in-memory finish boundary; deterministic slot/terminal identities; and the terminal persistence/reconciliation state machine.
 
 ## 8. Mechanical S1 decision
 
@@ -102,11 +109,12 @@ PASS requires all of:
 - zero authority violations;
 - zero replacement/backfill;
 - median `handling_seconds` across the three consumed slots <= 600 seconds;
-- at least two definitive non-D0 slots.
+- at least two definitive non-D0 slots;
+- no unresolved `persistence_outcome_unknown` state.
 
-REJECT occurs immediately on any slot with `binding_failure_increment=1`, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering or other preregistered material protocol violation.
+REJECT occurs immediately on any slot with `binding_failure_increment=1`, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering or other preregistered material protocol violation. An unresolved `persistence_outcome_unknown` state cannot be treated as PASS or INCONCLUSIVE and, if still unresolved at closeout, is itself a material protocol violation.
 
-INCONCLUSIVE is permitted only when the mechanics succeed, `binding_failure_count == 0`, all three fixed slots are consumed, and fewer than two are informative non-D0 cases. No backfill is allowed; any successor is a new prospective cohort.
+INCONCLUSIVE is permitted only when the mechanics succeed, `binding_failure_count == 0`, all three fixed slots are consumed, no persistence ambiguity remains, and fewer than two are informative non-D0 cases. No backfill is allowed; any successor is a new prospective cohort.
 
 ## 9. Non-claims
 
