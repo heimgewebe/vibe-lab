@@ -1,0 +1,132 @@
+{
+  "schema_version": "experiment.registration.v2",
+  "experiment_id": "2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
+  "registered_at": "2026-08-30T08:05:00Z",
+  "consumer": {
+    "organ": "Grabowski",
+    "use": "Decide whether the passed R3 v3 Outcome-Bound admission semantics are feasible on the first three prospective natural Bureau operator-intake identity births without delaying productive work.",
+    "relationship": "external",
+    "commitment": {
+      "status": "confirmed",
+      "evidence_ref": "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830",
+      "confirmed_at": "2026-08-30T08:05:00Z",
+      "valid_until": "2026-09-30T23:59:59Z"
+    }
+  },
+  "decision_target": {
+    "question": "Can exactly three first-in-order post-activation candidate_identity_birth slots be prospectively admitted under C/S/B/E/T/Q with zero binding failures, zero authority violations, zero backfill and median handling <= 10 minutes?",
+    "owner": "Grabowski",
+    "decision_ref": "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830"
+  },
+  "intervention": {
+    "name": "R3-v3 prospective three-slot admission",
+    "description": "The experiment is registered as active testing before A while execution_status remains designed. After reviewed merge, set A to one explicit Bureau activation-marker event id; then consume the first three fully provable later candidate identity births in numeric event-id order and attempt C/S/B/E/T/Q binding before productive mutation without delaying work."
+  },
+  "control_condition": {
+    "id": "pre_activation_boundary_sentinels",
+    "description": "The last three fully provable canonical candidate identity births with event_id < A are frozen after A only as negative eligibility sentinels: each must remain excluded because it predates A. They are not pilot cases and their outcomes are not compared for efficacy."
+  },
+  "treatment_condition": {
+    "id": "first_three_post_a_births",
+    "description": "Exactly the first three fully provable canonical candidate identity births with identity_first_event.event_id > A, subject to the inherited R3 v3 hard birth-proof and self-interference rules."
+  },
+  "measurement": {
+    "primary_metric": "binding_failure_count",
+    "direction": "lower_is_better",
+    "unit": "count",
+    "minimum_material_effect": 1,
+    "method": "Before A, keep this experiment active as testing while execution_status remains designed and results/decision.yml remains not_executed. A may be written only after exact-head reviewed merge, complete Bureau birth-projection proof, and a frozen slot_capture_contract for one already-existing durable provider surface. That surface must provider-own an absent -> begun -> terminal per-slot state machine with deterministic caller slot_id, atomic idempotent begin bound to canonical birth identity, provider-owned capture-session continuity/liveness, provider-owned begin-to-terminal elapsed timing, atomic immutable terminalization of one complete admission payload, exact crash/restart readback, same-id/same-payload convergence, hard same-id/different-payload conflict detection, provider SHA-256 evidence identity, and no operational authority. For a valid live session the controller may finalize exactly one admission payload. A successful frozen admission must terminalize before productive mutation. not_applicable is allowed only after inherited Phase-G reproducibly proves naturalness, no experiment interference and unambiguous independence, and prospective D0 is then established before productive mutation and before outcome/result knowledge. rejected_interference or rejected_ambiguous_causation always takes precedence over D0. The not_applicable payload binds Phase-G findings, authority findings, D0 evidence and binding_failure_increment=0 and terminalizes immediately before productive mutation; otherwise the applicable failure state is mandatory. Failure states whose defining trigger is productive mutation or outcome/result knowledge terminalize immediately after that trigger is authoritatively established and can never be reclassified as frozen or not_applicable. If provider-owned liveness proves that a begun session is irrecoverably lost, only the provider may atomically terminalize that same slot to indeterminate with binding_failure_increment=1 and reason capture_session_lost; a replacement never reconstructs a successful capture. If no existing surface proves the contract, A MUST NOT be written. The cohort is exactly the first three fully provable post-A candidate_identity_birth events. Before handling any later ordinal, reconstruct every earlier birth and read provider state; absent, begun, unresolved or otherwise nonterminal earlier state blocks the later ordinal. Any ambiguous begin/finalize outcome is resolved only by provider readback. No client-side claim/intent/failure-record/re-serialization state machine exists.",
+    "success": "3/3 fixed canonical slots, binding_failure_count == 0, zero material review disagreements, zero authority violations, zero replacement/backfill, all three provider states durably terminal with valid immutable evidence, median provider elapsed handling <= 600 seconds, and at least two definitive non-D0 cases.",
+    "falsification": "Any binding failure, provider state/session/payload conflict, unresolved or nonterminal earlier provider state, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering, post-result binding, or material exact-head review disagreement rejects the revision.",
+    "outcome_criteria": {
+      "success_threshold": 0,
+      "harm_or_falsification_threshold": 1
+    },
+    "cost_metric": {
+      "id": "median_handling_seconds",
+      "unit": "seconds",
+      "method": "For each consumed slot, provider begin establishes handling start and provider terminalization establishes handling finish; provider-computed elapsed seconds are metric authority. The interval includes C/S/B/E/T/Q analysis and terminal-payload construction, excludes pre-slot Bureau birth discovery/proof and post-terminalization review, and is never optimized by delaying productive work. A begun slot that cannot reach a valid terminal state is a binding failure or unresolved-provider-state REJECT rather than a censored timing observation. PASS requires the three-slot median <= 600 seconds."
+    }
+  },
+  "comparison": {
+    "mode": "unpaired",
+    "unit": "three fixed pre-A negative eligibility sentinels versus three post-A pilot slots",
+    "minimum_control": 3,
+    "minimum_treatment": 3,
+    "comparability_constraints": [
+      "activation boundary is the Bureau marker event id A, not a retrospectively selected timestamp",
+      "only identity_first_event.event_id ascending determines slot order",
+      "no replacement or backfill after any slot outcome",
+      "R3 v3 sampling semantics remain unchanged",
+      "no Full Outcome Case is collected"
+    ],
+    "confounders": [
+      "the first three births may contain too few informative non-D0 cases",
+      "observer independence may be hard to prove for some slots",
+      "three cases establish only tiny-sample feasibility, not product efficacy"
+    ]
+  },
+  "evidence_sources": {
+    "allowed": [
+      "Vibe-Lab R3 v3 frozen result and exact-head review evidence",
+      "active-experiment registry and not-executed decision binding frozen before A",
+      "fresh Bureau live-list completeness signals with coverage_complete=true and projection_source=complete_event_scan",
+      "idempotent Bureau activation marker and exact numeric event id A",
+      "authoritative Bureau candidate event ids and canonical candidate identities",
+      "frozen slot_capture_contract naming exact already-existing provider surface and revision",
+      "provider durable per-slot state readback: absent, begun or terminal",
+      "provider begun receipt bound to canonical birth identity and capture-session continuity",
+      "provider-owned lost-session liveness evidence and atomic indeterminate terminalization when applicable",
+      "provider immutable terminal admission payload and provider-generated SHA-256 evidence identity",
+      "provider-computed begin-to-terminal elapsed handling seconds",
+      "provider same-id/same-payload convergence and hard different-payload conflict evidence",
+      "pre-mutation C/S/B/E/T/Q terminalization evidence",
+      "restart readback proving no earlier canonical ordinal was skipped or reconstructed from later outcome knowledge",
+      "Git/GitHub exact revision and CI truth",
+      "independent exact-head post-cohort review evidence"
+    ],
+    "independent_observation_required": true
+  },
+  "review_at": "2026-09-07T18:00:00Z",
+  "expires_at": "2026-09-30T23:59:59Z",
+  "closure": {
+    "allowed_outcomes": [
+      "promote",
+      "pilot",
+      "defer",
+      "reject",
+      "archive"
+    ],
+    "archive_path": "experiments/_archive/2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
+    "outcome_by_result": {
+      "success": "pilot",
+      "harm_or_falsification": "reject",
+      "inconclusive": "defer",
+      "expired": "archive"
+    }
+  },
+  "surface_budget": {
+    "durable_additions": [
+      "add:experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation"
+    ],
+    "durable_offsets": [
+      "replace:experiments/active.v1.json",
+      "replace:docs/_generated/doc-index.md",
+      "replace:docs/_generated/promotion-readiness.json"
+    ],
+    "reviewed_exception": {
+      "reviewed_by": "Grabowski controller under explicit user authorization",
+      "review_ref": "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830",
+      "reviewed_at": "2026-08-30T08:05:00Z",
+      "rationale": "This is a bounded experiment-only activation successor to the passed R3 v3 sampling protocol; the active-registry replacement adds lifecycle visibility but no production or control-plane authority."
+    }
+  },
+  "boundary": {
+    "experiment_only": true,
+    "no_auto_policy": true,
+    "no_auto_routing": true,
+    "no_queue_authority": true,
+    "no_runtime_authority": true,
+    "no_merge_authority": true
+  }
+}

@@ -23,6 +23,17 @@
       "review_at": "2026-08-15T00:00:00Z",
       "expires_at": "2026-09-01T00:00:00Z",
       "source_ref": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml"
+    },
+    {
+      "experiment_id": "2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
+      "path": "experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
+      "state": "testing",
+      "consumer": "Grabowski",
+      "decision_target": "Can exactly three first-in-order post-activation candidate_identity_birth slots be prospectively admitted under C/S/B/E/T/Q with zero binding failures, zero authority violations, zero backfill and median handling <= 10 minutes?",
+      "primary_metric": "binding_failure_count",
+      "review_at": "2026-09-07T18:00:00Z",
+      "expires_at": "2026-09-30T23:59:59Z",
+      "source_ref": "experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation/results/decision.yml"
     }
   ]
 }

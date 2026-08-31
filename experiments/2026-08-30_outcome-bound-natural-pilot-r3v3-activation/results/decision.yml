@@ -1,0 +1,25 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "not_executed"
+date: "2026-08-30"
+reviewer: "ChatGPT / Grabowski"
+triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830"
+rationale: >
+  The experiment is registered in the active-experiment registry as testing so
+  lifecycle visibility, review-date enforcement and decision binding exist before
+  activation boundary A. execution_status remains designed: no Bureau activation
+  marker A exists in this revision, no post-A identity birth has been admitted,
+  and zero natural pilot slots have been consumed. This decision therefore makes
+  no feasibility, efficacy or adoption claim.
+evidence_summary:
+  natural_cases_taken: 0
+  slots_consumed: 0
+  binding_failure_count: 0
+  activation_marker_present: false
+next_steps: >
+  After this exact revision passes independent review and is merged, re-read the
+  R3 v3 predecessor and complete Bureau candidate-task projection, then append the
+  single idempotent activation marker whose numeric event id becomes A. Only the
+  first three fully provable candidate_identity_birth events with event_id > A may
+  consume slots under the frozen protocol. No routing, queue, runtime, policy,
+  Chronik, Leitstand or product authority is granted.
