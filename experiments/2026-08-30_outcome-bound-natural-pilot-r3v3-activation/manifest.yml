@@ -11,7 +11,7 @@ experiment:
   execution_status: designed
   execution_refs: []
   created: "2026-08-30"
-  updated: "2026-08-30"
+  updated: "2026-08-31"
   author: "ChatGPT / Grabowski"
   triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830"
   iteration: 1
