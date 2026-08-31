@@ -3,7 +3,7 @@ title: "Outcome-Bound natural pilot — R3 v3 prospective activation"
 status: testing
 canonicality: exploratory
 created: "2026-08-30"
-updated: "2026-08-30"
+updated: "2026-08-31"
 triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830; predecessor:2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3"
 ---
 
@@ -11,116 +11,110 @@ triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830;
 
 ## 1. Purpose
 
-This revision does not change the passed R3 v3 sampling semantics. When merged, it registers exactly one active testing experiment while `execution_status` remains `designed`; this makes the experiment visible to active-experiment validation and review-date enforcement before any natural case exists. The prospective three-slot cohort itself starts only after a separate authoritative Bureau activation marker has been appended. No natural case may be selected, reconstructed or backfilled before that marker exists.
+This revision does not change the passed R3 v3 sampling semantics. When merged, it registers exactly one active testing experiment while `execution_status` remains `designed`; this makes the experiment visible to active-experiment validation and review-date enforcement without fabricating a natural run. The prospective three-slot cohort starts only after a separate authoritative Bureau activation marker exists.
 
-The inherited R3 v3 contract remains authoritative for canonical identity, birth proof, Phase-S slot construction, Phase-G naturalness/self-interference and no-backfill semantics. In particular, every fully provable post-A `candidate_identity_birth` creates exactly one fixed ordinal before any gate decision.
+The inherited R3 v3 contract remains authoritative for canonical identity, birth proof, Phase-S ordering, Phase-G naturalness/self-interference and no-backfill semantics. Every fully provable post-A `candidate_identity_birth` therefore owns exactly one fixed ordinal before any admission decision.
 
 ## 2. Activation boundary A
 
-The activation boundary is not a wall-clock timestamp and is not chosen from observed candidate outcomes. After this exact revision is independently reviewed and merged, the controller appends exactly one Bureau `candidate_task` operator-intake marker with idempotency key `outcome-bound-natural-pilot-r3v3-activation-20260830-v1`.
+The activation boundary is not a wall-clock timestamp and is not chosen from observed candidate outcomes. After this exact revision is independently reviewed and merged, the controller may append exactly one Bureau `candidate_task` operator-intake marker with idempotency key `outcome-bound-natural-pilot-r3v3-activation-20260830-v1`.
 
-The authoritative numeric Bureau event id returned by that append is **A**. The marker itself is experiment-caused but has `event_id == A`; the cohort admits only births with `identity_first_event.event_id > A`, so the marker cannot consume a pilot slot. No repository, PR or review mutation required to establish this revision may occur after A.
+The authoritative numeric Bureau event id returned by that append is **A**. The marker itself has `event_id == A`; only births with `identity_first_event.event_id > A` are eligible, so the activation marker itself cannot consume a slot. No repository, PR or review mutation required to establish this activation revision may occur after A.
 
-Activation is valid only when the marker records and binds all of the following preconditions observed immediately before append:
+A may be written only when one pre-marker observation binds all of the following:
 
-- this Vibe-Lab activation revision is merged on `main`;
+- this activation revision is merged on Vibe-Lab `main`;
 - `experiments/active.v1.json` contains this experiment with `state: testing`, `primary_metric: binding_failure_count` and `source_ref` bound to this experiment's `results/decision.yml`;
-- the manifest remains `status: testing` and `execution_status: designed`, and `results/decision.yml` remains `verdict: not_executed`, proving that registry activation did not fabricate a natural run;
-- the R3 v3 result remains `verdict: confirms`, `natural_cases_taken: 0`, `pilot_authorized: false` before this successor activation;
-- a fresh Bureau `live-list --kind candidate_task` observation reports `coverage_complete=true` and `projection_source=complete_event_scan`;
-- the same observation reports the complete projection size and the latest displayed candidate event used as the pre-marker high-water observation;
+- the manifest remains `status: testing` and `execution_status: designed`, and `results/decision.yml` remains `verdict: not_executed`;
+- the R3 v3 predecessor still says `verdict: confirms`, `natural_cases_taken: 0`, `pilot_authorized: false`;
+- fresh Bureau candidate projection reports `coverage_complete=true` and `projection_source=complete_event_scan`, together with projection size and the latest displayed pre-marker event;
 - no already-observed event is reclassified as post-A;
-- a `terminal_journal_contract` has been frozen for one **already existing** durable controller evidence journal. The frozen contract names the exact append/read surface and revision and proves, before A, all of: create-if-absent writes keyed by caller-supplied record id; repeated or concurrent append of the same record id with byte-identical caller payload converges to exactly one immutable record or returns that exact existing record; the same record id with a different payload is a detectable conflict and is never overwritten; exact readback by record id including the original caller payload bytes or an exact byte-equivalent representation; authoritative presence/absence classification; process-restart durability; and an immutable provider-returned lowercase SHA-256 `record_sha256` that exact readback reproduces. The journal operation must not create a Bureau candidate identity birth and must grant no routing, queue, runtime, policy or product authority. If no existing surface satisfies this contract, A MUST NOT be written and the pilot remains not executed.
+- a **`slot_capture_contract`** has been frozen for one already-existing durable provider surface, with its exact surface identity and revision. The provider—not the controller—must durably own the complete per-slot state machine described below. If no existing surface satisfies that contract, A MUST NOT be written and the pilot remains `not_executed`.
 
 If the marker append is ambiguous, no second marker is written until exact idempotency-key readback establishes whether the first append exists.
 
-## 3. Fixed cohort
+## 3. Required slot-freeze provider contract
 
-Before assigning post-A pilot slots, freeze exactly three negative eligibility sentinels: the last three fully provable canonical candidate identity births with `identity_first_event.event_id < A`, ordered by event id. They exist only to verify that the activation boundary excludes pre-A births; they are never pilot cases, do not consume N, and their outcomes are not used for efficacy comparison.
+The pre-A `slot_capture_contract` must prove all of these properties for one exact existing surface:
 
-`N = 3`. The cohort consists of the first three **fully provable** canonical candidate-identity births with `identity_first_event.event_id > A`, ordered only by authoritative numeric event id.
+1. **Deterministic key:** the caller supplies one `slot_id`; all state for that slot is addressed only by that id.
+2. **Provider-owned states:** exact readback returns exactly one of `absent`, `begun` or `terminal`, plus immutable provider receipts. The provider owns the only transitions `absent → begun → terminal`; state never moves backward and the terminal payload is immutable. The terminal payload contains exactly one admission state from §5, including fail-closed `indeterminate` when provider-owned session continuity is lost.
+3. **Atomic begin:** `begin(slot_id, birth_binding)` is create-if-absent and durably records the canonical birth binding before returning success. Repeated or concurrent begin for the same id and same binding converges to the same begun session; a different binding is a hard conflict.
+4. **Session continuity:** the provider owns the capture-session identity/liveness. Successful admission finalization can succeed only for the still-valid begun session. A replacement controller cannot impersonate or recreate that session after process/session loss. When provider-owned liveness proves that a begun session is irrecoverably lost, the provider must support one atomic fail-closed terminalization of that same slot to admission state `indeterminate`; this transition is derived only from provider-owned session state and requires no reconstructed C/S/B/E/T/Q.
+5. **Provider timing:** begin establishes the authoritative handling start; terminalization establishes the authoritative finish and provider-computed elapsed seconds. Client clocks are not the metric authority.
+6. **Atomic terminalization:** `finalize(slot_id, payload)` atomically stores the complete exact terminal payload once and transitions provider state to `terminal`. For a valid live session the payload is the controller-supplied admission result; for provider-proven lost-session recovery the provider itself supplies the fixed `indeterminate` failure payload. Same-id/same-payload replay converges; same-id/different-payload is a hard conflict and never overwrites evidence.
+7. **Crash/restart durability:** `begun` and `terminal` survive controller/process restart, and a replacement can exact-read the complete state and terminal payload without reconstructing C/S/B/E/T/Q from later knowledge.
+8. **Ambiguous transport readback:** after any unknown/ambiguous begin or finalize result, exact provider readback by `slot_id` is authoritative. While the state cannot be resolved, no mutation for that slot and no later ordinal is allowed.
+9. **Immutable evidence identity:** provider receipts expose stable evidence identity, including a provider-generated lowercase SHA-256 digest for the durable begun/terminal state and exact readback reproduces that digest.
+10. **No operational authority:** begin/read/finalize are experiment-evidence operations only. They create no Bureau candidate identity birth and grant no routing, queue, runtime, merge, deployment, policy or product authority.
 
-For each fully proved birth, Phase S assigns the next ordinal before any admission decision. A slot can never be replaced, skipped, renumbered or backfilled.
+This revision does not authorize building such a surface. It only permits A if a qualifying surface already exists and is proved against the exact contract before activation.
 
-A post-A event that is only a supersession or later event of a pre-existing canonical candidate identity consumes no new slot because it is not an identity birth.
+## 4. Fixed cohort and ordinal reconstruction
 
-## 4. Slot outcomes and primary-metric mapping
+Before any post-A slot is handled, freeze exactly three negative eligibility sentinels: the last three fully provable canonical identity births with `identity_first_event.event_id < A`, ordered by numeric event id. They are eligibility checks only and never consume N.
 
-Each assigned slot terminates in exactly one admission state. The state fixes both its contribution to `binding_failure_count` and its mechanical decision effect before any case is observed:
+`N = 3`. The cohort is the first three fully provable canonical `candidate_identity_birth` events with `identity_first_event.event_id > A`, ordered only by authoritative numeric event id.
 
-- `frozen`: C/S/B/E/T/Q were prospectively bound before productive mutation; `binding_failure_increment=0`; continue until the fixed cohort ends. It is informative only when its outcome-distance classification is non-D0.
-- `not_applicable`: D0; `binding_failure_increment=0`; continue. It is explicitly non-informative and can never be replaced.
-- `capture_missed_before_mutation`: productive mutation had already begun before the required binding; `binding_failure_increment=1`; immediate REJECT.
-- `capture_not_frozen_in_time`: binding could not be completed without delaying productive work; `binding_failure_increment=1`; immediate REJECT.
-- `result_informed_binding_failure`: outcome/result knowledge existed before binding; `binding_failure_increment=1`; immediate REJECT.
-- `indeterminate`: C/S/B/E/T/Q or required timing evidence could not be bound reproducibly; `binding_failure_increment=1`; immediate REJECT.
-- `rejected_interference`: the experiment influenced a fully proved birth; `binding_failure_increment=1`; immediate REJECT and zero accepted natural evidence.
-- `rejected_ambiguous_causation`: independence from the experiment cannot be proved; `binding_failure_increment=1`; immediate REJECT and zero accepted natural evidence.
+Before handling ordinal `n`, the controller reconstructs the canonical births for ordinals `1..n` and reads provider state for every earlier `slot_id`. A later ordinal is never eligible while an earlier ordinal is `absent`, `begun`, unresolved, or otherwise nonterminal. An earlier `terminal` slot is never recomputed; its immutable admission state is authoritative. A supersession/later event of an already-existing canonical candidate identity is not a new birth and consumes no slot.
 
-`binding_failure_count` is the sum of the frozen per-slot increments above. There is no reviewer discretion to reclassify an increment after seeing later slots. Any of the six failure states already falsifies this revision; later births cannot repair, replace or dilute that failure. Authority violations, noncanonical ordering, backfill/replacement or other preregistered material protocol violations also cause REJECT even if `binding_failure_count` remains zero.
+`slot_id` is SHA-256 over UTF-8 bytes of `experiment_id`, decimal A, decimal ordinal, canonical candidate id and decimal birth event id joined by the single byte `0x1f`, with no surrounding whitespace.
 
-## 5. Successful capture payload
+## 5. Slot outcomes and binding-failure metric
 
-A `frozen` slot records only the already established S0-R3 admission bindings:
+Each consumed ordinal has exactly one admission state:
 
-- C — Claim Snapshot
-- S — Subject
-- B — Baseline
-- E — Target Effect
-- T — Transition Path
-- Q — Delivery Qualifiers
+- `frozen`: C/S/B/E/T/Q were bound before productive mutation; increment `0`.
+- `not_applicable`: D0; increment `0`; non-informative and never replaced.
+- `capture_missed_before_mutation`: productive mutation had already begun before the required binding; increment `1`; REJECT.
+- `capture_not_frozen_in_time`: binding could not complete without delaying productive work; increment `1`; REJECT.
+- `result_informed_binding_failure`: result/outcome knowledge existed before binding; increment `1`; REJECT.
+- `indeterminate`: required admission or provider evidence could not be established reproducibly; increment `1`; REJECT.
+- `rejected_interference`: the experiment influenced the fully proved birth; increment `1`; REJECT and zero accepted natural evidence.
+- `rejected_ambiguous_causation`: independence from the experiment cannot be proved; increment `1`; REJECT and zero accepted natural evidence.
 
-It additionally records slot/anchor identity, the timing fields defined below, outcome-distance classification, primary-evidence references and authority violations. It must not copy mutable technical truth and does not create a Full Outcome Case.
+`binding_failure_count` is the sum of these fixed increments. No later slot can repair, replace or dilute an earlier failure.
 
-## 6. Prospective timing and durable terminalization
+## 6. One provider-owned capture transaction per slot
 
-For a potentially capturable birth, C/S/B/E/T/Q must be frozen before productive mutation. The capture observer may not delay, reprioritize, split, merge or reshape productive work. If timely capture is impossible, the slot records the corresponding failure state rather than delaying execution.
+For the earliest eligible nonterminal ordinal:
 
-The handling-time and terminalization contract is fixed as follows for every consumed slot:
+1. Prove canonical birth identity and ordinal from the complete Bureau projection. If productive mutation or outcome knowledge already makes successful prospective capture impossible, that fact determines the appropriate failure payload below; the ordinal is still not skipped.
+2. Call provider `begin(slot_id, birth_binding)` **before C/S/B/E/T/Q analysis**. Exact-readback-verify provider state `begun` and the canonical birth binding before continuing. Provider begin time starts the handling metric.
+3. If provider state is already `begun` from a prior controller/session, provider-owned liveness decides the only two legal paths: the same still-valid session continues, or the provider atomically terminalizes that slot to `indeterminate`, increment `1`, with reason `capture_session_lost`. A replacement never reconstructs a successful capture for that begun session.
+4. Under the same valid provider session, derive the terminal payload. A successful `frozen` payload contains only C/S/B/E/T/Q, slot/birth identity, outcome-distance classification, bounded primary-evidence references and authority findings. Failure states contain only the evidence needed to prove that state. No Full Outcome Case or mutable technical-truth copy is permitted.
+5. Call provider `finalize(slot_id, complete_terminal_payload)` before productive mutation for a successful capture or any failure state discovered while the same session remains valid. Provider terminalization time ends the handling metric. Exact readback must return `terminal`, the exact immutable payload, its provider digest and provider-computed elapsed seconds.
+6. Any ambiguous begin/finalize result is handled only by exact provider readback. If provider readback proves `begun` and the original session is irrecoverably lost, invoke only the provider-owned lost-session terminalization above; exact readback must then return terminal `indeterminate`. If provider state cannot be resolved without delaying productive execution, stop all slot handling and REJECT on unresolved provider state. No client-side alternate intent, failure record, reserialization path, or second record id exists.
+7. A provider hard conflict, illegal state transition, payload mismatch, or evidence-integrity mismatch is a material protocol violation and immediate REJECT.
 
-1. `handling_started_at_monotonic_ns` is sampled immediately **before** issuing the first authoritative candidate-task read in the scan that discovers the candidate or begins the proof that it is the next eligible canonical identity birth. Candidate detection, complete-projection checks, identity/birth proof and Phase-S ordering therefore begin inside the clock.
-2. Once the canonical birth and ordinal are proved, the slot receives deterministic identity `slot_id = sha256(experiment_id || A || ordinal || canonical_candidate_id || birth_event_id)`. This identity digest is SHA-256 over UTF-8 bytes of the five textual fields joined by the single byte `0x1f`, with decimal base-10 representations for A, ordinal and birth event id and no surrounding whitespace.
-3. **Before any C/S/B/E/T/Q analysis**, append and exact-readback-verify one immutable `slot_claim` with deterministic `claim_id = "slot-claim:" + slot_id`. Its payload is derived only from authoritative birth evidence and contains `slot_id`, A, ordinal, canonical candidate id, birth event id, birth-proof evidence refs, `handling_started_at_monotonic_ns`, a UTC start timestamp and a `monotonic_clock_domain` identifying the host/boot domain in which that monotonic value is valid. The claim append follows the same same-id/same-payload read-before-retry rule as all other journal records. A controller that crashes before a claim is verified is, by contract, forbidden to have started C/S/B/E/T/Q analysis; a replacement re-runs Phase S for the same earliest birth and cannot skip it.
-4. After a verified claim exists, the observer constructs a complete **provisional terminal payload** containing the proposed admission state, fixed `binding_failure_increment`, required primary-evidence references, C/S/B/E/T/Q when applicable, outcome-distance classification, authority findings and UTC provenance timestamps. Failed-capture classification is inside this payload and therefore inside the clock.
-5. `handling_finished_at_monotonic_ns` is sampled immediately after that provisional terminal payload is fully determined in memory and **before** journal persistence. `handling_seconds = (handling_finished_at_monotonic_ns - handling_started_at_monotonic_ns) / 1_000_000_000`. No candidate detection, completeness scan, identity/birth proof, evidence read or analysis interval before this boundary may be subtracted. If the current process cannot prove continuity with the claim's `monotonic_clock_domain`, the provisional admission state is `indeterminate` with increment one.
-6. Before attempting the terminal record, construct the **complete exact terminal record bytes once**. The record has deterministic `terminal_id = "slot-terminal:" + slot_id`; it binds `claim_id`, `intent_id`, the admission state and all frozen payload/timing fields. Freeze these exact bytes as `terminal_record_bytes_b64` plus `terminal_record_bytes_sha256 = sha256(exact_terminal_record_bytes)`. No later controller is permitted to reserialize logical fields to recreate the terminal payload.
-7. Append one immutable write-ahead `slot_terminal_intent` with deterministic `intent_id = "slot-terminal-intent:" + slot_id`. The intent contains `claim_id`, `slot_id`, `terminal_id`, `terminal_record_bytes_b64`, `terminal_record_bytes_sha256`, the logical provisional payload for human review, start, finish and `handling_seconds`. The append receipt's immutable provider-generated `record_sha256` becomes `intent_record_sha256`. Exact-read the same `intent_id` and require the journal to reproduce both its record digest and the frozen terminal byte blob/hash. If the intent append is ambiguous, only exact readback by `intent_id` is permitted before any retry. Authoritative absence permits only a byte-identical idempotent retry of the same intent; an existing same-id record with different content is a material protocol violation and immediate REJECT.
-8. After a verified intent exists, every terminal append or retry uses **only** the exact bytes decoded from the intent's `terminal_record_bytes_b64`, under the same deterministic `terminal_id`. The controller verifies the bytes against `terminal_record_bytes_sha256` before append and never serializes a new terminal object. Persistence/readback latency is explicitly excluded from `handling_seconds`; it is a separate hard validity gate.
-9. After **every** terminal-append outcome—success, definite error or ambiguous/unknown result—the controller performs exact readback by `terminal_id` before another terminal append. Reconciliation has exactly three states:
-   - a matching terminal record exists and its caller payload bytes/hash equal the intent-frozen terminal bytes/hash: terminalize the slot;
-   - the journal authoritatively reports `terminal_id` absent: retry the same byte-identical terminal bytes under the same deterministic id. A definite write error and an ambiguous write followed by authoritative absence use this identical recovery path. Because the frozen journal contract makes same-id/same-payload appends converge, a delayed original append and a retry cannot create contradictory records;
-   - presence versus absence cannot be established: derive `persistence_outcome_unknown`, perform no terminal mutation, handle no later ordinal and permit neither PASS nor INCONCLUSIVE until exact readback becomes possible.
-10. If exact readback finds `terminal_id` with bytes, digest or intent binding different from the verified intent, or the journal reports a same-id/different-payload conflict, the controller MUST NOT overwrite or reinterpret it. This is `terminal_identity_conflict`, a preregistered material protocol violation and immediate REJECT.
-11. Before handling ordinal `n+1`, every controller—including a replacement after crash/restart—must reconstruct the first `n` canonical post-A births and verify for each earlier ordinal the deterministic `claim_id`, `intent_id` and `terminal_id`. An earlier birth may never be skipped because one of those records is absent. If an earlier claim exists but its intent does not, that ordinal remains the only admissible work item: the replacement may continue the capture only when it can prove the same monotonic clock domain and that productive mutation/result knowledge have not invalidated prospectivity; otherwise it must freeze the applicable failure state, never reconstruct a successful C/S/B/E/T/Q binding from later knowledge, then persist its intent/terminal through the same path. If an earlier deterministic birth has no verified claim, the controller must process that birth first; because analysis before claim is forbidden, it re-runs Phase S for that same birth and then either claims it prospectively or records the applicable failure state if productive work has already advanced. No later ordinal is eligible while an earlier claim, intent or terminal remains unresolved.
-12. Terminal-journal transport does **not** retroactively change the slot's admission state or `binding_failure_count`. A verified eventual terminal record preserves the state already frozen in the intent. Persistence is a separate protocol-validity gate: any `terminal_identity_conflict` rejects immediately, and any earlier slot still lacking a verified claim/intent/terminal at registered review/closeout is a material protocol violation and REJECT.
-13. A separate `persistence_verified_at_monotonic_ns` may be sampled after successful terminal readback for audit provenance only and is never part of the cost metric.
-14. If productive mutation begins before a successful C/S/B/E/T/Q freeze, the state cannot be `frozen`; it must take the applicable failure state. The observer never delays productive execution merely to improve the measured duration.
+For a slot whose provider state is `terminal` and whose admission state is `frozen` or `not_applicable`, continue only to the next fixed ordinal. For every other terminal state, stop immediately. No fourth case exists.
 
-For a scan that finds no new eligible identity birth, no slot is consumed and no handling duration is recorded. Once a scan proves a birth and its claim is verified, that fixed ordinal cannot be abandoned, replaced or backfilled.
+## 7. Timing rule
 
-## 7. Three-slot stop and review
+The cost metric is provider-owned elapsed capture time from durable successful `begin` to durable provider `terminal` for each consumed slot. It includes C/S/B/E/T/Q analysis and terminal payload construction. It excludes pre-slot Bureau birth discovery/proof and post-terminalization review. A begun slot that cannot reach a valid terminal state is a binding failure or unresolved-provider-state REJECT rather than a censored timing observation.
 
-The pilot stops when three ordinals have been consumed or immediately when a failure state or inherited R3 v3 rule requires fail-closed termination. No fourth case can replace an uninformative or failed slot.
+The observer must never delay, reprioritize, split, merge or reshape productive work to improve this metric. If capture cannot finish without delaying productive work, finalize `capture_not_frozen_in_time` if the same provider session remains valid; otherwise provider-owned lost-session terminalization yields `indeterminate` and REJECT.
 
-After termination, freeze the exact evidence revision. An independent exact-head reviewer must verify: activation-marker identity and A; first-three-birth ordering; no replacement/backfill; complete birth proof; claim-before-analysis; capture-before-mutation; C/S/B/E/T/Q reproducibility; exhaustive state-to-metric mapping; classifications; baseline stability; target-effect versus qualifier separation; authority boundaries; measured handling time and monotonic-clock domain; frozen terminal-journal contract; deterministic claim/intent/terminal identities; exact terminal bytes frozen inside the intent; provider-returned intent record digest; same-id/same-payload retry convergence; absence of terminal-identity conflicts; restart reconstruction without skipping earlier ordinals; and the single-terminal-record reconciliation path.
+## 8. Stop, review and mechanical S1 decision
 
-## 8. Mechanical S1 decision
+The pilot stops after three consumed ordinals or immediately on any failure state/material protocol violation.
+
+After termination, freeze the exact evidence revision. Independent exact-head review must verify: A and activation preconditions; the exact `slot_capture_contract`; first-three-birth ordering; negative sentinels; no replacement/backfill; provider state transitions and session continuity; capture-before-mutation; C/S/B/E/T/Q reproducibility; state-to-metric mapping; provider elapsed times; authority boundaries; and absence of any unreviewed operational integration.
 
 PASS requires all of:
 
-- exactly 3/3 slots in canonical order;
-- `binding_failure_count == 0` under the fixed state mapping;
+- exactly 3/3 fixed slots in canonical order;
+- `binding_failure_count == 0`;
 - zero material review disagreements;
 - zero authority violations;
 - zero replacement/backfill;
-- zero terminal-identity conflicts;
-- median `handling_seconds` across the three consumed slots <= 600 seconds;
-- at least two definitive non-D0 slots;
-- no earlier slot with unresolved claim, intent or terminal evidence.
+- all three provider states durably `terminal` with valid immutable evidence;
+- median provider elapsed handling time <= 600 seconds;
+- at least two definitive non-D0 slots.
 
-REJECT occurs immediately on any slot with `binding_failure_increment=1`, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering, terminal-identity conflict or other preregistered material protocol violation. An earlier slot with unresolved claim/intent/terminal evidence can never be treated as PASS or INCONCLUSIVE and, if still unresolved at registered review/closeout, is itself a material protocol violation.
+REJECT occurs on any binding failure, provider/session/payload conflict, unresolved provider state, experiment interference, ambiguous causation, authority violation, replacement/backfill, noncanonical ordering or other preregistered material protocol violation.
 
-INCONCLUSIVE is permitted only when the mechanics succeed, `binding_failure_count == 0`, all three fixed slots are consumed, no terminal-identity conflict or unresolved earlier slot evidence remains, and fewer than two are informative non-D0 cases. No backfill is allowed; any successor is a new prospective cohort.
+INCONCLUSIVE is permitted only when all mechanics succeed with `binding_failure_count == 0`, all three provider states are validly terminal, but fewer than two slots are informative non-D0. No backfill is allowed; any successor requires a new prospective cohort.
 
 ## 9. Non-claims
 
