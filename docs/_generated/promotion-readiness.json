@@ -348,41 +348,6 @@
     },
     {
       "adoption_basis": "",
-      "execution_status": "prepared",
-      "falsifiability_triggered": false,
-      "historical_escape": false,
-      "missing": [
-        "prepared_not_executed"
-      ],
-      "notes": [
-        "falsifiability_voluntary",
-        "prepared_not_executed"
-      ],
-      "path": "experiments/2026-07-13_chronik-history-brief-effect",
-      "pre_execution_hold": true,
-      "promotion_ready": false,
-      "status": "testing",
-      "warnings": []
-    },
-    {
-      "adoption_basis": "",
-      "execution_status": "executed",
-      "falsifiability_triggered": true,
-      "historical_escape": false,
-      "missing": [
-        "insufficient_proof_assessment"
-      ],
-      "notes": [
-        "insufficient_proof_assessment"
-      ],
-      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow",
-      "pre_execution_hold": false,
-      "promotion_ready": false,
-      "status": "testing",
-      "warnings": []
-    },
-    {
-      "adoption_basis": "",
       "execution_status": "executed",
       "falsifiability_triggered": true,
       "historical_escape": false,
@@ -395,56 +360,6 @@
       "pre_execution_hold": false,
       "promotion_ready": false,
       "status": "inconclusive",
-      "warnings": []
-    },
-    {
-      "adoption_basis": "",
-      "execution_status": "executed",
-      "falsifiability_triggered": true,
-      "historical_escape": false,
-      "missing": [
-        "falsifiability.assessment_counterhypothesis_supported"
-      ],
-      "notes": [],
-      "path": "experiments/2026-08-16_outcome-bound-operator-loop-successor-s0",
-      "pre_execution_hold": false,
-      "promotion_ready": false,
-      "status": "rejected",
-      "warnings": [
-        "falsifiability_assessment_inconclusive"
-      ]
-    },
-    {
-      "adoption_basis": "",
-      "execution_status": "executed",
-      "falsifiability_triggered": true,
-      "historical_escape": false,
-      "missing": [
-        "falsifiability.assessment_blocked",
-        "falsifiability.assessment_counterhypothesis_supported"
-      ],
-      "notes": [],
-      "path": "experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2",
-      "pre_execution_hold": false,
-      "promotion_ready": false,
-      "status": "rejected",
-      "warnings": [
-        "falsifiability_assessment_inconclusive"
-      ]
-    },
-    {
-      "adoption_basis": "",
-      "execution_status": "executed",
-      "falsifiability_triggered": true,
-      "historical_escape": false,
-      "missing": [
-        "falsifiability.assessment_counterhypothesis_supported"
-      ],
-      "notes": [],
-      "path": "experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow",
-      "pre_execution_hold": false,
-      "promotion_ready": false,
-      "status": "rejected",
       "warnings": []
     },
     {
@@ -591,12 +506,12 @@
   "mode": "dry_run",
   "schema_version": "0.1.0",
   "summary": {
-    "experiments_checked": 37,
+    "experiments_checked": 32,
     "historical_escape": 1,
-    "not_ready": 25,
-    "pre_execution_hold": 5,
+    "not_ready": 21,
+    "pre_execution_hold": 4,
     "ready": 6,
-    "warnings": 9
+    "warnings": 7
   },
   "trigger": "need_for_reproducibility"
 }

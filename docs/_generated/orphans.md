@@ -3,7 +3,7 @@
 
 # Unreferenced Documents
 
-Unexpected orphans (103 found):
+Unexpected orphans (120 found):
 
 - `docs/ecosystem/README.md`
 - `docs/ecosystem/vibe-lab-productive-role.md`
@@ -88,7 +88,24 @@ Unexpected orphans (103 found):
 - `experiments/2026-07-08_operator-learning-capture-sample/results/nonclaims.md`
 - `experiments/2026-07-08_operator-learning-capture-sample/results/review-questions.md`
 - `experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/closeout.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/preactivation-rejection.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/sampling-cases.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/closeout-review.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/controller-reconciliation-attestation.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-a2.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-b2.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/s1r2-gate.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/sampling-cases.md`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/results/counter-check.md`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/sampling-unit-cases.md`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/cases/README.md`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/post-finding-orchestration-proposal.md`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/preactivation-rejection.md`
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/sampling-unit-cases.md`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/sampling-unit-cases.md`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/sampling-unit-cases.md`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/sampling-unit-cases.md`
 - `instruction-blocks/evidence-bound-status.md`
 - `prompts/adopted/prompt-length-control.md`
 - `prompts/adopted/spec-first-api.md`
@@ -109,7 +126,7 @@ Unexpected orphans (103 found):
 - `tests/fixtures/model_lab_next_blocker_triage/_evidence/assessment-context.md`
 - `tests/fixtures/pr_scope/valid/summary.md`
 
-Expected orphans (112 found):
+Expected orphans (122 found):
 
 - `experiments/2026-04-08_spec-first/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-04-08_spec-first/INITIAL.md` — experiment_bundle_initial_prompt
@@ -169,7 +186,6 @@ Expected orphans (112 found):
 - `experiments/2026-04-23_agent-failure-surface/failure_modes.md` — experiment_bundle_local_analysis
 - `experiments/2026-04-23_phase-1-drift-injection/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-04-23_phase-1-drift-injection/failure_modes.md` — experiment_bundle_local_analysis
-- `experiments/2026-04-23_phase-1-drift-injection/results/result.md` — experiment_result_local_surface
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/CONTEXT.md` — experiment_bundle_local_context
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-012-external-outcome-audit/auditor-inability-report.md` — external_auditor_inability_archive
@@ -206,13 +222,24 @@ Expected orphans (112 found):
 - `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` — experiment_bundle_initial_prompt
 - `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` — experiment_bundle_local_analysis
 - `experiments/2026-07-08_rlens-agent-context-conditions/method.md` — experiment_bundle_method
-- `experiments/2026-07-13_chronik-history-brief-effect/CONTEXT.md` — experiment_bundle_local_context
-- `experiments/2026-07-13_chronik-history-brief-effect/INITIAL.md` — experiment_bundle_initial_prompt
-- `experiments/2026-07-13_chronik-history-brief-effect/failure_modes.md` — experiment_bundle_local_analysis
-- `experiments/2026-07-13_chronik-history-brief-effect/method.md` — experiment_bundle_method
-- `experiments/2026-07-13_chronik-history-brief-effect/results/result.md` — experiment_result_local_surface
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/CONTEXT.md` — experiment_bundle_local_context
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/method.md` — experiment_bundle_method
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/method.md` — experiment_bundle_method
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/method.md` — experiment_bundle_method
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/method.md` — experiment_bundle_method
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/method.md` — experiment_bundle_method
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/method.md` — experiment_bundle_method
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/method.md` — experiment_bundle_method
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/method.md` — experiment_bundle_method
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/method.md` — experiment_bundle_method
+- `experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation/CONTEXT.md` — experiment_bundle_local_context
+- `experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation/method.md` — experiment_bundle_method
 - `exports/copilot/constraint-before-code.md` — generated_export_surface
 - `exports/copilot/edge-case-enumeration.md` — generated_export_surface
 - `exports/copilot/no-vague-prompts.md` — generated_export_surface

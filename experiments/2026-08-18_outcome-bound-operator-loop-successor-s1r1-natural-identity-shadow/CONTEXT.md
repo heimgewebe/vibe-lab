@@ -7,7 +7,7 @@ updated: "2026-08-18"
 triggered_by: "conversation:user-request-2026-08-18-continue-outcome-bound"
 relations:
   - type: derived_from
-    target: ../2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md
+    target: ../_archive/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md
   - type: references
     target: ../_archive/2026-08-17_outcome-bound-operator-loop-successor-s0r3/protocol.md
 ---

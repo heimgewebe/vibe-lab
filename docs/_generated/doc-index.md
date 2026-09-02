@@ -284,16 +284,6 @@
 | `experiments/2026-07-08_rlens-agent-context-conditions/INITIAL.md` | Initial Prompt — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/failure_modes.md` | Failure Modes — rLens Agent Context Conditions | designed | operative |
 | `experiments/2026-07-08_rlens-agent-context-conditions/method.md` | Method — rLens Agent Context Conditions | designed | operative |
-| `experiments/2026-07-13_chronik-history-brief-effect/CONTEXT.md` | Chronik History Brief Effect — Context | active | operative |
-| `experiments/2026-07-13_chronik-history-brief-effect/INITIAL.md` | Chronik History Brief Effect — Initial State | active | operative |
-| `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` | Chronik History Brief Effect — Natural-Case Admission Protocol | active | operative |
-| `experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md` | README | — | — |
-| `experiments/2026-07-13_chronik-history-brief-effect/failure_modes.md` | Chronik History Brief Effect — Failure Modes | active | operative |
-| `experiments/2026-07-13_chronik-history-brief-effect/method.md` | Chronik History Brief Effect — Method | active | operative |
-| `experiments/2026-07-13_chronik-history-brief-effect/results/result.md` | Chronik History Brief Effect — Result | draft | operative |
-| `experiments/2026-07-23_operator-routing-ml-readiness-shadow/CONTEXT.md` | Operator Routing ML Readiness Shadow — Context | active | operative |
-| `experiments/2026-07-23_operator-routing-ml-readiness-shadow/method.md` | Operator Routing ML Readiness Shadow — Method | active | operative |
-| `experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md` | Operator Routing Shadow — Independent Semantic Review Protocol | active | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/CONTEXT.md` | Outcome-Bound Operator Loop P0 — Context | designed | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md` | Outcome-Bound Operator Loop P0 — Illustrative examples | designed | exploratory |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` | Outcome-Bound Operator Loop P0 — Method and future protocols | testing | operative |
@@ -301,22 +291,6 @@
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/closeout.md` | closeout | — | — |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md` | Outcome-Bound Operator Loop P0 — Paper/schema-fit gate | designed | operative |
 | `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` | Outcome-Bound Operator Loop P0 — Three-case retrospective schema fit | designed | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/CONTEXT.md` | Outcome-Bound Operator Loop Successor S0 — Context | designed | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/protocol.md` | Outcome-Bound Operator Loop Successor S0 — Intervention-relative admission protocol | designed | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/results/reviewer-b.md` | Outcome-Bound Operator Loop Successor S0 — Independent Reviewer B | rejected | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/results/s0-gate.md` | Outcome-Bound Operator Loop Successor S0 — Paper gate | rejected | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0/s0/paper-cases.md` | Outcome-Bound Operator Loop Successor S0 — Fixed paper cases | designed | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/CONTEXT.md` | Outcome-Bound Operator Loop Successor S0-R2 — Context | designed | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/protocol.md` | Outcome-Bound Operator Loop Successor S0-R2 — Effect-lineage admission protocol | designed | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/results/reviewer-b.md` | Outcome-Bound Operator Loop Successor S0-R2 — Independent exact-head PR review | rejected | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/results/s0r2-gate.md` | Outcome-Bound Operator Loop Successor S0-R2 — Paper gate | rejected | operative |
-| `experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2/s0/paper-cases.md` | Outcome-Bound Operator Loop Successor S0-R2 — Fixed adversarial paper cases | designed | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/CONTEXT.md` | Outcome-Bound Operator Loop Successor S1 — Natural-case external-validity shadow | designed | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/method.md` | Outcome-Bound S1 — Natural-case external-validity protocol | designed | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md` | closeout | — | — |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/reviewer-b.md` | Outcome-Bound S1 — Independent sampling-integrity review | rejected | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/s1-gate.md` | Outcome-Bound S1 — Natural-sampling gate | rejected | operative |
-| `experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/sequence-proof.md` | sequence-proof | — | — |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/CONTEXT.md` | Outcome-Bound Operator Loop S1-R1 — Natural identity shadow | designed | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/method.md` | Outcome-Bound S1-R1 — Natural identity sampling protocol | designed | operative |
 | `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/preactivation-rejection.md` | Outcome-Bound S1-R1 — Pre-activation rejection | rejected | operative |

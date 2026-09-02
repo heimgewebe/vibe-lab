@@ -88,7 +88,7 @@
       "scope_paths": [
         "experiments/active.v1.json",
         "experiments/2026-07-01_operator-lab-loop",
-        "experiments/2026-07-23_operator-routing-ml-readiness-shadow"
+        "experiments/_archive/2026-07-23_operator-routing-ml-readiness-shadow"
       ],
       "execution_policy": {
         "pull_request": "blocking",

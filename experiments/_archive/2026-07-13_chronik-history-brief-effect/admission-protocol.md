@@ -9,15 +9,15 @@ relations:
   - type: references
     target: registration.v2.json
   - type: references
-    target: ../../schemas/natural-case-admission.v1.schema.json
+    target: ../../../schemas/natural-case-admission.v1.schema.json
   - type: references
-    target: ../../tools/vibe-cli/admit_natural_case.py
+    target: ../../../tools/vibe-cli/admit_natural_case.py
   - type: validated_by
-    target: ../../tools/vibe-cli/test_admit_natural_case.py
+    target: ../../../tools/vibe-cli/test_admit_natural_case.py
   - type: references
-    target: ../../tests/fixtures/natural_case_admission/valid-control-request.json
+    target: ../../../tests/fixtures/natural_case_admission/valid-control-request.json
   - type: references
-    target: ../../tools/vibe-cli/capture_effect_observation.py
+    target: ../../../tools/vibe-cli/capture_effect_observation.py
 ---
 
 # Natural-case admission protocol

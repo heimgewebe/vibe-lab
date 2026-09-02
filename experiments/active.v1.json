@@ -3,28 +3,6 @@
   "max_active": 5,
   "experiments": [
     {
-      "experiment_id": "2026-07-13_chronik-history-brief-effect",
-      "path": "experiments/2026-07-13_chronik-history-brief-effect",
-      "state": "testing",
-      "consumer": "Grabowski",
-      "decision_target": "Does a frozen repo- and component-specific Chronik history brief reduce avoidable repeated coding errors without causing stale-history or false-confidence regressions?",
-      "primary_metric": "coding_decision_quality_score",
-      "review_at": "2026-08-15T00:00:00Z",
-      "expires_at": "2026-09-01T00:00:00Z",
-      "source_ref": "experiments/2026-07-13_chronik-history-brief-effect/results/decision.yml"
-    },
-    {
-      "experiment_id": "2026-07-23_operator-routing-ml-readiness-shadow",
-      "path": "experiments/2026-07-23_operator-routing-ml-readiness-shadow",
-      "state": "testing",
-      "consumer": "Grabowski",
-      "decision_target": "Can evidence-bound shadow capture produce a trustworthy route-plus-outcome cohort without treating process state as task correctness or granting ML operational authority?",
-      "primary_metric": "direct_route_plus_reviewed_outcome_completeness",
-      "review_at": "2026-08-15T00:00:00Z",
-      "expires_at": "2026-09-01T00:00:00Z",
-      "source_ref": "experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml"
-    },
-    {
       "experiment_id": "2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
       "path": "experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation",
       "state": "testing",

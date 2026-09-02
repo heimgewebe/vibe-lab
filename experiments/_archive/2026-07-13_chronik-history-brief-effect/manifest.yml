@@ -5,15 +5,15 @@ experiment:
   hypothesis: >
     A frozen, historical-only Chronik brief supplied before coding planning may
     reduce avoidable repeated paths without increasing stale-state assumptions.
-  status: testing
+  status: blocked
   category: workflow
   execution_status: prepared
   execution_refs: []
   created: "2026-07-13"
-  updated: "2026-08-11"
+  updated: "2026-09-02"
   author: "ChatGPT / Grabowski"
   triggered_by: "user-request-chronik-natural-case-admission-2026-08-09"
-  iteration: 1
+  iteration: 2
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -28,9 +28,9 @@ experiment:
           status: pending
           outcome: not_checked
           pending_checks:
-            - "Compare control and treatment score distributions."
+            - "No further checks are authorized under the expired registration; a successor would require a new prospective contract."
           limitations:
-            - "Requires at least three natural cases per condition."
+            - "The registration expired before any natural control or treatment case was admitted."
           confidence: low
       - id: "history_increases_false_confidence"
         statement: "Historical context may create stale assumptions or encourage unsafe retries."
@@ -38,9 +38,9 @@ experiment:
           status: pending
           outcome: not_checked
           pending_checks:
-            - "Score the fatal history_not_live_truth component independently."
+            - "No further checks are authorized under the expired registration; a successor would require a new prospective contract."
           limitations:
-            - "Rare harmful cases may not appear in the minimum sample."
+            - "The registration expired before any natural control or treatment case was admitted."
           confidence: low
 
 context:

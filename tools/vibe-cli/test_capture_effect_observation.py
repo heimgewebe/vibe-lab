@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 SCRIPT = Path(__file__).with_name("capture_effect_observation.py")
@@ -366,11 +367,22 @@ class ChronikAdmissionBindingTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
-        source = CAPTURE.ROOT / "experiments/2026-07-13_chronik-history-brief-effect"
+        source = CAPTURE.ROOT / "experiments/_archive/2026-07-13_chronik-history-brief-effect"
         self.exp = self.root / "experiments/2026-07-13_chronik-history-brief-effect"
         (self.exp / "results").mkdir(parents=True)
         self.registration = self.exp / "registration.v2.json"
         self.registration.write_bytes((source / "registration.v2.json").read_bytes())
+        original_validate_registration = CAPTURE.REGISTRATION_GATE.validate_registration
+        frozen_now = ADMISSION.utc_timestamp("2026-08-11T06:50:00Z", "test-now")
+        registration_clock = mock.patch.object(
+            CAPTURE.REGISTRATION_GATE,
+            "validate_registration",
+            side_effect=lambda path, **kwargs: original_validate_registration(
+                path, now=frozen_now, **kwargs
+            ),
+        )
+        registration_clock.start()
+        self.addCleanup(registration_clock.stop)
         request = json.loads((CAPTURE.ROOT / "tests/fixtures/natural_case_admission/valid-control-request.json").read_text())
         request["case_id"] = "case-1"
         request_path = self.root / "request.json"
