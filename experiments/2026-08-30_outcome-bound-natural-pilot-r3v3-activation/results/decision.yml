@@ -1,25 +1,34 @@
 schema_version: "0.1.0"
 decision_type: "execution_assessment"
 verdict: "not_executed"
-date: "2026-08-30"
+date: "2026-09-02"
 reviewer: "ChatGPT / Grabowski"
 triggered_by: "direct-user:outcome-bound-natural-pilot-r3v3-activation-20260830"
 rationale: >
-  The experiment is registered in the active-experiment registry as testing so
-  lifecycle visibility, review-date enforcement and decision binding exist before
-  activation boundary A. execution_status remains designed: no Bureau activation
-  marker A exists in this revision, no post-A identity birth has been admitted,
-  and zero natural pilot slots have been consumed. This decision therefore makes
-  no feasibility, efficacy or adoption claim.
+  Post-merge activation preflight remains fail-closed. Vibe-Lab main is the reviewed
+  activation merge 046570387dd5f6eebb2750f1a7a8e2aa0f271aa3 and Grabowski runtime is
+  healthy on 49e78e25a6a329959157bfb04bb5dd1078353153, but that Grabowski revision
+  proves only the durable slot-capture core and its tests. No concrete SessionAuthority
+  implementation or executable MCP, grip, runtime or other provider integration can be
+  proven for the slot-capture module. The frozen registration requires one already-existing
+  durable provider surface whose session continuity, liveness, timing, begin/finalize and
+  immutable readback are provider-owned. Because that slot_capture_contract cannot be
+  frozen truthfully, A MUST NOT be written. No post-A identity birth has been admitted and
+  zero natural pilot slots have been consumed. This decision makes no feasibility,
+  efficacy, adoption or production claim.
 evidence_summary:
   natural_cases_taken: 0
   slots_consumed: 0
   binding_failure_count: 0
   activation_marker_present: false
+  provider_contract_satisfied: false
+  executable_provider_surface_proven: false
+  vibe_lab_main: "046570387dd5f6eebb2750f1a7a8e2aa0f271aa3"
+  grabowski_runtime_head: "49e78e25a6a329959157bfb04bb5dd1078353153"
 next_steps: >
-  After this exact revision passes independent review and is merged, re-read the
-  R3 v3 predecessor and complete Bureau candidate-task projection, then append the
-  single idempotent activation marker whose numeric event id becomes A. Only the
-  first three fully provable candidate_identity_birth events with event_id > A may
-  consume slots under the frozen protocol. No routing, queue, runtime, policy,
-  Chronik, Leitstand or product authority is granted.
+  Do not create or integrate a provider merely to make this experiment executable. Reassess
+  the provider gate only if an independently existing surface can be proven against the
+  frozen slot_capture_contract before the registered review or expiry boundary. Until then,
+  keep A unset, consume no natural slots and preserve execution_status=designed. If no such
+  surface exists at the review or expiry boundary, defer or archive under the registered
+  closure policy.
