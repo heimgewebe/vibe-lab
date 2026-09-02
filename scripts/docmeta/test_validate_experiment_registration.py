@@ -16,10 +16,12 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 NOW = datetime(2026, 7, 10, tzinfo=timezone.utc)
 T005_NOW = datetime(2026, 8, 8, tzinfo=timezone.utc)
-# Repository-tree validation uses the wall clock for the checked-in corpus.
-# Explicit fixed-clock unit cases below still verify future registered_at rejection.
+# Repository-corpus validation is a historical fixture, not a wall-clock liveness check.
+# Freeze it after the latest checked-in registration (2026-08-30T08:05Z) and
+# before the earliest checked-in expiry (2026-08-31T23:59:59Z). Live expiry is
+# enforced separately by validate_active_experiments.py and direct gate calls.
 # triggered_by: conversation:user-request-2026-08-20-continue-outcome-bound
-REPOSITORY_NOW = datetime.now(timezone.utc)
+REPOSITORY_NOW = datetime(2026, 8, 30, 12, 0, tzinfo=timezone.utc)
 DELETE = object()
 OUTCOME_OBSERVATION_SCHEMA_PATH = (
     ROOT
@@ -321,7 +323,7 @@ def test_assignment_prior_digest_must_match_registration_without_assignment() ->
     with tempfile.TemporaryDirectory() as raw:
         directory = Path(raw) / "2026-07-13_chronik-history-brief-effect"
         directory.mkdir(parents=True)
-        payload = json.loads((ROOT / "experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json").read_text())
+        payload = json.loads((ROOT / "experiments/_archive/2026-07-13_chronik-history-brief-effect/registration.v2.json").read_text())
         payload["assignment"]["prior_registration_sha256"] = "0" * 64
         path = directory / "registration.v2.json"
         path.write_text(json.dumps(payload))

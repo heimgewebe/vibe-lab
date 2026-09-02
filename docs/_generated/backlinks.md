@@ -487,6 +487,7 @@
 ## `experiments/2026-04-19_generated-artifact-contract-validation/results/result.md`
 
 - ← `experiments/2026-04-19_generated-artifact-contract-validation/results/cross-run-assessment.md` (informed_by)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` (references)
 
 ## `experiments/2026-04-23_agent-failure-surface/artifacts/run-phase-f-rrg01-real/observed.json`
 
@@ -619,6 +620,10 @@
 ## `experiments/2026-04-23_phase-1-drift-injection/results/evidence.jsonl`
 
 - ← `experiments/2026-04-23_phase-1-drift-injection/results/result.md` (references)
+
+## `experiments/2026-04-23_phase-1-drift-injection/results/result.md`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` (references)
 
 ## `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-003-controlled-agent-skill-run/measurement.yml`
 
@@ -755,6 +760,10 @@
 
 - ← `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md` (references)
 
+## `experiments/2026-07-01_operator-lab-loop/results/cross-run-assessment.v1.json`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` (references)
+
 ## `experiments/2026-07-08_rlens-agent-context-conditions/CONTEXT.md`
 
 - ← `experiments/2026-07-08_rlens-agent-context-conditions/method.md` (references)
@@ -763,17 +772,58 @@
 
 - ← `experiments/2026-07-08_rlens-agent-context-conditions/method.md` (references)
 
-## `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md`
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/CONTEXT.md`
 
-- ← `experiments/2026-07-13_chronik-history-brief-effect/method.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md` (references)
 
-## `experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md`
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-case-spec.v0.schema.json`
 
-- ← `experiments/2026-07-13_chronik-history-brief-effect/method.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` (references)
 
-## `experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json`
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-observation.v0.schema.json`
 
-- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cohort-protocol.v1.yml`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/decision.yml`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/activation.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/decision.yml`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+
+## `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md`
+
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/method.md` (references)
+- ← `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md` (references)
 
 ## `experiments/README.md`
 
@@ -783,6 +833,14 @@
 ## `experiments/_archive/2026-07-12_operator-intervention-effect-evaluator/registration.v2.json`
 
 - ← `docs/playbooks/effect-observation-capture.md` (informs)
+
+## `experiments/_archive/2026-08-17_outcome-bound-operator-loop-successor-s0r3/protocol.md`
+
+- ← `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/CONTEXT.md` (references)
+
+## `experiments/_archive/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow/results/closeout.md`
+
+- ← `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/CONTEXT.md` (derived_from)
 
 ## `instruction-blocks/constraint-before-code.md`
 
@@ -840,10 +898,6 @@
 - ← `docs/blueprints/blueprint-v2.md` (references)
 - ← `docs/reference/manifest-schema.md` (references)
 
-## `schemas/natural-case-admission.v1.schema.json`
-
-- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
-
 ## `schemas/review-events.v1.schema.json`
 
 - ← `.vibe/review-rework-artifact.contract.md` (references)
@@ -884,18 +938,9 @@
 
 - ← `docs/reference/agent-operability-fixture-matrix.md` (references)
 
-## `tests/fixtures/natural_case_admission/valid-control-request.json`
-
-- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
-
-## `tools/vibe-cli/admit_natural_case.py`
-
-- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
-
 ## `tools/vibe-cli/capture_effect_observation.py`
 
 - ← `docs/playbooks/effect-observation-capture.md` (references)
-- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (references)
 
 ## `tools/vibe-cli/pr_context_capture.py`
 
@@ -904,10 +949,6 @@
 ## `tools/vibe-cli/replay_minimal.py`
 
 - ← `docs/reference/replay-trace-redaction.md` (references)
-
-## `tools/vibe-cli/test_admit_natural_case.py`
-
-- ← `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md` (validated_by)
 
 ## `tools/vibe-cli/test_capture_effect_observation.py`
 

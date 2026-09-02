@@ -27,7 +27,7 @@ from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRATION_SCHEMA = ROOT / "schemas/experiment.registration.v2.schema.json"
 ADMISSION_SCHEMA = ROOT / "schemas/natural-case-admission.v1.schema.json"
-DEFAULT_EXPERIMENT = ROOT / "experiments/2026-07-13_chronik-history-brief-effect"
+DEFAULT_EXPERIMENT = ROOT / "experiments/_archive/2026-07-13_chronik-history-brief-effect"
 DEFAULT_REGISTRATION = DEFAULT_EXPERIMENT / "registration.v2.json"
 DEFAULT_ADMISSIONS = DEFAULT_EXPERIMENT / "artifacts/admissions"
 SUPPORTED_EXPERIMENT_ID = DEFAULT_EXPERIMENT.name

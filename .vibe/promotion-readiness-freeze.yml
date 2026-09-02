@@ -121,19 +121,6 @@ promotion_readiness_freeze:
         once the counter-hypotheses reach checked/partially_checked with evidence
         after enough comparable runs.
 
-    - path: experiments/2026-07-23_operator-routing-ml-readiness-shadow
-      allowed_missing:
-        - insufficient_proof_assessment
-      review_date: "2026-08-15"
-      reason: >-
-        The first real production cohort audit is executed and evidence-bound,
-        but the cohort contains only one eligible production case, one explicit
-        semantic abstention and zero complete independently reviewed cases. The
-        preregistered minimum is twenty natural production cases with at least
-        90 percent route-plus-reviewed-outcome completeness. Keep promotion
-        blocked and remove this exact freeze entry only after a separately
-        reviewed readiness PASS or experiment closure.
-
     - path: experiments/2026-08-16_outcome-bound-operator-loop-p0
       allowed_missing:
         - falsifiability.assessment_not_checked
@@ -149,53 +136,6 @@ promotion_readiness_freeze:
         with a pending comparison that the early-stopped P1 did not authorize.
         Keep only these bounded falsifiability blockers; do not treat early-stop
         execution as efficacy, adoption evidence, or P3 authorization.
-
-    - path: experiments/2026-08-16_outcome-bound-operator-loop-successor-s0
-      allowed_missing:
-        - falsifiability.assessment_counterhypothesis_supported
-      reason: >-
-        S0 executed its preregistered independent semantic review and was
-        terminally rejected: Reviewer B found two material disagreements,
-        including a supported counter-hypothesis that the intervention boundary
-        remains ambiguous. Promotion readiness must therefore stay fail-closed at
-        this exact signal. This freeze records the rejected result; it is not an
-        exception authorizing S1, a validator, P2/P3, adoption, or production
-        integration. Remove only if a separately authorized successor experiment
-        supersedes this experiment's readiness role; do not rewrite the rejected
-        S0 result.
-
-    - path: experiments/2026-08-16_outcome-bound-operator-loop-successor-s0r2
-      allowed_missing:
-        - falsifiability.assessment_blocked
-        - falsifiability.assessment_counterhypothesis_supported
-      reason: >-
-        S0-R2 was terminally rejected after the exact-head PR review found that
-        its effect-lineage rule still leaves the precondition-versus-material-
-        sub-effect boundary ambiguous on R2-02/R2-08. A separate registered
-        comparison/procedure mismatch prevents repairing the frozen revision in
-        place, and the early semantic stop leaves the metadata-overhead
-        counter-hypothesis deliberately unmeasured. These two exact readiness
-        blockers therefore describe the negative result rather than an unfinished
-        promotion candidate. The freeze authorizes no S1, natural cohort,
-        validator, P2/P3, adoption or production integration; remove only if a
-        separately authorized successor supersedes this experiment's readiness
-        role, never by rewriting the rejected R2 result.
-
-    - path: experiments/2026-08-17_outcome-bound-operator-loop-successor-s1-natural-shadow
-      allowed_missing:
-        - falsifiability.assessment_counterhypothesis_supported
-      reason: >-
-        S1 is terminally rejected because its frozen natural-sampling protocol does
-        not uniquely determine whether post-activation supersession events for a
-        pre-existing candidate identity are separate treatment arrivals. Independent
-        exact-head review confirmed that a later identity-first obligation cannot
-        retroactively resolve the already observed sample. The supported
-        counter-hypothesis is therefore the negative result itself, and promotion
-        readiness must remain fail-closed at exactly this signal. This freeze
-        authorizes no replacement cohort, P1/P2/P3, Minimal-versus-Full comparison,
-        adoption, routing, runtime or other production integration; remove only if a
-        separately authorized successor supersedes S1's readiness role, never by
-        rewriting the rejected evidence.
 
     - path: experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow
       allowed_missing:

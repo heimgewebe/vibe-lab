@@ -11,10 +11,10 @@ Diagnostic, non-blocking. Classifies all tracked repository artifacts according 
 
 ## Summary
 
-- total: 1667
-- classified: 1666
-  - of which fallback_classified (catch-all rule): 888
-  - fallback_share: 53.3% (888 / 1666)
+- total: 1713
+- classified: 1712
+  - of which fallback_classified (catch-all rule): 903
+  - fallback_share: 52.7% (903 / 1712)
   - fallback_threshold: 50.0% — warning
 
 Fallback classifications come from broad catch-all rules. They are valid diagnostic classifications, but lower confidence than specific path rules.
@@ -33,7 +33,7 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | catalog | 12 |
 | contract | 61 |
 | docs | 50 |
-| experiment | 935 |
+| experiment | 981 |
 | export | 16 |
 | generated | 8 |
 | governance | 94 |
@@ -43,18 +43,18 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 
 | authority | count |
 | --- | ---: |
-| decision_record | 27 |
+| decision_record | 34 |
 | diagnostic_signal | 7 |
-| evidence_log | 25 |
+| evidence_log | 32 |
 | generated_projection | 10 |
-| historical_record | 601 |
+| historical_record | 616 |
 | implementation_behavior | 25 |
 | navigation_surface | 28 |
 | normative_contract | 16 |
-| procedure_contract | 166 |
-| raw_capture | 33 |
-| result_interpretation | 74 |
-| runtime_observation | 132 |
+| procedure_contract | 187 |
+| raw_capture | 32 |
+| result_interpretation | 72 |
+| runtime_observation | 131 |
 | schema_truth | 49 |
 | sovereign_source | 3 |
 | test_expectation | 445 |
@@ -65,10 +65,10 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | lifecycle | count |
 | --- | ---: |
 | <none> | 1 |
-| append_only | 680 |
-| handcrafted | 852 |
+| append_only | 697 |
+| handcrafted | 870 |
 | regenerated | 18 |
-| revision_with_reason | 114 |
+| revision_with_reason | 125 |
 | superseded_not_rewritten | 2 |
 
 ### By enforcement
@@ -77,14 +77,14 @@ Fallback classifications come from broad catch-all rules. They are valid diagnos
 | --- | ---: |
 | advisory | 1 |
 | best_effort | 1 |
-| ci_blocking | 657 |
+| ci_blocking | 678 |
 | diagnostic | 2 |
 | no_manual_edit | 18 |
-| no_rewrite | 680 |
+| no_rewrite | 697 |
 | no_silent_edit | 3 |
 | non_blocking_diagnostic | 6 |
 | owner_required | 3 |
-| review_required | 364 |
+| review_required | 374 |
 
 ## Unknown artifacts
 
@@ -680,23 +680,6 @@ _none_
 - `experiments/2026-07-08_operator-learning-capture-sample/results/sample.yml`
 - `experiments/2026-07-08_operator-learning-capture-sample/results/scope-stop.md`
 - `experiments/2026-07-08_rlens-agent-context-conditions/measurement-plan.yml`
-- `experiments/2026-07-13_chronik-history-brief-effect/admission-protocol.md`
-- `experiments/2026-07-13_chronik-history-brief-effect/artifacts/README.md`
-- `experiments/2026-07-13_chronik-history-brief-effect/registration.v2.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-001-live-v3-readiness/readiness-gate.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-002-review-hardening/readiness-gate.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-003-prospective-binding-time/readiness-gate.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/run-004-prospective-source-authority/readiness-gate.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/readiness-gate.v1.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/registration.v2.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/readiness-gate-2026-07-23.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/readiness-gate-2026-07-26.json`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/review-protocol.md`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_prospective_cohort.py`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/audit_task_store.py`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_prospective_cohort.py`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools/test_audit_task_store.py`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-case-spec.v0.schema.json`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/contracts/outcome-observation.v0.schema.json`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/examples.md`
@@ -705,10 +688,42 @@ _none_
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/full-spec.json`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/stage-a-screening.yml`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-01/trigger-provenance.yml`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02/eligibility-correction.yml`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02/form-outcome.yml`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02/full-spec.json`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02/stage-a-screening.yml`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02/trigger-provenance.yml`
+- `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/closeout.md`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cohort-protocol.v1.yml`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/registration.v2.json`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/p0-gate.md`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/schema-fit.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/registration.v2.json`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/preactivation-rejection.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/sampling-cases.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/registration.v2.json`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/closeout-review.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/controller-reconciliation-attestation.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-a2.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/reviewer-b2.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/s1r2-gate.md`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/sampling-cases.md`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/registration.v2.json`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/results/counter-check.md`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/sampling-unit-cases.md`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/cases/README.md`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/registration.v2.json`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/post-finding-orchestration-proposal.md`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/preactivation-rejection.md`
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/registration.v2.json`
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/sampling-unit-cases.md`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/registration.v2.json`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/sampling-unit-cases.md`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/registration.v2.json`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/sampling-unit-cases.md`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/registration.v2.json`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/sampling-unit-cases.md`
+- `experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation/registration.v2.json`
 - `experiments/_template/artifacts/README.md`
 - `experiments/_template/registration.v1.json`
 - `experiments/_template/registration.v2.json`
@@ -1048,13 +1063,27 @@ _none_
 - `experiments/2026-07-05_ecosystem-organ-preflight/results/evidence.jsonl`
 - `experiments/2026-07-08_operator-learning-capture-sample/results/evidence.jsonl`
 - `experiments/2026-07-08_rlens-agent-context-conditions/results/decision.yml`
-- `experiments/2026-07-13_chronik-history-brief-effect/results/decision.yml`
-- `experiments/2026-07-13_chronik-history-brief-effect/results/evidence.jsonl`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/decision.yml`
-- `experiments/2026-07-23_operator-routing-ml-readiness-shadow/results/evidence.jsonl`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/decision.yml`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/decision.yml`
 - `experiments/2026-08-16_outcome-bound-operator-loop-p0/results/evidence.jsonl`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/decision.yml`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r1-natural-identity-shadow/results/evidence.jsonl`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/decision.yml`
+- `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results/evidence.jsonl`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/results/decision.yml`
+- `experiments/2026-08-20_outcome-bound-natural-pilot-sampling-unit/results/evidence.jsonl`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/decision.yml`
+- `experiments/2026-08-20_outcome-bound-operator-loop-successor-s1r2-natural-activation/results/evidence.jsonl`
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/results/decision.yml`
+- `experiments/2026-08-22_outcome-bound-natural-pilot-sampling-unit-r2/results/evidence.jsonl`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/results/decision.yml`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v2/results/evidence.jsonl`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/results/decision.yml`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3-v3/results/evidence.jsonl`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/results/decision.yml`
+- `experiments/2026-08-24_outcome-bound-natural-pilot-sampling-unit-r3/results/evidence.jsonl`
+- `experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation/results/decision.yml`
+- `experiments/2026-08-30_outcome-bound-natural-pilot-r3v3-activation/results/evidence.jsonl`
 - `experiments/_template/results/decision.yml`
 - `experiments/_template/results/evidence.jsonl`
 - `instruction-blocks/constraint-before-code.md`
@@ -1118,10 +1147,10 @@ Counts fallback-classified artifacts per catch-all pattern. Shows which broad ru
 
 | matched_pattern | count | share_of_fallback |
 | --- | ---: | ---: |
-| `experiments/*/artifacts/**` | 534 | 60.1% |
-| `tests/fixtures/**` | 275 | 31.0% |
-| `experiments/**` | 67 | 7.5% |
-| `docs/**` | 12 | 1.4% |
+| `experiments/*/artifacts/**` | 528 | 58.5% |
+| `tests/fixtures/**` | 275 | 30.5% |
+| `experiments/**` | 88 | 9.7% |
+| `docs/**` | 12 | 1.3% |
 
 ## Residual fallback clusters
 
@@ -1136,8 +1165,8 @@ Sorted by high_risk_count desc, then total desc, then matched_pattern asc.
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
 | `tests/fixtures/**` | 275 | 275 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/model_lab_next_blocker_triage/invalid`=29, `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence`=16, `tests/fixtures/dependency_risk_caveat_scope/invalid`=15, `tests/fixtures/model_lab_condition_contrast_design_gate/invalid`=15, `tests/fixtures/model_lab_next_blocker_triage/_evidence`=15 |
-| `experiments/*/artifacts/**` | 534 | 0 | `run-card.yml`=36, `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
-| `experiments/**` | 67 | 0 | `README.md`=4, `registration.v2.json`=4, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2, `AGENT_NOTE.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-07-08_operator-learning-capture-sample/results`=7, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-05-31_model-lab-replication-series/results`=4, `experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools`=4 |
+| `experiments/*/artifacts/**` | 528 | 0 | `run-card.yml`=36, `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
+| `experiments/**` | 88 | 0 | `registration.v2.json`=11, `README.md`=5, `sampling-unit-cases.md`=5, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-07-08_operator-learning-capture-sample/results`=7, `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02`=5, `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results`=5, `experiments/2026-04-15_agent-task-validity`=4 |
 | `docs/**` | 12 | 0 | `README.md`=5, `agent-skill-file-fruitfulness.md`=1, `doc-freshness-registry.yml`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/ecosystem`=2, `docs`=1, `docs/experiments`=1, `docs/onboarding`=1 |
 
 ### Volume-first clusters
@@ -1146,9 +1175,9 @@ Sorted by total desc, then high_risk_count desc, then matched_pattern asc.
 
 | matched_pattern | total | high_risk_count | top_basenames | top_parent_dirs |
 | --- | ---: | ---: | --- | --- |
-| `experiments/*/artifacts/**` | 534 | 0 | `run-card.yml`=36, `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
+| `experiments/*/artifacts/**` | 528 | 0 | `run-card.yml`=36, `evidence-pack.yml`=22, `auditor-output.yml`=21, `measurement.yml`=21, `run.yml`=21 | `experiments/2026-05-01_agent-skill-minimal-layer-instrumentation/artifacts/run-013-replicated-outcome-evidence`=14, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-001-rest-api-spec-first-baseline`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-002-rest-api-code-first-control`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/run-003-rest-api-independent-model-or-tool-condition`=13, `experiments/2026-05-31_model-lab-replication-series/artifacts/runtime-validation-run-001-run-002`=13 |
 | `tests/fixtures/**` | 275 | 275 | `evidence-pack.yml`=9, `changed-files.txt`=8, `auditor-output.yml`=7, `comparability.yml`=7, `measurement.yml`=7 | `tests/fixtures/model_lab_next_blocker_triage/invalid`=29, `tests/fixtures/model_lab_condition_contrast_design_gate/_evidence`=16, `tests/fixtures/dependency_risk_caveat_scope/invalid`=15, `tests/fixtures/model_lab_condition_contrast_design_gate/invalid`=15, `tests/fixtures/model_lab_next_blocker_triage/_evidence`=15 |
-| `experiments/**` | 67 | 0 | `README.md`=4, `registration.v2.json`=4, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2, `AGENT_NOTE.md`=1 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-07-08_operator-learning-capture-sample/results`=7, `experiments/2026-04-15_agent-task-validity`=4, `experiments/2026-05-31_model-lab-replication-series/results`=4, `experiments/2026-07-23_operator-routing-ml-readiness-shadow/tools`=4 |
+| `experiments/**` | 88 | 0 | `registration.v2.json`=11, `README.md`=5, `sampling-unit-cases.md`=5, `.gitignore`=2, `AGENT_INSTRUCTION.md`=2 | `experiments/2026-04-14_tdd-vibe/results/run-tdd-vibe`=10, `experiments/2026-07-08_operator-learning-capture-sample/results`=7, `experiments/2026-08-16_outcome-bound-operator-loop-p0/p1/cases/P1-02`=5, `experiments/2026-08-18_outcome-bound-operator-loop-successor-s1r2-paper/results`=5, `experiments/2026-04-15_agent-task-validity`=4 |
 | `docs/**` | 12 | 0 | `README.md`=5, `agent-skill-file-fruitfulness.md`=1, `doc-freshness-registry.yml`=1, `replay-gap-cross-diagnosis-rrg01-rrg02.md`=1, `rrg03-remediation-strategy-comparison.md`=1 | `docs/evaluations`=3, `docs/ecosystem`=2, `docs`=1, `docs/experiments`=1, `docs/onboarding`=1 |
 
 ## Fallback classified artifacts requiring review

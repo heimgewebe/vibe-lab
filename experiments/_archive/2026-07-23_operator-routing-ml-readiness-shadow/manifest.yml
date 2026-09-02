@@ -6,7 +6,7 @@ experiment:
     An evidence-bound shadow capture path can make naturally occurring operator
     routing cases suitable for offline model comparison without granting automatic
     routing, policy, queue, merge or runtime authority.
-  status: testing
+  status: inconclusive
   category: workflow
   execution_status: executed
   execution_refs:
@@ -28,9 +28,9 @@ experiment:
     - "results/readiness-gate-2026-07-26.json"
     - "results/evidence.jsonl"
   created: "2026-07-23"
-  updated: "2026-07-26"
+  updated: "2026-09-02"
   author: "Grabowski / Bureau"
-  iteration: 6
+  iteration: 7
   evidence_level: experimental
   falsifiability:
     version: 1
@@ -52,6 +52,7 @@ experiment:
             - path: "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json"
           limitations:
             - "Task state establishes process lifecycle, not semantic task correctness or merge quality."
+            - "The registration expired before the minimum treatment cohort was collected."
           confidence: high
       - id: "route_identity_is_already_complete"
         statement: "Current task records already carry complete canonical route identity for model training."
@@ -63,6 +64,7 @@ experiment:
             - path: "experiments/2026-07-23_operator-routing-ml-readiness-shadow/artifacts/control-readiness.json"
           limitations:
             - "Verified workspace route_evidence exists for a bounded subset, but current task rows expose no direct canonical route column or explicit join binding to reviewed semantic outcomes; argv inference is not canonical route evidence."
+            - "The registration expired before the minimum treatment cohort was collected."
           confidence: high
 
 context:
