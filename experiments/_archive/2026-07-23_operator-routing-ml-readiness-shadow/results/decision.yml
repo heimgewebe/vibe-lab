@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+decision_type: "execution_assessment"
+verdict: "insufficient_proof"
+date: "2026-09-02"
+reviewer: "ChatGPT / Grabowski"
+gate_result: "EXPIRED-ARCHIVED"
+closure_outcome: "archive"
+criteria_sha256: "2507258fe107441f150290cf7cd2158a652d1557e7c5af528aab5966654d1fa9"
+cohort_identity_sha256: "65ae60aa3c868861ffd386d59119223ea404026c97d257f1662f23d2fb0f52b3"
+source_gate_report: "results/readiness-gate-2026-07-26.json"
+rationale: >
+  The executed shadow cohort remains insufficient proof: one natural production
+  case, one bound eligibility, one sealed abstention, zero complete treatment
+  records, 0.0 percent route-plus-reviewed-outcome completeness and one unresolved
+  source binding. The registered collection window expired at
+  2026-09-01T00:00:00Z before the minimum cohort was reached. The experiment is
+  therefore removed from the active registry and archived as inconclusive exactly
+  as required by the registered expired outcome; the existing evidence and
+  abstention remain unchanged. No training, automatic routing, policy, queue,
+  merge or runtime authority follows. Continuing the old cohort after expiry or
+  backfilling later cases is not authorized; any successor must be prospectively
+  registered again.
+evidence_summary:
+  observations: 1
+  positive: 0
+  negative: 0
+  neutral: 1
+  eligible_production_cases: 1
+  abstained_records: 1
+  complete_records: 0
+  complete_treatment_cases: 0
+  completeness_percent: 0.0
+  admitted_route_strata: 0
+  unresolved_source_bindings: 1
+  integrity_errors: 0
+  no_effect_violations: 0
+  treatment_execution_provenance_missing: 0
+  registration_expired_at: "2026-09-01T00:00:00Z"
+next_steps: >
+  Preserve the existing cohort and abstention unchanged in the registered archive
+  path. Do not collect or bind additional cases under the expired registration.
+  Revisit route-plus-outcome readiness only through a separately reviewed successor
+  whose producer binding, cohort window and prospective admission contract are
+  frozen before new cases. No result here authorizes model training or productive
+  routing effects.

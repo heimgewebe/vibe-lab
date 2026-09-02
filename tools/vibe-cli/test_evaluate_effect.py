@@ -386,7 +386,7 @@ class AssignedExperimentEvaluatorTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
-        source = ROOT / "experiments/2026-07-13_chronik-history-brief-effect"
+        source = ROOT / "experiments/_archive/2026-07-13_chronik-history-brief-effect"
         self.exp = self.root / "2026-07-13_chronik-history-brief-effect"
         self.exp.mkdir()
         self.registration_path = self.exp / "registration.v2.json"
